@@ -544,36 +544,24 @@ public class WeightedPartitionEnumeratorNode<D, R, F extends Function<? extends 
    * @param accumSlot  local slot holding the accumulator object
    * @param loIntSlot  local slot holding the lo int primitive
    */
-  private void generateFamilyFunctionBodyCall(MethodVisitor mv, Class<?> resultType, int arrSlot, int accumSlot, int loIntSlot)
-  {
-    // The family function field on the generated class is a FunctionMapping
-    // backed by an IntegerFunction that closes over the local arr[].
-    // We implement this by generating an anonymous IntegerFunction via a
-    // dedicated inner expression registered in the context.
-    //
-    // Runtime: the context field `familyName` holds an IntegerFunction
-    // instance whose evaluate(Integer q, …) returns arr[q.getSignedValue()-lo].
-    //
-    // Since ASM cannot capture a local variable directly, we store the
-    // current arr[] contents into a context-held int[] field named
-    // `arrayFieldName`, and the IntegerFunction reads from that field.
-    //
-    // Step 1: store arr into context field `arrayFieldName`.
-    loadThisOntoStack(mv);
-    mv.visitVarInsn(ALOAD, arrSlot);
-    mv.visitFieldInsn(PUTFIELD, expression.className, arrayFieldName, "[I");
+private void generateFamilyFunctionBodyCall(MethodVisitor mv,
+                                             Class<?> resultType,
+                                             int arrSlot,
+                                             int accumSlot,
+                                             int loIntSlot)
+{
+  mv.visitVarInsn(ALOAD, 0);
+  mv.visitVarInsn(ALOAD, arrSlot);
+  mv.visitFieldInsn(PUTFIELD, operandExpression.className, arrayFieldName, "[I");
 
-    // Step 2: evaluate the body node — it will call familyName(q) which
-    // reads from the context field via the registered IntegerFunction.
-    bodyNode.generate(mv, resultType);
+  bodyNode.generate(mv, resultType);
 
-    // Step 3: accumulate: accum = accum.{operation}(bodyResult, bits)
-    mv.visitVarInsn(ALOAD, accumSlot);
-    mv.visitInsn(SWAP); // stack: accum, bodyResult
-    loadBitsParameterOntoStack(mv);
-    generateVirtualMethodInvocation(mv, resultType, operation, resultType, resultType, int.class);
-    pop(mv);
-  }
+  mv.visitVarInsn(ALOAD, accumSlot);
+  mv.visitInsn(SWAP);
+  mv.visitVarInsn(ILOAD, 3);
+  generateVirtualMethodInvocation(mv, resultType, operation, resultType, resultType, int.class);
+  pop(mv);
+}
 
   @Override
   public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)

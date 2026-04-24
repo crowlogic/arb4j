@@ -374,11 +374,12 @@ public class Parser
   {
     str = str.replaceAll("\\.{2,}", "…")
              .replace(';', ',')
+             .replace(':', '_')
              .replace(" ", "")
              .replace("/", "Slash")
              .replace(".", "Point")
              .replace("{", "")
-             .replace("}", "")
+             .replace("}", "")             
              .replace("₍", "")
              .replace("₎", "")
              .replace(">", "Gt")

@@ -470,7 +470,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   protected void loadOperand(MethodVisitor mv)
   {
-    getFieldFromThis(mv, functionClass, operandFunctionFieldName, String.format("L%s;", operandFunctionFieldName));
+    getFieldFromThis(mv, functionClass, operandFunctionFieldName, operandMapping.functionFieldDescriptor());
   }
 
   protected void loadOperandValue(MethodVisitor mv)
@@ -680,79 +680,50 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
    * @param hiNode                   upper bound of the family index
    * @param bodyNode                 the summand body that references familyName
    */
-  @SuppressWarnings("unchecked")
-  private void registerFamilyFunction(Expression<Integer, R, Sequence<R>> currentOperandExpression,
-                                      String familyName,
-                                      String familyIndexName,
-                                      Node<Integer, R, Sequence<R>> loNode,
-                                      Node<Integer, R, Sequence<R>> hiNode,
-                                      Node<Integer, R, Sequence<R>> bodyNode)
-  {
-    // 1. Build a concrete backing array that the enumerator will fill on each
-    // partition step. Its length is (hiNode - loNode + 1), which for
-    // n-dependent bounds must be evaluated at runtime. We model it as an
-    // int[] field on the outer generated class and expose it through a tiny
-    // IntegerFunction lambda registered in the context.
-    //
-    // At *compile* time we only need to register the FunctionMapping so
-    // that FunctionNode.lookupFunctionInContext() finds "m" (or "p"/"k")
-    // and routes calls through the context path. The runtime wiring of the
-    // actual values is done by the WeightedPartitionEnumeratorNode in
-    // generate().
+@SuppressWarnings("unchecked")
+private void registerFamilyFunction(Expression<Integer, R, Sequence<R>> currentOperandExpression,
+                                     String familyName,
+                                     String familyIndexName,
+                                     Node<Integer, R, Sequence<R>> loNode,
+                                     Node<Integer, R, Sequence<R>> hiNode,
+                                     Node<Integer, R, Sequence<R>> bodyNode)
+{
+  String arrayFieldName =
+      currentOperandExpression.getNextIntermediateVariableFieldName(familyName + "Arr", int[].class);
+  currentOperandExpression.newIntermediateVariable(arrayFieldName, int[].class);
 
-    // Allocate a field name for the int[] backing array.
-    String                                                 arrayFieldName = currentOperandExpression.getNextIntermediateVariableFieldName(familyName + "Arr",
-                                                                                                                                          int[].class);
+  @SuppressWarnings("rawtypes")
+  FunctionMapping<Integer, arb.Integer, IntegerFunction> familyMapping =
+      currentOperandExpression.context.registerFunctionMapping(familyName,
+                                                               (IntegerFunction) (index, order, bits, result) ->
+                                                               {
+                                                                 throw new UnsupportedOperationException("family function "
+                                                                                                         + familyName
+                                                                                                         + " must be called via compiled bytecode");
+                                                               },
+                                                               arb.Integer.class,
+                                                               arb.Integer.class,
+                                                               IntegerFunction.class,
+                                                               false,
+                                                               null,
+                                                               familyName);
 
-    // Register the family function as a
-    // FunctionMapping<Integer,Integer,IntegerFunction>
-    // with a null instance — the expression will be supplied by the
-    // WeightedPartitionEnumeratorNode at generate() time.
-    FunctionMapping<Integer, arb.Integer, IntegerFunction> familyMapping  =
-                                                                         currentOperandExpression.context.registerFunctionMapping(familyName,
-                                                                                                                                  (IntegerFunction) (index,
-                                                                                                                                                     order,
-                                                                                                                                                     bits,
-                                                                                                                                                     result) ->
-                                                                                                                                                                                                        {
-                                                                                                                                                                                                          throw new UnsupportedOperationException("family function "
-                                                                                                                                                                                                                                                  + familyName
-                                                                                                                                                                                                                                                  + " must be called via compiled bytecode");
-                                                                                                                                                                                                        },
-                                                                                                                                  arb.Integer.class,
-                                                                                                                                  arb.Integer.class,
-                                                                                                                                  IntegerFunction.class,
-                                                                                                                                  false,
-                                                                                                                                  null,
-                                                                                                                                  familyName);
+  currentOperandExpression.registerReferencedFunction(familyName, familyMapping);
 
-    currentOperandExpression.registerReferencedFunction(familyName, familyMapping);
-
-    // 2. Wrap the current body in a WeightedPartitionEnumeratorNode that owns
-    // the partition loop for this family binding. The enumerator node's
-    // generate() will:
-    // a) allocate the int[] array (one slot per familyIndex value),
-    // b) enumerate all tuples (m[lo], m[lo+1], …, m[hi]) of non-negative
-    // integers satisfying the weighted-partition constraint inferred
-    // from the enclosing Σ context,
-    // c) on each tuple, populate the int[] array and call bodyNode.generate().
-    var enumeratorNode =
-                  new WeightedPartitionEnumeratorNode<>(this.expression,
-                                                        currentOperandExpression,
-                                                        familyName,
-                                                        arrayFieldName,
-                                                        familyMapping,
-                                                        familyIndexName,
-                                                        loNode,
-                                                        hiNode,
-                                                        bodyNode,
-                                                        identity,
-                                                        operation);
-
-    currentOperandExpression.rootNode = (Node<Integer, R, Sequence<R>>) (Node<?, ?, ?>) enumeratorNode;
-
-    expression.continueParsingFrom(currentOperandExpression);
-  }
+  var enumeratorNode = new WeightedPartitionEnumeratorNode<>(this.expression,
+                                                             currentOperandExpression,
+                                                             familyName,
+                                                             arrayFieldName,
+                                                             familyMapping,
+                                                             familyIndexName,
+                                                             loNode,
+                                                             hiNode,
+                                                             bodyNode,
+                                                             identity,
+                                                             operation);
+  currentOperandExpression.rootNode = (Node<Integer, R, Sequence<R>>) (Node<?, ?, ?>) enumeratorNode;
+  expression.continueParsingFrom(currentOperandExpression);
+}
 
   /**
    * Handles the iterated-sum / iterated-product syntax extension:

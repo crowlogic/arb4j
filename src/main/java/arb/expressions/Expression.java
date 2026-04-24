@@ -166,10 +166,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
-  static final String arrayListDescriptor  = Type.getDescriptor(ArrayList.class);
-  static final String arrayListInternal    = Type.getInternalName(ArrayList.class);
-  static final String functionInternal     = Type.getInternalName(Function.class);
-  static final String fieldInternal        = Type.getInternalName(Field.class);
+  static final String arrayListDescriptor = Type.getDescriptor(ArrayList.class);
+  static final String arrayListInternal   = Type.getInternalName(ArrayList.class);
+  static final String functionInternal    = Type.getInternalName(Function.class);
+  static final String fieldInternal       = Type.getInternalName(Field.class);
 
   protected void declareDerivativeCacheField(ClassVisitor cw)
   {
@@ -191,10 +191,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * <ol>
    * <li>Grows the derivativeCache by calling derivative() on the last entry</li>
    * <li>Loops k = 0..order-1, evaluating each cached derivative at (t, 1, bits)
-   *     into result.get(k)</li>
+   * into result.get(k)</li>
    * <li>Divides by k! for k >= 2 to produce Taylor coefficients</li>
    * </ol>
-   * <p>Local variable layout for the Taylor path:</p>
+   * <p>
+   * Local variable layout for the Taylor path:
+   * </p>
+   * 
    * <pre>
    *   slot 5: k (loop counter)
    *   slot 6: factorial (long, occupies slots 6-7)
@@ -244,8 +247,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitInsn(Opcodes.ICONST_0);
     mv.visitVarInsn(Opcodes.ISTORE, kSlot);
 
-    Label loopTop      = new Label();
-    Label loopEnd      = new Label();
+    Label loopTop = new Label();
+    Label loopEnd = new Label();
 
     // --- loopTop: if (k >= order) goto loopEnd ---
     mv.visitLabel(loopTop);
@@ -283,8 +286,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, arrayListInternal, "get", "(I)Ljava/lang/Object;", false);
     mv.visitTypeInsn(Opcodes.CHECKCAST, functionInternal);
     // call prev.derivative()
-    mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, functionInternal, "derivative",
-                       "()L" + functionInternal + ";", true);
+    mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, functionInternal, "derivative", "()L" + functionInternal + ";", true);
     // stack: newDerivative; push cache again for add
     // need cache ref on stack before the value
     // Reload cache, swap
@@ -314,11 +316,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // --- fk.evaluate(t, 1, bits, element) ---
     // stack already has fk; push args
     mv.visitVarInsn(Opcodes.ALOAD, 1); // t
-    mv.visitInsn(Opcodes.ICONST_1);    // order = 1
+    mv.visitInsn(Opcodes.ICONST_1); // order = 1
     mv.visitVarInsn(Opcodes.ILOAD, 3); // bits
     mv.visitVarInsn(Opcodes.ALOAD, elementSlot); // element
-    mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, functionInternal, "evaluate",
-                       Compiler.evaluationMethodDescriptor, true);
+    mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, functionInternal, "evaluate", Compiler.evaluationMethodDescriptor, true);
     mv.visitInsn(Opcodes.POP); // discard return value
 
     // --- if (k >= 2) element.div((int)factorial, bits, element) ---
@@ -333,8 +334,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitVarInsn(Opcodes.ILOAD, 3); // bits
     mv.visitVarInsn(Opcodes.ALOAD, elementSlot);
     mv.visitTypeInsn(Opcodes.CHECKCAST, fieldInternal); // cast Object to Field
-    mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, fieldInternal, "div",
-                       "(IIL" + fieldInternal + ";)L" + fieldInternal + ";", true);
+    mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, fieldInternal, "div", "(IIL" + fieldInternal + ";)L" + fieldInternal + ";", true);
     mv.visitInsn(Opcodes.POP); // discard return
     mv.visitLabel(skipDiv);
 
@@ -357,15 +357,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public int nextLocalVariableSlot = 5;
 
   /**
-   * Allocates and returns the next available local variable slot for use in
-   * the generated evaluate() method bytecode. Each call returns a unique slot.
+   * Allocates and returns the next available local variable slot for use in the
+   * generated evaluate() method bytecode. Each call returns a unique slot.
    */
   public int allocateLocalVariableSlot()
   {
     return nextLocalVariableSlot++;
   }
 
-  public Expression<?, ?, ?>                            functionalChild;
+  public Expression<?, ?, ?> functionalChild;
 
   public String typeString()
   {
@@ -526,11 +526,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     assert arb.functions.integer.Sequence.class.equals(Sequence.class) : "you forgot to import arb.functions.sequences.Sequence or imported a class named sequence in another package";
   }
 
-  public File                                           compiledClassDir              = new File("compiled");
+  public File                            compiledClassDir = new File("compiled");
 
-  public Expression<?, ?, ?>                            superExpression;
+  public Expression<?, ?, ?>             superExpression;
 
-  public final List<Expression<?, ?, ?>>                 subExpressions                = new ArrayList<>();
+  public final List<Expression<?, ?, ?>> subExpressions   = new ArrayList<>();
 
   public Expression<?, ?, ?> getSuperExpression()
   {
@@ -577,7 +577,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public LinkedList<Consumer<MethodVisitor>>            initializers                  = new LinkedList<>();
 
-  public GenerationContext                               generationContext             = GenerationContext.Evaluation;
+  public GenerationContext                              generationContext             = GenerationContext.Evaluation;
 
   protected F                                           instance;
 
@@ -617,15 +617,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   /**
    * Attempts to consume an explicit input variable declaration of the form
-   * {@code name➔} or {@code name∈(a,b)➔} from the current cursor position.
-   * If the next tokens are a valid identifier, optionally followed by {@code ∈}
-   * and an interval specification, followed by the arrow character {@code ➔},
-   * the name is consumed and returned. Otherwise the cursor is restored to its
-   * original position and {@code null} is returned.
+   * {@code name➔} or {@code name∈(a,b)➔} from the current cursor position. If the
+   * next tokens are a valid identifier, optionally followed by {@code ∈} and an
+   * interval specification, followed by the arrow character {@code ➔}, the name
+   * is consumed and returned. Otherwise the cursor is restored to its original
+   * position and {@code null} is returned.
    *
-   * <p>If the {@code ∈} operator is present, the interval bounds are parsed
-   * and stored in {@link #pendingInputVariableBounds} for the caller to apply
-   * via {@link VariableReference#setBounds}.
+   * <p>
+   * If the {@code ∈} operator is present, the interval bounds are parsed and
+   * stored in {@link #pendingInputVariableBounds} for the caller to apply via
+   * {@link VariableReference#setBounds}.
    *
    * @return the declared variable name, or {@code null} if no arrow declaration
    *         is present
@@ -709,7 +710,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     require(',', '…');
     Node<D, C, F> upperNode = resolve();
 
-    boolean upperInclusive;
+    boolean       upperInclusive;
     if (character == ']')
     {
       upperInclusive = true;
@@ -735,8 +736,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * Evaluates a bound node to a double value. The node must be a literal
-   * constant or a negated literal constant.
+   * Evaluates a bound node to a double value. The node must be a literal constant
+   * or a negated literal constant.
    */
   private double evaluateBoundToDouble(Node<D, C, F> node)
   {
@@ -773,7 +774,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Expression(Class<? extends D> domain, Class<? extends C> coDomain, Class<? extends F> function)
   {
-    this.superExpression               = null;
+    this.superExpression                  = null;
     this.domainType                       = domain;
     this.coDomainType                     = coDomain;
     this.functionClass                    = function;
@@ -817,7 +818,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                     Expression<?, ?, ?> ascenentExpression)
   {
     assert className != null : "className needs to be specified";
-    this.superExpression               = ascenentExpression;
+    this.superExpression                  = ascenentExpression;
     this.className                        = className;
     this.domainType                       = domain;
     this.coDomainType                     = codomain;
@@ -1054,6 +1055,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Expression<D, C, F> compile()
   {
+    assert !className.isEmpty() : "className is empty";
     if (compiledClass != null)
     {
       return this;
@@ -1072,12 +1074,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       optimize();
       generate();
     }
-    assert context != null : "context is null for "
-                             + this
-                             + " and superExpression="
-                             + superExpression
-                             + " superExpression.context="
-                             + superExpression.context;
+    assert context != null : "context is null for " + this + " and superExpression=" + superExpression + " superExpression.context=" + superExpression.context;
+    assert !className.isEmpty() : "className is empty";
     compiledClass = loadFunctionClass(className, instructions, context);
     return this;
   }
@@ -1091,6 +1089,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       Class<?> type = mapping.type();
       if (type == null || type.isInterface())
       {
+        System.err.println( "Instantiating " + mapping );
         mapping.instantiate();
         type = mapping.type();
       }
@@ -1214,10 +1213,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * Walk the AST and merge {@link JetNode}s that share the same
    * {@link JetState#structuralKey structuralKey} (same function, same argument)
    * to reference a single canonical {@link JetState}. This ensures that
-   * differentiation-produced siblings of the same jet share one polynomial
-   * buffer and one stamp field, and that
-   * {@link JetState#getMaxCoefficientNeeded()} reflects the maximum across all
-   * siblings.
+   * differentiation-produced siblings of the same jet share one polynomial buffer
+   * and one stamp field, and that {@link JetState#getMaxCoefficientNeeded()}
+   * reflects the maximum across all siblings.
    */
   @SuppressWarnings("rawtypes")
   protected void deduplicateJets()
@@ -1425,17 +1423,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * Reference-identity equality. Expression instances are identified by
-   * their object identity: every parsed/compiled Expression gets its own
-   * AST and its own generated class, so two non-identical Expressions are
-   * never considered equal for the purposes of collection lookup. The
-   * previous implementation recursed through {@code rootNode.equals}, which
-   * combined with {@link arb.expressions.nodes.Node#equals}'s former
-   * inclusion of {@code expression} in its structural compare formed an
-   * equality cycle that overflowed the stack as soon as a sub-expression
-   * and its parent were compared. Callers that want structural equivalence
-   * between two Expressions can compare their rendered {@code toString}
-   * forms or their root nodes with {@code Node#isEquivalentTo}.
+   * Reference-identity equality. Expression instances are identified by their
+   * object identity: every parsed/compiled Expression gets its own AST and its
+   * own generated class, so two non-identical Expressions are never considered
+   * equal for the purposes of collection lookup. The previous implementation
+   * recursed through {@code rootNode.equals}, which combined with
+   * {@link arb.expressions.nodes.Node#equals}'s former inclusion of
+   * {@code expression} in its structural compare formed an equality cycle that
+   * overflowed the stack as soon as a sub-expression and its parent were
+   * compared. Callers that want structural equivalence between two Expressions
+   * can compare their rendered {@code toString} forms or their root nodes with
+   * {@code Node#isEquivalentTo}.
    */
   @Override
   public boolean equals(Object obj)
@@ -1522,8 +1520,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
       else
       {
-        throw new CompilerException("arrow variable declaration '" + arrowVar
-                                    + "➔' found but coDomain " + coDomainType.getSimpleName()
+        throw new CompilerException("arrow variable declaration '"
+                                    + arrowVar
+                                    + "➔' found but coDomain "
+                                    + coDomainType.getSimpleName()
                                     + " is not a functional interface");
       }
     }
@@ -1573,20 +1573,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     boolean prevDef = deferVariableResolution;
     deferVariableResolution = true;
-    var variableNode = newVariableNode(variableName);
+    var                 variableNode = newVariableNode(variableName);
 
-    Expression<D, C, F> subExpr = cloneExpression();
+    Expression<D, C, F> subExpr      = cloneExpression();
     subExpr.clearIndependentVariable();
-    subExpr.superExpression    = this;
+    subExpr.superExpression = this;
     if (isGeneratedFunctional())
     {
-      subExpr.functionClass    = (Class) coDomainType;
-      subExpr.domainType       = (Class) resolveChildDomain(coDomainType);
-      subExpr.coDomainType     = (Class) resolveChildCoDomain(coDomainType);
-      this.functionalChild     = subExpr;
+      subExpr.functionClass = (Class) coDomainType;
+      subExpr.domainType    = (Class) resolveChildDomain(coDomainType);
+      subExpr.coDomainType  = (Class) resolveChildCoDomain(coDomainType);
+      this.functionalChild  = subExpr;
     }
-    placeholderVariable        = subExpr.setIndependentVariable(variableNode.spliceInto(subExpr));
-    subExpr.rootNode           = subExpr.resolve();
+    placeholderVariable = subExpr.setIndependentVariable(variableNode.spliceInto(subExpr));
+    subExpr.rootNode    = subExpr.resolve();
 
     setCursorFrom(subExpr);
 
@@ -1629,7 +1629,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       VariableNode<D, C, F> newRef = newVariableNode(inputVariableName);
       if (pendingInputVariableBounds != null)
       {
-        newRef.reference.bounds = pendingInputVariableBounds;
+        newRef.reference.bounds    = pendingInputVariableBounds;
         pendingInputVariableBounds = null;
       }
       assignInputVariable(newRef);
@@ -1822,6 +1822,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     return classVisitor;
   }
+
   protected void generateCachePeek(MethodVisitor mv)
   {
     Label cacheMiss = new Label();
@@ -1836,7 +1837,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // stack: cached(coDomainType)
     mv.visitVarInsn(Opcodes.ALOAD, 4);
     mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
-    mv.visitInsn(Opcodes.SWAP);                        // stack: result(cast), cached
+    mv.visitInsn(Opcodes.SWAP); // stack: result(cast), cached
     Compiler.generateVirtualMethodInvocation(mv, coDomainType, "set", coDomainType, coDomainType);
     mv.visitInsn(Opcodes.POP);
     mv.visitVarInsn(Opcodes.ALOAD, 4);
@@ -1850,10 +1851,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   private int cacheIndexSlot     = -1;
 
   /**
-   * Stores the cache ArrayList and the int index in dynamically allocated
-   * local variable slots. Nothing is left on the operand stack, so
-   * rootNode.generate() runs with a clean stack regardless of branching
-   * (when/switch nodes).
+   * Stores the cache ArrayList and the int index in dynamically allocated local
+   * variable slots. Nothing is left on the operand stack, so rootNode.generate()
+   * runs with a clean stack regardless of branching (when/switch nodes).
    */
   protected void generateCachePokePrologue(MethodVisitor mv)
   {
@@ -1867,23 +1867,23 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * After rootNode.generate() has left the computed result on the stack:
-   * allocate a fresh copy, copy result into it, poke into the cache, and
-   * return the result.
+   * After rootNode.generate() has left the computed result on the stack: allocate
+   * a fresh copy, copy result into it, poke into the cache, and return the
+   * result.
    */
   protected void generateCachePokeEpilogue(MethodVisitor mv)
   {
     int freshCopySlot = allocateLocalVariableSlot();
 
     // stack on entry: <result> (left by rootNode.generate)
-    // pop the result — it has already been written into local4 (the result parameter)
+    // pop the result — it has already been written into local4 (the result
+    // parameter)
     mv.visitInsn(Opcodes.POP);
 
     // allocate fresh copy of coDomainType
     mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(coDomainType));
     mv.visitInsn(Opcodes.DUP);
-    mv.visitMethodInsn(Opcodes.INVOKESPECIAL,
-                       Type.getInternalName(coDomainType), "<init>", "()V", false);
+    mv.visitMethodInsn(Opcodes.INVOKESPECIAL, Type.getInternalName(coDomainType), "<init>", "()V", false);
     mv.visitVarInsn(Opcodes.ASTORE, freshCopySlot);
 
     // copy result (local4) into fresh copy
@@ -1891,14 +1891,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitVarInsn(Opcodes.ALOAD, 4);
     mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
     Compiler.generateVirtualMethodInvocation(mv, coDomainType, "set", coDomainType, coDomainType);
-    mv.visitInsn(Opcodes.POP);                   // discard set() return value
+    mv.visitInsn(Opcodes.POP); // discard set() return value
 
     // poke(cache, index, freshCopy)
     mv.visitVarInsn(Opcodes.ALOAD, cacheArrayListSlot);
     mv.visitVarInsn(Opcodes.ILOAD, cacheIndexSlot);
     mv.visitVarInsn(Opcodes.ALOAD, freshCopySlot);
     Compiler.invokeStaticMethod(mv, Function.class, "poke", Object.class, ArrayList.class, int.class, Object.class);
-    mv.visitInsn(Opcodes.POP);                   // discard poke return value
+    mv.visitInsn(Opcodes.POP); // discard poke return value
 
     // return result
     mv.visitVarInsn(Opcodes.ALOAD, 4);
@@ -1911,6 +1911,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     loadInputParameter(mv);
     mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(domainType));
   }
+
   protected void generateCodeToSetIsInitializedToTrue(MethodVisitor methodVisitor)
   {
     loadThisOntoStack(methodVisitor).visitInsn(Opcodes.ICONST_1);
@@ -2075,13 +2076,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (!functionClass.equals(Function.class))
     {
-      String functionDescriptor       = Compiler.getMethodDescriptor(Function.class);
-      String concreteDescriptor       = Compiler.getMethodDescriptor(functionClass);
-      var    bridge                   = classVisitor.visitMethod(Opcodes.ACC_PUBLIC | Opcodes.ACC_BRIDGE | Opcodes.ACC_SYNTHETIC,
-                                                                  func,
-                                                                  functionDescriptor,
-                                                                  null,
-                                                                  null);
+      String functionDescriptor = Compiler.getMethodDescriptor(Function.class);
+      String concreteDescriptor = Compiler.getMethodDescriptor(functionClass);
+      var    bridge             =
+                    classVisitor.visitMethod(Opcodes.ACC_PUBLIC | Opcodes.ACC_BRIDGE | Opcodes.ACC_SYNTHETIC, func, functionDescriptor, null, null);
       bridge.visitCode();
       bridge.visitVarInsn(Opcodes.ALOAD, 0);
       bridge.visitMethodInsn(Opcodes.INVOKEVIRTUAL, className, func, concreteDescriptor, false);
@@ -2212,16 +2210,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     // this.evaluateStaticSubexpressions(input, order, bits, result)
     loadThisOntoStack(mv);
-    mv.visitVarInsn(Opcodes.ALOAD, 1);  // input
-    mv.visitVarInsn(Opcodes.ILOAD, 2);  // order
-    mv.visitVarInsn(Opcodes.ILOAD, 3);  // bits
-    mv.visitVarInsn(Opcodes.ALOAD, 4);  // result
-    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                       internalName,
-                       EVALUATE_STATIC_SUBEXPRESSIONS,
-                       Compiler.evaluationMethodDescriptor,
-                       false);
-    mv.visitInsn(Opcodes.POP);          // discard return value
+    mv.visitVarInsn(Opcodes.ALOAD, 1); // input
+    mv.visitVarInsn(Opcodes.ILOAD, 2); // order
+    mv.visitVarInsn(Opcodes.ILOAD, 3); // bits
+    mv.visitVarInsn(Opcodes.ALOAD, 4); // result
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, internalName, EVALUATE_STATIC_SUBEXPRESSIONS, Compiler.evaluationMethodDescriptor, false);
+    mv.visitInsn(Opcodes.POP); // discard return value
 
     designateLabel(mv, skipLabel);
   }
@@ -2380,13 +2374,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                               assignments));
     }
 
-    ;
-
-    if (nestedFunction.instance != null && nestedFunction.isGenerated())
+    if (nestedFunction.instance != null && nestedFunction.isGenerated() && !nestedFunction.instance.getClass().isSynthetic())
     {
-      // filter by nestedExpression.hasDeclaredVariable so that variables
-      // that weren't in the context at the time of the functions compilation are not
-      // attempted to be injected
       var variableStream         = context.variableClassStream();
       var nestedExpression       = nestedFunction.expression;
       var declaredVariableStream = variableStream.filter(variable -> nestedExpression.hasDeclaredVariable(variable.getLeft()));
@@ -2486,22 +2475,22 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * Whether this expression has any {@link StaticNode} wrappers after
    * {@link #replaceConstantNodes()} has run.
    */
-  protected boolean hasStaticNodes = false;
+  protected boolean          hasStaticNodes                 = false;
 
   /**
-   * Set by {@link #optimize()} once all AST-rewriting passes (jet
-   * deduplication, static-subexpression hoisting, common-subexpression
-   * elimination) have run. Used as an idempotency guard so that repeated
-   * optimize/compile/generate calls never re-mutate the tree.
+   * Set by {@link #optimize()} once all AST-rewriting passes (jet deduplication,
+   * static-subexpression hoisting, common-subexpression elimination) have run.
+   * Used as an idempotency guard so that repeated optimize/compile/generate calls
+   * never re-mutate the tree.
    */
-  protected boolean optimized = false;
+  protected boolean          optimized                      = false;
 
   /**
    * Emit {@code public void invalidateStaticCache()} that resets
    * {@code staticPrecision = -1}, forcing the next {@code evaluate()} call to
    * re-run {@code evaluateStaticSubexpressions}. Only emitted when
-   * {@link #hasStaticNodes} is true — otherwise the {@code Function}
-   * interface's no-op default is inherited.
+   * {@link #hasStaticNodes} is true — otherwise the {@code Function} interface's
+   * no-op default is inherited.
    * <p>
    * Required for workflows that mutate bound-parameter instance data or
    * {@link Context} variables between evaluations (parameter estimation,
@@ -2542,11 +2531,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       return classVisitor;
     }
-    var mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
-                                      EVALUATE_STATIC_SUBEXPRESSIONS,
-                                      Compiler.evaluationMethodDescriptor,
-                                      null,
-                                      null);
+    var mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, EVALUATE_STATIC_SUBEXPRESSIONS, Compiler.evaluationMethodDescriptor, null, null);
     mv.visitCode();
     try
     {
@@ -2575,32 +2560,26 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * {@link #generateStaticEvaluationMethod(ClassVisitor)} where
    * {@link #generationContext} is {@link GenerationContext#StaticEvaluation}.
    * <p>
-   * Each delegate's {@code generate()} leaves the computed result on the
-   * stack. This method then stores that reference into the StaticNode's own
-   * field via {@code PUTFIELD}.
+   * Each delegate's {@code generate()} leaves the computed result on the stack.
+   * This method then stores that reference into the StaticNode's own field via
+   * {@code PUTFIELD}.
    */
   @SuppressWarnings("rawtypes")
   protected void generateStaticSubexpressionComputations(MethodVisitor mv)
   {
     String internalName = className.replace('.', '/');
-    rootNode.nodeStream()
-            .filter(node -> node instanceof StaticNode)
-            .map(node -> (StaticNode) node)
-            .forEach(staticNode ->
-            {
-              boolean wasRootNode            = staticNode.delegate.isRootNode;
-              staticNode.delegate.isRootNode = false;
-              staticNode.generate(mv, staticNode.type());
-              staticNode.delegate.isRootNode = wasRootNode;
-              // stack: [result]
-              // store into this.fieldName: need this under result
-              loadThisOntoStack(mv);
-              mv.visitInsn(Opcodes.SWAP);
-              mv.visitFieldInsn(Opcodes.PUTFIELD,
-                                internalName,
-                                staticNode.fieldName,
-                                staticNode.type().descriptorString());
-            });
+    rootNode.nodeStream().filter(node -> node instanceof StaticNode).map(node -> (StaticNode) node).forEach(staticNode ->
+    {
+      boolean wasRootNode = staticNode.delegate.isRootNode;
+      staticNode.delegate.isRootNode = false;
+      staticNode.generate(mv, staticNode.type());
+      staticNode.delegate.isRootNode = wasRootNode;
+      // stack: [result]
+      // store into this.fieldName: need this under result
+      loadThisOntoStack(mv);
+      mv.visitInsn(Opcodes.SWAP);
+      mv.visitFieldInsn(Opcodes.PUTFIELD, internalName, staticNode.fieldName, staticNode.type().descriptorString());
+    });
   }
 
   /**
@@ -2612,23 +2591,23 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * {@code evaluate()} body no longer recomputes dynamic products of purely
    * cached values.
    *
-   * <p>Iteration sketch (see issue #955):
+   * <p>
+   * Iteration sketch (see issue #955):
    * <ol>
-   *   <li>Run {@link Node#replaceConstantNodes()} to wrap every maximal
-   *       input-independent subtree in a {@link StaticNode}.</li>
-   *   <li>For each mul/div chain in the tree, collect operands while tracking
-   *       numerator/denominator role under {@link DivisionNode} alternation,
-   *       partition into static and dynamic, and rebuild the chain as
-   *       {@code dynamicChain * compositeStatic} (or
-   *       {@code dynamicChain / compositeStatic} if the chain has no dynamic
-   *       factors at all). The composite static is assembled from the
-   *       <em>delegates</em> of the input static nodes; the old StaticNode
-   *       wrappers' intermediate-variable registrations are removed so
-   *       {@link #declareIntermediateVariables} and {@link #generateCloseMethod}
-   *       see only the surviving fields.</li>
-   *   <li>Re-run {@link Node#replaceConstantNodes()}; the rebuilt composite
-   *       subtree is constant and becomes a new {@link StaticNode}.</li>
-   *   <li>Repeat until no further collapses are produced (fixed point).</li>
+   * <li>Run {@link Node#replaceConstantNodes()} to wrap every maximal
+   * input-independent subtree in a {@link StaticNode}.</li>
+   * <li>For each mul/div chain in the tree, collect operands while tracking
+   * numerator/denominator role under {@link DivisionNode} alternation, partition
+   * into static and dynamic, and rebuild the chain as
+   * {@code dynamicChain * compositeStatic} (or
+   * {@code dynamicChain / compositeStatic} if the chain has no dynamic factors at
+   * all). The composite static is assembled from the <em>delegates</em> of the
+   * input static nodes; the old StaticNode wrappers' intermediate-variable
+   * registrations are removed so {@link #declareIntermediateVariables} and
+   * {@link #generateCloseMethod} see only the surviving fields.</li>
+   * <li>Re-run {@link Node#replaceConstantNodes()}; the rebuilt composite subtree
+   * is constant and becomes a new {@link StaticNode}.</li>
+   * <li>Repeat until no further collapses are produced (fixed point).</li>
    * </ol>
    * {@link StaticNode#replaceConstantNodes()} is idempotent, so the repeated
    * first step does not double-wrap anything.
@@ -2647,8 +2626,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     rootNode.nodeStream().forEach(n -> n.invalidateConstantFlag());
     rootNode = rootNode.replaceConstantNodes();
 
-    int    maxIterations = 8;
-    int    iteration     = 0;
+    int maxIterations = 8;
+    int iteration     = 0;
     while (iteration++ < maxIterations)
     {
       boolean changed = segregateStaticFactorsInTree(rootNode);
@@ -2662,8 +2641,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       rootNode.nodeStream().forEach(n -> n.invalidateConstantFlag());
       rootNode = rootNode.replaceConstantNodes();
     }
-    assert iteration <= maxIterations
-                 : "static-hoisting fixed point not reached in " + maxIterations + " iterations";
+    assert iteration <= maxIterations : "static-hoisting fixed point not reached in " + maxIterations + " iterations";
 
     hasStaticNodes = rootNode.nodeStream().anyMatch(n -> n instanceof StaticNode);
     if (trace)
@@ -2677,20 +2655,22 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * Finds every maximal {@link MultiplicationNode}/{@link DivisionNode} chain
-   * in the current {@link #rootNode} tree and applies
-   * {@link #segregateStaticFactorsAt(Node)} to each. Returns {@code true} if
-   * any rewrite was performed.
+   * Finds every maximal {@link MultiplicationNode}/{@link DivisionNode} chain in
+   * the current {@link #rootNode} tree and applies
+   * {@link #segregateStaticFactorsAt(Node)} to each. Returns {@code true} if any
+   * rewrite was performed.
    *
-   * <p>Traversal uses {@link Node#nodeStream()} (which goes through each
-   * node's own {@link Node#accept} method, not through the risky
-   * {@code spliceInto}-based {@link Node#getBranches}) so that n-ary nodes,
-   * jet nodes, integral nodes, etc. are walked correctly. A {@link CachedNode}
-   * is opaque to {@code accept}, so its delegate subtree is never
-   * revisited — exactly what we want, because cached subtrees are already
-   * owned by a generated field and must not be restructured.
+   * <p>
+   * Traversal uses {@link Node#nodeStream()} (which goes through each node's own
+   * {@link Node#accept} method, not through the risky {@code spliceInto}-based
+   * {@link Node#getBranches}) so that n-ary nodes, jet nodes, integral nodes,
+   * etc. are walked correctly. A {@link CachedNode} is opaque to {@code accept},
+   * so its delegate subtree is never revisited — exactly what we want, because
+   * cached subtrees are already owned by a generated field and must not be
+   * restructured.
    *
-   * <p>A chain "top" is a mul/div node whose parent is not itself a mul/div.
+   * <p>
+   * A chain "top" is a mul/div node whose parent is not itself a mul/div.
    * Interior mul/div nodes will be absorbed by their ancestor's
    * {@link #collectMulDivOperands} descent, so processing them independently
    * would duplicate work.
@@ -2707,11 +2687,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // Snapshot the chain tops before any rewriting, because
     // segregateStaticFactorsAt mutates parent/child links.
     List<Node<?, ?, ?>> chainTops = tree.nodeStream()
-                                       .filter(Expression::isMulOrDiv)
-                                       .filter(n -> !isMulOrDiv(n.parent))
-                                       .collect(Collectors.toCollection(ArrayList::new));
+                                        .filter(Expression::isMulOrDiv)
+                                        .filter(n -> !isMulOrDiv(n.parent))
+                                        .collect(Collectors.toCollection(ArrayList::new));
 
-    boolean changed = false;
+    boolean             changed   = false;
     for (Node<?, ?, ?> chainTop : chainTops)
     {
       // If this chain top was already replaced by an ancestor's rewrite
@@ -2728,8 +2708,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * @return {@code true} if {@code node} is a {@link MultiplicationNode} or
-   *         a {@link DivisionNode}. Factored out to avoid a series of
+   * @return {@code true} if {@code node} is a {@link MultiplicationNode} or a
+   *         {@link DivisionNode}. Factored out to avoid a series of
    *         {@code instanceof} tests at call sites.
    */
   private static boolean isMulOrDiv(Node<?, ?, ?> node)
@@ -2740,20 +2720,23 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   /**
    * Segregates the static and dynamic factors of a single maximal
    * {@link MultiplicationNode}/{@link DivisionNode} chain rooted at
-   * {@code chainRoot}. See {@link #replaceConstantNodes()} for the
-   * role of this pass in the fixed-point loop.
+   * {@code chainRoot}. See {@link #replaceConstantNodes()} for the role of this
+   * pass in the fixed-point loop.
    *
-   * <p>The chain is scanned left-to-right, and the sign of each operand is
-   * tracked: entering the right-hand side of a {@link DivisionNode} flips
-   * the sign. After partitioning operands into static (those wrapped in a
-   * {@link StaticNode}) and dynamic, the chain is rebuilt as
+   * <p>
+   * The chain is scanned left-to-right, and the sign of each operand is tracked:
+   * entering the right-hand side of a {@link DivisionNode} flips the sign. After
+   * partitioning operands into static (those wrapped in a {@link StaticNode}) and
+   * dynamic, the chain is rebuilt as
+   * 
    * <pre>
-   *   dynamicNumProduct / dynamicDenProduct  *  S(staticNumProduct / staticDenProduct)
+   * dynamicNumProduct / dynamicDenProduct * S(staticNumProduct / staticDenProduct)
    * </pre>
-   * where every factor in the composite static is taken as the raw delegate
-   * of the contributing {@link StaticNode}. The stale
-   * {@link IntermediateVariable} registrations of the unwrapped StaticNodes
-   * are dropped so their fields are not declared, initialised, or closed.
+   * 
+   * where every factor in the composite static is taken as the raw delegate of
+   * the contributing {@link StaticNode}. The stale {@link IntermediateVariable}
+   * registrations of the unwrapped StaticNodes are dropped so their fields are
+   * not declared, initialised, or closed.
    *
    * @return {@code true} if the tree was rewritten, {@code false} otherwise
    */
@@ -2853,7 +2836,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (parent == null)
     {
       // chainRoot was the expression root.
-      rootNode = replacement;
+      rootNode           = replacement;
       replacement.parent = null;
     }
     else
@@ -2866,8 +2849,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   /**
    * Recursively walks a {@link MultiplicationNode}/{@link DivisionNode} chain
    * collecting every non-Mul/Div operand along with its accumulated
-   * numerator/denominator sign. The right operand of a {@link DivisionNode}
-   * flips the sign; all other descents preserve it. Stops descending at a
+   * numerator/denominator sign. The right operand of a {@link DivisionNode} flips
+   * the sign; all other descents preserve it. Stops descending at a
    * {@link StaticNode} so its cached subtree is treated as an atomic factor.
    */
   @SuppressWarnings(
@@ -2886,15 +2869,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     else
     {
-      out.add(new FactorRole(node, sign));
+      out.add(new FactorRole(node,
+                             sign));
     }
   }
 
   /**
    * Returns {@code factors} with every {@link StaticNode} replaced by its
    * {@link CachedNode#delegate}. The delegate's {@code parent} will be
-   * overwritten when it is wired into the rebuilt chain; we null it here
-   * to make the detachment from its former StaticNode parent explicit.
+   * overwritten when it is wired into the rebuilt chain; we null it here to make
+   * the detachment from its former StaticNode parent explicit.
    */
   @SuppressWarnings(
   { "rawtypes", "unchecked" })
@@ -2907,7 +2891,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       {
         Node delegate = sn.delegate;
         delegate.parent = null;
-        out.add(new FactorRole(delegate, f.sign));
+        out.add(new FactorRole(delegate,
+                               f.sign));
       }
       else
       {
@@ -2920,9 +2905,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   /**
    * Reassembles an ordered list of signed factors into a single
    * multiplication/division tree. Numerator factors are multiplied together
-   * left-to-right and denominator factors are composed into a single
-   * denominator that is divided in once at the end. Returns {@code null}
-   * when the list is empty.
+   * left-to-right and denominator factors are composed into a single denominator
+   * that is divided in once at the end. Returns {@code null} when the list is
+   * empty.
    */
   @SuppressWarnings(
   { "rawtypes", "unchecked" })
@@ -2954,9 +2939,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * Ordered pair of a factor node and its role in a mul/div chain
-   * (+1 = numerator, -1 = denominator). Used by
-   * {@link #collectMulDivOperands}.
+   * Ordered pair of a factor node and its role in a mul/div chain (+1 =
+   * numerator, -1 = denominator). Used by {@link #collectMulDivOperands}.
    */
   private static final class FactorRole
   {
@@ -3007,8 +2991,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
 
       String funcTypeDesc    = funcMapping.functionFieldDescriptor();
-      String nestedClassName = funcMapping.functionName;
-
+      String nestedClassName = funcMapping.expression != null ? funcMapping.expression.className
+                                                              : funcMapping.functionName;
+      
       // Share parent's context with child arg class (#842)
       if (nestedExpr.superExpression != null)
       {
@@ -3034,8 +3019,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         }
 
         // Skip if already declared as upstream independent variable
-        if (superExpression != null && superExpression.getIndependentVariable() != null
-                      && varName.equals(superExpression.getIndependentVariable().getName()))
+        if (superExpression != null && superExpression.getIndependentVariable() != null && varName.equals(superExpression.getIndependentVariable().getName()))
         {
           continue;
         }
@@ -3244,10 +3228,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // argument, yielding a MissingFormatArgumentException from String.format.
     // The indices match the order in which entries are added to
     // the Object[] args array below.
-    List<String>                matchedNames     = new ArrayList<>();
-    List<VariableNode<D, C, F>> matchedNodes     = new ArrayList<>();
-    Map<String, java.lang.Integer> variableIndices  = new HashMap<>();
-    int                         nextIndex        = 1;
+    List<String>                   matchedNames    = new ArrayList<>();
+    List<VariableNode<D, C, F>>    matchedNodes    = new ArrayList<>();
+    Map<String, java.lang.Integer> variableIndices = new HashMap<>();
+    int                            nextIndex       = 1;
     for (Entry<String, VariableNode<D, C, F>> entry : runtimeVars)
     {
       matchedNames.add(entry.getKey());
@@ -3257,8 +3241,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     // toStringBound(variableIndices) emits indexed specifiers so repeated
     // occurrences of the same variable share a single argument slot.
-    String                      boundExpr    = rootNode != null ? rootNode.toStringBound(variableIndices) : getExpression();
-    String                      formatString = namePrefix + arrow + boundExpr;
+    String boundExpr    = rootNode != null ? rootNode.toStringBound(variableIndices) : getExpression();
+    String formatString = namePrefix + arrow + boundExpr;
 
     if (Expression.trace)
     {
@@ -3888,9 +3872,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     functionalExpression.expression = expression;
     functionalExpression.context    = context;
 
-    // Use the declared variable as the functional expression's independent variable.
+    // Use the declared variable as the functional expression's independent
+    // variable.
     var declaredVariable = placeholderVariable;
-    placeholderVariable   = null;
+    placeholderVariable = null;
 
     if (declaredVariable != null)
     {
@@ -3911,7 +3896,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   static Class<?> resolveChildDomain(Class<?> parentCoDomainType)
   {
     if (RealFunction.class.equals(parentCoDomainType) || RealFunctional.class.equals(parentCoDomainType)
-        || RealToComplexFunction.class.equals(parentCoDomainType))
+                  || RealToComplexFunction.class.equals(parentCoDomainType))
     {
       return Real.class;
     }
@@ -4083,15 +4068,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     });
 
     // Phase 2: Filter to redundant, non-leaf, input-dependent classes
-    Node<D, C, F> independentVariable = isNullaryFunction() ? null : getIndependentVariable();
-    List<CongruenceClass<D, C, F>> redundant =
-      classes.stream()
-             .filter(CongruenceClass::isRedundant)
-             .filter(c -> !c.canonical().isLeaf())
-             .filter(c -> independentVariable != null
-                          && c.canonical().dependsOn((VariableNode<D, C, F>) independentVariable))
-             .sorted(Comparator.comparingInt(c -> c.canonical().depth()))
-             .toList();
+    Node<D, C, F>                  independentVariable = isNullaryFunction() ? null : getIndependentVariable();
+    List<CongruenceClass<D, C, F>> redundant           = classes.stream()
+                                                                .filter(CongruenceClass::isRedundant)
+                                                                .filter(c -> !c.canonical().isLeaf())
+                                                                .filter(c -> independentVariable != null
+                                                                              && c.canonical().dependsOn((VariableNode<D, C, F>) independentVariable))
+                                                                .sorted(Comparator.comparingInt(c -> c.canonical().depth()))
+                                                                .toList();
 
     if (redundant.isEmpty())
     {
@@ -4104,11 +4088,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       String fieldName = newIntermediateVariable("cse", cc.type());
       // First member is canonical: compute + store
-      replacements.put(cc.canonical(), new SharedNode<>(cc.canonical(), fieldName, true));
+      replacements.put(cc.canonical(),
+                       new SharedNode<>(cc.canonical(),
+                                        fieldName,
+                                        true));
       // Remaining members are references: just load
       for (int i = 1; i < cc.size(); i++)
       {
-        replacements.put(cc.get(i), new SharedNode<>(cc.get(i), fieldName, false));
+        replacements.put(cc.get(i),
+                         new SharedNode<>(cc.get(i),
+                                          fieldName,
+                                          false));
       }
     }
 
@@ -4117,15 +4107,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * Recursively walks the AST and replaces any node whose identity appears in
-   * the replacement map. Container nodes have their children replaced first
+   * Recursively walks the AST and replaces any node whose identity appears in the
+   * replacement map. Container nodes have their children replaced first
    * (bottom-up), then the node itself is checked.
    * 
    * FIXME: remove this instanceif idiocy
    */
   @SuppressWarnings("unchecked")
-  private Node<D, C, F> replaceByIdentity(Node<D, C, F> node,
-                                           IdentityHashMap<Node<D, C, F>, SharedNode<D, C, F>> replacements)
+  private Node<D, C, F> replaceByIdentity(Node<D, C, F> node, IdentityHashMap<Node<D, C, F>, SharedNode<D, C, F>> replacements)
   {
     // Recurse into children first (bottom-up)
     if (node instanceof BinaryOperationNode<D, C, F> binOp)
@@ -5099,8 +5088,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (BUILTIN_FUNCTION_NAMES.contains(referencedFunctionName))
     {
-      throw new CompilerException("cannot register a user-defined function named '" + referencedFunctionName
-                                  + "': that name is reserved for the built-in " + referencedFunctionName + ". Rename the function.");
+      throw new CompilerException("cannot register a user-defined function named '"
+                                  + referencedFunctionName
+                                  + "': that name is reserved for the built-in "
+                                  + referencedFunctionName
+                                  + ". Rename the function.");
     }
     referencedFunctions.put(referencedFunctionName, referenceFunctionMapping);
     return this;
@@ -5119,7 +5111,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public LinkedList<Expression<?, ?, ?>> getUpstreamExpressions()
   {
     var                 superExpressions = new LinkedList<Expression<?, ?, ?>>();
-    Expression<?, ?, ?> e                   = this;
+    Expression<?, ?, ?> e                = this;
     do
     {
       superExpressions.add(e);
@@ -5189,14 +5181,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * Returns the existing {@link LiteralConstantNode} in this expression
-   * whose {@link LiteralConstantNode#stringValue} equals {@code stringValue},
-   * or {@code null} if none. This lets the public {@code newLiteralConstant}
-   * / {@code newFractionLiteralConstant} factories short-circuit when a
-   * simplification step would otherwise mint a fresh node object for a
-   * value that already has a cached field — the caller gets back the
-   * original node instead of a duplicate that would later collide on
-   * {@code fieldName} inside {@link LiteralConstantNode}'s constructor.
+   * Returns the existing {@link LiteralConstantNode} in this expression whose
+   * {@link LiteralConstantNode#stringValue} equals {@code stringValue}, or
+   * {@code null} if none. This lets the public {@code newLiteralConstant} /
+   * {@code newFractionLiteralConstant} factories short-circuit when a
+   * simplification step would otherwise mint a fresh node object for a value that
+   * already has a cached field — the caller gets back the original node instead
+   * of a duplicate that would later collide on {@code fieldName} inside
+   * {@link LiteralConstantNode}'s constructor.
    */
   @SuppressWarnings("unchecked")
   private LiteralConstantNode<D, C, F> findExistingLiteralConstant(String stringValue)
