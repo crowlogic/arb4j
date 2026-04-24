@@ -188,12 +188,12 @@ public class WeightedPartitionEnumeratorNode<D, R, F extends Function<? extends 
     // lo and hi are small non-negative integers at runtime, so we
     // materialise them as JVM int primitives via Integer.getSignedValue().
 
-    int loSlot     = expression.allocateLocalVariableSlot(); // arb.Integer
-    int hiSlot     = expression.allocateLocalVariableSlot(); // arb.Integer
-    int loIntSlot  = expression.allocateLocalVariableSlot(); // int (primitive)
-    int hiIntSlot  = expression.allocateLocalVariableSlot(); // int (primitive)
-    int lenSlot    = expression.allocateLocalVariableSlot(); // int (= hi-lo+1)
-    int targetSlot = expression.allocateLocalVariableSlot(); // int (partition target)
+    int loSlot     = operandExpression.allocateLocalVariableSlot(); // arb.Integer
+    int hiSlot     = operandExpression.allocateLocalVariableSlot(); // arb.Integer
+    int loIntSlot  = operandExpression.allocateLocalVariableSlot(); // int (primitive)
+    int hiIntSlot  = operandExpression.allocateLocalVariableSlot(); // int (primitive)
+    int lenSlot    = operandExpression.allocateLocalVariableSlot(); // int (= hi-lo+1)
+    int targetSlot = operandExpression.allocateLocalVariableSlot(); // int (partition target)
 
     // Allocate arb.Integer temporaries for lo/hi evaluation.
     generateNewObjectInstruction(mv, Integer.class);
@@ -241,7 +241,7 @@ public class WeightedPartitionEnumeratorNode<D, R, F extends Function<? extends 
     // The operand expression's independent variable is the integer argument
     // passed to this sequence (b for M, 2c for N, or the k-family slack for μ).
     // Load it and convert to int.
-    int indepSlot = expression.allocateLocalVariableSlot(); // arb.Integer reference
+    int indepSlot = operandExpression.allocateLocalVariableSlot(); // arb.Integer reference
     loadInputParameter(mv); // → Object on stack
     mv.visitTypeInsn(CHECKCAST, "arb/Integer");
     mv.visitVarInsn(ASTORE, indepSlot);
@@ -250,7 +250,7 @@ public class WeightedPartitionEnumeratorNode<D, R, F extends Function<? extends 
     mv.visitVarInsn(ISTORE, targetSlot);
 
     // ── 3. Allocate the int[] backing array ──────────────────────────────
-    int arrSlot = expression.allocateLocalVariableSlot(); // int[]
+    int arrSlot = operandExpression.allocateLocalVariableSlot(); // int[]
     mv.visitVarInsn(ILOAD, lenSlot);
     mv.visitIntInsn(NEWARRAY, T_INT);
     mv.visitVarInsn(ASTORE, arrSlot);
@@ -262,8 +262,8 @@ public class WeightedPartitionEnumeratorNode<D, R, F extends Function<? extends 
     // For the runtime path we use the local int[] directly.)
 
     // ── 5. Initialise accumulator ────────────────────────────────────────
-    int accumSlot = expression.allocateLocalVariableSlot();
-    expression.allocateIntermediateVariable(mv, "partAccum", resultType);
+    int accumSlot = operandExpression.allocateLocalVariableSlot();
+    operandExpression.allocateIntermediateVariable(mv, "partAccum", resultType);
     // The allocateIntermediateVariable call leaves the object on the stack.
     // Invoke identity() on it.
     generateVirtualMethodInvocation(mv, resultType, identity, resultType);
@@ -274,10 +274,10 @@ public class WeightedPartitionEnumeratorNode<D, R, F extends Function<? extends 
     // We allocate three int[] arrays of length `len` to serve as the
     // explicit call stack for pos, remaining, and v across recursion levels.
 
-    int stackPosSlot   = expression.allocateLocalVariableSlot(); // int[] pos stack
-    int stackRemSlot   = expression.allocateLocalVariableSlot(); // int[] remaining stack
-    int stackVSlot     = expression.allocateLocalVariableSlot(); // int[] v stack
-    int stackDepthSlot = expression.allocateLocalVariableSlot(); // int current depth
+    int stackPosSlot   = operandExpression.allocateLocalVariableSlot(); // int[] pos stack
+    int stackRemSlot   = operandExpression.allocateLocalVariableSlot(); // int[] remaining stack
+    int stackVSlot     = operandExpression.allocateLocalVariableSlot(); // int[] v stack
+    int stackDepthSlot = operandExpression.allocateLocalVariableSlot(); // int current depth
 
     // Allocate stacks of size (len+1) to hold recursion state.
     // We compute len+1 to avoid zero-size arrays when len==0.
@@ -327,11 +327,11 @@ public class WeightedPartitionEnumeratorNode<D, R, F extends Function<? extends 
     Label doAscend   = new Label();
 
     // Local int slots for current frame values (reload each iteration).
-    int   curPosSlot = expression.allocateLocalVariableSlot();
-    int   curRemSlot = expression.allocateLocalVariableSlot();
-    int   curVSlot   = expression.allocateLocalVariableSlot();
-    int   weightSlot = expression.allocateLocalVariableSlot();
-    int   maxVSlot   = expression.allocateLocalVariableSlot();
+    int   curPosSlot = operandExpression.allocateLocalVariableSlot();
+    int   curRemSlot = operandExpression.allocateLocalVariableSlot();
+    int   curVSlot   = operandExpression.allocateLocalVariableSlot();
+    int   weightSlot = operandExpression.allocateLocalVariableSlot();
+    int   maxVSlot   = operandExpression.allocateLocalVariableSlot();
 
     mv.visitLabel(loopTop);
 
@@ -431,7 +431,7 @@ public class WeightedPartitionEnumeratorNode<D, R, F extends Function<? extends 
 
     // Descend to next position with updated remaining.
     // newRem = curRem - weight*curV
-    int newRemAscend = expression.allocateLocalVariableSlot();
+    int newRemAscend = operandExpression.allocateLocalVariableSlot();
     mv.visitVarInsn(ILOAD, curRemSlot);
     mv.visitVarInsn(ILOAD, weightSlot);
     mv.visitVarInsn(ILOAD, curVSlot);
@@ -495,7 +495,7 @@ public class WeightedPartitionEnumeratorNode<D, R, F extends Function<? extends 
     mv.visitInsn(IASTORE);
 
     // Push new frame
-    int newRem = expression.allocateLocalVariableSlot();
+    int newRem = operandExpression.allocateLocalVariableSlot();
     mv.visitVarInsn(ILOAD, curRemSlot);
     mv.visitVarInsn(ILOAD, weightSlot);
     mv.visitVarInsn(ILOAD, curVSlot);
@@ -573,7 +573,12 @@ private void generateFamilyFunctionBodyCall(MethodVisitor mv,
   @SuppressWarnings("unchecked")
   public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
-    var splicedOperandExpression = (Expression<Integer, S, Sequence<S>>) (Expression<?, ?, ?>) operandExpression;
+    var splicedOperandExpression = (Expression<Integer, S, Sequence<S>>) (Expression<?, ?, ?>) newExpression;
+    if (!splicedOperandExpression.intermediateVariables.containsKey(arrayFieldName))
+    {
+      splicedOperandExpression.registerIntermediateVariable(arrayFieldName, int[].class, true);
+    }
+    splicedOperandExpression.registerReferencedFunction(familyName, familyMapping);
     return (Node<E, S, G>) new WeightedPartitionEnumeratorNode<E, S, G>(newExpression,
                                                                         splicedOperandExpression,
                                                                         familyName,
