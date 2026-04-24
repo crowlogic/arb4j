@@ -642,7 +642,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
     parseMultisumIndices();
 
-    if (resolveAfterMultisum)
+    if (resolveAfterMultisum && !expression.deferVariableResolution)
     {
       operandExpression.rootNode.resolveVariables();
     }
@@ -717,9 +717,12 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
         }
       }
       currentOperandExpression.require('=');
+      boolean priorDefer = currentOperandExpression.deferVariableResolution;
+      currentOperandExpression.deferVariableResolution = true;
       var extraLower = currentOperandExpression.resolve();
       currentOperandExpression.require('\u2026');
       var    extraUpper             = currentOperandExpression.resolve();
+      currentOperandExpression.deferVariableResolution = priorDefer;
 
       String innerOperandFieldName  = currentOperandExpression.getNextIntermediateVariableFieldName("operand", Function.class);
 

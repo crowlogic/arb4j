@@ -227,11 +227,32 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return this;
     }
 
+    if (hasDeferredAncestor())
+    {
+      if (Expression.traceNodes)
+      {
+        logger.debug("resolveReference DEFERRED: {}", resolutionStateString());
+      }
+      return this;
+    }
+
     if (Expression.traceNodes)
     {
       logger.debug("resolveReference UNDEFINED: {}", resolutionStateString());
     }
     throw new UndefinedReferenceException(resolutionStateString());
+  }
+
+  private boolean hasDeferredAncestor()
+  {
+    for (Expression<?, ?, ?> e = expression; e != null; e = e.superExpression)
+    {
+      if (e.deferVariableResolution)
+      {
+        return true;
+      }
+    }
+    return false;
   }
 
   private boolean isPlaceholder()
