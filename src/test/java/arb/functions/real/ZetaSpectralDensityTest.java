@@ -132,8 +132,11 @@ public class ZetaSpectralDensityTest extends
           Real gN8 = new Real();
           Real bound = new Real())
     {
-      ev.evaluate(ν0, 2, T_LOW, BITS, gN2);
-      ev.evaluate(ν0, 8, T_LOW, BITS, gN8);
+      ev.N= 2;
+      ev.tLow = T_LOW;
+      ev.evaluate(ν0, 0, BITS, gN2);
+      ev.N= 8;
+      ev.evaluate(ν0, 0, BITS, gN8);
       double diff = Math.abs(gN8.doubleValue() - gN2.doubleValue());
       assertTrue("multi-mode sum must differ from single-mode (|G_8 - G_2| = " + diff + ")",
                  diff > 0.0);
@@ -154,8 +157,10 @@ public class ZetaSpectralDensityTest extends
           Real first = new Real();
           Real second = new Real())
     {
-      ev.evaluate(ν0, 6, T_LOW, BITS, first);
-      ev.evaluate(ν0, 6, T_LOW, BITS, second);
+      ev.N= 6;
+      ev.tLow = T_LOW;
+      ev.evaluate(ν0, 0, BITS, first);
+      ev.evaluate(ν0, 0, BITS, second);
       double a = first.doubleValue();
       double b = second.doubleValue();
       assertTrue("evaluator produced a finite density; got " + a, Double.isFinite(a));
@@ -168,6 +173,7 @@ public class ZetaSpectralDensityTest extends
     try ( var ev = new ZetaSpectralDensity();
           Real res = new Real())
     {
+      boolean caught = false;
       double[] bad = { -1.5, -1.0, 0.0, 1.0, 1.7 };
       for (double νd : bad)
       {
@@ -175,13 +181,17 @@ public class ZetaSpectralDensityTest extends
         {
           try
           {
-            ev.evaluate(νBad, 4, T_LOW, BITS, res);
+            ev.N= 4;
+            ev.tLow = T_LOW;
+            ev.evaluate(νBad, 0, BITS, res);
             fail("expected IllegalArgumentException for ν = " + νd);
           }
           catch (IllegalArgumentException expected)
           {
+            caught = true;
             // ok
           }
+          assertTrue(caught);
         }
       }
     }
@@ -195,7 +205,9 @@ public class ZetaSpectralDensityTest extends
     {
       try
       {
-        ev.evaluate(ν0, 0, T_LOW, BITS, res);
+        ev.N= 0;
+        ev.tLow = T_LOW;
+        ev.evaluate(ν0, 0, BITS, res);
         fail("expected IllegalArgumentException for N = 0");
       }
       catch (IllegalArgumentException ok)

@@ -106,7 +106,7 @@ import arb.expressions.Context;
  *      {@link TheArb4jLibrary}
  */
 public class ZetaSpectralDensity implements
-                                  AutoCloseable
+                                  AutoCloseable, RealFunction
 {
   /** Default lower integration bound matching the repo's T₀ = 200. */
   public static final double DEFAULT_T_LOW  = 200.0;
@@ -266,6 +266,10 @@ public class ZetaSpectralDensity implements
     }
   }
 
+  int N;
+  
+  double tLow;
+  
   /**
    * Evaluate G_N(ν) as the finite stationary-phase mode sum up to N.
    *
@@ -276,7 +280,8 @@ public class ZetaSpectralDensity implements
    * @param out      destination for the evaluated density
    * @return the real density G_N(ν) = Re K_T^{stat}(ν) summed over n = 2..N
    */
-  public Real evaluate(Real νIn, int N, double tLow, int bits, Real out)
+  @Override
+  public Real evaluate(Real νIn, int order, int bits, Real out)
   {
     double νd = νIn.doubleValue();
     validateNu(νd);
@@ -411,4 +416,6 @@ public class ZetaSpectralDensity implements
     term.close();
     θ.close();
   }
+
+ 
 }
