@@ -71,7 +71,7 @@ See `DEBUGGING.md` for full details on debug flags and workflows.
 
 ## Native Library
 
-`libarblib.so` in the project root is the pre-built native library. **Do not delete it.**
+`libarblib.so` is built locally from `native/` (see `Makefile`: `make` produces it via `swig` + `clang` against `libflint` and `libxdo`). It is not committed. **Once built, do not delete it** — a fresh build takes around 30 minutes, so keep the file in the project root across iterations. `make clean` removes it; avoid that unless you actually need to regenerate.
 
 ## Git
 
