@@ -80,4 +80,16 @@ public class SumMultiBindingTest extends
     Real                  val = f.evaluate(null, 128, new Real());
     assertEquals(72.0, val.doubleValue());
   }
+
+  /**
+   * Indexed-family binding, single level:
+   *   Σ_{q=1..3} Σ_{k∶q=1..2} k
+   * = Σ_{q=1..3} (1+2) = 9.
+   */
+  public static void testSingleIndexedFamilyBinding() throws AnalyzerException
+  {
+    NullaryFunction<Real> f   = RealNullaryFunction.express("Σk{q=1…3, k∶q=1…2}");
+    Real                  val = f.evaluate(null, 128, new Real());
+    assertEquals(9.0, val.doubleValue());
+  }
 }

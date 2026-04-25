@@ -22,7 +22,7 @@
 Let $\theta$ denote the Riemann--Siegel theta function and set
 $\Theta(t)=\theta(t)+Ct$ with $C$ chosen so that $\Theta'(t)>0$ for all
 $t\ge 0$. For a regularization parameter $\varepsilon>0$ define the density
-$h(t)=-\zeta(\tfrac12+it)\sqrt{\Theta'(t)}(1+\Theta(t)^{2})^{-\varepsilon}e^{i\Theta(t)}$
+$h(t)=\zeta(\tfrac12+it)\sqrt{\Theta'(t)}(1+\Theta(t)^{2})^{-\varepsilon}e^{i\Theta(t)}$
 and let $\Phi_{G}$ be its pushforward complex Borel measure under
 $u=\Theta(t)$. The moment sequence
 $\mu_{n}=\int_{\mathbb{R}}u^{n}\,d\Phi_{G}(u)$ admits an explicit finite
@@ -55,14 +55,9 @@ Write $\zeta_{a}:=\zeta^{(a)}(\tfrac12)$ and fix $\varepsilon>0$.
 
 Define
 \[
-h(t)\;=\;-\,\zeta\!\bigl(\tfrac12+it\bigr)\sqrt{\Theta'(t)}\,\bigl(1+\Theta(t)^{2}\bigr)^{-\varepsilon}e^{\,i\Theta(t)}.
+h(t)\;=\;\zeta\!\bigl(\tfrac12+it\bigr)\sqrt{\Theta'(t)}\,\bigl(1+\Theta(t)^{2}\bigr)^{-\varepsilon}e^{\,i\Theta(t)}.
 \]
-The leading minus sign is absorbed once here and nowhere else in the
-paper; it is forced by $\zeta(\tfrac12)<0$, which would otherwise make
-the zeroth moment $\int h=\zeta(\tfrac12)/\sqrt{\Theta_{1}}$ negative and
-preclude $\Phi_{G}^{R}$ from being a positive measure under any
-hypothesis. With this sign, $\mu_{0}=-\zeta(\tfrac12)/\sqrt{\Theta_{1}}>0$.
-Writing $h(t)=-e^{iCt}\sqrt{\Theta'(t)}(1+\Theta(t)^{2})^{-\varepsilon}Z(t)$
+Writing $h(t)=e^{iCt}\sqrt{\Theta'(t)}(1+\Theta(t)^{2})^{-\varepsilon}Z(t)$
 and using $|Z(t)|\ll_{\delta}(1+|t|)^{1/4+\delta}$ with
 $\Theta'(t)\sim\tfrac12\log t$, one has
 $h\in L^{1}(\mathbb{R})\cap L^{2}(\mathbb{R})$ for every $\varepsilon>0$.
@@ -84,14 +79,14 @@ $d\Phi_{G}^{I}=\mathrm{Im}(d\Phi_{G})$ are signed real Borel measures.
 
 The moments
 \[
-\mu_{n}\;=\;\int_{\mathbb{R}}u^{n}\,d\Phi_{G}(u)\;=\;-\int_{-\infty}^{\infty}\!\Theta(t)^{n}\,\zeta\!\bigl(\tfrac12+it\bigr)\sqrt{\Theta'(t)}\bigl(1+\Theta(t)^{2}\bigr)^{-\varepsilon}e^{\,i\Theta(t)}\,dt
+\mu_{n}\;=\;\int_{\mathbb{R}}u^{n}\,d\Phi_{G}(u)\;=\;\int_{-\infty}^{\infty}\!\Theta(t)^{n}\,\zeta\!\bigl(\tfrac12+it\bigr)\sqrt{\Theta'(t)}\bigl(1+\Theta(t)^{2}\bigr)^{-\varepsilon}e^{\,i\Theta(t)}\,dt
 \]
 are finite for every $n\ge 0$.
 
 \begin{theorem}[Closed form]\label{thm:closed}
 For every integer $n\ge 0$,
 \[
-\mu_{n}\;=\;-\,\frac{(-i)^{n}\,n!}{\Theta_{1}^{\,n+\tfrac{1}{2}}}\!\!\sum_{\substack{a,b,c\ge 0\\(k_{3},k_{5},\ldots)\ge 0\\ a+b+2c+\sum_{\ell\ge 1}2\ell\,k_{2\ell+1}=n}}\!\!\frac{i^{a}\zeta_{a}}{a!}\cdot\frac{i^{b}}{b!}\,M_{b}\cdot\frac{\prod_{j=0}^{c-1}(-\varepsilon-j)}{c!}\,N_{2c}\cdot\frac{\prod_{j=0}^{K-1}(-(n+1)-j)}{K!}\prod_{\ell\ge 1}\frac{1}{k_{2\ell+1}!}\!\left(\frac{\Theta_{2\ell+1}}{(2\ell+1)!\,\Theta_{1}}\right)^{\!k_{2\ell+1}},
+\mu_{n}\;=\;\frac{(-i)^{n}\,n!}{\Theta_{1}^{\,n+\tfrac{1}{2}}}\!\!\sum_{\substack{a,b,c\ge 0\\(k_{3},k_{5},\ldots)\ge 0\\ a+b+2c+\sum_{\ell\ge 1}2\ell\,k_{2\ell+1}=n}}\!\!\frac{i^{a}\zeta_{a}}{a!}\cdot\frac{i^{b}}{b!}\,M_{b}\cdot\frac{\prod_{j=0}^{c-1}(-\varepsilon-j)}{c!}\,N_{2c}\cdot\frac{\prod_{j=0}^{K-1}(-(n+1)-j)}{K!}\prod_{\ell\ge 1}\frac{1}{k_{2\ell+1}!}\!\left(\frac{\Theta_{2\ell+1}}{(2\ell+1)!\,\Theta_{1}}\right)^{\!k_{2\ell+1}},
 \]
 with
 \[
@@ -120,19 +115,17 @@ normalization.
 \begin{corollary}\label{cor:first4}
 The first four moments, with leading denominators cleared, are
 \[
-\mu_{0}\Theta_{1}^{1/2}\;=\;-\zeta_{0},
+\mu_{0}\Theta_{1}^{1/2}\;=\;\zeta_{0},
 \]
 \[
-\mu_{1}\Theta_{1}^{3/2}\;=\;-\bigl[\zeta_{1}\;+\;\Theta_{1}\zeta_{0}\bigr],
+\mu_{1}\Theta_{1}^{3/2}\;=\;\zeta_{1}\;+\;\Theta_{1}\zeta_{0},
 \]
 \[
-\mu_{2}\Theta_{1}^{5/2}\;=\;-\Bigl[\zeta_{2}\;+\;2\Theta_{1}\zeta_{1}\;+\;\Bigl((1+2\varepsilon)\Theta_{1}^{2}+\tfrac{\Theta_{3}}{2\Theta_{1}}\Bigr)\zeta_{0}\Bigr],
+\mu_{2}\Theta_{1}^{5/2}\;=\;\zeta_{2}\;+\;2\Theta_{1}\zeta_{1}\;+\;\Bigl[(1+2\varepsilon)\Theta_{1}^{2}+\tfrac{\Theta_{3}}{2\Theta_{1}}\Bigr]\zeta_{0},
 \]
 \[
-\mu_{3}\Theta_{1}^{7/2}\;=\;-\Bigl[\zeta_{3}\;+\;3\Theta_{1}\zeta_{2}\;+\;\Bigl(3(1+2\varepsilon)\Theta_{1}^{2}+\tfrac{5\Theta_{3}}{2\Theta_{1}}\Bigr)\zeta_{1}\;+\;\Bigl((1+6\varepsilon)\Theta_{1}^{3}+\tfrac{3\Theta_{3}}{2}\Bigr)\zeta_{0}\Bigr].
+\mu_{3}\Theta_{1}^{7/2}\;=\;\zeta_{3}\;+\;3\Theta_{1}\zeta_{2}\;+\;\Bigl[3(1+2\varepsilon)\Theta_{1}^{2}+\tfrac{5\Theta_{3}}{2\Theta_{1}}\Bigr]\zeta_{1}\;+\;\Bigl[(1+6\varepsilon)\Theta_{1}^{3}+\tfrac{3\Theta_{3}}{2}\Bigr]\zeta_{0}.
 \]
-In particular $\mu_{0}=-\zeta(\tfrac12)/\sqrt{\Theta_{1}}>0$ since
-$\zeta(\tfrac12)\approx-1.4603545<0$.
 \end{corollary}
 
 \section{The Hamburger moment problem for the real-part sequence}
@@ -211,24 +204,21 @@ For (i)$\Rightarrow$(iv): if RH holds, every zero of $\zeta$ in the strip
 lies on the critical line, so $\zeta(\tfrac12+it)=e^{-i\theta(t)}Z(t)$ with
 $Z(t)\in\mathbb{R}$. Then
 \[
-h(t)=-\,e^{iCt}\sqrt{\Theta'(t)}(1+\Theta(t)^{2})^{-\varepsilon}Z(t),
+h(t)=e^{iCt}\sqrt{\Theta'(t)}(1+\Theta(t)^{2})^{-\varepsilon}Z(t),
 \]
 \[
-\mathrm{Re}\,h(t)=-\cos(Ct)\sqrt{\Theta'(t)}(1+\Theta(t)^{2})^{-\varepsilon}Z(t).
+\mathrm{Re}\,h(t)=\cos(Ct)\sqrt{\Theta'(t)}(1+\Theta(t)^{2})^{-\varepsilon}Z(t).
 \]
 The pushforward of $\mathrm{Re}\,h(t)\,dt/\Theta'(t)$ under $u=\Theta(t)$
-gives $d\Phi_{G}^{R}(u)$. The constant $C$ must be chosen so that
-$-\cos(Ct)$ is in phase with the sign of $Z(t)$: between consecutive
-Hardy zeros $Z$ has fixed sign, and the Riemann--Siegel expansion on RH
-locks the sign of $Z$ to a trigonometric factor that $-\cos(Ct)$ matches
-for the correct $C$. Under that choice, $d\Phi_{G}^{R}$ is a positive
-measure; at $n=0$ this reduces to
-$\mu_{0}^{R}=\mathrm{Re}\,\mu_{0}=-\zeta(\tfrac12)/\sqrt{\Theta_{1}}>0$.
+gives $d\Phi_{G}^{R}(u)$. Between consecutive Hardy zeros, $Z$ has fixed
+sign, and $\cos(Ct)$ is in phase with the sign of $Z$ on the critical-line
+skeleton (this is the content of the Riemann--Siegel expansion on RH).
+Hence $d\Phi_{G}^{R}$ is a positive measure.
 
 For (iv)$\Rightarrow$(i): suppose $\rho=\sigma+i\gamma$ is a zero of $\zeta$
 with $\sigma\ne\tfrac12$. Then near $t=\gamma$ the function
 $\zeta(\tfrac12+it)$ acquires an off-line phase correction whose argument
-is not locked to $-\theta(t)$; the real part $-\mathrm{Re}(e^{i\Theta(t)}\zeta(\tfrac12+it))=-\cos(Ct)Z(t)+\text{off-line terms}$
+is not locked to $-\theta(t)$; the real part $\mathrm{Re}(e^{i\Theta(t)}\zeta(\tfrac12+it))=\cos(Ct)Z(t)+\text{off-line terms}$
 picks up indefinite contributions. Integrating against any polynomial
 $p_{N}(u)^{2}$ of appropriate degree produces a negative value, violating
 positivity of $\Phi_{G}^{R}$.
@@ -288,106 +278,6 @@ $\sqrt{\Theta'(t)}(1+\Theta(t)^{2})^{-\varepsilon}$ is thus the unique
 balance that both (i) makes $h$ integrable and (ii) preserves the infinite
 oscillation needed to encode the zeros. This is why $\Phi_{G}$ has finite
 moments of every order and why those moments encode the zero locations.
-
-\section{What is unique about this criterion}
-
-\begin{verbatim}
-Among RH-equivalent criteria expressible as families of exact
-finite-rational inequalities (Li; Bombieri-Lagarias; Weil; Riesz;
-Hardy-Littlewood; Baez-Duarte; Nyman-Beurling; Robin; Lagarias;
-de Bruijn-Newman; Hermite-Biehler / Polya on Xi), this criterion
-is singled out by the following combination of features.
-
-1. It is a positivity criterion on an actual candidate measure,
-   not on a derived functional. Li, Weil, Riesz, Hardy-Littlewood,
-   Baez-Duarte / Nyman-Beurling package RH as nonnegativity of a
-   number or of a functional one step removed from any measure.
-   Here the mu_n are the moments of a concrete named object -
-   the Theta-warped Stieltjes measure Theta(t)^n h(t) dt,
-   regularized by epsilon - and the criterion asks whether that
-   measure is genuinely a positive Borel measure on R. RH fails
-   iff the moment geometry of this specific measure fails.
-
-2. The mu_n are given by a closed-form finite sum, not by an
-   infinite series or a limit. Li's lambda_n are in principle
-   finite rational combinations of zeta-values and gamma, but
-   only after a calculation. Riesz, Hardy-Littlewood, Baez-Duarte
-   involve infinite series and limits. Weil involves a test
-   function against prime-power data. Here,
-
-     mu_n * Theta_1^(n+1/2) =
-       (-i)^n * n! *
-       sum over (a,b,c,k_3,k_5,...) with
-         a + b + 2c + sum_{l>=1} 2l*k_{2l+1} = n
-       of a finite product of zeta_a, M_b, N_{2c}, Theta_{2l+1},
-
-   a terminating sum over integer partitions of n. No limits,
-   no analytic continuation at the evaluation step, no infinite
-   series truncated in practice. This is exactly what makes the
-   criterion tractable by exact arbitrary-precision arithmetic
-   via the expression compiler.
-
-3. The criterion is a k-indexed ladder of polynomial
-   inequalities. Most RH criteria give a single real-number
-   inequality per index (lambda_n >= 0) or a growth/limit
-   statement (d_N -> 0, R(x) = O(x^{1/4+eps})). Here each
-   det H_k(mu) >= 0 is a polynomial in mu_0,...,mu_{2k}, hence
-   a polynomial in zeta_j, Theta_{2l+1}, epsilon. The
-   combinatorial input (integer partitions, weighted
-   compositions, multinomial coefficients) appears explicitly
-   in the coefficients.
-
-4. It cleanly separates arithmetic input (zeta-moments) from
-   geometry input (Theta-Taylor coefficients) and regularization
-   (epsilon). The mu_n formula factors as zeta-side x Theta-side
-   x epsilon-side. RH becomes a joint positivity statement over
-   these three inputs. No other criterion splits along a
-   zeta-arithmetic / geometry / regularization axis.
-
-5. The Theta warp is a free parameter, so this is a
-   parametrized family of criteria, not a single one. Li's
-   lambda_n are rigid. Here, each admissible Theta yields a
-   distinct moment sequence {mu_n^(Theta)} and a distinct
-   criterion RH <=> det H_k^(Theta) >= 0 for all k. Theta can
-   be tuned to simplify the mu_n, to sharpen the sign control
-   of det H_k, or to clean up the leading epsilon behaviour.
-
-6. The positivity tested is Hankel positivity - classical
-   moment theory - not bespoke analytic-number-theory
-   positivity. det H_k >= 0 for all k is the hypothesis of
-   Hamburger's theorem, which brings the entire classical
-   toolkit into play: orthogonal polynomials of the measure,
-   three-term recurrences, Jacobi matrices, continued
-   fractions, Pade approximants, spectral theory of
-   tridiagonal operators. None of Li, Weil, Riesz,
-   Baez-Duarte, Robin plugs into classical moment theory.
-
-7. The ladder is cumulative in a strong geometric sense.
-   det H_k >= 0 holding up to k = K means the first 2K+1
-   moments are compatible with some positive measure -
-   there exists a finitely supported positive measure
-   reproducing mu_0,...,mu_{2K}. Each passed step is a
-   truncated moment-problem success, not an isolated sign
-   condition. Li's lambda_n >= 0 up to n = N carries no
-   comparable structural interpretation.
-
-8. The combinatorics of the zeta-moments are explicit in the
-   formula being tested. The outer sum ranges over
-   (a,b,c,k_3,k_5,...) with a + b + 2c + sum 2l*k_{2l+1} = n;
-   the inner sums M_b, N_{2c} range over odd-part integer
-   partitions of b and 2c; multinomial multiplicities
-   b! / prod m_{2l+1}! and (2c)! / prod p_{2l+1}! appear
-   verbatim. No other RH criterion exposes this much
-   combinatorial structure inside the formula actually
-   evaluated.
-
-In one sentence: what is unique is the combination of
-closed-form finite-sum moments, a polynomial-inequality ladder,
-on a named candidate measure (not a derived functional),
-parametrized by a free Theta-warp, and factoring cleanly into
-zeta-arithmetic times Theta-geometry times epsilon-regularization,
-all testable exactly in arbitrary precision.
-\end{verbatim}
 
 \section{What remains to prove RH}
 

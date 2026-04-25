@@ -120,7 +120,7 @@ typedef long int		mp_size_t;
  * TypesAndStructures.i. This remap makes SWIG-generated accessors for the
  * struct member named `stride` redirect to the actual member `rows`, keeping
  * the .i description stable across FLINT versions that renamed the field. */
-#define stride rows
+//#define stride rows
 
 %}
 

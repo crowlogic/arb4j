@@ -75,6 +75,7 @@ public class Parser
   }
 
   public static HashSet<Character> greekAndBlackLetterChars = new HashSet<Character>(Arrays.asList('ℰ',
+                                                                                                   'ℓ',
                                                                                                    'ℭ',
                                                                                                    'Γ',
                                                                                                    'Δ',
@@ -374,11 +375,12 @@ public class Parser
   {
     str = str.replaceAll("\\.{2,}", "…")
              .replace(';', ',')
+             .replace(':', '_')
              .replace(" ", "")
              .replace("/", "Slash")
              .replace(".", "Point")
              .replace("{", "")
-             .replace("}", "")
+             .replace("}", "")             
              .replace("₍", "")
              .replace("₎", "")
              .replace(">", "Gt")

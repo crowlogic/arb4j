@@ -3,7 +3,7 @@ VERSION=$(shell $(BASEDIR)/bin/arb4jVersion)
 SOURCES=native/arb_wrap.c native/complex.c native/ml.c
 JAVA_HOME=$(shell readlink -f `which javac` | sed "s:bin/javac::")
 C_INCLUDES=-I$(JAVA_HOME)include -I$(JAVA_HOME)include/linux -I/usr/include/flint
-CFLAGS=-g -O3 -fPIC -shared -Wno-int-conversion -Dflint_rand_struct=flint_rand_s -Dflint_rand_init=flint_randinit -Dflint_rand_clear=flint_randclear -Dflint_rand_set_seed=flint_randseed 
+CFLAGS=-g -O3 -fPIC -shared -Wno-int-conversion 
 SWIGFLAGS=-v -java -package arb -outdir src/main/java/arb
 
 all: libarblib.so 

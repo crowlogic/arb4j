@@ -231,6 +231,14 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       logger.debug("resolveReference UNDEFINED: {}", resolutionStateString());
     }
+    // print superExpression chain for debugging
+    Expression<?,?,?> dbg = expression;
+    int depth = 0;
+    while (dbg != null) {
+      System.err.println("  superChain[" + depth + "]: className=" + dbg.className + " independentVariable=" + dbg.getIndependentVariable() + " expression=" + dbg.expression);
+      dbg = dbg.superExpression;
+      depth++;
+    }
     throw new UndefinedReferenceException(resolutionStateString());
   }
 

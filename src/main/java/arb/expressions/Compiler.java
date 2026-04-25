@@ -96,6 +96,8 @@ public class Compiler
 
   static
   {
+    typePrefixes.put(int[].class, "iArr");
+    
     typePrefixes.put(AlgebraicNumber.class, "𝔸");
     typePrefixes.put(Real.class, "ℝ");
     typePrefixes.put(Complex.class, "ℂ");
