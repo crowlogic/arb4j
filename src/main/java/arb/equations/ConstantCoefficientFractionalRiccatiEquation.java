@@ -73,7 +73,7 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
                                                           AutoCloseable
 {
 
-  public static final String      FRACTIONAL_RICCATI_EQUATION = "t➔Đᵅy(t)=t➔p(v)+q(v)*y(t)+r(v)*y(t)²";
+  public static final String      FRACTIONAL_RICCATI_EQUATION = "t➔Đ^(μ)y(t)=t➔p(v)+q(v)*y(t)+r(v)*y(t)²";
 
   /** Fractional order μ ∈ (0,1), bound into the Context as the variable named "μ". */
   public final Real               α                           = new Real();
