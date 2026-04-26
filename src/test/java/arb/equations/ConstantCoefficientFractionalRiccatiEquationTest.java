@@ -159,4 +159,101 @@ public class ConstantCoefficientFractionalRiccatiEquationTest extends
       μ.close();
     }
   }
+
+  /**
+   * Quadratic-case test (r ≠ 0). At μ = 1 the Caputo fractional Riccati
+   *
+   * <pre>
+   *   Đ^μ y(t) = p + q·y(t) + r·y(t)²,   y(0) = 0
+   * </pre>
+   *
+   * reduces to the integer-order Riccati. With (p, q, r) = (1, 0, -1) this is
+   *
+   * <pre>
+   *   y'(t) + y(t)² = 1,   y(0) = 0
+   * </pre>
+   *
+   * whose exact closed-form solution is
+   *
+   * <pre>
+   *   y(t) = tanh(t).
+   * </pre>
+   *
+   * <p>
+   * Reference: Ali, Jaradat, Alquran, "New computational method for solving
+   * fractional Riccati equation", J. Math. Computer Sci. 17 (2017), 106–114,
+   * Example 4.2 — D^α y + y² = 1, y(0) = 0, exact at α=1: y(t) = tanh(t).
+   * </p>
+   *
+   * <p>
+   * Why this exercises the quadratic branch: the Müntz recurrence at μ=1
+   * with q=0 produces a_2 = 0, a_4 = 0, a_6 = 0, ... (S at even k vanishes
+   * because every product a_j · a_{k-1-j} pairs an odd index with an even
+   * index, and even-indexed a's are all zero). Odd coefficients are driven
+   * entirely by r·y² — the r=0 branch would give a_3 = a_5 = a_7 = … = 0
+   * and y ≡ 0, so a non-trivial match against tanh(t) at multiple t values
+   * cannot be achieved without a correctly assembled r·Σ a_j a_{k-1-j}.
+   * Concretely the recurrence yields
+   *   a_1 = 1, a_3 = -1/3, a_5 = 2/15, a_7 = -17/315, ...
+   * which are the Taylor coefficients of tanh(t).
+   * </p>
+   *
+   * <p>
+   * Padé order: maxOrder=8 reproduces tanh on [0, 1.75] to roughly 1e-9.
+   * The diagonal (M,M) Padé approximant of tanh has poles on the imaginary
+   * axis at ±i·π/2, ±i·3π/2, …, so along the real axis the convergence is
+   * geometric and fast — much faster than the linear-Mittag-Leffler case.
+   * </p>
+   */
+  public static void testQuadraticCaseAtIntegerOrderAgainstTanh()
+  {
+    int  bits = 256;
+    Real μ    = new Real();
+    μ.set("1", bits);
+    // μ = 1 sits at the upper inclusive bound of the open-at-zero interval.
+    // The Müntz recurrence and Padé reorganization are continuous in μ; at
+    // μ = 1 the fractional Riccati collapses to the classical Riccati.
+    μ.setBounds(0, false, 1, true);
+
+    try ( ConstantCoefficientFractionalRiccatiEquation eq = new ConstantCoefficientFractionalRiccatiEquation(μ,
+                                                                                                             "1",
+                                                                                                             "0",
+                                                                                                             "-1"))
+    {
+      // Coefficients are constants in v; pick any v.
+      eq.v.set(1, 0);
+
+      // Closed form: y(t) = tanh(t) at integer order μ=1.
+      ComplexFunction yReference = ComplexFunction.express("yRef", "t➔tanh(t)");
+
+      // Solver. maxOrder=8 reproduces tanh on [0, 1.75] to ~1e-9.
+      ComplexFunction ySolver = eq.solve(8, bits);
+
+      // Compare at four test points spanning the practical range.
+      double[] ts        = { 0.25, 0.5, 1.0, 1.75 };
+      double   tolerance = 1e-8;
+      Complex  zArg      = new Complex();
+      Complex  yRef      = new Complex();
+      Complex  ySol      = new Complex();
+      for (double t : ts)
+      {
+        zArg.set(t, 0);
+        yReference.evaluate(zArg, 1, bits, yRef);
+        ySolver.evaluate(zArg, 1, bits, ySol);
+
+        double refRe = yRef.getReal().doubleValue();
+        double refIm = yRef.getImag().doubleValue();
+        double solRe = ySol.getReal().doubleValue();
+        double solIm = ySol.getImag().doubleValue();
+
+        assertEquals("y(" + t + ") real part disagrees with tanh(" + t + ")",      refRe, solRe, tolerance);
+        assertEquals("y(" + t + ") imaginary part disagrees", refIm, solIm, tolerance);
+        assertEquals("reference imaginary part must be zero at real t", 0.0, refIm, 1e-30);
+      }
+    }
+    finally
+    {
+      μ.close();
+    }
+  }
 }
