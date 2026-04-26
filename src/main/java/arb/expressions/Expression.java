@@ -3524,15 +3524,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     instance = newInstance();
 
-    // Cycle-break: publish the instance on this Expression's FunctionMapping
-    // before recursing into referenced functions so that mutually-recursive
-    // mappings (e.g. a ↔ S in the fractional Riccati Müntz recurrence,
-    // issue #982) terminate when the recursive walk discovers this mapping.
-    if (functionMapping != null && functionMapping.instance == null)
-    {
-      functionMapping.instance = instance;
-    }
-
     instantiateAndInjectReferencedFunctions(instance);
 
     injectReferences(instance);
