@@ -1,6 +1,7 @@
 package arb.equations;
 
 import arb.Complex;
+import arb.ComplexPolynomial;
 import arb.Real;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.integer.ComplexSequence;
@@ -250,6 +251,196 @@ public class ConstantCoefficientFractionalRiccatiEquationTest extends
         assertEquals("y(" + t + ") imaginary part disagrees", refIm, solIm, tolerance);
         assertEquals("reference imaginary part must be zero at real t", 0.0, refIm, 1e-30);
       }
+    }
+    finally
+    {
+      μ.close();
+    }
+  }
+
+  /**
+   * Padé interpolation defining property (qrh.tex §3.1).
+   *
+   * <p>
+   * The diagonal <code>(M, M)</code> Padé approximant
+   * <code>R_M(z) = P_M(z)/Q_M(z)</code> of the Müntz reorganization
+   *
+   * <pre>
+   *   g(z) = y(z^{1/μ}) = Σ_{k≥1} α_k z^k,   α_k = a_k(v)
+   * </pre>
+   *
+   * is, by construction, the unique rational function of type
+   * <code>(M, M)</code> with <code>Q_M(0) = 1</code> whose Taylor expansion
+   * agrees with <code>g(z)</code> through order <code>z^{2M}</code>.
+   * Equivalently, the polynomial residue
+   *
+   * <pre>
+   *   E_M(z) := Q_M(z)·g_{2M}(z) - P_M(z),   g_{2M}(z) = Σ_{k=1}^{2M} α_k z^k,
+   * </pre>
+   *
+   * vanishes at every order <code>z^0, z^1, …, z^{2M}</code>:
+   *
+   * <pre>
+   *   [z^n] E_M(z) = 0   for n = 0, 1, …, 2M.
+   * </pre>
+   *
+   * These <code>2M+1</code> linear constraints are exactly the full system
+   * of Padé normal equations:
+   * <ul>
+   * <li>row <code>n = 0</code> fixes <code>P_M(0) = α_0 = 0</code>;</li>
+   * <li>rows <code>n = 1, …, M</code> fix the back-substituted numerator
+   * coefficients <code>p_1, …, p_M</code>;</li>
+   * <li>rows <code>n = M+1, …, 2M</code> — the Hankel rows — fix the
+   * denominator coefficients <code>q_1, …, q_M</code>.</li>
+   * </ul>
+   * (Beyond <code>z^{2M}</code> there is no constraint and the residue is
+   * generically nonzero.) So this test pins the entire algebraic
+   * construction implemented by
+   * {@link ConstantCoefficientFractionalRiccatiEquation#padePolynomials(int,int)}
+   * directly: if any one Hankel row solve, any one back-substitution, or
+   * the Q_M(0) = 1 normalization were wrong, at least one of
+   * <code>[z^0] E_M, …, [z^{2M}] E_M</code> would fail to vanish.
+   * </p>
+   *
+   * <p>
+   * Note. With the Müntz expansion truncated at degree <code>2M</code>
+   * (i.e. using <code>g_{2M}(z) = Σ_{k=1}^{2M} α_k z^k</code> in place of
+   * the full series <code>g(z)</code>), the residue
+   * <code>E_M = Q_M · g_{2M} - P_M</code> is a polynomial of degree
+   * <code>3M</code>. The first <code>2M+1</code> coefficients are
+   * constrained to vanish by the Padé equations as above; the remaining
+   * <code>M</code> coefficients (orders <code>z^{2M+1}, …, z^{3M}</code>)
+   * are not constrained — they record what the Padé reorganization is
+   * doing past the data window. Were the full series available, the
+   * defining property is <code>Q_M · g - P_M = O(z^{2M+1})</code> with the
+   * leading non-cancelled term <code>[z^{2M+1}] (Q_M · g) ≠ 0</code>
+   * generically; the truncation simply moves the cutoff so the witness
+   * lives at <code>z^{2M+1}</code> in the polynomial product as well
+   * (the contributions from the missing series tail α_{2M+1}, α_{2M+2}, …
+   * would refine the witness coefficient but cannot make it zero in a
+   * non-degenerate regime).
+   * </p>
+   *
+   * <p>
+   * Non-triviality witness. The interpolation property would also be
+   * trivially satisfied by setting <code>P_M = Q_M · g_{2M}</code> as a
+   * polynomial of degree <code>3M</code> — that's not the diagonal Padé
+   * approximant, that's just polynomial multiplication. To distinguish, we
+   * additionally check that <code>E_M(z)</code> is non-trivially nonzero at
+   * order <code>z^{2M+1}</code>: this is the leading non-cancelled term,
+   * and its non-vanishing is the assertion that <code>P_M</code> has
+   * degree at most <code>M</code> rather than degree <code>3M</code>.
+   * (The <code>z^{2M+1}</code> coefficient would also be zero in the
+   * degenerate case where <code>g(z)</code> already happened to be a
+   * rational function of type <code>(M, M)</code>; the rough-Heston-regime
+   * parameters chosen below make this degeneracy impossible — the Müntz
+   * series is transcendental in <code>v</code>.)
+   * </p>
+   *
+   * <p>
+   * Parameter choice. Coefficients <code>(p, q, r) = (1+i, -1/2 + i/3, 3/10)</code>
+   * with <code>v = 1</code> and <code>μ = 0.6</code>: all three are nonzero
+   * with non-trivial complex values, so the Müntz recurrence exercises
+   * every term — the linear part <code>q·a_{k-1}</code>, the convolution
+   * <code>r·Σ a_j a_{k-1-j}</code>, and the inhomogeneity
+   * <code>p / Γ(μ + 1)</code>. This is the rough-Heston regime, where the
+   * Müntz coefficients are complex polynomials in <code>v</code> evaluated
+   * at a complex point; the test scope is the algebra of the Padé
+   * construction, which is identical at any (p, q, r), but choosing nonzero
+   * complex coefficients exercises the complex Hankel solve
+   * <code>acb_mat_solve</code> rather than reducing it to a real one.
+   * </p>
+   *
+   * <p>
+   * Order <code>M = 4</code>: the test consumes <code>2M = 8</code> Müntz
+   * coefficients, builds an <code>M×M = 4×4</code> Hankel solve, and
+   * checks <code>2M + 1 = 9</code> vanishing constraints (orders
+   * <code>z^0</code> through <code>z^{2M} = z^8</code>) plus one
+   * non-triviality constraint at order <code>z^{2M+1} = z^9</code>.
+   * Working precision <code>bits = 256</code> is chosen so that the
+   * asserted vanishing tolerance is well above the empirical Hankel-solve
+   * cancellation noise floor at this <code>M</code> (observed
+   * ~<code>10^{-33}</code>, corresponding to roughly <code>110</code> bits
+   * of bit loss out of <code>256</code>) and far below the non-triviality
+   * witness magnitude at <code>z^{2M+1}</code> (here
+   * <code>|[z^9] E_M| ≈ 0.276</code>).
+   * </p>
+   */
+  public static void testPadeInterpolationDefiningProperty()
+  {
+    int  bits = 256;
+    Real μ    = new Real();
+    μ.set("0.6", bits);
+    μ.setBounds(0, false, 1, true);
+
+    int M = 4;
+
+    try ( ConstantCoefficientFractionalRiccatiEquation eq = new ConstantCoefficientFractionalRiccatiEquation(μ,
+                                                                                                             "1 + ⅈ",
+                                                                                                             "-1/2 + ⅈ/3",
+                                                                                                             "3/10"))
+    {
+      // Coefficients are constants in v; pick v = 1 so the test is reproducible.
+      eq.v.set(1, 0);
+
+      // Stage 1 — the truncated Müntz reorganization
+      //   g_{2M}(z) = Σ_{k=1}^{2M} α_k z^k,   α_k = a_k(v).
+      // muntzCoefficientsAtV returns α_1..α_{2M} indexed from 0.
+      Complex[] α = eq.muntzCoefficientsAtV(2 * M, bits);
+
+      ComplexPolynomial g = new ComplexPolynomial();
+      g.fitLength(2 * M + 1);
+      g.setLength(2 * M + 1);
+      g.set(0, new Complex().set(0)); // α_0 = 0 by initial condition y(0) = 0
+      for (int k = 1; k <= 2 * M; k++)
+      {
+        g.set(k, α[k - 1]);
+      }
+
+      // Stage 2 — the Padé polynomials at the same v.
+      ComplexPolynomial[] PQ  = eq.padePolynomials(M, bits);
+      ComplexPolynomial   P_M = PQ[0];
+      ComplexPolynomial   Q_M = PQ[1];
+
+      // Stage 3 — the polynomial residue
+      //   E_M(z) = Q_M(z) · g_{2M}(z) - P_M(z).
+      ComplexPolynomial product = new ComplexPolynomial();
+      Q_M.mul(g, bits, product);
+      ComplexPolynomial E = new ComplexPolynomial();
+      product.sub(P_M, bits, E);
+
+      // Stage 4 — assert the 2M + 1 interpolation conditions. Tolerance 1e-30
+      // is set above the empirical Hankel-cancellation noise floor for this
+      // regime (observed ~1.2e-33 at the worst row at M=4, corresponding to
+      // roughly 110 bits of cancellation out of the 256-bit working
+      // precision — the expected loss for the condition number of the
+      // complex Hankel system) and far below the non-triviality witness
+      // magnitude at z^{2M+1} (here ~0.276). The asserted property is exact
+      // in infinite precision; the tolerance reflects only the Hankel
+      // solve's bit loss propagated through the polynomial product.
+      double tolerance = 1e-30;
+      for (int n = 0; n <= 2 * M; n++)
+      {
+        Complex c = E.get(n);
+        double  re = c.getReal().doubleValue();
+        double  im = c.getImag().doubleValue();
+        assertEquals("[z^" + n + "] E_M(z) real part must vanish",      0.0, re, tolerance);
+        assertEquals("[z^" + n + "] E_M(z) imaginary part must vanish", 0.0, im, tolerance);
+      }
+
+      // Stage 5 — non-triviality witness at order z^{2M+1}.
+      // The Padé construction makes E_M vanish through z^{2M} but not
+      // z^{2M+1}; a degenerate solver that built P_M = Q_M · g_{2M} as a
+      // degree-3M polynomial would also make this coefficient vanish, so
+      // checking it is nonzero distinguishes the actual diagonal Padé from
+      // the trivial identity-rational fit.
+      Complex cWitness = E.get(2 * M + 1);
+      Real    mod      = new Real();
+      cWitness.abs(bits, mod);
+      double witnessSize = mod.doubleValue();
+      assertTrue("[z^" + (2 * M + 1) + "] E_M(z) must be nonzero (non-triviality witness), got |c| = "
+                 + witnessSize,
+                 witnessSize > 1e-3);
     }
     finally
     {

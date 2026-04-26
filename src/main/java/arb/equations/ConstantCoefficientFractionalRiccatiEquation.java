@@ -288,6 +288,44 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
       };
     }
 
+    ComplexPolynomial[] PQ = padePolynomials(M, bits);
+    return assemblePadeFunction(PQ[0], PQ[1]);
+  }
+
+  /**
+   * Diagonal (M,M) Padé numerator and denominator polynomials
+   * <code>{P_M, Q_M}</code> of
+   * <code>g(z) = y(z^{1/μ}) = Σ a_k(v) zᵏ</code> at the current Context
+   * <code>v</code>, returned as a length-two array <code>{P_M, Q_M}</code>.
+   *
+   * <p>
+   * Same construction as {@link #padeApproximant(int,int)} but exposes the
+   * polynomials themselves rather than the rational function
+   * <code>R_M(z) = P_M(z)/Q_M(z)</code>. Useful for tests that verify the
+   * defining algebraic property
+   *
+   * <pre>
+   *   Q_M(z)·g_{2M}(z) - P_M(z) = O(z^{M+1}),
+   * </pre>
+   *
+   * i.e. that the diagonal (M,M) Padé approximant matches the first
+   * <code>2M+1</code> Taylor coefficients of <code>g(z)</code> exactly
+   * (qrh.tex §3.1).
+   * </p>
+   *
+   * @param M    diagonal Padé order
+   * @param bits working precision
+   * @return <code>{P_M, Q_M}</code>
+   * @throws ArithmeticException if the Hankel system is singular at every
+   *         order from M down to 1
+   */
+  public ComplexPolynomial[] padePolynomials(int M, int bits)
+  {
+    if (M < 1)
+    {
+      throw new IllegalArgumentException("padePolynomials requires M ≥ 1, got " + M);
+    }
+
     // Stage 2.1 — evaluate the first 2M Müntz coefficients at the current v.
     Complex[] coeff = evaluateMuntzCoefficientsAtV(2 * M, bits);
 
@@ -298,13 +336,30 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
       ComplexPolynomial[] PQ = solveHankel(coeff, currentM, bits);
       if (PQ != null)
       {
-        return assemblePadeFunction(PQ[0], PQ[1]);
+        return PQ;
       }
       currentM--;
     }
     throw new ArithmeticException("All Padé orders ≤ "
                                   + M
                                   + " produced singular Hankel matrices at the current v");
+  }
+
+  /**
+   * Evaluate the first <code>n</code> Müntz coefficients
+   * <code>α_k = a_k(v)</code> at the current Context <code>v</code>.
+   *
+   * <p>
+   * Returned as scalars <code>α_k ∈ ℂ</code> for <code>k = 1..n</code>.
+   * Index 0 of the array holds <code>α_1</code>, since
+   * <code>a_0 ≡ 0</code> by the initial condition <code>y(0)=0</code>.
+   * Public so tests can inspect the truncated Müntz series
+   * <code>g_n(z) = Σ_{k=1}^{n} α_k z^k</code> directly.
+   * </p>
+   */
+  public Complex[] muntzCoefficientsAtV(int n, int bits)
+  {
+    return evaluateMuntzCoefficientsAtV(n, bits);
   }
 
   /**
