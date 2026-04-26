@@ -327,7 +327,7 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
     }
 
     // Stage 2.1 — evaluate the first 2M Müntz coefficients at the current v.
-    Complex[] coeff = evaluateMuntzCoefficientsAtV(2 * M, bits);
+    Complex coeff = evaluateMuntzCoefficientsAtV(2 * M, bits);
 
     // Stage 2.2 — assemble Hankel system. Try order M; on singular fall back.
     int currentM = M;
@@ -357,7 +357,7 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
    * <code>g_n(z) = Σ_{k=1}^{n} α_k z^k</code> directly.
    * </p>
    */
-  public Complex[] muntzCoefficientsAtV(int n, int bits)
+  public Complex muntzCoefficientsAtV(int n, int bits)
   {
     return evaluateMuntzCoefficientsAtV(n, bits);
   }
@@ -472,19 +472,18 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
 
   /**
    * Evaluate the first {@code n} Müntz coefficients at the current Context v.
-   * Returns scalars α_k = a_k(v) ∈ ℂ for k=1..n (index 0 of the returned
-   * array holds α_1, since a_0 is identically zero by the initial condition).
+   * Returns scalars α_k = a_k(v) ∈ ℂ for k=1..n as a {@link Complex}
+   * vector of length n; <code>get(k-1)</code> retrieves α_k since
+   * <code>a_0</code> is identically zero by the initial condition.
    */
-  private Complex[] evaluateMuntzCoefficientsAtV(int n, int bits)
+  private Complex evaluateMuntzCoefficientsAtV(int n, int bits)
   {
-    Complex[]   out = new Complex[n];
+    Complex     out = Complex.newVector(n);
     arb.Integer idx = new arb.Integer();
     for (int k = 1; k <= n; k++)
     {
       idx.set(k);
-      Complex α_k = new Complex();
-      a.evaluate(idx, 1, bits, α_k);
-      out[k - 1] = α_k;
+      a.evaluate(idx, 1, bits, out.get(k - 1));
     }
     return out;
   }
@@ -507,30 +506,28 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
    *
    * </p>
    */
-  private ComplexPolynomial[] solveHankel(Complex[] coeff, int M, int bits)
+  private ComplexPolynomial[] solveHankel(Complex coeff, int M, int bits)
   {
-    // α-array indexed as α_k = coeff[k-1]; we need α_1..α_{2M}.
+    // α-vector indexed as α_k = coeff.get(k-1); we need α_1..α_{2M}.
     // Hankel uses α_{M+i-j} for i,j ∈ [0,M-1] → indices in [1, 2M-1].
     // RHS uses α_{M+1+i} for i ∈ [0,M-1] → indices in [M+1, 2M].
-    if (coeff.length < 2 * M)
+    if (coeff.dim < 2 * M)
     {
-      throw new IllegalStateException("Need 2M=" + (2 * M) + " coefficients, have " + coeff.length);
+      throw new IllegalStateException("Need 2M=" + (2 * M) + " coefficients, have " + coeff.dim);
     }
 
-    ComplexMatrix H   = ComplexMatrix.newMatrix(M, M);
-    ComplexMatrix neg_b   = ComplexMatrix.newMatrix(M, 1);
-    Complex       tmp = new Complex();
+    ComplexMatrix H     = ComplexMatrix.newMatrix(M, M);
+    ComplexMatrix neg_b = ComplexMatrix.newMatrix(M, 1);
 
     for (int i = 0; i < M; i++)
     {
       for (int j = 0; j < M; j++)
       {
-        // α_{M+i-j}, k = M+i-j, coeff[k-1]
-        H.set(i, j, coeff[M + i - j - 1]);
+        // α_{M+i-j}, k = M+i-j, coeff.get(k-1)
+        H.set(i, j, coeff.get(M + i - j - 1));
       }
-      // -b[i] = -α_{M+1+i}, k=M+1+i, coeff[k-1]
-      coeff[M + i].neg(tmp);
-      neg_b.set(i, 0, tmp);
+      // -b[i] = -α_{M+1+i}, written in place into the matrix slot.
+      coeff.get(M + i).neg(neg_b.get(i, 0));
     }
 
     ComplexMatrix qMat = ComplexMatrix.newMatrix(M, 1);
@@ -551,21 +548,26 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
     ComplexPolynomial Q_M = new ComplexPolynomial();
     Q_M.fitLength(M + 1);
     Q_M.setLength(M + 1);
-    Q_M.set(0, new Complex().set(1));
+    Q_M.get(0).one();
     for (int j = 1; j <= M; j++)
     {
       Q_M.set(j, qMat.get(j - 1, 0));
     }
 
     // Back-substitute: p_0 = 0; p_n = α_n + Σ_{j=1}^{min(n,M)} q_j α_{n-j}.
-    ComplexPolynomial P_M    = new ComplexPolynomial();
+    // Scratch instances are allocated once outside both loops and reused
+    // across iterations — in-place arithmetic, no per-iteration allocation.
+    ComplexPolynomial P_M  = new ComplexPolynomial();
     P_M.fitLength(M + 1);
     P_M.setLength(M + 1);
-    P_M.set(0, new Complex().set(0));
+    P_M.get(0).zero();
+    Complex pn   = new Complex();
+    Complex acc  = new Complex();
+    Complex term = new Complex();
     for (int n = 1; n <= M; n++)
     {
-      Complex pn  = new Complex().set(coeff[n - 1]); // α_n
-      Complex acc = new Complex();
+      pn.set(coeff.get(n - 1)); // α_n
+      acc.zero();
       for (int j = 1; j <= Math.min(n, M); j++)
       {
         // q_j · α_{n-j}, n-j ∈ [0, n-1]; α_0 = 0, so skip n-j=0.
@@ -573,8 +575,7 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
         {
           continue;
         }
-        Complex term = new Complex();
-        qMat.get(j - 1, 0).mul(coeff[n - j - 1], bits, term);
+        qMat.get(j - 1, 0).mul(coeff.get(n - j - 1), bits, term);
         acc.add(term, bits, acc);
       }
       pn.add(acc, bits, pn);

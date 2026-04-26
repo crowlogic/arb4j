@@ -386,15 +386,15 @@ public class ConstantCoefficientFractionalRiccatiEquationTest extends
       // Stage 1 — the truncated Müntz reorganization
       //   g_{2M}(z) = Σ_{k=1}^{2M} α_k z^k,   α_k = a_k(v).
       // muntzCoefficientsAtV returns α_1..α_{2M} indexed from 0.
-      Complex[] α = eq.muntzCoefficientsAtV(2 * M, bits);
+      Complex α = eq.muntzCoefficientsAtV(2 * M, bits);
 
       ComplexPolynomial g = new ComplexPolynomial();
       g.fitLength(2 * M + 1);
       g.setLength(2 * M + 1);
-      g.set(0, new Complex().set(0)); // α_0 = 0 by initial condition y(0) = 0
+      g.get(0).zero(); // α_0 = 0 by initial condition y(0) = 0
       for (int k = 1; k <= 2 * M; k++)
       {
-        g.set(k, α[k - 1]);
+        g.get(k).set(α.get(k - 1));
       }
 
       // Stage 2 — the Padé polynomials at the same v.
