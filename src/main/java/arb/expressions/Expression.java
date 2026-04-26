@@ -1841,8 +1841,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     Label cacheMiss = new Label();
     loadThisAndFieldOntoStack(mv, "cache", TreeMap.class);
     loadInputParameterChecked(mv);
-    Compiler.generateVirtualMethodInvocation(mv, domainType, "getSignedValue", int.class);
-    Compiler.invokeStaticMethod(mv, Function.class, "peek", Object.class, TreeMap.class, int.class);
+    Compiler.invokeStaticMethod(mv, Function.class, "peek", Object.class, TreeMap.class, arb.Integer.class);
     Compiler.cast(mv, coDomainType);
     Compiler.duplicateTopOfTheStack(mv);
     mv.visitJumpInsn(Opcodes.IFNULL, cacheMiss);
@@ -1875,8 +1874,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     loadThisAndFieldOntoStack(mv, "cache", TreeMap.class);
     mv.visitVarInsn(Opcodes.ASTORE, cacheArrayListSlot);
     loadInputParameterChecked(mv);
-    Compiler.generateVirtualMethodInvocation(mv, domainType, "getSignedValue", int.class);
-    mv.visitVarInsn(Opcodes.ISTORE, cacheIndexSlot);
+    mv.visitVarInsn(Opcodes.ASTORE, cacheIndexSlot);
   }
 
   /**
@@ -1908,9 +1906,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     // poke(cache, index, freshCopy)
     mv.visitVarInsn(Opcodes.ALOAD, cacheArrayListSlot);
-    mv.visitVarInsn(Opcodes.ILOAD, cacheIndexSlot);
+    mv.visitVarInsn(Opcodes.ALOAD, cacheIndexSlot);
     mv.visitVarInsn(Opcodes.ALOAD, freshCopySlot);
-    Compiler.invokeStaticMethod(mv, Function.class, "poke", Object.class, TreeMap.class, int.class, Object.class);
+    Compiler.invokeStaticMethod(mv, Function.class, "poke", Object.class, TreeMap.class, arb.Integer.class, Object.class);
     mv.visitInsn(Opcodes.POP); // discard poke return value
 
     // return result
