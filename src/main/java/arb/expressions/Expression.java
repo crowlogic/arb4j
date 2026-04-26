@@ -1102,14 +1102,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       duplicateTopOfTheStack(mv);
       invokeDefaultConstructor(mv, typeInternalName);
       putField(mv, className, mapping.functionName, fieldDescriptor);
-      // No GETFIELD or PUTFIELD on "cache" is emitted here, ever, for any
-      // reason. Two distinct instances must never share a cache, regardless
-      // of whether their types coincide. The only operation in this method
-      // is wiring the freshly-allocated peer reference into the field that
-      // names it on `this`. Each instance's cache is initialized to its own
-      // new TreeMap by generateCacheFieldInitializer in its own constructor
-      // and is touched only by Function.peek/poke against that same
-      // instance's field reference.
+      // After storing the new instance, immediately inject context function
+      // references into it so its own initialize() finds non-null peer fields
+      // and never hits the `if (this.X == null) this.X = new X()` null-guards
+      // that cause unbounded allocation chains.
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(GETFIELD, className, mapping.functionName, fieldDescriptor);
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(GETFIELD, className, "context", Type.getDescriptor(Context.class));
+      mv.visitMethodInsn(INVOKESTATIC,
+                         Type.getInternalName(Context.class),
+                         "injectFunctionReferencesIntoOperand",
+                         "(Ljava/lang/Object;Larb/expressions/Context;)V",
+                         false);
       mv.visitLabel(alreadyInitialized);
     }
   }
