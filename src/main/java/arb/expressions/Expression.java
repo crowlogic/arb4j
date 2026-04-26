@@ -1085,22 +1085,23 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     assert mapping != null : "mapping shan't be null";
     if ((mapping.functionName == null || functionName == null || !functionName.equals(mapping.functionName)) && mapping.expression != null)
     {
-
-      Class<?> type = mapping.type();
-      if (type == null || type.isInterface())
-      {
-        mapping.instantiate();
-        type = mapping.type();
-      }
-      assert type != null : "type is  null for mapping=" + mapping;
-      var alreadyInitialized = new Label();
-      loadThisOntoStack(mv).visitFieldInsn(GETFIELD, className, mapping.functionName, mapping.functionFieldDescriptor());
+      // Bytecode-only path: use the mapping's already-known generated-class
+      // internal name. ASM's new/invokespecial accept name strings; resolving
+      // the Class<?> here would force eager compilation of the dependency
+      // and break mutual recursion across mappings (a ↔ S in the fractional
+      // Riccati Müntz recurrence, issue #982). The class is resolved lazily
+      // by the JVM when the opcode first executes — by which point the outer
+      // compile chain has defined every class in the recursive cluster.
+      String typeInternalName = mapping.functionName;
+      String fieldDescriptor  = mapping.functionFieldDescriptor();
+      var alreadyInitialized  = new Label();
+      loadThisOntoStack(mv).visitFieldInsn(GETFIELD, className, mapping.functionName, fieldDescriptor);
       mv.visitJumpInsn(Opcodes.IFNONNULL, alreadyInitialized);
       loadThisOntoStack(mv);
-      generateNewObjectInstruction(mv, type);
+      generateNewObjectInstruction(mv, typeInternalName);
       duplicateTopOfTheStack(mv);
-      invokeDefaultConstructor(mv, type);
-      putField(mv, className, mapping.functionName, type);
+      invokeDefaultConstructor(mv, typeInternalName);
+      putField(mv, className, mapping.functionName, fieldDescriptor);
       mv.visitLabel(alreadyInitialized);
     }
   }

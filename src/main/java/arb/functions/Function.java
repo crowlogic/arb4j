@@ -246,8 +246,17 @@ public interface Function<D, CO> extends
                                                                                         functionClass,
                                                                                         functionName,
                                                                                         replace);
-    return compiledParsedAndRegisteredExpression.functionMapping != null ? compiledParsedAndRegisteredExpression.functionMapping.instance
-                                                                         : compiledParsedAndRegisteredExpression.instantiate();
+    if (compiledParsedAndRegisteredExpression.functionMapping != null
+        && compiledParsedAndRegisteredExpression.functionMapping.instance != null)
+    {
+      return compiledParsedAndRegisteredExpression.functionMapping.instance;
+    }
+    Q instance = compiledParsedAndRegisteredExpression.instantiate();
+    if (compiledParsedAndRegisteredExpression.functionMapping != null)
+    {
+      compiledParsedAndRegisteredExpression.functionMapping.instance = instance;
+    }
+    return instance;
   }
 
   static <D, H, Q extends Function<? extends D, ? extends H>> Expression<D, H, Q> parseCompileAndRegister(String expression,
@@ -299,13 +308,6 @@ public interface Function<D, CO> extends
     if (mapping != null)
     {
       mapping.expression = parsedExpression;
-    }
-
-    Q func = parsedExpression.instantiate();
-
-    if (parsedExpression.functionMapping != null)
-    {
-      parsedExpression.functionMapping.instance = func;
     }
 
     if (context != null)
@@ -372,7 +374,7 @@ public interface Function<D, CO> extends
    * Extracts function name from expression, registers in context, and parses.
    * Returns the parsed Expression with functionMapping wired up.
    */
-  static <D, H, Q extends Function<? extends D, ? extends H>> Expression<D, H, Q> parseAndRegister(String expression,
+  public static <D, H, Q extends Function<? extends D, ? extends H>> Expression<D, H, Q> parseAndRegister(String expression,
                                                                                                    Context context,
                                                                                                    Class<? extends D> domainClass,
                                                                                                    Class<? extends H> coDomainClass,

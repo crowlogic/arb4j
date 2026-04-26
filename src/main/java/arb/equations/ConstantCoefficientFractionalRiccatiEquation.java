@@ -10,7 +10,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.functions.complex.ComplexFunction;
-import arb.functions.integer.ComplexFunctionSequence;
+import arb.functions.integer.ComplexSequence;
 
 /**
  * Constant-coefficient (in time) fractional Riccati equation
@@ -91,11 +91,12 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
   public ComplexFunction          r;
 
   /**
-   * The compiled Müntz coefficient sequence k ↦ a_k(v) — a
-   * {@code Function<Integer,ComplexFunction>}. Driven by one expression, no
-   * Java arithmetic loop.
+   * The compiled Müntz coefficient sequence k ↦ a_k — a
+   * {@code Function<Integer,Complex>} whose body reads p, q, r and v from
+   * the Context. Driven by one expression, no Java arithmetic loop. To
+   * obtain a_k at a new v, mutate the Context's v and re-evaluate.
    */
-  public ComplexFunctionSequence  a;
+  public ComplexSequence          a;
 
   /**
    * The Fourier parameter v as a Complex Context variable. If the user already
@@ -152,27 +153,61 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
     q = ComplexFunction.express("q", linearTerm, context);
     r = ComplexFunction.express("r", quadraticTerm, context);
 
-    // Compile the Müntz recurrence in one shot. The `when` lives at the
-    // sequence-index level (k), and each branch is a lambda in v producing a
-    // ComplexFunction. The convolution sum at k=2 has empty index range
-    // j=1..0 and the SumNode returns the additive identity (zero),
-    // implementing Remark 2.2 of qrh.tex.
-    String aExpr = "a:k➔when(k=1, v➔p(v)/Γ(μ+1),"
-                   + " else, v➔(Γ((k-1)*μ+1)/Γ(k*μ+1))"
-                   + "        *(q(v)*a(k-1)(v)"
-                   + "          +r(v)*sum(j➔a(j)(v)*a(k-1-j)(v){j=1..k-2})))";
-    a = ComplexFunctionSequence.express("a", aExpr, context);
+    // Compile the Müntz recurrence as two mutually-recursive sequences.
+    //
+    //   S(k) = Σ_{j=1}^{k-2} a(j)·a(k-1-j)         convolution sum
+    //   a(k) = when k=1: p(v)/Γ(μ+1)
+    //          else:    γ_k · ( q(v)·a(k-1) + r(v)·S(k) )
+    //
+    // Splitting the convolution out of the body of `a` avoids the
+    // sum-with-recursion-inline pattern that the expression compiler
+    // recurses on infinitely. The expression compiler resolves the
+    // a ↔ S cross-reference through Context lookups; both sequences are
+    // in the same Context and each sees the other as a referenced
+    // function (the self-reference guard at Expression.java:1086 fires
+    // on the direct a→a reference inside `a`'s when-else branch and on
+    // the S→S reference inside its body, while the cross-references
+    // a→S and S→a are routed through ordinary FunctionMapping lookup).
+    //
+    // Pre-register `a` as a prototype (typed but not yet defined) before
+    // compiling S, so S's body can resolve `a` to a typed mapping. When
+    // `a` is then compiled, replace=true overwrites the prototype with
+    // the real expression. Empty-range sum at k=2 (j=1..0) returns the
+    // additive identity, implementing Remark 2.2 of qrh.tex.
+    context.registerFunctionMapping("a",
+                                    arb.Integer.class,
+                                    Complex.class,
+                                    ComplexSequence.class);
+
+    // Parse, compile and register S without instantiating it. This generates
+    // class bytecode for S and registers the FunctionMapping, but defers
+    // instance construction (which would walk S's public fields and force
+    // the JVM to resolve `a`'s class — not yet defined).
+    String sExpr = "S:k➔sum(j➔a(j)*a(k-1-j){j=1..k-2})";
+    arb.functions.integer.Sequence.parseCompileAndRegister("S", Complex.class, sExpr, ComplexSequence.class, context);
+
+    // Now express `a`, which compiles class bytecode for `a` and instantiates it.
+    // By this point both classes S and a are defined in the ExpressionClassLoader,
+    // so the field-injection reflection walk on `a` resolves successfully.
+    String aExpr = "a:k➔when(k=1, p(v)/Γ(μ+1),"
+                   + " else, (Γ((k-1)*μ+1)/Γ(k*μ+1))"
+                   + "       *(q(v)*a(k-1)+r(v)*S(k)))";
+    a = ComplexSequence.express(aExpr, context);
 
     initialize(FRACTIONAL_RICCATI_EQUATION, context);
   }
 
   /**
-   * The compiled Müntz coefficient sequence a_k(v).
+   * The compiled Müntz coefficient sequence a_k.
    *
-   * @return {@code Function<Integer, ComplexFunction>} reading v from the
-   *         Context.
+   * <p>
+   * Returned as a {@link ComplexSequence}
+   * ({@code Function<Integer, Complex>}) whose body reads p, q, r and the
+   * Fourier parameter v from the Context. Mutating the Context's v and
+   * re-evaluating produces a_k at the new v.
+   * </p>
    */
-  public ComplexFunctionSequence muntzCoefficients()
+  public ComplexSequence muntzCoefficients()
   {
     return a;
   }
@@ -351,9 +386,8 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
     for (int k = 1; k <= n; k++)
     {
       idx.set(k);
-      ComplexFunction a_k = a.evaluate(idx, 1, bits, null);
-      Complex         α_k = new Complex();
-      a_k.evaluate(v, 1, bits, α_k);
+      Complex α_k = new Complex();
+      a.evaluate(idx, 1, bits, α_k);
       out[k - 1] = α_k;
     }
     return out;

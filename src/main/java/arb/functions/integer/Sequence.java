@@ -91,6 +91,27 @@ public interface Sequence<C> extends
     return express(null, coDomainType, expression, functionClass, context);
   }
 
+  /**
+   * Parses, compiles, and registers a sequence expression in the given
+   * {@link Context} <i>without</i> instantiating it. The class bytecode is
+   * generated and the {@link arb.expressions.FunctionMapping} is registered,
+   * but no instance is created and no field references are injected. Use this
+   * to forward-declare one member of a mutually recursive cluster of sequences
+   * before {@link #express} is called on the other(s); the deferred
+   * instantiation avoids forcing the JVM to resolve a class that has not yet
+   * been defined.
+   */
+  public static <Q, S extends Sequence<? extends Q>>
+         Expression<Integer, Q, S>
+         parseCompileAndRegister(String name,
+                                 Class<? extends Q> coDomainType,
+                                 String expression,
+                                 Class<? extends S> functionClass,
+                                 Context context)
+  {
+    return Function.parseCompileAndRegister(expression, context, Integer.class, coDomainType, functionClass, name, true);
+  }
+
   public static <C, S extends Sequence<? extends C>>
          Expression<Integer, C, S>
          parse(String className, Class<? extends S> seq, Class<? extends C> coDomainType, String expr)
