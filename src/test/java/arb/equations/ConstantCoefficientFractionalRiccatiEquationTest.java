@@ -2,8 +2,7 @@ package arb.equations;
 
 import arb.Complex;
 import arb.Real;
-import arb.functions.complex.ComplexFunction;
-import arb.functions.integer.ComplexFunctionSequence;
+import arb.functions.integer.ComplexSequence;
 import junit.framework.TestCase;
 
 /**
@@ -20,8 +19,12 @@ public class ConstantCoefficientFractionalRiccatiEquationTest extends
 {
 
   /**
-   * Smoke test: construction succeeds, the Müntz coefficient sequence compiles,
-   * a₁(v) is accessible. Constants in v: c₀=1, c₁=−0.5, c₂=0.3, μ=0.6.
+   * Smoke test: construction succeeds, the Müntz coefficient sequence
+   * compiles, a₁ is accessible. Constants in v: c₀=1, c₁=−1/2, c₂=3/10,
+   * μ=0.6.
+   *
+   * <p>
+   * Closed form: a₁ = c₀ / Γ(μ+1) = 1/Γ(1.6) ≈ 1.119184587280...
    */
   public static void testConstructionAndFirstMuntzCoefficient()
   {
@@ -34,25 +37,22 @@ public class ConstantCoefficientFractionalRiccatiEquationTest extends
                                                                                                             "-1/2",
                                                                                                             "3/10"))
     {
-      ComplexFunctionSequence a = eq.muntzCoefficients();
+      ComplexSequence a = eq.muntzCoefficients();
       assertNotNull("Müntz coefficient sequence must be compiled", a);
 
-      // a₁(v) = c₀(v) / Γ(μ+1) — for c₀=1 this is 1/Γ(1.6).
+      // Set Context v to any value; for constant inputs a_k does not depend on v.
+      eq.v.set(1, 0);
+
       arb.Integer one = new arb.Integer();
       one.set(1);
-      ComplexFunction a1 = a.evaluate(one, 1, bits, null);
-      assertNotNull("a₁ must evaluate", a1);
-
-      Complex v = eq.v;
-      v.set(1, 0); // any v works for constant inputs
       Complex α1 = new Complex();
-      a1.evaluate(v, 1, bits, α1);
+      a.evaluate(one, 1, bits, α1);
 
-      // Γ(1.6) ≈ 0.8935153492876903... → 1/Γ(1.6) ≈ 1.119184...
-      // Just sanity-check it's a finite nonzero complex with imaginary part 0.
-      assertTrue("a₁(v) real part should be near 1.119", α1.getReal().doubleValue() > 1.0
-                                                        && α1.getReal().doubleValue() < 1.2);
-      assertEquals("a₁(v) imaginary part should be 0", 0.0, α1.getImag().doubleValue(), 1e-30);
+      // 1/Γ(1.6) ≈ 1.119184587280...
+      double re = α1.getReal().doubleValue();
+      double im = α1.getImag().doubleValue();
+      assertEquals("a₁ real part should be 1/Γ(1.6) ≈ 1.119184587280", 1.11918458728, re, 1e-10);
+      assertEquals("a₁ imaginary part should be 0", 0.0, im, 1e-30);
     }
     finally
     {
