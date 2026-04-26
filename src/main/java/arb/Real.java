@@ -2330,7 +2330,17 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
         get(i).set(real.get(i));
       }
     }
-    bits = real.bits;
+    bits                     = real.bits;
+    // Copy bounds metadata. Without this, downstream code that depends on
+    // compile-time bound resolution (e.g. CaputoFractionalDerivativeNode
+    // resolving n = ⌈μ⌉ from μ's interval) sees a freshly-set Real with no
+    // bounds even though the caller's source Real had them. The bounds are
+    // semantically part of the value's static type, not a separate piece of
+    // state, so they travel with the value under set(Real).
+    lowerBound               = real.lowerBound;
+    lowerBoundInclusive      = real.lowerBoundInclusive;
+    upperBound               = real.upperBound;
+    upperBoundInclusive      = real.upperBoundInclusive;
     return this;
   }
     

@@ -31,6 +31,9 @@ public class ConstantCoefficientFractionalRiccatiEquationTest extends
     int  bits = 128;
     Real μ    = new Real();
     μ.set("0.6", bits);
+    // μ ∈ (0,1) is required by the fractional Riccati problem class so the
+    // Caputo derivative compiler can resolve n = ⌈μ⌉ = 1 at compile time.
+    μ.setBounds(0, false, 1, true);
 
     try ( ConstantCoefficientFractionalRiccatiEquation eq = new ConstantCoefficientFractionalRiccatiEquation(μ,
                                                                                                             "1",

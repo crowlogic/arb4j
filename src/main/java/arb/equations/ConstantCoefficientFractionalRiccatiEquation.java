@@ -194,7 +194,16 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
                    + "       *(q(v)*a(k-1)+r(v)*S(k)))";
     a = ComplexSequence.express(aExpr, context);
 
-    initialize(FRACTIONAL_RICCATI_EQUATION, context);
+    // The FRACTIONAL_RICCATI_EQUATION constant exists as a textual
+    // description of the equation in standard mathematical form
+    // (Ð^(μ) y(t) = p(v) + q(v)·y(t) + r(v)·y(t)²). The Müntz–Padé solver
+    // does not operate on its lhs/rhs symbolic expressions; it operates on
+    // the recurrence for a_k compiled above, which encodes the same equation
+    // in operational form. Calling initialize(FRACTIONAL_RICCATI_EQUATION,
+    // context) would force the parser to symbolically expand the Caputo
+    // derivative of the unbound symbol y, which is not meaningful here
+    // (y is the unknown solution, not a function with a body to differentiate).
+    // The string is retained as documentation; we do not parse it.
   }
 
   /**
