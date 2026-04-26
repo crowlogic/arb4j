@@ -348,35 +348,72 @@ public class Context implements
     }
   }
 
+  /**
+   * Merge another Context's variables and function mappings into this one.
+   *
+   * <p>
+   * Identical bindings — same name bound to the very same instance — are
+   * coalesced silently (idempotent merge). Different bindings — same name
+   * bound to a different instance — throw a {@link CompilerException} with
+   * the names, types, and identities of both sides so callers can disambiguate.
+   * </p>
+   *
+   * <p>
+   * A null argument is a no-op.
+   * </p>
+   */
   public void mergeFrom(Context context)
   {
     if (context == null)
     {
       return;
     }
-    for (String variable : context.variables.keySet())
+
+    for (var entry : context.variables.entrySet())
     {
-      if (variables.containsKey(variable))
+      String name     = entry.getKey();
+      Named  incoming = entry.getValue();
+      Named  existing = variables.get(name);
+      if (existing != null && existing != incoming)
       {
-        throw new CompilerException("TODO: handle merging of contexts with conflicting variable names by renaming inserted variables because "
-                                    + variable
-                                    + " already exists in "
-                                    + this);
+        throw new CompilerException(format("Cannot merge: variable '%s' is already bound in this Context to a different instance.\n"
+                                           + "  existing: %s @%d (type %s)\n"
+                                           + "  incoming: %s @%d (type %s)\n",
+                                           name,
+                                           existing,
+                                           System.identityHashCode(existing),
+                                           existing.getClass().getName(),
+                                           incoming,
+                                           System.identityHashCode(incoming),
+                                           incoming.getClass().getName()));
       }
-    }
-    for (String variable : context.functions.keySet())
-    {
-      if (functions.containsKey(variable))
+      if (existing == null)
       {
-        throw new CompilerException("TODO: handle merging of contexts with conflicting function names by renaming inserted functions because "
-                                    + variable
-                                    + " already exists in "
-                                    + this);
+        variables.put(name, incoming);
       }
     }
 
-    variables.putAll(context.variables);
-    functions.putAll(context.functions);
+    for (var entry : context.functions.entrySet())
+    {
+      String                       name     = entry.getKey();
+      FunctionMapping<?, ?, ?>     incoming = entry.getValue();
+      FunctionMapping<?, ?, ?>     existing = functions.get(name);
+      if (existing != null && existing != incoming)
+      {
+        throw new CompilerException(format("Cannot merge: function '%s' is already bound in this Context to a different mapping.\n"
+                                           + "  existing: %s @%d\n"
+                                           + "  incoming: %s @%d\n",
+                                           name,
+                                           existing,
+                                           System.identityHashCode(existing),
+                                           incoming,
+                                           System.identityHashCode(incoming)));
+      }
+      if (existing == null)
+      {
+        functions.put(name, incoming);
+      }
+    }
   }
 
   public void populateFunctionReferenceGraph()

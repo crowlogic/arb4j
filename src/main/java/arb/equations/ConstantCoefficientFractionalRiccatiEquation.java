@@ -75,8 +75,33 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
 
   public static final String      FRACTIONAL_RICCATI_EQUATION = "t➔Đ^(μ)y(t)=t➔p(v)+q(v)*y(t)+r(v)*y(t)²";
 
-  /** Fractional order μ ∈ (0,1), bound into the Context as the variable named "μ". */
-  public final Real               α                           = new Real();
+  /**
+   * Fractional order μ ∈ (0,1), bound into the Context as the variable named
+   * "μ". After {@link #initialize()} runs, {@code this.α} is the very same
+   * {@link Real} instance that lives at name "μ" in the Context — by identity,
+   * not by value-copy. Mutating either propagates to the other.
+   *
+   * <p>If the caller's Context already has μ registered when the constructor
+   * runs, that pre-existing instance becomes {@code this.α} and the constructor
+   * argument α is used only to seed its numeric value (existingMu.set(seed)).
+   * Otherwise a fresh {@link Real} is created, seeded, and registered.</p>
+   */
+  public Real                     α;
+
+  /**
+   * Whether {@link #α} is owned by this instance (true: created here, must be
+   * closed in {@link #close()}) or borrowed from the caller's Context (false:
+   * the caller is responsible for closing it).
+   */
+  private boolean                 ownsAlpha;
+
+  /**
+   * Seed value for α, captured from the constructor argument. Used by
+   * {@link #initialize()} to populate whichever Real ends up canonical.
+   * Closed during {@link #close()} only if it was a fresh allocation we
+   * never adopted as canonical (i.e. the caller's μ was already present).
+   */
+  private final Real              αSeed                       = new Real();
 
   /** Source expression for p(v). */
   public String                   constantTerm;
@@ -109,7 +134,7 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
   public ConstantCoefficientFractionalRiccatiEquation(Context context, Real α, String p, String q, String r)
   {
     super(context);
-    this.α.set(α);
+    this.αSeed.set(α);
     this.constantTerm  = p;
     this.linearTerm    = q;
     this.quadraticTerm = r;
@@ -128,10 +153,27 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
   @Override
   public void initialize()
   {
-    // Bind the fractional order μ as a Real Context variable. Constructor
-    // parameter α and the Context name μ are the same numerical scalar; the
-    // expression compiler reads it as μ.
-    context.registerVariable(α.setName("μ"));
+    // Bind the fractional order μ as a Real Context variable. After this
+    // block, this.α IS the Context's μ — same instance — so mutating either
+    // side propagates. If the caller's Context already has μ, we adopt it
+    // (seed value from αSeed is poured in); otherwise we register a fresh
+    // Real seeded from αSeed.
+    Real existingMu = context.getVariable("μ");
+    if (existingMu == null)
+    {
+      Real fresh = new Real();
+      fresh.set(αSeed);
+      fresh.setName("μ");
+      context.registerVariable(fresh);
+      this.α         = fresh;
+      this.ownsAlpha = true;
+    }
+    else
+    {
+      existingMu.set(αSeed);
+      this.α         = existingMu;
+      this.ownsAlpha = false;
+    }
 
     // Ensure the Fourier parameter v is registered as a Complex Context
     // variable. If already present, reuse the caller's reference; otherwise
@@ -675,7 +717,11 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
   @Override
   public void close()
   {
-    α.close();
+    if (ownsAlpha && α != null)
+    {
+      α.close();
+    }
+    αSeed.close();
   }
 
 }
