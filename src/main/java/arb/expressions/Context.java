@@ -221,24 +221,25 @@ public class Context implements
       // Look up the field by name AND type-compatibility. A name shared
       // between the {@code variables} and {@code functions} namespaces
       // (e.g. a Real {@code r} variable and a {@code r} ComplexFunction)
-      // produces only one field per compiled class — typed for whichever
-      // namespace the expression body actually referenced. Skip if the
-      // function instance is not assignment-compatible with the field's
-      // declared type so the matching variable injector can handle it.
-      java.lang.reflect.Field field;
+      // can produce TWO public fields with the same name in one compiled
+      // class — Java permits this at the bytecode level since field
+      // identity is name+descriptor. {@link Class#getField(String)} would
+      // return an arbitrary one of them. Enumerate all public fields and
+      // pick the one whose declared type accepts this function instance;
+      // the variable-side injector handles the other.
+      java.lang.reflect.Field field = findAssignableField(functionClass, functionName, functionMapping.instance.getClass());
+      if (field == null)
+      {
+        return; // expression body never references this function in its function-namespace role
+      }
       try
       {
-        field = functionClass.getField(functionName);
+        field.set(f, functionMapping.instance);
       }
-      catch (NoSuchFieldException nsfe)
+      catch (IllegalAccessException iae)
       {
-        return; // expression body never references this function
+        Utensils.wrapOrThrow("failed to set function field " + functionName + " on " + functionClass.getName(), iae);
       }
-      if (!field.getType().isAssignableFrom(functionMapping.instance.getClass()))
-      {
-        return; // same name, different namespace — skip
-      }
-      setFieldValue(functionClass, f, functionName, functionMapping.instance);
     });
   }
 
@@ -301,13 +302,13 @@ public class Context implements
       {
         try
         {
-          java.lang.reflect.Field field = operandClass.getField(functionName);
-          // Skip if the function instance is not assignment-compatible with
-          // the field's declared type — a name shared between the
-          // {@code variables} and {@code functions} namespaces produces
-          // a single field, typed for whichever namespace the expression
-          // body referenced. The variable-side injector handles the other.
-          if (!field.getType().isAssignableFrom(functionMapping.instance.getClass()))
+          // A name shared between the {@code variables} and
+          // {@code functions} namespaces can produce two public fields
+          // with the same name (different types) in one compiled class.
+          // Pick the field whose declared type accepts this function
+          // instance; the variable-side injector handles the other.
+          java.lang.reflect.Field field = findAssignableField(operandClass, functionName, functionMapping.instance.getClass());
+          if (field == null)
           {
             return;
           }
@@ -315,10 +316,6 @@ public class Context implements
           {
             field.set(operandInstance, functionMapping.instance);
           }
-        }
-        catch (NoSuchFieldException nsfe)
-        {
-          // operand has no such public field — nothing to wire
         }
         catch (IllegalAccessException iae)
         {
@@ -338,6 +335,31 @@ public class Context implements
   protected <D, R, F extends Function<? extends D, ? extends R>> void injectContextReference(F f)
   {
     setFieldValue(f.getClass(), f, "context", this);
+  }
+
+  /**
+   * Find the public field of {@code clazz} whose name is {@code name} and
+   * whose declared type accepts {@code valueClass}. Returns {@code null} if
+   * none exists.
+   *
+   * <p>Used by all three reference injectors. The compiler may emit two
+   * public fields with the same name when an identifier is bound on both
+   * the {@code variables} and {@code functions} sides of a Context: Java
+   * field identity at the bytecode level is name+descriptor, so two fields
+   * named {@code r} of types {@code Real} and {@code RealFunction} coexist.
+   * {@link Class#getField(String)} returns an arbitrary one; this helper
+   * filters by type so the right side gets injected.
+   */
+  protected static java.lang.reflect.Field findAssignableField(Class<?> clazz, String name, Class<?> valueClass)
+  {
+    for (java.lang.reflect.Field field : clazz.getFields())
+    {
+      if (field.getName().equals(name) && field.getType().isAssignableFrom(valueClass))
+      {
+        return field;
+      }
+    }
+    return null;
   }
 
   public <D, R, F extends Function<? extends D, ? extends R>> void injectVariableReferences(F f)
@@ -360,26 +382,24 @@ public class Context implements
       // Look up the field by name AND type-compatibility. Two Context
       // entries can legitimately share a name when one is a Variable
       // (registered in {@code variables}) and the other is a Function
-      // (registered in {@code functions}); the compiler emits a single
-      // public field with that name, typed for whichever side appeared
-      // in the expression. Only inject when the runtime value is
-      // assignment-compatible with the field's declared type — if it
-      // isn't, this name belongs to the other namespace and the
-      // function-reference injector handles it.
-      java.lang.reflect.Field field;
+      // (registered in {@code functions}); the compiler may emit TWO
+      // public fields with that name (different types) in one compiled
+      // class. {@link Class#getField} returns an arbitrary one — instead
+      // enumerate all public fields and pick the one whose declared
+      // type accepts this variable's runtime value.
+      java.lang.reflect.Field field = findAssignableField(compiledClass, variableName, value.getClass());
+      if (field == null)
+      {
+        return; // expression body never references this variable in its variable-namespace role
+      }
       try
       {
-        field = compiledClass.getField(variableName);
+        field.set(f, value);
       }
-      catch (NoSuchFieldException nsfe)
+      catch (IllegalAccessException iae)
       {
-        return; // expression body never references this variable
+        Utensils.wrapOrThrow("failed to set variable field " + variableName + " on " + compiledClass.getName(), iae);
       }
-      if (!field.getType().isAssignableFrom(value.getClass()))
-      {
-        return; // same name, different namespace — skip
-      }
-      setFieldValue(compiledClass, f, variableName, value);
     });
   }
 
