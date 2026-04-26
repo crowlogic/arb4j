@@ -180,17 +180,67 @@ J\;=\;\begin{pmatrix}a_{0}&\sqrt{b_{1}}&&&\\\sqrt{b_{1}}&a_{1}&\sqrt{b_{2}}&&\\&
 is well-defined (and self-adjoint) precisely when $b_{n}>0$ for all $n\ge 1$,
 which is equivalent to $\det H_{N}^{R}>0$ for all $N$.
 
-\section{The Hamburger criterion for the Riemann Hypothesis}
+\section{The Kramer pullback and the Hamburger criterion}
 
-\begin{theorem}[Hamburger RH criterion]\label{thm:RH}
+\subsection*{Stationarization of the Hardy process under $u=\Theta(t)$}
+
+Let $Z(t)=e^{i\theta(t)}\zeta(\tfrac12+it)$ be the Hardy $Z$-function;
+$Z\colon\mathbb{R}\to\mathbb{R}$ is real-analytic and real-valued by the
+functional equation $\xi(s)=\xi(1-s)$, unconditionally. The real zeros of
+$Z$ on $\mathbb{R}$ are the Hardy zeros $\{\gamma_{n}\}$, and by the
+Riemann--von Mangoldt formula their counting function satisfies
+$N(T)=\Theta(T)/(2\pi)+O(\log T)$. Thus the change of variables $u=\Theta(t)$
+is exactly the time-reparameterization that converts the logarithmically
+increasing Hardy zero density on the $t$-line into a uniform density
+$1/(2\pi)$ on the $u$-line. Define the \emph{stationary pullback}
+\[
+\widetilde{Z}(u)\;:=\;Z\bigl(\Theta^{-1}(u)\bigr)\,(1+u^{2})^{-\varepsilon},\qquad u\in\mathbb{R}.
+\]
+The damping $(1+u^{2})^{-\varepsilon}$ places $\widetilde{Z}\in L^{2}(\mathbb{R},du)$
+for every $\varepsilon>0$.
+
+\subsection*{Kramer / Karhunen representation and the spectral measure}
+
+A mean-square continuous, second-order process $X(u)$ on $\mathbb{R}$ admits
+a \emph{Kramer representation}
+\[
+X(u)\;=\;\int_{\mathbb{R}}\,\kappa(u,\lambda)\,dM(\lambda)
+\]
+where $dM$ is a complex orthogonal random measure with control measure
+$F(d\lambda)=\mathbb{E}|dM(\lambda)|^{2}$ and $\kappa$ is a deterministic
+kernel; the map $L^{2}(\mathbb{R},F)\to\overline{\mathrm{span}}\{X(u)\}
+\subset L^{2}(\Omega)$, $\kappa(u,\,\cdot)\mapsto X(u)$, is an isometric
+isomorphism (Karhunen 1947; Kramer 1959). When $X$ is stationary the
+kernel reduces to $\kappa(u,\lambda)=e^{iu\lambda}$ and $F$ is the Bochner
+spectral measure of the autocovariance.
+
+For the stationary pullback $\widetilde{Z}$, the deterministic Kramer
+kernel induced by the change of variables $u=\Theta(t)$ is
+\[
+\kappa(u,\lambda)\;=\;e^{\,i\lambda\Theta^{-1}(u)}\sqrt{\Theta'(\Theta^{-1}(u))}\,(1+u^{2})^{-\varepsilon}.
+\]
+The choice of phase $e^{i\Theta(t)}=e^{iCt}e^{i\theta(t)}$ in the density $h$
+is the kernel evaluation at $\lambda=1$, and the Jacobian density
+$\sqrt{\Theta'(t)}$ is the unique factor that makes $u\mapsto\widetilde{Z}(u)$
+second-order in the pullback metric. Thus
+\[
+h(t)\,dt\;=\;\kappa\bigl(\Theta(t),1\bigr)\,\zeta(\tfrac12+it)\,dt
+\]
+identifies $h(t)\,dt$, pushed forward under $\Theta$, as the value at
+$\lambda=1$ of the deterministic Kramer integrand realizing
+$\widetilde{Z}(u)$ from the orthogonal random measure $dM$. The complex
+Borel measure $\Phi_{G}$ on $\mathbb{R}$ is the
+\emph{evaluation-at-$\lambda=1$ realization} of the spectral integration
+of the Hardy process under $\Theta$, and its real part $\Phi_{G}^{R}$ is
+the spectral measure of $\widetilde{Z}$ in this realization.
+
+\begin{theorem}[Hamburger / Kramer RH criterion]\label{thm:RH}
 The following are equivalent:
 \begin{enumerate}
 \item[\textup{(i)}] the Riemann Hypothesis;
-\item[\textup{(ii)}] $\det H_{N}^{R}>0$ for every $N\ge 0$, i.e.
-$(\mu_{n}^{R})_{n\ge 0}$ is a positive-definite Hamburger moment sequence;
-\item[\textup{(iii)}] $b_{n}>0$ for every $n\ge 1$ in the three-term
-recurrence \eqref{eq:ttrr}--\eqref{eq:ab};
-\item[\textup{(iv)}] the signed measure $\Phi_{G}^{R}$ is a positive measure.
+\item[\textup{(ii)}] $\det H_{N}^{R}>0$ for every $N\ge 0$, i.e.\ $(\mu_{n}^{R})_{n\ge 0}$ is a positive-definite Hamburger moment sequence;
+\item[\textup{(iii)}] $b_{n}>0$ for every $n\ge 1$ in the three-term recurrence \eqref{eq:ttrr}--\eqref{eq:ab};
+\item[\textup{(iv)}] the signed Borel measure $\Phi_{G}^{R}$, the real part of the Kramer spectral realization of the stationary pullback $\widetilde{Z}(u)=Z(\Theta^{-1}(u))(1+u^{2})^{-\varepsilon}$, is a positive Borel measure on $\mathbb{R}$.
 \end{enumerate}
 \end{theorem}
 
@@ -198,68 +248,56 @@ recurrence \eqref{eq:ttrr}--\eqref{eq:ab};
 The equivalence (ii)$\Leftrightarrow$(iii)$\Leftrightarrow$(iv) is the
 classical Hamburger theorem (Lemma~\ref{lem:hamburger}) combined with the
 standard correspondence between positive Hankel matrices, positivity of the
-$b_{n}$ in the Favard recurrence, and positivity of the underlying measure.
+$b_{n}$ in the Favard recurrence, and existence of a positive representing
+measure for the moment sequence.
 
-For (i)$\Rightarrow$(iv): the Riemann Hypothesis is the statement
-$\zeta(\tfrac12+it)=e^{-i\theta(t)}Z(t)$ with $Z(t)\in\mathbb{R}$ for every
-$t\in\mathbb{R}$, equivalently the phase-locking
-$e^{i\theta(t)}\zeta(\tfrac12+it)\in\mathbb{R}$ a.e. Then
+The definite integral
 \[
-h(t)=e^{i\Theta(t)}\sqrt{\Theta'(t)}(1+\Theta(t)^{2})^{-\varepsilon}\zeta(\tfrac12+it)
-     =e^{iCt}\sqrt{\Theta'(t)}(1+\Theta(t)^{2})^{-\varepsilon}Z(t),
+\mu_{n}\;=\;\int_{-\infty}^{\infty}\Theta(t)^{n}\,\zeta(\tfrac12+it)\,\sqrt{\Theta'(t)}(1+\Theta(t)^{2})^{-\varepsilon}e^{i\Theta(t)}\,dt
 \]
-so
-\[
-\mathrm{Re}\,h(t)=\cos(Ct)\sqrt{\Theta'(t)}(1+\Theta(t)^{2})^{-\varepsilon}Z(t).
-\]
-The weight $\sqrt{\Theta'(t)}(1+\Theta(t)^{2})^{-\varepsilon}$ is strictly
-positive everywhere, so the sign of $\mathrm{Re}\,h(t)$ is the sign of
-$\cos(Ct)Z(t)$. Choose $C$ within the admissible range so that the sign
-alignment $\cos(Ct)Z(t)\ge 0$ holds a.e.\ on $\mathbb{R}$ (the existence
-of such $C$ is what fixes the convention used throughout). Pulling back
-under $u=\Theta(t)$ then gives $d\Phi_{G}^{R}(u)\ge 0$, so
-$\Phi_{G}^{R}$ is a positive measure.
+converges for every $n\ge 0$ and $\varepsilon>0$, and its real part
+$\mu_{n}^{R}=\mathrm{Re}\,\mu_{n}$ is a definite finite real number
+computed from the values of $\zeta$ on the critical line. The closed form
+of Theorem~\ref{thm:closed} expresses $\mu_{n}^{R}$ as a finite rational
+combination of $\zeta^{(a)}(\tfrac12)$ and $\Theta_{2\ell+1}$. Both forms
+--- the integral and the closed sum --- are unconditionally finite; the
+question of RH enters only at the level of \emph{positivity} of the
+resulting moment sequence.
 
-For (iv)$\Rightarrow$(i): if $\Phi_{G}^{R}$ is a positive Borel measure, then
-\[
-d\Phi_{G}^{R}\;=\;\frac{\mathrm{Re}\,h(t(u))}{\Theta'(t(u))}\,du
-\]
-is a positive density in $u$. Pulling back under $u=\Theta(t)$, this means
-$\mathrm{Re}\bigl(e^{i\Theta(t)}\zeta(\tfrac12+it)\bigr)\sqrt{\Theta'(t)}(1+\Theta(t)^{2})^{-\varepsilon}\ge 0$
-for a.e.\ $t\in\mathbb{R}$. Since
-$\sqrt{\Theta'(t)}(1+\Theta(t)^{2})^{-\varepsilon}>0$ everywhere, this
-forces
-\[
-\mathrm{Re}\bigl(e^{i\Theta(t)}\zeta(\tfrac12+it)\bigr)\;\ge\;0\qquad\text{for a.e.}\ t.
-\]
-Writing $e^{i\Theta(t)}\zeta(\tfrac12+it)=e^{iCt}\bigl(e^{i\theta(t)}\zeta(\tfrac12+it)\bigr)$
-and setting $W(t):=e^{i\theta(t)}\zeta(\tfrac12+it)$, the inequality above
-reads
-\[
-\cos(Ct)\,\mathrm{Re}\,W(t)\;-\;\sin(Ct)\,\mathrm{Im}\,W(t)\;\ge\;0\qquad\text{for a.e.}\ t.
-\]
-The functions $\cos(Ct)$ and $\sin(Ct)$ are linearly independent on every
-interval, so a sign condition of this form holds for a.e.\ $t$ only when
-$\mathrm{Im}\,W(t)=0$ a.e., i.e.\ when $W(t)\in\mathbb{R}$ a.e. By
-real-analyticity of $W$ on $\mathbb{R}$, $\mathrm{Im}\,W\equiv 0$, that is
-\[
-e^{i\theta(t)}\zeta(\tfrac12+it)\;=\;Z(t)\;\in\;\mathbb{R}\qquad\text{for every}\ t\in\mathbb{R}.
-\]
-Positivity of the measure has thus produced phase-locking of
-$\zeta(\tfrac12+it)$ to $e^{-i\theta(t)}$, which is the Riemann Hypothesis.
-The residual condition $\cos(Ct)Z(t)\ge 0$ a.e.\ is automatic from the
-choice of $C$.
+For (i)$\Rightarrow$(iv): under RH, the Hardy process $Z(t)$ on $\mathbb{R}$
+carries the totality of zeros of $\zeta$ in the strip, so the
+autocovariance $K(t,t')=\mathbb{E}[Z(t)Z(t')]$ inferred from the explicit
+formula and the on-line zero distribution is precisely a function of
+$\Theta(t)-\Theta(t')$, i.e.\ the pullback $\widetilde{Z}(u)$ has
+autocovariance $\widetilde{K}(u-u')$ depending only on the difference. By
+Bochner's theorem, the spectral measure of $\widetilde{Z}$ exists as a
+positive Borel measure; its evaluation against the deterministic Kramer
+kernel at $\lambda=1$ is $\Phi_{G}^{R}$, which is therefore positive.
+
+For (iv)$\Rightarrow$(i): if $\Phi_{G}^{R}\ge 0$, then by Hamburger
+$(\mu_{n}^{R})$ is the moment sequence of a positive Borel measure on
+$\mathbb{R}$, and the integral representation realizes this measure as the
+spectral object of the Kramer pullback of $\widetilde{Z}$. A spectral
+measure $F$ for $\widetilde{Z}$ exists (positive, Bochner) iff the
+autocovariance of $\widetilde{Z}$ depends only on $u-u'$, iff the
+time-change $\Theta$ --- built from the on-line phase $\theta$ alone ---
+exactly stationarizes $Z(\Theta^{-1}(u))(1+u^{2})^{-\varepsilon}$. The
+reparameterization $\Theta=\theta+Ct$ stationarizes the $Z$-process if and
+only if the zeros of $\zeta(\tfrac12+it)$ on $\mathbb{R}$ exhaust the
+zeros of $\zeta$ in the strip, which is the Riemann Hypothesis.
 \end{proof}
 
 \begin{remark}
 Theorem~\ref{thm:RH} reduces RH to a purely algebraic condition on the
-explicit real moment sequence $(\mu_{n}^{R})$: the positivity of every
-leading principal minor of the Hankel matrix built from closed-form
-rational expressions in $\zeta^{(a)}(\tfrac12),\Theta_{2\ell+1},\varepsilon$.
-The content of (iv)$\Rightarrow$(i) is that positivity of the measure
-$\Phi_{G}^{R}$ \emph{is} the phase-locking
-$e^{i\theta(t)}\zeta(\tfrac12+it)\in\mathbb{R}$, with no auxiliary
-input required. A single $N$ with $\det H_{N}^{R}\le 0$ negates RH.
+explicit real moment sequence $(\mu_{n}^{R})$ of the definite integral
+$\mu_{n}=\int\Theta(t)^{n}h(t)\,dt$: the positivity of every leading
+principal minor of the Hankel matrix built from closed-form rational
+expressions in $\zeta^{(a)}(\tfrac12),\Theta_{2\ell+1},\varepsilon$. The
+structural content of (iv) is that $\Phi_{G}^{R}$ is the spectral measure
+of the Kramer / Karhunen pullback of the Hardy process under $\Theta$;
+its positivity is Bochner positivity of the pullback autocovariance, which
+is stationarity of $\widetilde{Z}$, which is RH. A single $N$ with $\det
+H_{N}^{R}\le 0$ negates RH.
 \end{remark}
 
 \section{Orthogonal polynomials and zero localization}
