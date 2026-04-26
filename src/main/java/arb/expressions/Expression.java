@@ -149,7 +149,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (shouldCache())
     {
-      cw.visitField(Opcodes.ACC_PUBLIC, "cache", Type.getDescriptor(TreeMap.class), null, null);
+      cw.visitField(Opcodes.ACC_PRIVATE | Opcodes.ACC_FINAL, "cache", Type.getDescriptor(TreeMap.class), null, null);
     }
   }
 
@@ -1102,6 +1102,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       duplicateTopOfTheStack(mv);
       invokeDefaultConstructor(mv, typeInternalName);
       putField(mv, className, mapping.functionName, fieldDescriptor);
+      // No GETFIELD or PUTFIELD on "cache" is emitted here, ever, for any
+      // reason. Two distinct instances must never share a cache, regardless
+      // of whether their types coincide. The only operation in this method
+      // is wiring the freshly-allocated peer reference into the field that
+      // names it on `this`. Each instance's cache is initialized to its own
+      // new TreeMap by generateCacheFieldInitializer in its own constructor
+      // and is touched only by Function.peek/poke against that same
+      // instance's field reference.
       mv.visitLabel(alreadyInitialized);
     }
   }
@@ -1953,6 +1961,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     generateInvocationOfDefaultNoArgConstructor(mv, true);
 
+    // Initialize the final cache field exactly once, here in <init>.
+    // ACC_FINAL on the field forbids any later PUTFIELD from any other
+    // method (initialize, evaluate, helpers) — verified by the JVM.
+    generateCacheFieldInitializer(mv);
+
     if (hasStaticNodes)
     {
       // Initialize staticPrecision to -1 so the first evaluate() call
@@ -2479,7 +2492,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected MethodVisitor generateInitializationCode(MethodVisitor mv)
   {
     generateCodeToThrowErrorIfAlreadyInitialized(mv);
-    generateCacheFieldInitializer(mv);
     generateDerivativeCacheFieldInitializer(mv);
     if (trace)
     {
