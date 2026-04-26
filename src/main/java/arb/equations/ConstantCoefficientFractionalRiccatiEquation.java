@@ -1,5 +1,6 @@
 package arb.equations;
 
+import arb.Integer;
 import arb.Complex;
 import arb.ComplexMatrix;
 import arb.ComplexPolynomial;
@@ -217,7 +218,7 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
     // the real expression. Empty-range sum at k=2 (j=1..0) returns the
     // additive identity, implementing Remark 2.2 of qrh.tex.
     context.registerFunctionMapping("a",
-                                    arb.Integer.class,
+                                    Integer.class,
                                     Complex.class,
                                     ComplexSequence.class);
 
