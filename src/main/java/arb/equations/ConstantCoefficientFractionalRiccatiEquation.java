@@ -485,8 +485,16 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
       return null; // singular at this precision — caller falls back to M-1
     }
 
-    // Build Q_M(z) = 1 + q_1 z + q_2 z² + ... + q_M z^M
+    // Build Q_M(z) = 1 + q_1 z + q_2 z² + ... + q_M z^M.
+    // fitLength must precede the per-coefficient set() calls so the
+    // underlying acb_poly struct allocates its coefficient array; without
+    // it acb_poly_set_coeff_acb → _acb_poly_normalise reads beyond the
+    // allocation and crashes (SIGSEGV) when the JVM heap is in a non-
+    // zeroed state — which happens reliably when this test runs after
+    // unrelated tests in the same surefire fork. setLength alone only
+    // updates the length field; fitLength performs the realloc.
     ComplexPolynomial Q_M = new ComplexPolynomial();
+    Q_M.fitLength(M + 1);
     Q_M.setLength(M + 1);
     Q_M.set(0, new Complex().set(1));
     for (int j = 1; j <= M; j++)
@@ -496,6 +504,7 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
 
     // Back-substitute: p_0 = 0; p_n = α_n + Σ_{j=1}^{min(n,M)} q_j α_{n-j}.
     ComplexPolynomial P_M    = new ComplexPolynomial();
+    P_M.fitLength(M + 1);
     P_M.setLength(M + 1);
     P_M.set(0, new Complex().set(0));
     for (int n = 1; n <= M; n++)
