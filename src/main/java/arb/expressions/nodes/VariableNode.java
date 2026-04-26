@@ -573,7 +573,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     // Context variables are set once at initialize() and fixed for the
     // instance lifetime (callers that need to mutate them must go through
-    // invalidateStaticCache() — see #958), so subtrees depending solely on
+    // invalidateCache() — see #958), so subtrees depending solely on
     // context variables are safely hoistable regardless of whether this
     // expression is the inner body of a generated functional.
     if (isContextVariable())

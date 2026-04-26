@@ -116,9 +116,9 @@ public interface Function<D, CO> extends
    *
    * @see arb.expressions.nodes.StaticNode
    */
-  public default void invalidateStaticCache()
+  public default void invalidateCache()
   {
-    invalidateStaticCache(Collections.newSetFromMap(new IdentityHashMap<>()));
+    invalidateCache(Collections.newSetFromMap(new IdentityHashMap<>()));
   }
 
   /**
@@ -134,7 +134,7 @@ public interface Function<D, CO> extends
    * @param alreadyInvalidated identity-based set of {@link Function} instances
    *          whose static caches have been invalidated during this traversal
    */
-  public default void invalidateStaticCache(Set<Function<?, ?>> alreadyInvalidated)
+  public default void invalidateCache(Set<Function<?, ?>> alreadyInvalidated)
   {
 
   }

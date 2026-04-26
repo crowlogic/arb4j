@@ -2547,7 +2547,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected boolean          optimized                      = false;
 
   /**
-   * Emit the cycle-safe {@code public void invalidateStaticCache(Set)} override
+   * Emit the cycle-safe {@code public void invalidateCache(Set)} override
    * (and a no-arg shim that calls it with a fresh identity set) that:
    * <ol>
    *   <li>returns immediately if {@code alreadyInvalidated.add(this)} is
@@ -2557,7 +2557,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    *   <li>resets {@code this.staticPrecision = -1} when this expression has
    *       hoisted static subexpressions, forcing the next {@code evaluate()}
    *       call to re-run {@code evaluateStaticSubexpressions};</li>
-   *   <li>recursively calls {@code invalidateStaticCache(set)} on every
+   *   <li>recursively calls {@code invalidateCache(set)} on every
    *       inlined nested {@link Function} field (the
    *       {@link #referencedFunctions} entries) so their hoisted
    *       v-dependent subtrees are also flushed.</li>
@@ -2568,15 +2568,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    */
   protected ClassVisitor generateInvalidateStaticCacheMethod(ClassVisitor classVisitor)
   {
-    if (!hasStaticNodes && referencedFunctions.isEmpty())
+    if (!hasStaticNodes && referencedFunctions.isEmpty() && !shouldCache())
     {
       return classVisitor;
     }
     String setInternal = Type.getInternalName(Set.class);
 
-    // public void invalidateStaticCache(Set alreadyInvalidated)
+    // public void invalidateCache(Set alreadyInvalidated)
     var mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
-                                      "invalidateStaticCache",
+                                      "invalidateCache",
                                       "(L" + setInternal + ";)V",
                                       "(L" + setInternal + "<L" + functionInternal + "<**>;>;)V",
                                       null);
@@ -2596,7 +2596,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       mv.visitInsn(Opcodes.ICONST_M1);
       mv.visitFieldInsn(Opcodes.PUTFIELD, className.replace('.', '/'), "staticPrecision", "I");
     }
-    // for each inlined nested Function field f: if (this.f != null) this.f.invalidateStaticCache(alreadyInvalidated);
+    if (shouldCache())
+    {
+      // this.cache.clear()  — the per-index memoisation table is keyed only on
+      // the domain index k, so any change to other Context variables (e.g. v in
+      // the Müntz a/S recurrence) must drop every entry, otherwise a(k) returns
+      // the previous v's value at the same k.
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(Opcodes.GETFIELD, className, "cache", Type.getDescriptor(TreeMap.class));
+      mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, Type.getInternalName(TreeMap.class), "clear", "()V", false);
+    }
+    // for each inlined nested Function field f: if (this.f != null) this.f.invalidateCache(alreadyInvalidated);
     for (var mapping : referencedFunctions.values())
     {
       var skip = new Label();
@@ -2608,7 +2618,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       mv.visitVarInsn(Opcodes.ALOAD, 1);
       mv.visitMethodInsn(Opcodes.INVOKEINTERFACE,
                          functionInternal,
-                         "invalidateStaticCache",
+                         "invalidateCache",
                          "(L" + setInternal + ";)V",
                          true);
       mv.visitLabel(skip);
@@ -2617,8 +2627,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitMaxs(0, 0);
     mv.visitEnd();
 
-    // public void invalidateStaticCache()  { invalidateStaticCache(Collections.newSetFromMap(new IdentityHashMap())); }
-    var shim = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, "invalidateStaticCache", "()V", null, null);
+    // public void invalidateCache()  { invalidateCache(Collections.newSetFromMap(new IdentityHashMap())); }
+    var shim = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, "invalidateCache", "()V", null, null);
     shim.visitCode();
     loadThisOntoStack(shim);
     String idMapInternal = Type.getInternalName(IdentityHashMap.class);
@@ -2633,7 +2643,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                          false);
     shim.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                          className,
-                         "invalidateStaticCache",
+                         "invalidateCache",
                          "(L" + setInternal + ";)V",
                          false);
     shim.visitInsn(Opcodes.RETURN);

@@ -709,24 +709,24 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
    * hoisted v-dependent subtrees retain their values from the previous v
    * and a(k) returns stale results.
    *
-   * <p>The {@link arb.functions.Function#invalidateStaticCache()} default
+   * <p>The {@link arb.functions.Function#invalidateCache()} default
    * is a no-op, so functions without hoisted state are unaffected.
    *
-   * @see arb.functions.Function#invalidateStaticCache()
+   * @see arb.functions.Function#invalidateCache()
    * @see <a href="https://github.com/crowlogic/arb4j/issues/958">issue #958</a>
    */
-  public void invalidateStaticCache()
+  public void invalidateCache()
   {
     Set<Function<?, ?>> alreadyInvalidated = Collections.newSetFromMap(new IdentityHashMap<>());
-    if (p != null) p.invalidateStaticCache(alreadyInvalidated);
-    if (q != null) q.invalidateStaticCache(alreadyInvalidated);
-    if (r != null) r.invalidateStaticCache(alreadyInvalidated);
+    if (p != null) p.invalidateCache(alreadyInvalidated);
+    if (q != null) q.invalidateCache(alreadyInvalidated);
+    if (r != null) r.invalidateCache(alreadyInvalidated);
     var sMapping = context.<Integer, Complex, ComplexSequence>getFunctionMapping("S");
     if (sMapping != null && sMapping.instance != null)
     {
-      sMapping.instance.invalidateStaticCache(alreadyInvalidated);
+      sMapping.instance.invalidateCache(alreadyInvalidated);
     }
-    if (a != null) a.invalidateStaticCache(alreadyInvalidated);
+    if (a != null) a.invalidateCache(alreadyInvalidated);
   }
 
   @Override

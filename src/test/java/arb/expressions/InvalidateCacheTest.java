@@ -11,7 +11,7 @@ import junit.framework.TestCase;
 /**
  * Verifies
  * <a href="https://github.com/crowlogic/arb4j/issues/958">issue #958</a>:
- * {@code Function.invalidateStaticCache()} is generated on classes that have
+ * {@code Function.invalidateCache()} is generated on classes that have
  * hoisted static subexpressions and, when called, forces the next
  * {@code evaluate()} to recompute every subtree that was lifted into
  * {@code evaluateStaticSubexpressions()}.
@@ -24,7 +24,7 @@ import junit.framework.TestCase;
  *
  * @author Stephen Crowley ©2024-2026
  */
-public class InvalidateStaticCacheTest extends
+public class InvalidateCacheTest extends
                                       TestCase
 {
 
@@ -56,7 +56,7 @@ public class InvalidateStaticCacheTest extends
   /**
    * After a regular {@code evaluate} call on a generated class that hoists
    * a bound-parameter-dependent subtree, {@code staticPrecision} records
-   * the bits used. A subsequent {@code invalidateStaticCache()} must reset
+   * the bits used. A subsequent {@code invalidateCache()} must reset
    * it to {@code -1} so the next {@code evaluate} re-runs
    * {@code evaluateStaticSubexpressions}.
    */
@@ -71,8 +71,8 @@ public class InvalidateStaticCacheTest extends
                    128,
                    staticPrecisionOf(f));
 
-      f.invalidateStaticCache();
-      assertEquals("invalidateStaticCache must reset staticPrecision to -1",
+      f.invalidateCache();
+      assertEquals("invalidateCache must reset staticPrecision to -1",
                    -1,
                    staticPrecisionOf(f));
 
@@ -97,7 +97,7 @@ public class InvalidateStaticCacheTest extends
     {
       // (3² + 1) * 2 = 20
       assertEquals(20.0, f.evaluate(t, 1, 128, result).doubleValue());
-      f.invalidateStaticCache();
+      f.invalidateCache();
       assertEquals(20.0, f.evaluate(t, 1, 128, result2).doubleValue());
     }
   }
@@ -111,7 +111,7 @@ public class InvalidateStaticCacheTest extends
   {
     RealFunction f = RealFunction.express("t + t*t");
     // Must not throw.
-    f.invalidateStaticCache();
+    f.invalidateCache();
     try ( Real t = new Real().set(3); Real result = new Real())
     {
       assertEquals(12.0, f.evaluate(t, 1, 128, result).doubleValue());
