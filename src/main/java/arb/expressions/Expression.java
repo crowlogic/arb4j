@@ -496,9 +496,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   private static String     ASSERTION_ERROR_METHOD_DESCRIPTOR = Compiler.getMethodDescriptor(Void.class, Object.class);
 
-  private static final char COMBINING_DOT_ABOVE               = '\u0307';
+  private static final char COMBINING_DOT_ABOVE               = '̇';
 
-  private static final char COMBINING_TWO_DOTS_ABOVE          = '\u0308';
+  private static final char COMBINING_TWO_DOTS_ABOVE          = '̈';
 
   public static Class<?>[]  implementedInterfaces             = new Class[]
   { Typesettable.class, AutoCloseable.class, Initializable.class, Named.class };
@@ -646,13 +646,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         return null;
       }
       skipSpaces();
-      if (character == '\u2208') // ∈
+      if (character == '∈') // ∈
       {
         nextCharacter();
         pendingInputVariableBounds = parseIntervalBounds();
         skipSpaces();
       }
-      if (character == '\u2794') // ➔
+      if (character == '➔') // ➔
       {
         nextCharacter();
         return name;

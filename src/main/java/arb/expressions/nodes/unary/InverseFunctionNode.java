@@ -60,7 +60,7 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
    * opening parenthesis to distinguish compositional inverse from multiplicative
    * inverse.
    */
-  public static final String  INVERSE_MARKER      = "\u207B\u00B9";
+  public static final String  INVERSE_MARKER      = "⁻¹";
 
   /**
    * Default number of terms in the Lagrange series reversion, matching

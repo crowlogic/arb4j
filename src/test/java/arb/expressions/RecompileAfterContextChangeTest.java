@@ -43,7 +43,7 @@ public class RecompileAfterContextChangeTest extends
     Context context = new Context(Integer.named("m").set(3));
 
     String  body    =
-                 "y\u2794-I*(pFq([1,m,-m],[1/2],-((1/2)*I)/y)*exp(I*(\u03c0*m+y))-pFq([1,m,-m],[1/2],((1/2)*I)/y)*exp(I*(2*\u03c0*m-y)))*(4*m^2-1)*(-1)^(-m)/((4*m^2-2)*y*\u03c0)";
+                 "y➔-I*(pFq([1,m,-m],[1/2],-((1/2)*I)/y)*exp(I*(π*m+y))-pFq([1,m,-m],[1/2],((1/2)*I)/y)*exp(I*(2*π*m-y)))*(4*m^2-1)*(-1)^(-m)/((4*m^2-2)*y*π)";
 
     Expression<Complex, Complex, ComplexFunction> expr =
                                                        Function.parseAndCompile(Complex.class,

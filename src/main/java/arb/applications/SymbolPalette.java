@@ -332,7 +332,7 @@ public class SymbolPalette extends
     associateAliases('ᶿ', "suptheta");
 
     // Supplementary superscript q
-    associateAliases("\uD801\uDFA5", "supq");
+    associateAliases("𐞥", "supq");
 
     // Subscript operators and letters
     associateAliases('₊', "subplus");

@@ -38,9 +38,9 @@ public class NodeEqualsNoStackOverflowTest extends
 {
 
   private static final String BUG_EXPR =
-                              "y\u2794-I*(pFq([1,m,-m],[1/2],-((1/2)*I)/y)*exp(I*(\u03c0*m+y))"
-                                            + "-pFq([1,m,-m],[1/2],((1/2)*I)/y)*exp(I*(2*\u03c0*m-y)))"
-                                            + "*(4*m^2-1)*(-1)^(-m)/((4*m^2-2)*y*\u03c0)";
+                              "y➔-I*(pFq([1,m,-m],[1/2],-((1/2)*I)/y)*exp(I*(π*m+y))"
+                                            + "-pFq([1,m,-m],[1/2],((1/2)*I)/y)*exp(I*(2*π*m-y)))"
+                                            + "*(4*m^2-1)*(-1)^(-m)/((4*m^2-2)*y*π)";
 
   @SuppressWarnings({ "rawtypes", "unchecked" })
   public void testNodeEqualsDoesNotOverflow()

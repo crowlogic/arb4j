@@ -265,8 +265,8 @@ public class Parser
     SUPERSCRIPT_TO_NORMAL.put("⁹", "9");
 
     // Superscript operators — continue a run but cannot start one
-    SUPERSCRIPT_TO_NORMAL.put("\u207A", "+"); // ⁺ U+207A SUPERSCRIPT PLUS SIGN
-    SUPERSCRIPT_TO_NORMAL.put("\u207B", "-"); // ⁻ U+207B SUPERSCRIPT MINUS
+    SUPERSCRIPT_TO_NORMAL.put("⁺", "+"); // ⁺ U+207A SUPERSCRIPT PLUS SIGN
+    SUPERSCRIPT_TO_NORMAL.put("⁻", "-"); // ⁻ U+207B SUPERSCRIPT MINUS
   }
 
   /**
