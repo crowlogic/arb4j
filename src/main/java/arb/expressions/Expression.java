@@ -1102,6 +1102,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       duplicateTopOfTheStack(mv);
       invokeDefaultConstructor(mv, typeInternalName);
       putField(mv, className, mapping.functionName, fieldDescriptor);
+      // Propagate the parent's context field into the new instance's context
+      // field so the new instance's own initialize() and its downstream
+      // injectFunctionReferencesIntoOperand calls see the live, populated
+      // Context. Without this, the new instance keeps its field-initializer
+      // default (an empty `new Context()`), which has no functions or
+      // variables registered, and every nested function reference (e.g. He)
+      // remains null at runtime.
+      String contextTypeDesc = Type.getDescriptor(Context.class);
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(GETFIELD, className, mapping.functionName, fieldDescriptor);
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(GETFIELD, className, "context", contextTypeDesc);
+      mv.visitFieldInsn(PUTFIELD, typeInternalName, "context", contextTypeDesc);
       // After storing the new instance, immediately inject context function
       // references into it so its own initialize() finds non-null peer fields
       // and never hits the `if (this.X == null) this.X = new X()` null-guards
@@ -1109,7 +1122,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       loadThisOntoStack(mv);
       mv.visitFieldInsn(GETFIELD, className, mapping.functionName, fieldDescriptor);
       loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, className, "context", Type.getDescriptor(Context.class));
+      mv.visitFieldInsn(GETFIELD, className, "context", contextTypeDesc);
       mv.visitMethodInsn(INVOKESTATIC,
                          Type.getInternalName(Context.class),
                          "injectFunctionReferencesIntoOperand",
@@ -2288,6 +2301,34 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (context != null)
     {
       propagateContext(mv, functional);
+      // Also propagate the context field itself so the curried inner
+      // expression's own initialize() — which calls
+      // Context.injectFunctionReferencesIntoOperand(child, this.context) —
+      // sees a live, populated Context. Without this the inner func
+      // instance has context=null and every nested
+      // injectFunctionReferencesIntoOperand call short-circuits, leaving
+      // function fields like `He` un-wired.
+      String contextTypeDesc = Context.class.descriptorString();
+      duplicateTopOfTheStack(mv);
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(GETFIELD, className, "context", contextTypeDesc);
+      mv.visitFieldInsn(PUTFIELD, functional.className, "context", contextTypeDesc);
+      // Inject context-registered Java function references (e.g. He, a
+      // ProbabilistHermitePolynomials registered with mapping.instance != null
+      // and mapping.expression == null) into the curried inner instance. The
+      // operand-construction path (constructReferencedFunctionInstanceIfItIsNull)
+      // already does this for nested operand classes, but the curried
+      // sub-expression construction did not. Without this call, fields like
+      // hermiteOnefunc.He remain null because the inner's own initialize()
+      // body has no allocation block for Java-coded functions.
+      duplicateTopOfTheStack(mv);
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(GETFIELD, className, "context", contextTypeDesc);
+      mv.visitMethodInsn(INVOKESTATIC,
+                         Type.getInternalName(Context.class),
+                         "injectFunctionReferencesIntoOperand",
+                         "(Ljava/lang/Object;Larb/expressions/Context;)V",
+                         false);
     }
 
     invokeInitializationMethod(mv, functional);

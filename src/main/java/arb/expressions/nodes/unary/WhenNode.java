@@ -626,6 +626,29 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     return arg.isScalar();
   }
 
+  /**
+   * A {@link WhenNode} is unconditionally zero iff every case's value AND
+   * the {@code else} value (stored in {@link #arg}) are statically zero.
+   * Otherwise the result depends on which predicate matches at runtime, so
+   * we cannot prove zero at compile time.
+   */
+  @Override
+  public boolean isZero()
+  {
+    if (arg == null || !arg.isZero())
+    {
+      return false;
+    }
+    for (var c : cases)
+    {
+      if (!c.value.isZero())
+      {
+        return false;
+      }
+    }
+    return true;
+  }
+
   @Override
   public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
