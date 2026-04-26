@@ -243,7 +243,7 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
    * <code>p_n = α_n + Σ_{j=1}^{min(n,M)} q_j·α_{n-j}</code>;</li>
    * <li>register <code>P_M, Q_M</code> as polynomials in a per-call
    * sub-context, return the compiled
-   * <code>ComplexFunction.express("R", "z -> P(z)/Q(z)", subCtx)</code>.</li>
+   * <code>ComplexFunction.express("ℛ", "z -> P(z)/Q(z)", subCtx)</code>.</li>
    * </ol>
    * </p>
    *
@@ -253,9 +253,39 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
    */
   public ComplexFunction padeApproximant(int M, int bits)
   {
-    if (M < 1)
+    if (M < 0)
     {
-      throw new IllegalArgumentException("Padé order M must be ≥ 1, got " + M);
+      throw new IllegalArgumentException("Padé order M must be ≥ 0, got " + M);
+    }
+
+    // Order-zero diagonal Padé approximant. With y(0)=0 → a_0 = 0, the (0,0)
+    // Padé approximant is P_0/Q_0 = 0/1, i.e. the identically-zero function.
+    // Returning it explicitly here lets callers (notably the M=2 branch of
+    // successiveDifferenceErrorBound, which needs R_{M-2}=R_0) compute the
+    // bound at the smallest non-trivial order without losing a data point
+    // by starting the adaptive loop at M=3.
+    if (M == 0)
+    {
+      return new ComplexFunction()
+      {
+        @Override
+        public Complex evaluate(Complex t, int order, int bits_, Complex res)
+        {
+          return res.set(0);
+        }
+
+        @Override
+        public String toString()
+        {
+          return "0";
+        }
+
+        @Override
+        public String typeset()
+        {
+          return "0";
+        }
+      };
     }
 
     // Stage 2.1 — evaluate the first 2M Müntz coefficients at the current v.
@@ -315,11 +345,13 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
     ComplexFunction R_M = padeApproximant(M, bits);
 
     // Stage 3 — compose with the Müntz substitution z = t^μ. The result is a
-    // ComplexFunction in t. R is registered as a function in a per-call
-    // sub-context so the expression compiler can resolve R(t^μ).
+    // ComplexFunction in t. ℛ is registered as a function in a per-call
+    // sub-context so the expression compiler can resolve ℛ(t^μ). The script
+    // capital ℛ (U+211B) is used instead of plain R because R is reserved
+    // for the built-in real-number type (Expression.BUILTIN_FUNCTION_NAMES).
     Context subCtx = newSubContext();
-    subCtx.registerFunction("R", R_M);
-    return ComplexFunction.express("y", "t➔R(t^μ)", subCtx);
+    subCtx.registerFunction("ℛ", R_M);
+    return ComplexFunction.express("y", "t➔ℛ(t^μ)", subCtx);
   }
 
   /**
@@ -499,7 +531,7 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
     Context subCtx = newSubContext();
     subCtx.registerFunction("P", P_M.setName("P"));
     subCtx.registerFunction("Q", Q_M.setName("Q"));
-    return ComplexFunction.express("R", "z➔P(z)/Q(z)", subCtx);
+    return ComplexFunction.express("ℛ", "z➔P(z)/Q(z)", subCtx);
   }
 
   /**

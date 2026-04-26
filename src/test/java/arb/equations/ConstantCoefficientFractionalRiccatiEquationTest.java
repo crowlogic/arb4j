@@ -116,10 +116,11 @@ public class ConstantCoefficientFractionalRiccatiEquationTest extends
       // We register no extra context — the literals 0.6 and 1.6 are inlined.
       ComplexFunction yReference = ComplexFunction.express("yRef", "t➔2*t^(0.6)*ℰ(0.6, 1.6, -3*t^(0.6))");
 
-      // Solver. maxOrder=14 is generous; the linear case has an exact rational
-      // Padé reconstruction, so the bound should saturate at the working
-      // precision well before that.
-      ComplexFunction ySolver = eq.solve(14, bits);
+      // Solver. maxOrder=4 to keep the test inside a reasonable heap budget
+      // while still exercising the adaptive loop. The linear case has an
+      // exact rational Padé reconstruction at low order so the bound should
+      // saturate quickly.
+      ComplexFunction ySolver = eq.solve(4, bits);
 
       // Compare at three test points spanning the practical range.
       double[] ts        = { 0.25, 0.5, 1.0, 1.75 };

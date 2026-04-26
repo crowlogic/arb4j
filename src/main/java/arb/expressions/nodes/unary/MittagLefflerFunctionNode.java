@@ -160,16 +160,24 @@ public class MittagLefflerFunctionNode<D, R, F extends Function<? extends D, ? e
       arg.generateCastTo(mv, scalarType);
     }
 
-    α.generate(mv, scalarType);
-    if (!α.generatedType.equals(scalarType))
+    // α and β are always Real (the order parameters of E_{α,β}); the JNI
+    // bindings acb_mittag_leffler_E(Complex out, Complex z, Real α, Real β,
+    // double, int) and arb_mittag_leffler_E(Real out, Real z, Real α, Real β,
+    // double, int) both accept Real for α and β regardless of whether the
+    // surrounding expression is real- or complex-valued. Previously the
+    // generator emitted `scalarType` for these positions, which produced a
+    // call with Complex α and β when scalarType=Complex and crashed at
+    // runtime with NoSuchMethodError because no such overload exists.
+    α.generate(mv, Real.class);
+    if (!α.generatedType.equals(Real.class))
     {
-      α.generateCastTo(mv, scalarType);
+      α.generateCastTo(mv, Real.class);
     }
 
-    β.generate(mv, scalarType);
-    if (!β.generatedType.equals(scalarType))
+    β.generate(mv, Real.class);
+    if (!β.generatedType.equals(Real.class))
     {
-      β.generateCastTo(mv, scalarType);
+      β.generateCastTo(mv, Real.class);
     }
 
     mv.visitLdcInsn(1e-30);
@@ -188,8 +196,8 @@ public class MittagLefflerFunctionNode<D, R, F extends Function<? extends D, ? e
                               Void.class,
                               scalarType,
                               scalarType,
-                              scalarType,
-                              scalarType,
+                              Real.class,
+                              Real.class,
                               double.class,
                               int.class);
   }
