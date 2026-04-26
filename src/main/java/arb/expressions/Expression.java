@@ -2374,14 +2374,60 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                               assignments));
     }
 
-    if (nestedFunction.instance != null && nestedFunction.isGenerated() && !nestedFunction.instance.getClass().isSynthetic())
+    boolean haveLiveInstance = nestedFunction.instance != null
+                               && nestedFunction.isGenerated()
+                               && !nestedFunction.instance.getClass().isSynthetic();
+
+    // Pre-registered branch: a mapping created via
+    // Function.parseCompileAndRegister has no `instance` yet (deferred to
+    // break the chicken-and-egg cycle in mutually-recursive sequences
+    // such as a ↔ S in the fractional Riccati Müntz recurrence,
+    // issue #982). The Expression itself, however, is parsed and its
+    // generated-class name is fixed at registration time, so we can still
+    // emit the v/μ-propagation bytecode using the Expression's className
+    // as a symbolic reference — ASM's GETFIELD/PUTFIELD accept name
+    // strings and the JVM resolves the class lazily when the parent's
+    // initialize() executes (by which point the recursive compile chain
+    // has defined every class in the cluster). Without this branch the
+    // generated initialize() body silently omits the
+    // `if (this.S.v == null) this.S.v = this.v; else this.S.v.set(this.v)`
+    // block for every pre-registered referenced function and crashes
+    // with NPE on the first evaluate() that touches it.
+    // Skip self-references at this codegen layer — the generated
+    // initialize() body emits `this.<self> = new <self>(); inject v/μ`
+    // later via generateSelfReference (Expression.java:2488). Emitting an
+    // injection block here would dereference `this.<self>` before that
+    // allocation runs and crash with NPE on the very first invocation.
+    boolean isSelfReference = nestedFunction.functionName != null
+                              && nestedFunction.functionName.equals(this.functionName);
+
+    boolean haveRegisteredExpression = !haveLiveInstance
+                                       && !isSelfReference
+                                       && nestedFunction.expression != null
+                                       && nestedFunction.expression.className != null;
+
+    if (haveLiveInstance || haveRegisteredExpression)
     {
+      var nestedExpression           = nestedFunction.expression;
+      // Force the nested expression to declare its fields if it hasn't yet.
+      // For mappings registered via parseCompileAndRegister, declareVariables
+      // has not run, so declaredVariables is still empty — querying it
+      // would yield an empty filter and no v/μ-injection block would be
+      // emitted. Compiling here populates declaredVariables (line 1305) and
+      // generates the bytecode for the nested class, breaking the
+      // chicken-and-egg with the parent's own compile by going through the
+      // shared ExpressionClassLoader.
+      if (haveRegisteredExpression && !nestedExpression.variablesDeclared)
+      {
+        nestedExpression.compile();
+      }
       var variableStream         = context.variableClassStream();
-      var nestedExpression       = nestedFunction.expression;
       var declaredVariableStream = variableStream.filter(variable -> nestedExpression.hasDeclaredVariable(variable.getLeft()));
+      String nestedClassInternalName = haveLiveInstance ? Type.getInternalName(nestedFunction.type())
+                                                        : nestedFunction.expression.className;
       initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv),
                                                      className,
-                                                     Type.getInternalName(nestedFunction.type()),
+                                                     nestedClassInternalName,
                                                      nestedFunction.functionName,
                                                      declaredVariableStream);
     }
@@ -3463,9 +3509,151 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     instance = newInstance();
 
+    // Cycle-break: publish the instance on this Expression's FunctionMapping
+    // before recursing into referenced functions so that mutually-recursive
+    // mappings (e.g. a ↔ S in the fractional Riccati Müntz recurrence,
+    // issue #982) terminate when the recursive walk discovers this mapping.
+    if (functionMapping != null && functionMapping.instance == null)
+    {
+      functionMapping.instance = instance;
+    }
+
+    instantiateAndInjectReferencedFunctions(instance);
+
     injectReferences(instance);
 
     return instance;
+  }
+
+  /**
+   * Fix-up pass run by {@link #instantiate()} after the top-level instance
+   * has been constructed. For every entry in {@link #getReferencedFunctions()}
+   * whose {@link FunctionMapping#instance} is still {@code null} but whose
+   * {@link FunctionMapping#expression} is available — the typical
+   * forward-declared case produced by
+   * {@code Function.parseCompileAndRegister(...)} when implementing the
+   * prototype-then-real pattern required for mutually-recursive sequences
+   * such as {@code a ↔ S} in the fractional Riccati Müntz recurrence
+   * (issue #982) — this method materialises the dependent instance and
+   * wires it onto the parent.
+   *
+   * <p>The materialisation is reflection-based and performs three steps for
+   * each such referenced mapping {@code g}:
+   *
+   * <ol>
+   *   <li>{@code g.instantiate()} — compiles {@code g}'s expression if
+   *       needed and constructs an instance, recursively running this same
+   *       fix-up on {@code g} itself.</li>
+   *   <li>{@link Context#injectVariableReferences} on the new instance —
+   *       publishes every Context variable whose name matches a public
+   *       field on the dependent class (e.g. {@code v}, {@code μ}). This is
+   *       the step that the bytecode emitted by
+   *       {@code generateInitializationCode} omits for mappings registered
+   *       via {@code parseCompileAndRegister}, since the v/μ-injection
+   *       block in {@code initialize()} is only emitted for mappings that
+   *       had a non-null {@code instance} at codegen time
+   *       (Expression.java line 2377).</li>
+   *   <li>Reflectively assigns {@code parent.<g.functionName> = g.instance}
+   *       so the bytecode in {@code parent.initialize()} short-circuits its
+   *       {@code if (this.<g> == null) this.<g> = new <g>()} guard and
+   *       leaves the now-fully-injected instance in place.</li>
+   * </ol>
+   *
+   * <p>The bytecode-level skip in the {@code else} branch of
+   * {@code generateFunctionInitializer} (Expression.java:2388) remains a
+   * deliberately supported configuration — callers who do <em>not</em> want
+   * automatic Context-variable propagation into their referenced functions
+   * can still construct an {@link Expression} and drive
+   * {@link #newInstance()} directly without going through
+   * {@link #instantiate()}.
+   */
+  protected void instantiateAndInjectReferencedFunctions(F parentInstance)
+  {
+    if (context == null)
+    {
+      return;
+    }
+    Class<?> parentClass = parentInstance.getClass();
+    for (var entry : getReferencedFunctions().entrySet())
+    {
+      String                   referencedFunctionName = entry.getKey();
+      FunctionMapping<?, ?, ?>  mapping                = entry.getValue();
+
+      // Skip self-references — handled by generateSelfReference at codegen
+      // time and by the bytecode in initialize().
+      if (referencedFunctionName.equals(functionName))
+      {
+        continue;
+      }
+
+      // Nothing to do for mappings that already have an instance — either
+      // codegen will inject them via initializeReferencedFunctionVariableReferences
+      // (the working `express`-path branch at Expression.java:2377), or a
+      // prior fix-up pass already wired them.
+      if (mapping.instance != null)
+      {
+        continue;
+      }
+
+      // Without an Expression we cannot compile or instantiate.
+      if (mapping.expression == null)
+      {
+        continue;
+      }
+
+      Object referencedInstance;
+      try
+      {
+        referencedInstance = mapping.instantiate();
+      }
+      catch (Throwable t)
+      {
+        if (trace)
+        {
+          log.debug("instantiateAndInjectReferencedFunctions: skipping {} due to {}", referencedFunctionName, t.toString());
+        }
+        continue;
+      }
+      if (referencedInstance == null)
+      {
+        continue;
+      }
+
+      // Reflectively wire the dependent instance onto the parent. The
+      // bytecode in parent.initialize() guards this assignment with
+      // `if (this.<g> == null)`, so populating it here pre-empts the
+      // would-be `new g()` allocation that has no v/μ injected.
+      try
+      {
+        java.lang.reflect.Field parentField = parentClass.getField(referencedFunctionName);
+        if (parentField.get(parentInstance) == null)
+        {
+          parentField.set(parentInstance, referencedInstance);
+        }
+      }
+      catch (NoSuchFieldException nsfe)
+      {
+        // Parent class doesn't have a field for this referenced function —
+        // it appears in the registry but isn't actually used by this
+        // expression's bytecode. Nothing to wire.
+        if (trace)
+        {
+          log.debug("instantiateAndInjectReferencedFunctions: parent {} has no field {}", parentClass.getName(), referencedFunctionName);
+        }
+      }
+      catch (IllegalAccessException iae)
+      {
+        Utensils.wrapOrThrow("failed to set parent field " + referencedFunctionName + " on " + parentClass.getName(), iae);
+      }
+
+      // Inject Context variables (v, μ, ...) into the dependent instance's
+      // own fields. This is the v/μ-propagation that the bytecode emitted
+      // for mappings registered via parseCompileAndRegister fails to do.
+      @SuppressWarnings({ "unchecked", "rawtypes" })
+      Function<?, ?> referencedFunction = (Function) referencedInstance;
+      context.injectVariableReferences(referencedFunction);
+      context.injectFunctionReferences(referencedFunction);
+    }
   }
 
   protected void invokeInitializationMethod(MethodVisitor mv, Expression<Object, Object, Function<?, ?>> function)

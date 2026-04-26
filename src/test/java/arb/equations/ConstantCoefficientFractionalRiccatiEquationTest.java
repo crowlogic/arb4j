@@ -2,6 +2,7 @@ package arb.equations;
 
 import arb.Complex;
 import arb.Real;
+import arb.functions.complex.ComplexFunction;
 import arb.functions.integer.ComplexSequence;
 import arb.functions.real.RealNullaryFunction;
 import junit.framework.TestCase;
@@ -57,6 +58,90 @@ public class ConstantCoefficientFractionalRiccatiEquationTest extends
       Real   val = RealNullaryFunction.express("1/Γ(1.6)").evaluate();
       assertEquals("a₁ real part should be 1/Γ(1.6)", val.doubleValue(), re, 1e-30);
       assertEquals("a₁ imaginary part should be 0", 0.0, im, 1e-30);
+    }
+    finally
+    {
+      μ.close();
+    }
+  }
+
+  /**
+   * End-to-end test: with r ≡ 0 the Riccati equation reduces to the linear
+   * fractional Cauchy problem
+   *
+   * <pre>
+   *   Đ^μ y(t) = p + q·y(t),   y(0) = 0,   μ ∈ (0,1)
+   * </pre>
+   *
+   * whose exact solution is
+   *
+   * <pre>
+   *   y(t) = p · t^μ · E_{μ, μ+1}(q · t^μ)
+   * </pre>
+   *
+   * <p>
+   * Sanity-check via the Müntz recurrence the solver uses: with r=0 the
+   * convolution sum S(k) is identically zero, so the recurrence telescopes:
+   *
+   * <pre>
+   *   a_k = p · q^{k-1} / Γ(kμ + 1)
+   * </pre>
+   *
+   * and y(t) = Σ a_k t^{kμ} = p · t^μ · Σ_{k≥1} (q t^μ)^{k-1} / Γ(kμ+1)
+   *         = p · t^μ · E_{μ, μ+1}(q t^μ).
+   * </p>
+   *
+   * <p>
+   * Choice of (p, q, μ): negative q keeps |q t^μ| bounded and the series
+   * oscillating, which is the regime where diagonal Padé converges fastest;
+   * μ = 0.6 is the same order used in the rough-Heston probe.
+   * </p>
+   */
+  public static void testLinearCaseAgainstMittagLefflerClosedForm()
+  {
+    int  bits = 256;
+    Real μ    = new Real();
+    μ.set("0.6", bits);
+    μ.setBounds(0, false, 1, true);
+
+    try ( ConstantCoefficientFractionalRiccatiEquation eq = new ConstantCoefficientFractionalRiccatiEquation(μ,
+                                                                                                             "2",
+                                                                                                             "-3",
+                                                                                                             "0"))
+    {
+      // For r=0 the coefficients are constants in v; pick any v.
+      eq.v.set(1, 0);
+
+      // The closed form. ℰ(α,β,z) is the parser's two-parameter Mittag-Leffler.
+      // We register no extra context — the literals 0.6 and 1.6 are inlined.
+      ComplexFunction yReference = ComplexFunction.express("yRef", "t➔2*t^(0.6)*ℰ(0.6, 1.6, -3*t^(0.6))");
+
+      // Solver. maxOrder=14 is generous; the linear case has an exact rational
+      // Padé reconstruction, so the bound should saturate at the working
+      // precision well before that.
+      ComplexFunction ySolver = eq.solve(14, bits);
+
+      // Compare at three test points spanning the practical range.
+      double[] ts        = { 0.25, 0.5, 1.0, 1.75 };
+      double   tolerance = 1e-10;
+      Complex  zArg      = new Complex();
+      Complex  yRef      = new Complex();
+      Complex  ySol      = new Complex();
+      for (double t : ts)
+      {
+        zArg.set(t, 0);
+        yReference.evaluate(zArg, 1, bits, yRef);
+        ySolver.evaluate(zArg, 1, bits, ySol);
+
+        double refRe = yRef.getReal().doubleValue();
+        double refIm = yRef.getImag().doubleValue();
+        double solRe = ySol.getReal().doubleValue();
+        double solIm = ySol.getImag().doubleValue();
+
+        assertEquals("y(" + t + ") real part disagrees",      refRe, solRe, tolerance);
+        assertEquals("y(" + t + ") imaginary part disagrees", refIm, solIm, tolerance);
+        assertEquals("reference imaginary part must be zero at real t", 0.0, refIm, 1e-30);
+      }
     }
     finally
     {
