@@ -309,26 +309,7 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
     // by starting the adaptive loop at M=3.
     if (M == 0)
     {
-      return new ComplexFunction()
-      {
-        @Override
-        public Complex evaluate(Complex t, int order, int bits_, Complex res)
-        {
-          return res.set(0);
-        }
-
-        @Override
-        public String toString()
-        {
-          return "0";
-        }
-
-        @Override
-        public String typeset()
-        {
-          return "0";
-        }
-      };
+      return ComplexFunction.express("0");
     }
 
     ComplexPolynomial[] PQ = padePolynomials(M, bits);
