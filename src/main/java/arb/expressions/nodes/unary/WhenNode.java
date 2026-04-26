@@ -154,17 +154,26 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
 
   private boolean isIndependentVariableOfThisOrAncestorExpression(VariableNode<D, R, F> variable)
   {
-    return variable.isIndependent();
-//    Expression<?, ?, ?> expr = expression;
-//    while (expr != null)
-//    {
-//      if (expr.getIndependentVariable() != null && variable.equals(expr.getIndependentVariable()))
-//      {
-//        return true;
-//      }
-//      expr = expr.superExpression;
-//    }
-//    return false;
+    // Two-tier acceptance. A variable is admissible as a `when` discriminator
+    // if it is the independent variable of THIS expression (the immediate,
+    // fast path) OR of any ENCLOSING expression reachable through the
+    // superExpression chain. The latter is essential for curried arrows like
+    //
+    //     a:k ➔ u ➔ when(k=1, ..., else, ...)
+    //
+    // where, while parsing the body of the inner `u ➔` arrow, the inner
+    // expression's independent variable is `u`, not `k`; the discriminator
+    // `k` is bound on the *outer* arrow and resolves through the super-
+    // expression chain. The flat-arrow case `u ➔ when(u=1,...)` succeeds
+    // on the first clause; the curried case succeeds on the second.
+    // Variables bound by neither (free symbols, context constants, typos)
+    // fall through both clauses and are rejected with a CompilerException by
+    // the caller.
+    if (variable.isIndependent())
+    {
+      return true;
+    }
+    return expression.thisOrAnySuperIndependentVariableIsNamed(variable.getName());
   }
 
   void evaluateCase(TreeMap<Integer, Node<D, R, F>> cases, VariableNode<D, R, F> variable)
@@ -251,17 +260,31 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
       labels[i] = new Label();
     }
 
-    mv.visitTableSwitchInsn(0, cases.size() - 1, defaultLabel, labels);
-    var branches = cases.values().stream().toList();
-
-    for (int i = 0; i < labels.length; i++)
+    // Build the parallel (key,label) arrays in sorted order. The TreeMap is
+    // already sorted by key, but we materialize the keys explicitly so the
+    // emitted lookupswitch dispatches on the literal case values supplied in
+    // the source — e.g. `when(k=1, ..., k=2, ..., else, ...)` switches on
+    // 1 and 2, not on the positional indices 0 and 1. A previous version
+    // used tableswitch(0, cases.size()-1, ...) which silently mis-routed
+    // any case whose key was not the dense range starting at 0.
+    int[]  switchKeys = new int[cases.size()];
+    int    i          = 0;
+    var    branches   = cases.values().stream().toList();
+    for (var key : cases.keySet())
     {
-      Compiler.designateLabel(mv, labels[i]);
+      switchKeys[i++] = key.getSignedValue();
+    }
 
-      var ithBranch     = branches.get(i);
-      var ithBranchType = ithBranch.type();
+    mv.visitLookupSwitchInsn(defaultLabel, switchKeys, labels);
 
-      ithBranch.generate(mv, ithBranchType);
+    for (int j = 0; j < labels.length; j++)
+    {
+      Compiler.designateLabel(mv, labels[j]);
+
+      var jthBranch     = branches.get(j);
+      var jthBranchType = jthBranch.type();
+
+      jthBranch.generate(mv, jthBranchType);
       Compiler.jumpTo(mv, endSwitch);
     }
     Compiler.designateLabel(mv, defaultLabel);
