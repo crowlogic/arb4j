@@ -180,7 +180,7 @@ J\;=\;\begin{pmatrix}a_{0}&\sqrt{b_{1}}&&&\\\sqrt{b_{1}}&a_{1}&\sqrt{b_{2}}&&\\&
 is well-defined (and self-adjoint) precisely when $b_{n}>0$ for all $n\ge 1$,
 which is equivalent to $\det H_{N}^{R}>0$ for all $N$.
 
-\section{The Kramer pullback and the Hamburger criterion}
+\section{The Cram\'er pullback and the Hamburger criterion}
 
 \subsection*{Stationarization of the Hardy process under $u=\Theta(t)$}
 
@@ -199,23 +199,33 @@ $1/(2\pi)$ on the $u$-line. Define the \emph{stationary pullback}
 The damping $(1+u^{2})^{-\varepsilon}$ places $\widetilde{Z}\in L^{2}(\mathbb{R},du)$
 for every $\varepsilon>0$.
 
-\subsection*{Kramer / Karhunen representation and the spectral measure}
+\subsection*{Cram\'er--Karhunen representation and the spectral measure}
 
-A mean-square continuous, second-order process $X(u)$ on $\mathbb{R}$ admits
-a \emph{Kramer representation}
+A mean-square continuous, second-order \emph{stationary} process $X(u)$
+on $\mathbb{R}$ admits the \emph{Cram\'er spectral representation}
+(Cram\'er 1942)
 \[
-X(u)\;=\;\int_{\mathbb{R}}\,\kappa(u,\lambda)\,dM(\lambda)
+X(u)\;=\;\int_{\mathbb{R}}e^{\,iu\lambda}\,dZ(\lambda),
 \]
-where $dM$ is a complex orthogonal random measure with control measure
-$F(d\lambda)=\mathbb{E}|dM(\lambda)|^{2}$ and $\kappa$ is a deterministic
-kernel; the map $L^{2}(\mathbb{R},F)\to\overline{\mathrm{span}}\{X(u)\}
-\subset L^{2}(\Omega)$, $\kappa(u,\,\cdot)\mapsto X(u)$, is an isometric
-isomorphism (Karhunen 1947; Kramer 1959). When $X$ is stationary the
-kernel reduces to $\kappa(u,\lambda)=e^{iu\lambda}$ and $F$ is the Bochner
-spectral measure of the autocovariance.
+where $dZ$ is a complex orthogonal random measure with control measure
+$F(d\lambda)=\mathbb{E}|dZ(\lambda)|^{2}$, the \emph{spectral measure} of
+$X$; the map $L^{2}(\mathbb{R},F)\to\overline{\mathrm{span}}\{X(u)\}
+\subset L^{2}(\Omega)$, $e^{iu\lambda}\mapsto X(u)$, is an isometric
+isomorphism. By Bochner's theorem the autocovariance
+$K(u-u')=\mathbb{E}[X(u)\overline{X(u')}]$ is the Fourier transform of
+the positive measure $F$, so existence of $F$ as a positive Borel measure
+is equivalent to positive-definiteness of $K$ as a kernel.
 
-For the stationary pullback $\widetilde{Z}$, the deterministic Kramer
-kernel induced by the change of variables $u=\Theta(t)$ is
+For a non-stationary second-order process \emph{stationarized} by a
+deterministic time-change, the representation lifts: if $X(u)=Y(\Theta^{-1}(u))$
+is stationary on $\mathbb{R}$ for some bijection $\Theta$, the
+Karhunen extension (Karhunen 1947) gives
+$X(u)=\int\kappa(u,\lambda)\,dZ(\lambda)$ with deterministic kernel
+$\kappa$ inherited from the change of variables, the same orthogonal
+$dZ$, and the same spectral measure $F$.
+
+For the stationary pullback $\widetilde{Z}$, the deterministic kernel
+induced by the change of variables $u=\Theta(t)$ is
 \[
 \kappa(u,\lambda)\;=\;e^{\,i\lambda\Theta^{-1}(u)}\sqrt{\Theta'(\Theta^{-1}(u))}\,(1+u^{2})^{-\varepsilon}.
 \]
@@ -227,20 +237,21 @@ second-order in the pullback metric. Thus
 h(t)\,dt\;=\;\kappa\bigl(\Theta(t),1\bigr)\,\zeta(\tfrac12+it)\,dt
 \]
 identifies $h(t)\,dt$, pushed forward under $\Theta$, as the value at
-$\lambda=1$ of the deterministic Kramer integrand realizing
-$\widetilde{Z}(u)$ from the orthogonal random measure $dM$. The complex
-Borel measure $\Phi_{G}$ on $\mathbb{R}$ is the
-\emph{evaluation-at-$\lambda=1$ realization} of the spectral integration
-of the Hardy process under $\Theta$, and its real part $\Phi_{G}^{R}$ is
-the spectral measure of $\widetilde{Z}$ in this realization.
+$\lambda=1$ of the deterministic Karhunen integrand realizing
+$\widetilde{Z}(u)$ from the orthogonal random measure $dZ$ of the
+Cram\'er representation. The complex Borel measure $\Phi_{G}$ on
+$\mathbb{R}$ is the \emph{evaluation-at-$\lambda=1$ realization} of the
+spectral integration of the Hardy process under $\Theta$, and its real
+part $\Phi_{G}^{R}$ is the spectral measure of $\widetilde{Z}$ in this
+realization.
 
-\begin{theorem}[Hamburger / Kramer RH criterion]\label{thm:RH}
+\begin{theorem}[Hamburger / Cram\'er RH criterion]\label{thm:RH}
 The following are equivalent:
 \begin{enumerate}
 \item[\textup{(i)}] the Riemann Hypothesis;
 \item[\textup{(ii)}] $\det H_{N}^{R}>0$ for every $N\ge 0$, i.e.\ $(\mu_{n}^{R})_{n\ge 0}$ is a positive-definite Hamburger moment sequence;
 \item[\textup{(iii)}] $b_{n}>0$ for every $n\ge 1$ in the three-term recurrence \eqref{eq:ttrr}--\eqref{eq:ab};
-\item[\textup{(iv)}] the signed Borel measure $\Phi_{G}^{R}$, the real part of the Kramer spectral realization of the stationary pullback $\widetilde{Z}(u)=Z(\Theta^{-1}(u))(1+u^{2})^{-\varepsilon}$, is a positive Borel measure on $\mathbb{R}$.
+\item[\textup{(iv)}] the signed Borel measure $\Phi_{G}^{R}$, the real part of the Cram\'er spectral realization of the stationary pullback $\widetilde{Z}(u)=Z(\Theta^{-1}(u))(1+u^{2})^{-\varepsilon}$, is a positive Borel measure on $\mathbb{R}$.
 \end{enumerate}
 \end{theorem}
 
@@ -271,13 +282,14 @@ formula and the on-line zero distribution is precisely a function of
 $\Theta(t)-\Theta(t')$, i.e.\ the pullback $\widetilde{Z}(u)$ has
 autocovariance $\widetilde{K}(u-u')$ depending only on the difference. By
 Bochner's theorem, the spectral measure of $\widetilde{Z}$ exists as a
-positive Borel measure; its evaluation against the deterministic Kramer
-kernel at $\lambda=1$ is $\Phi_{G}^{R}$, which is therefore positive.
+positive Borel measure; its evaluation against the deterministic
+Karhunen kernel at $\lambda=1$ is $\Phi_{G}^{R}$, which is therefore
+positive.
 
 For (iv)$\Rightarrow$(i): if $\Phi_{G}^{R}\ge 0$, then by Hamburger
 $(\mu_{n}^{R})$ is the moment sequence of a positive Borel measure on
-$\mathbb{R}$, and the integral representation realizes this measure as the
-spectral object of the Kramer pullback of $\widetilde{Z}$. A spectral
+$\mathbb{R}$, and the integral representation realizes this measure as
+the spectral object of the Cram\'er pullback of $\widetilde{Z}$. A spectral
 measure $F$ for $\widetilde{Z}$ exists (positive, Bochner) iff the
 autocovariance of $\widetilde{Z}$ depends only on $u-u'$, iff the
 time-change $\Theta$ --- built from the on-line phase $\theta$ alone ---
@@ -294,7 +306,7 @@ $\mu_{n}=\int\Theta(t)^{n}h(t)\,dt$: the positivity of every leading
 principal minor of the Hankel matrix built from closed-form rational
 expressions in $\zeta^{(a)}(\tfrac12),\Theta_{2\ell+1},\varepsilon$. The
 structural content of (iv) is that $\Phi_{G}^{R}$ is the spectral measure
-of the Kramer / Karhunen pullback of the Hardy process under $\Theta$;
+of the Cram\'er--Karhunen pullback of the Hardy process under $\Theta$;
 its positivity is Bochner positivity of the pullback autocovariance, which
 is stationarity of $\widetilde{Z}$, which is RH. A single $N$ with $\det
 H_{N}^{R}\le 0$ negates RH.
