@@ -3183,18 +3183,33 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected MethodVisitor generateSelfReference(MethodVisitor mv)
   {
-    constructNewObject(loadThisOntoStack(mv), functionName);
-    invokeDefaultConstructor(duplicateTopOfTheStack(mv), functionName);
+    // Self-reference codegen for recursive functions.
+    //
+    // Previously this emitted `this.<self> = new <self>()` UNCONDITIONALLY at
+    // the end of initialize(). For non-self function references, codegen
+    // already wraps the `new` in a null-guard via
+    // constructReferencedFunctionInstanceIfItIsNull (line 1083); the self path
+    // was the only one missing that guard. The unconditional `new` clobbered
+    // any reference written by Context.injectFunctionReferences, defeating
+    // sharing/memoization arrangements set up at instantiation time.
+    //
+    // Emit the same null-guarded pattern used for non-self refs: if the field
+    // already holds a non-null reference (because injection wired it), keep
+    // that reference; otherwise allocate a fresh instance as the fallback.
     FunctionMapping<?, ?, ?> mapping = getReferencedFunctions().get(functionName);
-    if (mapping == null)
+    if (mapping == null && context != null)
     {
-      if (context != null)
-      {
-        mapping = context.getFunctionMapping(functionName);
-      }
+      mapping = context.getFunctionMapping(functionName);
     }
     assert mapping != null : "no function mapping for " + functionName + " in " + context.toStringExtended();
-    putField(mv, className, functionName, mapping.functionFieldDescriptor());
+    String fieldDescriptor  = mapping.functionFieldDescriptor();
+    var    alreadyAssigned  = new Label();
+    loadThisOntoStack(mv).visitFieldInsn(GETFIELD, className, functionName, fieldDescriptor);
+    mv.visitJumpInsn(IFNONNULL, alreadyAssigned);
+    constructNewObject(loadThisOntoStack(mv), functionName);
+    invokeDefaultConstructor(duplicateTopOfTheStack(mv), functionName);
+    putField(mv, className, functionName, fieldDescriptor);
+    mv.visitLabel(alreadyAssigned);
     initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv), className, functionName, functionName, context.variableClassStream());
     return mv;
   }
