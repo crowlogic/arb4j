@@ -3243,11 +3243,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    */
   protected void generatePeerOperandSelfInjections(MethodVisitor mv, FunctionMapping<?, ?, ?> selfMapping, String selfFieldDescriptor)
   {
-    Class<?> selfClass = selfMapping.functionClass;
-    if (selfClass == null)
+    if (selfMapping == null)
     {
       return;
     }
+    String selfDescriptor = selfMapping.functionFieldDescriptor();
     for (var peerEntry : getReferencedFunctions().entrySet())
     {
       String peerName = peerEntry.getKey();
@@ -3256,31 +3256,51 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         continue;
       }
       FunctionMapping<?, ?, ?> peerMapping = peerEntry.getValue();
-      if (peerMapping == null || peerMapping.expression == null)
+      if (peerMapping == null || peerMapping.expression == null || peerMapping.expression.rootNode == null)
       {
         continue;
       }
       String peerFieldDescriptor = peerMapping.functionFieldDescriptor();
-      String peerInternalName = peerMapping.functionFieldDescriptor().substring(1, peerMapping.functionFieldDescriptor().length() - 1);
-      for (var ivEntry : peerMapping.expression.intermediateVariables.entrySet())
+      String peerInternalName = peerFieldDescriptor.substring(1, peerFieldDescriptor.length() - 1);
+      java.util.List<NAryOperationNode<?, ?, ?>> naryNodes = new java.util.ArrayList<>();
+      peerMapping.expression.rootNode.accept(node -> {
+        if (node instanceof NAryOperationNode<?, ?, ?> nary)
+        {
+          naryNodes.add(nary);
+        }
+      });
+      for (NAryOperationNode<?, ?, ?> nary : naryNodes)
       {
-        String ivName = ivEntry.getKey();
-        Class<?> ivType = ivEntry.getValue().type;
-        if (ivType == null || !ivType.equals(selfClass))
+        if (nary.operandFunctionFieldName == null || nary.operandExpression == null)
         {
           continue;
         }
+        FunctionMapping<?, ?, ?> opMapping = nary.operandMapping;
+        if (opMapping == null)
+        {
+          continue;
+        }
+        FunctionMapping<?, ?, ?> innerSelf = nary.operandExpression.getReferencedFunctions().get(functionName);
+        if (innerSelf == null)
+        {
+          continue;
+        }
+        String operandFieldDescriptor = opMapping.functionFieldDescriptor();
+        String operandInternalName = operandFieldDescriptor.substring(1, operandFieldDescriptor.length() - 1);
         Label peerAlreadyInitialized = new Label();
-        loadThisOntoStack(mv).visitFieldInsn(GETFIELD, className, peerName, peerFieldDescriptor);
+        loadThisOntoStack(mv);
+        mv.visitFieldInsn(GETFIELD, className, peerName, peerFieldDescriptor);
         mv.visitFieldInsn(GETFIELD, peerInternalName, "isInitialized", "Z");
         mv.visitJumpInsn(IFNE, peerAlreadyInitialized);
-        loadThisOntoStack(mv).visitFieldInsn(GETFIELD, className, peerName, peerFieldDescriptor);
+        loadThisOntoStack(mv);
+        mv.visitFieldInsn(GETFIELD, className, peerName, peerFieldDescriptor);
         mv.visitMethodInsn(INVOKEVIRTUAL, peerInternalName, "initialize", "()V", false);
         mv.visitLabel(peerAlreadyInitialized);
-        loadThisOntoStack(mv).visitFieldInsn(GETFIELD, className, peerName, peerFieldDescriptor);
-        mv.visitFieldInsn(GETFIELD, peerInternalName, ivName, ivType.descriptorString());
         loadThisOntoStack(mv);
-        mv.visitFieldInsn(PUTFIELD, ivType.descriptorString().substring(1, ivType.descriptorString().length() - 1), functionName, selfFieldDescriptor);
+        mv.visitFieldInsn(GETFIELD, className, peerName, peerFieldDescriptor);
+        mv.visitFieldInsn(GETFIELD, peerInternalName, nary.operandFunctionFieldName, operandFieldDescriptor);
+        loadThisOntoStack(mv);
+        mv.visitFieldInsn(PUTFIELD, operandInternalName, functionName, selfDescriptor);
       }
     }
   }
