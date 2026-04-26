@@ -2547,32 +2547,98 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected boolean          optimized                      = false;
 
   /**
-   * Emit {@code public void invalidateStaticCache()} that resets
-   * {@code staticPrecision = -1}, forcing the next {@code evaluate()} call to
-   * re-run {@code evaluateStaticSubexpressions}. Only emitted when
-   * {@link #hasStaticNodes} is true — otherwise the {@code Function} interface's
-   * no-op default is inherited.
-   * <p>
-   * Required for workflows that mutate bound-parameter instance data or
-   * {@link Context} variables between evaluations (parameter estimation,
-   * Monte-Carlo sweeps, etc.) where the cached value of an
-   * {@code upstreamInput}-dependent subtree would otherwise become stale.
+   * Emit the cycle-safe {@code public void invalidateStaticCache(Set)} override
+   * (and a no-arg shim that calls it with a fresh identity set) that:
+   * <ol>
+   *   <li>returns immediately if {@code alreadyInvalidated.add(this)} is
+   *       {@code false} (already visited — prevents unbounded recursion in
+   *       the mutually-recursive Müntz {@code a ↔ S} cluster and any other
+   *       cycle in the function graph);</li>
+   *   <li>resets {@code this.staticPrecision = -1} when this expression has
+   *       hoisted static subexpressions, forcing the next {@code evaluate()}
+   *       call to re-run {@code evaluateStaticSubexpressions};</li>
+   *   <li>recursively calls {@code invalidateStaticCache(set)} on every
+   *       inlined nested {@link Function} field (the
+   *       {@link #referencedFunctions} entries) so their hoisted
+   *       v-dependent subtrees are also flushed.</li>
+   * </ol>
+   * Emitted whenever {@link #hasStaticNodes} is true OR
+   * {@link #referencedFunctions} is non-empty — otherwise the {@link Function}
+   * interface's no-op default is inherited.
    */
   protected ClassVisitor generateInvalidateStaticCacheMethod(ClassVisitor classVisitor)
   {
-    if (!hasStaticNodes)
+    if (!hasStaticNodes && referencedFunctions.isEmpty())
     {
       return classVisitor;
     }
-    var mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, "invalidateStaticCache", "()V", null, null);
+    String setInternal = Type.getInternalName(Set.class);
+
+    // public void invalidateStaticCache(Set alreadyInvalidated)
+    var mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
+                                      "invalidateStaticCache",
+                                      "(L" + setInternal + ";)V",
+                                      "(L" + setInternal + "<L" + functionInternal + "<**>;>;)V",
+                                      null);
     mv.visitCode();
-    // this.staticPrecision = -1
+    // if (!alreadyInvalidated.add(this)) return;
+    var notVisited = new Label();
+    mv.visitVarInsn(Opcodes.ALOAD, 1);
     loadThisOntoStack(mv);
-    mv.visitInsn(Opcodes.ICONST_M1);
-    mv.visitFieldInsn(Opcodes.PUTFIELD, className.replace('.', '/'), "staticPrecision", "I");
+    mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, setInternal, "add", "(Ljava/lang/Object;)Z", true);
+    mv.visitJumpInsn(Opcodes.IFNE, notVisited);
+    mv.visitInsn(Opcodes.RETURN);
+    mv.visitLabel(notVisited);
+    if (hasStaticNodes)
+    {
+      // this.staticPrecision = -1
+      loadThisOntoStack(mv);
+      mv.visitInsn(Opcodes.ICONST_M1);
+      mv.visitFieldInsn(Opcodes.PUTFIELD, className.replace('.', '/'), "staticPrecision", "I");
+    }
+    // for each inlined nested Function field f: if (this.f != null) this.f.invalidateStaticCache(alreadyInvalidated);
+    for (var mapping : referencedFunctions.values())
+    {
+      var skip = new Label();
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(Opcodes.GETFIELD, className, mapping.functionName, mapping.functionFieldDescriptor());
+      mv.visitJumpInsn(Opcodes.IFNULL, skip);
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(Opcodes.GETFIELD, className, mapping.functionName, mapping.functionFieldDescriptor());
+      mv.visitVarInsn(Opcodes.ALOAD, 1);
+      mv.visitMethodInsn(Opcodes.INVOKEINTERFACE,
+                         functionInternal,
+                         "invalidateStaticCache",
+                         "(L" + setInternal + ";)V",
+                         true);
+      mv.visitLabel(skip);
+    }
     mv.visitInsn(Opcodes.RETURN);
     mv.visitMaxs(0, 0);
     mv.visitEnd();
+
+    // public void invalidateStaticCache()  { invalidateStaticCache(Collections.newSetFromMap(new IdentityHashMap())); }
+    var shim = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, "invalidateStaticCache", "()V", null, null);
+    shim.visitCode();
+    loadThisOntoStack(shim);
+    String idMapInternal = Type.getInternalName(IdentityHashMap.class);
+    String collectionsInternal = Type.getInternalName(Collections.class);
+    shim.visitTypeInsn(Opcodes.NEW, idMapInternal);
+    shim.visitInsn(Opcodes.DUP);
+    shim.visitMethodInsn(Opcodes.INVOKESPECIAL, idMapInternal, "<init>", "()V", false);
+    shim.visitMethodInsn(Opcodes.INVOKESTATIC,
+                         collectionsInternal,
+                         "newSetFromMap",
+                         "(Ljava/util/Map;)Ljava/util/Set;",
+                         false);
+    shim.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                         className,
+                         "invalidateStaticCache",
+                         "(L" + setInternal + ";)V",
+                         false);
+    shim.visitInsn(Opcodes.RETURN);
+    shim.visitMaxs(0, 0);
+    shim.visitEnd();
     return classVisitor;
   }
 

@@ -10,8 +10,13 @@ import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
+import arb.functions.Function;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.integer.ComplexSequence;
+
+import java.util.Collections;
+import java.util.IdentityHashMap;
+import java.util.Set;
 
 /**
  * Constant-coefficient (in time) fractional Riccati equation
@@ -694,6 +699,34 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
   public ComplexFunction discriminant()
   {
     return ComplexFunction.express("discriminant", "v➔q(v)²-4*p(v)*r(v)", context);
+  }
+
+  /**
+   * Drop the static-subexpression caches of every compiled function whose
+   * body references the Fourier parameter v (the Context variable driving
+   * the Müntz coefficients): p, q, r, S, a. Call this whenever v is
+   * mutated in place between a(k) or downstream evaluations—otherwise
+   * hoisted v-dependent subtrees retain their values from the previous v
+   * and a(k) returns stale results.
+   *
+   * <p>The {@link arb.functions.Function#invalidateStaticCache()} default
+   * is a no-op, so functions without hoisted state are unaffected.
+   *
+   * @see arb.functions.Function#invalidateStaticCache()
+   * @see <a href="https://github.com/crowlogic/arb4j/issues/958">issue #958</a>
+   */
+  public void invalidateStaticCache()
+  {
+    Set<Function<?, ?>> alreadyInvalidated = Collections.newSetFromMap(new IdentityHashMap<>());
+    if (p != null) p.invalidateStaticCache(alreadyInvalidated);
+    if (q != null) q.invalidateStaticCache(alreadyInvalidated);
+    if (r != null) r.invalidateStaticCache(alreadyInvalidated);
+    var sMapping = context.<Integer, Complex, ComplexSequence>getFunctionMapping("S");
+    if (sMapping != null && sMapping.instance != null)
+    {
+      sMapping.instance.invalidateStaticCache(alreadyInvalidated);
+    }
+    if (a != null) a.invalidateStaticCache(alreadyInvalidated);
   }
 
   @Override
