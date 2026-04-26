@@ -3226,7 +3226,63 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     putField(mv, className, functionName, fieldDescriptor);
     mv.visitLabel(alreadyAssigned);
     initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv), className, functionName, functionName, context.variableClassStream());
+    generatePeerOperandSelfInjections(mv, mapping, fieldDescriptor);
     return mv;
+  }
+
+  /**
+   * For each peer FunctionMapping (other than self) whose Expression has an
+   * intermediate variable typed as the self class, emit:
+   *
+   *   if (!this.<peer>.isInitialized) { this.<peer>.initialize(); }
+   *   this.<peer>.<intermediateVarName>.<selfFieldName> = this;
+   *
+   * This reproduces, in the bytecode emitted from generateSelfReference, the
+   * inner-operand self-injection that the working a.java performs after the
+   * existing peer null-guard blocks.
+   */
+  protected void generatePeerOperandSelfInjections(MethodVisitor mv, FunctionMapping<?, ?, ?> selfMapping, String selfFieldDescriptor)
+  {
+    Class<?> selfClass = selfMapping.functionClass;
+    if (selfClass == null)
+    {
+      return;
+    }
+    for (var peerEntry : getReferencedFunctions().entrySet())
+    {
+      String peerName = peerEntry.getKey();
+      if (peerName.equals(functionName))
+      {
+        continue;
+      }
+      FunctionMapping<?, ?, ?> peerMapping = peerEntry.getValue();
+      if (peerMapping == null || peerMapping.expression == null)
+      {
+        continue;
+      }
+      String peerFieldDescriptor = peerMapping.functionFieldDescriptor();
+      String peerInternalName = peerMapping.functionFieldDescriptor().substring(1, peerMapping.functionFieldDescriptor().length() - 1);
+      for (var ivEntry : peerMapping.expression.intermediateVariables.entrySet())
+      {
+        String ivName = ivEntry.getKey();
+        Class<?> ivType = ivEntry.getValue().type;
+        if (ivType == null || !ivType.equals(selfClass))
+        {
+          continue;
+        }
+        Label peerAlreadyInitialized = new Label();
+        loadThisOntoStack(mv).visitFieldInsn(GETFIELD, className, peerName, peerFieldDescriptor);
+        mv.visitFieldInsn(GETFIELD, peerInternalName, "isInitialized", "Z");
+        mv.visitJumpInsn(IFNE, peerAlreadyInitialized);
+        loadThisOntoStack(mv).visitFieldInsn(GETFIELD, className, peerName, peerFieldDescriptor);
+        mv.visitMethodInsn(INVOKEVIRTUAL, peerInternalName, "initialize", "()V", false);
+        mv.visitLabel(peerAlreadyInitialized);
+        loadThisOntoStack(mv).visitFieldInsn(GETFIELD, className, peerName, peerFieldDescriptor);
+        mv.visitFieldInsn(GETFIELD, peerInternalName, ivName, ivType.descriptorString());
+        loadThisOntoStack(mv);
+        mv.visitFieldInsn(PUTFIELD, ivType.descriptorString().substring(1, ivType.descriptorString().length() - 1), functionName, selfFieldDescriptor);
+      }
+    }
   }
 
   public MethodVisitor generateSetResultInvocation(MethodVisitor mv, Class<?> inputType)
