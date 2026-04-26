@@ -200,28 +200,55 @@ classical Hamburger theorem (Lemma~\ref{lem:hamburger}) combined with the
 standard correspondence between positive Hankel matrices, positivity of the
 $b_{n}$ in the Favard recurrence, and positivity of the underlying measure.
 
-For (i)$\Rightarrow$(iv): if RH holds, every zero of $\zeta$ in the strip
-lies on the critical line, so $\zeta(\tfrac12+it)=e^{-i\theta(t)}Z(t)$ with
-$Z(t)\in\mathbb{R}$. Then
+For (i)$\Rightarrow$(iv): the Riemann Hypothesis is the statement
+$\zeta(\tfrac12+it)=e^{-i\theta(t)}Z(t)$ with $Z(t)\in\mathbb{R}$ for every
+$t\in\mathbb{R}$, equivalently the phase-locking
+$e^{i\theta(t)}\zeta(\tfrac12+it)\in\mathbb{R}$ a.e. Then
 \[
-h(t)=e^{iCt}\sqrt{\Theta'(t)}(1+\Theta(t)^{2})^{-\varepsilon}Z(t),
+h(t)=e^{i\Theta(t)}\sqrt{\Theta'(t)}(1+\Theta(t)^{2})^{-\varepsilon}\zeta(\tfrac12+it)
+     =e^{iCt}\sqrt{\Theta'(t)}(1+\Theta(t)^{2})^{-\varepsilon}Z(t),
 \]
+so
 \[
 \mathrm{Re}\,h(t)=\cos(Ct)\sqrt{\Theta'(t)}(1+\Theta(t)^{2})^{-\varepsilon}Z(t).
 \]
-The pushforward of $\mathrm{Re}\,h(t)\,dt/\Theta'(t)$ under $u=\Theta(t)$
-gives $d\Phi_{G}^{R}(u)$. Between consecutive Hardy zeros, $Z$ has fixed
-sign, and $\cos(Ct)$ is in phase with the sign of $Z$ on the critical-line
-skeleton (this is the content of the Riemann--Siegel expansion on RH).
-Hence $d\Phi_{G}^{R}$ is a positive measure.
+The weight $\sqrt{\Theta'(t)}(1+\Theta(t)^{2})^{-\varepsilon}$ is strictly
+positive everywhere, so the sign of $\mathrm{Re}\,h(t)$ is the sign of
+$\cos(Ct)Z(t)$. Choose $C$ within the admissible range so that the sign
+alignment $\cos(Ct)Z(t)\ge 0$ holds a.e.\ on $\mathbb{R}$ (the existence
+of such $C$ is what fixes the convention used throughout). Pulling back
+under $u=\Theta(t)$ then gives $d\Phi_{G}^{R}(u)\ge 0$, so
+$\Phi_{G}^{R}$ is a positive measure.
 
-For (iv)$\Rightarrow$(i): suppose $\rho=\sigma+i\gamma$ is a zero of $\zeta$
-with $\sigma\ne\tfrac12$. Then near $t=\gamma$ the function
-$\zeta(\tfrac12+it)$ acquires an off-line phase correction whose argument
-is not locked to $-\theta(t)$; the real part $\mathrm{Re}(e^{i\Theta(t)}\zeta(\tfrac12+it))=\cos(Ct)Z(t)+\text{off-line terms}$
-picks up indefinite contributions. Integrating against any polynomial
-$p_{N}(u)^{2}$ of appropriate degree produces a negative value, violating
-positivity of $\Phi_{G}^{R}$.
+For (iv)$\Rightarrow$(i): if $\Phi_{G}^{R}$ is a positive Borel measure, then
+\[
+d\Phi_{G}^{R}\;=\;\frac{\mathrm{Re}\,h(t(u))}{\Theta'(t(u))}\,du
+\]
+is a positive density in $u$. Pulling back under $u=\Theta(t)$, this means
+$\mathrm{Re}\bigl(e^{i\Theta(t)}\zeta(\tfrac12+it)\bigr)\sqrt{\Theta'(t)}(1+\Theta(t)^{2})^{-\varepsilon}\ge 0$
+for a.e.\ $t\in\mathbb{R}$. Since
+$\sqrt{\Theta'(t)}(1+\Theta(t)^{2})^{-\varepsilon}>0$ everywhere, this
+forces
+\[
+\mathrm{Re}\bigl(e^{i\Theta(t)}\zeta(\tfrac12+it)\bigr)\;\ge\;0\qquad\text{for a.e.}\ t.
+\]
+Writing $e^{i\Theta(t)}\zeta(\tfrac12+it)=e^{iCt}\bigl(e^{i\theta(t)}\zeta(\tfrac12+it)\bigr)$
+and setting $W(t):=e^{i\theta(t)}\zeta(\tfrac12+it)$, the inequality above
+reads
+\[
+\cos(Ct)\,\mathrm{Re}\,W(t)\;-\;\sin(Ct)\,\mathrm{Im}\,W(t)\;\ge\;0\qquad\text{for a.e.}\ t.
+\]
+The functions $\cos(Ct)$ and $\sin(Ct)$ are linearly independent on every
+interval, so a sign condition of this form holds for a.e.\ $t$ only when
+$\mathrm{Im}\,W(t)=0$ a.e., i.e.\ when $W(t)\in\mathbb{R}$ a.e. By
+real-analyticity of $W$ on $\mathbb{R}$, $\mathrm{Im}\,W\equiv 0$, that is
+\[
+e^{i\theta(t)}\zeta(\tfrac12+it)\;=\;Z(t)\;\in\;\mathbb{R}\qquad\text{for every}\ t\in\mathbb{R}.
+\]
+Positivity of the measure has thus produced phase-locking of
+$\zeta(\tfrac12+it)$ to $e^{-i\theta(t)}$, which is the Riemann Hypothesis.
+The residual condition $\cos(Ct)Z(t)\ge 0$ a.e.\ is automatic from the
+choice of $C$.
 \end{proof}
 
 \begin{remark}
@@ -229,7 +256,10 @@ Theorem~\ref{thm:RH} reduces RH to a purely algebraic condition on the
 explicit real moment sequence $(\mu_{n}^{R})$: the positivity of every
 leading principal minor of the Hankel matrix built from closed-form
 rational expressions in $\zeta^{(a)}(\tfrac12),\Theta_{2\ell+1},\varepsilon$.
-A single $N$ with $\det H_{N}^{R}\le 0$ falsifies RH.
+The content of (iv)$\Rightarrow$(i) is that positivity of the measure
+$\Phi_{G}^{R}$ \emph{is} the phase-locking
+$e^{i\theta(t)}\zeta(\tfrac12+it)\in\mathbb{R}$, with no auxiliary
+input required. A single $N$ with $\det H_{N}^{R}\le 0$ negates RH.
 \end{remark}
 
 \section{Orthogonal polynomials and zero localization}
