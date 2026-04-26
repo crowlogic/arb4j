@@ -3,6 +3,7 @@ package arb.equations;
 import arb.Complex;
 import arb.Real;
 import arb.functions.integer.ComplexSequence;
+import arb.functions.real.RealNullaryFunction;
 import junit.framework.TestCase;
 
 /**
@@ -19,9 +20,8 @@ public class ConstantCoefficientFractionalRiccatiEquationTest extends
 {
 
   /**
-   * Smoke test: construction succeeds, the Müntz coefficient sequence
-   * compiles, a₁ is accessible. Constants in v: c₀=1, c₁=−1/2, c₂=3/10,
-   * μ=0.6.
+   * Smoke test: construction succeeds, the Müntz coefficient sequence compiles,
+   * a₁ is accessible. Constants in v: c₀=1, c₁=−1/2, c₂=3/10, μ=0.6.
    *
    * <p>
    * Closed form: a₁ = c₀ / Γ(μ+1) = 1/Γ(1.6) ≈ 1.119184587280...
@@ -36,9 +36,9 @@ public class ConstantCoefficientFractionalRiccatiEquationTest extends
     μ.setBounds(0, false, 1, true);
 
     try ( ConstantCoefficientFractionalRiccatiEquation eq = new ConstantCoefficientFractionalRiccatiEquation(μ,
-                                                                                                            "1",
-                                                                                                            "-1/2",
-                                                                                                            "3/10"))
+                                                                                                             "1",
+                                                                                                             "-1/2",
+                                                                                                             "3/10"))
     {
       ComplexSequence a = eq.muntzCoefficients();
       assertNotNull("Müntz coefficient sequence must be compiled", a);
@@ -52,9 +52,10 @@ public class ConstantCoefficientFractionalRiccatiEquationTest extends
       a.evaluate(one, 1, bits, α1);
 
       // 1/Γ(1.6) ≈ 1.119184587280...
-      double re = α1.getReal().doubleValue();
-      double im = α1.getImag().doubleValue();
-      assertEquals("a₁ real part should be 1/Γ(1.6) ≈ 1.119184587280", 1.11918458728, re, 1e-10);
+      double re  = α1.getReal().doubleValue();
+      double im  = α1.getImag().doubleValue();
+      Real   val = RealNullaryFunction.express("1/Γ(1.6)").evaluate();
+      assertEquals("a₁ real part should be 1/Γ(1.6)", val.doubleValue(), re, 1e-30);
       assertEquals("a₁ imaginary part should be 0", 0.0, im, 1e-30);
     }
     finally
