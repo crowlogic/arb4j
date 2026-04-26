@@ -877,8 +877,51 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       expression.registerInitializer(mv ->
       {
         expression.context.variableEntries().forEach(entry -> propagateContextVariableToOperand(mv, entry));
+        propagateContextFunctionsToOperand(mv);
       });
     }
+  }
+
+  /**
+   * Emits, into the enclosing class's {@code initialize()} method, a single
+   * call to {@link Context#injectFunctionReferencesIntoOperand(Object, Context)}
+   * passing {@code this.<operandFieldName>} as the operand instance and
+   * {@code this.context} as the live registry. The call also assigns
+   * {@code this.<operandFieldName>.context = this.context} first so that the
+   * operand's own {@code initialize()} — and any subsequent
+   * {@link Context} lookup it performs — sees the same registry as its
+   * enclosing class.
+   *
+   * <p>Without this emitted call the operand's {@code initialize()} runs the
+   * compiled
+   * {@code if (this.<g> == null) this.<g> = new <g>()} guard for every
+   * Context-registered function {@code g} appearing in the operand body,
+   * allocating fresh, un-injected, empty-cache copies whose recursive
+   * dependencies recurse to allocate further fresh copies, exhausting the
+   * heap. Pre-injecting from the live registry breaks that chain.
+   */
+  protected void propagateContextFunctionsToOperand(MethodVisitor mv)
+  {
+    String operandDescriptor = String.format("L%s;", operandFunctionFieldName);
+    String contextDescriptor = Context.class.descriptorString();
+
+    // this.<operand>.context = this.context;
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(GETFIELD, expression.className, operandFunctionFieldName, operandDescriptor);
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(GETFIELD, expression.className, "context", contextDescriptor);
+    mv.visitFieldInsn(PUTFIELD, operandFunctionFieldName, "context", contextDescriptor);
+
+    // Context.injectFunctionReferencesIntoOperand(this.<operand>, this.context);
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(GETFIELD, expression.className, operandFunctionFieldName, operandDescriptor);
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(GETFIELD, expression.className, "context", contextDescriptor);
+    mv.visitMethodInsn(INVOKESTATIC,
+                       Type.getInternalName(Context.class),
+                       "injectFunctionReferencesIntoOperand",
+                       "(Ljava/lang/Object;Larb/expressions/Context;)V",
+                       false);
   }
 
   protected void propagateContextVariableToOperand(MethodVisitor mv, Entry<String, Named> entry)

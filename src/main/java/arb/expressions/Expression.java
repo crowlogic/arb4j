@@ -149,7 +149,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (shouldCache())
     {
-      cw.visitField(Opcodes.ACC_PUBLIC, "cache", Type.getDescriptor(ArrayList.class), null, null);
+      cw.visitField(Opcodes.ACC_PUBLIC, "cache", Type.getDescriptor(TreeMap.class), null, null);
     }
   }
 
@@ -157,12 +157,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (shouldCache())
     {
-      String internalName = Type.getInternalName(ArrayList.class);
+      String internalName = Type.getInternalName(TreeMap.class);
       loadThisOntoStack(mv);
       mv.visitTypeInsn(Opcodes.NEW, internalName);
       mv.visitInsn(Opcodes.DUP);
       mv.visitMethodInsn(Opcodes.INVOKESPECIAL, internalName, "<init>", "()V", false);
-      mv.visitFieldInsn(Opcodes.PUTFIELD, className, "cache", Type.getDescriptor(ArrayList.class));
+      mv.visitFieldInsn(Opcodes.PUTFIELD, className, "cache", Type.getDescriptor(TreeMap.class));
     }
   }
 
@@ -1826,10 +1826,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected void generateCachePeek(MethodVisitor mv)
   {
     Label cacheMiss = new Label();
-    loadThisAndFieldOntoStack(mv, "cache", ArrayList.class);
+    loadThisAndFieldOntoStack(mv, "cache", TreeMap.class);
     loadInputParameterChecked(mv);
     Compiler.generateVirtualMethodInvocation(mv, domainType, "getSignedValue", int.class);
-    Compiler.invokeStaticMethod(mv, Function.class, "peek", Object.class, ArrayList.class, int.class);
+    Compiler.invokeStaticMethod(mv, Function.class, "peek", Object.class, TreeMap.class, int.class);
     Compiler.cast(mv, coDomainType);
     Compiler.duplicateTopOfTheStack(mv);
     mv.visitJumpInsn(Opcodes.IFNULL, cacheMiss);
@@ -1859,7 +1859,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     cacheArrayListSlot = allocateLocalVariableSlot();
     cacheIndexSlot     = allocateLocalVariableSlot();
-    loadThisAndFieldOntoStack(mv, "cache", ArrayList.class);
+    loadThisAndFieldOntoStack(mv, "cache", TreeMap.class);
     mv.visitVarInsn(Opcodes.ASTORE, cacheArrayListSlot);
     loadInputParameterChecked(mv);
     Compiler.generateVirtualMethodInvocation(mv, domainType, "getSignedValue", int.class);
@@ -1897,7 +1897,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitVarInsn(Opcodes.ALOAD, cacheArrayListSlot);
     mv.visitVarInsn(Opcodes.ILOAD, cacheIndexSlot);
     mv.visitVarInsn(Opcodes.ALOAD, freshCopySlot);
-    Compiler.invokeStaticMethod(mv, Function.class, "poke", Object.class, ArrayList.class, int.class, Object.class);
+    Compiler.invokeStaticMethod(mv, Function.class, "poke", Object.class, TreeMap.class, int.class, Object.class);
     mv.visitInsn(Opcodes.POP); // discard poke return value
 
     // return result
