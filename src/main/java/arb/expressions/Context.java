@@ -211,17 +211,35 @@ public class Context implements
 
   public <D, R, F extends Function<? extends D, ? extends R>> void injectFunctionReferences(F f)
   {
-    var      fields        = getFields(f);
-
     Class<?> functionClass = f.getClass();
     functions.forEach((functionName, functionMapping) ->
     {
-      if (functionMapping.instance != null && fields.contains(functionName))
+      if (functionMapping.instance == null)
       {
-        setFieldValue(functionClass, f, functionName, functionMapping.instance);
+        return;
       }
+      // Look up the field by name AND type-compatibility. A name shared
+      // between the {@code variables} and {@code functions} namespaces
+      // (e.g. a Real {@code r} variable and a {@code r} ComplexFunction)
+      // produces only one field per compiled class — typed for whichever
+      // namespace the expression body actually referenced. Skip if the
+      // function instance is not assignment-compatible with the field's
+      // declared type so the matching variable injector can handle it.
+      java.lang.reflect.Field field;
+      try
+      {
+        field = functionClass.getField(functionName);
+      }
+      catch (NoSuchFieldException nsfe)
+      {
+        return; // expression body never references this function
+      }
+      if (!field.getType().isAssignableFrom(functionMapping.instance.getClass()))
+      {
+        return; // same name, different namespace — skip
+      }
+      setFieldValue(functionClass, f, functionName, functionMapping.instance);
     });
-
   }
 
   /**
@@ -284,6 +302,15 @@ public class Context implements
         try
         {
           java.lang.reflect.Field field = operandClass.getField(functionName);
+          // Skip if the function instance is not assignment-compatible with
+          // the field's declared type — a name shared between the
+          // {@code variables} and {@code functions} namespaces produces
+          // a single field, typed for whichever namespace the expression
+          // body referenced. The variable-side injector handles the other.
+          if (!field.getType().isAssignableFrom(functionMapping.instance.getClass()))
+          {
+            return;
+          }
           if (field.get(operandInstance) == null)
           {
             field.set(operandInstance, functionMapping.instance);
@@ -320,16 +347,39 @@ public class Context implements
     {
       log.debug(String.format("Context(#%s).injectVariableReferences(f=%s) variables={}", System.identityHashCode(this), f.getClass().getName(), variables));
     }
-    var fields = getFields(f);
+    Class<?> compiledClass = f.getClass();
 
     variableMap().entrySet().forEach(entry ->
     {
       var   variableName = entry.getKey();
       Named value        = variables.get(variableName);
-      if (value != null && fields.contains(variableName))
+      if (value == null)
       {
-        setFieldValue(f.getClass(), f, variableName, value);
+        return;
       }
+      // Look up the field by name AND type-compatibility. Two Context
+      // entries can legitimately share a name when one is a Variable
+      // (registered in {@code variables}) and the other is a Function
+      // (registered in {@code functions}); the compiler emits a single
+      // public field with that name, typed for whichever side appeared
+      // in the expression. Only inject when the runtime value is
+      // assignment-compatible with the field's declared type — if it
+      // isn't, this name belongs to the other namespace and the
+      // function-reference injector handles it.
+      java.lang.reflect.Field field;
+      try
+      {
+        field = compiledClass.getField(variableName);
+      }
+      catch (NoSuchFieldException nsfe)
+      {
+        return; // expression body never references this variable
+      }
+      if (!field.getType().isAssignableFrom(value.getClass()))
+      {
+        return; // same name, different namespace — skip
+      }
+      setFieldValue(compiledClass, f, variableName, value);
     });
   }
 
