@@ -1021,7 +1021,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
-  protected boolean characterAfterNextIs(char ch)
+  public boolean characterAfterNextIs(char ch)
   {
     return position + 1 < getExpression().length() && getExpression().charAt(position + 1) == ch;
   }
@@ -4520,10 +4520,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected Node<D, C, F> resolveFactorials(Node<D, C, F> node)
   {
-    if (nextCharacterIs('!'))
+    // '!' followed immediately by '=' is the ASCII not-equal operator, not
+    // a factorial. Leave it for the relational-operator parser.
+    if (character == '!' && !characterAfterNextIs('='))
     {
-      return new FactorialNode<>(this,
-                                 node);
+      if (nextCharacterIs('!'))
+      {
+        return new FactorialNode<>(this,
+                                   node);
+      }
     }
     if (nextCharacterIs('₍'))
     {

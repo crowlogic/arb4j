@@ -92,4 +92,126 @@ public class WhenTest extends
     }
   }
 
+  // ============================================================
+  // Comparison-predicate path tests (general path, if-chain bytecode)
+  //
+  // Each of the six relational operators in turn, plus the ASCII aliases
+  // {@code <=}, {@code >=}, {@code !=}. For these, the legacy lookupswitch
+  // detector returns false (any non-EQ predicate disables the fast path),
+  // so the if-chain general path is what's exercised here. End-to-end
+  // through {@code Function.express} so the parser-side and bytecode-side
+  // changes are tested together.
+  // ============================================================
+
+  public static void testWhenLessThan()
+  {
+    Function<Integer, Real> seq = Function.express(Integer.class, Real.class, "when(n<3,5,else,10)");
+    assertEquals(5.0,  seq.evaluate(new Integer(0), 128, new Real()).doubleValue());
+    assertEquals(5.0,  seq.evaluate(new Integer(1), 128, new Real()).doubleValue());
+    assertEquals(5.0,  seq.evaluate(new Integer(2), 128, new Real()).doubleValue());
+    assertEquals(10.0, seq.evaluate(new Integer(3), 128, new Real()).doubleValue());
+    assertEquals(10.0, seq.evaluate(new Integer(7), 128, new Real()).doubleValue());
+  }
+
+  public static void testWhenLessThanOrEqualUnicode()
+  {
+    Function<Integer, Real> seq = Function.express(Integer.class, Real.class, "when(n≤3,5,else,10)");
+    assertEquals(5.0,  seq.evaluate(new Integer(2), 128, new Real()).doubleValue());
+    assertEquals(5.0,  seq.evaluate(new Integer(3), 128, new Real()).doubleValue());
+    assertEquals(10.0, seq.evaluate(new Integer(4), 128, new Real()).doubleValue());
+  }
+
+  public static void testWhenLessThanOrEqualAscii()
+  {
+    Function<Integer, Real> seq = Function.express(Integer.class, Real.class, "when(n<=3,5,else,10)");
+    assertEquals(5.0,  seq.evaluate(new Integer(3), 128, new Real()).doubleValue());
+    assertEquals(10.0, seq.evaluate(new Integer(4), 128, new Real()).doubleValue());
+  }
+
+  public static void testWhenGreaterThan()
+  {
+    Function<Integer, Real> seq = Function.express(Integer.class, Real.class, "when(n>3,5,else,10)");
+    assertEquals(10.0, seq.evaluate(new Integer(0), 128, new Real()).doubleValue());
+    assertEquals(10.0, seq.evaluate(new Integer(3), 128, new Real()).doubleValue());
+    assertEquals(5.0,  seq.evaluate(new Integer(4), 128, new Real()).doubleValue());
+    assertEquals(5.0,  seq.evaluate(new Integer(99), 128, new Real()).doubleValue());
+  }
+
+  public static void testWhenGreaterThanOrEqualUnicode()
+  {
+    Function<Integer, Real> seq = Function.express(Integer.class, Real.class, "when(n≥3,5,else,10)");
+    assertEquals(10.0, seq.evaluate(new Integer(2), 128, new Real()).doubleValue());
+    assertEquals(5.0,  seq.evaluate(new Integer(3), 128, new Real()).doubleValue());
+    assertEquals(5.0,  seq.evaluate(new Integer(4), 128, new Real()).doubleValue());
+  }
+
+  public static void testWhenGreaterThanOrEqualAscii()
+  {
+    Function<Integer, Real> seq = Function.express(Integer.class, Real.class, "when(n>=3,5,else,10)");
+    assertEquals(10.0, seq.evaluate(new Integer(2), 128, new Real()).doubleValue());
+    assertEquals(5.0,  seq.evaluate(new Integer(3), 128, new Real()).doubleValue());
+  }
+
+  public static void testWhenNotEqualUnicode()
+  {
+    Function<Integer, Real> seq = Function.express(Integer.class, Real.class, "when(n≠0,5,else,10)");
+    assertEquals(10.0, seq.evaluate(new Integer(0), 128, new Real()).doubleValue());
+    assertEquals(5.0,  seq.evaluate(new Integer(1), 128, new Real()).doubleValue());
+    assertEquals(5.0,  seq.evaluate(new Integer(-3), 128, new Real()).doubleValue());
+  }
+
+  public static void testWhenNotEqualAscii()
+  {
+    Function<Integer, Real> seq = Function.express(Integer.class, Real.class, "when(n!=0,5,else,10)");
+    assertEquals(10.0, seq.evaluate(new Integer(0), 128, new Real()).doubleValue());
+    assertEquals(5.0,  seq.evaluate(new Integer(1), 128, new Real()).doubleValue());
+  }
+
+  /**
+   * Multiple comparison predicates in one {@code when}. Order-of-match
+   * semantics: the first predicate to evaluate true selects the branch.
+   */
+  public static void testWhenMultipleComparisonsOrderOfMatch()
+  {
+    // n<0 → 1, n<10 → 2, else → 3 — the second predicate fires only when the
+    // first failed, exactly like a chain of if/else if/else.
+    Function<Integer, Real> seq = Function.express(Integer.class, Real.class, "when(n<0,1,n<10,2,else,3)");
+    assertEquals(1.0, seq.evaluate(new Integer(-5), 128, new Real()).doubleValue());
+    assertEquals(2.0, seq.evaluate(new Integer(0),  128, new Real()).doubleValue());
+    assertEquals(2.0, seq.evaluate(new Integer(9),  128, new Real()).doubleValue());
+    assertEquals(3.0, seq.evaluate(new Integer(10), 128, new Real()).doubleValue());
+    assertEquals(3.0, seq.evaluate(new Integer(99), 128, new Real()).doubleValue());
+  }
+
+  /**
+   * Mixed equality and inequality predicates. The presence of any non-EQ
+   * predicate forces the if-chain general path even though the EQ entries
+   * could in isolation be dispatched by lookupswitch.
+   */
+  public static void testWhenMixedEqualityAndInequality()
+  {
+    Function<Integer, Real> seq = Function.express(Integer.class, Real.class, "when(n=0,100,n<5,5,else,10)");
+    assertEquals(100.0, seq.evaluate(new Integer(0), 128, new Real()).doubleValue());
+    assertEquals(5.0,   seq.evaluate(new Integer(1), 128, new Real()).doubleValue());
+    assertEquals(5.0,   seq.evaluate(new Integer(4), 128, new Real()).doubleValue());
+    assertEquals(10.0,  seq.evaluate(new Integer(5), 128, new Real()).doubleValue());
+  }
+
+  /**
+   * Curried-arrow form with a comparison predicate on the outer index. This
+   * exercises both the curried-arrow visibility fix and the new general-path
+   * generator simultaneously.
+   */
+  public static void testWhenCurriedArrowWithComparison()
+  {
+    RealFunctionSequence f = RealFunctionSequence.express("f:k➔x➔when(k<3,x,else,x^2)");
+    // k=0,1,2 → x branch
+    assertEquals(2.0, f.evaluate(0, 128).eval(2.0, new Real()).doubleValue(), 1e-30);
+    assertEquals(2.0, f.evaluate(1, 128).eval(2.0, new Real()).doubleValue(), 1e-30);
+    assertEquals(2.0, f.evaluate(2, 128).eval(2.0, new Real()).doubleValue(), 1e-30);
+    // k=3+ → x^2 branch
+    assertEquals(4.0, f.evaluate(3, 128).eval(2.0, new Real()).doubleValue(), 1e-30);
+    assertEquals(4.0, f.evaluate(4, 128).eval(2.0, new Real()).doubleValue(), 1e-30);
+  }
+
 }

@@ -368,7 +368,11 @@ public class Parser
 
     expression = collapseSuperscriptRuns(expression);
 
-    return Normalizer.normalize(expression, Normalizer.Form.NFD);
+    // NFD canonical decomposition was previously applied here. It was harmful
+    // for relational operators: it splits ≠ (U+2260) into '=' + combining
+    // long-solidus '̸', which the tokenizer cannot read as one operator. We
+    // intentionally pass the original code points through unchanged.
+    return expression;
   }
 
   public static String transformToAcceptableJavaIdentifier(String str)
