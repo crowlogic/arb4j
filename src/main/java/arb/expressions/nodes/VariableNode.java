@@ -76,7 +76,7 @@ import arb.functions.Function;
  * @param <F> Type of function that maps domain to codomain, must implement
  *            {@link Function}.
  *
- * @author Stephen Crowley ©2024-2025
+ * @author Stephen Crowley ©2024-2026
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> extends
@@ -94,10 +94,10 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     VariableNode<D, R, F> indepVar = expression.getIndependentVariable();
     if (this.equals(indepVar))
     {
-      Node<D, R, F> p         = one();
-      Node<D, R, F> numerator = p.add(one()).Γ();
-      Node<D, R, F> denomArg  = p.sub(α).add(one());
-      Node<D, R, F> term      = this.pow(p.sub(α));
+      var p         = one();
+      var numerator = p.add(one()).Γ();
+      var denomArg  = p.sub(α).add(one());
+      var term      = this.pow(p.sub(α));
       return numerator.div(denomArg.Γ()).mul(term);
     }
     return zero();
@@ -174,7 +174,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       logger.debug("resolveReference START: {}", resolutionStateString());
     }
-    
+
     if (resolveContextualVariable())
     {
       expression.registerReferencedVariable(this);
@@ -184,7 +184,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       }
       return this;
     }
-    
 
     if (isIndependent = isIndependent())
     {
@@ -196,15 +195,11 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       }
       return this;
     }
-    
-
-
-
 
     var upstream = resolveUpstreamVariables();
     if (upstream != null)
     {
-      if (upstreamInput )
+      if (upstreamInput)
       {
         expression.registerReferencedVariable(this);
       }
@@ -217,8 +212,8 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     if (isPlaceholder())
     {
-      isPlaceholder                  = true;
-      reference.type                 = expression.coDomainType;
+      isPlaceholder  = true;
+      reference.type = expression.coDomainType;
       expression.setPlaceholderVariable(this);
       if (Expression.traceNodes)
       {
@@ -231,13 +226,22 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       logger.debug("resolveReference UNDEFINED: {}", resolutionStateString());
     }
-    // print superExpression chain for debugging
-    Expression<?,?,?> dbg = expression;
-    int depth = 0;
-    while (dbg != null) {
-      System.err.println("  superChain[" + depth + "]: className=" + dbg.className + " independentVariable=" + dbg.getIndependentVariable() + " expression=" + dbg.expression);
-      dbg = dbg.superExpression;
-      depth++;
+    if (Expression.traceNodes && logger.isDebugEnabled())
+    {
+      Expression<?, ?, ?> dbg   = expression;
+      int                 depth = 0;
+      while (dbg != null)
+      {
+        {
+          logger.debug("  superChain[{}]: className={} independentVariable={},expression={}",
+                       depth,
+                       dbg.className,
+                       dbg.getIndependentVariable(),
+                       dbg.expression);
+        }
+        dbg = dbg.upstreamExpression;
+        depth++;
+      }
     }
     throw new UndefinedReferenceException(resolutionStateString());
   }
@@ -267,10 +271,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       this.reference.type = existingVariable.reference.type;
       isIndependent       = existingVariable.isIndependent;
       isPlaceholder       = existingVariable.isPlaceholder;
-      // Propagate upstreamInput — otherwise only the first occurrence of a
-      // variable at a given expression level retains the flag, and any
-      // subexpression built from subsequent occurrences cannot be
-      // recognised as parameter-invariant fixed instance data.
       upstreamInput       = existingVariable.upstreamInput;
     }
     else
@@ -361,8 +361,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return Objects.equals(reference, other.reference);
   }
 
-  boolean         refuseToGenerateIndeterminateVariables = false;
-
+  boolean refuseToGenerateIndeterminateVariables = false;
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
@@ -537,33 +536,10 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   /**
    * Returns {@code true} if this variable refers to a bound parameter of the
-   * enclosing function instance — i.e., a value emitted as a private field of
-   * the generated class that is assigned at instance initialization time and
-   * never mutated thereafter. Such variables behave as fixed identity data
-   * for the lifetime of the instance, so subexpressions that depend only on
-   * them (and not on the per-call evaluation variable) can be safely hoisted
-   * into {@code evaluateStaticSubexpressions()}.
-   * <p>
-   * This is currently the case for upstream-input variables of <em>inner
-   * expressions of a generated functional</em>: e.g. the {@code n} in
-   * {@code n➔t➔…} as seen by the inner {@code t} expression. The outer
-   * functional constructs a fresh inner instance per evaluation
-   * (see {@code Expression.generateFunctionalElement}) and propagates {@code n}
-   * into a field of that instance exactly once, so the instance's static
-   * caches can safely depend on it.
-   * <p>
-   * Upstream-input variables of expressions that are <em>not</em> the inner
-   * body of a generated functional (for instance a persistent operand
-   * expression of an N-ary operator inside a scalar-valued outer expression)
-   * are deliberately excluded: the operand instance outlives any single
-   * outer evaluate, and its upstream-variable fields get re-propagated on
-   * every outer call — hoisting based on them would cache a stale value.
-   * The evaluation variable, indeterminate placeholders, and mutable
-   * {@link Context} variables are likewise excluded.
-   *
+   * enclosing function instance
+   * 
    * @return true if this variable's value is fixed for the lifetime of the
-   *         function instance and subtrees depending only on it may be
-   *         hoisted.
+   *         function instance and subtrees depending only on it may be hoisted.
    */
   public boolean isFixedInstanceData()
   {
@@ -571,11 +547,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       return false;
     }
-    // Context variables are set once at initialize() and fixed for the
-    // instance lifetime (callers that need to mutate them must go through
-    // invalidateCache() — see #958), so subtrees depending solely on
-    // context variables are safely hoistable regardless of whether this
-    // expression is the inner body of a generated functional.
+
     if (isContextVariable())
     {
       return true;
@@ -584,12 +556,9 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       return false;
     }
-    // Only trust upstream inputs when THIS expression is the inner body
-    // of a generated functional — i.e., the enclosing class is constructed
-    // fresh per outer-evaluate, so the upstream-propagated fields are set
-    // once at construction and never mutated afterward.
-    Expression<?, ?, ?> parent = expression == null ? null : expression.superExpression;
-    return parent != null && parent.isGeneratedFunctional();
+
+    var superExpression = expression == null ? null : expression.upstreamExpression;
+    return superExpression != null && superExpression.isGeneratedFunctional();
   }
 
   /**
@@ -599,10 +568,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
    */
   public boolean isContextVariable()
   {
-    return expression != null
-           && expression.context != null
-           && expression.context.variables != null
-           && expression.context.variables.containsKey(reference.name);
+    return expression != null && expression.context != null && expression.context.variables != null && expression.context.variables.containsKey(reference.name);
   }
 
   /**
@@ -657,9 +623,9 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     assert (expression.getIndependentVariable() == null
                   || expression.getIndependentVariable().equals(expression.getIndependentVariable())) : "inputVariable is already "
-                                                                                                   + expression.getIndependentVariable()
-                                                                                                   + " it doesnt make sense to change it to "
-                                                                                                   + this;
+                                                                                                        + expression.getIndependentVariable()
+                                                                                                        + " it doesnt make sense to change it to "
+                                                                                                        + this;
     if (expression.getIndependentVariable() == null)// !expression.anyUpstreamIndependentVariableIsNamed(expression.getIndependentVariable().getName()))
     {
       if (Expression.traceNodes)
@@ -672,26 +638,21 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                    expression.getIndependentVariable(),
                                    expression.getPlaceholderVariable()));
       }
-      isIndependent                  = true;
+      isIndependent = true;
       expression.setIndependentVariable(this);
-      reference.type                 = expression.domainType;
+      reference.type = expression.domainType;
     }
   }
 
   public <E, S, G extends Function<? extends E, ? extends S>> VariableNode<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
-    VariableNode<E, S, G> variableNode = new VariableNode<E, S, G>(newExpression,
-                                                                   reference.spliceInto(newExpression),
-                                                                   !newExpression.deferVariableResolution);
+    var variableNode = new VariableNode<E, S, G>(newExpression,
+                                                 reference.spliceInto(newExpression),
+                                                 !newExpression.deferVariableResolution);
     variableNode.position   = position;
     variableNode.fieldName  = fieldName;
     variableNode.isRootNode = isRootNode;
-    // If this variable was a genuine upstream input in the source
-    // expression, preserve that status in the new expression as long as
-    // the variable still resolves to the SAME ancestor independent
-    // variable in the new expression's chain. Without this, splicing a
-    // subtree into a sibling/descendant expression can lose
-    // upstreamInput for subtrees built from prior occurrences.
+
     if (upstreamInput)
     {
       variableNode.upstreamInput = true;
@@ -718,9 +679,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     if (upstreamInput && Node.emittingBoundFormat.get())
     {
       java.lang.Integer index = Node.boundVariableIndices.get().get(reference.name);
-      // Indexed form "%N$s" when the caller supplied a position map, so that
-      // every occurrence of the same variable shares a single argument slot.
-      // Bare "%s" falls back for legacy callers that don't need indexed args.
       return index != null ? String.format("%%%d$s", index) : "%s";
     }
     return reference.toString();

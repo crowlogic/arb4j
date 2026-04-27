@@ -250,7 +250,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                                          (Class<Function<?, ?>>) argFunctionClass);
 
     argExpression.context            = expression.context;
-    argExpression.superExpression = expression;
+    argExpression.upstreamExpression = expression;
 
     var independentVar = expression.getIndependentVariable();
     if (independentVar != null && argumentDependsOnInput)

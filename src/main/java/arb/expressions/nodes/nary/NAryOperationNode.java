@@ -547,7 +547,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                          operandCoDomain,
                                          Sequence.class);
     operandExpression.continueParsingFrom(expression);
-    operandExpression.superExpression = expression;
+    operandExpression.upstreamExpression = expression;
     operandExpression.context         = expression.context;
     operandExpression.setIndependentVariable(null);
     operandExpression.className = operandFunctionFieldName;
@@ -853,7 +853,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                                             String innerOperandFieldName)
   {
     Expression<Integer, R, Sequence<R>> innerOperandExpression = currentOperandExpression.cloneExpression();
-    innerOperandExpression.superExpression = currentOperandExpression;
+    innerOperandExpression.upstreamExpression = currentOperandExpression;
     innerOperandExpression.context         = currentOperandExpression.context;
     innerOperandExpression.clearIndependentVariable();
     innerOperandExpression.rootNode                = null;

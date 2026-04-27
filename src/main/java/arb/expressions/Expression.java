@@ -142,7 +142,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean shouldCache()
   {
-    return domainType.equals(Integer.class) && !isGeneratedFunctional() && superExpression == null;
+    return domainType.equals(Integer.class) && !isGeneratedFunctional() && upstreamExpression == null;
   }
 
   protected void declareCacheField(ClassVisitor cw)
@@ -399,7 +399,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     while (cursor != null)
     {
       chain.addFirst(cursor);
-      cursor = cursor.superExpression;
+      cursor = cursor.upstreamExpression;
     }
 
     for (int i = 0; i < chain.size() - 1; i++)
@@ -528,13 +528,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public File                            compiledClassDir = new File("compiled");
 
-  public Expression<?, ?, ?>             superExpression;
+  public Expression<?, ?, ?>             upstreamExpression;
 
   public final List<Expression<?, ?, ?>> subExpressions   = new ArrayList<>();
 
   public Expression<?, ?, ?> getSuperExpression()
   {
-    return superExpression;
+    return upstreamExpression;
   }
 
   public char                                           character                     = 0;
@@ -767,14 +767,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       {
         return true;
       }
-      e = e.superExpression;
+      e = e.upstreamExpression;
     }
     return false;
   }
 
   public Expression(Class<? extends D> domain, Class<? extends C> coDomain, Class<? extends F> function)
   {
-    this.superExpression                  = null;
+    this.upstreamExpression                  = null;
     this.domainType                       = domain;
     this.coDomainType                     = coDomain;
     this.functionClass                    = function;
@@ -818,7 +818,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                     Expression<?, ?, ?> ascenentExpression)
   {
     assert className != null : "className needs to be specified";
-    this.superExpression                  = ascenentExpression;
+    this.upstreamExpression                  = ascenentExpression;
     this.className                        = className;
     this.domainType                       = domain;
     this.coDomainType                     = codomain;
@@ -924,9 +924,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       return getIndependentVariable();
     }
-    if (superExpression != null)
+    if (upstreamExpression != null)
     {
-      var immediatelyUpstreamIndependentVariable = superExpression.getIndependentVariable();
+      var immediatelyUpstreamIndependentVariable = upstreamExpression.getIndependentVariable();
       if (immediatelyUpstreamIndependentVariable != null)
       {
         return immediatelyUpstreamIndependentVariable;
@@ -946,9 +946,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean anySuperIndependentVariableIsNamed(String name)
   {
-    if (superExpression != null)
+    if (upstreamExpression != null)
     {
-      if (superExpression.thisOrAnySuperIndependentVariableIsNamed(name))
+      if (upstreamExpression.thisOrAnySuperIndependentVariableIsNamed(name))
       {
         return true;
       }
@@ -1036,7 +1036,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                        getExpression(),
                                        context,
                                        functionName,
-                                       superExpression);
+                                       upstreamExpression);
     expr.context = context;
     expr.setIndependentVariable(independentVariable);
 
@@ -1074,7 +1074,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       optimize();
       generate();
     }
-    assert context != null : "context is null for " + this + " and superExpression=" + superExpression + " superExpression.context=" + superExpression.context;
+    assert context != null : "context is null for " + this + " and superExpression=" + upstreamExpression + " superExpression.context=" + upstreamExpression.context;
     assert !className.isEmpty() : "className is empty";
     compiledClass = loadFunctionClass(className, instructions, context);
     return this;
@@ -1352,9 +1352,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected void declareVariables(ClassVisitor classVisitor)
   {
     // Declare the parent's independent variable as a field so we can receive it
-    if (superExpression != null)
+    if (upstreamExpression != null)
     {
-      var upstreamIndependentVariableNode = superExpression.getIndependentVariable();
+      var upstreamIndependentVariableNode = upstreamExpression.getIndependentVariable();
       if (upstreamIndependentVariableNode != null && !upstreamIndependentVariableNode.type().equals(Object.class))
       {
         String upstreamIndVarName = upstreamIndependentVariableNode.reference.name;
@@ -1417,9 +1417,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return false;
     }
 
-    if (superExpression != null)
+    if (upstreamExpression != null)
     {
-      VariableNode<?, ?, ?> upstreamIndependentVariable = superExpression.getIndependentVariable();
+      VariableNode<?, ?, ?> upstreamIndependentVariable = upstreamExpression.getIndependentVariable();
       if (upstreamIndependentVariable != null && varName.equals(upstreamIndependentVariable.getName()))
       {
         return false;
@@ -1603,7 +1603,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     Expression<D, C, F> subExpr      = cloneExpression();
     subExpr.clearIndependentVariable();
-    subExpr.superExpression = this;
+    subExpr.upstreamExpression = this;
     if (isGeneratedFunctional())
     {
       subExpr.functionClass = (Class) coDomainType;
@@ -1993,7 +1993,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     // Only root expressions create their own Context.
     // Child arg classes receive the parent's context via initialize() (#842)
-    if (context != null && superExpression == null)
+    if (context != null && upstreamExpression == null)
     {
       generateContextInitializer(mv);
     }
@@ -2130,7 +2130,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     accept(containingExpression -> log.debug("#{}: logVariables: independentVariable={} superExpression={}",
                                              System.identityHashCode(containingExpression),
                                              containingExpression.getIndependentVariable(),
-                                             containingExpression.superExpression));
+                                             containingExpression.upstreamExpression));
 
   }
 
@@ -3173,7 +3173,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                               : funcMapping.functionName;
       
       // Share parent's context with child arg class (#842)
-      if (nestedExpr.superExpression != null)
+      if (nestedExpr.upstreamExpression != null)
       {
         String contextTypeDesc = Context.class.descriptorString();
         // Generate: this.<funcFieldName>.context = this.context
@@ -3197,7 +3197,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         }
 
         // Skip if already declared as upstream independent variable
-        if (superExpression != null && superExpression.getIndependentVariable() != null && varName.equals(superExpression.getIndependentVariable().getName()))
+        if (upstreamExpression != null && upstreamExpression.getIndependentVariable() != null && varName.equals(upstreamExpression.getIndependentVariable().getName()))
         {
           continue;
         }
@@ -3455,7 +3455,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // propagated by value to this class as a field, but the predicate in
     // upstreamInputVariableEntryStream() explicitly excludes it.
     // Include it here since the field holds a concrete value at runtime.
-    Expression<?, ?, ?> ancestor = superExpression;
+    Expression<?, ?, ?> ancestor = upstreamExpression;
     while (ancestor != null)
     {
       if (ancestor.getIndependentVariable() != null)
@@ -3467,7 +3467,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
           runtimeVars.add(Map.entry(name, ref));
         }
       }
-      ancestor = ancestor.superExpression;
+      ancestor = ancestor.upstreamExpression;
     }
 
     String namePrefix = (functionName != null && !functionName.isEmpty()) ? functionName + ":" : "";
@@ -4265,7 +4265,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     var functionalExpression = new Expression<Object, Object, Function<?, ?>>(funcDomain,
                                                                               funcCoDomain,
                                                                               funcClass);
-    functionalExpression.superExpression = this;
+    functionalExpression.upstreamExpression = this;
     this.functionalChild                 = functionalExpression;
     if (context == null)
     {
@@ -4805,12 +4805,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   @SuppressWarnings("hiding")
   public <A, B, Q extends Function<? extends A, ? extends B>> FunctionMapping<A, B, Q> registerSubexpression(Expression<A, B, Q> expr)
   {
-    if (expr.superExpression == null)
+    if (expr.upstreamExpression == null)
     {
-      expr.superExpression = this;
+      expr.upstreamExpression = this;
       subExpressions.add(expr);
     }
-    else if (expr.superExpression != this && !subExpressions.contains(expr))
+    else if (expr.upstreamExpression != this && !subExpressions.contains(expr))
     {
       subExpressions.add(expr);
     }
@@ -5288,7 +5288,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       {
         return true;
       }
-      cursor = cursor.superExpression;
+      cursor = cursor.upstreamExpression;
     }
     return false;
   }
@@ -5409,12 +5409,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   @Override
   public void accept(Consumer<Expression<?, ?, ?>> t)
   {
-    assert superExpression != this;
+    assert upstreamExpression != this;
     t.accept(this);
 
-    if (superExpression != null)
+    if (upstreamExpression != null)
     {
-      superExpression.accept(t);
+      upstreamExpression.accept(t);
     }
 
   }
@@ -5523,7 +5523,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       superExpressions.add(e);
     }
-    while ((e = e.superExpression) != null);
+    while ((e = e.upstreamExpression) != null);
     return superExpressions;
   }
 

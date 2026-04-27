@@ -688,7 +688,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       else
       {
         var integrand = Function.parse(functionMapping.domain, functionMapping.coDomain, functionMapping.functionClass, functionMapping.expressionString);
-        integrand.superExpression = expression;
+        integrand.upstreamExpression = expression;
         return integrand.rootNode.integral(integrand.getIndependentVariable()).simplify();
 
 //        throw new CompilerException(String.format("TODO: integrate parsed but yet-to-be-compiled expression string in expression '%s' where functionMapping='%s'",
