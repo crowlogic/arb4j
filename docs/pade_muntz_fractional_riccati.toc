@@ -1,0 +1,20 @@
+\contentsline {section}{\numberline {1}Fractional Calculus and the M\"untz Basis}{2}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Riemann--Liouville integral and Caputo derivative}{2}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}The M\"untz basis}{3}{subsection.1.2}%
+\contentsline {section}{\numberline {2}The Constant-Coefficient Fractional Riccati Equation}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Equation and Volterra representation}{3}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}The M\"untz--Tau Puiseux series solution}{3}{subsection.2.2}%
+\contentsline {section}{\numberline {3}Pad\'e Resummation in \(z=t^\mu \)}{6}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Power series in \(z\) and the Hankel system}{6}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Remainder representation and successive-difference bound}{7}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Global convergence on the positive real axis}{7}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Algorithmic summary}{8}{subsection.3.4}%
+\contentsline {section}{\numberline {4}Resurgence, Borel--Pad\'e Resummation, and Riemann--Hilbert}{8}{section.4}%
+\contentsline {subsection}{\numberline {4.1}The substitution \(z=t^\mu \) is a power-series algebraization}{9}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Solutions are conjecturally resurgent transseries}{9}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Pad\'e is computational Borel--Pad\'e resummation}{9}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}The Riemann--Hilbert structure}{10}{subsection.4.4}%
+\contentsline {subsection}{\numberline {4.5}Generalizations}{10}{subsection.4.5}%
+\contentsline {paragraph}{Higher-degree polynomial nonlinearities (Bernoulli, Abel, and beyond).}{10}{section*.2}%
+\contentsline {paragraph}{Fractional ODE systems via Hermite--Pad\'e.}{10}{section*.3}%
+\contentsline {paragraph}{Non-constant coefficients: isomonodromy and Painlev\'e.}{10}{section*.4}%
