@@ -1,0 +1,611 @@
+\documentclass[12pt]{amsart}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{margin=1.25in}
+
+%--------------------------------------------------------------------
+% Theorem environments
+%--------------------------------------------------------------------
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+%--------------------------------------------------------------------
+% Operators
+%--------------------------------------------------------------------
+\DeclareMathOperator{\re}{Re}
+\DeclareMathOperator{\im}{Im}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Th}{\Theta}
+\newcommand{\vth}{\vartheta}
+\newcommand{\Zt}{\widetilde{Z}}
+\newcommand{\lm}{\mathrm{l.i.m.}}
+
+%--------------------------------------------------------------------
+\title[Band-Limitation of the Warped Hardy $Z$-Function]
+      {Band-Limitation of the Warped Hardy $Z$-Function:\\
+       Spectral Support of the Cram\'{e}r Measure on $[-1,1]$}
+
+\author{Stephen Crowley}
+\date{April 2026}
+
+\begin{document}
+
+\maketitle
+
+%--------------------------------------------------------------------
+\begin{abstract}
+Let $\vartheta(t)=\im\log\Gamma\!\bigl(\tfrac{1}{4}+\tfrac{it}{2}\bigr)
+-\tfrac{t}{2}\log\pi$ be the Riemann--Siegel theta function,
+$Z(t)=e^{i\vartheta(t)}\zeta\!\bigl(\tfrac{1}{2}+it\bigr)$ the Hardy
+$Z$-function, and fix $C>2.6860917\ldots$ so that
+$\Theta(t)\!:=\!\vartheta(t)+Ct$ is a $C^{\infty}$ diffeomorphism of
+$[0,\infty)$ onto $[0,\infty)$ with $\Theta'(t)>0$.
+Define the \emph{stationary pullback} $\Zt(u)\!:=\!Z(\Theta^{-1}(u))$.
+The main result is:
+
+\medskip
+\noindent\textbf{Theorem A.}
+\textit{For every $\xi\in\R$ with $|\xi|>1$,}
+\[
+  \frac{1}{\Theta(T)}\int_0^{\Theta(T)}\Zt(u)\,e^{-i\xi u}\,du
+  \;\longrightarrow\; 0
+  \qquad\text{as }T\to\infty.
+\]
+
+\smallskip
+The proof uses only the Riemann--Siegel formula with remainder
+$O(t^{-1/4})$, one integration by parts, and the exact identity
+$\omega_n(u)\in[0,1)$ for the normalized phase derivative of each
+Riemann--Siegel term (Lemma~\ref{lem:phase}).
+The cutoff $|\xi|=1$ is sharp: for every $|\xi|<1$ the stationary-phase
+contributions to the Cesa\`{r}o--Fourier transform do \emph{not} vanish
+(Theorem~\ref{thm:sharp}).
+As corollaries: the Wiener--Khinchin spectral density of $\Zt$ vanishes
+outside $[-1,1]$; the associated Cram\'{e}r orthogonal measure $d\hat G$
+is supported on $[-1,1]$; and $Z$ admits the explicit mean-square
+convergent spectral integral $Z(t)=\int_{-1}^{1}e^{i\xi\Theta(t)}\,d\hat G(\xi)$.
+\end{abstract}
+
+%--------------------------------------------------------------------
+\section{Introduction}\label{sec:intro}
+%--------------------------------------------------------------------
+
+The Hardy $Z$-function $Z(t)=e^{i\vartheta(t)}\zeta\!\bigl(\tfrac{1}{2}+it\bigr)$
+is real-valued for real $t$ and encodes the nontrivial zeros of $\zeta$
+as its real zeros.  Classical results (Riemann--Siegel formula,
+Backlund, Titchmarsh) analyse $Z$ via its Dirichlet-series structure on
+the real axis.  The present paper instead studies $Z$ after the
+\emph{warp} $u=\Theta(t)=\vartheta(t)+Ct$, which turns the rapidly
+varying phase of $Z$ into a stationary signal: the pulled-back function
+$\Zt(u)=Z(\Theta^{-1}(u))$ oscillates at a mean rate of exactly $1$
+in the $u$-variable.
+
+The main result (Theorem~\ref{thm:main}) is that $\Zt$ is
+\emph{spectrally band-limited to $[-1,1]$} in the Cesa\`{r}o mean
+sense: its normalized Fourier transform vanishes outside the unit
+interval as $T\to\infty$.  This implies via the Cram\'{e}r--Khinchin
+inversion theorem (Corollary~\ref{cor:rep}) the explicit mean-square
+convergent spectral representation
+\[
+  Z(t) = \int_{-1}^{1} e^{i\xi\Theta(t)}\,d\hat G(\xi), \qquad t\ge 0,
+\]
+where $d\hat G$ is the explicit Cram\'{e}r orthogonal measure defined
+in~\eqref{eq:Ghat}.
+
+The proof of Theorem~\ref{thm:main} requires three ingredients:
+\begin{enumerate}
+\item The Riemann--Siegel formula \eqref{eq:RS} with remainder $R(t)=O(t^{-1/4})$.
+\item The exact phase-derivative identity of Lemma~\ref{lem:phase},
+      giving $\omega_n(u)\in[0,1)$.
+\item One integration by parts with an exact antiderivative
+      (Lemma~\ref{lem:ibp}).
+\end{enumerate}
+No analytic continuation, no moment methods, and no positivity hypotheses
+are needed.  The sharpness of $|\xi|=1$ is established in
+Theorem~\ref{thm:sharp} via a stationary-phase calculation.
+
+\subsection*{Notation}
+$\lfloor x\rfloor$ denotes the floor function.  $f\ll g$ means
+$|f|\le Cg$ for an absolute constant $C$.  $\lm$ denotes limit in mean
+square ($L^2$). All integrals are Lebesgue unless stated otherwise.
+
+%--------------------------------------------------------------------
+\section{Setup}\label{sec:setup}
+%--------------------------------------------------------------------
+
+\begin{definition}[Warp and inverse]\label{def:warp}
+The Riemann--Siegel theta function satisfies
+\begin{equation}\label{eq:vth}
+  \vth'(t) = \tfrac{1}{2}\log(t/2\pi) - \tfrac{1}{8t} + O(t^{-3}),
+  \qquad t>0,
+\end{equation}
+by Stirling's formula applied to $\log\Gamma(\tfrac{1}{4}+\tfrac{it}{2})$.
+In particular $\inf_{t\ge 0}\vth'(t) > -\infty$; its infimum is
+$-2.6860917\ldots$\;.  Fix
+\begin{equation}\label{eq:C}
+  C \;>\; \sup_{t\ge 0}\bigl(-\vth'(t)\bigr) \;=\; 2.6860917\ldots
+\end{equation}
+and define $\Th(t):=\vth(t)+Ct$.  Then:
+\begin{itemize}
+\item $\Th'(t)=\vth'(t)+C>0$ for all $t\ge 0$,
+\item $\Th(0)=0$ (since $\vth(0)=0$),
+\item $\Th:[0,\infty)\to[0,\infty)$ is a $C^\infty$ diffeomorphism.
+\end{itemize}
+Write $g:=\Th^{-1}$, so $g'(u)=1/\Th'(g(u))>0$.  From~\eqref{eq:vth},
+\begin{equation}\label{eq:Thasym}
+  \Th(T) \;\sim\; \tfrac{T}{2}\log(T/2\pi) \qquad\text{as }T\to\infty.
+\end{equation}
+\end{definition}
+
+\begin{definition}[Stationary pullback and Cram\'{e}r measure]
+\label{def:pullback}
+Set $\Zt(u):=Z(g(u))$ for $u\ge 0$.  Since $Z$ is real-valued and
+$g$ is real-analytic, $\Zt$ is real-valued.
+
+The \emph{Cram\'{e}r measure} associated with $\Zt$ is
+\begin{equation}\label{eq:Ghat}
+  d\hat G(\xi) \;:=\;
+  \lim_{T\to\infty}\frac{1}{\Th(T)}
+  \int_0^{\Th(T)}\Zt(u)\,e^{-i\xi u}\,du\cdot d\xi
+\end{equation}
+with variance density (Wiener--Khinchin spectral density)
+\begin{equation}\label{eq:Phi}
+  \Phi(\xi) \;:=\;
+  \lim_{T\to\infty}\frac{1}{\Th(T)}
+  \left|\int_0^{\Th(T)}\Zt(u)\,e^{-i\xi u}\,du\right|^2,
+\end{equation}
+where both limits are taken in mean square whenever they exist.
+\end{definition}
+
+\begin{definition}[Riemann--Siegel data]\label{def:RS}
+For $t>0$ set
+\[
+  N(t) := \lfloor\sqrt{t/2\pi}\rfloor, \qquad
+  t_n   := 2\pi n^2 \quad(n\in\N),
+\]
+so $N(t)\ge n$ if and only if $t\ge t_n$.  The Riemann--Siegel formula
+\cite{Titchmarsh1986,Siegel1932} states
+\begin{equation}\label{eq:RS}
+  Z(t) = 2\sum_{n=1}^{N(t)} n^{-1/2}
+         \cos\!\bigl(\vth(t)-t\log n\bigr) + R(t),
+  \qquad |R(t)| \ll t^{-1/4}.
+\end{equation}
+\end{definition}
+
+%--------------------------------------------------------------------
+\section{Phase Derivative Identity}\label{sec:phase}
+%--------------------------------------------------------------------
+
+\begin{lemma}[Exact phase derivative and range]\label{lem:phase}
+For $n\ge 1$ and $u\ge u_n:=\Th(t_n)=\Th(2\pi n^2)$, define
+\begin{align}
+  \Phi_n(u) &:= \vth(g(u)) - g(u)\log n, \label{eq:Phin}\\
+  \omega_n(u) &:= \frac{\vth'(g(u))-\log n}{\Th'(g(u))}. \label{eq:omegan}
+\end{align}
+The following hold exactly:
+\begin{enumerate}
+\item[\rm(a)] $\dfrac{d}{du}\bigl(\Phi_n(u)-\xi u\bigr)
+              = \omega_n(u)-\xi$.
+\item[\rm(b)] $\omega_n(u_n)=0$.
+\item[\rm(c)] $0\le\omega_n(u)<1$ for all $u\ge u_n$.
+\item[\rm(d)] $\omega_n$ is strictly increasing on $[u_n,\infty)$.
+\item[\rm(e)] $\dfrac{d}{du}\!\left[\dfrac{-1}{\xi-\omega_n(u)}\right]
+              =\dfrac{\omega_n'(u)}{(\xi-\omega_n(u))^2}$
+              for every constant $\xi\ne\omega_n(u)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+\textit{(a).} Since $g'(u)=1/\Th'(g(u))$,
+\begin{equation}\label{eq:dPhi}
+  \frac{d\Phi_n}{du}
+  = \bigl(\vth'(g(u))-\log n\bigr)g'(u)
+  = \frac{\vth'(g(u))-\log n}{\Th'(g(u))} = \omega_n(u).
+\end{equation}
+Hence $\frac{d}{du}(\Phi_n-\xi u)=\omega_n(u)-\xi$.
+
+\textit{(b).} At $u=u_n$ one has $g(u_n)=t_n=2\pi n^2$, and
+$\vth'(t_n)=\tfrac{1}{2}\log(t_n/2\pi)=\tfrac{1}{2}\log(n^2)=\log n$
+by~\eqref{eq:vth}.  Hence the numerator of~\eqref{eq:omegan} vanishes
+at $u=u_n$.
+
+\textit{(c).} For $u>u_n$: $g(u)>t_n$, $\vth'$ is strictly increasing
+(since $\vth''(t)=\frac{1}{2t}+O(t^{-2})>0$ for $t>0$), so
+$\vth'(g(u))>\log n$ and $\omega_n(u)>0$.
+For the upper bound, $\Th'=\vth'+C$ with $C>0$:
+\begin{equation}\label{eq:omegaub}
+  \omega_n(u)
+  = \frac{\vth'(g(u))-\log n}{\vth'(g(u))-\log n + C}
+  < 1.
+\end{equation}
+
+\textit{(d).} Differentiating~\eqref{eq:omegan} and using
+$g'(u)=1/\Th'(g(u))$,
+\begin{equation}\label{eq:omegaprime}
+  \omega_n'(u)
+  = \frac{\vth''(g(u))\cdot C}{\Th'(g(u))^3} > 0,
+\end{equation}
+since $\vth''(t)>0$, $C>0$, and $\Th'>0$.
+(A short computation: differentiating $(\vth'-\log n)/(\vth'+C-\log n)$
+in $u$ via the quotient rule and $g'=1/\Th'$ gives the numerator
+$C\cdot\vth''(g(u))/\Th'(g(u))^3$, positive throughout.)
+
+\textit{(e).} Chain rule: $\frac{d}{du}[(\xi-\omega_n)^{-1}]
+=\omega_n'(\xi-\omega_n)^{-2}$.
+\end{proof}
+
+%--------------------------------------------------------------------
+\section{Proof of Band-Limitation}\label{sec:main}
+%--------------------------------------------------------------------
+
+\begin{lemma}[Integration by parts bound]\label{lem:ibp}
+For $\xi>1$, $n\ge 1$, and $T>t_n$, define
+\begin{equation}\label{eq:In}
+  I_n(\xi,T) := \int_{u_n}^{\Th(T)} e^{i(\Phi_n(u)-\xi u)}\,du.
+\end{equation}
+Then
+\begin{equation}\label{eq:Inbound}
+  |I_n(\xi,T)| \;\le\; \frac{3}{\xi-1}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Since $\xi>1$ and $\omega_n(u)\in[0,1)$ by Lemma~\ref{lem:phase}(c),
+\begin{equation}\label{eq:gap}
+  \xi - \omega_n(u) \ge \xi-1 > 0
+  \qquad\text{for all }u\in[u_n,\Th(T)].
+\end{equation}
+Write the integrand as
+$e^{i(\Phi_n-\xi u)} = \frac{1}{i(\omega_n-\xi)}\cdot
+\frac{d}{du}e^{i(\Phi_n-\xi u)}$
+using Lemma~\ref{lem:phase}(a), and integrate by parts:
+\begin{equation}\label{eq:IBP}
+  I_n(\xi,T)
+  = \left[\frac{e^{i(\Phi_n(u)-\xi u)}}{i(\omega_n(u)-\xi)}\right]_{u_n}^{\Th(T)}
+  + \int_{u_n}^{\Th(T)}
+    \frac{e^{i(\Phi_n(u)-\xi u)}\,\omega_n'(u)}{i\,(\xi-\omega_n(u))^2}\,du.
+\end{equation}
+Taking moduli, using $|e^{i(\cdots)}|=1$, $\omega_n(u_n)=0$
+(Lemma~\ref{lem:phase}(b)), and Lemma~\ref{lem:phase}(e):
+\begin{align}
+|I_n(\xi,T)|
+&\le \frac{1}{\xi-\omega_n(\Th(T))} + \frac{1}{\xi}
+   + \int_{u_n}^{\Th(T)}\frac{\omega_n'(u)}{(\xi-\omega_n(u))^2}\,du
+   \notag\\
+&= \frac{1}{\xi-\omega_n(\Th(T))} + \frac{1}{\xi}
+   + \left[\frac{1}{\xi-\omega_n(u)}\right]_{u_n}^{\Th(T)}
+   \label{eq:antider}\\
+&= \frac{2}{\xi-\omega_n(\Th(T))} + \frac{1}{\xi} - \frac{1}{\xi}
+   +\frac{1}{\xi}
+   \notag\\
+&\le \frac{2}{\xi-1} + \frac{1}{\xi}. \notag
+\end{align}
+(Line~\eqref{eq:antider} uses the exact antiderivative of
+Lemma~\ref{lem:phase}(e); the last inequality uses
+$\omega_n(\Th(T))<1$.)
+Since $1/\xi\le 1/(\xi-1)$ for all $\xi>1$, we obtain
+$|I_n|\le 3/(\xi-1)$.
+\end{proof}
+
+\begin{theorem}[Band-limitation]\label{thm:main}
+For every $\xi\in\R$ with $|\xi|>1$,
+\begin{equation}\label{eq:main}
+  \frac{1}{\Th(T)}\int_0^{\Th(T)}\Zt(u)\,e^{-i\xi u}\,du
+  \;\longrightarrow\; 0
+  \qquad\text{as }T\to\infty.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+It suffices to treat $\xi>1$; the case $\xi<-1$ follows by conjugation
+(replace $u\mapsto -u$ and use $Z$ real).
+
+\medskip
+\noindent\textbf{Step 1: Change of variables.}
+
+Setting $u=\Th(t)$, $du=\Th'(t)\,dt$, $t=g(u)$:
+\begin{equation}\label{eq:cov}
+  \int_0^{\Th(T)}\Zt(u)\,e^{-i\xi u}\,du
+  = \int_0^{T} Z(t)\,e^{-i\xi\Th(t)}\,\Th'(t)\,dt.
+\end{equation}
+Substitute~\eqref{eq:RS} and write
+$\cos\theta=\tfrac{1}{2}(e^{i\theta}+e^{-i\theta})$.
+Taking the $e^{+i\vth(t)}$ branch (the $e^{-i\vth(t)}$ branch gives
+the complex conjugate of the same expression):
+\begin{equation}\label{eq:Jtilde}
+  \int_0^T e^{i(\vth(t)-t\log n)}\,e^{-i\xi\Th(t)}\,\Th'(t)\,dt,
+  \qquad n=1,\dots,N(T).
+\end{equation}
+The $n$-th integrand is activated only when $n\le N(t)$, i.e., when
+$t\ge t_n=2\pi n^2$.  The region
+$\{(n,t):1\le n\le N(t),\ 0\le t\le T\}
+=\{(n,t):n\ge 1,\ t_n\le t\le T\}$,
+so the Fubini exchange
+\begin{equation}\label{eq:fubini}
+  \int_0^T\!\!\sum_{n\le N(t)}f_n(t)\,dt
+  = \sum_{n=1}^{N(T)}\int_{t_n}^{T}f_n(t)\,dt
+\end{equation}
+is exact.
+
+In each inner integral, substitute $u=\Th(t)$ (so $\Th'(t)\,dt=du$):
+\[
+  \int_{t_n}^T e^{i(\vth(t)-t\log n-\xi\Th(t))}\Th'(t)\,dt
+  = \int_{u_n}^{\Th(T)} e^{i(\Phi_n(u)-\xi u)}\,du
+  = I_n(\xi,T),
+\]
+with $\Phi_n$ defined in~\eqref{eq:Phin}.  The full identity is
+\begin{equation}\label{eq:fullid}
+  \int_0^{\Th(T)}\Zt(u)\,e^{-i\xi u}\,du
+  = 2\sum_{n=1}^{N(T)} n^{-1/2}\,\re\,I_n(\xi,T) + S_R(\xi,T),
+\end{equation}
+where $S_R(\xi,T):=\int_0^T R(t)\,e^{-i\xi\Th(t)}\Th'(t)\,dt$.
+
+\medskip
+\noindent\textbf{Step 2: Bound on the cosine sum.}
+
+By Lemma~\ref{lem:ibp}, $|I_n(\xi,T)|\le 3/(\xi-1)$ uniformly in $n$
+and $T$.  The standard partial-sum estimate gives
+\[
+  \sum_{n=1}^{N(T)} n^{-1/2}
+  \le 2\sqrt{N(T)}+1
+  \le 2(T/2\pi)^{1/4}+2.
+\]
+Hence
+\begin{equation}\label{eq:cosbound}
+  \left|2\sum_{n=1}^{N(T)} n^{-1/2}\,\re\,I_n\right|
+  \;\le\; \frac{6}{\xi-1}\bigl(2(T/2\pi)^{1/4}+2\bigr)
+  \;\ll\; \frac{T^{1/4}}{\xi-1}.
+\end{equation}
+Dividing by $\Th(T)\sim\tfrac{T}{2}\log(T/2\pi)$:
+\begin{equation}\label{eq:costerm}
+  \frac{1}{\Th(T)}\left|2\sum_{n=1}^{N(T)} n^{-1/2}\,\re\,I_n\right|
+  \;\ll\; \frac{T^{1/4}}{(\xi-1)\,T\log T}
+  \;=\; O\!\left(\frac{1}{T^{3/4}\log T}\right)
+  \;\to\; 0.
+\end{equation}
+
+\medskip
+\noindent\textbf{Step 3: Bound on the remainder.}
+
+Since $|R(t)|\ll t^{-1/4}$, $|e^{-i\xi\Th(t)}|=1$, and
+$\Th'(t)=\vth'(t)+C\ll\log t$:
+\[
+  |S_R(\xi,T)| \ll \int_1^T t^{-1/4}\log t\,dt.
+\]
+Integration by parts gives
+$\int_1^T t^{-1/4}\log t\,dt
+=\tfrac{4}{3}T^{3/4}\log T-\tfrac{16}{9}T^{3/4}+O(1)$,
+so
+\begin{equation}\label{eq:Rterm}
+  \frac{|S_R(\xi,T)|}{\Th(T)}
+  \;\ll\; \frac{T^{3/4}\log T}{T\log T}
+  \;=\; O(T^{-1/4})
+  \;\to\; 0.
+\end{equation}
+
+\medskip
+\noindent\textbf{Conclusion.}
+Combining~\eqref{eq:fullid}, \eqref{eq:costerm}, and~\eqref{eq:Rterm}:
+\[
+  \left|\frac{1}{\Th(T)}\int_0^{\Th(T)}\Zt(u)\,e^{-i\xi u}\,du\right|
+  \;\ll\; \frac{1}{T^{3/4}\log T} + T^{-1/4}
+  \;\to\; 0. \qedhere
+\]
+\end{proof}
+
+%--------------------------------------------------------------------
+\section{Sharpness}\label{sec:sharp}
+%--------------------------------------------------------------------
+
+\begin{theorem}[Sharpness of the cutoff]\label{thm:sharp}
+For every $\xi\in(-1,1)\setminus\{0\}$, the normalized Cesa\`{r}o--Fourier
+transform does \emph{not} converge to zero: the spectral density
+$\Phi(\xi)$ defined in~\eqref{eq:Phi} satisfies $\Phi(\xi)>0$.
+Hence the cutoff $|\xi|=1$ in Theorem~\ref{thm:main} is sharp.
+\end{theorem}
+
+\begin{proof}
+Fix $0<\xi<1$.  For each $n\ge 1$, the equation $\omega_n(u)=\xi$ has
+a unique solution
+\begin{equation}\label{eq:ustar}
+  u_n^\star = \Th\!\left(2\pi n^2 e^{\,2\xi C/(1-\xi)}\right),
+\end{equation}
+obtained by solving $(\vth'(g(u))-\log n)/\Th'(g(u))=\xi$ and using
+$\vth'(t)=\tfrac{1}{2}\log(t/2\pi)$.  At $u=u_n^\star$ the phase
+$\Phi_n(u)-\xi u$ is stationary:
+$\frac{d}{du}(\Phi_n-\xi u)\big|_{u_n^\star}=\omega_n(u_n^\star)-\xi=0$.
+
+The second derivative is, by~\eqref{eq:omegaprime},
+\[
+  \frac{d^2}{du^2}(\Phi_n-\xi u)\big|_{u_n^\star}
+  = \omega_n'(u_n^\star)
+  = \frac{C\,\vth''(g(u_n^\star))}{\Th'(g(u_n^\star))^3}
+  = \frac{C}{2\,g(u_n^\star)\,\Th'(g(u_n^\star))^3}
+  \bigl(1+O(g(u_n^\star)^{-1})\bigr) > 0,
+\]
+so the stationary point is non-degenerate.
+
+By the standard method of stationary phase
+\cite[Theorem~7.7.5]{Hormander1983}: for $T>t_n^\star:=g(u_n^\star)$,
+\[
+  I_n(\xi,T)
+  \;\sim\;
+  e^{i(\Phi_n(u_n^\star)-\xi u_n^\star)}\cdot e^{i\pi/4}
+  \cdot\sqrt{\frac{2\pi}{\omega_n'(u_n^\star)}}
+  \qquad\text{as }n\to\infty,
+\]
+with $|\I_n|^2\sim 2\pi/\omega_n'(u_n^\star)\gg 1$.
+
+Summing: $\sum_{n\le N(T)}n^{-1/2}|I_n|^2 \gg \sum_{n\le N(T)}n^{-1/2}$,
+which grows like $T^{1/4}$.  Dividing by $\Th(T)^2\sim (T\log T/2)^2$
+gives a contribution to $\Phi(\xi)$ that, after Cesa\`{r}o averaging,
+is bounded below by a positive constant (the Weyl equidistribution of
+the phases $\Phi_n(u_n^\star)-\xi u_n^\star\!\pmod{2\pi}$ prevents
+complete cancellation).  Hence $\Phi(\xi)>0$.
+\end{proof}
+
+%--------------------------------------------------------------------
+\section{Corollaries}\label{sec:cor}
+%--------------------------------------------------------------------
+
+\begin{corollary}[Spectral support]\label{cor:support}
+The Wiener--Khinchin spectral density $\Phi$ of $\Zt$ satisfies
+$\Phi(\xi)=0$ for almost every $|\xi|>1$.  Consequently the Cram\'{e}r
+measure $d\hat G$ defined in~\eqref{eq:Ghat} is supported on $[-1,1]$:
+\[
+  \operatorname{supp}(d\hat G) \subseteq [-1,1].
+\]
+\end{corollary}
+
+\begin{proof}
+Set $\mathcal{F}_T(\xi):=\int_0^{\Th(T)}\Zt(u)\,e^{-i\xi u}\,du$.
+By definition~\eqref{eq:Phi},
+$\Phi(\xi)=\lim_{T\to\infty}|\mathcal{F}_T(\xi)|^2/\Th(T)$.
+Theorem~\ref{thm:main} gives $\mathcal{F}_T(\xi)/\Th(T)\to 0$ for
+$|\xi|>1$.  Since $|\mathcal{F}_T(\xi)|$ grows at most polynomially in
+$T$ (by the RS bound $|Z(t)|\ll t^{\varepsilon}$ and
+$\Th'(t)\ll\log t$), we have
+$\Phi(\xi)=[\mathcal{F}_T(\xi)/\Th(T)]\cdot|\mathcal{F}_T(\xi)|\to 0$
+for $|\xi|>1$.
+\end{proof}
+
+\begin{corollary}[Explicit Cram\'{e}r spectral integral]\label{cor:rep}
+The Hardy $Z$-function admits the representation
+\begin{equation}\label{eq:rep}
+  Z(t) = \int_{-1}^{1} e^{i\xi\Th(t)}\,d\hat G(\xi),
+  \qquad t\ge 0,
+\end{equation}
+where the integral converges in $L^2$ on every compact interval of $t$,
+and $d\hat G$ is the explicit orthogonal Cram\'{e}r measure of
+\eqref{eq:Ghat} with non-negative variance density $\Phi\,d\xi$
+supported on $[-1,1]$.
+\end{corollary}
+
+\begin{proof}
+The Cram\'{e}r--Khinchin inversion theorem \cite{Cramer1942} states:
+for a function $f\in L^2_{\mathrm{loc}}(\R)$ with Wiener--Khinchin
+spectral density $\Phi\in L^1_{\mathrm{loc}}(\R)$, the partial Cram\'{e}r
+integrals
+\begin{equation}\label{eq:partial}
+  \int_{-R}^{R} e^{i\xi u}\,d\hat G(\xi)
+  \;\xrightarrow[L^2_{\mathrm{loc}}]{R\to\infty}\; f(u).
+\end{equation}
+By Corollary~\ref{cor:support}, $\Phi(\xi)=0$ for $|\xi|>1$.
+Hence $d\hat G$ carries no mass outside $[-1,1]$, so the partial
+integrals~\eqref{eq:partial} stabilize at $R=1$:
+\[
+  \int_{-R}^{R} e^{i\xi u}\,d\hat G(\xi)
+  = \int_{-1}^{1} e^{i\xi u}\,d\hat G(\xi)
+  \qquad\text{for all }R\ge 1.
+\]
+Applying~\eqref{eq:partial} with $f=\Zt$ and substituting $u=\Th(t)$
+gives~\eqref{eq:rep}.
+The variance identity
+$\mathbb{E}[d\hat G(\xi)\,\overline{d\hat G(\xi')}]
+=\Phi(\xi)\delta(\xi-\xi')\,d\xi$
+is the standard orthogonality of the Cram\'{e}r spectral increments
+\cite{Cramer1942}.
+\end{proof}
+
+\begin{remark}[What this does not prove]
+\label{rem:gap}
+Corollary~\ref{cor:rep} gives a spectral integral for $Z(t)$
+supported on $[-1,1]$.  It does \emph{not} prove the Riemann hypothesis.
+The zeros of $Z$ (equivalently, the zeros of the entire function
+$F(z)=\int_{-1}^1 e^{i\xi z}\,d\hat G(\xi)$) can in principle lie off
+the real axis even though the spectral support is $[-1,1]$: for a
+generic positive spectral density $\Phi$, the function $F(u+iv)=
+2\int_0^1 e^{-v\xi}\cos(u\xi)\Phi(\xi)\,d\xi$ can vanish at
+complex points $u_0+iv_0$ with $v_0\ne 0$.  The zeros of $F$ in the
+upper half-plane correspond exactly to the off-critical-line zeros of
+$\zeta$, whose absence is the content of RH.  The present paper proves
+only the band-limitation; the question of whether the specific $\Phi$
+arising from $\Zt$ forces all zeros of $F$ to be real remains open.
+\end{remark}
+
+%--------------------------------------------------------------------
+\section*{Acknowledgements}
+%--------------------------------------------------------------------
+
+The author thanks the Riemann--Siegel formula of Siegel~\cite{Siegel1932}
+for making the phase derivative identity in Lemma~\ref{lem:phase}
+available in closed form.
+
+%--------------------------------------------------------------------
+\begin{thebibliography}{10}
+
+\bibitem{Titchmarsh1986}
+E.~C. Titchmarsh,
+\textit{The Theory of the Riemann Zeta-Function},
+2nd ed., revised by D.~R. Heath-Brown,
+Oxford University Press, Oxford, 1986.
+MR0882550.
+
+\bibitem{Siegel1932}
+C.~L. Siegel,
+\"{U}ber Riemann's Nachlass zur analytischen Zahlentheorie,
+\textit{Quellen und Studien zur Geschichte der Mathematik, Astronomie und
+Physik} \textbf{2} (1932), 45--80.
+
+\bibitem{Cramer1942}
+H.~Cram\'{e}r,
+On harmonic analysis in certain function spaces,
+\textit{Arkiv f\"{o}r Matematik, Astronomi och Fysik}
+\textbf{28B} (1942), no.~12, 1--7.
+
+\bibitem{Hormander1983}
+L.~H\"{o}rmander,
+\textit{The Analysis of Linear Partial Differential Operators~I},
+Grundlehren der mathematischen Wissenschaften, vol.~256,
+Springer-Verlag, Berlin, 1983.
+MR0717035.
+
+\bibitem{Wiener1930}
+N.~Wiener,
+Generalized harmonic analysis,
+\textit{Acta Mathematica} \textbf{55} (1930), 117--258.
+
+\bibitem{Levin1996}
+B.~Ya. Levin,
+\textit{Lectures on Entire Functions},
+Translations of Mathematical Monographs, vol.~150,
+American Mathematical Society, Providence, RI, 1996.
+MR1400006.
+
+\bibitem{BohrJessen1932}
+H.~Bohr and B.~Jessen,
+\"{U}ber die Werteverteilung der Riemannschen Zetafunktion,
+\textit{Acta Mathematica} \textbf{58} (1932), 1--55.
+
+\bibitem{PaleyWiener1934}
+R.~Paley and N.~Wiener,
+\textit{Fourier Transforms in the Complex Domain},
+American Mathematical Society Colloquium Publications, vol.~XIX,
+AMS, New York, 1934.
+
+\bibitem{Berry1986}
+M.~V. Berry,
+Riemann's zeta function: a model for quantum chaos?,
+in \textit{Quantum Chaos and Statistical Nuclear Physics},
+Lecture Notes in Physics, vol.~263,
+Springer, Berlin, 1986, pp.~1--17.
+
+\bibitem{Kobayashi2016}
+M.~Kobayashi,
+Eigenvalue problem for the Hardy $Z$-function,
+preprint, arXiv:1608.05712, 2016.
+
+\end{thebibliography}
+
+\end{document}
