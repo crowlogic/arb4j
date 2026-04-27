@@ -197,7 +197,7 @@ Granting that, write \(y(t)=\sum_{k\ge1}a_k\,t^{k\mu}\); by \eqref{eq:prod_Muntz
 \[
 y(t)^2=\sum_{m=2}^{\infty}\!\Big(\sum_{\substack{j+\ell=m\\1\le j,\ell\le m-1}}\!a_j\,a_\ell\Big)t^{m\mu},
 \]
-which we abbreviate \(b_m:=\sum_{\substack{j+\ell=m\\1\le j,\ell\le m-1}}a_j\,a_\ell\) (with \(b_1=0\)).
+abbreviated \(b_m:=\sum_{\substack{j+\ell=m\\1\le j,\ell\le m-1}}a_j\,a_\ell\) (with \(b_1=0\)).
 Substituting into \eqref{eq:frac_riccati_V} and splitting the integral,
 \begin{align*}
 y(t)
@@ -468,7 +468,7 @@ A constant-coefficient fractional ODE in \(t\) is \emph{not} algebraic in \(t\) 
 After the substitution \(z=t^\mu\), the solution \(y(t)\) is represented by the convergent power series \(g(z)=\sum_{k\ge1}a_k\,z^k\) (\cref{thm:riccati_series}), whose coefficients satisfy the closed Gamma-ratio recurrence \eqref{eq:a1_const}--\eqref{eq:ak_const}.
 In this sense, \(z=t^\mu\) is the canonical \emph{analytic} variable for the problem: it converts the H\"older-continuous solution \(t\mapsto y(t)\) into a power-series-analytic function \(z\mapsto g(z)\), lifting the problem from the H\"older category into the analytic category and making the full machinery of complex analysis --- in particular Pad\'e approximation and analytic continuation --- available.
 
-We emphasize a point of precision: the substitution \(z=t^\mu\) does \emph{not} reduce the Volterra equation \eqref{eq:frac_riccati_V} to a local ordinary differential equation in \(z\). A direct change of variables converts \eqref{eq:frac_riccati_V} into the functional integral equation
+A point of precision deserves emphasis: the substitution \(z=t^\mu\) does \emph{not} reduce the Volterra equation \eqref{eq:frac_riccati_V} to a local ordinary differential equation in \(z\). A direct change of variables converts \eqref{eq:frac_riccati_V} into the functional integral equation
 \begin{equation}\label{eq:g_functional}
 g(z)\;=\;\frac{z}{\mu\,\Gamma(\mu)}\!\int_0^1(1-u^{1/\mu})^{\mu-1}\,u^{1/\mu-1}\,\bigl(c_0+c_1\,g(zu)+c_2\,g(zu)^2\bigr)\dd u,
 \end{equation}
@@ -484,7 +484,7 @@ When \(g(z)\) is meromorphic on \(\C\) (the hypothesis of \cref{thm:pade_riccati
 where the leading sector \(n=0\) is the Puiseux series of \cref{thm:riccati_series} and the higher sectors \(n\ge1\) encode \emph{non-perturbative} contributions controlled by the action \(A\) (the Riccati pole structure).
 The \emph{alien derivatives} \(\Delta_A\widetilde y\) of \'Ecalle measure the obstruction to analytic continuation across each singularity, and the \emph{Stokes constants} \(S_A\) record the discontinuities of the lateral Borel sums when crossing Stokes lines.
 For the constant-coefficient fractional Riccati, the leading-sector coefficients are exactly the M\"untz \(a_k\); the higher sectors capture the multivaluedness of \(y\) around the movable poles.
-The resurgent picture is established rigorously for integer-order ODEs with the Painlev\'e property and is conjectural in the fractional regime; we treat it here as a structural perspective unifying the M\"untz Tau, Pad\'e, and Riemann--Hilbert ingredients.
+The resurgent picture is established rigorously for integer-order ODEs with the Painlev\'e property and is conjectural in the fractional regime; it is treated here as a structural perspective unifying the M\"untz Tau, Pad\'e, and Riemann--Hilbert ingredients.
 
 \subsection{Pad\'e is computational Borel--Pad\'e resummation}
 
