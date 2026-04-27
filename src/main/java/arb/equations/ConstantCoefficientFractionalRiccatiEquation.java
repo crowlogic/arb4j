@@ -1,12 +1,9 @@
 package arb.equations;
 
+import java.util.*;
+
+import arb.*;
 import arb.Integer;
-import arb.Complex;
-import arb.ComplexMatrix;
-import arb.ComplexPolynomial;
-import arb.Initializable;
-import arb.Real;
-import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
@@ -14,11 +11,9 @@ import arb.functions.Function;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.integer.ComplexSequence;
 
-import java.util.Collections;
-import java.util.IdentityHashMap;
-import java.util.Set;
-
 /**
+ * FIXME: the ai wasn't keen enough to follow the fluent style. fix that
+ * 
  * Constant-coefficient (in time) fractional Riccati equation
  *
  * <pre>
@@ -28,13 +23,13 @@ import java.util.Set;
  * <p>
  * "Constant-coefficient" means the coefficients <code>p, q, r</code> do not
  * depend on time <code>t</code>. They are functions of the Fourier parameter
- * <code>v</code> alone — supplied as expression strings in <code>v</code>
- * (and any other parameters already registered in the supplied
- * {@link Context}). The fully general fractional Riccati would have
+ * <code>v</code> alone — supplied as expression strings in <code>v</code> (and
+ * any other parameters already registered in the supplied {@link Context}). The
+ * fully general fractional Riccati would have
  * <code>p(v,t), q(v,t), r(v,t)</code> — bivariate in <code>v</code> and
- * <code>t</code>; this class is the time-independent specialization, for
- * which the Müntz series and diagonal Padé reorganization of
- * qrh.tex §§2–3 yield a closed-form-via-recurrence solution.
+ * <code>t</code>; this class is the time-independent specialization, for which
+ * the Müntz series and diagonal Padé reorganization of qrh.tex §§2–3 yield a
+ * closed-form-via-recurrence solution.
  * </p>
  *
  * <p>
@@ -79,63 +74,67 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
                                                           AutoCloseable
 {
 
-  public static final String      FRACTIONAL_RICCATI_EQUATION = "t➔Đ^(μ)y(t)=t➔p(v)+q(v)*y(t)+r(v)*y(t)²";
+  public static final String FRACTIONAL_RICCATI_EQUATION = "t➔Đ^(μ)y(t)=t➔p(v)+q(v)*y(t)+r(v)*y(t)²";
 
   /**
-   * Fractional order μ ∈ (0,1), bound into the Context as the variable named
-   * "μ". After {@link #initialize()} runs, {@code this.α} is the very same
+   * Fractional order μ ∈ (0,1), bound into the Context as the variable named "μ".
+   * After {@link #initialize()} runs, {@code this.α} is the very same
    * {@link Real} instance that lives at name "μ" in the Context — by identity,
    * not by value-copy. Mutating either propagates to the other.
    *
-   * <p>If the caller's Context already has μ registered when the constructor
-   * runs, that pre-existing instance becomes {@code this.α} and the constructor
+   * <p>
+   * If the caller's Context already has μ registered when the constructor runs,
+   * that pre-existing instance becomes {@code this.α} and the constructor
    * argument α is used only to seed its numeric value (existingMu.set(seed)).
-   * Otherwise a fresh {@link Real} is created, seeded, and registered.</p>
+   * Otherwise a fresh {@link Real} is created, seeded, and registered.
+   * </p>
    */
-  public Real                     α;
+  public Real                α;
 
   /**
    * Whether {@link #α} is owned by this instance (true: created here, must be
-   * closed in {@link #close()}) or borrowed from the caller's Context (false:
-   * the caller is responsible for closing it).
+   * closed in {@link #close()}) or borrowed from the caller's Context (false: the
+   * caller is responsible for closing it).
    */
-  private boolean                 ownsAlpha;
+  private boolean            ownsAlpha;
 
   /**
    * Seed value for α, captured from the constructor argument. Used by
-   * {@link #initialize()} to populate whichever Real ends up canonical.
-   * Closed during {@link #close()} only if it was a fresh allocation we
-   * never adopted as canonical (i.e. the caller's μ was already present).
+   * {@link #initialize()} to populate whichever Real ends up canonical. Closed
+   * during {@link #close()} only if it was a fresh allocation we never adopted as
+   * canonical (i.e. the caller's μ was already present).
    */
-  private final Real              αSeed                       = new Real();
+  private final Real         αSeed                       = new Real();
 
   /** Source expression for p(v). */
-  public String                   constantTerm;
+  public String              constantTerm;
   /** Source expression for q(v). */
-  public String                   linearTerm;
+  public String              linearTerm;
   /** Source expression for r(v). */
-  public String                   quadraticTerm;
+  public String              quadraticTerm;
 
-  /** Compiled p(v), q(v), r(v) as ComplexFunctions over the Fourier parameter v. */
-  public ComplexFunction          p;
-  public ComplexFunction          q;
-  public ComplexFunction          r;
+  /**
+   * Compiled p(v), q(v), r(v) as ComplexFunctions over the Fourier parameter v.
+   */
+  public ComplexFunction     p;
+  public ComplexFunction     q;
+  public ComplexFunction     r;
 
   /**
    * The compiled Müntz coefficient sequence k ↦ a_k — a
-   * {@code Function<Integer,Complex>} whose body reads p, q, r and v from
-   * the Context. Driven by one expression, no Java arithmetic loop. To
-   * obtain a_k at a new v, mutate the Context's v and re-evaluate.
+   * {@code Function<Integer,Complex>} whose body reads p, q, r and v from the
+   * Context. Driven by one expression, no Java arithmetic loop. To obtain a_k at
+   * a new v, mutate the Context's v and re-evaluate.
    */
-  public ComplexSequence          a;
+  public ComplexSequence     a;
 
   /**
    * The Fourier parameter v as a Complex Context variable. If the user already
    * registered "v" in the supplied Context, that reference is reused and the
-   * caller retains ownership of the storage; otherwise a fresh Complex is
-   * created and registered.
+   * caller retains ownership of the storage; otherwise a fresh Complex is created
+   * and registered.
    */
-  public Complex                  v;
+  public Complex             v;
 
   public ConstantCoefficientFractionalRiccatiEquation(Context context, Real α, String p, String q, String r)
   {
@@ -203,9 +202,9 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
 
     // Compile the Müntz recurrence as two mutually-recursive sequences.
     //
-    //   S(k) = Σ_{j=1}^{k-2} a(j)·a(k-1-j)         convolution sum
-    //   a(k) = when k=1: p(v)/Γ(μ+1)
-    //          else:    γ_k · ( q(v)·a(k-1) + r(v)·S(k) )
+    // S(k) = Σ_{j=1}^{k-2} a(j)·a(k-1-j) convolution sum
+    // a(k) = when k=1: p(v)/Γ(μ+1)
+    // else: γ_k · ( q(v)·a(k-1) + r(v)·S(k) )
     //
     // Splitting the convolution out of the body of `a` avoids the
     // sum-with-recursion-inline pattern that the expression compiler
@@ -222,10 +221,7 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
     // `a` is then compiled, replace=true overwrites the prototype with
     // the real expression. Empty-range sum at k=2 (j=1..0) returns the
     // additive identity, implementing Remark 2.2 of qrh.tex.
-    context.registerFunctionMapping("a",
-                                    Integer.class,
-                                    Complex.class,
-                                    ComplexSequence.class);
+    context.registerFunctionMapping("a", Integer.class, Complex.class, ComplexSequence.class);
 
     // Parse, compile and register S without instantiating it. This generates
     // class bytecode for S and registers the FunctionMapping, but defers
@@ -237,9 +233,7 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
     // Now express `a`, which compiles class bytecode for `a` and instantiates it.
     // By this point both classes S and a are defined in the ExpressionClassLoader,
     // so the field-injection reflection walk on `a` resolves successfully.
-    String aExpr = "a:k➔when(k=1, p(v)/Γ(μ+1),"
-                   + " else, (Γ((k-1)*μ+1)/Γ(k*μ+1))"
-                   + "       *(q(v)*a(k-1)+r(v)*S(k)))";
+    String aExpr = "a:k➔when(k=1, p(v)/Γ(μ+1)," + " else, (Γ((k-1)*μ+1)/Γ(k*μ+1))" + "       *(q(v)*a(k-1)+r(v)*S(k)))";
     a = ComplexSequence.express(aExpr, context);
 
     // The FRACTIONAL_RICCATI_EQUATION constant exists as a textual
@@ -258,10 +252,9 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
    * The compiled Müntz coefficient sequence a_k.
    *
    * <p>
-   * Returned as a {@link ComplexSequence}
-   * ({@code Function<Integer, Complex>}) whose body reads p, q, r and the
-   * Fourier parameter v from the Context. Mutating the Context's v and
-   * re-evaluating produces a_k at the new v.
+   * Returned as a {@link ComplexSequence} ({@code Function<Integer, Complex>})
+   * whose body reads p, q, r and the Fourier parameter v from the Context.
+   * Mutating the Context's v and re-evaluating produces a_k at the new v.
    * </p>
    */
   public ComplexSequence muntzCoefficients()
@@ -272,25 +265,24 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
   /**
    * Diagonal (M,M) Padé approximant <code>R_M(z) = P_M(z)/Q_M(z)</code> of
    * <code>g(z) = y(z^{1/μ}) = Σ a_k(v) zᵏ</code> at the current Context
-   * <code>v</code>, returned as a callable
-   * {@link ComplexFunction} whose <code>evaluate(z, ...)</code> computes
-   * <code>P_M(z)/Q_M(z)</code>.
+   * <code>v</code>, returned as a callable {@link ComplexFunction} whose
+   * <code>evaluate(z, ...)</code> computes <code>P_M(z)/Q_M(z)</code>.
    *
    * <p>
    * Internally:
    * <ol>
    * <li>evaluate the first <code>2M</code> Müntz coefficients at the current
    * Context <code>v</code> to scalars <code>α_k ∈ ℂ</code>;</li>
-   * <li>build the Hankel matrix
-   * <code>H_M[i][j] = α_{M+i-j}</code>, RHS <code>b[i] = α_{M+1+i}</code>;</li>
+   * <li>build the Hankel matrix <code>H_M[i][j] = α_{M+i-j}</code>, RHS
+   * <code>b[i] = α_{M+1+i}</code>;</li>
    * <li>solve <code>H_M·q = -b</code> via {@code acb_mat_solve}; if singular
    * (<code>acb_mat_solve</code> returns 0), fall back to order <code>M-1</code>
    * (Remark 3.2);</li>
    * <li>back-substitute the numerator: <code>p_0 = 0</code>, and for
    * <code>n=1..M</code>,
    * <code>p_n = α_n + Σ_{j=1}^{min(n,M)} q_j·α_{n-j}</code>;</li>
-   * <li>register <code>P_M, Q_M</code> as polynomials in a per-call
-   * sub-context, return the compiled
+   * <li>register <code>P_M, Q_M</code> as polynomials in a per-call sub-context,
+   * return the compiled
    * <code>ComplexFunction.express("ℛ", "z -> P(z)/Q(z)", subCtx)</code>.</li>
    * </ol>
    * </p>
@@ -323,9 +315,9 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
 
   /**
    * Diagonal (M,M) Padé numerator and denominator polynomials
-   * <code>{P_M, Q_M}</code> of
-   * <code>g(z) = y(z^{1/μ}) = Σ a_k(v) zᵏ</code> at the current Context
-   * <code>v</code>, returned as a length-two array <code>{P_M, Q_M}</code>.
+   * <code>{P_M, Q_M}</code> of <code>g(z) = y(z^{1/μ}) = Σ a_k(v) zᵏ</code> at
+   * the current Context <code>v</code>, returned as a length-two array
+   * <code>{P_M, Q_M}</code>.
    *
    * <p>
    * Same construction as {@link #padeApproximant(int,int)} but exposes the
@@ -338,15 +330,15 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
    * </pre>
    *
    * i.e. that the diagonal (M,M) Padé approximant matches the first
-   * <code>2M+1</code> Taylor coefficients of <code>g(z)</code> exactly
-   * (qrh.tex §3.1).
+   * <code>2M+1</code> Taylor coefficients of <code>g(z)</code> exactly (qrh.tex
+   * §3.1).
    * </p>
    *
    * @param M    diagonal Padé order
    * @param bits working precision
    * @return <code>{P_M, Q_M}</code>
-   * @throws ArithmeticException if the Hankel system is singular at every
-   *         order from M down to 1
+   * @throws ArithmeticException if the Hankel system is singular at every order
+   *                             from M down to 1
    */
   public ComplexPolynomial[] padePolynomials(int M, int bits)
   {
@@ -356,10 +348,10 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
     }
 
     // Stage 2.1 — evaluate the first 2M Müntz coefficients at the current v.
-    Complex coeff = evaluateMuntzCoefficientsAtV(2 * M, bits);
+    Complex coeff    = evaluateMuntzCoefficientsAtV(2 * M, bits);
 
     // Stage 2.2 — assemble Hankel system. Try order M; on singular fall back.
-    int currentM = M;
+    int     currentM = M;
     while (currentM >= 1)
     {
       ComplexPolynomial[] PQ = solveHankel(coeff, currentM, bits);
@@ -369,9 +361,7 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
       }
       currentM--;
     }
-    throw new ArithmeticException("All Padé orders ≤ "
-                                  + M
-                                  + " produced singular Hankel matrices at the current v");
+    throw new ArithmeticException("All Padé orders ≤ " + M + " produced singular Hankel matrices at the current v");
   }
 
   /**
@@ -379,11 +369,10 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
    * <code>α_k = a_k(v)</code> at the current Context <code>v</code>.
    *
    * <p>
-   * Returned as scalars <code>α_k ∈ ℂ</code> for <code>k = 1..n</code>.
-   * Index 0 of the array holds <code>α_1</code>, since
-   * <code>a_0 ≡ 0</code> by the initial condition <code>y(0)=0</code>.
-   * Public so tests can inspect the truncated Müntz series
-   * <code>g_n(z) = Σ_{k=1}^{n} α_k z^k</code> directly.
+   * Returned as scalars <code>α_k ∈ ℂ</code> for <code>k = 1..n</code>. Index 0
+   * of the array holds <code>α_1</code>, since <code>a_0 ≡ 0</code> by the
+   * initial condition <code>y(0)=0</code>. Public so tests can inspect the
+   * truncated Müntz series <code>g_n(z) = Σ_{k=1}^{n} α_k z^k</code> directly.
    * </p>
    */
   public Complex muntzCoefficientsAtV(int n, int bits)
@@ -392,18 +381,18 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
   }
 
   /**
-   * Solve the fractional Riccati equation. Returns a callable
-   * <code>y(t)</code> evaluable on <code>[0,∞)</code> at the working precision
-   * specified by <code>bits</code>. The Fourier parameter <code>v</code> is a
-   * Context variable: generated code reads it by reference. To change
-   * <code>v</code>, the caller mutates the bound <code>Complex</code> and
-   * re-evaluates — no recompilation.
+   * Solve the fractional Riccati equation. Returns a callable <code>y(t)</code>
+   * evaluable on <code>[0,∞)</code> at the working precision specified by
+   * <code>bits</code>. The Fourier parameter <code>v</code> is a Context
+   * variable: generated code reads it by reference. To change <code>v</code>, the
+   * caller mutates the bound <code>Complex</code> and re-evaluates — no
+   * recompilation.
    *
    * <p>
    * Internally uses the Müntz–Padé construction: <code>M</code> Müntz
    * coefficients drive a diagonal <code>(M,M)</code> Padé approximant
-   * <code>R_M(z)</code> of <code>g(z) = y(z^{1/μ})</code>, and
-   * <code>y(t)</code> is recovered as <code>t → R_M(t^μ)</code>.
+   * <code>R_M(z)</code> of <code>g(z) = y(z^{1/μ})</code>, and <code>y(t)</code>
+   * is recovered as <code>t → R_M(t^μ)</code>.
    * </p>
    *
    * <p>
@@ -423,24 +412,23 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
 
     // Stage 4 — adaptive selection. Probe at z=1 (canonical), grow M until
     // successive-difference bound stops decreasing or maxOrder is reached.
-    int M = chooseAdaptiveOrder(maxOrder, bits);
+    int             M      = chooseAdaptiveOrder(maxOrder, bits);
 
     // Stage 2 — Padé approximant at the current v.
-    ComplexFunction R_M = padeApproximant(M, bits);
+    ComplexFunction R_M    = padeApproximant(M, bits);
 
     // Stage 3 — compose with the Müntz substitution z = t^μ. The result is a
     // ComplexFunction in t. ℛ is registered as a function in a per-call
     // sub-context so the expression compiler can resolve ℛ(t^μ). The script
     // capital ℛ (U+211B) is used instead of plain R because R is reserved
     // for the built-in real-number type (Expression.BUILTIN_FUNCTION_NAMES).
-    Context subCtx = newSubContext();
+    Context         subCtx = newSubContext();
     subCtx.registerFunction("ℛ", R_M);
     return ComplexFunction.express("y", "t➔ℛ(t^μ)", subCtx);
   }
 
   /**
-   * The a-posteriori successive-difference error bound (qrh.tex
-   * eq:error_bound):
+   * The a-posteriori successive-difference error bound (qrh.tex eq:error_bound):
    *
    * <pre>
    *   |y(t) - y_M(t)| ≤ |Δ_M(z)|² / ( |Δ_{M-1}(z)| - |Δ_M(z)| ),    z = t^μ
@@ -454,45 +442,43 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
    * @param bits working precision
    * @return ball containing the bound
    */
-  public Real successiveDifferenceErrorBound(int M, Complex z, int bits)
+  public Real successiveDifferenceErrorBound(int M, Complex z, int bits, Real result)
   {
     if (M < 2)
     {
       throw new IllegalArgumentException("Successive-difference bound requires M ≥ 2, got " + M);
     }
 
-    ComplexFunction R_M     = padeApproximant(M, bits);
-    ComplexFunction R_Mm1   = padeApproximant(M - 1, bits);
-    ComplexFunction R_Mm2   = padeApproximant(M - 2, bits);
+    ComplexFunction R_M   = padeApproximant(M, bits);
+    ComplexFunction R_Mm1 = padeApproximant(M - 1, bits);
+    ComplexFunction R_Mm2 = padeApproximant(M - 2, bits);
 
-    Complex         valM    = new Complex().setName("R_M(z)");
-    Complex         valMm1  = new Complex().setName("R_{M-1}(z)");
-    Complex         valMm2  = new Complex().setName("R_{M-2}(z)");
+    try ( Complex valM = Complex.named("R_M(z)"); Complex valMm1 = Complex.named("R_{M-1}(z)"); Complex valMm2 = Complex.named("R_{M-2}(z)");)
+    {
 
-    R_M.evaluate(z, 1, bits, valM);
-    R_Mm1.evaluate(z, 1, bits, valMm1);
-    R_Mm2.evaluate(z, 1, bits, valMm2);
+      R_M.evaluate(z, 1, bits, valM);
+      R_Mm1.evaluate(z, 1, bits, valMm1);
+      R_Mm2.evaluate(z, 1, bits, valMm2);
 
-    // Δ_M = R_M - R_{M-1}, Δ_{M-1} = R_{M-1} - R_{M-2}
-    Complex deltaM   = new Complex();
-    Complex deltaMm1 = new Complex();
-    valM.sub(valMm1, bits, deltaM);
-    valMm1.sub(valMm2, bits, deltaMm1);
+      // Δ_M = R_M - R_{M-1}, Δ_{M-1} = R_{M-1} - R_{M-2}
+      Complex deltaM   = new Complex();
+      Complex deltaMm1 = new Complex();
+      valM.sub(valMm1, bits, deltaM);
+      valMm1.sub(valMm2, bits, deltaMm1);
 
-    Real    absM    = new Real();
-    Real    absMm1  = new Real();
-    deltaM.abs(bits, absM);
-    deltaMm1.abs(bits, absMm1);
+      Real absM   = new Real();
+      Real absMm1 = new Real();
+      deltaM.abs(bits, absM);
+      deltaMm1.abs(bits, absMm1);
 
-    Real    num     = new Real();
-    absM.mul(absM, bits, num);
+      Real num = new Real();
+      absM.mul(absM, bits, num);
 
-    Real    denom   = new Real();
-    absMm1.sub(absM, bits, denom);
+      Real denom = new Real();
+      absMm1.sub(absM, bits, denom);
 
-    Real    bound   = new Real();
-    num.div(denom, bits, bound);
-    return bound;
+      return num.div(denom, bits, result);
+    }
   }
 
   // ────────────────────────────────────────────────────────────────────────
@@ -501,18 +487,18 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
 
   /**
    * Evaluate the first {@code n} Müntz coefficients at the current Context v.
-   * Returns scalars α_k = a_k(v) ∈ ℂ for k=1..n as a {@link Complex}
-   * vector of length n; <code>get(k-1)</code> retrieves α_k since
-   * <code>a_0</code> is identically zero by the initial condition.
+   * Returns scalars α_k = a_k(v) ∈ ℂ for k=1..n as a {@link Complex} vector of
+   * length n; <code>get(k-1)</code> retrieves α_k since <code>a_0</code> is
+   * identically zero by the initial condition.
    */
   private Complex evaluateMuntzCoefficientsAtV(int n, int bits)
   {
-    Complex     out = Complex.newVector(n);
-    arb.Integer idx = new arb.Integer();
+    Complex out = Complex.newVector(n);
+    int     idx;
     for (int k = 1; k <= n; k++)
     {
-      idx.set(k);
-      a.evaluate(idx, 1, bits, out.get(k - 1));
+      idx = k;
+      a.evaluate(idx, bits, out.get(k - 1));
     }
     return out;
   }
@@ -560,7 +546,7 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
     }
 
     ComplexMatrix qMat = ComplexMatrix.newMatrix(M, 1);
-    int            ok   = arblib.acb_mat_solve(qMat, H, neg_b, bits);
+    int           ok   = arblib.acb_mat_solve(qMat, H, neg_b, bits);
     if (ok == 0)
     {
       return null; // singular at this precision — caller falls back to M-1
@@ -586,39 +572,40 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
     // Back-substitute: p_0 = 0; p_n = α_n + Σ_{j=1}^{min(n,M)} q_j α_{n-j}.
     // Scratch instances are allocated once outside both loops and reused
     // across iterations — in-place arithmetic, no per-iteration allocation.
-    ComplexPolynomial P_M  = new ComplexPolynomial();
+    ComplexPolynomial P_M = new ComplexPolynomial();
     P_M.fitLength(M + 1);
     P_M.setLength(M + 1);
     P_M.get(0).zero();
-    Complex pn   = new Complex();
-    Complex acc  = new Complex();
-    Complex term = new Complex();
-    for (int n = 1; n <= M; n++)
+    try ( Complex pn = new Complex(); Complex acc = new Complex(); Complex term = new Complex();)
     {
-      pn.set(coeff.get(n - 1)); // α_n
-      acc.zero();
-      for (int j = 1; j <= Math.min(n, M); j++)
+      for (int n = 1; n <= M; n++)
       {
-        // q_j · α_{n-j}, n-j ∈ [0, n-1]; α_0 = 0, so skip n-j=0.
-        if (n - j == 0)
+        pn.set(coeff.get(n - 1)); // α_n
+        acc.zero();
+        for (int j = 1; j <= Math.min(n, M); j++)
         {
-          continue;
+          // q_j · α_{n-j}, n-j ∈ [0, n-1]; α_0 = 0, so skip n-j=0.
+          if (n - j == 0)
+          {
+            continue;
+          }
+          qMat.get(j - 1, 0).mul(coeff.get(n - j - 1), bits, term);
+          acc.add(term, bits, acc);
         }
-        qMat.get(j - 1, 0).mul(coeff.get(n - j - 1), bits, term);
-        acc.add(term, bits, acc);
+        pn.add(acc, bits, pn);
+        P_M.set(n, pn);
       }
-      pn.add(acc, bits, pn);
-      P_M.set(n, pn);
     }
 
-    return new ComplexPolynomial[] { P_M, Q_M };
+    return new ComplexPolynomial[]
+    { P_M, Q_M };
   }
 
   /**
-   * Assemble R_M(z) = P_M(z) / Q_M(z) as a callable ComplexFunction.
-   * P_M and Q_M are registered in a per-call sub-context that inherits the
-   * parent Context's variables (μ, v, and any user-defined parameters), then
-   * the rational expression is compiled.
+   * Assemble R_M(z) = P_M(z) / Q_M(z) as a callable ComplexFunction. P_M and Q_M
+   * are registered in a per-call sub-context that inherits the parent Context's
+   * variables (μ, v, and any user-defined parameters), then the rational
+   * expression is compiled.
    */
   private ComplexFunction assemblePadeFunction(ComplexPolynomial P_M, ComplexPolynomial Q_M)
   {
@@ -629,10 +616,10 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
   }
 
   /**
-   * Adaptive Padé order selection. Probes the successive-difference bound at
-   * z = 1 (canonical scale; the substitution z = t^μ maps t=1 to z=1) and
-   * grows M until the bound stops shrinking by more than a factor of 10
-   * between consecutive orders or maxOrder is reached.
+   * Adaptive Padé order selection. Probes the successive-difference bound at z =
+   * 1 (canonical scale; the substitution z = t^μ maps t=1 to z=1) and grows M
+   * until the bound stops shrinking by more than a factor of 10 between
+   * consecutive orders or maxOrder is reached.
    *
    * <p>
    * The bound requires M≥2; for maxOrder=1 the choice is forced.
@@ -649,40 +636,42 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
 
     Real prevBound = null;
     int  best      = 2;
-    for (int M = 2; M <= maxOrder; M++)
+    try ( Real ratio = new Real(); Real threshold = Real.valueOf("0.1", bits);)
     {
-      Real currentBound;
-      try
+
+      for (int M = 2; M <= maxOrder; M++)
       {
-        currentBound = successiveDifferenceErrorBound(M, zProbe, bits);
-      }
-      catch (ArithmeticException e)
-      {
-        // Hankel singularity at this M; keep the best so far.
-        return best;
-      }
-      best = M;
-      if (prevBound != null)
-      {
-        // Stop when the relative improvement falls below 10x — heuristic
-        // matching the Padé convergence rate in qrh.tex §3.5.
-        Real ratio     = new Real();
-        currentBound.div(prevBound, bits, ratio);
-        Real threshold = new Real().set("0.1", bits);
-        if (ratio.compareTo(threshold) >= 0)
+        Real currentBound;
+        try
         {
-          return M;
+          currentBound = successiveDifferenceErrorBound(M, zProbe, bits, new Real());
         }
+        catch (ArithmeticException e)
+        {
+          // Hankel singularity at this M; keep the best so far.
+          return best;
+        }
+        best = M;
+        if (prevBound != null)
+        {
+          // Stop when the relative improvement falls below 10x — heuristic
+          // matching the Padé convergence rate in qrh.tex §3.5.
+          currentBound.div(prevBound, bits, ratio);
+          if (ratio.compareTo(threshold) >= 0)
+          {
+            return M;
+          }
+        }
+        prevBound = currentBound;
       }
-      prevBound = currentBound;
     }
     return maxOrder;
   }
 
   /**
    * Build a sub-context that inherits the parent Context's variables and
-   * functions, used as a scratch namespace for per-call registrations
-   * (P, Q polynomials in {@link #padeApproximant}, R in {@link #solve}).
+   * functions, used as a scratch namespace for per-call registrations (P, Q
+   * polynomials in {@link #padeApproximant}, R in {@link #solve}).
    */
   private Context newSubContext()
   {
@@ -702,15 +691,15 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
   }
 
   /**
-   * Drop the static-subexpression caches of every compiled function whose
-   * body references the Fourier parameter v (the Context variable driving
-   * the Müntz coefficients): p, q, r, S, a. Call this whenever v is
-   * mutated in place between a(k) or downstream evaluations—otherwise
-   * hoisted v-dependent subtrees retain their values from the previous v
-   * and a(k) returns stale results.
+   * Drop the static-subexpression caches of every compiled function whose body
+   * references the Fourier parameter v (the Context variable driving the Müntz
+   * coefficients): p, q, r, S, a. Call this whenever v is mutated in place
+   * between a(k) or downstream evaluations—otherwise hoisted v-dependent subtrees
+   * retain their values from the previous v and a(k) returns stale results.
    *
-   * <p>The {@link arb.functions.Function#invalidateCache()} default
-   * is a no-op, so functions without hoisted state are unaffected.
+   * <p>
+   * The {@link arb.functions.Function#invalidateCache()} default is a no-op, so
+   * functions without hoisted state are unaffected.
    *
    * @see arb.functions.Function#invalidateCache()
    * @see <a href="https://github.com/crowlogic/arb4j/issues/958">issue #958</a>
@@ -718,15 +707,19 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
   public void invalidateCache()
   {
     Set<Function<?, ?>> alreadyInvalidated = Collections.newSetFromMap(new IdentityHashMap<>());
-    if (p != null) p.invalidateCache(alreadyInvalidated);
-    if (q != null) q.invalidateCache(alreadyInvalidated);
-    if (r != null) r.invalidateCache(alreadyInvalidated);
+    if (p != null)
+      p.invalidateCache(alreadyInvalidated);
+    if (q != null)
+      q.invalidateCache(alreadyInvalidated);
+    if (r != null)
+      r.invalidateCache(alreadyInvalidated);
     var sMapping = context.<Integer, Complex, ComplexSequence>getFunctionMapping("S");
     if (sMapping != null && sMapping.instance != null)
     {
       sMapping.instance.invalidateCache(alreadyInvalidated);
     }
-    if (a != null) a.invalidateCache(alreadyInvalidated);
+    if (a != null)
+      a.invalidateCache(alreadyInvalidated);
   }
 
   @Override
