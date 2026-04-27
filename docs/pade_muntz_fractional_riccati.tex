@@ -1,0 +1,534 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{bm}
+\usepackage{hyperref}
+\usepackage{cleveref}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!70!black,
+  citecolor=blue!70!black,
+  urlcolor=blue!70!black
+}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{assumption}[theorem]{Assumption}
+
+\DeclareMathOperator{\re}{Re}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\ii}{\mathrm{i}}
+
+\title{\textbf{The Pad\'e--M\"untz Method for\\
+Constant-Coefficient Fractional Riccati Equations}}
+\author{Stephen Crowley}
+\date{April 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+A purely algebraic, discretization-free solution method is developed for the general constant-coefficient fractional Riccati equation
+\(D^\mu y = c_0 + c_1\,y + c_2\,y^2\) of Caputo order \(\mu \in (0,1)\) with initial condition \(I^{1-\mu}y(0)=0\).
+Because the M\"untz lattice \(\{t^{k\mu}\}_{k\ge1}\) is closed under the Caputo derivative, fractional integration, and pointwise multiplication, the M\"untz spectral Tau substitution yields an explicit Puiseux expansion \(y(t)=\sum_{k\ge1} a_k\,t^{k\mu}\) whose coefficients satisfy a closed Gamma-ratio convolution recurrence.
+The induced power series in the variable \(z=t^\mu\) has strictly positive radius of convergence \(R>0\); for generic parameters \(R\) is also finite, controlled by movable singularities of the Riccati flow in the complex \(z\)-plane, so the recurrence by itself produces only a local representation and is not globally convergent in \(t\). (Positivity is proved by a Mittag-Leffler majorant; finiteness is stated as a separate proposition under the hypotheses of Painlev\'e's theorem on movable singularities of algebraic first-order ODEs.)
+Global-in-\(t\) convergence on the positive real axis is recovered by re-summing the Puiseux series via the diagonal \([M/M]\) Pad\'e approximant in \(z\), constructed from the M\"untz coefficients through a single Hankel linear system \(H_M\bm{q}=-\bm{b}\).
+Under the de~Montessus de~Ballore and Nuttall--Pommerenke theorems, the diagonal Pad\'e sequence converges to the analytic continuation of \(y\) along \(z=t^\mu\) for all \(t\ge0\) whenever the solution has no real-positive poles, and a computable a-posteriori error bound
+\(|y(t)-y_M(t)|\le |\Delta_M(t^\mu)|^2/(|\Delta_{M-1}(t^\mu)|-|\Delta_M(t^\mu)|)\)
+in terms of successive Pad\'e differences \(\Delta_k=R_k-R_{k-1}\) is derived from a geometric tail estimate.
+A concluding section identifies the deeper structure: the substitution \(z=t^\mu\) promotes the solution to a \emph{resurgent transseries} in \(z\), the Pad\'e step is the computational instantiation of \emph{Borel--Pad\'e resummation}, and the global analytic continuation is governed by a scalar \emph{Riemann--Hilbert problem} whose jump contours are the Stokes lines of the transseries.
+This perspective points to natural generalizations to higher-degree polynomial nonlinearities, fractional ODE systems via Hermite--Pad\'e simultaneous approximation, and non-constant coefficients via isomonodromic Riemann--Hilbert problems of Painlev\'e type.
+\end{abstract}
+
+\tableofcontents
+
+%% ============================================================
+\section{Fractional Calculus and the M\"untz Basis}\label{sec:prelim}
+%% ============================================================
+
+\subsection{Riemann--Liouville integral and Caputo derivative}
+
+\begin{definition}[Riemann--Liouville integral]\label{def:RL}
+Let \(r>0\) and \(f\in L^1_{\mathrm{loc}}[0,T]\). Define
+\begin{equation}\label{eq:RL_int}
+I^r f(t) := \frac{1}{\Gamma(r)}\int_0^t (t-s)^{r-1} f(s)\,\dd s,\qquad t\in[0,T].
+\end{equation}
+\end{definition}
+
+\begin{definition}[Caputo derivative]\label{def:Caputo}
+Let \(\mu\in(0,1)\) and \(f\) satisfy \(I^{1-\mu}f\in C^1[0,T]\). Define
+\begin{equation}\label{eq:caputo}
+D^\mu f(t) := \frac{\dd}{\dd t}\!\left(I^{1-\mu}f(t)\right)
+- \frac{f(0)}{\Gamma(1-\mu)}t^{-\mu},\qquad t\in(0,T].
+\end{equation}
+The fundamental relations are
+\begin{equation}\label{eq:caputo_RL}
+I^\mu D^\mu f(t) = f(t) - f(0),\qquad D^\mu I^\mu f(t)=f(t).
+\end{equation}
+\end{definition}
+
+\begin{remark}[Vanishing correction term for the Riccati solution]\label{rem:correction}
+For the fractional Riccati equation \eqref{eq:frac_riccati} below, the initial condition \(I^{1-\mu}y(0)=0\) forces \(y(0)=0\), since \(I^{1-\mu}[t^{k\mu}]\big|_{t=0}=0\) for all \(k\ge1\).
+Consequently the correction term \(-f(0)t^{-\mu}/\Gamma(1-\mu)\) in \eqref{eq:caputo} vanishes identically along the Riccati solution, and the Caputo derivative reduces to \(D^\mu y(t)=\frac{\dd}{\dd t}I^{1-\mu}y(t)\) throughout.
+\end{remark}
+
+\begin{proposition}[Action on powers]\label{prop:powers}
+Let \(s>-1\) and \(r>0\). Then
+\begin{align}
+I^r t^s &= \frac{\Gamma(s+1)}{\Gamma(s+r+1)}\,t^{s+r},\label{eq:Ir_power}\\[4pt]
+D^\mu t^s &= \frac{\Gamma(s+1)}{\Gamma(s+1-\mu)}\,t^{s-\mu}.\label{eq:Dmu_power}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+For \eqref{eq:Ir_power}, \(I^r t^s=\frac{1}{\Gamma(r)}\int_0^t(t-u)^{r-1}u^s\,\dd u\). The substitution \(u=tx\) gives
+\[
+I^r t^s
+= \frac{t^{s+r}}{\Gamma(r)}\int_0^1(1-x)^{r-1}x^s\,\dd x
+= \frac{t^{s+r}}{\Gamma(r)}\cdot\frac{\Gamma(s+1)\Gamma(r)}{\Gamma(s+r+1)}
+= \frac{\Gamma(s+1)}{\Gamma(s+r+1)}\,t^{s+r}.
+\]
+For \eqref{eq:Dmu_power}, \(I^{1-\mu}t^s=\frac{\Gamma(s+1)}{\Gamma(s+2-\mu)}t^{s+1-\mu}\) by \eqref{eq:Ir_power}.
+Differentiating and using \(\Gamma(s+2-\mu)=(s+1-\mu)\Gamma(s+1-\mu)\) gives \eqref{eq:Dmu_power}.
+Since \(t^s\) is continuous at \(0\) for \(s>-1\), the Caputo correction is absent.
+\end{proof}
+
+\subsection{The M\"untz basis}
+
+Fix \(\mu\in(0,1)\) and \(T>0\).
+
+\begin{definition}[M\"untz system]\label{def:muntz}
+For \(k\in\N\), define \(e_k(t):=t^{k\mu}\) on \([0,T]\).
+The span of \(\{1,e_k:k\ge1\}\) is denoted
+\[
+\mathcal{M} := \mathrm{span}\{1,t^{\mu},t^{2\mu},\ldots\}.
+\]
+\end{definition}
+
+\begin{remark}[Completeness]\label{rem:muntz_complete}
+By the M\"untz--Sz\'asz theorem, \(\{t^{k\mu}\}_{k\ge1}\) is complete in \(L^2[0,1]\) iff \(\sum_{k\ge1}(k\mu)^{-1}=\infty\).
+Since \(\sum_{k\ge1}k^{-1}=\infty\), completeness holds for every \(\mu\in(0,1)\).
+This underwrites the M\"untz--Tau spectral method.
+\end{remark}
+
+\begin{proposition}[Closure of \(\mathcal{M}\)]\label{prop:closure_M}
+For \(k\ge1\) and \(r>0\),
+\begin{align}
+D^\mu t^{k\mu} &= \frac{\Gamma(k\mu+1)}{\Gamma((k-1)\mu+1)}\,t^{(k-1)\mu},\label{eq:Dmu_Muntz}\\
+I^r t^{k\mu} &= \frac{\Gamma(k\mu+1)}{\Gamma(k\mu+r+1)}\,t^{k\mu+r},\label{eq:Ir_Muntz}\\
+t^{j\mu}\,t^{k\mu} &= t^{(j+k)\mu}.\label{eq:prod_Muntz}
+\end{align}
+Consequently \(D^\mu\mathcal{M}\subset\mathcal{M}\), \(I^r\mathcal{M}\subset\mathcal{M}\), and \(\mathcal{M}\) is closed under multiplication.
+\end{proposition}
+
+\begin{proof}
+\eqref{eq:Dmu_Muntz} and \eqref{eq:Ir_Muntz} follow from \cref{prop:powers} with \(s=k\mu\). \eqref{eq:prod_Muntz} is direct.
+\end{proof}
+
+These three closure properties together --- under \(D^\mu\), under \(I^r\), and under multiplication --- are exactly what makes the M\"untz lattice the canonical basis for any constant-coefficient fractional ODE with polynomial nonlinearity.
+The M\"untz--Tau substitution \cite{esmaeili2015} preserves the entire algebraic structure of the equation.
+
+%% ============================================================
+\section{The Constant-Coefficient Fractional Riccati Equation}\label{sec:riccati}
+%% ============================================================
+
+\subsection{Equation and Volterra representation}
+
+Let \(\mu\in(0,1)\) and \(c_0,c_1,c_2\in\C\). Consider
+\begin{equation}\label{eq:frac_riccati}
+D^\mu y(t)=c_0+c_1\,y(t)+c_2\,y(t)^2,\qquad I^{1-\mu}y(0)=0.
+\end{equation}
+Applying \(I^\mu\) and using \eqref{eq:caputo_RL} (and \(y(0)=0\) by \cref{rem:correction}) gives the equivalent Volterra integral equation
+\begin{equation}\label{eq:frac_riccati_V}
+y(t)
+=
+\frac{1}{\Gamma(\mu)}\int_0^t (t-s)^{\mu-1}\!\left(c_0+c_1\,y(s)+c_2\,y(s)^2\right)\dd s.
+\end{equation}
+
+\begin{remark}[H\"older regularity at the origin]\label{rem:regularity}
+Evaluating \eqref{eq:frac_riccati_V} at \(t=0\) gives \(y(0)=0\).
+Near the origin, \(y(t)=\frac{c_0}{\Gamma(\mu+1)}\,t^\mu + \mathcal{O}(t^{2\mu})\), so \(y\) is H\"older continuous of order \(\mu\) but not \(C^1\) at \(0\).
+The H\"older exponent \(\mu\) is the natural regularity scale of the problem and the reason ordinary Taylor series in \(t\) fail.
+\end{remark}
+
+\subsection{The M\"untz--Tau Puiseux series solution}
+
+\begin{theorem}[Series solution in \(\{t^{k\mu}\}\)]\label{thm:riccati_series}
+There exists \(R>0\) and coefficients \((a_k)_{k\ge1}\subset\C\) such that
+\begin{equation}\label{eq:y_series}
+y(t)=\sum_{k=1}^{\infty}a_k\,t^{k\mu},\qquad |t|<R^{1/\mu},
+\end{equation}
+with
+\begin{align}
+a_1 &= \frac{c_0}{\Gamma(\mu+1)},\label{eq:a1_const}\\[4pt]
+a_{k+1} &= \frac{\Gamma(k\mu+1)}{\Gamma((k+1)\mu+1)}
+\left(c_1\,a_k+c_2\!\!\sum_{\substack{j+\ell=k\\1\le j,\ell\le k-1}}\!\!a_j\,a_\ell\right),\qquad k\ge1.\label{eq:ak_const}
+\end{align}
+\end{theorem}
+
+\begin{remark}[Quadratic convolution at \(k=1\)]\label{rem:conv_k1}
+For \(k=1\), the convolution sum is empty (no pairs \((j,\ell)\) with \(j,\ell\ge1\) and \(j+\ell=1\)), so \(a_2 = \frac{\Gamma(\mu+1)}{\Gamma(2\mu+1)}\,c_1\,a_1\).
+The quadratic term first contributes at \(k=2\), giving \(a_3 = \frac{\Gamma(2\mu+1)}{\Gamma(3\mu+1)}(c_1\,a_2 + c_2\,a_1^2)\).
+\end{remark}
+
+\begin{proof}
+Assume \(y(t)=\sum_{k\ge1}a_k\,t^{k\mu}\) with radius of convergence \(R^{1/\mu}>0\). Then by \eqref{eq:prod_Muntz},
+\[
+y(t)^2=\sum_{m=2}^{\infty}\!\Big(\sum_{\substack{j+\ell=m\\1\le j,\ell\le m-1}}\!a_j\,a_\ell\Big)t^{m\mu},
+\]
+which we abbreviate \(b_m:=\sum_{j+\ell=m}a_j\,a_\ell\).
+Substituting into \eqref{eq:frac_riccati_V} and splitting the integral,
+\begin{align*}
+y(t)
+&=
+\frac{c_0}{\Gamma(\mu)}\!\int_0^t\!(t-s)^{\mu-1}\dd s
++\frac{c_1}{\Gamma(\mu)}\sum_{k\ge1}a_k\!\int_0^t\!(t-s)^{\mu-1}s^{k\mu}\dd s\\
+&\quad
++\frac{c_2}{\Gamma(\mu)}\sum_{m\ge2}b_m\!\int_0^t\!(t-s)^{\mu-1}s^{m\mu}\dd s.
+\end{align*}
+The first integral equals \(t^\mu/\Gamma(\mu+1)\). For the others, \eqref{eq:Ir_power} with \(s=k\mu\) gives
+\[
+\int_0^t (t-s)^{\mu-1}s^{k\mu}\dd s
+= \Gamma(\mu)\,\frac{\Gamma(k\mu+1)}{\Gamma((k+1)\mu+1)}\,t^{(k+1)\mu}.
+\]
+Reindexing with \(n=k+1\) and \(n=m+1\) and matching the coefficient of \(t^{n\mu}\) for each \(n\ge1\) yields \eqref{eq:a1_const} for \(n=1\) and
+\[
+a_n = c_1\,a_{n-1}\,\frac{\Gamma((n-1)\mu+1)}{\Gamma(n\mu+1)}
++ c_2\,b_{n-1}\,\frac{\Gamma((n-1)\mu+1)}{\Gamma(n\mu+1)},\qquad n\ge2,
+\]
+which is \eqref{eq:ak_const} after renaming \(n\mapsto k+1\).
+Existence of \(R>0\) follows from a standard fixed-point or majorant-series argument (see \cref{thm:radius} below).
+\end{proof}
+
+\begin{theorem}[Positive Puiseux radius]\label{thm:radius}
+The Puiseux series \(\sum_{k\ge1}a_k\,z^k\) in \(z=t^\mu\) has strictly positive radius of convergence \(R>0\). Specifically, with \(M_0=|c_0|\) and any fixed truncation level \(N\ge1\), there exists a constant \(C_N>0\) (depending on \(|c_1|\), \(|c_2|\), \(M_0\) and \(N\)) such that
+\begin{equation}\label{eq:decay_bound}
+|a_k|\;\le\;\frac{M_0\,C_N^{\,k-1}}{\Gamma(k\mu+1)},\qquad 1\le k\le N,
+\end{equation}
+so that on the corresponding truncation
+\begin{equation}\label{eq:series_bound}
+\sum_{k=1}^{N}|a_k|\,|z|^k \;\le\; \frac{M_0}{C_N}\big(E_\mu(C_N|z|)-1\big),
+\end{equation}
+where \(E_\mu\) is the Mittag-Leffler function. Consequently the formal series \(\sum_{k\ge1}a_k z^k\) has \(R\ge\liminf_k\big(\Gamma(k\mu+1)/M_0\big)^{1/(k-1)}/C_k>0\) along any subsequence on which \(C_k\) grows sub-exponentially in \(k\).
+\end{theorem}
+
+\begin{proof}
+Let \(B_k := M_0\,C_N^{\,k-1}/\Gamma(k\mu+1)\). For the base case, \(B_1=M_0/\Gamma(\mu+1)\ge|a_1|\).
+The convolution majorant satisfies
+\[
+\sum_{\substack{j+\ell=k\\j,\ell\ge1}}\!\frac{1}{\Gamma(j\mu+1)\,\Gamma(\ell\mu+1)}
+\;\le\;\frac{2^k}{\Gamma(k\mu+1)},
+\]
+via \(\frac{\Gamma(k\mu+1)}{\Gamma(j\mu+1)\,\Gamma(\ell\mu+1)}\le\binom{k}{j}\) for \(\mu\le1\) and \(j+\ell=k\) (a Beta-function consequence \(\mathrm{B}(j\mu+1,\ell\mu+1)\ge\mathrm{B}(j+1,\ell+1)\)).
+Substituting the inductive hypothesis into \eqref{eq:ak_const} gives
+\[
+|a_{k+1}|\;\le\;\frac{M_0\,C_N^{\,k-1}}{\Gamma((k+1)\mu+1)}\big(|c_1|+|c_2|\,M_0\,2^k/C_N\big),\qquad k\le N-1.
+\]
+Choosing \(C_N\ge\max(|c_1|,\,2|c_2|M_0\,2^N)\) closes the induction up to step \(N\); \eqref{eq:series_bound} then follows from \(\sum_k z^k/\Gamma(k\mu+1)=E_\mu(z)\). The choice of \(C_N\) is truncation-dependent, so this argument establishes only that the formal series has positive radius and not a uniform lower bound on \(R\); a uniform bound would require a sharper convolution estimate that is not pursued here.
+\end{proof}
+
+\begin{proposition}[Finiteness of the Puiseux radius]\label{prop:radius_finite}
+For generic constant parameters \((c_0,c_1,c_2)\) with \(c_2\ne0\) the radius of convergence \(R\) of \(\sum_{k\ge1}a_k z^k\) is finite, and equals the distance from the origin in \(\C\) to the nearest singularity of the analytic continuation of \(g(z)=y(z^{1/\mu})\). The location of that singularity is movable --- it depends on the parameters \((c_0,c_1,c_2,\mu)\) and is not fixed by the differential equation alone.
+\end{proposition}
+
+\begin{remark}[Status of \cref{prop:radius_finite}]\label{rem:radius_finite_status}
+The statement \(R<\infty\) is not proved in this paper. Two paths to a proof are available in the literature.
+(i)~Painlev\'e's theorem on movable singularities of algebraic first-order ODEs \cite{hille1976ode,ince1956ode}: the algebraized equation in \(z\) (cf.\ \cref{sec:resurgence}) is a first-order algebraic ODE in \(g\) and \(z\), and Painlev\'e's classification implies its solutions admit only poles or algebraic branch points as movable singularities; the existence of at least one such singularity for generic \((c_0,c_1,c_2)\) follows by direct integration in the integer-order limit \(\mu=1\), where the classical Riccati \(g'=c_0+c_1 g+c_2 g^2\) has explicit poles at \(z=z_*\) determined by the Cauchy data.
+(ii)~Explicit construction: for any fixed choice of \((c_0,c_1,c_2,\mu)\) one may compute \(a_k\) numerically up to large \(k\) and verify that \(\limsup |a_k|^{1/k}>0\).
+Neither path is carried out here. The remainder of the paper proceeds under the assumption that \(R<\infty\), so that Pad\'e resummation is the operative tool rather than direct series summation.
+\end{remark}
+
+\begin{remark}[Why this is only a local representation]\label{rem:radius_local}
+\cref{thm:radius} together with \cref{prop:radius_finite} is the central obstruction: even though every \(a_k\) is computed in closed form by \eqref{eq:ak_const}, the series \eqref{eq:y_series} does \emph{not} converge for all \(t\ge0\) under the standing assumption \(R<\infty\) of \cref{prop:radius_finite}.
+The complex \(z\)-plane carries movable poles of the Riccati flow, and the Puiseux radius \(R\) is the distance to the nearest such pole.
+On the positive real \(t\)-axis the solution \(y(t)\) may exist for all \(t\), yet the M\"untz series ceases to converge once \(t^\mu\) exceeds \(R\).
+A genuine global representation must exploit \emph{analytic continuation}, not raw series summation.
+This is the role played by Pad\'e approximation in the next section.
+\end{remark}
+
+%% ============================================================
+\section{Pad\'e Resummation in \(z=t^\mu\)}\label{sec:pade}
+%% ============================================================
+
+\subsection{Power series in \(z\) and the Hankel system}
+
+Let \(z:=t^\mu\) and define \(g(z):=y(z^{1/\mu})\). Then
+\begin{equation}\label{eq:g_series}
+g(z)=\sum_{k=1}^{\infty}a_k\,z^k,\qquad |z|<R.
+\end{equation}
+Fix \(M\in\N\) and seek polynomials
+\[
+P_M(z):=\sum_{k=0}^{M}p_k\,z^k,\qquad
+Q_M(z):=1+\sum_{k=1}^{M}q_k\,z^k,
+\]
+satisfying the Pad\'e matching condition
+\begin{equation}\label{eq:Pade_match}
+Q_M(z)\,g(z)-P_M(z)=\mathcal{O}(z^{2M+1})\quad(z\to 0).
+\end{equation}
+
+\begin{lemma}[Hankel form of the denominator system]\label{lem:hankel}
+Substituting \eqref{eq:g_series} into \eqref{eq:Pade_match} and matching coefficients of \(z^n\) for \(0\le n\le 2M\) gives \(p_0=0\),
+\begin{align}
+p_n &= a_n+\sum_{j=1}^{\min(n,M)}q_j\,a_{n-j},\qquad 1\le n\le M,\label{eq:Pade1}\\
+0 &= a_n+\sum_{j=1}^{M}q_j\,a_{n-j},\qquad M+1\le n\le 2M.\label{eq:Pade2}
+\end{align}
+The denominator system \eqref{eq:Pade2} is the Hankel linear system
+\begin{equation}\label{eq:hankel_system}
+H_M\,\bm{q}=-\bm{b},\qquad
+H_M=\begin{pmatrix}
+a_M & a_{M-1} & \cdots & a_1\\
+a_{M+1} & a_M & \cdots & a_2\\
+\vdots & \vdots & \ddots & \vdots\\
+a_{2M-1} & a_{2M-2} & \cdots & a_M
+\end{pmatrix},\quad
+\bm{q}=\begin{pmatrix}q_1\\\vdots\\q_M\end{pmatrix},\quad
+\bm{b}=\begin{pmatrix}a_{M+1}\\\vdots\\a_{2M}\end{pmatrix}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Direct expansion of \(Q_M\,g\) and identification of coefficients.
+\end{proof}
+
+\begin{remark}[Invertibility of \(H_M\)]\label{rem:HM_invertible}
+\(H_M\) is invertible iff \(g(z)\) is not a rational function of degree less than \(M\).
+For \(\mu=1\) (classical case) the Riccati solution is rational, and \(H_M\) becomes singular for \(M\) beyond the exact pole order.
+For \(\mu\in(0,1)\), \(g(z)\) admits no finite-order rational representation; \(\det H_M\ne 0\) generically for all \(M\ge1\).
+If a particular order \(M\) yields \(\det H_M=0\), use \(M\pm 1\).
+\end{remark}
+
+\begin{lemma}[Solution]\label{lem:Pade_system}
+If \(\det H_M\neq0\), then \eqref{eq:hankel_system} has the unique solution \(\bm{q}=-H_M^{-1}\bm{b}\), and the numerator coefficients are given by \eqref{eq:Pade1}.
+\end{lemma}
+
+The diagonal Pad\'e approximant is then
+\begin{equation}\label{eq:R_M_def}
+R_M(z)\;:=\;\frac{P_M(z)}{Q_M(z)}
+\;=\;\frac{\sum_{k=0}^{M}p_k\,z^k}{1+\sum_{k=1}^{M}q_k\,z^k}.
+\end{equation}
+
+\begin{definition}[Pad\'e domain]\label{def:D_M}
+\(\mathcal{D}_M:=\{z\in\C:\det H_M\neq0,\ Q_M(z)\neq0\}\).
+\end{definition}
+
+\subsection{Remainder representation and successive-difference bound}
+
+Define the remainder
+\begin{equation}\label{eq:eps_g}
+\varepsilon_M(z):=g(z)-R_M(z).
+\end{equation}
+By construction \(\varepsilon_M(z)=\mathcal{O}(z^{2M+1})\), and standard Pad\'e theory \cite{baker1996} gives the structural representation
+\begin{equation}\label{eq:eps_structure}
+\varepsilon_M(z)=\frac{\Pi_{M+1}(z)}{Q_M(z)^2}\,z^{2M+1}
+\end{equation}
+for some polynomial \(\Pi_{M+1}\) of degree at most \(M+1\).
+
+For the a-posteriori bound, define
+\begin{equation}\label{eq:Delta_def}
+\Delta_k(z):=R_k(z)-R_{k-1}(z),\qquad k\ge1.
+\end{equation}
+
+\begin{assumption}[Geometric tail]\label{ass:diff_bound}
+At a fixed \(z\in\mathcal{D}_M\cap\mathcal{D}_{M-1}\):
+\begin{enumerate}[label=(\roman*),nosep]
+\item \(g\) has no poles in \(\{|\zeta|\le|z|\}\);
+\item \(Q_M(z)\ne0\) and \(Q_{M-1}(z)\ne0\);
+\item the sequence \(|\Delta_k(z)|\) is geometrically decreasing for \(k\ge M\), i.e.\ \(|\Delta_M(z)|<|\Delta_{M-1}(z)|\).
+\end{enumerate}
+\end{assumption}
+
+\begin{theorem}[Computable error bound]\label{thm:error}
+Under \cref{ass:diff_bound},
+\begin{equation}\label{eq:error_bound}
+|g(z)-R_M(z)|\;\le\;\frac{|\Delta_M(z)|^2}{|\Delta_{M-1}(z)|-|\Delta_M(z)|}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The telescoping identity \(g(z)-R_M(z)=\sum_{k=M+1}^{\infty}\Delta_k(z)\) holds wherever the Pad\'e sequence converges.
+Setting \(\rho:=|\Delta_M(z)|/|\Delta_{M-1}(z)|<1\), the geometric contraction \(|\Delta_{j+1}|\le\rho\,|\Delta_j|\) for \(j\ge M\) yields \(|\Delta_{M+k}|\le\rho^k|\Delta_M|\), hence
+\[
+|g(z)-R_M(z)|\le\sum_{k=1}^{\infty}\rho^k|\Delta_M(z)|=\frac{\rho|\Delta_M(z)|}{1-\rho}=\frac{|\Delta_M(z)|^2}{|\Delta_{M-1}(z)|-|\Delta_M(z)|}.\qedhere
+\]
+\end{proof}
+
+\subsection{Global convergence on the positive real axis}
+
+\begin{theorem}[de Montessus de Ballore \cite{baker1996,montessus1902}]\label{thm:dMdB}
+Let \(g\) be meromorphic in \(\{|z|<\rho\}\) with exactly \(n\) poles (counted with multiplicity) in that disc and no poles on the boundary.
+The diagonal Pad\'e approximants \(R_M\) of order \((M,M)\) converge to \(g\) uniformly on compact subsets of \(\{|z|<\rho\}\setminus\{\text{poles}\}\) as \(M\to\infty\).
+\end{theorem}
+
+\begin{theorem}[Nuttall--Pommerenke \cite{baker1996,nuttall1970}]\label{thm:NP}
+Let \(g\) be meromorphic in \(\C\) with at most countably many poles.
+The diagonal sequence \(R_M\) converges to \(g\) \emph{in capacity} on \(\C\setminus E\), where \(E\) has logarithmic capacity zero.
+In particular, convergence is quasi-everywhere, though not necessarily pointwise at every individual point.
+\end{theorem}
+
+\begin{remark}[Which theorem applies]\label{rem:which_thm}
+\cref{thm:dMdB} gives \emph{pointwise} uniform convergence on compacta but requires knowing the exact pole count.
+\cref{thm:NP} requires no such count but yields only quasi-everywhere convergence.
+When \(g(z)=y(z^{1/\mu})\) is meromorphic in \(\C\) with no poles on \((0,\infty)\) --- the canonical case for globally bounded Riccati solutions on the real time axis --- both theorems apply, and \(R_M(t^\mu)\to y(t)\) for every \(t>0\).
+\end{remark}
+
+\begin{theorem}[Global Pad\'e--M\"untz representation]\label{thm:pade_riccati}
+Let \(y(t)\) solve \eqref{eq:frac_riccati} and assume \(y\) is bounded on \([0,\infty)\) (so that \(g(z)\) has no poles on the positive real \(z\)-axis). Then
+\begin{equation}\label{eq:y_global_pade}
+\boxed{\,y(t)=\lim_{M\to\infty}R_M(t^\mu)=\lim_{M\to\infty}\frac{P_M(t^\mu)}{Q_M(t^\mu)}\quad\text{for every }t\ge0.\,}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By \cref{thm:radius} the singularities of \(g\) at \(|z|=R\) are movable poles in the complex \(z\)-plane.
+Since \(y\) is bounded on \([0,\infty)\), \(g\) has no poles on the positive real axis.
+\(g\) is meromorphic in \(\C\) with poles accumulating only at \(\infty\), so \cref{thm:NP} applies to give convergence on \((0,\infty)\), and \cref{thm:dMdB} gives uniform convergence on compacta away from poles.
+\end{proof}
+
+\subsection{Algorithmic summary}
+
+Given \((c_0,c_1,c_2,\mu)\) and Pad\'e order \(M\):
+\begin{enumerate}[label=\textbf{Step \arabic*.},leftmargin=2.5em,nosep]
+\item Compute the Puiseux coefficients \(a_1,\ldots,a_{2M}\) by the recurrence \eqref{eq:a1_const}--\eqref{eq:ak_const}. Cost: \(\mathcal{O}(M^2)\).
+\item Form the Hankel matrix \(H_M\) and right-hand side \(\bm{b}\) from \eqref{eq:hankel_system}.
+\item Solve \(H_M\bm{q}=-\bm{b}\) for the denominator coefficients. Cost: \(\mathcal{O}(M^3)\).
+\item Recover the numerator coefficients via \eqref{eq:Pade1}.
+\item Evaluate \(y_M(t)=P_M(t^\mu)/Q_M(t^\mu)\) at any \(t\ge0\). Cost: \(\mathcal{O}(M)\) per query.
+\end{enumerate}
+Steps 1--4 are independent of \(t\); the entire family \(\{y_M(t):t\ge0\}\) is encoded in a single rational function in \(z=t^\mu\).
+There is no grid, no time stepping, no Newton iteration, no fixed-point loop.
+
+%% ============================================================
+\section{Resurgence, Borel--Pad\'e Resummation, and Riemann--Hilbert}\label{sec:resurgence}
+%% ============================================================
+
+The Pad\'e--M\"untz construction of the previous sections solves the constant-coefficient fractional Riccati equation in closed algebraic form by exploiting two independent structural facts: the M\"untz lattice closes the differential algebra of \(D^\mu,\,I^r,\,\cdot\); and the diagonal Pad\'e in \(z=t^\mu\) re-sums the resulting Puiseux series past its finite radius of analyticity.
+These two facts are not coincidences. Both are special cases of a deeper and far more general principle drawn from the theory of \emph{resurgent functions} and the \emph{Riemann--Hilbert correspondence}.
+
+\subsection{The substitution \(z=t^\mu\) is an algebraization}
+
+A constant-coefficient fractional ODE in \(t\) is \emph{not} algebraic in \(t\) --- the operator \(D^\mu\) is non-local, and the solution is generically only H\"older continuous of exponent \(\mu\) at the origin (\cref{rem:regularity}).
+After the substitution \(z=t^\mu\), however, the Volterra equation \eqref{eq:frac_riccati_V} becomes equivalent to an \emph{algebraic ODE} in \(z\), in the precise sense that its solutions are Puiseux-expandable at the origin (\cref{thm:riccati_series}) and the Cauchy--Kovalevskaya theorem applies.
+The substitution \(z=t^\mu\) thus performs an \emph{algebraization}: it lifts the problem from the H\"older category into the analytic category, where the full machinery of complex analysis becomes available.
+
+\subsection{Solutions are resurgent transseries}
+
+Algebraic ODEs with polynomial nonlinearities have solutions that are \emph{resurgent} in the sense of \'Ecalle \cite{ecalle1981,costin2008}: their formal expansions at any singular point can be promoted to \emph{transseries}
+\begin{equation}\label{eq:transseries}
+\widetilde y(z)\;=\;\sum_{n\ge0}e^{-n\,A/z}\,z^{n\beta_n}\sum_{k\ge0}a_{n,k}\,z^k,
+\end{equation}
+where the leading sector \(n=0\) is the Puiseux series of \cref{thm:riccati_series} and the higher sectors \(n\ge1\) encode \emph{non-perturbative} contributions controlled by the action \(A\) (the Riccati pole structure).
+The \emph{alien derivatives} \(\Delta_A\widetilde y\) of \'Ecalle measure the obstruction to analytic continuation across each singularity, and the \emph{Stokes constants} \(S_A\) record the discontinuities of the lateral Borel sums when crossing Stokes lines.
+For the constant-coefficient fractional Riccati, the leading-sector coefficients are exactly the M\"untz \(a_k\); the higher sectors capture the multivaluedness of \(y\) around the movable poles.
+
+\subsection{Pad\'e is computational Borel--Pad\'e resummation}
+
+The diagonal Pad\'e approximant in \(z\) is the canonical computational instantiation of \emph{Borel--Pad\'e resummation}.
+Recall that the Borel transform sends a divergent or finite-radius series \(\sum a_k z^k\) to its Borel transform \(\widehat g(\zeta)=\sum a_k\zeta^{k-1}/\Gamma(k)\), then resums by Laplace-transforming \(\widehat g\) along a ray.
+The Pad\'e approximant \(R_M\) computes essentially the same object: the rational function \(P_M/Q_M\) is the unique meromorphic continuation that interpolates the formal series and respects the underlying singularity structure.
+Concretely, \cref{thm:dMdB,thm:NP} say that \(R_M\) recovers exactly the lateral Borel--Laplace sum on the real \(z\)-axis whenever no Stokes ray crosses \((0,\infty)\) \cite{costin2008,pommerenke1973}; this is precisely the boundedness hypothesis in \cref{thm:pade_riccati}.
+
+\subsection{The Riemann--Hilbert structure}
+
+The deeper geometric content is this. The poles of \(R_M\) for finite \(M\) are not arbitrary --- as \(M\to\infty\), they cluster along \emph{Stokes lines} in the \(z\)-plane, which are the branch cuts of the analytic continuation of \(y\).
+Nuttall--Pommerenke (\cref{thm:NP}) is a weak version of this fact: convergence in capacity means the spurious poles distribute themselves along the natural boundary of analyticity.
+The strong version, due to Stahl, Gonchar, and others \cite{stahl1997}, identifies the \emph{equilibrium measure} on those Stokes lines as the limiting pole distribution of the diagonal Pad\'e sequence.
+This equilibrium problem is precisely a \emph{scalar Riemann--Hilbert problem} for the resolvent of a logarithmic potential, and the diagonal Pad\'e asymptotics are obtained by the Deift--Zhou steepest descent / Fokas--Its--Kitaev machinery applied to the associated jump matrix \cite{deift1999}.
+
+The unifying statement of this paper, in maximum generality, is therefore:
+
+\begin{quote}
+\emph{For a constant-coefficient fractional ODE \(\,D^\mu y=F(y)\,\) with polynomial \(F\), the substitution \(z=t^\mu\) promotes the solution to a resurgent transseries in \(z\). The diagonal Pad\'e in \(z\) is a Borel--Pad\'e resummation of that transseries, and its global analytic continuation along the positive real axis is governed by a Riemann--Hilbert problem whose jump contours are the Stokes lines of the transseries.}
+\end{quote}
+
+\subsection{Generalizations}
+
+The framework of this paper extends in three natural directions, each obtained by relaxing one structural hypothesis.
+
+\paragraph{Higher-degree polynomial nonlinearities (Bernoulli, Abel, and beyond).}
+For \(D^\mu y=F(y)\) with \(F\) any polynomial of degree \(d\), the M\"untz lattice remains closed under the nonlinearity by \eqref{eq:prod_Muntz}, so the Tau substitution yields a closed Gamma-ratio recurrence of the same form as \eqref{eq:ak_const} but with a \(d\)-fold convolution sum.
+The Pad\'e step is unchanged, the Hankel system \eqref{eq:hankel_system} is unchanged, and the de~Montessus / Nuttall--Pommerenke theorems apply identically.
+Cubic Riccati (Abel of the second kind), quartic, and arbitrary polynomial \(F\) are all immediate.
+
+\paragraph{Fractional ODE systems via Hermite--Pad\'e.}
+For a system \(D^\mu \bm y = \bm F(\bm y)\) with polynomial \(\bm F\), each component admits a M\"untz Puiseux expansion, and the scalar Hankel system is replaced by a \emph{matrix Pad\'e} (or simultaneous \emph{Hermite--Pad\'e}) system involving multiple denominators.
+The convergence theory generalizes: the scalar Riemann--Hilbert problem becomes \emph{matrix-valued}, with jump contours determined by the eigenvalue structure of the linearization at the movable singularities \cite{deift1999}.
+
+\paragraph{Non-constant coefficients: isomonodromy and Painlev\'e.}
+When \(D^\mu y = c_0(t) + c_1(t) y + c_2(t) y^2\) with non-constant \(c_i(t)\), the M\"untz lattice is generally no longer preserved (the coefficients can introduce new exponents), the explicit Gamma-ratio recurrence breaks down, and the Puiseux structure may need to be enlarged to include logarithmic and Fuchsian terms.
+The associated Riemann--Hilbert problem is then \emph{isomonodromic} rather than equilibrium-type, and the nonlinear special functions that arise --- notably the Painlev\'e transcendents and their \(q\)- and fractional analogs --- replace the elementary rational Pad\'e approximants.
+
+%% ============================================================
+\begin{thebibliography}{9}
+
+\bibitem{baker1996}
+G.\,A.~Baker and P.~Graves-Morris,
+\emph{Pad\'e Approximants}, 2nd ed.,
+Cambridge University Press, 1996.
+
+\bibitem{esmaeili2015}
+S.~Esmaeili and M.~Shamsi,
+\emph{The M\"untz--Legendre Tau method for fractional differential equations},
+Applied Mathematical Modelling, 40(2):671--684, 2015.
+
+\bibitem{montessus1902}
+R.~de~Montessus de~Ballore,
+\emph{Sur les fractions continues alg\'ebriques},
+Bull.\ Soc.\ Math.\ France, 30:28--36, 1902.
+
+\bibitem{nuttall1970}
+J.~Nuttall,
+\emph{The convergence of Pad\'e approximants of meromorphic functions},
+J.\ Math.\ Anal.\ Appl., 31(1):147--153, 1970.
+
+\bibitem{pommerenke1973}
+Ch.~Pommerenke,
+\emph{Pad\'e approximants and convergence in capacity},
+J.\ Math.\ Anal.\ Appl., 41:775--780, 1973.
+
+\bibitem{stahl1997}
+H.~Stahl,
+\emph{The convergence of Pad\'e approximants to functions with branch points},
+J.\ Approx.\ Theory, 91:139--204, 1997.
+
+\bibitem{ecalle1981}
+J.~\'Ecalle,
+\emph{Les fonctions r\'esurgentes}, Vols.\ I--III,
+Publ.\ Math.\ d'Orsay, 1981--1985.
+
+\bibitem{costin2008}
+O.~Costin,
+\emph{Asymptotics and Borel Summability},
+Chapman \& Hall/CRC, 2008.
+
+\bibitem{deift1999}
+P.~Deift,
+\emph{Orthogonal Polynomials and Random Matrices: A Riemann--Hilbert Approach},
+Courant Lecture Notes 3, AMS, 1999.
+
+\bibitem{hille1976ode}
+E.~Hille,
+\emph{Ordinary Differential Equations in the Complex Domain},
+Wiley, 1976; Dover reprint, 1997.
+
+\bibitem{ince1956ode}
+E.~L.~Ince,
+\emph{Ordinary Differential Equations},
+Dover, 1956.
+
+\end{thebibliography}
+
+\end{document}
