@@ -6,35 +6,55 @@ import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 
 /**
+ * Strictly increasing modification of the Riemann–Siegel theta function on
+ * [0, ∞) defined by additive linear shift
+ *
  * <pre>
- * The Strictly Increasing Piecewise Reflected Riemann-Siegel θ function is
- * defined by
- * 
- * Let Δ:2*(ϑ(a) - ϑ(-a)) then
- * 
- * where ϑ'(a)=0 and θ''(a)
- * 
- * monotoneϑ:t->ϑ(t)+(ϑ(a)-ϑ(t))·(1+sgn(a-|t|))+Δ()·θ(-t-a)
- * 
+ *   Φ(t) := ϑ(t) + c·t
+ * </pre>
+ *
  * where
- * 
- * ϑ:t->im(lnΓ(¼+ⅈ*t/2))-(t*log(π)/2)
- * 
- * is the {@link RiemannSiegelThetaFunction}
- * 
+ *
+ * <pre>
+ *   ϑ(t) := im(lnΓ(¼ + ⅈ·t/2)) − (t·log(π)/2)
+ * </pre>
+ *
+ * is the {@link RiemannSiegelThetaFunction}. The derivative is
+ *
+ * <pre>
+ *   ϑ′(t) = ½·Re(ψ(¼ + ⅈ·t/2)) − ½·log(π),
+ * </pre>
+ *
+ * which is strictly increasing on [0, ∞) (since ϑ is convex there) and attains
+ * its infimum at t = 0:
+ *
+ * <pre>
+ *   ϑ′(0) = ½·Re(ψ(¼)) − ½·log(π)
+ *         = −½·(γ + π/2 + 3·log(2) + log(π))
+ *         ≈ −2.6857...
+ * </pre>
+ *
+ * (using the closed form ψ(¼) = −γ − π/2 − 3·log(2)). Therefore Φ′(t) ≥ 0 on
+ * [0, ∞) iff c ≥ −ϑ′(0) ≈ 2.6857..., and Φ is strictly increasing iff c is
+ * strictly greater than that threshold. The default value c = 3 satisfies this
+ * with a comfortable margin.
+ *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
 public class MonotonicRiemannSiegelThetaFunction implements
                                                  RealFunction
 {
-  Real           a       = Real.named("a").set(6.289835988836898);
+  Real           c       = Real.named("c").set(3.0);
 
-  public Context context = new Context(a);
+  public Context context = new Context(c);
 
-  public Real a()
+  /**
+   * The slope constant c in Φ(t) = ϑ(t) + c·t.
+   */
+  public Real c()
   {
-    return a;
+    return c;
   }
 
   @Override
@@ -43,13 +63,11 @@ public class MonotonicRiemannSiegelThetaFunction implements
     return monotoneθ.toString();
   }
 
-  public RealFunction        ϑ         = RealFunction.express("ϑ:t->im(lnΓ(¼+ⅈ*t/2))-(t*log(π)/2)", context);
+  public RealFunction ϑ         = RealFunction.express("ϑ:t->im(lnΓ(¼+ⅈ*t/2))-(t*log(π)/2)", context);
 
-  public RealNullaryFunction Δ         = RealNullaryFunction.express("Δ:2*(ϑ(a) - ϑ(-a))", context);
+  RealFunction        monotoneθ = RealFunction.express("monotoneϑ:t->ϑ(t)+c*t", context);
 
-  RealFunction               monotoneθ = RealFunction.express("monotoneϑ:t->ϑ(t)+(ϑ(a)-ϑ(t))·(1+sgn(a-|t|))+Δ()·θ(-t-a)", context);
-
-  RealFunction               diffMonotoneθ;
+  RealFunction        diffMonotoneθ;
 
   @Override
   public RealFunction derivative()
@@ -63,7 +81,6 @@ public class MonotonicRiemannSiegelThetaFunction implements
 
   public MonotonicRiemannSiegelThetaFunction()
   {
-    context.registerFunction("H", new HeavisideStepFunction());
   }
 
   @Override
