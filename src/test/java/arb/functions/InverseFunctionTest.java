@@ -12,10 +12,10 @@ import junit.framework.TestCase;
  * (issue #718).
  *
  * <ul>
- *   <li>RealFunction.invert() default method</li>
- *   <li>ComplexFunction.invert() default method</li>
- *   <li>InverseFunctionNode bytecode generation via expression compiler</li>
- *   <li>Equivalence with the deprecated HardyThetaInversion</li>
+ * <li>RealFunction.invert() default method</li>
+ * <li>ComplexFunction.invert() default method</li>
+ * <li>InverseFunctionNode bytecode generation via expression compiler</li>
+ * <li>Equivalence with the deprecated HardyThetaInversion</li>
  * </ul>
  *
  * @author Stephen Crowley ©2024-2026
@@ -28,14 +28,14 @@ public class InverseFunctionTest extends
   private static final int ORDER = 20;
 
   /**
-   * f(x)=x² has compositional inverse f⁻¹(y)=√y near x=2.
-   * Verify roundtrip: f⁻¹(f(2)) ≈ 2.
+   * f(x)=x² has compositional inverse f⁻¹(y)=√y near x=2. Verify roundtrip:
+   * f⁻¹(f(2)) ≈ 2.
    */
   public void testRealFunctionInvertRoundtrip()
   {
     RealFunction square = RealFunction.express("x²");
 
-    try (Real center = Real.valueOf(2); Real target = new Real(); Real result = new Real())
+    try ( Real center = Real.valueOf(2); Real target = new Real(); Real result = new Real())
     {
       // f(2) = 4
       square.evaluate(center, 1, BITS, target);
@@ -51,14 +51,14 @@ public class InverseFunctionTest extends
   }
 
   /**
-   * f(x)=x³ near center=2. f⁻¹(8) ≈ 2.
-   * Center must be near the target for the series to converge.
+   * f(x)=x³ near center=2. f⁻¹(8) ≈ 2. Center must be near the target for the
+   * series to converge.
    */
   public void testRealFunctionInvertCube()
   {
     RealFunction cube = RealFunction.express("x³");
 
-    try (Real center = Real.valueOf(2); Real y = new Real(); Real result = new Real())
+    try ( Real center = Real.valueOf(2); Real y = new Real(); Real result = new Real())
     {
       // f(2) = 8, so f⁻¹(8) should ≈ 2
       y.set(8.0);
@@ -81,7 +81,7 @@ public class InverseFunctionTest extends
     // Compile f⁻¹(x) — this exercises InverseFunctionNode.generate()
     RealFunction fInverse = RealFunction.express("f⁻¹(x)", context);
 
-    try (Real input = new Real(); Real result = new Real())
+    try ( Real input = new Real(); Real result = new Real())
     {
       // f⁻¹(4) should ≈ 2 (positive branch near center)
       input.set(4.0);
@@ -90,41 +90,34 @@ public class InverseFunctionTest extends
     }
   }
 
-
-
   /**
-   * ComplexFunction.invert() for f(z)=z². Uses a hand-built ComplexFunction
-   * that supports Taylor jet evaluation (order > 1), since the compiled
-   * expression z² does not yet support Taylor jets for complex functions.
+   * ComplexFunction.invert() for f(z)=z². Uses a hand-built ComplexFunction that
+   * supports Taylor jet evaluation (order > 1), since the compiled expression z²
+   * does not yet support Taylor jets for complex functions.
    */
   public void testComplexFunctionInvert()
   {
-    ComplexFunction square = new ComplexFunction()
+    ComplexFunction square = (Complex z, int order, int bits, Complex result) ->
     {
-      @Override
-      public Complex evaluate(Complex z, int order, int bits, Complex result)
+      if (order == 1)
       {
-        if (order == 1)
-        {
-          return z.mul(z, bits, result);
-        }
-        // Taylor coefficients of z² at z=a: [a², 2a, 1, 0, 0, ...]
-        z.mul(z, bits, result.get(0));
-        result.get(1).set(z).add(z, bits);
-        if (order > 2)
-        {
-          result.get(2).one();
-        }
-        for (int i = 3; i < order; i++)
-        {
-          result.get(i).zero();
-        }
-        return result;
+        return z.mul(z, bits, result);
       }
+      // Taylor coefficients of z² at z=a: [a², 2a, 1, 0, 0, ...]
+      z.mul(z, bits, result.get(0));
+      result.get(1).set(z).add(z, bits);
+      if (order > 2)
+      {
+        result.get(2).one();
+      }
+      for (int i = 3; i < order; i++)
+      {
+        result.get(i).zero();
+      }
+      return result;
     };
 
-    try (Complex center = new Complex(); Complex y = new Complex();
-         Complex result = new Complex())
+    try ( Complex center = new Complex(); Complex y = new Complex(); Complex result = new Complex())
     {
       center.set(2.0, 0.0);
       y.set(4.0, 0.0);
