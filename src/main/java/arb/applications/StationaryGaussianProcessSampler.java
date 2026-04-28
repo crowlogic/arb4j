@@ -9,7 +9,6 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
 import arb.stochastic.Charts;
-import arb.stochastic.Statistics;
 import arb.stochastic.processes.ComplexWhiteNoiseProcess;
 import arb.viz.WindowManager;
 import io.fair_acc.chartfx.XYChart;
@@ -63,6 +62,15 @@ public abstract class StationaryGaussianProcessSampler extends
    * bound after the user changes the length.
    */
   private XYChart               covarianceChart;
+
+  /**
+   * The single PSD XYChart created by
+   * {@link #newPowerSpectralDensityChart(Complex, double[], double[], double[], double[])}.
+   * Held so the refresh handler can rebuild the DFT-of-autocov overlay when
+   * the user changes the autocorrelation length, since that overlay is
+   * derived from the same lag horizon as the covariance chart.
+   */
+  private XYChart               psdChart;
 
   static final int              bits                              = 128;
 
@@ -180,37 +188,15 @@ public abstract class StationaryGaussianProcessSampler extends
     interval.close();
   }
 
-  public double[] computePowerSpectralDensity(double[] path)
-  {
-
-    try ( Complex complexPath = Complex.newVector(N); Complex fft = Complex.newVector(N); Real mag = new Real();
-          Real scalingFactor = Real.valueOf(dt).div(N / 2, bits);)
-    {
-      for (int i = 0; i < N; i++)
-      {
-        complexPath.get(i).set(path[i]);
-      }
-
-      arblib.acb_dft(fft, complexPath, N, bits);
-
-      double[] periodogram = new double[N];
-
-      for (int i = 0; i < N; i++)
-      {
-        periodogram[i] = fft.get(i).norm(bits, mag).pow(2, bits).mul(scalingFactor, bits).doubleValue();
-      }
-      return periodogram;
-    }
-  }
-
   void configureCharts()
   {
     covarianceChart = newAutoCorrelationChart(this, samplePath);
+    psdChart        = newPowerSpectralDensityChart(samplePath, positiveFrequencies, frequencies, theoreticalPowerSpectralDensities, powerSpectralDensity);
     Stream.of(charts = new XYChart[]
     { newTimeDomainChart(spectralSupport, samplingTimes, samplePath, envelope),
       newRandomWhiteNoiseMeasureChart(frequencies, whiteNoise),
       covarianceChart,
-      newPowerSpectralDensityChart(samplePath, positiveFrequencies, frequencies, theoreticalPowerSpectralDensities, powerSpectralDensity) })
+      psdChart })
           .forEach(chart -> Charts.configureChart(chart, light));
   }
 
@@ -430,15 +416,16 @@ public abstract class StationaryGaussianProcessSampler extends
     // applyInverseDiscreteFourierTransform(randomMeasure) ≡ samplePath exactly.
     samplePath.applyDiscreteFourierTransform(bits, randomMeasure);
 
-    try ( Real mag = new Real())
+    try ( Real mag = new Real(); Real binPower = new Real(); Real scaling = new Real(); Real dtScratch = new Real())
     {
+      dtScratch.set(dt).div(N / 2, bits, scaling);
       for (int k = 0; k < N; k++)
       {
-        // Periodogram normalization consistent with computePowerSpectralDensity:
-        // |X[k]|² · dt / (N/2). PSD lives on the same shifted-DC frequency
-        // axis as generateFrequencies().
-        double x2 = randomMeasure.get(k).norm(bits, mag).pow(2, bits).doubleValue();
-        powerSpectralDensity[k] = x2 * dt / (N / 2.0);
+        // Periodogram normalisation |X[k]|² · dt / (N/2); PSD lives on the
+        // same shifted-DC frequency axis as generateFrequencies().
+        randomMeasure.get(k).norm(bits, mag).pow(2, bits, binPower);
+        binPower.mul(scaling, bits, binPower);
+        powerSpectralDensity[k] = binPower.doubleValue();
       }
     }
 
@@ -509,30 +496,91 @@ public abstract class StationaryGaussianProcessSampler extends
   }
 
   /**
-   * Replace the empirical and theoretical-kernel datasets on the covariance
-   * chart using the current value of {@link #autocorrelationLength}, and
-   * write the lag grid into a length-{@code maxLag} array. The empirical
-   * lag count is clamped at the path length N so the autocorr estimator
-   * never runs past the data; the theoretical-kernel array is filled at
-   * the same length via {@link #getKernel(double[], double[])}.
+   * Rebuild the covariance chart's three series:
+   * <ol>
+   *   <li>Time-domain unbiased empirical autocorrelation ρ(k) = 1 − γ(k)/(2·C(0))
+   *       computed via {@link Real#autocorrelation(int, int, Real, Real, Real)}.</li>
+   *   <li>Theoretical kernel overlay K(k·dt)/K(0) when a kernel is available
+   *       via {@link #getKernel(double[], double[])}; zeros otherwise.</li>
+   *   <li>Frequency-domain cross-check: bias-corrected IDFT of the
+   *       periodogram. From the unnormalised forward DFT X[k] of the real
+   *       path, |X[k]|² is the periodogram; its inverse DFT is the biased
+   *       autocovariance ·N. Dividing lag k by (N−k) and normalising by
+   *       lag-zero gives an unbiased autocorrelation estimator that should
+   *       agree with series 1.</li>
+   * </ol>
+   * All arithmetic stays in {@link Real}/{@link Complex}; conversion to
+   * {@code double[]} happens only at the {@link DoubleDataSet#set} boundary.
    */
   void populateAutoCorrelationDatasets(XYChart chart, StationaryGaussianProcessSampler sampler, Complex samplePath)
   {
-    int      maxLag = (int) (sampler.autocorrelationLength / sampler.dt) + 1;
+    int    maxLag = (int) (sampler.autocorrelationLength / sampler.dt) + 1;
     if (maxLag > sampler.N)
     {
       maxLag = sampler.N;
     }
-    double[] times  = new double[maxLag];
-    double[] theory = new double[maxLag];
-    sampler.getKernel(times, theory);
-    var      kernelFn    = sampler.getKernel();
-    String   theoryLabel = kernelFn == null ? "Theoretical Covariance (none)"
+    int    pathLen     = sampler.N;
+    int    workingBits = bits;
+    double timeStep    = sampler.dt;
+
+    Real   realPath    = samplePath.re();
+
+    try ( Real    gamma         = Real.newVector(maxLag, "γ");
+          Real    squares       = Real.newVector(pathLen, "Z²");
+          Real    rho           = Real.newVector(maxLag, "ρ");
+          Complex complexPath   = Complex.newVector(pathLen);
+          Complex spectrum      = Complex.newVector(pathLen);
+          Complex periodogram   = Complex.newVector(pathLen);
+          Complex biasedAutocov = Complex.newVector(pathLen);
+          Real    lagZero       = new Real();
+          Real    biasFactor    = new Real();
+          Real    rhoFromFft    = Real.newVector(maxLag, "ρ̂"))
+    {
+      realPath.autocorrelation(maxLag, workingBits, gamma, squares, rho);
+
+      for (int i = 0; i < pathLen; i++)
+      {
+        complexPath.get(i).set(realPath.get(i));
+      }
+      complexPath.applyDiscreteFourierTransform(workingBits, spectrum);
+      try ( Real magnitude = new Real())
+      {
+        for (int k = 0; k < pathLen; k++)
+        {
+          spectrum.get(k).norm(workingBits, magnitude).pow(2, workingBits, periodogram.get(k).re());
+          periodogram.get(k).im().zero();
+        }
+      }
+      periodogram.applyInverseDiscreteFourierTransform(workingBits, biasedAutocov);
+
+      lagZero.set(biasedAutocov.get(0).re());
+      for (int k = 0; k < maxLag; k++)
+      {
+        biasFactor.set((double) pathLen / (double) (pathLen - k));
+        biasedAutocov.get(k).re().mul(biasFactor, workingBits, rhoFromFft.get(k));
+        rhoFromFft.get(k).div(lagZero, workingBits, rhoFromFft.get(k));
+      }
+
+      double[] times             = new double[maxLag];
+      double[] theory            = new double[maxLag];
+      double[] empiricalRho      = new double[maxLag];
+      double[] empiricalRhoFft   = new double[maxLag];
+      sampler.getKernel(times, theory);
+      for (int k = 0; k < maxLag; k++)
+      {
+        times[k]           = k * timeStep;
+        empiricalRho[k]    = rho.get(k).doubleValue();
+        empiricalRhoFft[k] = rhoFromFft.get(k).doubleValue();
+      }
+
+      var    kernelFn    = sampler.getKernel();
+      String theoryLabel = kernelFn == null ? "Theoretical Covariance (none)"
                                             : "Theoretical Covariance " + kernelFn;
-    double[] empirical   = Statistics.autocorr(samplePath.re().doubleValues(), maxLag);
-    chart.getDatasets().clear();
-    chart.getDatasets().addAll(new DoubleDataSet("Empirical").set(times, empirical),
-                               new DoubleDataSet(theoryLabel).set(times, theory));
+      chart.getDatasets().clear();
+      chart.getDatasets().addAll(new DoubleDataSet("Empirical (unbiased)").set(times, empiricalRho),
+                                 new DoubleDataSet("Empirical (IDFT of periodogram, bias-corrected)").set(times, empiricalRhoFft),
+                                 new DoubleDataSet(theoryLabel).set(times, theory));
+    }
   }
 
   /**
@@ -575,6 +623,7 @@ public abstract class StationaryGaussianProcessSampler extends
       autocorrelationLength = parsed;
       populateAutoCorrelationDatasets(covarianceChart, this, samplePath);
       covarianceChart.getXAxis().setMax(autocorrelationLength);
+      populatePowerSpectralDensityDatasets(psdChart, this, samplePath);
     };
     refresh.setOnAction(e -> doRefresh.run());
     lengthField.setOnAction(e -> doRefresh.run());
@@ -593,44 +642,141 @@ public abstract class StationaryGaussianProcessSampler extends
                                               double[] theoreticalPowerSpectralDensities,
                                               double[] powerSpectralDensity)
   {
-    // Chart 4: PSD
     XYChart chart = new XYChart(new DefaultNumericAxis("Frequency",
                                                        ""),
                                 new DefaultNumericAxis("ln(1 + PSD)",
                                                        ""));
     chart.setTitle("Power Spectral Density");
-    double[] empiricalPowerSpectralDensity = computePowerSpectralDensity(samplePath.im().doubleValues());
     for (int i = 0; i < positiveFrequencyCount; i++)
     {
       positiveFrequencies[i]               = frequencies[i];
       theoreticalPowerSpectralDensities[i] = powerSpectralDensity[i];
     }
+    populatePowerSpectralDensityDatasets(chart, this, samplePath);
+    configurePowerSpectralDensityAxes(chart);
+    return chart;
+  }
 
-    double[] empiricalLog1p   = new double[positiveFrequencyCount];
-    double[] theoreticalLog1p = new double[positiveFrequencyCount];
-    for (int i = 0; i < positiveFrequencyCount; i++)
+  /**
+   * Rebuild the PSD chart's three series in {@code ln(1 + PSD)} units:
+   * <ol>
+   *   <li>Empirical periodogram from the in-phase channel of the sample
+   *       path: P[k] = |X[k]|² · dt / (N/2), with X[k] the unnormalised
+   *       forward DFT of the real path.</li>
+   *   <li>Theoretical PSD as supplied by
+   *       {@link #getPowerSpectralDensity(double[])} on the positive
+   *       half of the frequency axis.</li>
+   *   <li>Frequency-domain cross-check: forward DFT of the unbiased
+   *       empirical autocovariance built from
+   *       {@link Real#autocovariance(int, int, Real, Real, Real)} over the
+   *       full lag horizon {@code maxLag = autocorrelationLength/dt}, with
+   *       Hermitian symmetry C(−k) = C(k) populated at index N−k. Same
+   *       periodogram normalisation · dt/(N/2) is applied so the units
+   *       match.</li>
+   * </ol>
+   * All arithmetic in arb types; conversion to {@code double[]} only at
+   * the {@link DoubleDataSet#set} boundary.
+   */
+  void populatePowerSpectralDensityDatasets(XYChart chart, StationaryGaussianProcessSampler sampler, Complex samplePath)
+  {
+    int    pathLen     = sampler.N;
+    int    posCount    = sampler.positiveFrequencyCount;
+    int    workingBits = bits;
+    int    maxLag      = (int) (sampler.autocorrelationLength / sampler.dt) + 1;
+    if (maxLag > pathLen)
     {
-      empiricalLog1p[i]   = Math.log1p(Math.max(0.0, empiricalPowerSpectralDensity[i]));
-      theoreticalLog1p[i] = Math.log1p(Math.max(0.0, theoreticalPowerSpectralDensities[i]));
+      maxLag = pathLen;
     }
 
-    var scatterPlotRenderer = newScatterChartRenderer();
-    var lineRenderer        = new ErrorDataSetRenderer();
+    Real    realPath = samplePath.re();
 
-    var empiricalDataSet    = new DoubleDataSet("Empirical").set(positiveFrequencies, empiricalLog1p)
-                                                            .setStyle(Charts.empiricialFrequencyDatasetStyle);
+    try ( Complex complexPath        = Complex.newVector(pathLen);
+          Complex spectrum           = Complex.newVector(pathLen);
+          Real    empiricalPsd       = Real.newVector(pathLen, "P");
+          Real    gamma              = Real.newVector(maxLag, "γ");
+          Real    squares            = Real.newVector(pathLen, "Z²");
+          Real    autocovUnbiased    = Real.newVector(maxLag, "C");
+          Complex autocovExtended    = Complex.newVector(pathLen);
+          Complex autocovSpectrum    = Complex.newVector(pathLen);
+          Real    scaling            = new Real();
+          Real    one                = new Real();
+          Real    log1pEmpirical     = Real.newVector(posCount, "ln(1+P)");
+          Real    log1pTheoretical   = Real.newVector(posCount, "ln(1+T)");
+          Real    log1pFromAutocov   = Real.newVector(posCount, "ln(1+Â)");
+          Real    dtScratch          = new Real();
+          Real    binTmp             = new Real())
+    {
+      one.set(1);
+      dtScratch.set(sampler.dt).div(pathLen / 2, workingBits, scaling);
 
-    var theoreticalDataSet  = new DoubleDataSet("Theoretical").set(positiveFrequencies, theoreticalLog1p)
-                                                              .setStyle(Charts.theoreticalFrequencyDatasetStyle);
-    scatterPlotRenderer.getDatasets().add(empiricalDataSet);
+      for (int i = 0; i < pathLen; i++)
+      {
+        complexPath.get(i).set(realPath.get(i));
+      }
+      complexPath.applyDiscreteFourierTransform(workingBits, spectrum);
+      try ( Real magnitude = new Real())
+      {
+        for (int k = 0; k < pathLen; k++)
+        {
+          spectrum.get(k).norm(workingBits, magnitude).pow(2, workingBits, empiricalPsd.get(k));
+          empiricalPsd.get(k).mul(scaling, workingBits, empiricalPsd.get(k));
+        }
+      }
 
-    lineRenderer.getDatasets().add(theoreticalDataSet);
+      realPath.autocovariance(maxLag, workingBits, gamma, squares, autocovUnbiased);
+      for (int i = 0; i < pathLen; i++)
+      {
+        autocovExtended.get(i).zero();
+      }
+      for (int k = 0; k < maxLag; k++)
+      {
+        autocovExtended.get(k).set(autocovUnbiased.get(k));
+        if (k > 0 && pathLen - k < pathLen)
+        {
+          autocovExtended.get(pathLen - k).set(autocovUnbiased.get(k));
+        }
+      }
+      autocovExtended.applyDiscreteFourierTransform(workingBits, autocovSpectrum);
 
-    chart.getRenderers().setAll(scatterPlotRenderer, lineRenderer);
+      for (int k = 0; k < posCount; k++)
+      {
+        empiricalPsd.get(k).add(one, workingBits, binTmp).log(workingBits, log1pEmpirical.get(k));
 
-    configurePowerSpectralDensityAxes(chart);
+        binTmp.set(sampler.theoreticalPowerSpectralDensities[k]);
+        binTmp.add(one, workingBits, binTmp).log(workingBits, log1pTheoretical.get(k));
 
-    return chart;
+        autocovSpectrum.get(k).re().mul(scaling, workingBits, binTmp);
+        binTmp.add(one, workingBits, binTmp).log(workingBits, log1pFromAutocov.get(k));
+      }
+
+      double[] freqAxis        = new double[posCount];
+      double[] empiricalDouble = new double[posCount];
+      double[] theoryDouble    = new double[posCount];
+      double[] autocovDouble   = new double[posCount];
+      for (int k = 0; k < posCount; k++)
+      {
+        freqAxis[k]        = sampler.positiveFrequencies[k];
+        empiricalDouble[k] = log1pEmpirical.get(k).doubleValue();
+        theoryDouble[k]    = log1pTheoretical.get(k).doubleValue();
+        autocovDouble[k]   = log1pFromAutocov.get(k).doubleValue();
+      }
+
+      var scatterPlotRenderer = newScatterChartRenderer();
+      var lineRenderer        = new ErrorDataSetRenderer();
+      var autocovRenderer     = new ErrorDataSetRenderer();
+
+      var empiricalDataSet    = new DoubleDataSet("Empirical").set(freqAxis, empiricalDouble)
+                                                              .setStyle(Charts.empiricialFrequencyDatasetStyle);
+      var theoreticalDataSet  = new DoubleDataSet("Theoretical").set(freqAxis, theoryDouble)
+                                                                .setStyle(Charts.theoreticalFrequencyDatasetStyle);
+      var autocovDataSet      = new DoubleDataSet("DFT of unbiased autocov").set(freqAxis, autocovDouble);
+
+      scatterPlotRenderer.getDatasets().add(empiricalDataSet);
+      lineRenderer.getDatasets().add(theoreticalDataSet);
+      autocovRenderer.getDatasets().add(autocovDataSet);
+
+      chart.getRenderers().setAll(scatterPlotRenderer, lineRenderer, autocovRenderer);
+    }
   }
 
   public XYChart newRandomWhiteNoiseMeasureChart(double[] frequencies, Complex whiteNoise)
