@@ -34,6 +34,40 @@ public class MonotonicRiemannSiegelThetaFunctionTest extends
     }
   }
 
+  /**
+   * Round-trip test of the local Lagrange inversion of Φ around a centerpoint:
+   * for t near the centerpoint, Φ⁻¹(Φ(t)) ≈ t.
+   */
+  public static void testInversionRoundTripNearCenter()
+  {
+    int  prec        = 128;
+    int  seriesOrder = 12;
+    var  Φ           = new MonotonicRiemannSiegelThetaFunction();
+
+    try ( Real centerPoint = Real.valueOf(50.0);
+          Real t           = Real.valueOf(0.0);
+          Real u           = Real.newVector(2);
+          Real tBack       = Real.valueOf(0.0))
+    {
+      var Φinv = Φ.invert(centerPoint, seriesOrder, prec);
+
+      double[] samples =
+      { 49.0, 49.5, 50.0, 50.5, 51.0 };
+
+      for (double s : samples)
+      {
+        t.set(s);
+        Φ.evaluate(t, 2, prec, u);
+        Φinv.evaluate(u.get(0), 1, prec, tBack);
+        double err = tBack.doubleValue() - s;
+        assertEquals(String.format("Φ⁻¹(Φ(%g)) = %g", s, tBack.doubleValue()),
+                     0.0,
+                     err,
+                     1e-9);
+      }
+    }
+  }
+
   public static void testEvaluationMatchesThetaPlusCT()
   {
     int  prec  = 128;

@@ -63,9 +63,11 @@ public class MonotonicRiemannSiegelThetaFunction implements
     return monotoneϑ.toString();
   }
 
-  RealFunction        monotoneϑ     = RealFunction.express("monotoneϑ:t->ϑ(t)+c*t", context);
+  RiemannSiegelThetaFunction ϑ             = new RiemannSiegelThetaFunction();
 
-  RealFunction        diffMonotoneϑ = RealFunction.express("diffmonotoneϑ:t->diff(ϑ(t),t)+c", context);
+  RealFunction               monotoneϑ     = RealFunction.express("monotoneϑ:t->ϑ(t)+c*t", context);
+
+  RealFunction               diffMonotoneϑ = RealFunction.express("diffmonotoneϑ:t->diff(ϑ(t),t)+c", context);
 
   @Override
   public RealFunction derivative()
@@ -77,10 +79,29 @@ public class MonotonicRiemannSiegelThetaFunction implements
   {
   }
 
+  /**
+   * Evaluates the Taylor jet of Φ(t+x) = ϑ(t+x) + c·(t+x) in x to the requested
+   * order. Coefficient 0 is Φ(t) = ϑ(t)+c·t; coefficient 1 is Φ′(t) = ϑ′(t)+c;
+   * higher coefficients are inherited unchanged from ϑ, since c·(t+x) is linear
+   * in x.
+   */
   @Override
   public Real evaluate(Real t, int order, int bits, Real res)
   {
-    return monotoneϑ.evaluate(t, order, bits, res);
+    ϑ.evaluate(t, order, bits, res);
+    if (order >= 1)
+    {
+      try ( Real ct = Real.valueOf(0.0))
+      {
+        c.mul(t, bits, ct);
+        res.get(0).add(ct, bits, res.get(0));
+      }
+      if (order >= 2)
+      {
+        res.get(1).add(c, bits, res.get(1));
+      }
+    }
+    return res;
   }
 
 }
