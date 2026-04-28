@@ -64,14 +64,6 @@ public abstract class StationaryGaussianProcessSampler extends
    */
   private XYChart               covarianceChart;
 
-  /**
-   * The single power-spectral-density XYChart created by
-   * {@link #newPowerSpectralDensityChart(Complex, double[], double[], double[], double[])}.
-   * Held so the recalculate handler can refresh the empirical PSD when the
-   * autocorrelation window length is changed.
-   */
-  private XYChart               powerSpectralDensityChart;
-
   static final int              bits                              = 128;
 
   /**
@@ -213,19 +205,12 @@ public abstract class StationaryGaussianProcessSampler extends
 
   void configureCharts()
   {
-    covarianceChart           = newAutoCorrelationChart(this, samplePath);
-    powerSpectralDensityChart = newPowerSpectralDensityChart(samplePath,
-                                                             positiveFrequencies,
-                                                             frequencies,
-                                                             theoreticalPowerSpectralDensities,
-                                                             powerSpectralDensity);
-    populateAutoCorrelationDatasets(covarianceChart, this, samplePath);
-    populatePowerSpectralDensityDatasets(powerSpectralDensityChart);
+    covarianceChart = newAutoCorrelationChart(this, samplePath);
     Stream.of(charts = new XYChart[]
     { newTimeDomainChart(spectralSupport, samplingTimes, samplePath, envelope),
       newRandomWhiteNoiseMeasureChart(frequencies, whiteNoise),
       covarianceChart,
-      powerSpectralDensityChart })
+      newPowerSpectralDensityChart(samplePath, positiveFrequencies, frequencies, theoreticalPowerSpectralDensities, powerSpectralDensity) })
           .forEach(chart -> Charts.configureChart(chart, light));
   }
 
@@ -539,21 +524,12 @@ public abstract class StationaryGaussianProcessSampler extends
       maxLag = sampler.N;
     }
     double[] times  = new double[maxLag];
-    for (int i = 0; i < maxLag; i++)
-    {
-      times[i] = i * sampler.dt;
-    }
     double[] theory = new double[maxLag];
     sampler.getKernel(times, theory);
     var      kernelFn    = sampler.getKernel();
     String   theoryLabel = kernelFn == null ? "Theoretical Covariance (none)"
                                             : "Theoretical Covariance " + kernelFn;
-    double[] empirical;
-    try ( Real autocorr = Real.newVector(maxLag))
-    {
-      sampler.samplePath.re().autocorrelation(maxLag, bits, autocorr);
-      empirical = autocorr.doubleValues();
-    }
+    double[] empirical   = Statistics.autocorr(samplePath.re().doubleValues(), maxLag);
     chart.getDatasets().clear();
     chart.getDatasets().addAll(new DoubleDataSet("Empirical").set(times, empirical),
                                new DoubleDataSet(theoryLabel).set(times, theory));
@@ -573,8 +549,8 @@ public abstract class StationaryGaussianProcessSampler extends
     Label     lengthLabel = new Label("Autocorrelation length:");
     TextField lengthField = new TextField(String.valueOf(autocorrelationLength));
     lengthField.setPrefColumnCount(8);
-    Button    recalculate = new Button("Recalculate");
-    Runnable  doRecalc    = () ->
+    Button    refresh     = new Button("Refresh");
+    Runnable  doRefresh   = () ->
     {
       String text = lengthField.getText();
       double parsed;
@@ -599,11 +575,10 @@ public abstract class StationaryGaussianProcessSampler extends
       autocorrelationLength = parsed;
       populateAutoCorrelationDatasets(covarianceChart, this, samplePath);
       covarianceChart.getXAxis().setMax(autocorrelationLength);
-      populatePowerSpectralDensityDatasets(powerSpectralDensityChart);
     };
-    recalculate.setOnAction(e -> doRecalc.run());
-    lengthField.setOnAction(e -> doRecalc.run());
-    HBox controls = new HBox(8, lengthLabel, lengthField, recalculate);
+    refresh.setOnAction(e -> doRefresh.run());
+    lengthField.setOnAction(e -> doRefresh.run());
+    HBox controls = new HBox(8, lengthLabel, lengthField, refresh);
     controls.setAlignment(Pos.CENTER_LEFT);
     controls.setPadding(new Insets(4, 8, 4, 8));
     BorderPane pane = new BorderPane();
@@ -624,40 +599,38 @@ public abstract class StationaryGaussianProcessSampler extends
                                 new DefaultNumericAxis("ln(1 + PSD)",
                                                        ""));
     chart.setTitle("Power Spectral Density");
+    double[] empiricalPowerSpectralDensity = computePowerSpectralDensity(samplePath.im().doubleValues());
     for (int i = 0; i < positiveFrequencyCount; i++)
     {
       positiveFrequencies[i]               = frequencies[i];
       theoreticalPowerSpectralDensities[i] = powerSpectralDensity[i];
     }
-    chart.getRenderers().setAll(newScatterChartRenderer(), new ErrorDataSetRenderer());
-    configurePowerSpectralDensityAxes(chart);
-    return chart;
-  }
 
-  /**
-   * Populate (or refresh) the two PSD-chart datasets:
-   * <ul>
-   * <li>Empirical: periodogram of {@code samplePath.im()}, log1p-compressed.</li>
-   * <li>Theoretical: closed-form PSD on the positive-frequency grid, log1p-compressed.</li>
-   * </ul>
-   */
-  void populatePowerSpectralDensityDatasets(XYChart chart)
-  {
-    double[] empiricalPsd = computePowerSpectralDensity(samplePath.im().doubleValues());
     double[] empiricalLog1p   = new double[positiveFrequencyCount];
     double[] theoreticalLog1p = new double[positiveFrequencyCount];
     for (int i = 0; i < positiveFrequencyCount; i++)
     {
-      empiricalLog1p[i]   = Math.log1p(Math.max(0.0, empiricalPsd[i]));
+      empiricalLog1p[i]   = Math.log1p(Math.max(0.0, empiricalPowerSpectralDensity[i]));
       theoreticalLog1p[i] = Math.log1p(Math.max(0.0, theoreticalPowerSpectralDensities[i]));
     }
-    var empiricalDataSet   = new DoubleDataSet("Empirical").set(positiveFrequencies, empiricalLog1p)
-                                                           .setStyle(Charts.empiricialFrequencyDatasetStyle);
-    var theoreticalDataSet = new DoubleDataSet("Theoretical").set(positiveFrequencies, theoreticalLog1p)
-                                                             .setStyle(Charts.theoreticalFrequencyDatasetStyle);
-    var renderers = chart.getRenderers();
-    ((ErrorDataSetRenderer) renderers.get(0)).getDatasets().setAll(empiricalDataSet);
-    ((ErrorDataSetRenderer) renderers.get(1)).getDatasets().setAll(theoreticalDataSet);
+
+    var scatterPlotRenderer = newScatterChartRenderer();
+    var lineRenderer        = new ErrorDataSetRenderer();
+
+    var empiricalDataSet    = new DoubleDataSet("Empirical").set(positiveFrequencies, empiricalLog1p)
+                                                            .setStyle(Charts.empiricialFrequencyDatasetStyle);
+
+    var theoreticalDataSet  = new DoubleDataSet("Theoretical").set(positiveFrequencies, theoreticalLog1p)
+                                                              .setStyle(Charts.theoreticalFrequencyDatasetStyle);
+    scatterPlotRenderer.getDatasets().add(empiricalDataSet);
+
+    lineRenderer.getDatasets().add(theoreticalDataSet);
+
+    chart.getRenderers().setAll(scatterPlotRenderer, lineRenderer);
+
+    configurePowerSpectralDensityAxes(chart);
+
+    return chart;
   }
 
   public XYChart newRandomWhiteNoiseMeasureChart(double[] frequencies, Complex whiteNoise)
