@@ -1168,13 +1168,17 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
   public Real structure(int n, int bits)
   {
     return structure(n, bits, Real.newVector(n, "γ"));
-  }  
+  }
 
   /**
-   * Empirical autocovariance C(k) = C(0) − γ(k)/2 derived from the variogram
-   * γ(k) = ⟨|Z(i+k) − Z(i)|²⟩, valid for any second-order stationary discrete
-   * sample sequence. C(0) is the empirical variance ⟨Z²⟩ − ⟨Z⟩² on the full
-   * sample. Caller supplies all storage — no hidden allocations.
+   * Empirical autocovariance C(k) at lags 0..n−1, computed from the variogram
+   * identity
+   *
+   *   C(k) = C(0) − γ(k)/2,
+   *
+   * where γ(k) = ⟨|Z(i+k) − Z(i)|²⟩ is the structure function and
+   * C(0) = ⟨Z²⟩ − ⟨Z⟩² is the sample variance. Caller supplies all storage;
+   * on return, gamma holds the variogram and squares holds Zᵢ².
    *
    * @param n        number of lags 0..n−1
    * @param bits     working precision
@@ -1203,7 +1207,7 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
 
   /**
    * Empirical autocorrelation ρ(k) = C(k)/C(0), the normalised
-   * {@link #autocovariance(int, int, Real, Real, Real)}. Caller supplies all
+   * this{@link #autocovariance(int, int, Real, Real, Real)}. Caller supplies all
    * storage; on return, gamma holds the variogram, squares holds Zᵢ², and
    * result[0] = 1.
    *
@@ -1227,7 +1231,6 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
     }
     return result;
   }
-
   
   /**
    * A this{@link #slice(int, int)} of this array of {@link Real}s from the n-th
