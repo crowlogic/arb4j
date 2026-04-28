@@ -31,7 +31,10 @@ override_dh_auto_install:
 	install -d $(JAR_DIR) $(JNI_DIR) $(HOME_DIR) $(BIN_DIR) $(DOC_DIR)
 	install -m 0644 libarblib.so                  $(JNI_DIR)/libarblib.so
 	# Shaded fat jar: every transitive dependency relocated under
-	# org.arblib.shaded.* (JavaFX excluded -- supplied by runtime JDK).
+	# org.arblib.shaded.* (third-party libs) or kept at canonical paths
+	# (javafx.*). JavaFX is not shipped by the runtime OpenJDK, so the
+	# javafx classes and their linux-classifier native libs ride inside
+	# arb4j.jar.
 	install -m 0644 build/$(PKG)-$(VER).jar       $(JAR_DIR)/$(PKG)-$(VER).jar
 	ln -sf $(PKG)-$(VER).jar                      $(JAR_DIR)/$(PKG).jar
 	cp -a build/apidocs/.                         $(DOC_DIR)/
@@ -39,6 +42,13 @@ override_dh_auto_install:
 	install -m 0644 pom.xml                       $(HOME_DIR)/pom.xml
 	install -m 0644 shell.start                   $(HOME_DIR)/shell.start
 	echo $(VER)                                 > $(HOME_DIR)/version
+	# Extract every .so from the shaded jar into /usr/lib/jni so the
+	# JVM can resolve them via -Djava.library.path. JavaFX's native
+	# libraries (libglass, libprism_es2, libjavafx_iio, libdecora_sse,
+	# libglassgtk3, libjavafx_font*, libprism_sw, libprism_common) live
+	# at the jar root once the linux-classifier artifacts are unpacked,
+	# alongside libj2v8_linux_x86_64.so from the j2v8 dependency.
+	cd $(JNI_DIR) && unzip -j -o $(CURDIR)/build/$(PKG)-$(VER).jar '*.so'
 	# Stage every wrapper from bin/ into /usr/bin with paths rewritten
 	# to the FHS layout. See debian/install-bin.sh.
 	debian/install-bin.sh bin $(BIN_DIR)

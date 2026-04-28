@@ -254,9 +254,9 @@
 							  shaded modules.
 							-->
 							<artifactSet>
-								<excludes>
-									<exclude>org.openjfx:*</exclude>
-								</excludes>
+								<includes>
+									<include>*:*</include>
+								</includes>
 							</artifactSet>
 							<filters>
 								<filter>

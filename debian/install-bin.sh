@@ -82,6 +82,14 @@ EOF
       gsub(/:\$BUILDIR/, "")
       gsub(/\$BASEDIR\/build\/classes\/?:/, "")
       gsub(/\$BUILDIR:/, "")
+      # The shaded fat jar carries every dependency, including JavaFX,
+      # at canonical javafx.* paths. Drop the module-path / add-modules
+      # flags that the dev launcher uses to bring JavaFX in as a JPMS
+      # module -- the JDK does not ship javafx.controls and the fat jar
+      # already loads everything from the classpath.
+      gsub(/--module-path \$CLASSPATH/, "")
+      gsub(/--add-modules arb4j/, "")
+      gsub(/--add-modules javafx\.controls/, "")
       print
     }
   ' "$src" > "$DST/$name"
