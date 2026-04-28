@@ -19,8 +19,6 @@
 		<asm.version>9.9.1</asm.version>
 		<mdep.outputFile>class.path</mdep.outputFile>
 		<argLine></argLine>
-		<!-- Skip javadoc by default; pass -Djavadoc.skip=false to generate it. -->
-		<javadoc.skip>true</javadoc.skip>
 	</properties>
 
 	<repositories>
@@ -180,22 +178,31 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>3.6.3</version>
-				<!--
-				  Javadoc generation is documentation, not part of the build's
-				  correctness contract. Skip the attach-javadocs execution by
-				  default so packaging never depends on javadoc succeeding.
-				  Re-enable on demand with -Djavadoc.skip=false.
-				-->
 				<configuration>
 					<source>26</source>
-					<skip>${javadoc.skip}</skip>
-					<failOnError>false</failOnError>
-					<failOnWarnings>false</failOnWarnings>
 					<additionalJOptions>
 						<additionalJOption>-Xdoclint:none</additionalJOption>
 						<additionalJOption>-quiet</additionalJOption>
 					</additionalJOptions>
-					<excludePackageNames>arb.solvers</excludePackageNames>
+					<!--
+					  maven-javadoc-plugin's default package enumeration walks
+					  the source tree and emits a flat @packages file to the
+					  javadoc tool. javadoc 26 then aborts with
+
+					      error: No source files for package <name>
+
+					  whenever any listed package contains only
+					  package-info.java (the package directory has no
+					  ordinary .java sources).
+
+					  Switching from <packages> to <subpackages> tells javadoc
+					  to discover sources recursively under <sourcepath>
+					  rather than processing an explicit list. Under that
+					  mode a directory whose only file is package-info.java
+					  is silently skipped instead of failing the run.
+					-->
+					<sourcepath>${project.basedir}/src/main/java</sourcepath>
+					<subpackages>arb</subpackages>
 				</configuration>
 				<executions>
 					<execution>
@@ -203,11 +210,6 @@
 						<goals>
 							<goal>jar</goal>
 						</goals>
-						<configuration>
-							<skip>${javadoc.skip}</skip>
-							<failOnError>false</failOnError>
-							<failOnWarnings>false</failOnWarnings>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>
