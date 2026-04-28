@@ -1,0 +1,39 @@
+#!/bin/sh
+# Headless screenshot of any arb4j JavaFX application under Xvfb.
+#
+# JavaFX 26's Linux glass backend is GTK; the openjfx Maven artifacts ship
+# no Monocle path, so the JVM needs a real X protocol stream. xvfb-run
+# starts an Xvfb server on a free :NN, exports DISPLAY, runs the command,
+# and tears the server down on exit.
+#
+# Usage:
+#   snapshot <Application-FQCN> <out.png> [settleSeconds]
+#
+# Examples:
+#   snapshot arb.applications.Expressor                /tmp/expressor.png
+#   snapshot arb.applications.SymbolPalette            /tmp/palette.png    2
+#   snapshot arb.applications.RandomWaveSampler        /tmp/rws.png        4
+#
+# The FQCN may be any class extending javafx.application.Application that
+# is reachable on $ARB4J_CLASSPATH (i.e. inside the shaded fat jar).
+#
+# Env knobs:
+#   XVFB_SCREEN   geometry+depth, default 1920x1200x24
+set -eu
+SCREEN=${XVFB_SCREEN:-1920x1200x24}
+
+if [ $# -lt 2 ]; then
+  printf 'usage: snapshot <Application-FQCN> <out.png> [settleSeconds]\n' >&2
+  exit 2
+fi
+
+# Prefer the FHS install layout. In a checkout, fall back to bin/run so
+# class.path / java.library.path resolve to the developer tree.
+if [ -r /usr/share/arb4j/env.sh ]; then
+  exec xvfb-run --auto-servernum --server-args="-screen 0 $SCREEN" \
+       run arb.applications.ScreenshotDriver "$@"
+else
+  BASEDIR=$(dirname "$(readlink -f "$0")")/..
+  exec xvfb-run --auto-servernum --server-args="-screen 0 $SCREEN" \
+       "$BASEDIR/bin/run" arb.applications.ScreenshotDriver "$@"
+fi

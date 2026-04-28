@@ -1,0 +1,28 @@
+#!/bin/sh
+# Generic headless wrapper. Invokes any arb4j launcher script (expressor,
+# symbolPalette, refBrowser, lemniscateLab, todo, bandLimitedWhiteNoiseSampler,
+# randomWaveSampler) under a virtual X server provided by Xvfb so JavaFX/GTK
+# can boot without a real display. JavaFX 26's Linux glass backend is GTK; it
+# has no Monocle path in the openjfx Maven artifacts, so a real X protocol
+# stream is mandatory.
+#
+# Usage:
+#   xvfbrun expressor                       # boot Expressor headlessly
+#   xvfbrun symbolPalette                   # boot SymbolPalette headlessly
+#   xvfbrun -- arb4jVersion                 # any non-FX command also works
+#
+# Env knobs:
+#   XVFB_SCREEN   geometry+depth, default 1920x1200x24
+#   XVFB_SERVER   server number, default :99
+set -eu
+SCREEN=${XVFB_SCREEN:-1920x1200x24}
+SERVER=${XVFB_SERVER:-:99}
+
+if [ $# -lt 1 ]; then
+  printf 'usage: xvfbrun <wrapper> [args...]\n' >&2
+  exit 2
+fi
+
+# xvfb-run handles starting Xvfb on a free server number, exporting DISPLAY,
+# running the command, and tearing the server down on exit.
+exec xvfb-run --auto-servernum --server-args="-screen 0 $SCREEN" "$@"
