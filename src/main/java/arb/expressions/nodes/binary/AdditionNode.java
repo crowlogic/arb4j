@@ -75,6 +75,21 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
+  public boolean hasClosedFormFractionalIntegral(VariableNode<D, R, F> variable)
+  {
+    return left.hasClosedFormFractionalIntegral(variable) && right.hasClosedFormFractionalIntegral(variable);
+  }
+
+  /**
+   * I^(μ)(f + g) = I^(μ)(f) + I^(μ)(g)
+   */
+  @Override
+  public Node<D, R, F> fractionalIntegral(VariableNode<D, R, F> variable, Node<D, R, F> μ)
+  {
+    return left.fractionalIntegral(variable, μ).add(right.fractionalIntegral(variable, μ));
+  }
+
+  @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
     return left.differentiate(variable).add(right.differentiate(variable));

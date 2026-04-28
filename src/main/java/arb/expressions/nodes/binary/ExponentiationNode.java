@@ -68,6 +68,31 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     }
   }
 
+  /**
+   * I^(μ)(t^β) = Γ(β+1)/Γ(β+μ+1) · t^(β+μ)    for β > −1
+   */
+  @Override
+  public boolean hasClosedFormFractionalIntegral(VariableNode<D, R, F> variable)
+  {
+    return left instanceof VariableNode<D, R, F> varNode && !right.dependsOn(varNode);
+  }
+
+  @Override
+  public Node<D, R, F> fractionalIntegral(VariableNode<D, R, F> variable, Node<D, R, F> μ)
+  {
+    if (left instanceof VariableNode<D, R, F> varNode && !right.dependsOn(varNode))
+    {
+      var t               = left;
+      var β               = right;
+      var numer           = β.add(one()).Γ();
+      var denom           = β.add(μ).add(one()).Γ();
+      var Γratio          = numer.div(denom);
+      var fractionalPower = t.pow(β.add(μ));
+      return Γratio.mul(fractionalPower);
+    }
+    return super.fractionalIntegral(variable, μ);
+  }
+
   @Override
   public boolean isZero()
   {

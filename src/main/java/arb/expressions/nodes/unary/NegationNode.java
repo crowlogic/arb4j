@@ -144,6 +144,25 @@ public class NegationNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
+  public boolean hasClosedFormFractionalIntegral(VariableNode<D, R, F> variable)
+  {
+    return arg.hasClosedFormFractionalIntegral(variable);
+  }
+
+  /**
+   * I^(μ)(−f) = −I^(μ)(f)
+   */
+  @Override
+  public Node<D, R, F> fractionalIntegral(VariableNode<D, R, F> variable, Node<D, R, F> μ)
+  {
+    if (arg.hasClosedFormFractionalIntegral(variable))
+    {
+      return arg.fractionalIntegral(variable, μ).neg();
+    }
+    return super.fractionalIntegral(variable, μ);
+  }
+
+  @Override
   public boolean isLinearOperator(VariableNode<D, R, F> outerVar, VariableNode<D, R, F> innerVar)
   {
     return true;

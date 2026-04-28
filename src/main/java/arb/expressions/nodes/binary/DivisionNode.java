@@ -84,6 +84,27 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
+  public boolean hasClosedFormFractionalIntegral(VariableNode<D, R, F> variable)
+  {
+    VariableNode<D, R, F> diffVar = variable != null ? variable : expression.getIndependentVariable();
+    return !right.dependsOn(diffVar) && left.hasClosedFormFractionalIntegral(variable);
+  }
+
+  /**
+   * I^(μ)(f / c) = I^(μ)(f) / c    when c is independent of the integration variable
+   */
+  @Override
+  public Node<D, R, F> fractionalIntegral(VariableNode<D, R, F> variable, Node<D, R, F> μ)
+  {
+    VariableNode<D, R, F> diffVar = variable != null ? variable : expression.getIndependentVariable();
+    if (!right.dependsOn(diffVar) && left.hasClosedFormFractionalIntegral(variable))
+    {
+      return left.fractionalIntegral(variable, μ).div(right);
+    }
+    return super.fractionalIntegral(variable, μ);
+  }
+
+  @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> requestedResultType)
   {
     return super.generate(mv, requestedResultType);

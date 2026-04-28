@@ -151,6 +151,22 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
   }
 
   @Override
+  public boolean hasClosedFormFractionalIntegral(VariableNode<D, R, F> variable)
+  {
+    return true;
+  }
+
+  /**
+   * I^(μ)(c) = c · t^μ / Γ(μ+1)
+   */
+  @Override
+  public Node<D, R, F> fractionalIntegral(VariableNode<D, R, F> variable, Node<D, R, F> μ)
+  {
+    VariableNode<D, R, F> t = variable != null ? variable : expression.getIndependentVariable();
+    return this.mul(t.pow(μ)).div(μ.add(one()).Γ());
+  }
+
+  @Override
   public boolean isNonNegativeIntegerConstant()
   {
     // TODO: improve this

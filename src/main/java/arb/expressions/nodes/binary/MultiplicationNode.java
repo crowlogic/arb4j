@@ -100,6 +100,39 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   }
 
   @Override
+  public boolean hasClosedFormFractionalIntegral(VariableNode<D, R, F> variable)
+  {
+    VariableNode<D, R, F> diffVar = variable != null ? variable : expression.getIndependentVariable();
+    if (!left.dependsOn(diffVar) && right.hasClosedFormFractionalIntegral(variable))
+    {
+      return true;
+    }
+    if (!right.dependsOn(diffVar) && left.hasClosedFormFractionalIntegral(variable))
+    {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * I^(μ)(c · f) = c · I^(μ)(f)    when c is independent of the integration variable
+   */
+  @Override
+  public Node<D, R, F> fractionalIntegral(VariableNode<D, R, F> variable, Node<D, R, F> μ)
+  {
+    VariableNode<D, R, F> diffVar = variable != null ? variable : expression.getIndependentVariable();
+    if (!left.dependsOn(diffVar) && right.hasClosedFormFractionalIntegral(variable))
+    {
+      return left.mul(right.fractionalIntegral(variable, μ));
+    }
+    if (!right.dependsOn(diffVar) && left.hasClosedFormFractionalIntegral(variable))
+    {
+      return right.mul(left.fractionalIntegral(variable, μ));
+    }
+    return super.fractionalIntegral(variable, μ);
+  }
+
+  @Override
   public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
     // Simplify first -- catches e.g. (x-a)*δ(x-a) = 0

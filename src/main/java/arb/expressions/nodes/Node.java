@@ -239,6 +239,18 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   }
 
   /**
+   * Returns true if this node has a closed-form Riemann–Liouville fractional
+   * integral with respect to {@code variable}. Used by composite nodes
+   * (multiplication, division, etc.) to decide whether scalar-factor / linearity
+   * rules apply. The base default returns false; the integral-form wrapper is
+   * always available regardless.
+   */
+  public boolean hasClosedFormFractionalIntegral(VariableNode<D, R, F> variable)
+  {
+    return false;
+  }
+
+  /**
    * Checks if a node is easily integrable (exp, sin, cos). These functions have
    * straightforward antiderivatives.
    */

@@ -104,6 +104,53 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
+  public boolean hasClosedFormFractionalIntegral(VariableNode<D, R, F> variable)
+  {
+    return "sin".equals(functionName) || "cos".equals(functionName) || "exp".equals(functionName);
+  }
+
+  @Override
+  public Node<D, R, F> fractionalIntegral(VariableNode<D, R, F> variable, Node<D, R, F> μ)
+  {
+    var t = variable != null ? variable : expression.getIndependentVariable();
+
+    switch (functionName)
+    {
+    case "sin":
+      // I^(μ) sin(t) = t^(μ+1) · E(2, μ+2, −t²)
+      var muPlusOne_sin   = μ.add(one());
+      var muPlusTwo_sin   = μ.add(two());
+      var negTSq_sin      = t.pow(2).neg();
+      return t.pow(muPlusOne_sin)
+              .mul(new MittagLefflerFunctionNode<>(expression,
+                                                   two(),
+                                                   muPlusTwo_sin,
+                                                   negTSq_sin));
+
+    case "cos":
+      // I^(μ) cos(t) = t^μ · E(2, μ+1, −t²)
+      var muPlusOne_cos = μ.add(one());
+      var negTSq_cos    = t.pow(2).neg();
+      return t.pow(μ)
+              .mul(new MittagLefflerFunctionNode<>(expression,
+                                                   two(),
+                                                   muPlusOne_cos,
+                                                   negTSq_cos));
+
+    case "exp":
+      // I^(μ) exp(t) = t^μ · E(1, μ+1, t)
+      return t.pow(μ)
+              .mul(new MittagLefflerFunctionNode<>(expression,
+                                                   one(),
+                                                   μ.add(one()),
+                                                   t));
+
+    default:
+      return super.fractionalIntegral(variable, μ);
+    }
+  }
+
+  @Override
   public <T extends Field<T>> T evaluate(Class<T> resultType, int bits, T result)
   {
     if (result == null)

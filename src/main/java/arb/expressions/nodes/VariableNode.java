@@ -114,6 +114,45 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return this.getName().equals(diffVar.getName()) || !this.dependsOn(diffVar);
   }
 
+  @Override
+  public boolean hasClosedFormFractionalIntegral(VariableNode<D, R, F> variable)
+  {
+    VariableNode<D, R, F> diffVar = variable != null ? variable : expression.getIndependentVariable();
+    if (diffVar == null)
+    {
+      return true;
+    }
+    return this.getName().equals(diffVar.getName()) || !this.dependsOn(diffVar);
+  }
+
+  /**
+   * I^(μ)(t) = Γ(2)/Γ(μ+2) · t^(μ+1)
+   *
+   * Monomial rule with k=1. If this variable is independent of the integration
+   * variable it is treated as a constant: I^(μ)(c) = c · t^μ / Γ(μ+1).
+   */
+  @Override
+  public Node<D, R, F> fractionalIntegral(VariableNode<D, R, F> variable, Node<D, R, F> μ)
+  {
+    VariableNode<D, R, F> diffVar = variable != null ? variable : expression.getIndependentVariable();
+    if (this.equals(diffVar))
+    {
+      var p         = one();
+      var numerator = p.add(one()).Γ();
+      var denomArg  = p.add(μ).add(one());
+      var term      = this.pow(p.add(μ));
+      return numerator.div(denomArg.Γ()).mul(term);
+    }
+    if (diffVar != null && !this.dependsOn(diffVar))
+    {
+      var t       = diffVar;
+      var tToTheMu = t.pow(μ);
+      var denomGamma = μ.add(one()).Γ();
+      return this.mul(tToTheMu).div(denomGamma);
+    }
+    return super.fractionalIntegral(variable, μ);
+  }
+
   public boolean isZero()
   {
     return false;

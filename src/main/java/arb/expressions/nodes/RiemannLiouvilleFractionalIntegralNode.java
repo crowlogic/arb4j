@@ -297,6 +297,21 @@ public class RiemannLiouvilleFractionalIntegralNode<D, R, F extends Function<? e
     return operand.fractionalIntegral(this.variable, order.add(expression.newLiteralConstant("1")));
   }
 
+  /**
+   * Semigroup composition: I^ν ∘ I^μ = I^(μ+ν).
+   */
+  @Override
+  public boolean hasClosedFormFractionalIntegral(VariableNode<D, R, F> variable)
+  {
+    return operand.hasClosedFormFractionalIntegral(variable);
+  }
+
+  @Override
+  public Node<D, R, F> fractionalIntegral(VariableNode<D, R, F> variable, Node<D, R, F> ν)
+  {
+    return operand.fractionalIntegral(this.variable, order.add(ν));
+  }
+
   @Override
   public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
