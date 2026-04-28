@@ -1,6 +1,7 @@
 package arb.applications;
 
 import java.util.*;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import arb.*;
@@ -63,6 +64,33 @@ public abstract class StationaryGaussianProcessSampler extends
    * bound after the user changes the length.
    */
   private XYChart               covarianceChart;
+
+  /**
+   * The single power-spectral-density XYChart created by
+   * {@link #newPowerSpectralDensityChart(Complex, double[], double[], double[], double[])}.
+   * Held so the recalculate handler can refresh both the empirical PSD and the
+   * cross-check overlay (DFT of the empirical autocorrelation) when the
+   * autocorrelation window length is changed.
+   */
+  private XYChart               powerSpectralDensityChart;
+
+  /**
+   * Cached empirical autocorrelation on the current lag grid (length =
+   * current maxLag). Populated by
+   * {@link #populateAutoCorrelationDatasets(XYChart, StationaryGaussianProcessSampler, Complex)}
+   * and consumed by the PSD cross-check overlay (DFT of the empirical
+   * autocorrelation).
+   */
+  private double[]              empiricalAutocorrelation;
+
+  /**
+   * Cached empirical power spectral density on the positive-frequency grid.
+   * Populated by
+   * {@link #populatePowerSpectralDensityDatasets(XYChart, double[], double[], double[])}
+   * and consumed by the covariance cross-check overlay (IDFT of the
+   * empirical PSD).
+   */
+  private double[]              empiricalPowerSpectralDensity;
 
   static final int              bits                              = 128;
 
@@ -205,12 +233,26 @@ public abstract class StationaryGaussianProcessSampler extends
 
   void configureCharts()
   {
-    covarianceChart = newAutoCorrelationChart(this, samplePath);
+    covarianceChart           = newAutoCorrelationChart(this, samplePath);
+    powerSpectralDensityChart = newPowerSpectralDensityChart(samplePath,
+                                                             positiveFrequencies,
+                                                             frequencies,
+                                                             theoreticalPowerSpectralDensities,
+                                                             powerSpectralDensity);
+    // Two passes so each chart's cross-check sees the other chart's primary
+    // empirical dataset: pass 1 fills covariance.empirical (autocorrelation
+    // of samplePath.re()) for the PSD cross-check to read; pass 2 fills
+    // psd.empirical (periodogram of samplePath.im()) for the covariance
+    // cross-check to read; pass 3 re-fills covariance now that the PSD is
+    // cached.
+    populateAutoCorrelationDatasets(covarianceChart, this, samplePath);
+    populatePowerSpectralDensityDatasets(powerSpectralDensityChart);
+    populateAutoCorrelationDatasets(covarianceChart, this, samplePath);
     Stream.of(charts = new XYChart[]
     { newTimeDomainChart(spectralSupport, samplingTimes, samplePath, envelope),
       newRandomWhiteNoiseMeasureChart(frequencies, whiteNoise),
       covarianceChart,
-      newPowerSpectralDensityChart(samplePath, positiveFrequencies, frequencies, theoreticalPowerSpectralDensities, powerSpectralDensity) })
+      powerSpectralDensityChart })
           .forEach(chart -> Charts.configureChart(chart, light));
   }
 
@@ -524,15 +566,135 @@ public abstract class StationaryGaussianProcessSampler extends
       maxLag = sampler.N;
     }
     double[] times  = new double[maxLag];
+    for (int i = 0; i < maxLag; i++)
+    {
+      times[i] = i * sampler.dt;
+    }
     double[] theory = new double[maxLag];
     sampler.getKernel(times, theory);
     var      kernelFn    = sampler.getKernel();
     String   theoryLabel = kernelFn == null ? "Theoretical Covariance (none)"
                                             : "Theoretical Covariance " + kernelFn;
-    double[] empirical   = Statistics.autocorr(samplePath.re().doubleValues(), maxLag);
+    double[] empirical;
+    try ( Real autocorr = Real.newVector(maxLag))
+    {
+      sampler.samplePath.re().autocorrelation(maxLag, bits, autocorr);
+      empirical = autocorr.doubleValues();
+    }
+    sampler.empiricalAutocorrelation = empirical;
+    double[] crossCheck = idftOfEmpiricalPowerSpectralDensityOnLagGrid(sampler, maxLag);
     chart.getDatasets().clear();
     chart.getDatasets().addAll(new DoubleDataSet("Empirical").set(times, empirical),
-                               new DoubleDataSet(theoryLabel).set(times, theory));
+                               new DoubleDataSet(theoryLabel).set(times, theory),
+                               new DoubleDataSet("IDFT(empirical PSD)").set(times, crossCheck));
+  }
+
+  /**
+   * Cross-check overlay for the covariance chart: take the cached empirical
+   * power spectral density (one-sided, on the positive-frequency grid) and
+   * inverse-Fourier-transform it onto the lag grid {0, dt, 2·dt, ...,
+   * (maxLag−1)·dt}, normalized by the lag-0 value so it sits on the same
+   * scale as the empirical autocorrelation. Wiener–Khinchin: K(τ) =
+   * 2·∫₀^{f_Ny} S(f)·cos(2π f τ) df, evaluated by trapezoidal sum on the
+   * positive-frequency grid with weights w[k] = df, halved at k = 0 and at
+   * k = nyquistIndex when N is even (Nyquist endpoint).
+   *
+   * Returns an array of length {@code maxLag} of zeros if the empirical PSD
+   * has not yet been populated (first chart-build pass before the PSD chart
+   * has run).
+   */
+  double[] idftOfEmpiricalPowerSpectralDensityOnLagGrid(StationaryGaussianProcessSampler sampler, int maxLag)
+  {
+    double[] psd = sampler.empiricalPowerSpectralDensity;
+    double[] result = new double[maxLag];
+    if (psd == null)
+    {
+      return result;
+    }
+    int                 m            = sampler.positiveFrequencyCount;
+    double              df           = sampler.df;
+    double              dt           = sampler.dt;
+    boolean             nIsEven      = sampler.N % 2 == 0;
+    int                 nyquist      = sampler.nyquistIndex;
+    IntStream.range(0, maxLag).parallel().forEach(idx ->
+    {
+      double tau = idx * dt;
+      double sum = 0.0;
+      for (int k = 0; k < m; k++)
+      {
+        double weight = df;
+        if (k == 0)
+        {
+          weight *= 0.5;
+        }
+        else if (nIsEven && k == nyquist)
+        {
+          weight *= 0.5;
+        }
+        sum += psd[k] * Math.cos(2.0 * Math.PI * (k * df) * tau) * weight;
+      }
+      result[idx] = 2.0 * sum;
+    });
+    double zero = result[0];
+    if (zero != 0.0 && Double.isFinite(zero))
+    {
+      for (int i = 0; i < maxLag; i++)
+      {
+        result[i] /= zero;
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Cross-check overlay for the PSD chart: take the cached empirical
+   * autocorrelation on the lag grid {0, dt, ..., (maxLag−1)·dt} and forward-
+   * Fourier-transform it onto the same positive-frequency grid as the
+   * existing empirical PSD. Wiener–Khinchin: S(f) = 2·∫₀^{(maxLag−1)·dt}
+   * ρ(τ)·cos(2π f τ) dτ, evaluated by trapezoidal sum with endpoint halving
+   * at τ = 0 and τ = (maxLag−1)·dt. Multiplied by the empirical lag-0
+   * variance estimate Σᵢ Z[i]² / N so the overlay has dimensions of power
+   * (matching {@link #computePowerSpectralDensity(double[])}).
+   *
+   * Returns an array of length {@code positiveFrequencyCount} of zeros if
+   * the empirical autocorrelation has not yet been populated (first chart-
+   * build pass before the covariance chart has run).
+   */
+  double[] dftOfEmpiricalAutocorrelationOnPositiveFrequencyGrid(StationaryGaussianProcessSampler sampler)
+  {
+    double[] rho = sampler.empiricalAutocorrelation;
+    int      m   = sampler.positiveFrequencyCount;
+    double[] result = new double[m];
+    if (rho == null)
+    {
+      return result;
+    }
+    int    maxLag    = rho.length;
+    double dt        = sampler.dt;
+    double df        = sampler.df;
+    double[] path    = sampler.samplePath.re().doubleValues();
+    double sumOfSquares = 0.0;
+    for (int i = 0; i < path.length; i++)
+    {
+      sumOfSquares += path[i] * path[i];
+    }
+    double variance  = sumOfSquares / path.length;
+    IntStream.range(0, m).parallel().forEach(idx ->
+    {
+      double f   = idx * df;
+      double sum = 0.0;
+      for (int n = 0; n < maxLag; n++)
+      {
+        double weight = dt;
+        if (n == 0 || n == maxLag - 1)
+        {
+          weight *= 0.5;
+        }
+        sum += rho[n] * Math.cos(2.0 * Math.PI * f * (n * dt)) * weight;
+      }
+      result[idx] = 2.0 * sum * variance;
+    });
+    return result;
   }
 
   /**
@@ -549,8 +711,8 @@ public abstract class StationaryGaussianProcessSampler extends
     Label     lengthLabel = new Label("Autocorrelation length:");
     TextField lengthField = new TextField(String.valueOf(autocorrelationLength));
     lengthField.setPrefColumnCount(8);
-    Button    refresh     = new Button("Refresh");
-    Runnable  doRefresh   = () ->
+    Button    recalculate = new Button("Recalculate");
+    Runnable  doRecalc    = () ->
     {
       String text = lengthField.getText();
       double parsed;
@@ -575,10 +737,11 @@ public abstract class StationaryGaussianProcessSampler extends
       autocorrelationLength = parsed;
       populateAutoCorrelationDatasets(covarianceChart, this, samplePath);
       covarianceChart.getXAxis().setMax(autocorrelationLength);
+      populatePowerSpectralDensityDatasets(powerSpectralDensityChart);
     };
-    refresh.setOnAction(e -> doRefresh.run());
-    lengthField.setOnAction(e -> doRefresh.run());
-    HBox controls = new HBox(8, lengthLabel, lengthField, refresh);
+    recalculate.setOnAction(e -> doRecalc.run());
+    lengthField.setOnAction(e -> doRecalc.run());
+    HBox controls = new HBox(8, lengthLabel, lengthField, recalculate);
     controls.setAlignment(Pos.CENTER_LEFT);
     controls.setPadding(new Insets(4, 8, 4, 8));
     BorderPane pane = new BorderPane();
@@ -599,38 +762,53 @@ public abstract class StationaryGaussianProcessSampler extends
                                 new DefaultNumericAxis("ln(1 + PSD)",
                                                        ""));
     chart.setTitle("Power Spectral Density");
-    double[] empiricalPowerSpectralDensity = computePowerSpectralDensity(samplePath.im().doubleValues());
     for (int i = 0; i < positiveFrequencyCount; i++)
     {
       positiveFrequencies[i]               = frequencies[i];
       theoreticalPowerSpectralDensities[i] = powerSpectralDensity[i];
     }
+    chart.getRenderers().setAll(newScatterChartRenderer(), new ErrorDataSetRenderer(), new ErrorDataSetRenderer());
+    configurePowerSpectralDensityAxes(chart);
+    return chart;
+  }
 
+  /**
+   * Populate (or refresh) the three PSD-chart datasets:
+   * <ul>
+   * <li>Empirical: periodogram of {@code samplePath.im()}, log1p-compressed.</li>
+   * <li>Theoretical: closed-form PSD on the positive-frequency grid, log1p-compressed.</li>
+   * <li>{@code DFT(empirical autocorrelation)} cross-check: forward-DFT of
+   * the cached empirical autocorrelation on the positive-frequency grid,
+   * log1p-compressed. Zero on first build before the covariance chart
+   * has populated {@link #empiricalAutocorrelation}.</li>
+   * </ul>
+   * Caches the empirical PSD into {@link #empiricalPowerSpectralDensity}
+   * so the covariance chart's {@code IDFT(empirical PSD)} overlay can
+   * read it on the next recalculate.
+   */
+  void populatePowerSpectralDensityDatasets(XYChart chart)
+  {
+    double[] empiricalPsd = computePowerSpectralDensity(samplePath.im().doubleValues());
+    empiricalPowerSpectralDensity = empiricalPsd;
+    double[] crossCheckPsd = dftOfEmpiricalAutocorrelationOnPositiveFrequencyGrid(this);
     double[] empiricalLog1p   = new double[positiveFrequencyCount];
     double[] theoreticalLog1p = new double[positiveFrequencyCount];
+    double[] crossCheckLog1p  = new double[positiveFrequencyCount];
     for (int i = 0; i < positiveFrequencyCount; i++)
     {
-      empiricalLog1p[i]   = Math.log1p(Math.max(0.0, empiricalPowerSpectralDensity[i]));
+      empiricalLog1p[i]   = Math.log1p(Math.max(0.0, empiricalPsd[i]));
       theoreticalLog1p[i] = Math.log1p(Math.max(0.0, theoreticalPowerSpectralDensities[i]));
+      crossCheckLog1p[i]  = Math.log1p(Math.max(0.0, crossCheckPsd[i]));
     }
-
-    var scatterPlotRenderer = newScatterChartRenderer();
-    var lineRenderer        = new ErrorDataSetRenderer();
-
-    var empiricalDataSet    = new DoubleDataSet("Empirical").set(positiveFrequencies, empiricalLog1p)
-                                                            .setStyle(Charts.empiricialFrequencyDatasetStyle);
-
-    var theoreticalDataSet  = new DoubleDataSet("Theoretical").set(positiveFrequencies, theoreticalLog1p)
-                                                              .setStyle(Charts.theoreticalFrequencyDatasetStyle);
-    scatterPlotRenderer.getDatasets().add(empiricalDataSet);
-
-    lineRenderer.getDatasets().add(theoreticalDataSet);
-
-    chart.getRenderers().setAll(scatterPlotRenderer, lineRenderer);
-
-    configurePowerSpectralDensityAxes(chart);
-
-    return chart;
+    var empiricalDataSet   = new DoubleDataSet("Empirical").set(positiveFrequencies, empiricalLog1p)
+                                                           .setStyle(Charts.empiricialFrequencyDatasetStyle);
+    var theoreticalDataSet = new DoubleDataSet("Theoretical").set(positiveFrequencies, theoreticalLog1p)
+                                                             .setStyle(Charts.theoreticalFrequencyDatasetStyle);
+    var crossCheckDataSet  = new DoubleDataSet("DFT(empirical autocorrelation)").set(positiveFrequencies, crossCheckLog1p);
+    var renderers = chart.getRenderers();
+    ((ErrorDataSetRenderer) renderers.get(0)).getDatasets().setAll(empiricalDataSet);
+    ((ErrorDataSetRenderer) renderers.get(1)).getDatasets().setAll(theoreticalDataSet);
+    ((ErrorDataSetRenderer) renderers.get(2)).getDatasets().setAll(crossCheckDataSet);
   }
 
   public XYChart newRandomWhiteNoiseMeasureChart(double[] frequencies, Complex whiteNoise)
