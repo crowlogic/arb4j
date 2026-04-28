@@ -1,0 +1,10 @@
+--- !!arb.expressions.SerializedExpression
+coDomain: arb.Complex
+context:
+  input:
+  - arb.Real
+  - 2.3000000000000000000000000000000000000 +/- 1.90e-38
+domain: arb.Complex
+expression: diff(√(π)*Γ(¾)*J(¼,s)*2^¼÷s^¼,s)
+function: arb.functions.complex.ComplexFunction
+...
