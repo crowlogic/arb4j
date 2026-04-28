@@ -12,6 +12,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.expressions.*;
+import arb.expressions.nodes.VariableNode;
 import arb.functions.complex.ComplexFunction;
 
 /**
@@ -125,6 +126,55 @@ public interface Function<D, CO> extends
   {
     assert false : "TODO: " + getClass() + " should implement this";
     return null;
+  }
+
+  /**
+   * Multi-variable analogue of {@link #derivative()}: return the Jacobian of this
+   * function with respect to a caller-ordered subset of its parameters. The
+   * implementing class decides how to produce each partial — symbolic
+   * differentiation against its own {@link Context}, ARB jets at the named
+   * variable, or anything else appropriate. Unknown variable names should be
+   * rejected against this function's parameter list.
+   *
+   * @param variables ordered list of parameter names whose partials to return
+   * @return a {@link Jacobian} whose i-th partial is ∂this/∂variables[i]
+   */
+  public default Jacobian<D, CO, ? extends Function<D, CO>> jacobian(String[] variables)
+  {
+    throw new UnsupportedOperationException("TODO: " + getClass() + " should implement jacobian(String[])");
+  }
+
+  /**
+   * Convenience overload of {@link #jacobian(String[])} taking
+   * {@link arb.expressions.VariableReference} handles. The default extracts each
+   * reference's name and dispatches to {@link #jacobian(String[])}; implementing
+   * classes that have direct access to the references (and so can avoid the
+   * name-lookup round trip) are free to override.
+   */
+  public default Jacobian<D, CO, ? extends Function<D, CO>> jacobian(VariableReference<?, ?, ?>[] variables)
+  {
+    String[] names = new String[variables.length];
+    for (int i = 0; i < variables.length; i++)
+    {
+      names[i] = variables[i].name;
+    }
+    return jacobian(names);
+  }
+
+  /**
+   * Convenience overload of {@link #jacobian(String[])} taking
+   * {@link arb.expressions.nodes.VariableNode} handles. The default extracts each
+   * node's name and dispatches to {@link #jacobian(String[])}; implementing
+   * classes that have direct access to the nodes are free to override.
+   */
+  public default Jacobian<D, CO, ? extends Function<D, CO>> jacobian(VariableNode<?, ?, ?>[] variables)
+  {
+    String[] names = new String[variables.length];
+    for (int i = 0; i < variables.length; i++)
+    {
+      names[i] = variables[i].getName();
+    }
+    return jacobian(names);
   }
 
   /**
