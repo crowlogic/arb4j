@@ -11,11 +11,11 @@
 	<description>arb4j</description>
 
 	<properties>
-		<maven.compiler.source>25</maven.compiler.source>
-		<maven.compiler.target>25</maven.compiler.target>
-		<maven.compiler.release>25</maven.compiler.release>
+		<maven.compiler.source>26</maven.compiler.source>
+		<maven.compiler.target>26</maven.compiler.target>
+		<maven.compiler.release>26</maven.compiler.release>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<javafx.version>25.0.2</javafx.version>
+		<javafx.version>26.0.1</javafx.version>
 		<asm.version>9.9.1</asm.version>
 		<mdep.outputFile>class.path</mdep.outputFile>
 		<argLine></argLine>
@@ -91,6 +91,12 @@
 			<artifactId>javafx-controls</artifactId>
 			<version>${javafx.version}</version>
 			<classifier>linux</classifier>
+			<exclusions>
+				<exclusion>
+					<groupId>org.openjfx</groupId>
+					<artifactId>javafx-controls</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.scilab.forge</groupId>
@@ -101,6 +107,20 @@
 			<groupId>io.fair-acc</groupId>
 			<artifactId>chartfx</artifactId>
 			<version>11.3.1</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.openjfx</groupId>
+					<artifactId>javafx-controls</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.openjfx</groupId>
+					<artifactId>javafx-base</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.openjfx</groupId>
+					<artifactId>javafx-graphics</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -139,10 +159,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.14.0</version>
 				<configuration>
-					<release>25</release>
-					<compilerArgs>
-						<arg>--enable-preview</arg>
-					</compilerArgs>
+					<release>26</release>
 				</configuration>
 			</plugin>
 
@@ -151,7 +168,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.2.5</version>
 				<configuration>
-					<argLine>-ea --enable-preview --illegal-native-access=allow
+					<argLine>-ea --illegal-native-access=allow
 						--sun-misc-unsafe-memory-access=allow
 						-Djava.library.path=${project.basedir} ${argLine}</argLine>
 				</configuration>
@@ -162,9 +179,8 @@
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>3.6.3</version>
 				<configuration>
-					<source>25</source>
+					<source>26</source>
 					<additionalJOptions>
-						<additionalJOption>--enable-preview</additionalJOption>
 						<additionalJOption>-Xdoclint:none</additionalJOption>
 						<additionalJOption>-quiet</additionalJOption>
 					</additionalJOptions>

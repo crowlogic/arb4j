@@ -83,6 +83,9 @@ public class Compiler
 
   public static final String              objectDesc         = Type.getInternalName(Object.class);
 
+  /** ASM has no V26 constant in 9.9.1; the JVMS class-file major number for JDK 26 is 70. */
+  public static final int                 V26                = 70;
+
   public static HashSet<Class<?>>         realScalarTypes    = new HashSet<>(Arrays.asList(AlgebraicNumber.class,
                                                                                            Integer.class,
                                                                                            Real.class,
@@ -252,7 +255,7 @@ public class Compiler
 
     classSignature = expression.getFunctionClassTypeSignature(expression.functionClass);
 
-    classVisitor.visit(V25 | V_PREVIEW, ACC_PUBLIC | ACC_SUPER, className, classSignature, objectDesc, expression.implementedInterfaces());
+    classVisitor.visit(V26, ACC_PUBLIC | ACC_SUPER, className, classSignature, objectDesc, expression.implementedInterfaces());
 
     return classVisitor;
   }
