@@ -272,22 +272,16 @@ public class RiccatiMittagLefflerFunction extends
   }
 
   // ────────────────────────────────────────────────────────────────────────
-  // Padé sub-context override — must inherit the parent Context's variables
-  // so an externally-owned p, q, r, μ, v continue to resolve when the user
-  // evaluates the assembled rational function.
+  // Padé sub-context parent — the assembled rational R_M(z) = P_M(z)/Q_M(z)
+  // is parsed in a sub-Context that inherits this function's variables so an
+  // externally-owned p, q, r, μ, v continue to resolve when the user evaluates
+  // the rational function.
   // ────────────────────────────────────────────────────────────────────────
 
   @Override
-  protected ComplexFunction assemblePadeFunction(arb.ComplexPolynomial P_M, arb.ComplexPolynomial Q_M)
+  protected Context padeParentContext()
   {
-    Context subCtx = new Context();
-    if (context.variables != null)
-    {
-      context.variables.forEach((name, var) -> subCtx.variables.put(name, var));
-    }
-    subCtx.registerFunction("P", P_M.setName("P"));
-    subCtx.registerFunction("Q", Q_M.setName("Q"));
-    return ComplexFunction.express("ℛ", "z➔P(z)/Q(z)", subCtx);
+    return context;
   }
 
   // ────────────────────────────────────────────────────────────────────────

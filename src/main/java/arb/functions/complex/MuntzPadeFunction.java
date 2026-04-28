@@ -73,10 +73,10 @@ public class MuntzPadeFunction implements
   protected String              name;
 
   // ── derived state, rebuilt on demand ─────────────────────────────────────
-  private final List<ComplexPolynomial[]> padeCache    = new ArrayList<>();
-  private Complex                         cachedAlpha;
-  private int                             cacheBits    = 0;
-  private boolean                         cacheValid   = false;
+  private final List<DiagonalPade> padeCache    = new ArrayList<>();
+  private Complex                  cachedAlpha;
+  private int                      cacheBits    = 0;
+  private boolean                  cacheValid   = false;
 
   public MuntzPadeFunction(Real α, ComplexSequence a)
   {
@@ -101,13 +101,7 @@ public class MuntzPadeFunction implements
     {
       t.pow(α, bits, z);
       int M = chooseOrderForPrecision(z, bits);
-      ComplexPolynomial[] PQ = padeCache.get(M - 1);
-      try ( Complex pz = new Complex(); Complex qz = new Complex())
-      {
-        PQ[0].evaluate(z, order, bits, pz);
-        PQ[1].evaluate(z, order, bits, qz);
-        return pz.div(qz, bits, result);
-      }
+      return padeCache.get(M - 1).evaluate(z, order, bits, result);
     }
   }
 
@@ -181,18 +175,20 @@ public class MuntzPadeFunction implements
   }
 
   /**
-   * Diagonal (M, M) Padé numerator and denominator. result[0] = P_M,
-   * result[1] = Q_M. Falls back to lower orders on Hankel singularity.
+   * Canonical: diagonal (M, M) Padé pair filled into the caller-supplied
+   * {@link DiagonalPade}. Falls back to lower orders on Hankel singularity.
+   *
+   * @return the result parameter (fluent)
    */
-  public ComplexPolynomial[] padePolynomials(int M, int bits, ComplexPolynomial[] result)
+  public DiagonalPade padePade(int M, int bits, DiagonalPade result)
   {
     if (M < 1)
     {
-      throw new IllegalArgumentException("padePolynomials requires M ≥ 1, got " + M);
+      throw new IllegalArgumentException("padePade requires M ≥ 1, got " + M);
     }
-    if (result == null || result.length < 2 || result[0] == null || result[1] == null)
+    if (result == null)
     {
-      throw new IllegalArgumentException("result must be a length-2 array of preallocated ComplexPolynomial");
+      throw new IllegalArgumentException("result must be a preallocated DiagonalPade");
     }
     try ( Complex coeff = Complex.newVector(2 * M))
     {
@@ -201,15 +197,35 @@ public class MuntzPadeFunction implements
       while (currentM >= 1)
       {
         solveHankel(coeff, currentM, bits, result);
-        if (result[0].get(0).isFinite())
+        if (!result.isSingularSentinel())
         {
-          return result;
+          return result.onCoefficientsChanged();
         }
         currentM--;
       }
     }
     throw new ArithmeticException("All Padé orders ≤ " + M
                                   + " produced singular Hankel matrices at the current coefficients");
+  }
+
+  /**
+   * Backward-compatible: diagonal (M, M) Padé numerator and denominator.
+   * result[0] = P_M, result[1] = Q_M. Falls back to lower orders on Hankel
+   * singularity. Prefer {@link #padePade(int, int, DiagonalPade)}.
+   */
+  public ComplexPolynomial[] padePolynomials(int M, int bits, ComplexPolynomial[] result)
+  {
+    if (result == null || result.length < 2 || result[0] == null || result[1] == null)
+    {
+      throw new IllegalArgumentException("result must be a length-2 array of preallocated ComplexPolynomial");
+    }
+    try ( DiagonalPade pade = new DiagonalPade(M))
+    {
+      padePade(M, bits, pade);
+      result[0].set(pade.P);
+      result[1].set(pade.Q);
+    }
+    return result;
   }
 
   /**
@@ -226,10 +242,9 @@ public class MuntzPadeFunction implements
     {
       return ComplexFunction.express("0");
     }
-    ComplexPolynomial[] PQ = new ComplexPolynomial[]
-    { new ComplexPolynomial(), new ComplexPolynomial() };
-    padePolynomials(M, bits, PQ);
-    return assemblePadeFunction(PQ[0], PQ[1]);
+    DiagonalPade pade = new DiagonalPade(M, padeParentContext());
+    padePade(M, bits, pade);
+    return pade.asFunction();
   }
 
   /**
@@ -361,14 +376,12 @@ public class MuntzPadeFunction implements
       a.evaluate(k, bits, cachedAlpha.get(k - 1));
     }
 
+    Context parentCtx = padeParentContext();
     for (int m = currentTop + 1; m <= M; m++)
     {
-      ComplexPolynomial   P_m = new ComplexPolynomial();
-      ComplexPolynomial   Q_m = new ComplexPolynomial();
-      ComplexPolynomial[] PQ  = new ComplexPolynomial[]
-      { P_m, Q_m };
-      solveHankel(cachedAlpha, m, bits, PQ);
-      padeCache.add(PQ);
+      DiagonalPade pade = new DiagonalPade(m, parentCtx);
+      solveHankel(cachedAlpha, m, bits, pade);
+      padeCache.add(pade);
     }
   }
 
@@ -380,10 +393,9 @@ public class MuntzPadeFunction implements
 
   private void disposeLocal()
   {
-    for (ComplexPolynomial[] PQ : padeCache)
+    for (DiagonalPade pade : padeCache)
     {
-      PQ[0].close();
-      PQ[1].close();
+      pade.close();
     }
     padeCache.clear();
     if (cachedAlpha != null)
@@ -393,23 +405,32 @@ public class MuntzPadeFunction implements
     }
   }
 
-  private void evaluatePadeAtCachedOrder(int m, Complex z, int bits, Complex pz, Complex qz, Complex into)
+  /**
+   * Hook for subclasses to supply a Context whose variables are imported
+   * into each cached {@link DiagonalPade}'s sub-Context, so user-facing
+   * variables (e.g. v, μ in the Riccati–Mittag-Leffler setting) continue
+   * to resolve when the rational function is evaluated. Default returns
+   * null (a fresh empty sub-Context).
+   */
+  protected Context padeParentContext()
   {
-    ComplexPolynomial[] PQ = padeCache.get(m - 1);
-    PQ[0].evaluate(z, 1, bits, pz);
-    PQ[1].evaluate(z, 1, bits, qz);
-    pz.div(qz, bits, into);
+    return null;
   }
 
-  private ComplexPolynomial[] solveHankel(Complex coeff, int M, int bits, ComplexPolynomial[] result)
+  private void evaluatePadeAtCachedOrder(int m, Complex z, int bits, Complex pz, Complex qz, Complex into)
+  {
+    padeCache.get(m - 1).evaluate(z, 1, bits, into);
+  }
+
+  private DiagonalPade solveHankel(Complex coeff, int M, int bits, DiagonalPade result)
   {
     if (coeff.dim < 2 * M)
     {
       throw new IllegalStateException("Need 2M=" + (2 * M) + " coefficients, have " + coeff.dim);
     }
 
-    ComplexPolynomial P_M = result[0];
-    ComplexPolynomial Q_M = result[1];
+    ComplexPolynomial P_M = result.P;
+    ComplexPolynomial Q_M = result.Q;
 
     try ( HankelSystem  hankel = new HankelSystem(coeff, M);
           ComplexMatrix neg_b  = ComplexMatrix.newMatrix(M, 1);
@@ -423,12 +444,7 @@ public class MuntzPadeFunction implements
       hankel.solve(neg_b, bits, qMat);
       if (hankel.wasSingular())
       {
-        P_M.fitLength(1);
-        P_M.setLength(1);
-        P_M.get(0).posInf();
-        Q_M.fitLength(1);
-        Q_M.setLength(1);
-        Q_M.get(0).posInf();
+        result.markSingular();
         return result;
       }
 
@@ -464,20 +480,6 @@ public class MuntzPadeFunction implements
       }
       return result;
     }
-  }
-
-  /**
-   * Assemble R_M(z) = P_M(z)/Q_M(z) as a callable ComplexFunction. Subclasses
-   * may override to register the polynomials in a richer Context (e.g. one
-   * that inherits parametric variables); the default uses a fresh empty
-   * Context.
-   */
-  protected ComplexFunction assemblePadeFunction(ComplexPolynomial P_M, ComplexPolynomial Q_M)
-  {
-    Context subCtx = new Context();
-    subCtx.registerFunction("P", P_M.setName("P"));
-    subCtx.registerFunction("Q", Q_M.setName("Q"));
-    return ComplexFunction.express("ℛ", "z➔P(z)/Q(z)", subCtx);
   }
 
   @Override
