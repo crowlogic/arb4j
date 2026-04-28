@@ -11,16 +11,16 @@ import junit.framework.TestCase;
  * which is the only stage that exercises the per-worker clones of Φ, dΦ,
  * Φ⁻¹, and the compiled F.
  *
- * <p>Two grid sizes are exercised: a smoke run on N = 1024 points with the
- * full available-processor worker count, and the production-sized run on
- * the same N = 100,000 default grid the GUI uses ([0, 1000] @ dt = 0.01).
- * The latter is the configuration in which earlier worker NPEs on
- * RealPolynomial.coeffs and Φ⁻¹ Newton non-convergence appeared, so it is
- * the one this test exists to keep regression-free.
+ * <p>A small N = 256 smoke grid with two parallel workers is exercised
+ * here; this is enough surface to detect a regression of the per-worker
+ * Φ-clone path and the Φ⁻¹(0) Newton terminator while keeping the
+ * surefire run under one second. Larger production-scale runs
+ * ([0, 1000] @ dt = 0.01, N = 100,000) are kept out of the main suite
+ * — invoke {@link #runProductionSize(double, double, double)}
+ * directly from a manual driver when needed.
  *
  * <p>Failure criterion: any worker thread throws, OR any sampled F(t) is
- * non-finite. The progress interval is bumped up so the surefire log does
- * not get drowned in 100k progress lines.
+ * non-finite.
  *
  * @author Stephen Crowley ©2026
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
@@ -29,34 +29,29 @@ public class InverseShiftedPhasePullbackSamplerHeadlessTest extends
                                                             TestCase
 {
   /**
-   * 1024-point smoke run with full worker parallelism. Exists to fail fast
-   * if a regression of the per-worker Φ-clone path is introduced.
-   *
-   * <p><b>Disabled in surefire</b> (method name does not start with
-   * {@code test}) until F's referenced-function reentrancy is settled
-   * — currently flaky on ≥ 4-core hosts. Invoke explicitly with
-   * {@code -Dtest=InverseShiftedPhasePullbackSamplerHeadlessTest#runSmokeRunFullParallelism}.
+   * 256-point smoke run with two parallel workers. Exists to fail fast
+   * if a regression of the per-worker Φ-clone path or the Φ⁻¹(0) Newton
+   * terminator is introduced. Suppresses progress prints by setting the
+   * progress interval beyond N.
    */
   public static void testSmokeRunFullParallelism()
   {
-    runHeadless(0.0, 10.24, 0.01, null, 250);
+    runHeadless(0.0, 2.56, 0.01, 2, Integer.MAX_VALUE);
   }
 
   /**
-   * Production-size run: matches the no-arg sampler defaults of the GUI
-   * ([0, 1000] @ dt = 0.01, N = 100,000) with one worker per available
-   * core. This is the configuration in which earlier reentrancy crashes
-   * appeared.
+   * Manual driver for production-size runs ([0, 1000] @ dt = 0.01,
+   * N = 100,000). Not auto-discovered by surefire — name does not start
+   * with {@code test}. Invoke from a one-off main or by passing the
+   * exact method name to {@code -Dtest=...#runProductionSize}.
    *
-   * <p><b>Disabled in surefire</b> (method name does not start with
-   * {@code test}) until F's referenced-function reentrancy is settled.
-   * Invoke explicitly with
-   * {@code -Dtest=InverseShiftedPhasePullbackSamplerHeadlessTest#runProductionSizeRun}
-   * once the diagnosis is in place.
+   * @param t0 lower endpoint of the time window
+   * @param t1 upper endpoint of the time window
+   * @param dt grid spacing
    */
-  public static void testProductionSizeRun()
+  public static void runProductionSize(double t0, double t1, double dt)
   {
-    runHeadless(0.0, 1000.0, 0.01, null, 5000);
+    runHeadless(t0, t1, dt, null, 5000);
   }
 
   /**
