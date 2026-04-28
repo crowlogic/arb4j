@@ -10,11 +10,11 @@ import arb.Complex;
 import arb.ComplexMatrix;
 import arb.ComplexPolynomial;
 import arb.Real;
-import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.functions.integer.ComplexSequence;
+import arb.solvers.HankelSystem;
 
 /**
  * Müntz–Padé re-summation of a Puiseux power series in {t^{kμ}}_{k≥1} into a
@@ -411,21 +411,17 @@ public class MuntzPadeFunction implements
     ComplexPolynomial P_M = result[0];
     ComplexPolynomial Q_M = result[1];
 
-    try ( ComplexMatrix H     = ComplexMatrix.newMatrix(M, M);
-          ComplexMatrix neg_b = ComplexMatrix.newMatrix(M, 1);
-          ComplexMatrix qMat  = ComplexMatrix.newMatrix(M, 1))
+    try ( HankelSystem  hankel = new HankelSystem(coeff, M);
+          ComplexMatrix neg_b  = ComplexMatrix.newMatrix(M, 1);
+          ComplexMatrix qMat   = ComplexMatrix.newMatrix(M, 1))
     {
       for (int i = 0; i < M; i++)
       {
-        for (int j = 0; j < M; j++)
-        {
-          H.set(i, j, coeff.get(M + i - j - 1));
-        }
         coeff.get(M + i).neg(neg_b.get(i, 0));
       }
 
-      int ok = arblib.acb_mat_solve(qMat, H, neg_b, bits);
-      if (ok == 0)
+      hankel.solve(neg_b, bits, qMat);
+      if (hankel.wasSingular())
       {
         P_M.fitLength(1);
         P_M.setLength(1);
