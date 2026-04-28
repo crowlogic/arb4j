@@ -385,8 +385,10 @@ public class ConstantCoefficientFractionalRiccatiEquationTest extends
 
       // Stage 1 — the truncated Müntz reorganization
       //   g_{2M}(z) = Σ_{k=1}^{2M} α_k z^k,   α_k = a_k(v).
-      // muntzCoefficientsAtV returns α_1..α_{2M} indexed from 0.
-      Complex α = eq.muntzCoefficientsAtV(2 * M, bits);
+      // muntzCoefficientsAtV writes α_1..α_{2M} into the caller-allocated
+      // vector at indices 0..2M-1.
+      Complex α = Complex.newVector(2 * M);
+      eq.muntzCoefficientsAtV(2 * M, bits, α);
 
       ComplexPolynomial g = new ComplexPolynomial();
       g.fitLength(2 * M + 1);
@@ -397,10 +399,14 @@ public class ConstantCoefficientFractionalRiccatiEquationTest extends
         g.get(k).set(α.get(k - 1));
       }
 
-      // Stage 2 — the Padé polynomials at the same v.
-      ComplexPolynomial[] PQ  = eq.padePolynomials(M, bits);
-      ComplexPolynomial   P_M = PQ[0];
-      ComplexPolynomial   Q_M = PQ[1];
+      // Stage 2 — the Padé polynomials at the same v. Caller pre-allocates
+      // the polynomial slots; padePolynomials writes P_M into result[0] and
+      // Q_M into result[1].
+      ComplexPolynomial   P_M = new ComplexPolynomial();
+      ComplexPolynomial   Q_M = new ComplexPolynomial();
+      ComplexPolynomial[] PQ  = new ComplexPolynomial[]
+      { P_M, Q_M };
+      eq.padePolynomials(M, bits, PQ);
 
       // Stage 3 — the polynomial residue
       //   E_M(z) = Q_M(z) · g_{2M}(z) - P_M(z).

@@ -309,7 +309,9 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
       return ComplexFunction.express("0");
     }
 
-    ComplexPolynomial[] PQ = padePolynomials(M, bits);
+    ComplexPolynomial[] PQ = new ComplexPolynomial[]
+    { new ComplexPolynomial(), new ComplexPolynomial() };
+    padePolynomials(M, bits, PQ);
     return assemblePadeFunction(PQ[0], PQ[1]);
   }
 
@@ -336,30 +338,40 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
    *
    * @param M    diagonal Padé order
    * @param bits working precision
-   * @return <code>{P_M, Q_M}</code>
+   * @param result length-2 array of caller-allocated polynomials; on return
+   *               <code>result[0] = P_M</code>, <code>result[1] = Q_M</code>
+   * @return the same <code>result</code> array, populated
    * @throws ArithmeticException if the Hankel system is singular at every order
    *                             from M down to 1
    */
-  public ComplexPolynomial[] padePolynomials(int M, int bits)
+  public ComplexPolynomial[] padePolynomials(int M, int bits, ComplexPolynomial[] result)
   {
     if (M < 1)
     {
       throw new IllegalArgumentException("padePolynomials requires M ≥ 1, got " + M);
     }
+    if (result == null || result.length < 2 || result[0] == null || result[1] == null)
+    {
+      throw new IllegalArgumentException("result must be a length-2 array of preallocated ComplexPolynomial");
+    }
 
     // Stage 2.1 — evaluate the first 2M Müntz coefficients at the current v.
-    Complex coeff    = evaluateMuntzCoefficientsAtV(2 * M, bits);
-
-    // Stage 2.2 — assemble Hankel system. Try order M; on singular fall back.
-    int     currentM = M;
-    while (currentM >= 1)
+    try ( Complex coeff = Complex.newVector(2 * M))
     {
-      ComplexPolynomial[] PQ = solveHankel(coeff, currentM, bits);
-      if (PQ != null)
+      evaluateMuntzCoefficientsAtV(2 * M, bits, coeff);
+
+      // Stage 2.2 — assemble Hankel system. Try order M; on singular (sentinel
+      // returned: result[0] is the infinity polynomial), fall back to M-1.
+      int currentM = M;
+      while (currentM >= 1)
       {
-        return PQ;
+        solveHankel(coeff, currentM, bits, result);
+        if (result[0].get(0).isFinite())
+        {
+          return result;
+        }
+        currentM--;
       }
-      currentM--;
     }
     throw new ArithmeticException("All Padé orders ≤ " + M + " produced singular Hankel matrices at the current v");
   }
@@ -374,10 +386,16 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
    * initial condition <code>y(0)=0</code>. Public so tests can inspect the
    * truncated Müntz series <code>g_n(z) = Σ_{k=1}^{n} α_k z^k</code> directly.
    * </p>
+   *
+   * @param n      number of Müntz coefficients to evaluate
+   * @param bits   working precision
+   * @param result caller-allocated Complex vector of dimension at least
+   *               <code>n</code>; on return holds α_1..α_n at indices 0..n-1
+   * @return the same <code>result</code>, populated
    */
-  public Complex muntzCoefficientsAtV(int n, int bits)
+  public Complex muntzCoefficientsAtV(int n, int bits, Complex result)
   {
-    return evaluateMuntzCoefficientsAtV(n, bits);
+    return evaluateMuntzCoefficientsAtV(n, bits, result);
   }
 
   /**
@@ -491,16 +509,20 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
    * length n; <code>get(k-1)</code> retrieves α_k since <code>a_0</code> is
    * identically zero by the initial condition.
    */
-  private Complex evaluateMuntzCoefficientsAtV(int n, int bits)
+  private Complex evaluateMuntzCoefficientsAtV(int n, int bits, Complex result)
   {
-    Complex out = Complex.newVector(n);
-    int     idx;
+    if (result == null || result.dim < n)
+    {
+      throw new IllegalArgumentException("result vector must have dim ≥ " + n + ", got "
+                                         + (result == null ? "null" : result.dim));
+    }
+    int idx;
     for (int k = 1; k <= n; k++)
     {
       idx = k;
-      a.evaluate(idx, bits, out.get(k - 1));
+      a.evaluate(idx, bits, result.get(k - 1));
     }
-    return out;
+    return result;
   }
 
   /**
@@ -521,7 +543,7 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
    *
    * </p>
    */
-  private ComplexPolynomial[] solveHankel(Complex coeff, int M, int bits)
+  private ComplexPolynomial[] solveHankel(Complex coeff, int M, int bits, ComplexPolynomial[] result)
   {
     // α-vector indexed as α_k = coeff.get(k-1); we need α_1..α_{2M}.
     // Hankel uses α_{M+i-j} for i,j ∈ [0,M-1] → indices in [1, 2M-1].
@@ -546,10 +568,22 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
     }
 
     ComplexMatrix qMat = ComplexMatrix.newMatrix(M, 1);
-    int           ok   = arblib.acb_mat_solve(qMat, H, neg_b, bits);
+    ComplexPolynomial P_M = result[0];
+    ComplexPolynomial Q_M = result[1];
+
+    int               ok  = arblib.acb_mat_solve(qMat, H, neg_b, bits);
     if (ok == 0)
     {
-      return null; // singular at this precision — caller falls back to M-1
+      // Singular at this precision — write the infinity polynomial sentinel
+      // (a degree-0 polynomial whose only coefficient is +∞) into both slots.
+      // The caller detects singular by inspecting result[0].get(0).isFinite().
+      P_M.fitLength(1);
+      P_M.setLength(1);
+      P_M.get(0).posInf();
+      Q_M.fitLength(1);
+      Q_M.setLength(1);
+      Q_M.get(0).posInf();
+      return result;
     }
 
     // Build Q_M(z) = 1 + q_1 z + q_2 z² + ... + q_M z^M.
@@ -560,7 +594,6 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
     // zeroed state — which happens reliably when this test runs after
     // unrelated tests in the same surefire fork. setLength alone only
     // updates the length field; fitLength performs the realloc.
-    ComplexPolynomial Q_M = new ComplexPolynomial();
     Q_M.fitLength(M + 1);
     Q_M.setLength(M + 1);
     Q_M.get(0).one();
@@ -572,7 +605,6 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
     // Back-substitute: p_0 = 0; p_n = α_n + Σ_{j=1}^{min(n,M)} q_j α_{n-j}.
     // Scratch instances are allocated once outside both loops and reused
     // across iterations — in-place arithmetic, no per-iteration allocation.
-    ComplexPolynomial P_M = new ComplexPolynomial();
     P_M.fitLength(M + 1);
     P_M.setLength(M + 1);
     P_M.get(0).zero();
@@ -597,8 +629,7 @@ public class ConstantCoefficientFractionalRiccatiEquation extends
       }
     }
 
-    return new ComplexPolynomial[]
-    { P_M, Q_M };
+    return result;
   }
 
   /**
