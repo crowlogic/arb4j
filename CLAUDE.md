@@ -117,15 +117,26 @@ branches, no resets. Push origin master with
 
 ## Numerics policy
 
-No numerics. No numerical evaluation. No quadrature fallback. No finite
-differences. No numerical fallback of any kind, ever. Every operator
-must resolve symbolically through closed-form rewrite rules; if the
-rewrite chain cannot reduce an operand, fail loudly at compile time —
-do not fall back to a numerical evaluator. The word "fallback" is not
-a concept that may be invoked under any circumstances.
+The compiler is a symbolic engine. Numerical evaluation of an operator
+is never offered automatically and never expected by default. No
+quadrature, no finite differences, no fallback of any kind, ever. The
+word "fallback" is not a concept that may be invoked under any
+circumstances.
 
-This applies to every fractional, integral, differential, and special-
-function operator past, present, and future. The existing
+If an operator's symbolic rewrite chain cannot reduce a given operand,
+the node throws `CompilerException` at construction time, naming the
+unhandled subtree. It does not silently degrade to a numerical
+evaluator.
+
+A caller who genuinely wants a numerical integral, derivative, or
+solver must construct it explicitly themselves — e.g. by writing their
+own integrator, calling `Real.integrate(...)` directly with a
+hand-built integrand, or wiring an arb quadrature primitive into a
+custom `Function`. They must opt in by name. The expression compiler
+never offers it, never suggests it, never serves it.
+
+This applies to every fractional, integral, differential, and
+special-function operator past, present, and future. The existing
 `CaputoFractionalDerivativeNode` integral-form path is grandfathered
 in as an internal closed-form-rewrite scaffold (the integrand is built
 symbolically and registered as a Context function); no new operator
