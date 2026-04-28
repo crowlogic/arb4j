@@ -1169,7 +1169,54 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
   {
     return structure(n, bits, Real.newVector(n, "γ"));
   }
-  
+
+  /**
+   * Empirical autocorrelation ρ(k) = (1/(N−k))·Σᵢ Z[i]·Z[i+k] / ⟨Z²⟩ for
+   * lags k = 0..maxLagSteps−1, with ρ(0) defined as 1. This is the direct
+   * arb-typed port of arb.stochastic.Statistics.autocorr(double[], int):
+   * the variance estimate is the uncentred second moment ⟨Z²⟩ (zero-mean
+   * assumption inherited from the original).
+   *
+   * Caller supplies result; no persistent allocations beyond a small,
+   * bounded set of scalar Real temporaries.
+   *
+   * @param maxLagSteps number of lags 0..maxLagSteps−1
+   * @param bits        working precision
+   * @param result      length-maxLagSteps vector receiving ρ(k) on exit
+   * @return result
+   */
+  public Real autocorrelation(int maxLagSteps, int bits, Real result)
+  {
+    int n = this.dim;
+    try ( Real meanSq = new Real(); Real cov = new Real(); Real product = new Real())
+    {
+      meanSq.zero();
+      for (int i = 0; i < n; i++)
+      {
+        get(i).mul(get(i), bits, product);
+        meanSq.add(product, bits, meanSq);
+      }
+      meanSq.div(n, bits, meanSq);
+      result.get(0).set(1);
+      for (int k = 1; k < maxLagSteps; k++)
+      {
+        if (n - k <= 0)
+        {
+          result.get(k).zero();
+          continue;
+        }
+        cov.zero();
+        for (int i = 0; i < n - k; i++)
+        {
+          get(i).mul(get(i + k), bits, product);
+          cov.add(product, bits, cov);
+        }
+        cov.div(n - k, bits, result.get(k)).div(meanSq, bits, result.get(k));
+      }
+    }
+    return result;
+  }
+
   /**
    * A this{@link #slice(int, int)} of this array of {@link Real}s from the n-th
    * element to the last

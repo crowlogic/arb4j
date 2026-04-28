@@ -7,6 +7,7 @@ import java.lang.foreign.Arena;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealNullaryFunction;
+import arb.stochastic.Statistics;
 import junit.framework.TestCase;
 
 /**
@@ -265,6 +266,40 @@ public class RealTest extends
         double expectation         = expected.get(i).doubleValue();
         double gammaVariance       = gammaVarianceResult.doubleValue();
         assertEquals(expectation, gammaVariance, 0.0001);
+      }
+    }
+  }
+
+  /**
+   * Real.autocorrelation must agree numerically with the existing
+   * Statistics.autocorr(double[], int) on the same input. The arb method
+   * is a direct port of the double algorithm, only the arithmetic backend
+   * differs.
+   */
+  public void testAutocorrelationMatchesStatistics()
+  {
+    int      N           = 256;
+    int      maxLagSteps = 32;
+    int      bits        = 128;
+    double[] x           = new double[N];
+    for (int i = 1; i <= N; i++)
+    {
+      x[i - 1] = Math.sin(0.05 * i) + 0.3 * Math.cos(0.13 * i);
+    }
+    double[] expected = Statistics.autocorr(x, maxLagSteps);
+    try ( Real path = Real.newVector(N, "Z"); Real rho = Real.newVector(maxLagSteps, "ρ"))
+    {
+      for (int i = 1; i <= N; i++)
+      {
+        path.get(i - 1).set(x[i - 1]);
+      }
+      path.autocorrelation(maxLagSteps, bits, rho);
+      for (int k = 1; k <= maxLagSteps; k++)
+      {
+        assertEquals("ρ(" + (k - 1) + ") arb vs double",
+                     expected[k - 1],
+                     rho.get(k - 1).doubleValue(),
+                     1e-12);
       }
     }
   }
