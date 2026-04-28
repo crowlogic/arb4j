@@ -13,6 +13,20 @@ arb4j (0.99.9.9.9) UNRELEASED; urgency=low
   * Drop empty override_dh_install in debian/rules so the
     arb4j.install manifest is actually honoured (previously the empty
     override silently disabled dh_install and bin/ shipped nothing).
+  * Relocate every bin/ wrapper to a real FHS layout. /usr/share/arb4j
+    holds env.sh, class.path, pom.xml, version, shell.start, and a
+    lib/ tree containing every transitive Maven dependency JAR. Each
+    /usr/bin wrapper sources env.sh and reads ARB4J_HOME, ARB4J_JAR,
+    ARB4J_NATIVE_DIR, ARB4J_CLASSPATH instead of computing BASEDIR
+    from $0. The dev-only updateClasspath script (which calls mvn
+    against a checkout) is no longer installed; arb4jVersion is
+    rewritten to cat /usr/share/arb4j/version.
+  * debian/env.sh.in, debian/install-bin.sh: new helpers driving the
+    rewrite. install-bin.sh uses awk to redirect BASEDIR= and FMDIR=
+    lines, replace `cat $BASEDIR/class.path` with $ARB4J_CLASSPATH,
+    redirect -Djava.library.path and LD_LIBRARY_PATH to
+    $ARB4J_NATIVE_DIR, drop dev-only $BASEDIR/build/classes from
+    classpaths, and resolve sibling wrapper invocations through PATH.
 
  -- Stephen Crowley <stephencrowley214@gmail.com>  Tue, 28 Apr 2026 04:28:00 -0500
 
