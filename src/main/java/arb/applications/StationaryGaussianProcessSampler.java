@@ -525,8 +525,8 @@ public abstract class StationaryGaussianProcessSampler extends
 
     Real   realPath    = samplePath.re();
 
-    try ( Real    yScratch      = Real.newVector(pathLen, "y");
-          Real    gamma         = Real.newVector(maxLag, "γ");
+    ThreadLocal<Real> yPool = new ThreadLocal<>();
+    try ( Real    gamma         = Real.newVector(maxLag, "γ");
           Real    squares       = Real.newVector(pathLen, "Z²");
           Real    rho           = Real.newVector(maxLag, "ρ");
           Complex complexPath   = Complex.newVector(pathLen);
@@ -537,7 +537,7 @@ public abstract class StationaryGaussianProcessSampler extends
           Real    biasFactor    = new Real();
           Real    rhoFromFft    = Real.newVector(maxLag, "ρ̂"))
     {
-      realPath.autocorrelation(maxLag, workingBits, yScratch, gamma, squares, rho);
+      realPath.autocorrelation(maxLag, workingBits, yPool, gamma, squares, rho);
 
       for (int i = 0; i < pathLen; i++)
       {
@@ -581,6 +581,10 @@ public abstract class StationaryGaussianProcessSampler extends
       chart.getDatasets().addAll(new DoubleDataSet("Empirical (unbiased)").set(times, empiricalRho),
                                  new DoubleDataSet("Empirical (IDFT of periodogram, bias-corrected)").set(times, empiricalRhoFft),
                                  new DoubleDataSet(theoryLabel).set(times, theory));
+    }
+    finally
+    {
+      yPool.remove();
     }
   }
 
@@ -691,10 +695,10 @@ public abstract class StationaryGaussianProcessSampler extends
 
     Real    realPath = samplePath.re();
 
+    ThreadLocal<Real> yPool = new ThreadLocal<>();
     try ( Complex complexPath        = Complex.newVector(pathLen);
           Complex spectrum           = Complex.newVector(pathLen);
           Real    empiricalPsd       = Real.newVector(pathLen, "P");
-          Real    yScratch           = Real.newVector(pathLen, "y");
           Real    gamma              = Real.newVector(maxLag, "γ");
           Real    squares            = Real.newVector(pathLen, "Z²");
           Real    autocovUnbiased    = Real.newVector(maxLag, "C");
@@ -725,7 +729,7 @@ public abstract class StationaryGaussianProcessSampler extends
         }
       }
 
-      realPath.autocovariance(maxLag, workingBits, yScratch, gamma, squares, autocovUnbiased);
+      realPath.autocovariance(maxLag, workingBits, yPool, gamma, squares, autocovUnbiased);
       for (int i = 0; i < pathLen; i++)
       {
         autocovExtended.get(i).zero();
@@ -778,6 +782,10 @@ public abstract class StationaryGaussianProcessSampler extends
       autocovRenderer.getDatasets().add(autocovDataSet);
 
       chart.getRenderers().setAll(scatterPlotRenderer, lineRenderer, autocovRenderer);
+    }
+    finally
+    {
+      yPool.remove();
     }
   }
 

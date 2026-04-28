@@ -112,9 +112,14 @@ public class RealDataSet extends
       }
 
     }
-    try ( Real yScratch = Real.newVector(y.dim, "y"))
+    ThreadLocal<Real> yPool = new ThreadLocal<>();
+    try
     {
-      y.structure(n, 128, yScratch, outy);
+      y.structure(n, 128, yPool, outy);
+    }
+    finally
+    {
+      yPool.remove();
     }
     return rds;
   }

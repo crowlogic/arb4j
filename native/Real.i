@@ -1133,12 +1133,19 @@ import arb.utensils.Utensils;
    * @param result length-n vector receiving γ(0..n−1)
    * @return result
    */
-  public Real structure(int n, int bits, Real y, Real result)
+  public Real structure(int n, int bits, ThreadLocal<Real> yPool, Real result)
   {
-    for (int i = 0; i < n; i++)
+    int dimension = this.dim;
+    IntStream.range(0, n).parallel().forEach(i ->
     {
+      Real y = yPool.get();
+      if (y == null)
+      {
+        y = Real.newVector(dimension, "y");
+        yPool.set(y);
+      }
       gammaVariance(i, bits, y, result.get(i));
-    }
+    });
     return result;
   }
 
@@ -1160,9 +1167,9 @@ import arb.utensils.Utensils;
    * @param result   length-n vector receiving C(k) on exit
    * @return result
    */
-  public Real autocovariance(int n, int bits, Real y, Real gamma, Real squares, Real result)
+  public Real autocovariance(int n, int bits, ThreadLocal<Real> yPool, Real gamma, Real squares, Real result)
   {
-    structure(n, bits, y, gamma);
+    structure(n, bits, yPool, gamma);
     pow(2, bits, squares);
     try ( Real sumOfSquares = new Real(); Real total = new Real(); Real mean = new Real();
           Real meanSquared = new Real(); Real cZero = new Real(); Real halfGamma = new Real())
@@ -1192,9 +1199,9 @@ import arb.utensils.Utensils;
    * @param result   length-n vector receiving ρ(k) on exit
    * @return result
    */
-  public Real autocorrelation(int n, int bits, Real y, Real gamma, Real squares, Real result)
+  public Real autocorrelation(int n, int bits, ThreadLocal<Real> yPool, Real gamma, Real squares, Real result)
   {
-    autocovariance(n, bits, y, gamma, squares, result);
+    autocovariance(n, bits, yPool, gamma, squares, result);
     try ( Real cZero = new Real())
     {
       cZero.set(result.get(0));

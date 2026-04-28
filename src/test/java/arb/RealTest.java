@@ -248,9 +248,10 @@ public class RealTest extends
       realInstance.get(i).set(i);
     }
 
-    try ( Real varianceStructure = Real.newVector(5, "γ"); Real yScratch = Real.newVector(N, "y"))
+    ThreadLocal<Real> yPool = new ThreadLocal<>();
+    try ( Real varianceStructure = Real.newVector(5, "γ"))
     {
-      realInstance.structure(5, 128, yScratch, varianceStructure);
+      realInstance.structure(5, 128, yPool, varianceStructure);
       varianceStructure.printPrecision = true;
 
       // Actual expected calculations
@@ -283,20 +284,20 @@ public class RealTest extends
    */
   public void testStructureUsesCallerScratchOnly()
   {
-    int N      = 64;
-    int maxLag = 16;
-    int bits   = 128;
-    try ( Real path     = Real.newVector(N, "Z");
-          Real y        = Real.newVector(N, "y");
-          Real gammaA   = Real.newVector(maxLag, "γA");
-          Real gammaB   = Real.newVector(maxLag, "γB"))
+    int               N      = 64;
+    int               maxLag = 16;
+    int               bits   = 128;
+    ThreadLocal<Real> yPool  = new ThreadLocal<>();
+    try ( Real path   = Real.newVector(N, "Z");
+          Real gammaA = Real.newVector(maxLag, "γA");
+          Real gammaB = Real.newVector(maxLag, "γB"))
     {
       for (int i = 1; i <= N; i++)
       {
         path.get(i - 1).set(Math.sin(0.1 * i));
       }
-      path.structure(maxLag, bits, y, gammaA);
-      path.structure(maxLag, bits, y, gammaB);
+      path.structure(maxLag, bits, yPool, gammaA);
+      path.structure(maxLag, bits, yPool, gammaB);
       for (int k = 1; k <= maxLag; k++)
       {
         assertEquals("γ(" + k + ") differs across invocations",
@@ -307,6 +308,10 @@ public class RealTest extends
       assertEquals(0.0, gammaA.get(0).doubleValue(), 1e-30);
       assertTrue("γ(1) should be positive on a non-constant sequence",
                  gammaA.get(1).doubleValue() > 0.0);
+    }
+    finally
+    {
+      yPool.remove();
     }
   }
 
