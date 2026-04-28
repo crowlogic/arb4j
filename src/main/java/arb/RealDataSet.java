@@ -1,7 +1,6 @@
 package arb;
 
 import java.io.Closeable;
-import java.util.stream.IntStream;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -113,7 +112,10 @@ public class RealDataSet extends
       }
 
     }
-    IntStream.range(0, n).parallel().forEach(i -> y.gammaVariance(i, 128, outy.get(i)));
+    try ( Real yScratch = Real.newVector(y.dim, "y"))
+    {
+      y.structure(n, 128, yScratch, outy);
+    }
     return rds;
   }
 
