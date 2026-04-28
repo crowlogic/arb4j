@@ -77,6 +77,13 @@ public class Jacobian<D, R, F extends Function<D, R>> implements
   }
 
   @Override
+  public String toString()
+  {
+    String n = source.getName() == null ? "f" : source.getName();
+    return "∂" + n + "/∂(" + String.join(",", variables) + ")";
+  }
+
+  @Override
   public String typeset()
   {
     StringBuilder sb = new StringBuilder("\\frac{\\partial ");
