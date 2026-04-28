@@ -90,6 +90,12 @@ EOF
       gsub(/--module-path \$CLASSPATH/, "")
       gsub(/--add-modules arb4j/, "")
       gsub(/--add-modules javafx\.controls/, "")
+      # JavaFX is now a classpath dependency, not a JPMS module, so
+      # any --add-opens javafx.<module>/<pkg>=<target> flag refers to
+      # a module the JVM never sees. Strip every such flag and the
+      # OPENS shell variable that aggregates them.
+      gsub(/--add-opens javafx\.[A-Za-z]+\/[A-Za-z0-9._]+=[A-Za-z0-9_]+/, "")
+      gsub(/\$OPENS/, "")
       print
     }
   ' "$src" > "$DST/$name"
