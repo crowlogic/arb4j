@@ -201,22 +201,24 @@ import arb.functions.complex.ComplexNullaryFunction;
 
 
   /**
-   * Calculate the inverse (discrete) Fourier transform (via some
-   * FastFourierTransfork routine or the other)
+   * Forward discrete Fourier transform with no scaling, matching arb's
+   * {@link arblib#acb_dft} convention so that
+   * {@code applyInverseDiscreteFourierTransform(applyDiscreteFourierTransform(x)) = x}
+   * exactly.
+   * 
+   * Y[k] = Σ_{n=0}^{N-1} x[n] · exp(-2πi·k·n/N)
    * 
    * @param bits
-   * @param randomMeasure multiplied by sample length
-   * @return {@link arblib#acb_dft_inverse(Complex, Complex, int, int)}
+   * @param result destination of length N
+   * @return {@code result}
    */
-  public Complex applyDiscreteFourierTransform(int bits, Complex randomMeasure)
+  public Complex applyDiscreteFourierTransform(int bits, Complex result)
   {
     int N = size();
-    assert randomMeasure.size()
-                  == N : String.format("randomMeasure.size=%d != N = %d", randomMeasure.size(), N);
-    arblib.acb_dft(randomMeasure, this, N, bits);
-   
-    return randomMeasure.div(N,
-                             bits);
+    assert result.size()
+                  == N : String.format("result.size=%d != N = %d", result.size(), N);
+    arblib.acb_dft(result, this, N, bits);
+    return result;
   }
     
   public Complex arctan(int prec, Complex result )
@@ -226,20 +228,24 @@ import arb.functions.complex.ComplexNullaryFunction;
   }
   
   /**
-   * Calculate the  (discrete) Fourier transform (via some
-   * FastFourierTransfork routine or the other)
+   * Inverse discrete Fourier transform with 1/N scaling, matching arb's
+   * {@link arblib#acb_dft_inverse} convention so that
+   * {@code applyInverseDiscreteFourierTransform(applyDiscreteFourierTransform(x)) = x}
+   * exactly.
+   * 
+   * x[n] = (1/N) · Σ_{k=0}^{N-1} Y[k] · exp(+2πi·k·n/N)
    * 
    * @param bits
-   * @param samplePath divided by sample length
-   * @return {@link arblib#acb_dft(Complex, Complex, int, int)}
+   * @param result destination of length N
+   * @return {@code result}
    */
-  public Complex applyInverseDiscreteFourierTransform(int bits, Complex samplePath)
+  public Complex applyInverseDiscreteFourierTransform(int bits, Complex result)
   {
     int N = size();
-    assert samplePath.size()
-                  == N : String.format("samplePath.size=%d != N = %d", samplePath.size(), N);
-    arblib.acb_dft_inverse(samplePath, this, N, bits);
-    return samplePath.mul(N,bits);
+    assert result.size()
+                  == N : String.format("result.size=%d != N = %d", result.size(), N);
+    arblib.acb_dft_inverse(result, this, N, bits);
+    return result;
   }
   
   public Complex pow( Real operand, int prec, Complex r )
