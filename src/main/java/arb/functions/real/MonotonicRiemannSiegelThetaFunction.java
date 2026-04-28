@@ -275,6 +275,18 @@ public class MonotonicRiemannSiegelThetaFunction implements
             // test below uses the freshly‐computed |step|, which is the
             // forward‐error estimate (Φ⁻¹)′ · residual on the iterate.
             seed.getRad().zero();
+            // Exact fixed point: step is exactly 0 means residual is exactly 0
+            // means Φ(seed) = u to the working precision. This is the only
+            // way the relative-accuracy test below can succeed when the true
+            // root is 0 (e.g. u = 0 ⇒ t = 0): for a midpoint of 0 with any
+            // non-zero radius, arb_rel_accuracy_bits returns -∞ (no relative
+            // accuracy with respect to 0), so the loop would otherwise spin
+            // until MAX_ITER and throw.
+            if (step.isZero())
+            {
+              res.set(seed);
+              return res;
+            }
             // Convergence: the next Newton correction would change seed by
             // less than 2^(-bits) of |seed|. Equivalently, place |step| as
             // the error radius around the current midpoint and ask whether

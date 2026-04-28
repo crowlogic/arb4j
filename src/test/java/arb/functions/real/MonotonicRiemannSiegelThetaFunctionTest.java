@@ -148,6 +148,30 @@ public class MonotonicRiemannSiegelThetaFunctionTest extends
     }
   }
 
+  /**
+   * Direct-from-zero boundary test: Φ(0) = ϑ(0) + 0 = 0 because
+   * ϑ(0) = im(lnΓ(¼)) = 0 (Γ(¼) is real positive). Therefore
+   * Φ⁻¹(0) must be exactly 0. This is the very first grid point of
+   * the GUI sampler's default span [0, 1000] and was the precise input
+   * at which the parallel sampler crashed with "Newton iteration failed
+   * to converge in 64 steps for u = 0".
+   */
+  public static void testInverseAtZero()
+  {
+    int bits  = 128;
+    var Φ     = new MonotonicRiemannSiegelThetaFunction();
+    var Φinv  = Φ.invert(null, 0, bits);
+
+    try ( Real u    = Real.valueOf(0.0);
+          Real out  = Real.valueOf(0.0))
+    {
+      Φinv.evaluate(u, 1, bits, out);
+      double t = out.doubleValue();
+      assertTrue("Φ⁻¹(0) should be finite, got " + t, Double.isFinite(t));
+      assertEquals("Φ⁻¹(0) should equal 0", 0.0, t, 1e-30);
+    }
+  }
+
   public static void testEvaluationMatchesThetaPlusCT()
   {
     int  prec  = 128;
