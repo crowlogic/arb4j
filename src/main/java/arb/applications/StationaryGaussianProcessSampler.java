@@ -44,7 +44,13 @@ public abstract class StationaryGaussianProcessSampler extends
 
   static final int              bits                              = 128;
 
-  protected static final double dt                                = 0.01;
+  /**
+   * Time-domain step size. Instance field (not static) so subclasses can
+   * choose their own grid via the {@link #StationaryGaussianProcessSampler(FloatInterval, double)}
+   * constructor while existing subclasses continue to see the historical
+   * default of 0.01 through the no-arg constructor.
+   */
+  protected final double        dt;
 
   private XYChart[]             charts;
 
@@ -56,30 +62,29 @@ public abstract class StationaryGaussianProcessSampler extends
 
   private boolean               light;
 
-  final FloatInterval           timeSpan                          = new FloatInterval(0,
-                                                                                      1000);
+  final FloatInterval           timeSpan;
 
-  final Float                   interval                          = timeSpan.length(128, new Float());
+  final Float                   interval;
 
-  final double                  L                                 = interval.doubleValue();
+  final double                  L;
 
-  final int                     N                                 = (int) (L / dt);
+  final int                     N;
 
-  private final boolean         N_IS_EVEN                         = N % 2 == 0;
+  private final boolean         N_IS_EVEN;
 
-  public final double           nyquistFrequency                  = 1.0 / (2 * dt);
+  public final double           nyquistFrequency;
 
-  public final int              nyquistIndex                      = N / 2;
+  public final int              nyquistIndex;
 
-  final int                     positiveFrequencyCount            = N / 2 + 1;
+  final int                     positiveFrequencyCount;
 
-  private final double[]        positiveFrequencies               = new double[positiveFrequencyCount];
+  private final double[]        positiveFrequencies;
 
-  public final double           df                                = 1.0 / L;
+  public final double           df;
 
   public double[]               powerSpectralDensity;
 
-  private Complex               randomMeasure;
+  protected Complex             randomMeasure;
 
   public Complex                samplePath;
 
@@ -93,12 +98,45 @@ public abstract class StationaryGaussianProcessSampler extends
 
   private Stage[]               stages;
 
-  private final double[]        theoreticalPowerSpectralDensities = new double[positiveFrequencyCount];
+  private final double[]        theoreticalPowerSpectralDensities;
 
   public Complex                whiteNoise;
 
+  /**
+   * Construct with the historical defaults: timeSpan = [0, 1000], dt = 0.01.
+   * Used by all existing subclasses that drive the seed-based
+   * {@link #generateSamplePathFromSpectrallyColoredOrthogonalRandomMeasure}
+   * pipeline.
+   */
   public StationaryGaussianProcessSampler()
   {
+    this(new FloatInterval(0, 1000), 0.01);
+  }
+
+  /**
+   * Construct with a caller-chosen time interval and step. Lets path-based
+   * subclasses (those that supply a precomputed stationary sample path via
+   * {@link #ingestPrecomputedSamplePath(Complex)}) work on grids other than
+   * the historical [0, 1000] @ dt = 0.01.
+   *
+   * @param timeSpan time-domain support of the sample path; length L = upper - lower
+   * @param dt       uniform spacing between consecutive samples; N = round(L/dt)
+   */
+  protected StationaryGaussianProcessSampler(FloatInterval timeSpan, double dt)
+  {
+    this.timeSpan               = timeSpan;
+    this.dt                     = dt;
+    this.interval               = timeSpan.length(128, new Float());
+    this.L                      = interval.doubleValue();
+    this.N                      = (int) (L / dt);
+    this.N_IS_EVEN              = N % 2 == 0;
+    this.nyquistFrequency       = 1.0 / (2 * dt);
+    this.nyquistIndex           = N / 2;
+    this.positiveFrequencyCount = N / 2 + 1;
+    this.positiveFrequencies    = new double[positiveFrequencyCount];
+    this.df                     = 1.0 / L;
+    this.theoreticalPowerSpectralDensities = new double[positiveFrequencyCount];
+
     spectralSupport = getSpectralSupport();
     whiteNoise      = Complex.newVector(N);
     samplePath      = Complex.newVector(N);
@@ -199,12 +237,17 @@ public abstract class StationaryGaussianProcessSampler extends
     try ( var whiteNoiseProcess = new ComplexWhiteNoiseProcess())
     {
       var W = generateSpectrallyColoredOrthogonalRandomMeasureFromWhiteNoise(seed, whiteNoiseProcess);
-      W.applyInverseDiscreteFourierTransform(bits, samplePath);
+      // Inverse DFT (arb convention includes 1/N), then re-scale by N so the
+      // synthesized path uses the unnormalized inverse Σ_k W[k] exp(+2πi·k·n/N).
+      // This preserves the historical amplitude of the seed-mode samplePath that
+      // BandLimitedWhiteNoiseSampler and RandomWaveSampler are calibrated against.
+      W.applyInverseDiscreteFourierTransform(bits, samplePath).mul(N, bits);
 
       var W2    = Complex.newVector(N);
       var Wdiff = Complex.newVector(N);
 
-      samplePath.applyDiscreteFourierTransform(bits, W2);
+      // Forward DFT then divide by N inverts the unnormalized inverse above so that W2 ≈ W.
+      samplePath.applyDiscreteFourierTransform(bits, W2).div(N, bits);
       W.sub(W2, bits, Wdiff);
 
       calculateEnvelopeSamplingTimesAndValues();
@@ -225,7 +268,7 @@ public abstract class StationaryGaussianProcessSampler extends
 
   protected XYChart[] generateAndConfigureCharts()
   {
-    generateSamplePathFromSpectrallyColoredOrthogonalRandomMeasure();
+    prepareSamplePath();
     configureCharts();
     return charts;
   }
@@ -263,20 +306,126 @@ public abstract class StationaryGaussianProcessSampler extends
     return randomMeasure;
   }
 
-  public abstract RealFunction getKernel();
+  /**
+   * Theoretical kernel of the process, used as a label/overlay on the
+   * autocorrelation chart. Path-based subclasses (those that ingest a
+   * precomputed sample path and have no closed-form kernel) may return
+   * {@code null}; the chart label then falls back to the class name.
+   */
+  public RealFunction getKernel()
+  {
+    return null;
+  }
 
   /**
+   * Theoretical autocovariance K(Δt) sampled on the lag grid, written into
+   * {@code values} aligned with {@code times[i] = i*dt}. Default writes
+   * zeros; path-based subclasses leave it as zeros (the chart still renders
+   * the empirical autocorrelation series).
+   *
    * FIXME: Use {@link FloatInterval} and
    * {@link RealFunction#quantize(FloatInterval, int, int, boolean)}
    * 
-   * @param times
-   * @param values
+   * @param times  filled with i*dt for i = 0..times.length-1
+   * @param values filled with theoretical K(times[i]); zeros if no theory
    */
-  public abstract void getKernel(double[] times, double[] values);
+  public void getKernel(double[] times, double[] values)
+  {
+    assert times.length == values.length;
+    for (int i = 0; i < times.length; i++)
+    {
+      times[i]  = i * dt;
+      values[i] = 0.0;
+    }
+  }
 
-  public abstract double[] getPowerSpectralDensity(double[] freq);
+  /**
+   * Theoretical power spectral density at the requested frequencies. Used
+   * (a) by the seed-based pipeline to color the white noise and (b) as the
+   * theoretical overlay on the PSD chart. Path-based subclasses without a
+   * closed-form PSD return zeros, in which case the empirical PSD computed
+   * by {@link #ingestPrecomputedSamplePath(Complex)} drives the chart.
+   */
+  public double[] getPowerSpectralDensity(double[] freq)
+  {
+    return new double[freq.length];
+  }
 
-  protected abstract FloatInterval getSpectralSupport();
+  /**
+   * Closed support of the spectral density on the frequency axis, used to
+   * size the time-domain chart. Defaults to [-nyquistFrequency, +nyquistFrequency].
+   */
+  protected FloatInterval getSpectralSupport()
+  {
+    return new FloatInterval(-nyquistFrequency, nyquistFrequency);
+  }
+
+  /**
+   * Hook chosen by subclass to populate {@link #samplePath},
+   * {@link #randomMeasure}, {@link #frequencies}, and
+   * {@link #powerSpectralDensity}. Default implementation runs the
+   * seed-based pipeline
+   * {@link #generateSamplePathFromSpectrallyColoredOrthogonalRandomMeasure}.
+   * Path-based subclasses override to call
+   * {@link #ingestPrecomputedSamplePath(Complex)}.
+   */
+  protected void prepareSamplePath()
+  {
+    generateSamplePathFromSpectrallyColoredOrthogonalRandomMeasure();
+  }
+
+  /**
+   * Path-based entry: take a precomputed stationary sample path on the
+   * sampler's uniform t-grid, copy it into {@link #samplePath}, derive the
+   * orthogonal random measure W = DFT(samplePath) (unnormalized forward,
+   * arb convention via {@link Complex#applyDiscreteFourierTransform}), and
+   * compute the empirical power spectral density |W[k]|² · dt / (N/2) into
+   * {@link #powerSpectralDensity}.
+   *
+   * The empirical PSD lives on the same shifted-DC frequency grid as the
+   * seed-based pipeline (negative frequencies wrap into [N/2+1, N-1]),
+   * matching {@link #generateFrequencies()}.
+   *
+   * Round-trip: {@code applyInverseDiscreteFourierTransform(randomMeasure) ≡ samplePath}
+   * to working precision, exercised by
+   * {@code StationaryGaussianProcessSamplerTest#testIngestRoundTrip}.
+   *
+   * @param precomputed length-N Complex vector with samplePath[i] = F(i*dt + t0)
+   * @return this
+   */
+  public StationaryGaussianProcessSampler ingestPrecomputedSamplePath(Complex precomputed)
+  {
+    assert precomputed.size() == N
+           : String.format("precomputed.size=%d != N=%d", precomputed.size(), N);
+
+    frequencies          = generateFrequencies();
+    powerSpectralDensity = new double[N];
+
+    for (int i = 0; i < N; i++)
+    {
+      samplePath.get(i).set(precomputed.get(i));
+    }
+
+    // randomMeasure[k] = Σ_n samplePath[n] · exp(-2πi·k·n/N) (arb convention,
+    // unnormalized forward DFT). Pairs with the standard 1/N inverse so that
+    // applyInverseDiscreteFourierTransform(randomMeasure) ≡ samplePath exactly.
+    samplePath.applyDiscreteFourierTransform(bits, randomMeasure);
+
+    try ( Real mag = new Real())
+    {
+      for (int k = 0; k < N; k++)
+      {
+        // Periodogram normalization consistent with computePowerSpectralDensity:
+        // |X[k]|² · dt / (N/2). PSD lives on the same shifted-DC frequency
+        // axis as generateFrequencies().
+        double x2 = randomMeasure.get(k).norm(bits, mag).pow(2, bits).doubleValue();
+        powerSpectralDensity[k] = x2 * dt / (N / 2.0);
+      }
+    }
+
+    calculateEnvelopeSamplingTimesAndValues();
+    return this;
+  }
 
   protected void initializeChartsInTheirOwnWindows(Stage stage)
   {
@@ -329,13 +478,16 @@ public abstract class StationaryGaussianProcessSampler extends
                                 new DefaultNumericAxis("Correlation",
                                                        ""));
     chart.setTitle("Covariance");
-    int      maxLag = (int) (StationaryGaussianProcessSampler.autocorrelationLength / StationaryGaussianProcessSampler.dt) + 1;
+    int      maxLag = (int) (StationaryGaussianProcessSampler.autocorrelationLength / sampler.dt) + 1;
     double[] times  = new double[maxLag];
     double[] theory = new double[maxLag];
     sampler.getKernel(times, theory);
+    var      kernelFn   = sampler.getKernel();
+    String   theoryLabel = kernelFn == null ? "Theoretical Covariance (none)"
+                                            : "Theoretical Covariance " + kernelFn;
     chart.getDatasets()
          .addAll(new DoubleDataSet("Empirical").set(times, Statistics.autocorr(samplePath.re().doubleValues(), maxLag)),
-                 new DoubleDataSet("Theoretical Covariance " + sampler.getKernel()).set(times, theory));
+                 new DoubleDataSet(theoryLabel).set(times, theory));
     chart.getYAxis().setAutoRanging(false);
     chart.getYAxis().setMin(-0.5);
     chart.getYAxis().setMax(1.05);
