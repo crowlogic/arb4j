@@ -1169,68 +1169,6 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
   {
     return structure(n, bits, Real.newVector(n, "γ"));
   }
-
-  /**
-   * Empirical autocovariance C(k) at lags 0..n−1, computed from the variogram
-   * identity
-   *
-   *   C(k) = C(0) − γ(k)/2,
-   *
-   * where γ(k) = ⟨|Z(i+k) − Z(i)|²⟩ is the structure function and
-   * C(0) = ⟨Z²⟩ − ⟨Z⟩² is the sample variance. Caller supplies all storage;
-   * on return, gamma holds the variogram and squares holds Zᵢ².
-   *
-   * @param n        number of lags 0..n−1
-   * @param bits     working precision
-   * @param gamma    length-n scratch vector that receives γ(k) on exit
-   * @param squares  length-this.dim scratch vector that receives Zᵢ² on exit
-   * @param result   length-n vector receiving C(k) on exit
-   * @return result
-   */
-  public Real autocovariance(int n, int bits, Real gamma, Real squares, Real result)
-  {
-    structure(n, bits, gamma);
-    pow(2, bits, squares);
-    try ( Real sumOfSquares = new Real(); Real total = new Real(); Real mean = new Real();
-          Real meanSquared = new Real(); Real cZero = new Real(); Real halfGamma = new Real())
-    {
-      sum(bits, total).div(dim, bits, mean).pow(2, bits, meanSquared);
-      squares.sum(bits, sumOfSquares).div(dim, bits, cZero).sub(meanSquared, bits, cZero);
-      for (int k = 0; k < n; k++)
-      {
-        gamma.get(k).div(2, bits, halfGamma);
-        cZero.sub(halfGamma, bits, result.get(k));
-      }
-    }
-    return result;
-  }
-
-  /**
-   * Empirical autocorrelation ρ(k) = C(k)/C(0), the normalised
-   * this{@link #autocovariance(int, int, Real, Real, Real)}. Caller supplies all
-   * storage; on return, gamma holds the variogram, squares holds Zᵢ², and
-   * result[0] = 1.
-   *
-   * @param n        number of lags 0..n−1
-   * @param bits     working precision
-   * @param gamma    length-n scratch vector that receives γ(k) on exit
-   * @param squares  length-this.dim scratch vector that receives Zᵢ² on exit
-   * @param result   length-n vector receiving ρ(k) on exit
-   * @return result
-   */
-  public Real autocorrelation(int n, int bits, Real gamma, Real squares, Real result)
-  {
-    autocovariance(n, bits, gamma, squares, result);
-    try ( Real cZero = new Real())
-    {
-      cZero.set(result.get(0));
-      for (int k = 0; k < n; k++)
-      {
-        result.get(k).div(cZero, bits, result.get(k));
-      }
-    }
-    return result;
-  }
   
   /**
    * A this{@link #slice(int, int)} of this array of {@link Real}s from the n-th
