@@ -1053,6 +1053,80 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return (Expression<D, C, F>) clone();
   }
 
+  /**
+   * Deep clone: produces a fresh {@link Expression} sharing this Expression's
+   * {@link Context} and structural metadata, with its own {@link #rootNode}
+   * spliced from {@code this.rootNode} so that AST surgery on the copy does
+   * not mutate the original. Resets compilation state ({@code compiledClass},
+   * {@code instructions}, {@code optimized}, {@code instance}) so the clone
+   * recompiles on first use.
+   *
+   * <p>If {@code rootNode} is null on the source, {@link #parse(boolean)} is
+   * driven first so the deep clone always returns an Expression carrying a
+   * concrete AST.
+   */
+  public Expression<D, C, F> deepCloneExpression()
+  {
+    if (rootNode == null)
+    {
+      parse(true);
+    }
+    Expression<D, C, F> copy = cloneExpression();
+    copy.rootNode      = rootNode.spliceInto(copy);
+    copy.compiledClass = null;
+    copy.instructions  = null;
+    copy.optimized     = false;
+    copy.instance      = null;
+    return copy;
+  }
+
+  /**
+   * Per-variable partial-derivative cache, keyed by {@code VariableReference.name}.
+   * Populated lazily by {@link #derivative(VariableReference)}; entries are
+   * fully compiled, ready-to-evaluate Functions.
+   */
+  private final java.util.Map<String, F> partialDerivativeCache = new java.util.HashMap<>();
+
+  /**
+   * Lazy on-demand symbolic partial derivative w.r.t. {@code variable}, returned
+   * as a fresh compiled {@link Function}. The work is pure-Java AST surgery on
+   * the already-parsed {@link #rootNode} — no source re-parsing — followed by
+   * a single bytecode-generation pass for the differentiated tree.
+   *
+   * <p>The variable is matched by name only ({@link VariableNode#equals} keys
+   * on {@link VariableReference#name}), so a free-floating reference handle is
+   * sufficient and no splice into the host AST is required. If {@code rootNode}
+   * does not depend on {@code variable}, {@link Node#simplify} collapses the
+   * differentiated tree to the literal-zero node and the returned Function
+   * evaluates to 0 in the codomain.
+   *
+   * <p>Results are memoized per variable name.
+   */
+  @SuppressWarnings("unchecked")
+  public synchronized F derivative(VariableReference<?, ?, ?> variable)
+  {
+    F cached = partialDerivativeCache.get(variable.name);
+    if (cached != null)
+    {
+      return cached;
+    }
+
+    if (rootNode == null)
+    {
+      parse(true);
+    }
+
+    Expression<D, C, F> partial = deepCloneExpression();
+    partial.className = className + "_d" + variable.name;
+
+    VariableNode<D, C, F> probe = new VariableNode<>(partial, new VariableReference<>(variable.name), false);
+    partial.rootNode = partial.rootNode.differentiate(probe).simplify();
+
+    F instance = partial.instantiate();
+    partialDerivativeCache.put(variable.name, instance);
+    return instance;
+  }
+
   public Expression<D, C, F> compile()
   {
     assert !className.isEmpty() : "className is empty";
@@ -1154,6 +1228,21 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return cw;
   }
 
+  /**
+   * Generated classes get a public {@code expression} field holding the
+   * {@link Expression} that produced them. The field is populated by
+   * {@link #instantiate()} immediately after construction, and lets every
+   * compiled Function answer {@link arb.functions.Function#getExpression()}
+   * and {@link arb.functions.Function#derivative(VariableReference)} without
+   * any extra registry. Consumers that don't want the back-pointer may null
+   * it out at any time.
+   */
+  private ClassVisitor declareSourceExpressionField(ClassVisitor cw)
+  {
+    cw.visitField(ACC_PUBLIC, "expression", Type.getDescriptor(Expression.class), null, null);
+    return cw;
+  }
+
   protected MethodVisitor declareEvaluateMethodArguments(MethodVisitor methodVisitor, Label startLabel, Label endLabel)
   {
     methodVisitor.visitLocalVariable("this", String.format("L%s;", className), null, startLabel, endLabel, 0);
@@ -1178,6 +1267,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       cw.visitField(Opcodes.ACC_PUBLIC, "staticPrecision", "I", null, null);
     }
     declareContext(cw);
+    declareSourceExpressionField(cw);
     declareCacheField(cw);
     if (!coDomainType.isInterface())
     {
@@ -3750,8 +3840,32 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     cloneNonReentrantReferencedFunctions(freshInstance);
     logReferencedFunctionFieldState(freshInstance, "after cloneNonReentrantReferencedFunctions");
 
+    populateSourceExpressionBackPointer(freshInstance);
+
     instance = freshInstance;
     return freshInstance;
+  }
+
+  /**
+   * Set the public {@code expression} field declared by
+   * {@link #declareSourceExpressionField} on a freshly constructed instance.
+   * Reflective; tolerates absence of the field on hand-written subclasses.
+   */
+  private void populateSourceExpressionBackPointer(F freshInstance)
+  {
+    try
+    {
+      java.lang.reflect.Field field = freshInstance.getClass().getField("expression");
+      field.set(freshInstance, this);
+    }
+    catch (NoSuchFieldException ignored)
+    {
+      // Hand-written Function subclass without the back-pointer field; fine.
+    }
+    catch (IllegalAccessException iae)
+    {
+      Utensils.wrapOrThrow(iae);
+    }
   }
 
   /**

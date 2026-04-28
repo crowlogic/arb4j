@@ -74,6 +74,18 @@ public interface Function<D, CO> extends
     return null;
   }
 
+  /**
+   * Source-Expression back-pointer. Expression-compiled Functions return the
+   * {@link Expression} that produced them; hand-written Functions return
+   * {@code null} unless they choose to expose one. Consumers may also null
+   * out a generated class's {@code expression} field directly if they want
+   * to drop the back-pointer.
+   */
+  default Expression<?, ?, ?> getExpression()
+  {
+    return null;
+  }
+
   @Override
   default String getName()
   {
@@ -99,10 +111,16 @@ public interface Function<D, CO> extends
    * @param variable location-free handle of the parameter to differentiate w.r.t.
    * @return a {@link Function} computing {@code ∂this/∂variable}
    */
+  @SuppressWarnings("unchecked")
   public default Function<D, CO> derivative(VariableReference<?, ?, ?> variable)
   {
+    Expression<?, ?, ?> expr = getExpression();
+    if (expr != null)
+    {
+      return (Function<D, CO>) expr.derivative(variable);
+    }
     throw new UnsupportedOperationException("TODO: " + getClass()
-                                             + " should implement derivative(VariableReference)");
+                                             + " should implement derivative(VariableReference) or expose getExpression()");
   }
 
   /**
