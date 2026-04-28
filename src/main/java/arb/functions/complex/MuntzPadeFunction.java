@@ -260,19 +260,17 @@ public class MuntzPadeFunction implements
     ensureOrder(M, bits);
     try ( Complex valM   = Complex.named("R_M(z)");
           Complex valMm1 = Complex.named("R_{M-1}(z)");
-          Complex valMm2 = Complex.named("R_{M-2}(z)");
-          Complex pz     = new Complex();
-          Complex qz     = new Complex())
+          Complex valMm2 = Complex.named("R_{M-2}(z)"))
     {
-      evaluatePadeAtCachedOrder(M, z, bits, pz, qz, valM);
-      evaluatePadeAtCachedOrder(M - 1, z, bits, pz, qz, valMm1);
+      evaluatePadeAtCachedOrder(M, z, bits, valM);
+      evaluatePadeAtCachedOrder(M - 1, z, bits, valMm1);
       if (M - 2 == 0)
       {
         valMm2.zero();
       }
       else
       {
-        evaluatePadeAtCachedOrder(M - 2, z, bits, pz, qz, valMm2);
+        evaluatePadeAtCachedOrder(M - 2, z, bits, valMm2);
       }
       try ( Complex deltaM   = new Complex();
             Complex deltaMm1 = new Complex();
@@ -417,9 +415,9 @@ public class MuntzPadeFunction implements
     return null;
   }
 
-  private void evaluatePadeAtCachedOrder(int m, Complex z, int bits, Complex pz, Complex qz, Complex into)
+  private Complex evaluatePadeAtCachedOrder(int m, Complex z, int bits, Complex into)
   {
-    padeCache.get(m - 1).evaluate(z, 1, bits, into);
+    return padeCache.get(m - 1).evaluate(z, 1, bits, into);
   }
 
   private DiagonalPade solveHankel(Complex coeff, int M, int bits, DiagonalPade result)
