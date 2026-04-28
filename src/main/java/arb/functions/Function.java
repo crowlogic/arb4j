@@ -86,6 +86,45 @@ public interface Function<D, CO> extends
   }
 
   /**
+   * Lazy on-demand partial derivative with respect to the parameter named by
+   * {@code variable}. Implementing classes whose dependence on {@code variable}
+   * is symbolic should return a fresh {@link Function} computing
+   * {@code ∂this/∂variable}; classes that do not depend on {@code variable}
+   * should return the zero function in the codomain.
+   *
+   * <p>The contract mirrors the no-argument {@link #derivative()}: nothing is
+   * pre-compiled at the parent's compile time, the work is paid only when this
+   * method is called, and concrete classes are expected to memoize.
+   *
+   * @param variable location-free handle of the parameter to differentiate w.r.t.
+   * @return a {@link Function} computing {@code ∂this/∂variable}
+   */
+  public default Function<D, CO> derivative(VariableReference<?, ?, ?> variable)
+  {
+    throw new UnsupportedOperationException("TODO: " + getClass()
+                                             + " should implement derivative(VariableReference)");
+  }
+
+  /**
+   * Convenience overload of {@link #derivative(VariableReference)} taking a
+   * variable name. The default resolves the name against {@link #getContext()};
+   * implementing classes that already hold a {@link VariableReference} should
+   * override to skip the round-trip.
+   *
+   * @param variableName name of the parameter to differentiate w.r.t.
+   * @return a {@link Function} computing {@code ∂this/∂variableName}
+   */
+  public default Function<D, CO> derivative(String variableName)
+  {
+    Context ctx = getContext();
+    assert ctx != null : getClass() + " has no Context; override derivative(String) directly";
+    Named  named = ctx.variables.get(variableName);
+    assert named != null : variableName + " not found in " + ctx;
+    var ref = new VariableReference<D, CO, Function<D, CO>>(variableName);
+    return derivative(ref);
+  }
+
+  /**
    * Prototype-pattern copy: produce a fresh instance of this function whose
    * mutable evaluation state (compiled DSL registers, scratch polynomials,
    * Newton-iteration buffers, etc.) is independent of {@code this}, but whose
