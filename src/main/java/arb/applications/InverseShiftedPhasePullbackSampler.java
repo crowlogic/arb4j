@@ -1,5 +1,6 @@
 package arb.applications;
 
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.IntStream;
 
 import arb.Complex;
@@ -81,9 +82,18 @@ public class InverseShiftedPhasePullbackSampler extends
   private final ThreadLocal<PullbackEvaluator> evaluator;
 
   /**
+   * Default sampler: [0, 1000] @ dt = 0.01, giving N = 100,000 grid points.
+   * Matches the historical defaults of {@link StationaryGaussianProcessSampler}.
+   */
+  public InverseShiftedPhasePullbackSampler()
+  {
+    this(new FloatInterval(0, 1000), 0.01);
+  }
+
+  /**
    * Sample F on [t₀, t₀ + N·dt) with N = ⌊length(timeSpan) / dt⌋. The lower
    * endpoint of {@code timeSpan} is t₀ and must lie in the domain of Φ⁻¹,
-   * i.e. t₀ ≥ Φ(0) ≈ −0.156. The default {@code timeSpan} of [0, 10000]
+   * i.e. t₀ ≥ Φ(0) ≈ −0.156. The default {@code timeSpan} of [0, 1000]
    * easily satisfies that.
    *
    * @param timeSpan time-domain support of F; t₀ = timeSpan.left()
@@ -96,11 +106,24 @@ public class InverseShiftedPhasePullbackSampler extends
   }
 
   /**
+   * One progress line is emitted every this many completed evaluations.
+   * Configurable per instance for tests that want quieter or more frequent
+   * output.
+   */
+  public int progressInterval = 100;
+
+  /**
    * Override of the path-preparation hook in
    * {@link StationaryGaussianProcessSampler}. Builds samplePath[i] = F(t_i)
    * in parallel across the common ForkJoinPool, then delegates to
    * {@link #ingestPrecomputedSamplePath(Complex)} for the FFT, the empirical
    * orthogonal random measure, and the empirical PSD.
+   *
+   * Each worker bumps a shared {@link AtomicLong} after each F(t)
+   * evaluation; whenever the post-bump count crosses a multiple of
+   * {@link #progressInterval} the worker prints a single line carrying its
+   * thread name, the index just completed, the running total, and the
+   * percentage of N reached. Output goes to {@code System.out}.
    *
    * F(t) is real-valued on the real t-axis; samplePath[i].im is set to 0.
    */
@@ -108,6 +131,9 @@ public class InverseShiftedPhasePullbackSampler extends
   protected void prepareSamplePath()
   {
     double t0 = timeSpan.getA().doubleValue();
+    AtomicLong completed = new AtomicLong(0);
+    long startNanos = System.nanoTime();
+
     try ( var sampledPath = Complex.newVector(N))
     {
       IntStream.range(0, N).parallel().forEach(i ->
@@ -119,6 +145,19 @@ public class InverseShiftedPhasePullbackSampler extends
           var slot = sampledPath.get(i);
           slot.re().set(Fval);
           slot.im().zero();
+        }
+        long done = completed.incrementAndGet();
+        if (done % progressInterval == 0 || done == N)
+        {
+          double pct = 100.0 * done / N;
+          double elapsedSec = (System.nanoTime() - startNanos) / 1e9;
+          System.out.printf("[%s] i=%d  done=%d/%d  %5.1f%%  %.1fs%n",
+                            Thread.currentThread().getName(),
+                            i,
+                            done,
+                            N,
+                            pct,
+                            elapsedSec);
         }
       });
 

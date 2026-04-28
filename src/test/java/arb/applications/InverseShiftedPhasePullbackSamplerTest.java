@@ -38,6 +38,7 @@ public class InverseShiftedPhasePullbackSamplerTest extends
       assertEquals("N from constructor", N, sampler.N);
       assertEquals("dt from constructor", dt, sampler.dt, 1e-15);
 
+      sampler.progressInterval = Integer.MAX_VALUE;  // suppress progress noise in unit test
       sampler.prepareSamplePath();
 
       for (int i = 0; i < N; i++)
