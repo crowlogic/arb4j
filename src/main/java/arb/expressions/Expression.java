@@ -5302,6 +5302,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return new WhenNode<>(this);
     case "fracdiff":
       return new CaputoFractionalDerivativeNode<>(this);
+    case "fracint":
+      return new RiemannLiouvilleFractionalIntegralNode<>(this);
     case "diff":
       return new DerivativeNode<>(this,
                                   true);

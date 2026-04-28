@@ -214,6 +214,31 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   }
 
   /**
+   * Compute the Riemann–Liouville fractional integral of order μ of this node
+   * with respect to {@code variable}, with lower limit 0:
+   *
+   * <pre>
+   * I^μ f(t) = (1/Γ(μ)) ∫₀ᵗ (t−s)^(μ−1) f(s) ds,    μ ∈ (0, 1)
+   * </pre>
+   *
+   * Default: wraps in a RiemannLiouvilleFractionalIntegralNode. Subclasses with
+   * closed-form rules (monomials, constants, linearity, scalar multiples,
+   * semigroup chaining) override this method to return the symbolic result
+   * directly.
+   *
+   * @param variable the variable of integration
+   * @param order    the fractional order μ
+   * @return the node representing I^(μ)(this)
+   */
+  public Node<D, R, F> fractionalIntegral(VariableNode<D, R, F> variable, Node<D, R, F> order)
+  {
+    return new RiemannLiouvilleFractionalIntegralNode<D, R, F>(expression,
+                                                                this,
+                                                                variable,
+                                                                order);
+  }
+
+  /**
    * Checks if a node is easily integrable (exp, sin, cos). These functions have
    * straightforward antiderivatives.
    */
