@@ -6,6 +6,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import arb.Complex;
 import arb.FloatInterval;
 import arb.Real;
@@ -54,6 +57,8 @@ import arb.functions.real.RealFunction;
 public class InverseShiftedPhasePullbackSampler extends
                                                 StationaryGaussianProcessSampler
 {
+  private static final Logger log = LoggerFactory.getLogger(InverseShiftedPhasePullbackSampler.class);
+
   public static void main(String[] args)
   {
     launch(args);
@@ -228,15 +233,15 @@ public class InverseShiftedPhasePullbackSampler extends
               {
                 double pct = 100.0 * doneCount / N;
                 double elapsedSec = (System.nanoTime() - startNanos) / 1e9;
-                System.out.printf("[%s] i=%d  done=%d/%d  %5.1f%%  %.2fs  thread‑rate=%.2f eval/s  thread‑mean=%.3f ms/eval%n",
-                                  tname,
-                                  i,
-                                  doneCount,
-                                  N,
-                                  pct,
-                                  elapsedSec,
-                                  s.meanRate(),
-                                  s.meanMillisPerEval());
+                log.debug("[{}] i={}  done={}/{}  {}%  {}s  thread‑rate={} eval/s  thread‑mean={} ms/eval",
+                         tname,
+                         i,
+                         doneCount,
+                         N,
+                         String.format("%5.1f", pct),
+                         String.format("%.2f", elapsedSec),
+                         String.format("%.2f", s.meanRate()),
+                         String.format("%.3f", s.meanMillisPerEval()));
               }
             }
           }
@@ -278,27 +283,38 @@ public class InverseShiftedPhasePullbackSampler extends
     double wallSec = elapsedNanos / 1e9;
     long   totalCount = 0;
     long   totalEvalNanos = 0;
-    System.out.println("─── per‑thread benchmark ───");
-    System.out.printf("%-44s  %10s  %12s  %14s  %14s%n",
-                      "thread", "count", "sumEval(s)", "rate(eval/s)", "mean(ms/eval)");
+    if (!log.isDebugEnabled())
+    {
+      for (ThreadStats s : threadStats.values())
+      {
+        totalCount     += s.count;
+        totalEvalNanos += s.totalNanos;
+      }
+      return;
+    }
+    StringBuilder report = new StringBuilder();
+    report.append("\n─── per‑thread benchmark ───\n");
+    report.append(String.format("%-44s  %10s  %12s  %14s  %14s%n",
+                                "thread", "count", "sumEval(s)", "rate(eval/s)", "mean(ms/eval)"));
     for (Map.Entry<String, ThreadStats> e : threadStats.entrySet())
     {
       ThreadStats s = e.getValue();
       totalCount     += s.count;
       totalEvalNanos += s.totalNanos;
-      System.out.printf("%-44s  %10d  %12.3f  %14.2f  %14.2f%n",
-                        e.getKey(),
-                        s.count,
-                        s.totalNanos / 1e9,
-                        s.meanRate(),
-                        s.meanMillisPerEval());
+      report.append(String.format("%-44s  %10d  %12.3f  %14.2f  %14.2f%n",
+                                  e.getKey(),
+                                  s.count,
+                                  s.totalNanos / 1e9,
+                                  s.meanRate(),
+                                  s.meanMillisPerEval()));
     }
     double globalRate = wallSec == 0 ? 0.0 : totalCount / wallSec;
-    System.out.printf("─── total: count=%d  wall=%.3fs  sumEval=%.3fs  global‑rate=%.2f eval/s  threads=%d ───%n",
-                      totalCount,
-                      wallSec,
-                      totalEvalNanos / 1e9,
-                      globalRate,
-                      threadStats.size());
+    report.append(String.format("─── total: count=%d  wall=%.3fs  sumEval=%.3fs  global‑rate=%.2f eval/s  threads=%d ───",
+                                totalCount,
+                                wallSec,
+                                totalEvalNanos / 1e9,
+                                globalRate,
+                                threadStats.size()));
+    log.debug("{}", report);
   }
 }

@@ -4,6 +4,7 @@ import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisMode;
 import io.fair_acc.chartfx.plugins.*;
 import io.fair_acc.dataset.utils.DataSetStyleBuilder;
+import javafx.scene.Node;
 import javafx.scene.layout.*;
 
 public class Charts
@@ -24,6 +25,24 @@ public class Charts
   }
 
   public static GridPane createGridPane(XYChart[] charts)
+  {
+    return createGridPane(charts, null);
+  }
+
+  /**
+   * Build the 2x2 chart grid. When {@code covarianceWrapper} is non-null, it
+   * is placed in the bottom-left cell instead of the bare {@code charts[2]}
+   * chart, so the covariance chart can be sandwiched under a control bar
+   * (length entry + refresh button) without changing the grid layout.
+   *
+   * @param charts            the four charts in panel order: top-left,
+   *                          top-right, bottom-left, bottom-right
+   * @param covarianceWrapper optional Node that already contains
+   *                          {@code charts[2]} as a child; when non-null,
+   *                          this is what gets placed in the grid in the
+   *                          bottom-left cell
+   */
+  public static GridPane createGridPane(XYChart[] charts, Node covarianceWrapper)
   {
     GridPane gridPane = new GridPane();
     gridPane.setHgap(10);
@@ -48,9 +67,13 @@ public class Charts
       GridPane.setVgrow(chart, Priority.ALWAYS);
     }
 
+    Node bottomLeft = covarianceWrapper != null ? covarianceWrapper : charts[2];
+    GridPane.setHgrow(bottomLeft, Priority.ALWAYS);
+    GridPane.setVgrow(bottomLeft, Priority.ALWAYS);
+
     gridPane.add(charts[0], 0, 0);
     gridPane.add(charts[1], 1, 0);
-    gridPane.add(charts[2], 0, 1);
+    gridPane.add(bottomLeft, 0, 1);
     gridPane.add(charts[3], 1, 1);
 
     return gridPane;

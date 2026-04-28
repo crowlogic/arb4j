@@ -19,8 +19,15 @@ import io.fair_acc.chartfx.renderer.LineStyle;
 import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
 import io.fair_acc.dataset.spi.DoubleDataSet;
 import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 /**
@@ -40,7 +47,22 @@ public abstract class StationaryGaussianProcessSampler extends
                                                        AutoCloseable
 {
 
-  static final double           autocorrelationLength             = 20.0;
+  /**
+   * Maximum lag (in time-units of the t-grid) over which the empirical
+   * autocovariance and the theoretical-kernel overlay are computed and
+   * displayed in the covariance chart. Mutable so the GUI control can
+   * extend the lag horizon at runtime; the refresh button rebuilds the
+   * datasets and updates the chart in place. Default 25.0.
+   */
+  protected double              autocorrelationLength             = 25.0;
+
+  /**
+   * The single covariance XYChart created by
+   * {@link #newAutoCorrelationChart(StationaryGaussianProcessSampler, Complex)}.
+   * Held so the refresh handler can mutate its datasets and x-axis upper
+   * bound after the user changes the length.
+   */
+  private XYChart               covarianceChart;
 
   static final int              bits                              = 128;
 
@@ -183,10 +205,11 @@ public abstract class StationaryGaussianProcessSampler extends
 
   void configureCharts()
   {
+    covarianceChart = newAutoCorrelationChart(this, samplePath);
     Stream.of(charts = new XYChart[]
     { newTimeDomainChart(spectralSupport, samplingTimes, samplePath, envelope),
       newRandomWhiteNoiseMeasureChart(frequencies, whiteNoise),
-      newAutoCorrelationChart(this, samplePath),
+      covarianceChart,
       newPowerSpectralDensityChart(samplePath, positiveFrequencies, frequencies, theoreticalPowerSpectralDensities, powerSpectralDensity) })
           .forEach(chart -> Charts.configureChart(chart, light));
   }
@@ -454,8 +477,9 @@ public abstract class StationaryGaussianProcessSampler extends
 
   protected void initializeWindowContainingAllCharts(Stage stage)
   {
-    GridPane gridPane = Charts.createGridPane(charts);
-    Scene    scene    = new Scene(gridPane);
+    BorderPane covariancePane = wrapCovarianceChartWithLengthControls();
+    GridPane   gridPane       = Charts.createGridPane(charts, covariancePane);
+    Scene      scene          = new Scene(gridPane);
     stage.setScene(scene);
     stage.setMaximized(true);
     stage.setTitle(String.format("%s[seed=%s]", getClass().getSimpleName(), seed));
@@ -474,23 +498,93 @@ public abstract class StationaryGaussianProcessSampler extends
                                 new DefaultNumericAxis("Correlation",
                                                        ""));
     chart.setTitle("Covariance");
-    int      maxLag = (int) (StationaryGaussianProcessSampler.autocorrelationLength / sampler.dt) + 1;
-    double[] times  = new double[maxLag];
-    double[] theory = new double[maxLag];
-    sampler.getKernel(times, theory);
-    var      kernelFn   = sampler.getKernel();
-    String   theoryLabel = kernelFn == null ? "Theoretical Covariance (none)"
-                                            : "Theoretical Covariance " + kernelFn;
-    chart.getDatasets()
-         .addAll(new DoubleDataSet("Empirical").set(times, Statistics.autocorr(samplePath.re().doubleValues(), maxLag)),
-                 new DoubleDataSet(theoryLabel).set(times, theory));
+    populateAutoCorrelationDatasets(chart, sampler, samplePath);
     chart.getYAxis().setAutoRanging(false);
     chart.getYAxis().setMin(-0.5);
     chart.getYAxis().setMax(1.05);
     chart.getXAxis().setAutoRanging(false);
     chart.getXAxis().setMin(0);
-    chart.getXAxis().setMax(StationaryGaussianProcessSampler.autocorrelationLength);
+    chart.getXAxis().setMax(sampler.autocorrelationLength);
     return chart;
+  }
+
+  /**
+   * Replace the empirical and theoretical-kernel datasets on the covariance
+   * chart using the current value of {@link #autocorrelationLength}, and
+   * write the lag grid into a length-{@code maxLag} array. The empirical
+   * lag count is clamped at the path length N so the autocorr estimator
+   * never runs past the data; the theoretical-kernel array is filled at
+   * the same length via {@link #getKernel(double[], double[])}.
+   */
+  void populateAutoCorrelationDatasets(XYChart chart, StationaryGaussianProcessSampler sampler, Complex samplePath)
+  {
+    int      maxLag = (int) (sampler.autocorrelationLength / sampler.dt) + 1;
+    if (maxLag > sampler.N)
+    {
+      maxLag = sampler.N;
+    }
+    double[] times  = new double[maxLag];
+    double[] theory = new double[maxLag];
+    sampler.getKernel(times, theory);
+    var      kernelFn    = sampler.getKernel();
+    String   theoryLabel = kernelFn == null ? "Theoretical Covariance (none)"
+                                            : "Theoretical Covariance " + kernelFn;
+    double[] empirical   = Statistics.autocorr(samplePath.re().doubleValues(), maxLag);
+    chart.getDatasets().clear();
+    chart.getDatasets().addAll(new DoubleDataSet("Empirical").set(times, empirical),
+                               new DoubleDataSet(theoryLabel).set(times, theory));
+  }
+
+  /**
+   * Build the covariance chart's container: a horizontal control bar with
+   * a length entry field and a refresh button on top, the chart filling
+   * the remaining space below. The button reads the field, updates
+   * {@link #autocorrelationLength}, recomputes the empirical and
+   * theoretical datasets, and stretches the chart's x-axis upper bound
+   * to match. Bad input is silently rejected; values larger than the
+   * usable lag horizon (N - 1) * dt are clamped down to it.
+   */
+  protected BorderPane wrapCovarianceChartWithLengthControls()
+  {
+    Label     lengthLabel = new Label("Autocorrelation length:");
+    TextField lengthField = new TextField(String.valueOf(autocorrelationLength));
+    lengthField.setPrefColumnCount(8);
+    Button    refresh     = new Button("Refresh");
+    Runnable  doRefresh   = () ->
+    {
+      String text = lengthField.getText();
+      double parsed;
+      try
+      {
+        parsed = Double.parseDouble(text);
+      }
+      catch (NumberFormatException nfe)
+      {
+        return;
+      }
+      if (!Double.isFinite(parsed) || parsed <= 0)
+      {
+        return;
+      }
+      double maxLength = (N - 1) * dt;
+      if (parsed > maxLength)
+      {
+        parsed = maxLength;
+        lengthField.setText(String.valueOf(parsed));
+      }
+      autocorrelationLength = parsed;
+      populateAutoCorrelationDatasets(covarianceChart, this, samplePath);
+      covarianceChart.getXAxis().setMax(autocorrelationLength);
+    };
+    refresh.setOnAction(e -> doRefresh.run());
+    lengthField.setOnAction(e -> doRefresh.run());
+    HBox controls = new HBox(8, lengthLabel, lengthField, refresh);
+    controls.setAlignment(Pos.CENTER_LEFT);
+    controls.setPadding(new Insets(4, 8, 4, 8));
+    BorderPane pane = new BorderPane();
+    pane.setTop(controls);
+    pane.setCenter(covarianceChart);
+    return pane;
   }
 
   public XYChart newPowerSpectralDensityChart(Complex samplePath,
