@@ -9,9 +9,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import arb.Complex;
-import arb.FloatInterval;
-import arb.Real;
+import arb.*;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.real.MonotonicRiemannSiegelThetaFunction;
@@ -27,27 +25,27 @@ import arb.functions.real.RealFunction;
  *   F(t) = Z(Φ⁻¹(t)) / √(Φ′(Φ⁻¹(t)))
  * </pre>
  *
- * on a uniform grid [t₀, t₀ + N·dt) and feeds it into the path-based
- * ingestion mode of {@link StationaryGaussianProcessSampler}. Here Z is the
- * Hardy Z function on the real line, ϑ is the Riemann–Siegel theta function,
- * Φ(τ) = ϑ(τ) + c·τ is the {@link MonotonicRiemannSiegelThetaFunction} (with
- * c = 3 by default), and Φ⁻¹ is its global inverse on [Φ(0), ∞).
+ * on a uniform grid [t₀, t₀ + N·dt) and feeds it into the path-based ingestion
+ * mode of {@link StationaryGaussianProcessSampler}. Here Z is the Hardy Z
+ * function on the real line, ϑ is the Riemann–Siegel theta function, Φ(τ) =
+ * ϑ(τ) + c·τ is the {@link MonotonicRiemannSiegelThetaFunction} (with c = 3 by
+ * default), and Φ⁻¹ is its global inverse on [Φ(0), ∞).
  *
  * <p>
  * The map τ → Φ(τ) reparameterizes the height τ on the critical line by the
- * cumulative phase Φ. Under that reparameterization, Z ∘ Φ⁻¹ rescaled by
- * 1/√Φ′ becomes wide-sense stationary in the t-coordinate (the Jacobian
- * absorbs the local stretching of the t-axis), so its empirical second-order
- * statistics — autocorrelation and power spectral density — are translation
- * invariant in t. That is exactly the input contract of
+ * cumulative phase Φ. Under that reparameterization, Z ∘ Φ⁻¹ rescaled by 1/√Φ′
+ * becomes wide-sense stationary in the t-coordinate (the Jacobian absorbs the
+ * local stretching of the t-axis), so its empirical second-order statistics —
+ * autocorrelation and power spectral density — are translation invariant in t.
+ * That is exactly the input contract of
  * {@link StationaryGaussianProcessSampler#ingestPrecomputedSamplePath}.
  *
  * <p>
- * The N evaluations of F(t_i) are independent and embarrassingly parallel.
- * Each worker holds thread-local copies of Φ, its derivative dΦ, the inverse
- * Φ⁻¹, and the compiled DSL expression
- * {@code F:t->Z(Φ⁻¹(t))/sqrt(dΦ(Φ⁻¹(t)))}, since those compiled functions
- * carry mutable evaluation state. Common-subexpression elimination in
+ * The N evaluations of F(t_i) are independent and embarrassingly parallel. Each
+ * worker holds thread-local copies of Φ, its derivative dΦ, the inverse Φ⁻¹,
+ * and the compiled DSL expression {@code F:t->Z(Φ⁻¹(t))/sqrt(dΦ(Φ⁻¹(t)))},
+ * since those compiled functions carry mutable evaluation state.
+ * Common-subexpression elimination in
  * {@link arb.expressions.Expression#optimize} collapses the two textual
  * occurrences of Φ⁻¹(t) into a single node per evaluation.
  *
@@ -63,75 +61,35 @@ public class InverseShiftedPhasePullbackSampler extends
   {
     launch(args);
   }
-  
-  /**
-   * Canonical Φ used as the prototype for per-worker clones.
-   */
-  protected final MonotonicRiemannSiegelThetaFunction        Φ                = new MonotonicRiemannSiegelThetaFunction();
 
-  /**
-   * Canonical dΦ obtained from {@link MonotonicRiemannSiegelThetaFunction#derivative()}.
-   * Its {@code cloneFunction()} returns a wrapper around a fresh Φ′s own
-   * {@code diffMonotoneϑ}, so the per-worker clone of dΦ has its own
-   * non-shared evaluation registers.
-   */
-  protected final RealFunction                                dΦ              = Φ.derivative();
+  final MonotonicRiemannSiegelThetaFunction            Φ  = new MonotonicRiemannSiegelThetaFunction();
 
-  /**
-   * Single shared {@link Context} with Φ and dΦ registered, and the single
-   * compiled {@link Expression} for F(t) = Z(Φ⁻¹(t)) / √(dΦ(Φ⁻¹(t))).
-   * The DSL is parsed and the bytecode class generated exactly once in the
-   * constructor; per-worker fresh evaluation state is obtained via
-   * {@link Expression#instantiate()}, which also clones Φ and dΦ into each
-   * fresh F instance via
-   * {@link Expression#cloneNonReentrantReferencedFunctions}.
-   */
-  protected final Context                                     context;
-  protected final Expression<Real, Real, RealFunction>        compiledF;
+  protected final RealFunction                         dΦ = Φ.derivative();
 
-  /**
-   * Default sampler: [0, 1000] @ dt = 0.01, giving N = 100,000 grid points.
-   * Matches the historical defaults of {@link StationaryGaussianProcessSampler}.
-   */
+  protected final Context                              context;
+  protected final Expression<Real, Real, RealFunction> compiledF;
+
   public InverseShiftedPhasePullbackSampler()
   {
-    this(new FloatInterval(0, 1000), 0.01);
+    this(new FloatInterval(0,
+                           2000),
+         0.01);
   }
 
-  /**
-   * Sample F on [t₀, t₀ + N·dt) with N = ⌊length(timeSpan) / dt⌋. The lower
-   * endpoint of {@code timeSpan} is t₀ and must lie in the domain of Φ⁻¹,
-   * i.e. t₀ ≥ Φ(0) ≈ −0.156. The default {@code timeSpan} of [0, 1000]
-   * easily satisfies that.
-   *
-   * @param timeSpan time-domain support of F; t₀ = timeSpan.left()
-   * @param dt       uniform spacing on the t-axis
-   */
   public InverseShiftedPhasePullbackSampler(FloatInterval timeSpan, double dt)
   {
-    super(timeSpan, dt);
-    context   = new Context();
-    context.registerFunction("Φ",  Φ);
+    super(timeSpan,
+          dt);
+    context = new Context();
+    context.registerFunction("Φ", Φ);
     context.registerFunction("dΦ", dΦ);
     compiledF = RealFunction.compile("F:t->Z(Φ⁻¹(t))/sqrt(dΦ(Φ⁻¹(t)))", context);
     // Force the compile so the first instantiate() is cheap.
     compiledF.instantiate();
   }
 
-  /**
-   * One progress line is emitted every this many completed evaluations.
-   * Configurable per instance for tests that want quieter or more frequent
-   * output.
-   */
   public int progressInterval = 1000;
 
-  /**
-   * Per-thread benchmark record collected during the most recent
-   * {@link #prepareSamplePath()} run. {@code count} is the number of F(t)
-   * evaluations performed by that thread; {@code totalNanos} is the sum of
-   * per-evaluation wall-clock durations measured around
-   * {@code F.evaluate(...)}. Mean rate = count / (totalNanos·10⁻⁹) Hz.
-   */
   public static final class ThreadStats
   {
     public long count;
@@ -148,54 +106,22 @@ public class InverseShiftedPhasePullbackSampler extends
     }
   }
 
-  /**
-   * Snapshot of per-thread statistics from the last
-   * {@link #prepareSamplePath()} call, keyed by thread name. Sorted by name
-   * for stable reporting.
-   */
-  public Map<String, ThreadStats> threadStats = new TreeMap<>();
+  public Map<String, ThreadStats> threadStats     = new TreeMap<>();
 
-  /**
-   * Number of worker threads to spawn for the parallel F(t) evaluation.
-   * Defaults to {@code Runtime.getRuntime().availableProcessors()} — one
-   * worker per core. Override before {@link #prepareSamplePath()} for
-   * benchmarks that want to study scaling.
-   */
-  public int numberOfWorkers = Runtime.getRuntime().availableProcessors();
+  public int                      numberOfWorkers = Runtime.getRuntime().availableProcessors();
 
-  /**
-   * Override of the path-preparation hook. Spawns exactly
-   * {@link #numberOfWorkers} worker threads. Worker {@code k} evaluates
-   * indices {@code k, k + W, k + 2·W, …} where {@code W = numberOfWorkers},
-   * a strided partition that spreads any t-axis non-stationarity in F's
-   * cost (e.g. Newton iteration count growing with t) evenly across
-   * workers instead of dumping the slow tail on one thread.
-   *
-   * <p>The DSL expression is compiled exactly once in the constructor.
-   * Each worker calls {@link Expression#instantiate()} on the shared
-   * compiled {@link #compiledF} to obtain a fresh {@link RealFunction}
-   * with its own evaluation registers; the
-   * {@link Expression#cloneNonReentrantReferencedFunctions} pass run by
-   * {@code instantiate()} also gives each worker its own private clone of
-   * Φ (and therefore its own Φ′ and Φ⁻¹), so the non-reentrant generated
-   * DSL classes inside Φ are not shared between threads.
-   *
-   * <p>Per-thread benchmark statistics record only the wall-clock time of
-   * the {@code F.evaluate(…)} call; allocation of the input/output
-   * {@link Real} scratch is excluded.
-   */
   @Override
   protected void prepareSamplePath()
   {
-    double                                  t0       = timeSpan.getA().doubleValue();
-    AtomicLong                              completed = new AtomicLong(0);
-    ConcurrentHashMap<String, ThreadStats>  stats    = new ConcurrentHashMap<>();
-    int                                     W        = numberOfWorkers;
-    long                                    startNanos = System.nanoTime();
+    double                                 t0         = timeSpan.getA().doubleValue();
+    AtomicLong                             completed  = new AtomicLong(0);
+    ConcurrentHashMap<String, ThreadStats> stats      = new ConcurrentHashMap<>();
+    int                                    W          = numberOfWorkers;
+    long                                   startNanos = System.nanoTime();
 
     try ( var sampledPath = Complex.newVector(N))
     {
-      CountDownLatch done = new CountDownLatch(W);
+      CountDownLatch done    = new CountDownLatch(W);
       Thread[]       workers = new Thread[W];
 
       for (int k = 0; k < W; k++)
@@ -203,8 +129,8 @@ public class InverseShiftedPhasePullbackSampler extends
         final int workerIndex = k;
         workers[k] = new Thread(() ->
         {
-          String tname = Thread.currentThread().getName();
-          ThreadStats s = new ThreadStats();
+          String      tname = Thread.currentThread().getName();
+          ThreadStats s     = new ThreadStats();
           stats.put(tname, s);
 
           // Each worker owns its own fresh instance of the compiled expression.
@@ -212,8 +138,7 @@ public class InverseShiftedPhasePullbackSampler extends
           // is fresh.
           RealFunction Fworker = compiledF.instantiate();
 
-          try ( Real t    = Real.valueOf(0.0);
-                Real Fval = Real.valueOf(0.0))
+          try ( Real t = Real.valueOf(0.0); Real Fval = Real.valueOf(0.0))
           {
             for (int i = workerIndex; i < N; i += W)
             {
@@ -231,7 +156,7 @@ public class InverseShiftedPhasePullbackSampler extends
               long doneCount = completed.incrementAndGet();
               if (doneCount % progressInterval == 0 || doneCount == N)
               {
-                double pct = 100.0 * doneCount / N;
+                double pct        = 100.0 * doneCount / N;
                 double elapsedSec = (System.nanoTime() - startNanos) / 1e9;
                 System.out.printf("[%s] i=%d  done=%d/%d  %5.1f%%  %.2fs  thread‑rate=%.2f eval/s  thread‑mean=%.3f ms/eval%n",
                                   tname,
@@ -249,7 +174,9 @@ public class InverseShiftedPhasePullbackSampler extends
           {
             done.countDown();
           }
-        }, "PullbackWorker-" + workerIndex);
+        },
+                                "PullbackWorker-"
+           + workerIndex);
         workers[k].start();
       }
 
@@ -260,7 +187,8 @@ public class InverseShiftedPhasePullbackSampler extends
       catch (InterruptedException ie)
       {
         Thread.currentThread().interrupt();
-        throw new RuntimeException("Interrupted while sampling F(t)", ie);
+        throw new RuntimeException("Interrupted while sampling F(t)",
+                                   ie);
       }
 
       ingestPrecomputedSamplePath(sampledPath);
@@ -271,17 +199,10 @@ public class InverseShiftedPhasePullbackSampler extends
     printBenchmarkSummary(elapsedNanos);
   }
 
-  /**
-   * Emit a final benchmark report: per-thread count, total CPU-time on F(t),
-   * mean evaluation rate, mean ms/eval; followed by an aggregate line giving
-   * the overall wall-clock elapsed time and the global mean rate (sum of
-   * thread counts divided by wall-clock time, the meaningful throughput
-   * figure since the workers run in parallel).
-   */
   protected void printBenchmarkSummary(long elapsedNanos)
   {
-    double wallSec = elapsedNanos / 1e9;
-    long   totalCount = 0;
+    double wallSec        = elapsedNanos / 1e9;
+    long   totalCount     = 0;
     long   totalEvalNanos = 0;
     if (!log.isDebugEnabled())
     {
@@ -294,19 +215,13 @@ public class InverseShiftedPhasePullbackSampler extends
     }
     StringBuilder report = new StringBuilder();
     report.append("\n─── per‑thread benchmark ───\n");
-    report.append(String.format("%-44s  %10s  %12s  %14s  %14s%n",
-                                "thread", "count", "sumEval(s)", "rate(eval/s)", "mean(ms/eval)"));
+    report.append(String.format("%-44s  %10s  %12s  %14s  %14s%n", "thread", "count", "sumEval(s)", "rate(eval/s)", "mean(ms/eval)"));
     for (Map.Entry<String, ThreadStats> e : threadStats.entrySet())
     {
       ThreadStats s = e.getValue();
       totalCount     += s.count;
       totalEvalNanos += s.totalNanos;
-      report.append(String.format("%-44s  %10d  %12.3f  %14.2f  %14.2f%n",
-                                  e.getKey(),
-                                  s.count,
-                                  s.totalNanos / 1e9,
-                                  s.meanRate(),
-                                  s.meanMillisPerEval()));
+      report.append(String.format("%-44s  %10d  %12.3f  %14.2f  %14.2f%n", e.getKey(), s.count, s.totalNanos / 1e9, s.meanRate(), s.meanMillisPerEval()));
     }
     double globalRate = wallSec == 0 ? 0.0 : totalCount / wallSec;
     report.append(String.format("─── total: count=%d  wall=%.3fs  sumEval=%.3fs  global‑rate=%.2f eval/s  threads=%d ───",
