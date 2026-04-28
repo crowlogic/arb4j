@@ -1,3 +1,51 @@
+arb4j (0.99.9.9.10) UNRELEASED; urgency=low
+
+  [ Stephen Crowley ]
+  * Universal lazy ∂/∂v on every Expression-compiled Function. Function
+    grows derivative(VariableReference) and derivative(String) defaults;
+    Expression.derivative(VariableReference) does pure-Java AST surgery
+    via deepCloneExpression + rootNode.differentiate(probe).simplify
+    with no source re-parsing; every generated class now emits
+    getExpression() returning a back-pointer field populated at
+    instantiate() time so the default reaches the source AST. Per-name
+    partialDerivativeCache memoizes compiled partials.
+  * Function gains a Jacobian class and jacobian(String[]/
+    VariableReference[]/VariableNode[]) defaults. Jacobian carries a
+    Unicode toString() while typeset() stays LaTeX.
+  * Extract MuntzPadeFunction; RiccatiMittagLefflerFunction extends it,
+    implements ComplexFunction, and derives evaluation order from bits.
+    Fluent shape on padePolynomials, muntzCoefficientsAtV, solveHankel.
+    Cache lifecycle split: clearCache drops references, disposeCache
+    closes native; invalidateCache override drops the Padé cache and
+    α-vector.
+  * partialDerivativeWithRespectToV rewritten to use p.derivative("v"),
+    q.derivative("v"), r.derivative("v") directly, registered under
+    p_dv, q_dv, r_dv on the shared Context so the bytecode field
+    descriptors L<name>; resolve to the actual loaded classes on the
+    shared ExpressionClassLoader. JacobianAtVTest green at all three
+    closed-form pins (w₁=1/Γ(1.6), w₂=1.5/Γ(2.2), w₃=1.25/Γ(2.8)); full
+    suite 780/780 in ~8s.
+  * Confine fat-jar shading to the -Pdebian profile so the development
+    build is unaffected.
+  * Bundle JavaFX inside the shaded fat jar; strip --add-opens javafx.*
+    flags from installed wrappers; add arb.applications.Launcher to
+    bypass the OpenJFX classpath-launch guard.
+  * Rewrite ch.qos.logback class names inside the fat jar's logback*.xml
+    after shade so logging configuration tracks the relocated packages.
+  * Headless-JavaFX support: bin/xvfbrun, bin/snapshot, ScreenshotDriver.
+  * arbshell wrapper: forward classpath to jshell driver and remote
+    agent; strip jshell -R-prefixed JPMS flags.
+  * Javadoc: skip by default (opt in with -Djavadoc.skip=false), make
+    failures non-fatal, switch to <subpackages>, exclude arb.solvers.
+  * Gaussian-process sampler: runtime sample-length control bar; default
+    range 0..2000; restore StationaryGaussianProcessSampler to commit
+    6594908; restore per-row progress meter to System.out; drop FFT
+    cross-check overlays from sampler chart build.
+  * Drop the Known Test Failures section from README.
+  * Strip apostrophes from comments inside install-bin.sh awk block.
+
+ -- Stephen Crowley <stephencrowley214@gmail.com>  Tue, 28 Apr 2026 10:28:00 -0500
+
 arb4j (0.99.9.9.9) UNRELEASED; urgency=low
 
   [ Stephen Crowley ]
