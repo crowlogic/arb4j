@@ -12,7 +12,6 @@ DOCDEST := $(CURDIR)/debian/$(DOCPKG)
 JAR_DIR  := $(DESTDIR)/usr/share/java
 JNI_DIR  := $(DESTDIR)/usr/lib/jni
 HOME_DIR := $(DESTDIR)/usr/share/$(PKG)
-LIB_DIR  := $(HOME_DIR)/lib
 BIN_DIR  := $(DESTDIR)/usr/bin
 DOC_DIR  := $(DOCDEST)/usr/share/doc/$(PKG)/api
 
@@ -29,8 +28,10 @@ override_dh_auto_build:
 override_dh_auto_test:
 
 override_dh_auto_install:
-	install -d $(JAR_DIR) $(JNI_DIR) $(HOME_DIR) $(LIB_DIR) $(BIN_DIR) $(DOC_DIR)
+	install -d $(JAR_DIR) $(JNI_DIR) $(HOME_DIR) $(BIN_DIR) $(DOC_DIR)
 	install -m 0644 libarblib.so                  $(JNI_DIR)/libarblib.so
+	# Shaded fat jar: every transitive dependency relocated under
+	# org.arblib.shaded.* (JavaFX excluded -- supplied by runtime JDK).
 	install -m 0644 build/$(PKG)-$(VER).jar       $(JAR_DIR)/$(PKG)-$(VER).jar
 	ln -sf $(PKG)-$(VER).jar                      $(JAR_DIR)/$(PKG).jar
 	cp -a build/apidocs/.                         $(DOC_DIR)/
@@ -38,17 +39,6 @@ override_dh_auto_install:
 	install -m 0644 pom.xml                       $(HOME_DIR)/pom.xml
 	install -m 0644 shell.start                   $(HOME_DIR)/shell.start
 	echo $(VER)                                 > $(HOME_DIR)/version
-	# Bundle every transitive dependency JAR named in the dev class.path
-	# under /usr/share/arb4j/lib so the installed class.path resolves
-	# without depending on a developer's ~/.m2 cache.
-	for j in `tr ':' '\n' < class.path | grep '\.jar$$'`; do \
-	  install -m 0644 "$$j" $(LIB_DIR)/; \
-	done
-	# Generate the runtime class.path: every bundled lib + the
-	# system JAR, joined with ':'.
-	( cd $(LIB_DIR) && ls -1 *.jar | sed 's|^|/usr/share/$(PKG)/lib/|' ) \
-	  | tr '\n' ':' | sed 's|:$$||' > $(HOME_DIR)/class.path
-	printf ':/usr/share/java/$(PKG).jar' >> $(HOME_DIR)/class.path
 	# Stage every wrapper from bin/ into /usr/bin with paths rewritten
 	# to the FHS layout. See debian/install-bin.sh.
 	debian/install-bin.sh bin $(BIN_DIR)

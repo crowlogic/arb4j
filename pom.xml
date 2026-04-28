@@ -220,6 +220,112 @@
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.6.2</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.ow2.asm</groupId>
+						<artifactId>asm</artifactId>
+						<version>${asm.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.ow2.asm</groupId>
+						<artifactId>asm-commons</artifactId>
+						<version>${asm.version}</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<id>fat-jar</id>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<!-- Replace the thin jar with the fat jar -->
+							<shadedArtifactAttached>false</shadedArtifactAttached>
+							<createDependencyReducedPom>false</createDependencyReducedPom>
+							<minimizeJar>false</minimizeJar>
+							<!--
+							  Pull every transitive dep into the jar, including JavaFX
+							  (linux-classifier native libs at META-INF/native/...).
+							  Strip module-info.class so the resulting jar loads as an
+							  automatic module without colliding declarations from
+							  shaded modules.
+							-->
+							<artifactSet>
+								<excludes>
+									<exclude>org.openjfx:*</exclude>
+								</excludes>
+							</artifactSet>
+							<filters>
+								<filter>
+									<artifact>*:*</artifact>
+									<excludes>
+										<exclude>module-info.class</exclude>
+										<exclude>META-INF/versions/**/module-info.class</exclude>
+										<exclude>META-INF/MANIFEST.MF</exclude>
+										<exclude>META-INF/*.SF</exclude>
+										<exclude>META-INF/*.DSA</exclude>
+										<exclude>META-INF/*.RSA</exclude>
+										<exclude>META-INF/maven/**</exclude>
+									</excludes>
+								</filter>
+							</filters>
+							<transformers>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<mainClass>arb.expressions.Expression</mainClass>
+									<manifestEntries>
+										<Multi-Release>true</Multi-Release>
+									</manifestEntries>
+								</transformer>
+							</transformers>
+							<!--
+							  Relocate every non-JavaFX third-party prefix into
+							  org.arblib.shaded.* so a downstream classpath can pull a
+							  conflicting version without colliding. arb.* is the project's
+							  own code and stays put. JavaFX artifacts are excluded from
+							  the artifact set above and supplied by the runtime JDK on
+							  the module path.
+							-->
+							<relocations>
+								<relocation><pattern>org.objectweb.asm</pattern><shadedPattern>org.arblib.shaded.asm</shadedPattern></relocation>
+								<relocation><pattern>org.slf4j</pattern><shadedPattern>org.arblib.shaded.slf4j</shadedPattern></relocation>
+								<relocation><pattern>ch.qos.logback</pattern><shadedPattern>org.arblib.shaded.logback</shadedPattern></relocation>
+								<relocation><pattern>org.yaml.snakeyaml</pattern><shadedPattern>org.arblib.shaded.snakeyaml</shadedPattern></relocation>
+								<relocation><pattern>io.fair_acc</pattern><shadedPattern>org.arblib.shaded.fair_acc</shadedPattern></relocation>
+								<relocation><pattern>org.scilab.forge.jlatexmath</pattern><shadedPattern>org.arblib.shaded.jlatexmath</shadedPattern></relocation>
+								<relocation><pattern>org.jetbrains.java.decompiler</pattern><shadedPattern>org.arblib.shaded.vineflower</shadedPattern></relocation>
+								<relocation><pattern>guru.nidi.graphviz</pattern><shadedPattern>org.arblib.shaded.graphvizjava</shadedPattern></relocation>
+								<relocation><pattern>com.eclipsesource.v8</pattern><shadedPattern>org.arblib.shaded.j2v8</shadedPattern></relocation>
+								<relocation><pattern>com.kitfox.svg</pattern><shadedPattern>org.arblib.shaded.svgsalamander</shadedPattern></relocation>
+								<relocation><pattern>org.kordamp.ikonli</pattern><shadedPattern>org.arblib.shaded.ikonli</shadedPattern></relocation>
+								<relocation><pattern>org.controlsfx</pattern><shadedPattern>org.arblib.shaded.controlsfx</shadedPattern></relocation>
+								<relocation><pattern>impl.org.controlsfx</pattern><shadedPattern>org.arblib.shaded.controlsfx_impl</shadedPattern></relocation>
+								<relocation><pattern>org.apache.commons</pattern><shadedPattern>org.arblib.shaded.commons</shadedPattern></relocation>
+								<relocation><pattern>org.HdrHistogram</pattern><shadedPattern>org.arblib.shaded.hdrhistogram</shadedPattern></relocation>
+								<relocation><pattern>org.jtransforms</pattern><shadedPattern>org.arblib.shaded.jtransforms</shadedPattern></relocation>
+								<relocation><pattern>pl.edu.icm.jlargearrays</pattern><shadedPattern>org.arblib.shaded.jlargearrays</shadedPattern></relocation>
+								<relocation><pattern>com.intellij.lang.annotations</pattern><shadedPattern>org.arblib.shaded.intellij.annotations</shadedPattern></relocation>
+								<relocation><pattern>org.intellij.lang.annotations</pattern><shadedPattern>org.arblib.shaded.intellij.lang.annotations</shadedPattern></relocation>
+								<relocation><pattern>org.jetbrains.annotations</pattern><shadedPattern>org.arblib.shaded.jetbrains.annotations</shadedPattern></relocation>
+								<relocation><pattern>net.arnx.nashorn.lib</pattern><shadedPattern>org.arblib.shaded.nashornpromise</shadedPattern></relocation>
+								<relocation><pattern>ar.com.hjg.pngj</pattern><shadedPattern>org.arblib.shaded.pngj</shadedPattern></relocation>
+								<relocation><pattern>org.junit</pattern><shadedPattern>org.arblib.shaded.junit</shadedPattern></relocation>
+								<relocation><pattern>junit</pattern><shadedPattern>org.arblib.shaded.junit_legacy</shadedPattern></relocation>
+								<relocation><pattern>org.hamcrest</pattern><shadedPattern>org.arblib.shaded.hamcrest</shadedPattern></relocation>
+								<relocation><pattern>javax.annotation</pattern><shadedPattern>org.arblib.shaded.jsr305</shadedPattern></relocation>
+							</relocations>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<version>3.6.1</version>
 				<executions>
