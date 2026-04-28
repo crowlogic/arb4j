@@ -525,8 +525,7 @@ public abstract class StationaryGaussianProcessSampler extends
 
     Real   realPath    = samplePath.re();
 
-    try ( Real    yScratch      = Real.newVector(pathLen, "y");
-          Real    gamma         = Real.newVector(maxLag, "γ");
+    try ( Real    gamma         = Real.newVector(maxLag, "γ");
           Real    squares       = Real.newVector(pathLen, "Z²");
           Real    rho           = Real.newVector(maxLag, "ρ");
           Complex complexPath   = Complex.newVector(pathLen);
@@ -537,7 +536,7 @@ public abstract class StationaryGaussianProcessSampler extends
           Real    biasFactor    = new Real();
           Real    rhoFromFft    = Real.newVector(maxLag, "ρ̂"))
     {
-      realPath.autocorrelation(maxLag, workingBits, yScratch, gamma, squares, rho);
+      realPath.autocorrelation(maxLag, workingBits, gamma, squares, rho);
 
       for (int i = 0; i < pathLen; i++)
       {
@@ -694,7 +693,6 @@ public abstract class StationaryGaussianProcessSampler extends
     try ( Complex complexPath        = Complex.newVector(pathLen);
           Complex spectrum           = Complex.newVector(pathLen);
           Real    empiricalPsd       = Real.newVector(pathLen, "P");
-          Real    yScratch           = Real.newVector(pathLen, "y");
           Real    gamma              = Real.newVector(maxLag, "γ");
           Real    squares            = Real.newVector(pathLen, "Z²");
           Real    autocovUnbiased    = Real.newVector(maxLag, "C");
@@ -725,7 +723,7 @@ public abstract class StationaryGaussianProcessSampler extends
         }
       }
 
-      realPath.autocovariance(maxLag, workingBits, yScratch, gamma, squares, autocovUnbiased);
+      realPath.autocovariance(maxLag, workingBits, gamma, squares, autocovUnbiased);
       for (int i = 0; i < pathLen; i++)
       {
         autocovExtended.get(i).zero();

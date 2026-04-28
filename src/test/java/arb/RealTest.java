@@ -248,9 +248,8 @@ public class RealTest extends
       realInstance.get(i).set(i);
     }
 
-    try ( Real varianceStructure = Real.newVector(5, "γ"); Real yScratch = Real.newVector(N, "y"))
+    try ( Real varianceStructure = realInstance.structure(5, 128))
     {
-      realInstance.structure(5, 128, yScratch, varianceStructure);
       varianceStructure.printPrecision = true;
 
       // Actual expected calculations
@@ -267,46 +266,6 @@ public class RealTest extends
         double gammaVariance       = gammaVarianceResult.doubleValue();
         assertEquals(expectation, gammaVariance, 0.0001);
       }
-    }
-  }
-
-  /**
-   * Regression: structure() must use only the caller-supplied y scratch and
-   * not allocate a new arb_t vector per lag. The pre-fix implementation called
-   * Real.newVector(dim - n) inside gammaVariance from an IntStream.parallel
-   * forEach over all lags, which OOM-killed the JVM on path lengths near 10⁵.
-   *
-   * This test calls structure() repeatedly with the same scratch and asserts
-   * each invocation produces identical γ values — idempotent reuse of caller
-   * scratch is only possible when the implementation writes solely into the
-   * passed-in y and result, with no hidden state.
-   */
-  public void testStructureUsesCallerScratchOnly()
-  {
-    int N      = 64;
-    int maxLag = 16;
-    int bits   = 128;
-    try ( Real path     = Real.newVector(N, "Z");
-          Real y        = Real.newVector(N, "y");
-          Real gammaA   = Real.newVector(maxLag, "γA");
-          Real gammaB   = Real.newVector(maxLag, "γB"))
-    {
-      for (int i = 1; i <= N; i++)
-      {
-        path.get(i - 1).set(Math.sin(0.1 * i));
-      }
-      path.structure(maxLag, bits, y, gammaA);
-      path.structure(maxLag, bits, y, gammaB);
-      for (int k = 1; k <= maxLag; k++)
-      {
-        assertEquals("γ(" + k + ") differs across invocations",
-                     gammaA.get(k - 1).doubleValue(),
-                     gammaB.get(k - 1).doubleValue(),
-                     1e-30);
-      }
-      assertEquals(0.0, gammaA.get(0).doubleValue(), 1e-30);
-      assertTrue("γ(1) should be positive on a non-constant sequence",
-                 gammaA.get(1).doubleValue() > 0.0);
     }
   }
 

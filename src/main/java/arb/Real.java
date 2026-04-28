@@ -1121,54 +1121,54 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
     return result;
   }  
     
-  /**
-   * Empirical γ-variance ⟨|Z(i+n) − Z(i)|²⟩ at lag n, with caller-supplied
-   * scratch. Performs zero allocation.
-   *
-   * @param n      lag (0 returns 0)
-   * @param prec   working precision
-   * @param y      scratch vector with y.dim ≥ this.dim; only y[0..this.dim−n)
-   *               is touched. On return, that slice holds (Z(i+n) − Z(i))²
-   * @param result length-1 vector or scalar receiving γ(n)
-   * @return result
-   */
-  public Real gammaVariance(int n, int prec, Real y, Real result)
+  public Real gammaVariance(int n, int prec, Real result)
   {
     if (n == 0)
     {
       return result.zero();
     }
 
-    try ( Real unshiftedSlice = slice(0, dim - n); Real shiftedSlice = shift(n);
-          Real yHead = y.slice(0, dim - n))
+    try ( Real unshiftedSlice = slice(0, dim-n); Real shiftedSlice = shift(n);
+          Real y = unshiftedSlice.sub(shiftedSlice, prec, Real.newVector(dim - n)))
     {
-      unshiftedSlice.sub(shiftedSlice, prec, yHead).pow(2, prec).sum(prec, result).div(dim - n, prec, result);
-      return result;
+      Real pow = y.pow(2, prec);
+      Real sum = pow.sum(prec, result);
+      Real div = sum.div(dim - n, prec, result);
+      return div;
     }
   }
-
+  
  /**
    * Calculate the empirical (variance) structure function, also known as a variogram:
    *
    * <|Z(i+n)-Z(i)|^2>
    *
-   * Zero allocation. Caller owns y and result.
-   *
-   * @param n      number of lags 0..n−1
-   * @param bits   working precision
-   * @param y      scratch vector with y.dim ≥ this.dim
-   * @param result length-n vector receiving γ(0..n−1)
-   * @return result
+   * @param n number of shifts to calculate
+   
+   * @param bits
+   * @param Result
+   * @return a vector of n {@link Real} γ-variances calculated via
+   *         this{@link #γVariance(int, int, Real)} for each finite shift from 0
+   *         to n-1
    */
-  public Real structure(int n, int bits, Real y, Real result)
+  public Real structure(int n, int bits, Real result)
   {
-    for (int i = 0; i < n; i++)
-    {
-      gammaVariance(i, bits, y, result.get(i));
-    }
+    IntStream.range(0, n).parallel().forEach(i -> gammaVariance(i, bits, result.get(i)));
     return result;
   }
-
+  
+  /**
+   * Shortcut for this{@link #structure(int, int)} which allocates a new
+   * {@link Real} vector with {@link Real#newVector(int)}
+   * 
+   * @param n
+   * @param bits
+   * @return this{@link #structure(int, int)}
+   */
+  public Real structure(int n, int bits)
+  {
+    return structure(n, bits, Real.newVector(n, "γ"));
+  }
 
   /**
    * Empirical autocovariance C(k) at lags 0..n−1, computed from the variogram
@@ -1182,15 +1182,14 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
    *
    * @param n        number of lags 0..n−1
    * @param bits     working precision
-   * @param y        length-this.dim scratch vector for the variogram diff buffer
    * @param gamma    length-n scratch vector that receives γ(k) on exit
    * @param squares  length-this.dim scratch vector that receives Zᵢ² on exit
    * @param result   length-n vector receiving C(k) on exit
    * @return result
    */
-  public Real autocovariance(int n, int bits, Real y, Real gamma, Real squares, Real result)
+  public Real autocovariance(int n, int bits, Real gamma, Real squares, Real result)
   {
-    structure(n, bits, y, gamma);
+    structure(n, bits, gamma);
     pow(2, bits, squares);
     try ( Real sumOfSquares = new Real(); Real total = new Real(); Real mean = new Real();
           Real meanSquared = new Real(); Real cZero = new Real(); Real halfGamma = new Real())
@@ -1214,15 +1213,14 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
    *
    * @param n        number of lags 0..n−1
    * @param bits     working precision
-   * @param y        length-this.dim scratch vector for the variogram diff buffer
    * @param gamma    length-n scratch vector that receives γ(k) on exit
    * @param squares  length-this.dim scratch vector that receives Zᵢ² on exit
    * @param result   length-n vector receiving ρ(k) on exit
    * @return result
    */
-  public Real autocorrelation(int n, int bits, Real y, Real gamma, Real squares, Real result)
+  public Real autocorrelation(int n, int bits, Real gamma, Real squares, Real result)
   {
-    autocovariance(n, bits, y, gamma, squares, result);
+    autocovariance(n, bits, gamma, squares, result);
     try ( Real cZero = new Real())
     {
       cZero.set(result.get(0));
