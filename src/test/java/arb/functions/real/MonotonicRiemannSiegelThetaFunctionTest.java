@@ -1,6 +1,7 @@
 package arb.functions.real;
 
 import arb.Real;
+import arb.expressions.Context;
 import junit.framework.TestCase;
 
 /**
@@ -169,6 +170,65 @@ public class MonotonicRiemannSiegelThetaFunctionTest extends
                      0.0,
                      diff,
                      1e-12);
+      }
+    }
+  }
+
+  /**
+   * Verifies the spectral pullback
+   *
+   *   F(t) = Z(Φ⁻¹(t)) / √(Φ′(Φ⁻¹(t)))
+   *
+   * compiles and evaluates correctly in the DSL with Φ⁻¹(·) routed through
+   * {@link MonotonicRiemannSiegelThetaFunction#invert}. The forward map Φ and
+   * its derivative Φ′ are registered as separate functions in the
+   * {@link Context}; the textual repetition of Φ⁻¹(t) is collapsed to a
+   * single node by common-subexpression elimination in
+   * {@link arb.expressions.Expression#optimize}.
+   *
+   * The check is intrinsic: at each sample t, recompute τ = Φ⁻¹(t) and Φ′(τ)
+   * directly in Java, then assert F(t) · √(Φ′(τ)) − Z(τ) = 0, where Z(τ) is
+   * obtained from a separate single-call DSL expression {@code z:s->Z(s)}.
+   * No reference to a specific zeta zero is required.
+   */
+  public static void testSpectralPullbackComposition()
+  {
+    int  prec    = 128;
+    var  Φ       = new MonotonicRiemannSiegelThetaFunction();
+    var  dΦ      = Φ.derivative();
+    var  Φinv    = Φ.invert(null, 0, prec);
+
+    var  context = new Context();
+    context.registerFunction("Φ",  Φ);
+    context.registerFunction("dΦ", dΦ);
+
+    var pullback = RealFunction.express("F:t->Z(Φ⁻¹(t))/sqrt(dΦ(Φ⁻¹(t)))", context);
+    var zEval    = RealFunction.express("z:s->Z(s)");
+
+    double[] samples = { 5.0, 20.0, 50.0, 100.0, 500.0 };
+
+    try ( Real t       = Real.valueOf(0.0);
+          Real τ       = Real.valueOf(0.0);
+          Real Fval    = Real.valueOf(0.0);
+          Real Zval    = Real.valueOf(0.0);
+          Real dΦval   = Real.valueOf(0.0);
+          Real sqrtdΦ  = Real.valueOf(0.0);
+          Real lhs     = Real.valueOf(0.0))
+    {
+      for (double s : samples)
+      {
+        t.set(s);
+        pullback.evaluate(t, 1, prec, Fval);
+        Φinv.evaluate(t, 1, prec, τ);
+        zEval.evaluate(τ, 1, prec, Zval);
+        dΦ.evaluate(τ, 1, prec, dΦval);
+        dΦval.sqrt(prec, sqrtdΦ);
+        Fval.mul(sqrtdΦ, prec, lhs);
+        double err = lhs.doubleValue() - Zval.doubleValue();
+        assertEquals(String.format("F(%g)·√Φ′(Φ⁻¹(%g)) should equal Z(Φ⁻¹(%g))", s, s, s),
+                     0.0,
+                     err,
+                     1e-9);
       }
     }
   }
