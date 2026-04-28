@@ -1864,6 +1864,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
       generateGetNameMethod(classVisitor);
       generateGetContextMethod(classVisitor);
+      generateGetExpressionMethod(classVisitor);
 
       generateToStringMethod(classVisitor);
       generateTypesetMethod(classVisitor);
@@ -2599,6 +2600,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     Compiler.annotateWithOverride(methodVisitor);
 
     Compiler.getFieldFromThis(methodVisitor, className, "context", Context.class);
+
+    Compiler.generateReturnFromMethod(methodVisitor);
+    return classVisitor;
+  }
+
+  protected ClassVisitor generateGetExpressionMethod(ClassVisitor classVisitor)
+  {
+    var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, "getExpression", Compiler.getMethodDescriptor(Expression.class), null, null);
+
+    methodVisitor.visitCode();
+    Compiler.annotateWithOverride(methodVisitor);
+
+    Compiler.getFieldFromThis(methodVisitor, className, "expression", Expression.class);
 
     Compiler.generateReturnFromMethod(methodVisitor);
     return classVisitor;

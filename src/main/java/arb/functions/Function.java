@@ -134,12 +134,7 @@ public interface Function<D, CO> extends
    */
   public default Function<D, CO> derivative(String variableName)
   {
-    Context ctx = getContext();
-    assert ctx != null : getClass() + " has no Context; override derivative(String) directly";
-    Named  named = ctx.variables.get(variableName);
-    assert named != null : variableName + " not found in " + ctx;
-    var ref = new VariableReference<D, CO, Function<D, CO>>(variableName);
-    return derivative(ref);
+    return derivative(new VariableReference<D, CO, Function<D, CO>>(variableName));
   }
 
   /**

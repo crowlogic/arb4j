@@ -13,6 +13,7 @@ import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
+import arb.expressions.Expression;
 import arb.functions.Function;
 import arb.functions.Jacobian;
 import arb.functions.integer.ComplexSequence;
@@ -379,79 +380,59 @@ public class RiccatiMittagLefflerFunction extends
 
   /**
    * Build w(t) = ∂y/∂v as a {@link MuntzPadeFunction} with the linear-Volterra
-   * Müntz coefficients w_k. The w-sequence is compiled once as an expression
-   * in a sub-context that exposes c₀, c₁, c₂ (= p, q, r symbolically), their
-   * v-derivatives c₀', c₁', c₂', and the parent's a-sequence.
+   * Müntz coefficients w_k.
+   *
+   * <p>p, q, r already live in {@link #context} as compiled
+   * {@link ComplexFunction}s. Their v-partials are obtained via the universal
+   * lazy on-demand {@link Function#derivative(String)} entry point — pure-Java
+   * AST surgery on the source Expressions, no sub-context, no symbol
+   * renaming. The differentiated functions are then plugged into the same
+   * {@link #context} under the names ṗ, q̇, ṙ so the f, g, w expressions can
+   * resolve them by name like any other Context-scoped function.
    */
   private ComplexFunction partialDerivativeWithRespectToV()
   {
-    // Two sub-contexts:
-    //   coeffCtx: compiles c0, c1, c2 from their source strings with v as the
-    //             scalar input variable. Has μ inherited (so a constant like
-    //             "μ" inside p, q, r resolves), but does NOT carry v as a
-    //             context variable, otherwise the compiler refuses to declare
-    //             v as the function input.
-    //   jacCtx:   inherits the parent's variables (μ, v) so f, g, w resolve v
-    //             as the live Context variable. Registers c0, c1, c2 (already
-    //             compiled) and the integer-domain f, g, w sequences.
-    Context coeffCtx = new Context();
-    if (context.variables != null)
-    {
-      context.variables.forEach((nm, var) -> {
-        if (!"v".equals(nm)) coeffCtx.variables.put(nm, var);
-      });
-    }
+    // p_dv, q_dv, r_dv : ∂p/∂v, ∂q/∂v, ∂r/∂v — fresh ComplexFunctions sharing
+    // this.context. The cloned Expression compiles under className equal to
+    // <orig>_d<var>, so the registered function name must match that exact
+    // string for the JVM to resolve the field descriptor `L<name>;` to the
+    // actual loaded class on the shared ExpressionClassLoader.
+    ComplexFunction p_dv = (ComplexFunction) p.derivative("v");
+    ComplexFunction q_dv = (ComplexFunction) q.derivative("v");
+    ComplexFunction r_dv = (ComplexFunction) r.derivative("v");
 
-    Context jacCtx = new Context();
-    if (context.variables != null)
-    {
-      context.variables.forEach((nm, var) -> jacCtx.variables.put(nm, var));
-    }
+    // Register them by name in the same Context. Both `instance` and
+    // `expression` are set so generateFunctionInitializer finds the source
+    // Expression for v/μ-propagation field-injection.
+    var pMap = context.registerFunctionMapping("p_dv", Complex.class, Complex.class, ComplexFunction.class);
+    pMap.instance   = p_dv;
+    pMap.expression = (Expression) p_dv.getExpression();
+    var qMap = context.registerFunctionMapping("q_dv", Complex.class, Complex.class, ComplexFunction.class);
+    qMap.instance   = q_dv;
+    qMap.expression = (Expression) q_dv.getExpression();
+    var rMap = context.registerFunctionMapping("r_dv", Complex.class, Complex.class, ComplexFunction.class);
+    rMap.instance   = r_dv;
+    rMap.expression = (Expression) r_dv.getExpression();
 
-    // Compile c0, c1, c2 as scalar functions of v in coeffCtx. The
-    // "name:v➔..." form registers them with name and input variable so the
-    // expression compiler can later take their formal v-derivative via the
-    // combining-dot-above postfix (e.g. c0̇(v)).
-    ComplexFunction.express("c0:v➔" + constantTerm,  coeffCtx);
-    ComplexFunction.express("c1:v➔" + linearTerm,    coeffCtx);
-    ComplexFunction.express("c2:v➔" + quadraticTerm, coeffCtx);
+    // Forward-declare w so its self-reference resolves; a is already in context.
+    context.registerFunctionMapping("w", Integer.class, Complex.class, ComplexSequence.class);
 
-    // Pull c0, c1, c2's mappings into jacCtx by reference. The f, g, w
-    // compilations below will resolve them through the same FunctionMapping
-    // identities that coeffCtx holds, so the auto-merge during compilation
-    // sees them as already-equal and not as a conflict.
-    jacCtx.functions.put("c0", coeffCtx.functions.get("c0"));
-    jacCtx.functions.put("c1", coeffCtx.functions.get("c1"));
-    jacCtx.functions.put("c2", coeffCtx.functions.get("c2"));
+    // f_k:  k=0 → ṗ(v);    k≥1 → q̇(v)·a(k) + ṙ(v)·Σ_{j=1}^{k-1} a(j)·a(k-j)
+    String fExpr = "f:k➔when(k=0, p_dv(v),"
+                 + " else, q_dv(v)*a(k) + r_dv(v)*sum(j➔a(j)*a(k-j){j=1..k-1}))";
+    Sequence.parseCompileAndRegister("f", Complex.class, fExpr, ComplexSequence.class, context);
 
-    // Forward-declare a (the parent Müntz coefficients) and w (the Volterra
-    // ones) so each can refer to the other before either is compiled.
-    jacCtx.registerFunctionMapping("a", Integer.class, Complex.class, ComplexSequence.class);
-    jacCtx.registerFunctionMapping("w", Integer.class, Complex.class, ComplexSequence.class);
+    // g_k:  k=0 → q(v);     k≥1 → 2·r(v)·a(k)
+    String gExpr = "g:k➔when(k=0, q(v), else, 2*r(v)*a(k))";
+    Sequence.parseCompileAndRegister("g", Complex.class, gExpr, ComplexSequence.class, context);
 
-    // Plug the parent's already-compiled a-sequence in by name so a(k) inside
-    // f and g resolves to the same object the parent uses.
-    var aMapping = jacCtx.<Integer, Complex, ComplexSequence>getFunctionMapping("a");
-    aMapping.instance = a;
-
-    // f_k:  k=0 → c0̇(v);    k≥1 → c1̇(v)·a(k) + c2̇(v)·Σ_{j=1}^{k-1} a(j)·a(k-j)
-    String fExpr = "f:k➔when(k=0, c0̇(v),"
-                 + " else, c1̇(v)*a(k) + c2̇(v)*sum(j➔a(j)*a(k-j){j=1..k-1}))";
-    Sequence.parseCompileAndRegister("f", Complex.class, fExpr, ComplexSequence.class, jacCtx);
-
-    // g_k:  k=0 → c1(v);     k≥1 → 2·c2(v)·a(k)
-    String gExpr = "g:k➔when(k=0, c1(v), else, 2*c2(v)*a(k))";
-    Sequence.parseCompileAndRegister("g", Complex.class, gExpr, ComplexSequence.class, jacCtx);
-
-    // w_n linear Volterra recurrence:
-    //   w(1) = c0̇(v)/Γ(μ+1)
-    //   w(n+1) = Γ(nμ+1)/Γ((n+1)μ+1) · (f(n) + Σ_{j=0..n-1} g(n-1-j)·w(j+1))
-    // Rewritten with k as the running index (k = n+1 ≥ 2):
-    //   w(k) = Γ((k-1)μ+1)/Γ(kμ+1) · (f(k-1) + Σ_{j=0..k-2} g(k-2-j)·w(j+1))
-    String wExpr = "w:k➔when(k=1, c0̇(v)/Γ(μ+1),"
+    // w_k linear Volterra recurrence (qrh_muntz §7.8):
+    //   w(1) = ṗ(v)/Γ(μ+1)
+    //   w(k) = Γ((k-1)μ+1)/Γ(kμ+1) · (f(k-1) + Σ_{j=0..k-2} g(k-2-j)·w(j+1))   [k≥2]
+    String wExpr = "w:k➔when(k=1, p_dv(v)/Γ(μ+1),"
                  + " else, (Γ((k-1)*μ+1)/Γ(k*μ+1))"
                  + "       *(f(k-1) + sum(j➔g(k-2-j)*w(j+1){j=0..k-2})))";
-    ComplexSequence w = ComplexSequence.express(wExpr, jacCtx);
+    ComplexSequence w = ComplexSequence.express(wExpr, context);
 
     return new MuntzPadeFunction("∂y/∂v", α, w);
   }
