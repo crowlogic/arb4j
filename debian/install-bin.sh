@@ -96,6 +96,14 @@ EOF
       # OPENS shell variable that aggregates them.
       gsub(/--add-opens javafx\.[A-Za-z]+\/[A-Za-z0-9._]+=[A-Za-z0-9_]+/, "")
       gsub(/\$OPENS/, "")
+      # JavaFX rides on the classpath, not as a JPMS module, so the
+      # OpenJFX LauncherImpl "JavaFX runtime components are missing"
+      # guard fires whenever the JVM main class extends Application.
+      # Route every invocation through arb.applications.Launcher --
+      # which does not extend Application -- so the guard never sees
+      # an Application subclass on the command line. Launcher takes
+      # the original FQCN as its first argument and forwards.
+      gsub(/-classpath \$CLASSPATH \$@/, "-classpath $CLASSPATH arb.applications.Launcher $@")
       print
     }
   ' "$src" > "$DST/$name"
