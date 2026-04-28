@@ -54,6 +54,11 @@ import arb.functions.real.RealFunction;
 public class InverseShiftedPhasePullbackSampler extends
                                                 StationaryGaussianProcessSampler
 {
+  public static void main(String[] args)
+  {
+    launch(args);
+  }
+  
   /**
    * Single shared Φ, dΦ, Φ⁻¹. All three are reentrant: every {@code evaluate}
    * call allocates its own try-with-resources scratch and the only closed-over
