@@ -63,8 +63,9 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
   public static final String  INVERSE_MARKER      = "⁻¹";
 
   /**
-   * Default number of terms in the Lagrange series reversion, matching
-   * {@link arb.functions.complex.HardyThetaInversion}.
+   * Default number of terms in the Lagrange series reversion
+   * 
+   * FIXME: THIS SHOULD BE dynamic based on whatever bits of precision 
    */
   public static final int     DEFAULT_SERIES_ORDER = 20;
 

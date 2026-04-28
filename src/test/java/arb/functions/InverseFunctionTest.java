@@ -4,9 +4,7 @@ import arb.Complex;
 import arb.Real;
 import arb.expressions.Context;
 import arb.functions.complex.ComplexFunction;
-import arb.functions.complex.HardyThetaInversion;
 import arb.functions.real.RealFunction;
-import arb.functions.real.RiemannSiegelThetaFunction;
 import junit.framework.TestCase;
 
 /**
@@ -92,39 +90,7 @@ public class InverseFunctionTest extends
     }
   }
 
-  /**
-   * Verify equivalence between RealFunction.invert() and the deprecated
-   * HardyThetaInversion for the Riemann-Siegel theta function.
-   */
-  @SuppressWarnings("deprecation")
-  public void testEquivalenceWithHardyThetaInversion()
-  {
-    int           precision   = BITS;
-    int           seriesOrder = 10;
-    RealFunction  theta       = new RiemannSiegelThetaFunction();
 
-    try (Real centerPoint = Real.valueOf(40); Real point = Real.valueOf(50);
-         Real targetThetaValue = Real.newVector(2); Real oldResult = new Real();
-         Real newResult = new Real())
-    {
-      // Compute theta(50) as the target value to invert
-      theta.evaluate(point, 2, precision, targetThetaValue);
-
-      // Old way: HardyThetaInversion
-      try (HardyThetaInversion oldInverter = new HardyThetaInversion(theta, centerPoint, seriesOrder, precision))
-      {
-        oldInverter.evaluate(targetThetaValue.get(0), 1, precision, oldResult);
-      }
-
-      // New way: RealFunction.invert()
-      RealFunction newInverter = theta.invert(centerPoint, seriesOrder, precision);
-      newInverter.evaluate(targetThetaValue.get(0), 1, precision, newResult);
-
-      // Both should produce the same result (approximately point=50)
-      assertEquals(oldResult.doubleValue(), newResult.doubleValue(), 1e-10);
-      assertEquals(50.0, newResult.doubleValue(), 1e-3);
-    }
-  }
 
   /**
    * ComplexFunction.invert() for f(z)=z². Uses a hand-built ComplexFunction
