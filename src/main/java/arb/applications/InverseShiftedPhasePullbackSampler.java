@@ -233,15 +233,15 @@ public class InverseShiftedPhasePullbackSampler extends
               {
                 double pct = 100.0 * doneCount / N;
                 double elapsedSec = (System.nanoTime() - startNanos) / 1e9;
-                log.debug("[{}] i={}  done={}/{}  {}%  {}s  thread‑rate={} eval/s  thread‑mean={} ms/eval",
-                         tname,
-                         i,
-                         doneCount,
-                         N,
-                         String.format("%5.1f", pct),
-                         String.format("%.2f", elapsedSec),
-                         String.format("%.2f", s.meanRate()),
-                         String.format("%.3f", s.meanMillisPerEval()));
+                System.out.printf("[%s] i=%d  done=%d/%d  %5.1f%%  %.2fs  thread‑rate=%.2f eval/s  thread‑mean=%.3f ms/eval%n",
+                                  tname,
+                                  i,
+                                  doneCount,
+                                  N,
+                                  pct,
+                                  elapsedSec,
+                                  s.meanRate(),
+                                  s.meanMillisPerEval());
               }
             }
           }
