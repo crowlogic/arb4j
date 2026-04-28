@@ -60,19 +60,26 @@ public class InverseShiftedPhasePullbackSampler extends
   }
   
   /**
-   * Single shared Φ, dΦ, Φ⁻¹. All three are reentrant: every {@code evaluate}
-   * call allocates its own try-with-resources scratch and the only closed-over
-   * state ({@code c} on Φ, {@code MAX_ITER} on Φ⁻¹) is read-only.
+   * Canonical Φ used as the prototype for per-worker clones.
    */
   protected final MonotonicRiemannSiegelThetaFunction        Φ                = new MonotonicRiemannSiegelThetaFunction();
-  protected final RealFunction                                dΦ              = Φ.derivative();
-  protected final RealFunction                                Φinv;
 
   /**
-   * Single shared {@link Context} into which Φ and dΦ are registered, and
-   * the single compiled {@link Expression} for F(t) = Z(Φ⁻¹(t))/√dΦ(Φ⁻¹(t)).
-   * The DSL is parsed and the bytecode class generated exactly once; per-
-   * worker fresh evaluation state is obtained via {@link Expression#instantiate()}.
+   * Canonical dΦ obtained from {@link MonotonicRiemannSiegelThetaFunction#derivative()}.
+   * Its {@code cloneFunction()} returns a wrapper around a fresh Φ′s own
+   * {@code diffMonotoneϑ}, so the per-worker clone of dΦ has its own
+   * non-shared evaluation registers.
+   */
+  protected final RealFunction                                dΦ              = Φ.derivative();
+
+  /**
+   * Single shared {@link Context} with Φ and dΦ registered, and the single
+   * compiled {@link Expression} for F(t) = Z(Φ⁻¹(t)) / √(dΦ(Φ⁻¹(t))).
+   * The DSL is parsed and the bytecode class generated exactly once in the
+   * constructor; per-worker fresh evaluation state is obtained via
+   * {@link Expression#instantiate()}, which also clones Φ and dΦ into each
+   * fresh F instance via
+   * {@link Expression#cloneNonReentrantReferencedFunctions}.
    */
   protected final Context                                     context;
   protected final Expression<Real, Real, RealFunction>        compiledF;
@@ -98,7 +105,6 @@ public class InverseShiftedPhasePullbackSampler extends
   public InverseShiftedPhasePullbackSampler(FloatInterval timeSpan, double dt)
   {
     super(timeSpan, dt);
-    Φinv      = Φ.invert(null, 0, bits);
     context   = new Context();
     context.registerFunction("Φ",  Φ);
     context.registerFunction("dΦ", dΦ);
@@ -163,8 +169,11 @@ public class InverseShiftedPhasePullbackSampler extends
    * <p>The DSL expression is compiled exactly once in the constructor.
    * Each worker calls {@link Expression#instantiate()} on the shared
    * compiled {@link #compiledF} to obtain a fresh {@link RealFunction}
-   * with its own evaluation registers; Φ, dΦ, and Φ⁻¹ are shared and
-   * reentrant.
+   * with its own evaluation registers; the
+   * {@link Expression#cloneNonReentrantReferencedFunctions} pass run by
+   * {@code instantiate()} also gives each worker its own private clone of
+   * Φ (and therefore its own Φ′ and Φ⁻¹), so the non-reentrant generated
+   * DSL classes inside Φ are not shared between threads.
    *
    * <p>Per-thread benchmark statistics record only the wall-clock time of
    * the {@code F.evaluate(…)} call; allocation of the input/output

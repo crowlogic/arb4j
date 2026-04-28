@@ -70,14 +70,86 @@ public class MonotonicRiemannSiegelThetaFunction implements
 
   RealFunction               diffMonotoneϑ = RealFunction.express("diffmonotoneϑ:t->diff(ϑ(t),t)+c", context);
 
+  /**
+   * Thin reentrant wrapper around {@code diffMonotoneϑ}. The wrapper itself
+   * holds no mutable state — every {@code evaluate} call delegates to the
+   * enclosing {@link MonotonicRiemannSiegelThetaFunction}'s own
+   * {@code diffMonotoneϑ}. {@link #cloneFunction()} returns a wrapper
+   * bound to a freshly-cloned Φ, so that per-worker clones of dΦ do not
+   * share the non-reentrant evaluation registers of
+   * {@code diffMonotoneϑ} with each other.
+   */
+  public final class DPhi implements
+                          RealFunction
+  {
+    @Override
+    public Real evaluate(Real t, int order, int bits, Real res)
+    {
+      return diffMonotoneϑ.evaluate(t, order, bits, res);
+    }
+
+    @Override
+    public arb.functions.Function<Real, Real> cloneFunction()
+    {
+      MonotonicRiemannSiegelThetaFunction fresh = new MonotonicRiemannSiegelThetaFunction(c.doubleValue());
+      return fresh.new DPhi();
+    }
+
+    @Override
+    public Class<Real> domainType()
+    {
+      return Real.class;
+    }
+
+    @Override
+    public Class<Real> coDomainType()
+    {
+      return Real.class;
+    }
+  }
+
   @Override
   public RealFunction derivative()
   {
-    return diffMonotoneϑ;
+    return new DPhi();
   }
 
   public MonotonicRiemannSiegelThetaFunction()
   {
+  }
+
+  /**
+   * Construct a Φ with a specific slope constant {@code c} for the linear
+   * shift Φ(t) = ϑ(t) + c·t. The default no-arg constructor uses c = 3,
+   * which exceeds the threshold |ϑ′(0)| ≈ 2.6857 required for monotonicity
+   * of Φ on [0, ∞). Pass any value ≥ 2.6857 with a margin of safety.
+   *
+   * @param cValue slope of the linear shift
+   */
+  public MonotonicRiemannSiegelThetaFunction(double cValue)
+  {
+    c.set(cValue);
+  }
+
+  /**
+   * Prototype-pattern clone: returns a brand-new
+   * {@link MonotonicRiemannSiegelThetaFunction} with the same slope constant
+   * {@code c} as {@code this} and freshly-built internal pieces — a fresh
+   * {@link RiemannSiegelThetaFunction} ϑ, a fresh
+   * {@link arb.expressions.Context}, and freshly-compiled DSL
+   * {@code monotoneϑ} and {@code diffmonotoneϑ}. None of those internal
+   * pieces are shared with {@code this}, so the returned Φ may be evaluated
+   * concurrently with {@code this} without contention on the
+   * non-reentrant evaluation registers of the generated DSL classes.
+   *
+   * <p>The DSL parse and bytecode generation cost for {@code monotoneϑ} and
+   * {@code diffmonotoneϑ} is paid once per clone, in the constructor of the
+   * returned object.
+   */
+  @Override
+  public arb.functions.Function<Real, Real> cloneFunction()
+  {
+    return new MonotonicRiemannSiegelThetaFunction(c.doubleValue());
   }
 
   /**

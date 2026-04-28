@@ -84,6 +84,33 @@ public interface Function<D, CO> extends
     throw new UnsupportedOperationException("TODO: " + getClass() + " should implement derivative()");
   }
 
+  /**
+   * Prototype-pattern copy: produce a fresh instance of this function whose
+   * mutable evaluation state (compiled DSL registers, scratch polynomials,
+   * Newton-iteration buffers, etc.) is independent of {@code this}, but whose
+   * mathematically-meaningful parameters (slope constants, branch indices,
+   * orders, etc.) match {@code this} exactly. The intended use is to spread a
+   * single-instance Function across multiple worker threads: each worker
+   * obtains its own {@link #cloneFunction()} and evaluates concurrently
+   * without sharing the per-evaluation registers that make a generated DSL
+   * class non-reentrant.
+   *
+   * <p>The default throws {@link UnsupportedOperationException}. Implement
+   * this on any Function whose {@code evaluate} is not reentrant. Generated
+   * DSL classes inherit the default and must be cloned by their owner: a
+   * Java class that wraps DSL-compiled subfunctions overrides
+   * {@code cloneFunction} to return a fresh wrapper whose subfunctions are
+   * themselves freshly built (typically by re-running its constructor).
+   *
+   * @return a fresh function instance independent of {@code this} for the
+   *         purposes of concurrent evaluation
+   */
+  public default Function<D, CO> cloneFunction()
+  {
+    throw new UnsupportedOperationException(getClass()
+                                             + " must override cloneFunction() to be safely shared across threads");
+  }
+
   public default Function<D, CO> derivative(int n)
   {
     Function<D, CO> result = this;

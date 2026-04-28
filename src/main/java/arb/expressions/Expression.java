@@ -3736,7 +3736,101 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     injectReferences(instance);
 
+    cloneNonReentrantReferencedFunctions(instance);
+
     return instance;
+  }
+
+  /**
+   * After {@link #instantiateAndInjectReferencedFunctions} and
+   * {@link #injectReferences} have wired the parent's referenced-function
+   * fields to the canonical singleton instances cached in their
+   * {@link FunctionMapping}s, replace each such field with a fresh prototype
+   * clone obtained via {@link arb.functions.Function#cloneFunction()} when
+   * the singleton supports it. This is what makes the same compiled parent
+   * expression safe to evaluate from multiple worker threads concurrently
+   * via repeated {@link #instantiate()} calls: each fresh parent ends up
+   * holding its own private chain of referenced functions, so the
+   * non-reentrant evaluation registers of generated DSL classes are not
+   * shared between workers.
+   *
+   * <p>For referenced functions whose {@code cloneFunction()} throws
+   * {@link UnsupportedOperationException} — the inherited default — the
+   * field is left pointing at the canonical singleton, preserving the
+   * pre-existing single-instance semantics. So adding this pass cannot
+   * regress any function that did not already opt into the prototype
+   * pattern.
+   */
+  protected void cloneNonReentrantReferencedFunctions(F parentInstance)
+  {
+    if (context == null)
+    {
+      return;
+    }
+    Class<?> parentClass = parentInstance.getClass();
+    for (var entry : getReferencedFunctions().entrySet())
+    {
+      String referencedFunctionName = entry.getKey();
+
+      if (referencedFunctionName.equals(functionName))
+      {
+        // Self-reference: the parent's own field holding `this` is
+        // populated by generateSelfReference at codegen time. Cloning it
+        // would short-circuit the self-recursion the bytecode relies on.
+        continue;
+      }
+
+      java.lang.reflect.Field parentField;
+      try
+      {
+        parentField = parentClass.getField(referencedFunctionName);
+      }
+      catch (NoSuchFieldException nsfe)
+      {
+        continue;
+      }
+
+      Object current;
+      try
+      {
+        current = parentField.get(parentInstance);
+      }
+      catch (IllegalAccessException iae)
+      {
+        continue;
+      }
+      if (!(current instanceof arb.functions.Function))
+      {
+        continue;
+      }
+      arb.functions.Function<?, ?> singleton = (arb.functions.Function<?, ?>) current;
+      arb.functions.Function<?, ?> fresh;
+      try
+      {
+        fresh = singleton.cloneFunction();
+      }
+      catch (UnsupportedOperationException uoe)
+      {
+        // The referenced function did not opt into the prototype pattern.
+        // Leave the singleton in place — callers that don't share this
+        // parent across threads still work; callers that do are expected
+        // to override cloneFunction on the relevant Function class.
+        continue;
+      }
+      try
+      {
+        parentField.set(parentInstance, fresh);
+      }
+      catch (IllegalAccessException iae)
+      {
+        Utensils.wrapOrThrow("failed to set parent field " + referencedFunctionName + " with cloned function on " + parentClass.getName(), iae);
+      }
+      // Re-run the same context-variable / function injection that
+      // instantiateAndInjectReferencedFunctions performs, so the cloned
+      // referenced function sees the parent's Context.
+      context.injectVariableReferences(fresh);
+      context.injectFunctionReferences(fresh);
+    }
   }
 
   /**
