@@ -40,7 +40,6 @@ public class SphericalBesselFunctionNodeOfTheFirstKindTest extends
       RealPolynomialSequence j0 = RealPolynomialSequence.express("k->j(k,x)");
       RealPolynomial         y  = j0.evaluate(3, 128);
 
-      System.out.println("j0(2.3)=" + y);
       assertEquals(0.0856499630648839, y.eval(2.3));
     }
     catch (CompilerException e)

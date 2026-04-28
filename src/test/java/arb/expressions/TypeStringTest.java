@@ -17,7 +17,6 @@ public class TypeStringTest
   {
     var expr = Function.parse(Real.class, Real.class, RealFunction.class, "x➔x^2");
     String ts = expr.typeString();
-    System.out.println("Leaf: " + ts);
     assertEquals("RealFunction:x=Real➔Real", ts);
   }
 
@@ -27,10 +26,8 @@ public class TypeStringTest
     Expression<Real, RealFunction, RealFunctional> expr =
         Function.parse(Real.class, RealFunction.class, RealFunctional.class, "t➔x➔t+3*x+x^2");
 
-    System.out.println(Utensils.yamlString(expr));
 
     String ts = expr.typeString();
-    System.out.println("Nested: " + ts);
     assertEquals("RealFunctional:t=Real➔(RealFunction:x=Real➔Real)", ts);
   }
 }

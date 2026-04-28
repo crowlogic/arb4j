@@ -67,7 +67,6 @@ public class InverseShiftedPhasePullbackSamplerHeadlessTest extends
    */
   static void runHeadless(double t0, double t1, double dt, Integer workers, int progress)
   {
-    long wallStart = System.nanoTime();
     try ( InverseShiftedPhasePullbackSampler sampler = new InverseShiftedPhasePullbackSampler(new FloatInterval(t0,
                                                                                                                 t1),
                                                                                               dt))
@@ -77,12 +76,6 @@ public class InverseShiftedPhasePullbackSamplerHeadlessTest extends
         sampler.numberOfWorkers = workers;
       }
       sampler.progressInterval = progress;
-      System.out.printf("[headless] N=%d  workers=%d  dt=%.6f  span=[%.3f,%.3f]%n",
-                        sampler.N,
-                        sampler.numberOfWorkers,
-                        sampler.dt,
-                        t0,
-                        t1);
 
       sampler.prepareSamplePath();
 
@@ -99,9 +92,6 @@ public class InverseShiftedPhasePullbackSamplerHeadlessTest extends
                                             .mapToLong(s -> s.count)
                                             .sum();
       assertEquals("sum of per-thread counts should equal N", (long) N, totalEvals);
-
-      double wallSec = (System.nanoTime() - wallStart) / 1e9;
-      System.out.printf("[headless] OK: N=%d  finite=%d  wall=%.3fs%n", N, N, wallSec);
     }
     catch (RuntimeException re)
     {

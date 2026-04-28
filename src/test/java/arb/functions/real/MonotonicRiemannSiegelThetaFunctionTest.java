@@ -67,12 +67,9 @@ public class MonotonicRiemannSiegelThetaFunctionTest extends
         double absErr = Math.abs(diffT.doubleValue());
         double relErr = absErr / Math.max(s, 1.0);
         maxRelErr     = Math.max(maxRelErr, relErr);
-        System.out.printf("  t=%10.4f  Φ(t)=%14.6f  Φ⁻¹(Φ(t))=%14.10f  |err|=%.3e  rel=%.3e%n",
-                          s, u.get(0).doubleValue(), tBack.doubleValue(), absErr, relErr);
         assertTrue(String.format("Φ⁻¹(Φ(%g)) accuracy: rel err %.3e exceeds 1e-30", s, relErr),
                    relErr < 1e-30);
       }
-      System.out.printf("  max relative error across [0, 10000]: %.3e%n", maxRelErr);
     }
   }
 
@@ -99,7 +96,6 @@ public class MonotonicRiemannSiegelThetaFunctionTest extends
         for (int order : orders)
         {
           var Φinv = Φ.invert(center, order, prec);
-          System.out.printf("%n--- center=%g, order=%d ---%n", cp, order);
           for (double dt : new double[] { 0.0, 0.5, 1.0, 2.0, 5.0, 10.0, 20.0, 50.0, 100.0 })
           {
             double s = cp + dt;
@@ -107,7 +103,6 @@ public class MonotonicRiemannSiegelThetaFunctionTest extends
             Φ.evaluate(t, 2, prec, u);
             Φinv.evaluate(u.get(0), 1, prec, tBack);
             double err = Math.abs(tBack.doubleValue() - s);
-            System.out.printf("  t=%9.3f  |Φ⁻¹(Φ(t))-t| = %.3e%n", s, err);
           }
         }
       }
