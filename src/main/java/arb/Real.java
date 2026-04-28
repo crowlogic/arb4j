@@ -38,6 +38,10 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
+  private static final ThreadLocal<Real[]> autocorrelationScratch =
+                                                                  ThreadLocal.withInitial(() -> new Real[]
+                                                                  { new Real(), new Real() });
+
   public Real(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;
@@ -1188,7 +1192,7 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
   public Real autocorrelation(int maxLagSteps, int bits, Real result)
   {
     int n = this.dim;
-    try ( Real meanSq = new Real(); Real cov = new Real(); Real product = new Real())
+    try ( Real meanSq = new Real(); Real product = new Real())
     {
       meanSq.zero();
       for (int i = 0; i < n; i++)
@@ -1198,21 +1202,24 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
       }
       meanSq.div(n, bits, meanSq);
       result.get(0).set(1);
-      for (int k = 1; k < maxLagSteps; k++)
+      IntStream.range(1, maxLagSteps).parallel().forEach(k ->
       {
         if (n - k <= 0)
         {
           result.get(k).zero();
-          continue;
+          return;
         }
+        Real[] scratch = autocorrelationScratch.get();
+        Real cov = scratch[0];
+        Real prod = scratch[1];
         cov.zero();
         for (int i = 0; i < n - k; i++)
         {
-          get(i).mul(get(i + k), bits, product);
-          cov.add(product, bits, cov);
+          get(i).mul(get(i + k), bits, prod);
+          cov.add(prod, bits, cov);
         }
         cov.div(n - k, bits, result.get(k)).div(meanSq, bits, result.get(k));
-      }
+      });
     }
     return result;
   }

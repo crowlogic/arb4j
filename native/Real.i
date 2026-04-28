@@ -31,6 +31,9 @@ import arb.utensils.Utensils;
 %}
 %typemap(javacode) arb_struct %{
 
+	private static final ThreadLocal<Real[]> autocorrelationScratch =
+	  ThreadLocal.withInitial(() -> new Real[] { new Real(), new Real() });
+
 	public RealPolynomial add( Real z, int bits, RealPolynomial result )
 	{
 	  return result.set(this).add(z,bits,result);
@@ -1151,7 +1154,7 @@ import arb.utensils.Utensils;
   public Real autocorrelation(int maxLagSteps, int bits, Real result)
   {
     int n = this.dim;
-    try ( Real meanSq = new Real(); Real cov = new Real(); Real product = new Real())
+    try ( Real meanSq = new Real(); Real product = new Real())
     {
       meanSq.zero();
       for (int i = 0; i < n; i++)
@@ -1161,21 +1164,24 @@ import arb.utensils.Utensils;
       }
       meanSq.div(n, bits, meanSq);
       result.get(0).set(1);
-      for (int k = 1; k < maxLagSteps; k++)
+      java.util.stream.IntStream.range(1, maxLagSteps).parallel().forEach(k ->
       {
         if (n - k <= 0)
         {
           result.get(k).zero();
-          continue;
+          return;
         }
+        Real[] scratch = autocorrelationScratch.get();
+        Real cov = scratch[0];
+        Real prod = scratch[1];
         cov.zero();
         for (int i = 0; i < n - k; i++)
         {
-          get(i).mul(get(i + k), bits, product);
-          cov.add(product, bits, cov);
+          get(i).mul(get(i + k), bits, prod);
+          cov.add(prod, bits, cov);
         }
         cov.div(n - k, bits, result.get(k)).div(meanSq, bits, result.get(k));
-      }
+      });
     }
     return result;
   }
