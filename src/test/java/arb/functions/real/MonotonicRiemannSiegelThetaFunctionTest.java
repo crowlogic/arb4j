@@ -22,13 +22,13 @@ public class MonotonicRiemannSiegelThetaFunctionTest extends
     double[] samples =
     { 0.0, 1.0e-3, 0.1, 1.0, 5.0, 14.134725, 50.0, 200.0, 1000.0 };
 
-    try ( Real t = new Real(); Real out = new Real())
+    try ( Real t = Real.valueOf(0.0); Real out = Real.newVector(2))
     {
       for (double s : samples)
       {
         t.set(s);
-        Φprime.evaluate(t, 1, prec, out);
-        double d = out.doubleValue();
+        Φprime.evaluate(t, 2, prec, out);
+        double d = out.get(0).doubleValue();
         assertTrue(String.format("Φ′(%g) = %g should be > 0", s, d), d > 0);
       }
     }
@@ -44,14 +44,14 @@ public class MonotonicRiemannSiegelThetaFunctionTest extends
     double[] samples =
     { 0.0, 1.0, 14.134725, 100.0 };
 
-    try ( Real t = new Real(); Real lhs = new Real(); Real rhs = new Real())
+    try ( Real t = Real.valueOf(0.0); Real lhs = Real.newVector(2); Real rhs = Real.newVector(2))
     {
       for (double s : samples)
       {
         t.set(s);
-        Φ.evaluate(t, 1, prec, lhs);
-        ϑ.evaluate(t, 1, prec, rhs);
-        double diff = lhs.doubleValue() - rhs.doubleValue() - cVal * s;
+        Φ.evaluate(t, 2, prec, lhs);
+        ϑ.evaluate(t, 2, prec, rhs);
+        double diff = lhs.get(0).doubleValue() - rhs.get(0).doubleValue() - cVal * s;
         assertEquals(String.format("Φ(%g) − ϑ(%g) − c·%g should be 0", s, s, s),
                      0.0,
                      diff,

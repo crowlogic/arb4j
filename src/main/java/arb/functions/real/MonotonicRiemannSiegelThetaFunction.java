@@ -60,23 +60,17 @@ public class MonotonicRiemannSiegelThetaFunction implements
   @Override
   public String toString()
   {
-    return monotoneθ.toString();
+    return monotoneϑ.toString();
   }
 
-  public RealFunction ϑ         = RealFunction.express("ϑ:t->im(lnΓ(¼+ⅈ*t/2))-(t*log(π)/2)", context);
+  RealFunction        monotoneϑ     = RealFunction.express("monotoneϑ:t->ϑ(t)+c*t", context);
 
-  RealFunction        monotoneθ = RealFunction.express("monotoneϑ:t->ϑ(t)+c*t", context);
-
-  RealFunction        diffMonotoneθ;
+  RealFunction        diffMonotoneϑ = RealFunction.express("diffmonotoneϑ:t->diff(ϑ(t),t)+c", context);
 
   @Override
   public RealFunction derivative()
   {
-    if (diffMonotoneθ == null)
-    {
-      diffMonotoneθ = RealFunction.express("diffmonotoneθ:t->diff(monotoneθ(t),t)", context);
-    }
-    return diffMonotoneθ;
+    return diffMonotoneϑ;
   }
 
   public MonotonicRiemannSiegelThetaFunction()
@@ -86,7 +80,7 @@ public class MonotonicRiemannSiegelThetaFunction implements
   @Override
   public Real evaluate(Real t, int order, int bits, Real res)
   {
-    return monotoneθ.evaluate(t, order, bits, res);
+    return monotoneϑ.evaluate(t, order, bits, res);
   }
 
 }
