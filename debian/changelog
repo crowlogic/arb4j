@@ -1,3 +1,18 @@
+arb4j (0.99.9.9.9) UNRELEASED; urgency=low
+
+  [ Stephen Crowley ]
+  * New upstream milestone 0.99.9.9.9: parallel Real.autocorrelation
+    over lag strides backed by a ThreadLocal scalar pair, bidirectional
+    Wiener–Khinchin cross-checks (IDFT of empirical PSD on the
+    covariance chart, DFT of empirical autocorrelation on the PSD
+    chart), Recalculate button driving both panels in lockstep, and
+    JavaFX 26 / JDK 26 build target.
+  * Switch JDK build-dependency and runtime dependency from openjdk-25
+    to openjdk-26 (control, rules JAVA_HOME path).
+  * Install every script under bin/ to /usr/bin via debian/arb4j.install.
+
+ -- Stephen Crowley <stephencrowley214@gmail.com>  Tue, 28 Apr 2026 04:28:00 -0500
+
 arb4j (0.99.9.9.8) UNRELEASED; urgency=low
 
   [ Stephen Crowley ]

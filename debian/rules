@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 
-export JAVA_HOME := /usr/lib/jvm/java-25-openjdk-$(shell dpkg-architecture -qDEB_HOST_ARCH)
+export JAVA_HOME := /usr/lib/jvm/java-26-openjdk-$(shell dpkg-architecture -qDEB_HOST_ARCH)
 export PATH      := $(JAVA_HOME)/bin:$(PATH)
 
 PKG     := arb4j
