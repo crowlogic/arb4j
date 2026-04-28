@@ -106,14 +106,22 @@ public class MonotonicRiemannSiegelThetaFunction implements
   }
 
   /**
-   * Returns the inverse map Φ⁻¹ : [Φ(0), ∞) → [0, ∞). Implementation seeds with
-   * the Lambert‐W asymptotic inversion of the Stirling form
+   * Returns the global inverse map Φ⁻¹ : [Φ(0), ∞) → [0, ∞), overriding the
+   * default {@link RealFunction#invert} so that the expression compiler’s
+   * {@code Φ⁻¹(·)} syntax routes here rather than to local Lagrange series
+   * reversion centered at one point. The {@code centerPoint},
+   * {@code seriesOrder}, and {@code precision} parameters of the default
+   * contract are ignored — the returned function is valid on the whole
+   * domain [Φ(0), ∞), and the actual working precision is taken from the
+   * {@code bits} argument passed to its {@code evaluate}.
+   * <p>
+   * Seed: the Lambert‐W asymptotic inversion of the Stirling form
    *
    * <pre>
    *   Φ(t) ≈ (t/2) (log(t/(2π)) + 2c − 1) − π/8
    * </pre>
    *
-   * giving the closed-form seed t₀(u) = 2π v / W(v·e^A) with A = 2c − 1 and v =
+   * gives the closed-form seed t₀(u) = 2π v / W(v·e^A) with A = 2c − 1 and v =
    * u/π + 1/8 (valid where the asymptotic expansion of ϑ is good, i.e.
    * t ≳ 2π). For u below Φ(2π) the seed t₀ = u/c is used (where ct dominates
    * ϑ(t)). The seed is then refined by Newton iteration on
@@ -126,8 +134,15 @@ public class MonotonicRiemannSiegelThetaFunction implements
    * [0, ∞). Iteration terminates when the iterate carries at least the
    * requested {@code bits} of relative accuracy, or throws after a safety cap
    * of 64 iterations.
+   *
+   * @param centerPoint ignored (kept for interface compatibility)
+   * @param seriesOrder ignored (kept for interface compatibility)
+   * @param precision   ignored — the precision used at evaluation time is the
+   *                    {@code bits} argument of the returned function’s
+   *                    {@code evaluate}, not this construction parameter
    */
-  public RealFunction inverse()
+  @Override
+  public RealFunction invert(Real centerPoint, int seriesOrder, int precision)
   {
     return new RealFunction()
     {

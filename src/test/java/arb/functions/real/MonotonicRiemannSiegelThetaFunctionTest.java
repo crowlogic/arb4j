@@ -35,7 +35,7 @@ public class MonotonicRiemannSiegelThetaFunctionTest extends
   }
 
   /**
-   * Verifies that Φ.inverse() achieves the requested bits of precision across
+   * Verifies that Φ.invert(·) achieves the requested bits of precision across
    * a wide range t ∈ [0, 10000]. For each test point, the residual
    * |Φ(Φ⁻¹(Φ(t))) - Φ(t)| is checked rather than |Φ⁻¹(Φ(t)) - t|, because
    * the round-trip in t-space is divided by Φ′(t) which can be small.
@@ -44,7 +44,9 @@ public class MonotonicRiemannSiegelThetaFunctionTest extends
   {
     int  bits = 128;
     var  Φ    = new MonotonicRiemannSiegelThetaFunction();
-    var  Φinv = Φ.inverse();
+    // centerPoint, seriesOrder, precision arguments are ignored by the
+    // override; pass nulls / placeholders.
+    var  Φinv = Φ.invert(null, 0, bits);
 
     double[] samples =
     { 0.5, 1.0, 3.0, 6.28, 10.0, 14.134725, 20.0, 50.0, 100.0, 500.0, 1000.0, 5000.0, 10000.0 };
