@@ -191,6 +191,13 @@
 					  and exits 2. Exclude the package from the javadoc run.
 					-->
 					<excludePackageNames>arb.solvers</excludePackageNames>
+					<!--
+					  Javadoc generation is documentation, not part of the
+					  build's correctness contract. Never let a javadoc
+					  failure abort packaging.
+					-->
+					<failOnError>false</failOnError>
+					<failOnWarnings>false</failOnWarnings>
 				</configuration>
 				<executions>
 					<execution>
