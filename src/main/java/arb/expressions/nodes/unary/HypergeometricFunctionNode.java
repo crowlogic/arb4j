@@ -249,7 +249,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                                          argCoDomainType,
                                          (Class<Function<?, ?>>) argFunctionClass);
 
-    argExpression.context            = expression.context;
+    argExpression.setContext(expression.getContext());
     argExpression.upstreamExpression = expression;
 
     var independentVar = expression.getIndependentVariable();

@@ -114,9 +114,9 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
           argument);
     assert forwardFunctionName != null : "forwardFunctionName must not be null";
     this.forwardFunctionName = forwardFunctionName;
-    if (expression.context != null)
+    if (expression.getContext() != null)
     {
-      forwardMapping = expression.context.getFunctionMapping(forwardFunctionName);
+      forwardMapping = expression.getContext().getFunctionMapping(forwardFunctionName);
       contextual     = forwardMapping != null;
       if (contextual)
       {

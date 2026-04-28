@@ -297,7 +297,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
     mv.visitLdcInsn(Type.getType(expression.functionClass));
     mv.visitLdcInsn("__df__" + System.identityHashCode(this));
     mv.visitLdcInsn(operand.toString());
-    if (expression.context != null)
+    if (expression.getContext() != null)
     {
       loadThisOntoStack(mv);
       mv.visitFieldInsn(Opcodes.GETFIELD, internalName, "context", Context.class.descriptorString());
@@ -393,7 +393,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
       splicedNode.order = order == null ? null : order.spliceInto(newExpression);
       return splicedNode;
     }
-    assert false : "nthDerivativeNode is null for " + this + " context=" + expression.context + "functions=" + expression.context.functions;
+    assert false : "nthDerivativeNode is null for " + this + " context=" + expression.getContext() + "functions=" + expression.getContext().functions;
     return getDifferentiatedNode().spliceInto(newExpression);
   }
 

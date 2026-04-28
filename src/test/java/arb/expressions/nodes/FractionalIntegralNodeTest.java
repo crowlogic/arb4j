@@ -145,4 +145,39 @@ public class FractionalIntegralNodeTest extends
     var diff     = actual.sub(expected, BITS, new Real()).abs();
     assertTrue("expected=" + expected + " actual=" + actual + " |diff|=" + diff, diff.doubleValue() < TOL);
   }
+
+  /**
+   * Inverse identity: D^(μ)[I^(μ) f](t) = f(t) for several test functions at
+   * non-integer μ ∈ {0.5, 0.7}, bits = 256, t = 1.7.
+   *
+   * The Caputo derivative D^(μ) is left-inverse to I^(μ) when f(0) is finite,
+   * which is the regime exercised here: f ∈ { t, t², 1, 3 + t, 2·t³ }. Each
+   * pair (D^μ ∘ I^μ) is composed symbolically by parsing
+   * fracdiff(fracint(f, t^μ), t^μ) and evaluating at t.
+   */
+  public void testInverseIdentity()
+  {
+    double[] mus = { 0.5, 0.7 };
+    String[] fs  = { "t", "t^2", "1", "3 + t", "2*t^3" };
+    double   t   = 1.7;
+    var      tR  = new Real(Double.toString(t), BITS);
+
+    for (double mu : mus)
+    {
+      String muStr = Double.toString(mu);
+      for (String f : fs)
+      {
+        String composed = "fracdiff(fracint(" + f + ", t^(" + muStr + ")), t^(" + muStr + "))";
+        var    expr     = RealFunction.express(composed);
+        var    actual   = expr.evaluate(tR, 1, BITS, new Real());
+
+        var    direct   = RealFunction.express("t ➜ " + f);
+        var    expected = direct.evaluate(tR, 1, BITS, new Real());
+
+        var    diff     = actual.sub(expected, BITS, new Real()).abs();
+        assertTrue("μ=" + mu + " f=" + f + " expected=" + expected + " actual=" + actual + " |diff|=" + diff,
+                   diff.doubleValue() < TOL);
+      }
+    }
+  }
 }

@@ -164,10 +164,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     this.operation    = operation;
     this.symbol       = symbol;
     this.functionForm = functionForm;
-    if (expression.context == null)
-    {
-      expression.context = new Context();
-    }
+    expression.getContext();
     assignFieldNamesIfNecessary(expression.coDomainType);
     parseOperand();
     functionClass = expression.className;
@@ -194,10 +191,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     this.prefix    = prefix;
     this.operation = operation;
     this.symbol    = symbol;
-    if (expression.context == null)
-    {
-      expression.context = new Context();
-    }
+    expression.getContext();
     this.operandExpression = operandExpression;
     functionClass          = expression.className;
     assert functionClass != null : "functionClass=expression.className shan't be null, expression=" + expression;
@@ -548,7 +542,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                          Sequence.class);
     operandExpression.continueParsingFrom(expression);
     operandExpression.upstreamExpression = expression;
-    operandExpression.context         = expression.context;
+    operandExpression.setContext(expression.getContext());
     operandExpression.setIndependentVariable(null);
     operandExpression.className = operandFunctionFieldName;
 
@@ -635,7 +629,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       registerFamilyFunction(operandExpression, specifiedName, firstFamilyIndexName, loNode, hiNode, operandExpression.rootNode);
       expression.continueParsingFrom(operandExpression);
       operandExpression.rootNode.resolveFunctions();
-      expression.context.functions.values().forEach(fm -> { if (fm.expression != null && fm.expression.rootNode != null) fm.expression.rootNode.resolveFunctions(); });
+      expression.getContext().functions.values().forEach(fm -> { if (fm.expression != null && fm.expression.rootNode != null) fm.expression.rootNode.resolveFunctions(); });
       parseMultisumIndices();
       if (expression.nextCharacterIs('}')) { }
       return this;
@@ -716,7 +710,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
     @SuppressWarnings("rawtypes")
     FunctionMapping<Integer, arb.Integer, IntegerFunction> familyMapping =
-        currentOperandExpression.context.registerFunctionMapping(familyName,
+        currentOperandExpression.getContext().registerFunctionMapping(familyName,
                                                                  null,
                                                                  arb.Integer.class,
                                                                  arb.Integer.class,
@@ -825,7 +819,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     innerLevel.functionClass            = currentOperandExpression.className;
     innerLevel.assignFieldNamesIfNecessary(innerOperandExpression.coDomainType);
 
-    innerLevel.operandMapping = currentOperandExpression.context.registerFunctionMapping(innerOperandFieldName,
+    innerLevel.operandMapping = currentOperandExpression.getContext().registerFunctionMapping(innerOperandFieldName,
                                                                                          null,
                                                                                          Integer.class,
                                                                                          innerOperandExpression.coDomainType,
@@ -854,7 +848,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     Expression<Integer, R, Sequence<R>> innerOperandExpression = currentOperandExpression.cloneExpression();
     innerOperandExpression.upstreamExpression = currentOperandExpression;
-    innerOperandExpression.context         = currentOperandExpression.context;
+    innerOperandExpression.setContext(currentOperandExpression.getContext());
     innerOperandExpression.clearIndependentVariable();
     innerOperandExpression.rootNode                = null;
     innerOperandExpression.deferVariableResolution = false;
@@ -872,11 +866,11 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   protected void propagateContextVariablesToOperand()
   {
-    if (expression.context != null && expression.context.variables != null)
+    if (expression.getContext() != null && expression.getContext().variables != null)
     {
       expression.registerInitializer(mv ->
       {
-        expression.context.variableEntries().forEach(entry -> propagateContextVariableToOperand(mv, entry));
+        expression.getContext().variableEntries().forEach(entry -> propagateContextVariableToOperand(mv, entry));
         propagateContextFunctionsToOperand(mv);
       });
     }
@@ -1095,7 +1089,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     assert operandFunctionFieldName != null : "operandFunctionFieldName shan't be null";
 
-    operandMapping = expression.context.registerFunctionMapping(operandFunctionFieldName,
+    operandMapping = expression.getContext().registerFunctionMapping(operandFunctionFieldName,
                                                                 null,
                                                                 Integer.class,
                                                                 operandExpression.coDomainType,

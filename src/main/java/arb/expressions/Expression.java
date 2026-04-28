@@ -547,7 +547,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   HashMap<Class<?>, AtomicInteger>                      constantCounts                = new HashMap<>();
 
-  public Context                                        context;
+  private Context                                       context;
 
   HashSet<String>                                       declaredIntermediateVariables = new HashSet<>();
 
@@ -1224,7 +1224,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     Class<?> type           = Context.class;
     String   typeDescriptor = type.descriptorString();
-    cw.visitField(ACC_PUBLIC, "context", typeDescriptor, null, null);
+    cw.visitField(ACC_PROTECTED, "context", typeDescriptor, null, null);
     return cw;
   }
 
@@ -5769,6 +5769,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       context = new Context();
     }
     return context;
+  }
+
+  public Expression<D, C, F> setContext(Context context)
+  {
+    this.context = context;
+    return this;
   }
 
   public String getTypeString()

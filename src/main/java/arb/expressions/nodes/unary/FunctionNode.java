@@ -395,7 +395,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     assert functionName != null : "functionName cannot be null";
     this.functionName = functionName;
     assignFunctionName();
-    if (this.expression.context != null)
+    if (this.expression.getContext() != null)
     {
       lookupFunctionInContext();
     }
@@ -412,7 +412,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public void lookupFunctionInContext()
   {
-    mapping    = expression.context.getFunctionMapping(functionName);
+    mapping    = expression.getContext().getFunctionMapping(functionName);
     contextual = mapping != null;
     if (contextual)
     {
@@ -581,9 +581,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return new ZetaJetNode<>(expression, arg, 1, state);
     }
     default:
-      if (expression.context != null)
+      if (expression.getContext() != null)
       {
-        FunctionMapping<?, ?, ?> ctxMapping = expression.context.getFunctionMapping(functionName);
+        FunctionMapping<?, ?, ?> ctxMapping = expression.getContext().getFunctionMapping(functionName);
         if (ctxMapping != null && ctxMapping.expression != null)
         {
           contextual = true;
@@ -627,7 +627,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   private Node<D, R, F> differentiateContextualFunction()
   {
-    var functionMapping = expression.context.getFunctionMapping(functionName);
+    var functionMapping = expression.getContext().getFunctionMapping(functionName);
 
     if (functionMapping == null)
     {
@@ -673,7 +673,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     String derivativeFunctionName = derivative.getName();
     assert derivativeFunctionName != null : "derivativeFunctionName is null for instance " + instance + ": TODO: use the " + derivative + " directly";
 
-    var newDerivativeFunctionMapping = expression.context.functions.get(derivativeFunctionName);
+    var newDerivativeFunctionMapping = expression.getContext().functions.get(derivativeFunctionName);
 
     assert newDerivativeFunctionMapping
                   != null : "no function mapping with name " + derivativeFunctionName + " for derivative " + derivative + " of " + instance;
@@ -692,12 +692,12 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       Context instanceContext = (Context) instanceContextField.get(instance);
       if (instanceContext != null)
       {
-        if (expression.context != instanceContext)
+        if (expression.getContext() != instanceContext)
         {
-          expression.context.mergeFrom(instanceContext);
+          expression.getContext().mergeFrom(instanceContext);
         }
       }
-      instanceContextField.set(instance, expression.context);
+      instanceContextField.set(instance, expression.getContext());
 
     }
     catch (Exception e)
@@ -715,7 +715,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       logger.debug("integrateContextualFunction(): functionName={}", functionName);
     }
-    FunctionMapping functionMapping = expression.context.getFunctionMapping(functionName);
+    FunctionMapping functionMapping = expression.getContext().getFunctionMapping(functionName);
 
     if (functionMapping == null)
     {
@@ -747,7 +747,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     var    integral                   = instance.integral();
     String integralFunctionName       = integral.getName();
 
-    var    newIntegralFunctionMapping = expression.context.functions.get(integralFunctionName);
+    var    newIntegralFunctionMapping = expression.getContext().functions.get(integralFunctionName);
     if (functionMapping != null && Polynomial.class.isAssignableFrom(functionMapping.coDomain))
     {
       return new PolynomialIntegralNode<>(expression,
@@ -911,8 +911,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public FunctionMapping<D, R, F> getFunctionMapping()
   {
-    assert expression.context != null : expression + " has no context by which to retrieve the functionMapping named " + functionName + " from";
-    FunctionMapping<D, R, F> mapping = expression.context.getFunctionMapping(functionName);
+    assert expression.getContext() != null : expression + " has no context by which to retrieve the functionMapping named " + functionName + " from";
+    FunctionMapping<D, R, F> mapping = expression.getContext().getFunctionMapping(functionName);
     if (isSelfReferential(mapping))
     {
       mapping = registerSelfReferrentialFunctionMapping();
@@ -942,7 +942,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       throw new UnsupportedOperationException("Cannot integrate function: "
                                               + functionName
                                               + " because its not a builtin function and its not registered in "
-                                              + expression.context);
+                                              + expression.getContext());
   }
 
   private Node<D, R, F> integrateBuiltinFunction()
@@ -1051,7 +1051,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public boolean isSelfReferential(FunctionMapping<D, R, F> mapping)
   {
-    return mapping == null && functionName != null && expression.context != null;
+    return mapping == null && functionName != null && expression.getContext() != null;
   }
 
   private void loadFunctionReferenceOntoStack(MethodVisitor mv, FunctionMapping<D, R, F> mapping)
@@ -1068,7 +1068,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public FunctionMapping<D, R, F> registerSelfReferrentialFunctionMapping()
   {
-    var mapping = expression.context.registerFunctionMapping(functionName,
+    var mapping = expression.getContext().registerFunctionMapping(functionName,
                                                              null,
                                                              expression.domainType,
                                                              expression.coDomainType,
@@ -1093,7 +1093,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return Object.class;
     }
     Class<? extends Object> argType = arg.type();
-    assert argType != null : "argType is null for arg " + arg + " of " + this + " in " + expression.toStringExtended() + " context=" + expression.context;
+    assert argType != null : "argType is null for arg " + arg + " of " + this + " in " + expression.toStringExtended() + " context=" + expression.getContext();
 
     Class<?> scalarArgType = Compiler.scalarType(arg.type());
     switch (functionName)

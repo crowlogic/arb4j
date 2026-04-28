@@ -283,7 +283,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   private Expression<D, C, F> createEvaluationExpressionWithDeferredVariableResolution()
   {
     Expression<D, C, F> evaluationExpression = expression.cloneExpression();
-    evaluationExpression.context                 = expression.context;
+    evaluationExpression.setContext(expression.getContext());
     evaluationExpression.deferVariableResolution = true;
 
     return evaluationExpression;

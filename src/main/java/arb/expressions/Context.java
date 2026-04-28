@@ -679,7 +679,15 @@ public class Context implements
     java.lang.reflect.Field field;
     try
     {
-      field = compiledClass.getField(variableName);
+      try
+      {
+        field = compiledClass.getField(variableName);
+      }
+      catch (NoSuchFieldException nsfe)
+      {
+        field = compiledClass.getDeclaredField(variableName);
+        field.setAccessible(true);
+      }
       field.set(f, value);
     }
     catch (Throwable e)
@@ -691,7 +699,7 @@ public class Context implements
                   + "' in "
                   + compiledClass
                   + " which has fields "
-                  + Stream.of(compiledClass.getFields()).map(hmm -> hmm.getName()).toList(),
+                  + Stream.of(compiledClass.getDeclaredFields()).map(hmm -> hmm.getName()).toList(),
                   e);
     }
   }

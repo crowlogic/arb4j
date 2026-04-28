@@ -296,7 +296,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   public VariableNode(Expression<D, R, F> expression, VariableReference<D, R, F> reference, boolean resolve)
   {
     super(expression);
-    var variables = expression.context != null ? expression.context.variables : null;
+    var variables = expression.getContext() != null ? expression.getContext().variables : null;
     this.expression         = expression;
     this.reference          = reference;
     this.reference.position = position = expression.position;
@@ -607,7 +607,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
    */
   public boolean isContextVariable()
   {
-    return expression != null && expression.context != null && expression.context.variables != null && expression.context.variables.containsKey(reference.name);
+    return expression != null && expression.getContext() != null && expression.getContext().variables != null && expression.getContext().variables.containsKey(reference.name);
   }
 
   /**
@@ -639,9 +639,9 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public boolean resolveContextualVariable()
   {
-    if (expression.context != null && expression.context.variables != null)
+    if (expression.getContext() != null && expression.getContext().variables != null)
     {
-      Object instanceVariable = expression.context.variables.get(reference.name);
+      Object instanceVariable = expression.getContext().variables.get(reference.name);
       if (instanceVariable != null)
       {
         reference.type = instanceVariable.getClass();

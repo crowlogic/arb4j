@@ -1262,7 +1262,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     nodeStream()
       .filter(Node::isFunction)
       .map(Node::asFunction)
-      .filter(fn -> fn.mapping == null && fn.expression.context != null)
+      .filter(fn -> fn.mapping == null && fn.expression.getContext() != null)
       .forEach(fn -> fn.lookupFunctionInContext());
   }
 

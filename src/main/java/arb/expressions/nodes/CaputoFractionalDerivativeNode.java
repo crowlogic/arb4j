@@ -203,7 +203,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   public CaputoFractionalDerivativeNode(Expression<D, R, F> expression)
   {
     super(expression);
-    this.context = expression.context;
+    this.context = expression.getContext();
     operand      = expression.resolve();
     var variableNode = expression.require(",").resolve();
     if (variableNode instanceof VariableNode)

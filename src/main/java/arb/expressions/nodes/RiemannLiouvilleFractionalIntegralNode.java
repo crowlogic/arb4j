@@ -132,7 +132,7 @@ public class RiemannLiouvilleFractionalIntegralNode<D, R, F extends Function<? e
   public RiemannLiouvilleFractionalIntegralNode(Expression<D, R, F> expression)
   {
     super(expression);
-    this.context = expression.context;
+    this.context = expression.getContext();
     operand      = expression.resolve();
     var variableNode = expression.require(",").resolve();
     if (variableNode instanceof VariableNode)
@@ -329,6 +329,27 @@ public class RiemannLiouvilleFractionalIntegralNode<D, R, F extends Function<? e
   public Node<D, R, F> fractionalIntegral(VariableNode<D, R, F> variable, Node<D, R, F> ν)
   {
     return operand.fractionalIntegral(this.variable, order.add(ν));
+  }
+
+  /**
+   * If the integral has a closed form, fractional differentiation delegates
+   * to the closed-form result so that compositions like D^μ[I^μ f] can
+   * resolve symbolically without instantiating an integral form.
+   */
+  @Override
+  public boolean hasClosedFormFractionalDerivative(VariableNode<D, R, F> variable)
+  {
+    return closedFormResult != null && closedFormResult.hasClosedFormFractionalDerivative(variable);
+  }
+
+  @Override
+  public Node<D, R, F> fractionalDerivative(VariableNode<D, R, F> variable, Node<D, R, F> α)
+  {
+    if (closedFormResult != null)
+    {
+      return closedFormResult.fractionalDerivative(variable, α);
+    }
+    return super.fractionalDerivative(variable, α);
   }
 
   @Override
