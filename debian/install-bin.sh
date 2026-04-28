@@ -89,7 +89,17 @@ EOF
       # already loads everything from the classpath.
       gsub(/--module-path \$CLASSPATH/, "")
       gsub(/--add-modules arb4j/, "")
+      gsub(/--add-module arb4j/, "")
+      gsub(/--add-modules ALL-MODULE-PATH/, "")
       gsub(/--add-modules javafx\.controls/, "")
+      # arbshell forwards JPMS flags to the jshell remote agent via
+      # -R<flag>. Strip the same JavaFX-module flags in their -R form,
+      # plus the -R--add-module(s) that name arb4j or javafx.controls.
+      gsub(/-R--add-modules -Rarb4j/, "")
+      gsub(/-R--add-module -Rarb4j/, "")
+      gsub(/-R--add-modules -RALL-MODULE-PATH/, "")
+      gsub(/-R--add-modules -Rjavafx\.controls/, "")
+      gsub(/-R--add-opens -Rjavafx\.[A-Za-z]+\/[A-Za-z0-9._]+=[A-Za-z0-9_]+/, "")
       # JavaFX is now a classpath dependency, not a JPMS module, so
       # any --add-opens javafx.<module>/<pkg>=<target> flag refers to
       # a module the JVM never sees. Strip every such flag and the
