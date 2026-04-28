@@ -414,6 +414,22 @@ public class RiccatiMittagLefflerFunction implements
       a.invalidateCache(alreadyInvalidated);
   }
 
+  /**
+   * Drop every cached state so the next {@link #evaluate(Complex, int, int, Complex)}
+   * call rebuilds from scratch: the symbolic static-hoist caches inside p, q, r,
+   * S, a, plus the entire (M, P_M, Q_M) Padé cache and the cached α-vector.
+   * Used by callers that mutate parameters (ρ, λ, ν, etc.) registered in this
+   * function's Context between evaluation calls.
+   */
+  @Override
+  public void invalidateCache()
+  {
+    invalidateSymbolicCaches();
+    disposeCache();
+    cachedVValid = false;
+    cacheBits    = 0;
+  }
+
   // ────────────────────────────────────────────────────────────────────────
   // Inspection methods (public, fluent shape)
   // ────────────────────────────────────────────────────────────────────────
