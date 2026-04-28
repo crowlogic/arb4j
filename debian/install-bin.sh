@@ -92,7 +92,7 @@ EOF
       gsub(/--add-module arb4j/, "")
       gsub(/--add-modules ALL-MODULE-PATH/, "")
       gsub(/--add-modules javafx\.controls/, "")
-      # jshell's --class-path is a driver-only flag. The dev launcher
+      # The jshell --class-path flag is driver-only. The dev launcher
       # relied on --module-path/--add-module arb4j to get the project
       # classes into BOTH the driver and remote agent module graphs;
       # those flags are stripped above. Inject --class-path for the
@@ -101,7 +101,7 @@ EOF
       gsub(/jshell  /, "jshell --class-path $CLASSPATH -R--class-path -R$CLASSPATH ")
       # arbshell forwards JPMS flags to the jshell remote agent via
       # -R<flag>. Strip the same JavaFX-module flags in their -R form,
-      # plus the -R--add-module(s) that name arb4j or javafx.controls.
+      # plus the -R--add-module form that names arb4j or javafx.controls.
       gsub(/-R--add-modules -Rarb4j/, "")
       gsub(/-R--add-module -Rarb4j/, "")
       gsub(/-R--add-modules -RALL-MODULE-PATH/, "")
