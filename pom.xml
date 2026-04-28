@@ -256,7 +256,7 @@
 				<executions>
 					<execution>
 						<id>fat-jar</id>
-						<phase>package</phase>
+						<phase>none</phase>
 						<goals>
 							<goal>shade</goal>
 						</goals>
@@ -359,7 +359,7 @@
 				<executions>
 					<execution>
 						<id>rewrite-logback-xml-in-fat-jar</id>
-						<phase>package</phase>
+						<phase>none</phase>
 						<goals><goal>run</goal></goals>
 						<configuration>
 							<target>
@@ -402,4 +402,41 @@
 
 		</plugins>
 	</build>
+
+	<profiles>
+		<!--
+		  Debian packaging produces a self-contained fat jar with every
+		  transitive dep relocated under org.arblib.shaded.*. The default
+		  `mvn install` ships a thin jar so downstream Maven consumers
+		  (bonanzai, etc.) resolve their own transitive graph normally.
+		  Activate with: mvn -Pdebian package
+		-->
+		<profile>
+			<id>debian</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-shade-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>fat-jar</id>
+								<phase>package</phase>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>rewrite-logback-xml-in-fat-jar</id>
+								<phase>package</phase>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
