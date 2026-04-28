@@ -213,12 +213,17 @@ public class MonotonicRiemannSiegelThetaFunction implements
    *                    {@code bits} argument of the returned function’s
    *                    {@code evaluate}, not this construction parameter
    */
-  @Override
-  public RealFunction invert(Real centerPoint, int seriesOrder, int precision)
+  /**
+   * Reentrant Newton inverter for Φ on [Φ(0), ∞). Each {@link InversePhi}
+   * holds a reference to its enclosing {@link MonotonicRiemannSiegelThetaFunction}
+   * Φ; {@link #cloneFunction()} returns an inverter bound to a freshly cloned
+   * Φ so that two workers never share Φ's non-reentrant Taylor-jet scratch
+   * buffers ({@link RiemannSiegelThetaFunction} ϑ's evaluation registers).
+   */
+  public final class InversePhi implements
+                          RealFunction
   {
-    return new RealFunction()
-    {
-      static final int MAX_ITER = 64;
+    static final int MAX_ITER = 64;
 
       @Override
       public Real evaluate(Real u, int order, int bits, Real res)
@@ -305,7 +310,7 @@ public class MonotonicRiemannSiegelThetaFunction implements
               Real twoPi = Real.valueOf(0.0))
         {
           // A = 2c - 1
-          c.mul(2, workingBits, A);
+          A.set(c).mul(2, workingBits, A);
           A.sub(1, workingBits, A);
 
           // v = u/π + 1/8
@@ -340,7 +345,19 @@ public class MonotonicRiemannSiegelThetaFunction implements
       {
         return Real.class;
       }
-    };
+
+      @Override
+      public arb.functions.Function<Real, Real> cloneFunction()
+      {
+        MonotonicRiemannSiegelThetaFunction fresh = new MonotonicRiemannSiegelThetaFunction(c.doubleValue());
+        return fresh.new InversePhi();
+      }
+  }
+
+  @Override
+  public RealFunction invert(Real centerPoint, int seriesOrder, int precision)
+  {
+    return new InversePhi();
   }
 
 }
