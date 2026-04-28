@@ -456,26 +456,25 @@ public class MuntzPadeFunction implements
         Q_M.set(j, qMat.get(j - 1, 0));
       }
 
+      // P(z) = (z·A(z)·Q(z)) mod z^{M+1}, where A(z) = Σ_{k=0..M-1} a_{k+1}·z^k
+      // is the truncation of the input Müntz series f(z) = z·A(z). The convolution
+      // p_n = Σ_{j=0..n-1} q_j·a_{n-j} for n=1..M is exactly [z^{n-1}](A·Q), so
+      // we form B(z) = A(z)·Q(z) and copy B[0..M-1] into P[1..M].
       P_M.fitLength(M + 1);
       P_M.setLength(M + 1);
       P_M.get(0).zero();
-      try ( Complex pn = new Complex(); Complex acc = new Complex(); Complex term = new Complex())
+      try ( ComplexPolynomial A = new ComplexPolynomial(); ComplexPolynomial B = new ComplexPolynomial())
       {
+        A.fitLength(M);
+        A.setLength(M);
+        for (int k = 0; k < M; k++)
+        {
+          A.get(k).set(coeff.get(k));
+        }
+        A.mul(Q_M, bits, B);
         for (int n = 1; n <= M; n++)
         {
-          pn.set(coeff.get(n - 1));
-          acc.zero();
-          for (int j = 1; j <= Math.min(n, M); j++)
-          {
-            if (n - j == 0)
-            {
-              continue;
-            }
-            qMat.get(j - 1, 0).mul(coeff.get(n - j - 1), bits, term);
-            acc.add(term, bits, acc);
-          }
-          pn.add(acc, bits, pn);
-          P_M.set(n, pn);
+          P_M.get(n).set(B.get(n - 1));
         }
       }
       return result;
