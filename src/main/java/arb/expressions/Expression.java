@@ -3727,18 +3727,87 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                           f);
   }
 
-  public F instantiate()
+  public synchronized F instantiate()
   {
+    log.debug("instantiate[{}]: ENTER thread={} functionName={} referencedFunctions={}",
+              System.identityHashCode(this),
+              Thread.currentThread().getName(),
+              functionName,
+              getReferencedFunctions().keySet());
 
-    instance = newInstance();
+    F freshInstance = newInstance();
+    log.debug("instantiate[{}]: newInstance -> {}@{}",
+              System.identityHashCode(this),
+              freshInstance.getClass().getName(),
+              System.identityHashCode(freshInstance));
 
-    instantiateAndInjectReferencedFunctions(instance);
+    instantiateAndInjectReferencedFunctions(freshInstance);
+    logReferencedFunctionFieldState(freshInstance, "after instantiateAndInjectReferencedFunctions");
 
-    injectReferences(instance);
+    injectReferences(freshInstance);
+    logReferencedFunctionFieldState(freshInstance, "after injectReferences");
 
-    cloneNonReentrantReferencedFunctions(instance);
+    cloneNonReentrantReferencedFunctions(freshInstance);
+    logReferencedFunctionFieldState(freshInstance, "after cloneNonReentrantReferencedFunctions");
 
-    return instance;
+    instance = freshInstance;
+    return freshInstance;
+  }
+
+  /**
+   * Diagnostic dump of the actual {@link Object#identityHashCode} of every
+   * referenced-function field on {@code parentInstance}, plus the same
+   * identityHashCode for any {@code public} {@link arb.functions.Function}
+   * fields declared by {@code parentInstance}'s class. Use this to verify
+   * by-eye that two consecutive {@code instantiate()} calls produce parents
+   * whose referenced-function fields point at distinct objects.
+   */
+  protected void logReferencedFunctionFieldState(F parentInstance, String label)
+  {
+    if (!log.isDebugEnabled())
+    {
+      return;
+    }
+    Class<?> parentClass = parentInstance.getClass();
+    StringBuilder sb = new StringBuilder();
+    sb.append("instantiate[").append(System.identityHashCode(this))
+      .append("] ").append(label)
+      .append(" parent=").append(System.identityHashCode(parentInstance))
+      .append(" thread=").append(Thread.currentThread().getName())
+      .append(" fields={");
+    boolean first = true;
+    for (java.lang.reflect.Field f : parentClass.getFields())
+    {
+      if (!arb.functions.Function.class.isAssignableFrom(f.getType()))
+      {
+        continue;
+      }
+      try
+      {
+        Object value = f.get(parentInstance);
+        if (!first)
+        {
+          sb.append(", ");
+        }
+        first = false;
+        sb.append(f.getName()).append("=");
+        if (value == null)
+        {
+          sb.append("null");
+        }
+        else
+        {
+          sb.append(value.getClass().getSimpleName())
+            .append("@").append(System.identityHashCode(value));
+        }
+      }
+      catch (IllegalAccessException iae)
+      {
+        // skip
+      }
+    }
+    sb.append("}");
+    log.debug(sb.toString());
   }
 
   /**
@@ -3765,8 +3834,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (context == null)
     {
+      log.debug("cloneNonReentrantReferencedFunctions: context is null on {} for parent {}",
+                functionName,
+                parentInstance.getClass().getName());
       return;
     }
+    log.debug("cloneNonReentrantReferencedFunctions: ENTER parent={} thread={} keys={}",
+              System.identityHashCode(parentInstance),
+              Thread.currentThread().getName(),
+              getReferencedFunctions().keySet());
     Class<?> parentClass = parentInstance.getClass();
     for (var entry : getReferencedFunctions().entrySet())
     {
@@ -3774,9 +3850,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
       if (referencedFunctionName.equals(functionName))
       {
-        // Self-reference: the parent's own field holding `this` is
-        // populated by generateSelfReference at codegen time. Cloning it
-        // would short-circuit the self-recursion the bytecode relies on.
+        log.debug("  skip self-reference {}", referencedFunctionName);
         continue;
       }
 
@@ -3787,6 +3861,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
       catch (NoSuchFieldException nsfe)
       {
+        log.debug("  skip {} : no public field on {}",
+                  referencedFunctionName,
+                  parentClass.getName());
         continue;
       }
 
@@ -3797,13 +3874,21 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
       catch (IllegalAccessException iae)
       {
+        log.debug("  skip {} : illegal access on field", referencedFunctionName);
         continue;
       }
       if (!(current instanceof arb.functions.Function))
       {
+        log.debug("  skip {} : current value not a Function ({})",
+                  referencedFunctionName,
+                  current == null ? "null" : current.getClass().getName());
         continue;
       }
       arb.functions.Function<?, ?> singleton = (arb.functions.Function<?, ?>) current;
+      log.debug("  field {} : current={}@{}",
+                referencedFunctionName,
+                singleton.getClass().getSimpleName(),
+                System.identityHashCode(singleton));
       arb.functions.Function<?, ?> fresh;
       try
       {
@@ -3811,12 +3896,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
       catch (UnsupportedOperationException uoe)
       {
-        // The referenced function did not opt into the prototype pattern.
-        // Leave the singleton in place — callers that don't share this
-        // parent across threads still work; callers that do are expected
-        // to override cloneFunction on the relevant Function class.
+        log.debug("  skip {} : cloneFunction() unsupported on {}",
+                  referencedFunctionName,
+                  singleton.getClass().getName());
         continue;
       }
+      log.debug("  field {} : cloned -> {}@{}",
+                referencedFunctionName,
+                fresh.getClass().getSimpleName(),
+                System.identityHashCode(fresh));
       try
       {
         parentField.set(parentInstance, fresh);
@@ -3831,6 +3919,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       context.injectVariableReferences(fresh);
       context.injectFunctionReferences(fresh);
     }
+    log.debug("cloneNonReentrantReferencedFunctions: EXIT parent={}",
+              System.identityHashCode(parentInstance));
   }
 
   /**
@@ -4440,7 +4530,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     try
     {
-      return instance = compiledClass.getDeclaredConstructor().newInstance();
+      // No side-write to the `instance` field here — instantiate() is the
+      // only caller that should publish a freshly constructed instance,
+      // and only after wiring is complete. Doing the assignment here used
+      // to clobber another thread's in-flight instance during concurrent
+      // instantiate() calls.
+      return compiledClass.getDeclaredConstructor().newInstance();
     }
     catch (Exception e)
     {
