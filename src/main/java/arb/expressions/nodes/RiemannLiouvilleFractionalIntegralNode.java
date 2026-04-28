@@ -48,6 +48,7 @@ public class RiemannLiouvilleFractionalIntegralNode<D, R, F extends Function<? e
   Node<D, R, F>                 integralNode;
   Expression<D, R, F>           integralExpression;
   FunctionMapping<D, R, F>      gintMapping;
+  public Node<D, R, F>          closedFormResult;
   private final Context         context;
 
   private VariableNode<D, R, F> variable;
@@ -77,6 +78,12 @@ public class RiemannLiouvilleFractionalIntegralNode<D, R, F extends Function<? e
 
     this.operand = tryInlineOperandBody(this.operand);
     operand      = this.operand;
+
+    if (operand.hasClosedFormFractionalIntegral(variable))
+    {
+      closedFormResult = operand.fractionalIntegral(variable, order);
+      return;
+    }
 
     init(operand);
   }
@@ -155,6 +162,12 @@ public class RiemannLiouvilleFractionalIntegralNode<D, R, F extends Function<? e
     this.operand = tryInlineOperandBody(this.operand);
     operand      = this.operand;
 
+    if (operand.hasClosedFormFractionalIntegral(variable))
+    {
+      closedFormResult = operand.fractionalIntegral(variable, order);
+      return;
+    }
+
     init(operand);
   }
 
@@ -205,12 +218,17 @@ public class RiemannLiouvilleFractionalIntegralNode<D, R, F extends Function<? e
   @Override
   public boolean isZero()
   {
+    if (closedFormResult != null) return closedFormResult.isZero();
     return integralNode != null ? integralNode.isZero() : operand.isZero();
   }
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
+    if (closedFormResult != null)
+    {
+      return closedFormResult.generate(mv, resultType);
+    }
     expression.loadFieldOntoStack(Compiler.loadThisOntoStack(mv), "gint", gintMapping.functionFieldDescriptor());
     VariableNode<D, R, F> indepVar = variable != null ? variable : expression.getIndependentVariable();
     indepVar.generate(mv, indepVar.type());
@@ -262,6 +280,7 @@ public class RiemannLiouvilleFractionalIntegralNode<D, R, F extends Function<? e
   @Override
   public boolean dependsOn(VariableNode<D, R, F> variable)
   {
+    if (closedFormResult != null) return closedFormResult.dependsOn(variable);
     return integralNode != null ? integralNode.dependsOn(variable) : order.dependsOn(variable) || operand.dependsOn(variable);
   }
 
@@ -315,6 +334,10 @@ public class RiemannLiouvilleFractionalIntegralNode<D, R, F extends Function<? e
   @Override
   public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
+    if (closedFormResult != null)
+    {
+      return closedFormResult.spliceInto(newExpression);
+    }
     RiemannLiouvilleFractionalIntegralNode<E, S, G> splicedNode =
                                                                 new RiemannLiouvilleFractionalIntegralNode<E, S, G>(newExpression,
                                                                                                                     operand.spliceInto(newExpression),
@@ -327,6 +350,7 @@ public class RiemannLiouvilleFractionalIntegralNode<D, R, F extends Function<? e
   @Override
   public Class<?> type()
   {
+    if (closedFormResult != null) return closedFormResult.type();
     return integralNode != null ? integralNode.type() : expression.coDomainType;
   }
 
