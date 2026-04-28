@@ -43,8 +43,45 @@ arb4j (0.99.9.9.10) UNRELEASED; urgency=low
     cross-check overlays from sampler chart build.
   * Drop the Known Test Failures section from README.
   * Strip apostrophes from comments inside install-bin.sh awk block.
+  * Riemann–Liouville fractional integral I^μ as a first-class symbolic
+    operator. New RiemannLiouvilleFractionalIntegralNode mirrors the
+    Caputo derivative node: parser keyword fracint, full AST surgery
+    semantics (accept, dependsOn, differentiate, integral=I^(μ+1),
+    spliceInto, type, typeset LaTeX, toString Unicode), and a generic
+    integrand-based bytecode generation path. Closed-form short-circuit
+    overrides on VariableNode, ExponentiationNode (t^β →
+    Γ(β+1)/Γ(β+μ+1)·t^(β+μ)), AdditionNode, NegationNode,
+    MultiplicationNode (constant·f), DivisionNode (f/constant),
+    LiteralConstantNode (c·t^μ/Γ(μ+1)), FunctionNode (inline body),
+    and the Riemann–Liouville node itself (semigroup
+    I^μ∘I^ν = I^(μ+ν)).
+  * Inverse identity D^μ[I^μ f] = f verified at non-integer μ on
+    multiple test functions at 256 bits. Volterra residual test on a
+    Müntz partial sum (qrh.tex Test 1) shows the first non-vanishing
+    coefficient at t^((N+1)μ) equals −a_{N+1}(v).
+  * Wrapper RiemannLiouvilleFractionalIntegralNode exposes its
+    closedFormResult through hasClosedFormFractionalDerivative and
+    fractionalDerivative so the closed-form path is reachable from the
+    parent Caputo node.
+  * ConstantCoefficientFractionalRiccatiEquation reduced to a
+    deprecated stub that redirects to RiccatiMittagLefflerFunction.
+  * Expression.context encapsulated: field is now private with a
+    getContext()/setContext() pair (getContext lazy-constructs a
+    Context if absent), the bytecode-emitted context field on
+    generated classes carries ACC_PROTECTED, and Context.setFieldValue
+    falls back to getDeclaredField+setAccessible to remain reflective
+    against the tightened access. All in-tree callers migrated to
+    getContext() across 11 files.
+  * Parser arrow normalization widened: ➜, ↦, ⟶, ⟼ all fold to ➔ at
+    the lexer stage so all arrow variants parse identically.
+  * Generic Jacobian class on the Function interface (#991): the
+    jacobian(String[])/jacobian(VariableReference[])/jacobian(
+    VariableNode[]) defaults on Function build a Jacobian<D,R,F>
+    instance whose closure under self-application yields Hessians for
+    free; closes #991 Phase 1.
+  * Closes: #984, #991. Test suite 786/786 green.
 
- -- Stephen Crowley <stephencrowley214@gmail.com>  Tue, 28 Apr 2026 10:28:00 -0500
+ -- Stephen Crowley <stephencrowley214@gmail.com>  Tue, 28 Apr 2026 11:58:00 -0500
 
 arb4j (0.99.9.9.9) UNRELEASED; urgency=low
 
