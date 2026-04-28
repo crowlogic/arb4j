@@ -502,7 +502,7 @@ public abstract class StationaryGaussianProcessSampler extends
     // Chart 4: PSD
     XYChart chart = new XYChart(new DefaultNumericAxis("Frequency",
                                                        ""),
-                                new DefaultNumericAxis("PSD",
+                                new DefaultNumericAxis("ln(1 + PSD)",
                                                        ""));
     chart.setTitle("Power Spectral Density");
     double[] empiricalPowerSpectralDensity = computePowerSpectralDensity(samplePath.im().doubleValues());
@@ -512,13 +512,21 @@ public abstract class StationaryGaussianProcessSampler extends
       theoreticalPowerSpectralDensities[i] = powerSpectralDensity[i];
     }
 
+    double[] empiricalLog1p   = new double[positiveFrequencyCount];
+    double[] theoreticalLog1p = new double[positiveFrequencyCount];
+    for (int i = 0; i < positiveFrequencyCount; i++)
+    {
+      empiricalLog1p[i]   = Math.log1p(Math.max(0.0, empiricalPowerSpectralDensity[i]));
+      theoreticalLog1p[i] = Math.log1p(Math.max(0.0, theoreticalPowerSpectralDensities[i]));
+    }
+
     var scatterPlotRenderer = newScatterChartRenderer();
     var lineRenderer        = new ErrorDataSetRenderer();
 
-    var empiricalDataSet    = new DoubleDataSet("Empirical").set(positiveFrequencies, Arrays.copyOf(empiricalPowerSpectralDensity, positiveFrequencyCount))
+    var empiricalDataSet    = new DoubleDataSet("Empirical").set(positiveFrequencies, empiricalLog1p)
                                                             .setStyle(Charts.empiricialFrequencyDatasetStyle);
 
-    var theoreticalDataSet  = new DoubleDataSet("Theoretical").set(positiveFrequencies, theoreticalPowerSpectralDensities)
+    var theoreticalDataSet  = new DoubleDataSet("Theoretical").set(positiveFrequencies, theoreticalLog1p)
                                                               .setStyle(Charts.theoreticalFrequencyDatasetStyle);
     scatterPlotRenderer.getDatasets().add(empiricalDataSet);
 
