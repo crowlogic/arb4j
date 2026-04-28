@@ -123,7 +123,7 @@ public class InverseShiftedPhasePullbackSampler extends
    * Configurable per instance for tests that want quieter or more frequent
    * output.
    */
-  public int progressInterval = 100;
+  public int progressInterval = 1000;
 
   /**
    * Per-thread benchmark record collected during the most recent
