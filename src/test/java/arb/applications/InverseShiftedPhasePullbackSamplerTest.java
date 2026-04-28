@@ -70,6 +70,20 @@ public class InverseShiftedPhasePullbackSamplerTest extends
         assertTrue("PSD[" + k + "] = " + p + " not finite/non-negative",
                    Double.isFinite(p) && p >= 0.0);
       }
+
+      // Per-thread benchmark statistics must account for every evaluation.
+      assertFalse("threadStats should not be empty", sampler.threadStats.isEmpty());
+      long totalEvals = sampler.threadStats.values().stream()
+                                            .mapToLong(s -> s.count)
+                                            .sum();
+      assertEquals("sum of per-thread counts should equal N", (long) N, totalEvals);
+      for (var entry : sampler.threadStats.entrySet())
+      {
+        var s = entry.getValue();
+        assertTrue(entry.getKey() + " totalNanos must be positive", s.totalNanos > 0);
+        assertTrue(entry.getKey() + " meanRate must be finite/positive",
+                   Double.isFinite(s.meanRate()) && s.meanRate() > 0);
+      }
     }
     catch (Exception e)
     {

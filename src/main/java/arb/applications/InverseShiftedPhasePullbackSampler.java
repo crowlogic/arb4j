@@ -1,5 +1,8 @@
 package arb.applications;
 
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.IntStream;
 
@@ -113,6 +116,36 @@ public class InverseShiftedPhasePullbackSampler extends
   public int progressInterval = 100;
 
   /**
+   * Per-thread benchmark record collected during the most recent
+   * {@link #prepareSamplePath()} run. {@code count} is the number of F(t)
+   * evaluations performed by that thread; {@code totalNanos} is the sum of
+   * per-evaluation wall-clock durations measured around
+   * {@code F.evaluate(...)}. Mean rate = count / (totalNanos·10⁻⁹) Hz.
+   */
+  public static final class ThreadStats
+  {
+    public long count;
+    public long totalNanos;
+
+    public double meanRate()
+    {
+      return totalNanos == 0 ? 0.0 : count / (totalNanos / 1e9);
+    }
+
+    public double meanMillisPerEval()
+    {
+      return count == 0 ? 0.0 : (totalNanos / 1e6) / count;
+    }
+  }
+
+  /**
+   * Snapshot of per-thread statistics from the last
+   * {@link #prepareSamplePath()} call, keyed by thread name. Sorted by name
+   * for stable reporting.
+   */
+  public Map<String, ThreadStats> threadStats = new TreeMap<>();
+
+  /**
    * Override of the path-preparation hook in
    * {@link StationaryGaussianProcessSampler}. Builds samplePath[i] = F(t_i)
    * in parallel across the common ForkJoinPool, then delegates to
@@ -132,12 +165,14 @@ public class InverseShiftedPhasePullbackSampler extends
   {
     double t0 = timeSpan.getA().doubleValue();
     AtomicLong completed = new AtomicLong(0);
+    ConcurrentHashMap<String, ThreadStats> stats = new ConcurrentHashMap<>();
     long startNanos = System.nanoTime();
 
     try ( var sampledPath = Complex.newVector(N))
     {
       IntStream.range(0, N).parallel().forEach(i ->
       {
+        long evalStart = System.nanoTime();
         try ( Real t = Real.valueOf(t0 + i * dt);
               Real Fval = Real.valueOf(0.0))
         {
@@ -146,22 +181,75 @@ public class InverseShiftedPhasePullbackSampler extends
           slot.re().set(Fval);
           slot.im().zero();
         }
+        long evalNanos = System.nanoTime() - evalStart;
+
+        String tname = Thread.currentThread().getName();
+        ThreadStats s = stats.computeIfAbsent(tname, k -> new ThreadStats());
+        // Each index i is touched by exactly one worker, so the per-thread
+        // record is single-writer. Map entries themselves are owned by
+        // ConcurrentHashMap; the field updates need no further synchronization.
+        s.count++;
+        s.totalNanos += evalNanos;
+
         long done = completed.incrementAndGet();
         if (done % progressInterval == 0 || done == N)
         {
           double pct = 100.0 * done / N;
           double elapsedSec = (System.nanoTime() - startNanos) / 1e9;
-          System.out.printf("[%s] i=%d  done=%d/%d  %5.1f%%  %.1fs%n",
-                            Thread.currentThread().getName(),
+          double threadRate = s.meanRate();
+          System.out.printf("[%s] i=%d  done=%d/%d  %5.1f%%  %.1fs  thread‑rate=%.2f eval/s  thread‑mean=%.2f ms/eval%n",
+                            tname,
                             i,
                             done,
                             N,
                             pct,
-                            elapsedSec);
+                            elapsedSec,
+                            threadRate,
+                            s.meanMillisPerEval());
         }
       });
 
       ingestPrecomputedSamplePath(sampledPath);
     }
+
+    threadStats = new TreeMap<>(stats);
+    long elapsedNanos = System.nanoTime() - startNanos;
+    printBenchmarkSummary(elapsedNanos);
+  }
+
+  /**
+   * Emit a final benchmark report: per-thread count, total CPU-time on F(t),
+   * mean evaluation rate, mean ms/eval; followed by an aggregate line giving
+   * the overall wall-clock elapsed time and the global mean rate (sum of
+   * thread counts divided by wall-clock time, the meaningful throughput
+   * figure since the workers run in parallel).
+   */
+  protected void printBenchmarkSummary(long elapsedNanos)
+  {
+    double wallSec = elapsedNanos / 1e9;
+    long   totalCount = 0;
+    long   totalEvalNanos = 0;
+    System.out.println("─── per‑thread benchmark ───");
+    System.out.printf("%-44s  %10s  %12s  %14s  %14s%n",
+                      "thread", "count", "sumEval(s)", "rate(eval/s)", "mean(ms/eval)");
+    for (Map.Entry<String, ThreadStats> e : threadStats.entrySet())
+    {
+      ThreadStats s = e.getValue();
+      totalCount     += s.count;
+      totalEvalNanos += s.totalNanos;
+      System.out.printf("%-44s  %10d  %12.3f  %14.2f  %14.2f%n",
+                        e.getKey(),
+                        s.count,
+                        s.totalNanos / 1e9,
+                        s.meanRate(),
+                        s.meanMillisPerEval());
+    }
+    double globalRate = wallSec == 0 ? 0.0 : totalCount / wallSec;
+    System.out.printf("─── total: count=%d  wall=%.3fs  sumEval=%.3fs  global‑rate=%.2f eval/s  threads=%d ───%n",
+                      totalCount,
+                      wallSec,
+                      totalEvalNanos / 1e9,
+                      globalRate,
+                      threadStats.size());
   }
 }
