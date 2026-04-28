@@ -114,3 +114,19 @@ kept for the existing test that uses it.
 Standard `git add` / `git commit` / `git push` only. No stash, no
 branches, no resets. Push origin master with
 `api_credentials=["github"]`.
+
+## Numerics policy
+
+No numerics. No numerical evaluation. No quadrature fallback. No finite
+differences. No numerical fallback of any kind, ever. Every operator
+must resolve symbolically through closed-form rewrite rules; if the
+rewrite chain cannot reduce an operand, fail loudly at compile time —
+do not fall back to a numerical evaluator. The word "fallback" is not
+a concept that may be invoked under any circumstances.
+
+This applies to every fractional, integral, differential, and special-
+function operator past, present, and future. The existing
+`CaputoFractionalDerivativeNode` integral-form path is grandfathered
+in as an internal closed-form-rewrite scaffold (the integrand is built
+symbolically and registered as a Context function); no new operator
+may introduce a quadrature path on the rationale that "Caputo does it".
