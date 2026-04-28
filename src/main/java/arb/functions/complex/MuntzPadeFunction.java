@@ -408,65 +408,66 @@ public class MuntzPadeFunction implements
       throw new IllegalStateException("Need 2M=" + (2 * M) + " coefficients, have " + coeff.dim);
     }
 
-    ComplexMatrix H     = ComplexMatrix.newMatrix(M, M);
-    ComplexMatrix neg_b = ComplexMatrix.newMatrix(M, 1);
+    ComplexPolynomial P_M = result[0];
+    ComplexPolynomial Q_M = result[1];
 
-    for (int i = 0; i < M; i++)
+    try ( ComplexMatrix H     = ComplexMatrix.newMatrix(M, M);
+          ComplexMatrix neg_b = ComplexMatrix.newMatrix(M, 1);
+          ComplexMatrix qMat  = ComplexMatrix.newMatrix(M, 1))
     {
-      for (int j = 0; j < M; j++)
+      for (int i = 0; i < M; i++)
       {
-        H.set(i, j, coeff.get(M + i - j - 1));
+        for (int j = 0; j < M; j++)
+        {
+          H.set(i, j, coeff.get(M + i - j - 1));
+        }
+        coeff.get(M + i).neg(neg_b.get(i, 0));
       }
-      coeff.get(M + i).neg(neg_b.get(i, 0));
-    }
 
-    ComplexMatrix     qMat = ComplexMatrix.newMatrix(M, 1);
-    ComplexPolynomial P_M  = result[0];
-    ComplexPolynomial Q_M  = result[1];
+      int ok = arblib.acb_mat_solve(qMat, H, neg_b, bits);
+      if (ok == 0)
+      {
+        P_M.fitLength(1);
+        P_M.setLength(1);
+        P_M.get(0).posInf();
+        Q_M.fitLength(1);
+        Q_M.setLength(1);
+        Q_M.get(0).posInf();
+        return result;
+      }
 
-    int               ok   = arblib.acb_mat_solve(qMat, H, neg_b, bits);
-    if (ok == 0)
-    {
-      P_M.fitLength(1);
-      P_M.setLength(1);
-      P_M.get(0).posInf();
-      Q_M.fitLength(1);
-      Q_M.setLength(1);
-      Q_M.get(0).posInf();
+      Q_M.fitLength(M + 1);
+      Q_M.setLength(M + 1);
+      Q_M.get(0).one();
+      for (int j = 1; j <= M; j++)
+      {
+        Q_M.set(j, qMat.get(j - 1, 0));
+      }
+
+      P_M.fitLength(M + 1);
+      P_M.setLength(M + 1);
+      P_M.get(0).zero();
+      try ( Complex pn = new Complex(); Complex acc = new Complex(); Complex term = new Complex())
+      {
+        for (int n = 1; n <= M; n++)
+        {
+          pn.set(coeff.get(n - 1));
+          acc.zero();
+          for (int j = 1; j <= Math.min(n, M); j++)
+          {
+            if (n - j == 0)
+            {
+              continue;
+            }
+            qMat.get(j - 1, 0).mul(coeff.get(n - j - 1), bits, term);
+            acc.add(term, bits, acc);
+          }
+          pn.add(acc, bits, pn);
+          P_M.set(n, pn);
+        }
+      }
       return result;
     }
-
-    Q_M.fitLength(M + 1);
-    Q_M.setLength(M + 1);
-    Q_M.get(0).one();
-    for (int j = 1; j <= M; j++)
-    {
-      Q_M.set(j, qMat.get(j - 1, 0));
-    }
-
-    P_M.fitLength(M + 1);
-    P_M.setLength(M + 1);
-    P_M.get(0).zero();
-    try ( Complex pn = new Complex(); Complex acc = new Complex(); Complex term = new Complex())
-    {
-      for (int n = 1; n <= M; n++)
-      {
-        pn.set(coeff.get(n - 1));
-        acc.zero();
-        for (int j = 1; j <= Math.min(n, M); j++)
-        {
-          if (n - j == 0)
-          {
-            continue;
-          }
-          qMat.get(j - 1, 0).mul(coeff.get(n - j - 1), bits, term);
-          acc.add(term, bits, acc);
-        }
-        pn.add(acc, bits, pn);
-        P_M.set(n, pn);
-      }
-    }
-    return result;
   }
 
   /**
