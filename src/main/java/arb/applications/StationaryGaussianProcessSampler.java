@@ -200,16 +200,12 @@ public abstract class StationaryGaussianProcessSampler extends
 
   public void configureXAxisOfPowerSpectralDensityChart(XYChart chart)
   {
-    chart.getXAxis().setAutoRanging(false);
-    chart.getXAxis().setMin(0);
-    chart.getXAxis().setMax(1.0);
+    chart.getXAxis().setAutoRanging(true);
   }
 
   public void configureYAxisOfPowerSpectralDensityChart(XYChart chart)
   {
-    chart.getYAxis().setAutoRanging(false);
-    chart.getYAxis().setMin(0);
-    chart.getYAxis().setMax(5.0);
+    chart.getYAxis().setAutoRanging(true);
   }
 
   protected Complex drawWhiteNoiseSample(ComplexWhiteNoiseProcess whiteNoiseProcess, int k)
@@ -545,21 +541,19 @@ public abstract class StationaryGaussianProcessSampler extends
 
     final ErrorDataSetRenderer scatterPlotRenderer    = newScatterChartRenderer();
 
-    int                        positiveFrequencyCount = frequencies.length;
-    double[]                   realNoise              = new double[positiveFrequencyCount];
-    double[]                   imagNoise              = new double[positiveFrequencyCount];
-    double[]                   normalizedFrequencies  = new double[positiveFrequencyCount];
+    int                        frequencyCount = frequencies.length;
+    double[]                   realNoise      = new double[frequencyCount];
+    double[]                   imagNoise      = new double[frequencyCount];
 
-    for (int i = 0; i < positiveFrequencyCount; i++)
+    for (int i = 0; i < frequencyCount; i++)
     {
       Complex element = whiteNoise.get(i);
-      realNoise[i]             = element.re().doubleValue();
-      imagNoise[i]             = element.im().doubleValue();
-      normalizedFrequencies[i] = frequencies[i] / nyquistFrequency; // Normalize to [0, 1]
+      realNoise[i] = element.re().doubleValue();
+      imagNoise[i] = element.im().doubleValue();
     }
 
-    DoubleDataSet realDataSet = new DoubleDataSet("Real").set(normalizedFrequencies, realNoise);
-    DoubleDataSet imagDataSet = new DoubleDataSet("Imaginary").set(normalizedFrequencies, imagNoise);
+    DoubleDataSet realDataSet = new DoubleDataSet("Real").set(frequencies, realNoise);
+    DoubleDataSet imagDataSet = new DoubleDataSet("Imaginary").set(frequencies, imagNoise);
 
     realDataSet.setStyle(Charts.randomMeasureDatasetStyle);
     imagDataSet.setStyle(Charts.randomMeasureDatasetStyle);
@@ -567,9 +561,7 @@ public abstract class StationaryGaussianProcessSampler extends
     chart.getRenderers().setAll(scatterPlotRenderer);
     scatterPlotRenderer.getDatasets().addAll(realDataSet, imagDataSet);
 
-    chart.getXAxis().setAutoRanging(false);
-    chart.getXAxis().setMin(0.0);
-    chart.getXAxis().setMax(1.0);
+    chart.getXAxis().setAutoRanging(true);
 
     return chart;
   }
