@@ -529,58 +529,10 @@ public abstract class StationaryGaussianProcessSampler extends
     var      kernelFn    = sampler.getKernel();
     String   theoryLabel = kernelFn == null ? "Theoretical Covariance (none)"
                                             : "Theoretical Covariance " + kernelFn;
-    double[] pathReal    = samplePath.re().doubleValues();
-    double[] empirical   = Statistics.autocorr(pathReal, maxLag);
-    double[] fromPsd     = sampler.empiricalAutocorrelationFromPeriodogram(pathReal, maxLag);
+    double[] empirical   = Statistics.autocorr(samplePath.re().doubleValues(), maxLag);
     chart.getDatasets().clear();
     chart.getDatasets().addAll(new DoubleDataSet("Empirical").set(times, empirical),
-                               new DoubleDataSet("From PSD (IDFT)").set(times, fromPsd),
                                new DoubleDataSet(theoryLabel).set(times, theory));
-  }
-
-  /**
-   * Sample autocovariance computed via the Wiener–Khinchin pair: build the
-   * periodogram |X[k]|² from a length-N forward DFT of the path's real
-   * part, inverse-DFT it (arb convention divides by N), keep the real
-   * part, normalise the lag-zero value to one. The result is the biased
-   * sample autocorrelation c̃(k) / c̃(0); when overlaid on the unbiased
-   * estimator from {@link Statistics#autocorr} the two should agree at
-   * lag k whenever k ≪ N because the bias factor (N−k)/N is then close
-   * to unity.
-   *
-   * @param pathReal the real part of the sample path, length N
-   * @param maxLag   number of lag points to return, starting at lag zero
-   * @return         length-{@code maxLag} array of normalised correlations
-   */
-  double[] empiricalAutocorrelationFromPeriodogram(double[] pathReal, int maxLag)
-  {
-    try ( Complex x = Complex.newVector(N); Complex X = Complex.newVector(N);
-          Complex P = Complex.newVector(N); Complex c = Complex.newVector(N);
-          Real    mag = new Real())
-    {
-      for (int i = 0; i < N; i++)
-      {
-        x.get(i).set(pathReal[i]);
-      }
-      x.applyDiscreteFourierTransform(bits, X);
-      for (int k = 0; k < N; k++)
-      {
-        double power = X.get(k).norm(bits, mag).pow(2, bits).doubleValue();
-        P.get(k).set(power);
-      }
-      P.applyInverseDiscreteFourierTransform(bits, c);
-      double   c0  = c.get(0).re().doubleValue();
-      double[] out = new double[maxLag];
-      if (c0 == 0.0)
-      {
-        return out;
-      }
-      for (int k = 0; k < maxLag; k++)
-      {
-        out[k] = c.get(k).re().doubleValue() / c0;
-      }
-      return out;
-    }
   }
 
   /**
