@@ -38,10 +38,6 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
-  private static final ThreadLocal<Real[]> autocorrelationScratch =
-                                                                  ThreadLocal.withInitial(() -> new Real[]
-                                                                  { new Real(), new Real() });
-
   public Real(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;
@@ -61,6 +57,9 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
     }
   }
 
+
+	private static final ThreadLocal<Real[]> autocorrelationScratch =
+	  ThreadLocal.withInitial(() -> new Real[] { new Real(), new Real() });
 
 	public RealPolynomial add( Real z, int bits, RealPolynomial result )
 	{
@@ -1176,18 +1175,8 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
 
   /**
    * Empirical autocorrelation ρ(k) = (1/(N−k))·Σᵢ Z[i]·Z[i+k] / ⟨Z²⟩ for
-   * lags k = 0..maxLagSteps−1, with ρ(0) defined as 1. This is the direct
-   * arb-typed port of arb.stochastic.Statistics.autocorr(double[], int):
-   * the variance estimate is the uncentred second moment ⟨Z²⟩ (zero-mean
-   * assumption inherited from the original).
-   *
-   * Caller supplies result; no persistent allocations beyond a small,
-   * bounded set of scalar Real temporaries.
-   *
-   * @param maxLagSteps number of lags 0..maxLagSteps−1
-   * @param bits        working precision
-   * @param result      length-maxLagSteps vector receiving ρ(k) on exit
-   * @return result
+   * lags k = 0..maxLagSteps−1, with ρ(0) defined as 1. Direct arb-typed
+   * port of Statistics.autocorr(double[], int).
    */
   public Real autocorrelation(int maxLagSteps, int bits, Real result)
   {
@@ -1202,7 +1191,7 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
       }
       meanSq.div(n, bits, meanSq);
       result.get(0).set(1);
-      IntStream.range(1, maxLagSteps).parallel().forEach(k ->
+      java.util.stream.IntStream.range(1, maxLagSteps).parallel().forEach(k ->
       {
         if (n - k <= 0)
         {
