@@ -184,6 +184,13 @@
 						<additionalJOption>-Xdoclint:none</additionalJOption>
 						<additionalJOption>-quiet</additionalJOption>
 					</additionalJOptions>
+					<!--
+					  arb.solvers contains only package-info.java. javadoc 26
+					  rejects packages with no .java source files other than
+					  package-info with 'No source files for package <name>'
+					  and exits 2. Exclude the package from the javadoc run.
+					-->
+					<excludePackageNames>arb.solvers</excludePackageNames>
 				</configuration>
 				<executions>
 					<execution>
