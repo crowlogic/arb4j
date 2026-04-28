@@ -32,8 +32,6 @@ override_dh_auto_install:
 	ln -sf $(PKG)-$(VER).jar                      $(JAR_DIR)/$(PKG).jar
 	cp -a build/apidocs/.                         $(DOC_DIR)/
 
-override_dh_install:
-
 override_dh_dwz:
 
 override_dh_strip:

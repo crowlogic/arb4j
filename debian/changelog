@@ -10,6 +10,9 @@ arb4j (0.99.9.9.9) UNRELEASED; urgency=low
   * Switch JDK build-dependency and runtime dependency from openjdk-25
     to openjdk-26 (control, rules JAVA_HOME path).
   * Install every script under bin/ to /usr/bin via debian/arb4j.install.
+  * Drop empty override_dh_install in debian/rules so the
+    arb4j.install manifest is actually honoured (previously the empty
+    override silently disabled dh_install and bin/ shipped nothing).
 
  -- Stephen Crowley <stephencrowley214@gmail.com>  Tue, 28 Apr 2026 04:28:00 -0500
 
