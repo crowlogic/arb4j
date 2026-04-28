@@ -1152,34 +1152,20 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
    *
    * <|Z(i+n)-Z(i)|^2>
    *
-   * Lags are dispatched in parallel via {@link IntStream#parallel()}. Each
-   * worker thread holds its own length-this.dim {@code y} scratch in a
-   * {@link ThreadLocal}, allocated once on first use by that worker and
-   * reused for every lag thereafter. The pool of worker scratches is the
-   * caller-owned {@code yPool}; passing the same {@code yPool} across
-   * successive {@code structure} invocations keeps total allocation bounded
-   * by the parallelism of the common pool.
+   * Zero allocation. Caller owns y and result.
    *
    * @param n      number of lags 0..n−1
    * @param bits   working precision
-   * @param yPool  caller-owned per-thread scratch holder; first call from
-   *               each worker allocates a length-this.dim vector inside it
+   * @param y      scratch vector with y.dim ≥ this.dim
    * @param result length-n vector receiving γ(0..n−1)
    * @return result
    */
-  public Real structure(int n, int bits, ThreadLocal<Real> yPool, Real result)
+  public Real structure(int n, int bits, Real y, Real result)
   {
-    int dimension = this.dim;
-    IntStream.range(0, n).parallel().forEach(i ->
+    for (int i = 0; i < n; i++)
     {
-      Real y = yPool.get();
-      if (y == null)
-      {
-        y = Real.newVector(dimension, "y");
-        yPool.set(y);
-      }
       gammaVariance(i, bits, y, result.get(i));
-    });
+    }
     return result;
   }
 
@@ -1196,15 +1182,15 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
    *
    * @param n        number of lags 0..n−1
    * @param bits     working precision
-   * @param yPool    per-thread scratch holder for the variogram diff buffer
+   * @param y        length-this.dim scratch vector for the variogram diff buffer
    * @param gamma    length-n scratch vector that receives γ(k) on exit
    * @param squares  length-this.dim scratch vector that receives Zᵢ² on exit
    * @param result   length-n vector receiving C(k) on exit
    * @return result
    */
-  public Real autocovariance(int n, int bits, ThreadLocal<Real> yPool, Real gamma, Real squares, Real result)
+  public Real autocovariance(int n, int bits, Real y, Real gamma, Real squares, Real result)
   {
-    structure(n, bits, yPool, gamma);
+    structure(n, bits, y, gamma);
     pow(2, bits, squares);
     try ( Real sumOfSquares = new Real(); Real total = new Real(); Real mean = new Real();
           Real meanSquared = new Real(); Real cZero = new Real(); Real halfGamma = new Real())
@@ -1228,15 +1214,15 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
    *
    * @param n        number of lags 0..n−1
    * @param bits     working precision
-   * @param yPool    per-thread scratch holder for the variogram diff buffer
+   * @param y        length-this.dim scratch vector for the variogram diff buffer
    * @param gamma    length-n scratch vector that receives γ(k) on exit
    * @param squares  length-this.dim scratch vector that receives Zᵢ² on exit
    * @param result   length-n vector receiving ρ(k) on exit
    * @return result
    */
-  public Real autocorrelation(int n, int bits, ThreadLocal<Real> yPool, Real gamma, Real squares, Real result)
+  public Real autocorrelation(int n, int bits, Real y, Real gamma, Real squares, Real result)
   {
-    autocovariance(n, bits, yPool, gamma, squares, result);
+    autocovariance(n, bits, y, gamma, squares, result);
     try ( Real cZero = new Real())
     {
       cZero.set(result.get(0));
