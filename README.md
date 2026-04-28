@@ -356,17 +356,6 @@ clang -g -O3 -fPIC -shared -Wno-int-conversion \
     -olibarblib.so -lflint -lxdo
 ```
 
-### Known Test Failures
-
-| Root Cause | Issue | Failing Tests |
-|---|---|---|
-| DivisionNode rejects RealPolynomial→Real | [#906](https://github.com/crowlogic/arb4j/issues/906) | `HypergeometricFunctionTest.testSum`, `testHypergeometricFunctionExpressionRealPolynomial`, `testHypergeometricPolynomialReal` |
-| VerifyError in rational function derivative bytecode | [#907](https://github.com/crowlogic/arb4j/issues/907) | `ExpressionTest.testRationalFunctionDerivative` |
-| DerivativeNode applies only 1st order regardless of requested order | [#908](https://github.com/crowlogic/arb4j/issues/908) | `DerivativeNodeTest.test2ndDerivative`, `FractionalDerivativeNodeTest.testFractionalDerivativeParsing` |
-| Expression toString() format mismatches | [#909](https://github.com/crowlogic/arb4j/issues/909) | `ExpressionTest.testConstantFoldingToo`, `testSubstitutionToo`, `testSubstitutionToo2`, `RationalFunctionTest.testHypergeometricFunctionExpressionRationalWithFunctionsMissingParenthesis`, `ComplexFunctionTest.testComplexHypergeometricFunctionSequence2` |
-| Constant subexpression factorization (TODO) | [#874](https://github.com/crowlogic/arb4j/issues/874) | `RealExpressionTest.testConstantSubexpressionFactorization` |
-| Common subexpression elimination (TODO) | [#518](https://github.com/crowlogic/arb4j/issues/518) | `RealExpressionTest.testCommonSubExpressionReuse` |
-
 ### Troubleshooting
 
 | Symptom | Fix |
