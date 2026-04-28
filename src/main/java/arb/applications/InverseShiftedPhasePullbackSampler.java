@@ -3,13 +3,14 @@ package arb.applications;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.IntStream;
 
 import arb.Complex;
 import arb.FloatInterval;
 import arb.Real;
 import arb.expressions.Context;
+import arb.expressions.Expression;
 import arb.functions.real.MonotonicRiemannSiegelThetaFunction;
 import arb.functions.real.RealFunction;
 
@@ -54,35 +55,22 @@ public class InverseShiftedPhasePullbackSampler extends
                                                 StationaryGaussianProcessSampler
 {
   /**
-   * Per-thread evaluator bundle. {@code F} is the compiled DSL expression
-   * producing F(t); the bundle owns the Φ, dΦ, Φ⁻¹ that {@code F} closes over
-   * via its private {@link Context}.
+   * Single shared Φ, dΦ, Φ⁻¹. All three are reentrant: every {@code evaluate}
+   * call allocates its own try-with-resources scratch and the only closed-over
+   * state ({@code c} on Φ, {@code MAX_ITER} on Φ⁻¹) is read-only.
    */
-  private static final class PullbackEvaluator implements
-                                              AutoCloseable
-  {
-    final MonotonicRiemannSiegelThetaFunction Φ    = new MonotonicRiemannSiegelThetaFunction();
-    final RealFunction                        dΦ   = Φ.derivative();
-    final RealFunction                        Φinv;
-    final RealFunction                        F;
+  protected final MonotonicRiemannSiegelThetaFunction        Φ                = new MonotonicRiemannSiegelThetaFunction();
+  protected final RealFunction                                dΦ              = Φ.derivative();
+  protected final RealFunction                                Φinv;
 
-    PullbackEvaluator(int prec)
-    {
-      Φinv          = Φ.invert(null, 0, prec);
-      var context   = new Context();
-      context.registerFunction("Φ",  Φ);
-      context.registerFunction("dΦ", dΦ);
-      F             = RealFunction.express("F:t->Z(Φ⁻¹(t))/sqrt(dΦ(Φ⁻¹(t)))",
-                                           context);
-    }
-
-    @Override
-    public void close()
-    {
-    }
-  }
-
-  private final ThreadLocal<PullbackEvaluator> evaluator;
+  /**
+   * Single shared {@link Context} into which Φ and dΦ are registered, and
+   * the single compiled {@link Expression} for F(t) = Z(Φ⁻¹(t))/√dΦ(Φ⁻¹(t)).
+   * The DSL is parsed and the bytecode class generated exactly once; per-
+   * worker fresh evaluation state is obtained via {@link Expression#instantiate()}.
+   */
+  protected final Context                                     context;
+  protected final Expression<Real, Real, RealFunction>        compiledF;
 
   /**
    * Default sampler: [0, 1000] @ dt = 0.01, giving N = 100,000 grid points.
@@ -105,7 +93,13 @@ public class InverseShiftedPhasePullbackSampler extends
   public InverseShiftedPhasePullbackSampler(FloatInterval timeSpan, double dt)
   {
     super(timeSpan, dt);
-    evaluator = ThreadLocal.withInitial(() -> new PullbackEvaluator(bits));
+    Φinv      = Φ.invert(null, 0, bits);
+    context   = new Context();
+    context.registerFunction("Φ",  Φ);
+    context.registerFunction("dΦ", dΦ);
+    compiledF = RealFunction.compile("F:t->Z(Φ⁻¹(t))/sqrt(dΦ(Φ⁻¹(t)))", context);
+    // Force the compile so the first instantiate() is cheap.
+    compiledF.instantiate();
   }
 
   /**
@@ -146,68 +140,109 @@ public class InverseShiftedPhasePullbackSampler extends
   public Map<String, ThreadStats> threadStats = new TreeMap<>();
 
   /**
-   * Override of the path-preparation hook in
-   * {@link StationaryGaussianProcessSampler}. Builds samplePath[i] = F(t_i)
-   * in parallel across the common ForkJoinPool, then delegates to
-   * {@link #ingestPrecomputedSamplePath(Complex)} for the FFT, the empirical
-   * orthogonal random measure, and the empirical PSD.
+   * Number of worker threads to spawn for the parallel F(t) evaluation.
+   * Defaults to {@code Runtime.getRuntime().availableProcessors()} — one
+   * worker per core. Override before {@link #prepareSamplePath()} for
+   * benchmarks that want to study scaling.
+   */
+  public int numberOfWorkers = Runtime.getRuntime().availableProcessors();
+
+  /**
+   * Override of the path-preparation hook. Spawns exactly
+   * {@link #numberOfWorkers} worker threads. Worker {@code k} evaluates
+   * indices {@code k, k + W, k + 2·W, …} where {@code W = numberOfWorkers},
+   * a strided partition that spreads any t-axis non-stationarity in F's
+   * cost (e.g. Newton iteration count growing with t) evenly across
+   * workers instead of dumping the slow tail on one thread.
    *
-   * Each worker bumps a shared {@link AtomicLong} after each F(t)
-   * evaluation; whenever the post-bump count crosses a multiple of
-   * {@link #progressInterval} the worker prints a single line carrying its
-   * thread name, the index just completed, the running total, and the
-   * percentage of N reached. Output goes to {@code System.out}.
+   * <p>The DSL expression is compiled exactly once in the constructor.
+   * Each worker calls {@link Expression#instantiate()} on the shared
+   * compiled {@link #compiledF} to obtain a fresh {@link RealFunction}
+   * with its own evaluation registers; Φ, dΦ, and Φ⁻¹ are shared and
+   * reentrant.
    *
-   * F(t) is real-valued on the real t-axis; samplePath[i].im is set to 0.
+   * <p>Per-thread benchmark statistics record only the wall-clock time of
+   * the {@code F.evaluate(…)} call; allocation of the input/output
+   * {@link Real} scratch is excluded.
    */
   @Override
   protected void prepareSamplePath()
   {
-    double t0 = timeSpan.getA().doubleValue();
-    AtomicLong completed = new AtomicLong(0);
-    ConcurrentHashMap<String, ThreadStats> stats = new ConcurrentHashMap<>();
-    long startNanos = System.nanoTime();
+    double                                  t0       = timeSpan.getA().doubleValue();
+    AtomicLong                              completed = new AtomicLong(0);
+    ConcurrentHashMap<String, ThreadStats>  stats    = new ConcurrentHashMap<>();
+    int                                     W        = numberOfWorkers;
+    long                                    startNanos = System.nanoTime();
 
     try ( var sampledPath = Complex.newVector(N))
     {
-      IntStream.range(0, N).parallel().forEach(i ->
+      CountDownLatch done = new CountDownLatch(W);
+      Thread[]       workers = new Thread[W];
+
+      for (int k = 0; k < W; k++)
       {
-        long evalStart = System.nanoTime();
-        try ( Real t = Real.valueOf(t0 + i * dt);
-              Real Fval = Real.valueOf(0.0))
+        final int workerIndex = k;
+        workers[k] = new Thread(() ->
         {
-          evaluator.get().F.evaluate(t, 1, bits, Fval);
-          var slot = sampledPath.get(i);
-          slot.re().set(Fval);
-          slot.im().zero();
-        }
-        long evalNanos = System.nanoTime() - evalStart;
+          String tname = Thread.currentThread().getName();
+          ThreadStats s = new ThreadStats();
+          stats.put(tname, s);
 
-        String tname = Thread.currentThread().getName();
-        ThreadStats s = stats.computeIfAbsent(tname, k -> new ThreadStats());
-        // Each index i is touched by exactly one worker, so the per-thread
-        // record is single-writer. Map entries themselves are owned by
-        // ConcurrentHashMap; the field updates need no further synchronization.
-        s.count++;
-        s.totalNanos += evalNanos;
+          // Each worker owns its own fresh instance of the compiled expression.
+          // The bytecode class is shared; only the per-evaluation register set
+          // is fresh.
+          RealFunction Fworker = compiledF.instantiate();
 
-        long done = completed.incrementAndGet();
-        if (done % progressInterval == 0 || done == N)
-        {
-          double pct = 100.0 * done / N;
-          double elapsedSec = (System.nanoTime() - startNanos) / 1e9;
-          double threadRate = s.meanRate();
-          System.out.printf("[%s] i=%d  done=%d/%d  %5.1f%%  %.1fs  thread‑rate=%.2f eval/s  thread‑mean=%.2f ms/eval%n",
-                            tname,
-                            i,
-                            done,
-                            N,
-                            pct,
-                            elapsedSec,
-                            threadRate,
-                            s.meanMillisPerEval());
-        }
-      });
+          try ( Real t    = Real.valueOf(0.0);
+                Real Fval = Real.valueOf(0.0))
+          {
+            for (int i = workerIndex; i < N; i += W)
+            {
+              t.set(t0 + i * dt);
+
+              long evalStart = System.nanoTime();
+              Fworker.evaluate(t, 1, bits, Fval);
+              s.totalNanos += System.nanoTime() - evalStart;
+              s.count++;
+
+              var slot = sampledPath.get(i);
+              slot.re().set(Fval);
+              slot.im().zero();
+
+              long doneCount = completed.incrementAndGet();
+              if (doneCount % progressInterval == 0 || doneCount == N)
+              {
+                double pct = 100.0 * doneCount / N;
+                double elapsedSec = (System.nanoTime() - startNanos) / 1e9;
+                System.out.printf("[%s] i=%d  done=%d/%d  %5.1f%%  %.2fs  thread‑rate=%.2f eval/s  thread‑mean=%.3f ms/eval%n",
+                                  tname,
+                                  i,
+                                  doneCount,
+                                  N,
+                                  pct,
+                                  elapsedSec,
+                                  s.meanRate(),
+                                  s.meanMillisPerEval());
+              }
+            }
+          }
+          finally
+          {
+            done.countDown();
+          }
+        }, "PullbackWorker-" + workerIndex);
+        workers[k].start();
+      }
+
+      try
+      {
+        done.await();
+      }
+      catch (InterruptedException ie)
+      {
+        Thread.currentThread().interrupt();
+        throw new RuntimeException("Interrupted while sampling F(t)", ie);
+      }
 
       ingestPrecomputedSamplePath(sampledPath);
     }
