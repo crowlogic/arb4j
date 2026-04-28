@@ -282,7 +282,7 @@ public class RiccatiMittagLefflerFunction implements
       {
         invalidateSymbolicCaches();
       }
-      disposeCache();
+      clearCache();
       cachedV.set(v);
       cachedVValid = true;
       cacheBits    = bits;
@@ -381,6 +381,26 @@ public class RiccatiMittagLefflerFunction implements
     }
   }
 
+  /**
+   * Drop the cached (M, P_M, Q_M) Padé triples and the cached α-vector as
+   * <em>values</em>: the cache becomes empty so the next refresh rebuilds.
+   * The native memory of the polynomials and α-vector is not released; the
+   * polynomials are held by the {@code padeCache} list (now cleared, so the
+   * references are dropped and the polynomials become garbage in the JVM
+   * heap, but their native handles remain live until the next garbage
+   * collection runs their cleaners). For deterministic native release see
+   * {@link #disposeCache()}.
+   */
+  private void clearCache()
+  {
+    padeCache.clear();
+    cachedAlpha = null;
+  }
+
+  /**
+   * Close every cached polynomial and the cached α-vector, releasing their
+   * native memory deterministically. Called only from {@link #close()}.
+   */
   private void disposeCache()
   {
     for (ComplexPolynomial[] PQ : padeCache)
@@ -425,7 +445,7 @@ public class RiccatiMittagLefflerFunction implements
   public void invalidateCache()
   {
     invalidateSymbolicCaches();
-    disposeCache();
+    clearCache();
     cachedVValid = false;
     cacheBits    = 0;
   }
