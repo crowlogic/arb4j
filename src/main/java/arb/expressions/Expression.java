@@ -149,7 +149,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (shouldCache())
     {
-      cw.visitField(Opcodes.ACC_PRIVATE | Opcodes.ACC_FINAL, "cache", Type.getDescriptor(TreeMap.class), null, null);
+      String signature = "L" + Type.getInternalName(TreeMap.class) + "<" + Type.getDescriptor(arb.Integer.class) + Type.getDescriptor(coDomainType) + ">;";
+      cw.visitField(Opcodes.ACC_PRIVATE | Opcodes.ACC_FINAL, "cache", Type.getDescriptor(TreeMap.class), signature, null);
     }
   }
 
