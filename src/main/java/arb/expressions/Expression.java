@@ -639,8 +639,25 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     CursorState saved = saveCursor();
     pendingInputVariableBounds = null;
+    pendingParameterList       = null;
     try
     {
+      if (character == '(')
+      {
+        List<String> params = parseParenParameterList();
+        skipSpaces();
+        if (params != null && !params.isEmpty() && character == '=')
+        {
+          nextCharacter();
+          String first = params.get(0);
+          List<String> rest = params.subList(1, params.size());
+          pendingParameterList = rest.isEmpty() ? null : new ArrayList<>(rest);
+          return first;
+        }
+        restoreCursor(saved);
+        return null;
+      }
+
       String name = parseName();
       if (name == null || name.isEmpty())
       {
@@ -648,24 +665,47 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         return null;
       }
       skipSpaces();
-      if (character == '∈') // ∈
+      if (character == '∈')
       {
         nextCharacter();
         pendingInputVariableBounds = parseIntervalBounds();
         skipSpaces();
       }
-      if (character == '➔') // ➔
+      if (character == '➔')
       {
         nextCharacter();
         return name;
       }
+      if (character == '(')
+      {
+        List<String> params = parseParenParameterList();
+        skipSpaces();
+        if (params != null && !params.isEmpty() && character == '=')
+        {
+          nextCharacter();
+          if (functionName != null && !functionName.equals(name))
+          {
+            throw new CompilerException("function name '" + name + "' specified in declaration head conflicts with already-declared functionName='" + functionName + "'");
+          }
+          if (functionName == null)
+          {
+            functionName = name;
+          }
+          String first = params.get(0);
+          List<String> rest = params.subList(1, params.size());
+          pendingParameterList = rest.isEmpty() ? null : new ArrayList<>(rest);
+          return first;
+        }
+      }
       pendingInputVariableBounds = null;
+      pendingParameterList       = null;
       restoreCursor(saved);
       return null;
     }
     catch (RuntimeException e)
     {
       pendingInputVariableBounds = null;
+      pendingParameterList       = null;
       restoreCursor(saved);
       return null;
     }
@@ -679,6 +719,65 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * @see <a href="https://github.com/crowlogic/arb4j/issues/878">#878</a>
    */
   VariableReference.Bounds pendingInputVariableBounds;
+
+  /**
+   * Parameter list captured by {@link #parseExplicitInputVariableIfPresent}
+   * when the declaration shape is {@code name(p₁,…,pₙ)=body} or
+   * {@code (p₁,…,pₙ)=body}. Holds the params after the first; the first
+   * is returned directly. Consumed and cleared by
+   * {@link #parseInputVariableAssignment}.
+   *
+   * @see <a href="https://github.com/crowlogic/arb4j/issues/975">#975</a>
+   */
+  List<String>             pendingParameterList;
+
+  /**
+   * Reads a parenthesised parameter list of the form
+   * {@code '(' name (',' name)* ')'} starting at the current cursor (which must
+   * be on the opening {@code '('}). The opening paren is consumed; on success
+   * the closing {@code ')'} is also consumed and the list of parameter names is
+   * returned. Returns {@code null} when malformed; the caller is responsible
+   * for restoring its own cursor snapshot.
+   *
+   * @see <a href="https://github.com/crowlogic/arb4j/issues/975">#975</a>
+   */
+  protected List<String> parseParenParameterList()
+  {
+    if (!nextCharacterIs('('))
+    {
+      return null;
+    }
+    List<String> params = new ArrayList<>();
+    skipSpaces();
+    if (nextCharacterIs(')'))
+    {
+      return params;
+    }
+    while (true)
+    {
+      skipSpaces();
+      if (!isIdentifierCharacter())
+      {
+        return null;
+      }
+      String name = parseName();
+      if (name == null || name.isEmpty())
+      {
+        return null;
+      }
+      params.add(name);
+      skipSpaces();
+      if (nextCharacterIs(','))
+      {
+        continue;
+      }
+      if (nextCharacterIs(')'))
+      {
+        return params;
+      }
+      return null;
+    }
+  }
 
   /**
    * Parses an interval specification of the form {@code (a,b)}, {@code [a,b]},
@@ -1700,7 +1799,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       this.functionalChild  = subExpr;
     }
     placeholderVariable = subExpr.setIndependentVariable(variableNode.spliceInto(subExpr));
-    subExpr.rootNode    = subExpr.resolve();
+
+    List<String> remainingParams = pendingParameterList;
+    pendingParameterList = null;
+    if (remainingParams != null && !remainingParams.isEmpty())
+    {
+      String       headParam = remainingParams.get(0);
+      List<String> tailParams = remainingParams.subList(1, remainingParams.size());
+      subExpr.pendingParameterList = tailParams.isEmpty() ? null : new ArrayList<>(tailParams);
+      subExpr.rootNode = subExpr.parseInputVariableAssignment(headParam);
+    }
+    else
+    {
+      subExpr.rootNode = subExpr.resolve();
+    }
 
     setCursorFrom(subExpr);
 
@@ -1740,13 +1852,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (inputVariableName != null)
     {
       assureInputNameHasNotAlreadyBeenAssociatedWithAContextVariable(inputVariableName);
-      VariableNode<D, C, F> newRef = newVariableNode(inputVariableName);
-      if (pendingInputVariableBounds != null)
+      if (pendingParameterList != null && !pendingParameterList.isEmpty() && coDomainType.isInterface())
       {
-        newRef.reference.bounds    = pendingInputVariableBounds;
-        pendingInputVariableBounds = null;
+        rootNode = parseInputVariableAssignment(inputVariableName);
       }
-      assignInputVariable(newRef);
+      else
+      {
+        VariableNode<D, C, F> newRef = newVariableNode(inputVariableName);
+        if (pendingInputVariableBounds != null)
+        {
+          newRef.reference.bounds    = pendingInputVariableBounds;
+          pendingInputVariableBounds = null;
+        }
+        assignInputVariable(newRef);
+      }
     }
 
     return this;
@@ -4899,7 +5018,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       log.debug("#{}: parseRoot expression='{}'\n", System.identityHashCode(this), getExpression());
     }
 
-    rootNode = resolve();
+    if (rootNode == null)
+    {
+      rootNode = resolve();
+    }
     assert rootNode != null : "parse(): resolve() returned null for expression='" + getExpression() + "'";
 
     if (position < getExpression().length() && character != '=')
@@ -5433,8 +5555,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     node = resolveAbsoluteValue(node);
     if (nextCharacterIs('('))
     {
-      node = new FunctionalEvaluationNode<>(this,
-                                            node);
+      FunctionalEvaluationNode.promoteDomainToScalarOfReifiedFunctional(this, node);
+      Node<D, C, F> arg = resolve();
+      node = new FunctionalEvaluationNode<>(this, node, arg);
+      while (nextCharacterIs(','))
+      {
+        node = new FunctionalEvaluationNode<>(this, node, resolve());
+      }
+      require(')');
     }
     return node;
   }

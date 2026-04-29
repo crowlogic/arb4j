@@ -68,13 +68,27 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
                                                                                                                     Expression<D, C, F> expression,
                                                                                                                     Node<D, C, F> functionNode)
   {
+    promoteDomainToScalarOfReifiedFunctional(expression, functionNode);
+    return expression.resolve();
+  }
+
+  /**
+   * When the function node's type is a reified functional (e.g.
+   * {@code RealPolynomial}) and the enclosing expression is nullary, promote
+   * the enclosing expression's {@code domainType} to the scalar type of the
+   * functional so that the argument variable resolves as an independent
+   * variable. Idempotent.
+   */
+  @SuppressWarnings("unchecked")
+  public static <D, C, F extends Function<? extends D, ? extends C>> void promoteDomainToScalarOfReifiedFunctional(Expression<D, C, F> expression,
+                                                                                                                   Node<D, C, F> functionNode)
+  {
     Class<?> fnType = functionNode.type();
     if (expression.isNullaryFunction() && Function.class.isAssignableFrom(fnType) && !fnType.isInterface()
         && !java.lang.reflect.Modifier.isAbstract(fnType.getModifiers()))
     {
       expression.domainType = (Class<? extends D>) Compiler.scalarType(fnType);
     }
-    return expression.resolve();
   }
 
   public FunctionalEvaluationNode(Expression<D, C, F> expression, Node<D, C, F> functionNode, Node<D, C, F> argNode)
