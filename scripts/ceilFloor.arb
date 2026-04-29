@@ -1,0 +1,22 @@
+var N = RealToComplexFunction.express("1+(-((lnΓ(¼ + t*I/2) - lnΓ(¼ - t*I/2))*I)/2 -ln(π)*t/2)/π + 1 - I*((ln(ζ(½ + I*t)) - ln(ζ(½ - I*t))))/(2*π)");
+N.typeset()
+var f=RealFunction.express("floor(√(t/(2*π)))");
+plot(0,100,1000,f)
+plot(0,1000,10000,f)
+var g=RealFunction.express("(√(t/(2*π)))");
+plot(0,1000,10000,f,g)
+var h=RealFunction.express("ceil(√(t/(2*π)))");
+plot(0,1000,10000,f,g,h)
+plot(0,1000,10000,j)
+plot(0,1000,10000,f,g,h,j)
+j.eval(23.3)
+j.eval(29.3)
+j.eval(55.3)
+j.eval(55.3)
+j.eval(55.3)
+j.eval(55.3)
+j.eval(55.3)
+var J=RealFunction.parse("ceil(√(t/(2*π)))-floor(√(t/(2*π)))");
+var j = J.instantiate();
+j.eval(55)
+J.inspect(j)
