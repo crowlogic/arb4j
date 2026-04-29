@@ -3,7 +3,8 @@ package arb.functions.complex;
 import arb.Complex;
 import arb.ComplexPolynomial;
 import arb.Real;
-import arb.functions.integer.ComplexSequence;
+import arb.functions.complex.ComplexFunction;
+import arb.functions.integer.ComplexFunctionSequence;
 import arb.functions.real.RealNullaryFunction;
 import junit.framework.TestCase;
 
@@ -36,15 +37,16 @@ public class RiccatiMittagLefflerFunctionTest extends
 
     try ( RiccatiMittagLefflerFunction eq = new RiccatiMittagLefflerFunction(μ, "1", "-1/2", "3/10"))
     {
-      ComplexSequence a = eq.muntzCoefficients();
+      ComplexFunctionSequence a = eq.muntzCoefficients();
       assertNotNull("Müntz coefficient sequence must be compiled", a);
-
-      eq.v.set(1, 0);
 
       arb.Integer one = new arb.Integer();
       one.set(1);
-      Complex α1 = new Complex();
-      a.evaluate(one, 1, bits, α1);
+      Complex v = new Complex();
+      v.set(1, 0);
+      Complex α1    = new Complex();
+      ComplexFunction a1Fn = a.evaluate(one, 1, bits, null);
+      a1Fn.evaluate(v, 1, bits, α1);
 
       double re  = α1.getReal().doubleValue();
       double im  = α1.getImag().doubleValue();
@@ -91,17 +93,18 @@ public class RiccatiMittagLefflerFunctionTest extends
     μ.setBounds(0, false, 1, true);
 
     try ( RiccatiMittagLefflerFunction eq = new RiccatiMittagLefflerFunction(μ, "2", "-3", "0");
+          Complex                      v  = new Complex();
           Complex                      z  = new Complex())
     {
-      eq.v.set(1, 0);
+      v.set(1, 0);
 
       // z = 0.5^0.6 ≈ 0.659753 — moderate, well inside the convergence radius
       // of the linear-case Mittag-Leffler series at q = -3.
       z.set(0.659753, 0);
 
-      int M8  = eq.chooseOrderForPrecision(z, 8);
-      int M16 = eq.chooseOrderForPrecision(z, 16);
-      int M32 = eq.chooseOrderForPrecision(z, 32);
+      int M8  = eq.chooseOrderForPrecision(v, z, 8);
+      int M16 = eq.chooseOrderForPrecision(v, z, 16);
+      int M32 = eq.chooseOrderForPrecision(v, z, 32);
 
       assertTrue("M(8 bits) must be ≥ 2, got " + M8, M8 >= 2);
       assertTrue("M(8 bits) must be ≤ 10 in the linear regime, got " + M8, M8 <= 10);
@@ -140,11 +143,12 @@ public class RiccatiMittagLefflerFunctionTest extends
                                                                              "-1/2 + ⅈ/3",
                                                                              "3/10"))
     {
-      eq.v.set(1, 0);
+      Complex v = new Complex();
+      v.set(1, 0);
 
-      // Stage 1 — the truncated Müntz reorganization.
+      // Stage 1 — the truncated Müntz reorganization at v.
       Complex α = Complex.newVector(2 * M);
-      eq.muntzCoefficientsAtV(2 * M, bits, α);
+      eq.coefficientsAt(v, 2 * M, bits, α);
 
       ComplexPolynomial g = new ComplexPolynomial();
       g.fitLength(2 * M + 1);
@@ -160,7 +164,7 @@ public class RiccatiMittagLefflerFunctionTest extends
       ComplexPolynomial   Q_M = new ComplexPolynomial();
       ComplexPolynomial[] PQ  = new ComplexPolynomial[]
       { P_M, Q_M };
-      eq.padePolynomials(M, bits, PQ);
+      eq.padePolynomials(v, M, bits, PQ);
 
       // Stage 3 — polynomial residue.
       ComplexPolynomial product = new ComplexPolynomial();

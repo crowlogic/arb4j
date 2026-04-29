@@ -1,6 +1,14 @@
 arb4j (0.99.9.9.10) UNRELEASED; urgency=low
 
   [ Stephen Crowley ]
+  * MuntzPadeFunction is a ComplexFunctional<Complex,Complex,ComplexFunction>:
+    v becomes the input parameter to evaluate, not a mutable field.
+    RiccatiMittagLefflerFunction extends MuntzPadeFunction; v field and
+    muntzCoefficientsAtV are gone. The curried Muntz coefficient sequence
+    a:k➔v➔a_k(v) is built once in the Context using a forward-declared
+    mutually-recursive cluster (a, S) so the integer memo on k fires at
+    every v without recompilation. New top-level MuntzPadeApproximantAtV
+    holds the per-v Pade pair built lazily inside evaluate.
   * Issue #994: Re-entrancy guard on Expression.compile() ends the
     recompile cascade in mutually-recursive curried sequence clusters.
     A peer's generateFunctionInitializer at line 2609 forced

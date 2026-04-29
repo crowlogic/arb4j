@@ -1,49 +1,44 @@
 package arb.functions.complex;
 
-import java.util.Collections;
-import java.util.IdentityHashMap;
-import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import arb.Complex;
-import arb.Integer;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
+import arb.functions.ComplexFunctional;
 import arb.functions.Function;
 import arb.functions.Jacobian;
-import arb.functions.integer.ComplexSequence;
+import arb.functions.integer.ComplexFunctionSequence;
 import arb.functions.integer.Sequence;
 
 /**
  * The Riccati–Mittag-Leffler function
  *
  * <pre>
- *   Y_α(p, q, r; t) := unique analytic solution on a neighborhood of t = 0 of
+ *   Y_α(p, q, r; t, v) := unique analytic solution on a neighborhood of t = 0 of
  *
- *       Đᵅ y(t) = p(v) + q(v)·y(t) + r(v)·y(t)²,    y(0) = 0,    α = μ ∈ (0,1)
+ *       Đᵅ y(t; v) = p(v) + q(v)·y(t; v) + r(v)·y(t; v)²,    y(0; v) = 0,
+ *       α = μ ∈ (0,1)
  * </pre>
  *
  * <p>
  * A three-parameter family of transcendental functions of t parametrized by a
  * fractional order α ∈ (0,1) and three analytic functions p(v), q(v), r(v) of
- * an external Fourier parameter v. The family generalizes the Mittag-Leffler
- * function E_α (recovered when r ≡ 0, q ≢ 0: Y_α(p, q, 0; t) = (p/q)·(E_α(q·tᵅ)
- * − 1)) and the pure power tᵅ (recovered when q ≡ 0, r ≡ 0: Y_α(p, 0, 0; t) =
- * p·tᵅ/Γ(α+1)). It is strictly larger than ₂F₁ — Gauss hypergeometric is a
- * linear ODE; this is genuinely nonlinear in y. At α = 1 the equation reduces
- * to the classical autonomous Riccati ODE whose solution is rational in tan or
- * tanh of √(q² − 4pr)·t/2 depending on the sign of the discriminant.
- * </p>
+ * an external Fourier parameter v. As a {@link ComplexFunctional}, this is the
+ * curry v ↦ (t ↦ Y_α(t; v)) — every call to
+ * {@link #evaluate(Complex, int, int, ComplexFunction)} at a v produces a
+ * fresh {@link MuntzPadeApproximantAtV} bound to the Padé pair built at that
+ * specific v. There is no mutable v field, no v-context, no cache that
+ * depends on v.
  *
  * <h2>Construction</h2>
  *
- * The Müntz coefficient sequence k ↦ a_k(v) is built from the algebraic
- * recurrence
+ * The curried Müntz coefficient sequence k ↦ v ↦ a_k(v) is built from the
+ * algebraic recurrence
  *
  * <pre>
  *   a_1(v) = p(v) / Γ(μ+1)
@@ -51,26 +46,13 @@ import arb.functions.integer.Sequence;
  *   a_k(v) = γ_k · ( q(v)·a_{k-1}(v) + r(v)·Σ_{j=1}^{k-2} a_j(v)·a_{k-1-j}(v) ),  k≥2
  * </pre>
  *
- * compiled once as an expression and handed to the parent
+ * compiled once as a {@link ComplexFunctionSequence} (so issue #993's integer
+ * memo on k fires automatically) and handed to the parent
  * {@link MuntzPadeFunction}. Everything else — the Hankel solve, the
  * order-selection loop from precision, the diagonal Padé evaluation, the
  * a-posteriori error bound — lives in the parent because none of it is
- * specific to Riccati: it belongs to the (μ, k ↦ a_k) Müntz–Padé re-summation.
- *
- * <h2>Derivative with respect to v</h2>
- *
- * Differentiating the Riccati equation in v gives the linear fractional
- * Volterra equation
- *
- * <pre>
- *   Đᵅ w(t) = f(t) + g(t)·w(t),    w := ∂y/∂v
- *   f(t)    = c₀'(v) + c₁'(v)·y(t) + c₂'(v)·y(t)²
- *   g(t)    = c₁(v) + 2·c₂(v)·y(t)
- * </pre>
- *
- * whose Müntz coefficients w_k satisfy a linear recurrence in (a_j, w_j). The
- * solution w is itself a Müntz–Padé function in (μ, k ↦ w_k). See
- * {@link #jacobian(String[])}.
+ * specific to Riccati: it belongs to the (μ, k ↦ v ↦ a_k(v)) Müntz–Padé
+ * re-summation.
  *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
@@ -83,58 +65,47 @@ public class RiccatiMittagLefflerFunction extends
   private static final Logger log = LoggerFactory.getLogger(RiccatiMittagLefflerFunction.class);
 
   /** Documentation-only string of the equation in standard form. */
-  public static final String FRACTIONAL_RICCATI_EQUATION = "t➔Đ^(μ)y(t)=t➔p(v)+q(v)*y(t)+r(v)*y(t)²";
+  public static final String FRACTIONAL_RICCATI_EQUATION = "t➔Đ^(μ)y(t;v)=t➔p(v)+q(v)*y(t;v)+r(v)*y(t;v)²";
 
   /** Source expressions for p(v), q(v), r(v) — kept for inspection. */
-  public final String        constantTerm;
-  public final String        linearTerm;
-  public final String        quadraticTerm;
+  public final String          constantTerm;
+  public final String          linearTerm;
+  public final String          quadraticTerm;
 
   /** Compiled p(v), q(v), r(v). */
   public final ComplexFunction p;
   public final ComplexFunction q;
   public final ComplexFunction r;
 
-  /** The Fourier parameter v as a Complex Context variable. */
-  public final Complex       v;
-
-  /** The Context holding all symbolic state (μ, v, p, q, r, S, a). */
-  public final Context       context;
+  /** The Context holding the symbolic parameters (μ, p, q, r, S, a). */
+  public final Context         context;
 
   /** Whether this instance owns (and must close) α. */
-  private final boolean      ownsAlpha;
-
-  /** Snapshot of v's value at the time the Padé cache was last built. */
-  private final Complex      cachedV      = new Complex();
-  private boolean            cachedVValid = false;
+  private final boolean        ownsAlpha;
 
   // ────────────────────────────────────────────────────────────────────────
   // Construction
   // ────────────────────────────────────────────────────────────────────────
 
   /**
-   * Holder returned by {@link #buildContext(Context, Real, String, String, String)}
-   * carrying everything the constructor needs to call super(α, a) and then
-   * populate its own fields.
+   * Holder returned by {@link #buildContext(Context, Real, String, String, String)}.
    */
   private static final class Built
   {
-    final Real             α;
-    final boolean          ownsAlpha;
-    final Complex          v;
-    final ComplexFunction  p;
-    final ComplexFunction  q;
-    final ComplexFunction  r;
-    final ComplexSequence  a;
-    final Context          context;
+    final Real                    α;
+    final boolean                 ownsAlpha;
+    final ComplexFunction         p;
+    final ComplexFunction         q;
+    final ComplexFunction         r;
+    final ComplexFunctionSequence a;
+    final Context                 context;
 
-    Built(Real α, boolean ownsAlpha, Complex v,
+    Built(Real α, boolean ownsAlpha,
           ComplexFunction p, ComplexFunction q, ComplexFunction r,
-          ComplexSequence a, Context context)
+          ComplexFunctionSequence a, Context context)
     {
       this.α         = α;
       this.ownsAlpha = ownsAlpha;
-      this.v         = v;
       this.p         = p;
       this.q         = q;
       this.r         = r;
@@ -157,7 +128,6 @@ public class RiccatiMittagLefflerFunction extends
   {
     super(b.α, b.a);
     this.context       = b.context;
-    this.v             = b.v;
     this.p             = b.p;
     this.q             = b.q;
     this.r             = b.r;
@@ -168,8 +138,8 @@ public class RiccatiMittagLefflerFunction extends
   }
 
   /**
-   * Bind μ and v in the supplied Context, compile p(v), q(v), r(v), then
-   * compile the Müntz coefficient sequence a_k.
+   * Bind μ in the supplied Context, compile p(v), q(v), r(v) as v↦· functions,
+   * then compile the curried Müntz coefficient sequence a:k➔v➔a_k(v).
    */
   private static Built buildContext(Context context, Real αSeed, String pSrc, String qSrc, String rSrc)
   {
@@ -192,90 +162,31 @@ public class RiccatiMittagLefflerFunction extends
       ownsAlpha = false;
     }
 
-    Complex v;
-    Complex existingV = context.getVariable("v");
-    if (existingV == null)
-    {
-      v = context.registerVariable("v", new Complex().setName("v"));
-    }
-    else
-    {
-      v = existingV;
-    }
+    ComplexFunction p = ComplexFunction.express("p", "v➔" + pSrc, context);
+    ComplexFunction q = ComplexFunction.express("q", "v➔" + qSrc, context);
+    ComplexFunction r = ComplexFunction.express("r", "v➔" + rSrc, context);
 
-    ComplexFunction p = ComplexFunction.express("p", pSrc, context);
-    ComplexFunction q = ComplexFunction.express("q", qSrc, context);
-    ComplexFunction r = ComplexFunction.express("r", rSrc, context);
-
-    // Mutually-recursive Müntz cluster: S(k) = Σ a(j)·a(k-1-j); the
+    // Mutually-recursive Müntz cluster: S(k)(v) = Σ a(j)(v)·a(k-1-j)(v); the
     // forward declaration of a's mapping makes the S compiler resolve a by
     // Context lookup instead of recursing into its own definition.
-    context.registerFunctionMapping("a", Integer.class, Complex.class, ComplexSequence.class);
+    context.registerFunctionMapping("a", arb.Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
 
-    String sExpr = "S:k➔sum(j➔a(j)*a(k-1-j){j=1..k-2})";
-    Sequence.parseCompileAndRegister("S", Complex.class, sExpr, ComplexSequence.class, context);
+    String sExpr = "S:k➔v➔sum(j➔a(j)(v)*a(k-1-j)(v){j=1..k-2})";
+    Sequence.parseCompileAndRegister("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, context);
 
-    String aExpr = "a:k➔when(k=1, p(v)/Γ(μ+1),"
+    String aExpr = "a:k➔v➔when(k=1, p(v)/Γ(μ+1),"
                  + " else, (Γ((k-1)*μ+1)/Γ(k*μ+1))"
-                 + "       *(q(v)*a(k-1)+r(v)*S(k)))";
-    ComplexSequence a = ComplexSequence.express(aExpr, context);
+                 + "       *(q(v)*a(k-1)(v)+r(v)*S(k)(v)))";
+    ComplexFunctionSequence a = ComplexFunctionSequence.express(aExpr, context);
 
-    return new Built(α, ownsAlpha, v, p, q, r, a, context);
+    return new Built(α, ownsAlpha, p, q, r, a, context);
   }
 
   // ────────────────────────────────────────────────────────────────────────
-  // Upstream-staleness hooks (parent calls these on every refresh)
-  // ────────────────────────────────────────────────────────────────────────
-
-  /**
-   * The Müntz coefficient sequence depends on v through p(v), q(v), r(v); the
-   * cached re-summation is stale whenever v has moved since the last build.
-   */
-  @Override
-  protected boolean isUpstreamStale()
-  {
-    return !cachedVValid || !cachedV.equals(v);
-  }
-
-  /**
-   * The compiled p, q, r, S, a hoist v-dependent sub-expressions in static
-   * caches; those caches must be invalidated whenever v changes so the next
-   * a_k evaluation rebuilds at the new v.
-   */
-  @Override
-  protected void invalidateUpstream()
-  {
-    Set<Function<?, ?>> alreadyInvalidated = Collections.newSetFromMap(new IdentityHashMap<>());
-    if (p != null) p.invalidateCache(alreadyInvalidated);
-    if (q != null) q.invalidateCache(alreadyInvalidated);
-    if (r != null) r.invalidateCache(alreadyInvalidated);
-    var sMapping = context.<Integer, Complex, ComplexSequence>getFunctionMapping("S");
-    if (sMapping != null && sMapping.instance != null)
-    {
-      sMapping.instance.invalidateCache(alreadyInvalidated);
-    }
-    if (a != null) a.invalidateCache(alreadyInvalidated);
-  }
-
-  @Override
-  protected void snapshotUpstream()
-  {
-    cachedV.set(v);
-    cachedVValid = true;
-  }
-
-  @Override
-  public void invalidateCache()
-  {
-    super.invalidateCache();
-    cachedVValid = false;
-  }
-
-  // ────────────────────────────────────────────────────────────────────────
-  // Padé sub-context parent — the assembled rational R_M(z) = P_M(z)/Q_M(z)
+  // Padé sub-context parent — the assembled rational R_M(z; v) = P_M(z;v)/Q_M(z;v)
   // is parsed in a sub-Context that inherits this function's variables so an
-  // externally-owned p, q, r, μ, v continue to resolve when the user evaluates
-  // the rational function.
+  // externally-owned μ continues to resolve when the rational function is
+  // evaluated.
   // ────────────────────────────────────────────────────────────────────────
 
   @Override
@@ -289,22 +200,12 @@ public class RiccatiMittagLefflerFunction extends
   // ────────────────────────────────────────────────────────────────────────
 
   /**
-   * Alias for {@link #coefficients()} — the compiled Müntz coefficient
-   * sequence k ↦ a_k(v).
+   * Alias for {@link #coefficients()} — the curried Müntz coefficient
+   * sequence k ↦ v ↦ a_k(v).
    */
-  public ComplexSequence muntzCoefficients()
+  public ComplexFunctionSequence muntzCoefficients()
   {
     return a;
-  }
-
-  /**
-   * Alias for {@link #coefficientsAt(int, int, Complex)} — evaluate the first
-   * n Müntz coefficients α_k = a_k(v) at the current v into the
-   * caller-allocated vector.
-   */
-  public Complex muntzCoefficientsAtV(int n, int bits, Complex result)
-  {
-    return coefficientsAt(n, bits, result);
   }
 
   /**
@@ -327,39 +228,39 @@ public class RiccatiMittagLefflerFunction extends
    * equation
    *
    * <pre>
-   *   Đᵅ w(t) = f(t) + g(t)·w(t),    w(t) := ∂y/∂v(t)
-   *   f(t)    = c₀'(v) + c₁'(v)·y(t) + c₂'(v)·y(t)²
-   *   g(t)    = c₁(v)  + 2·c₂(v)·y(t)
+   *   Đᵅ w(t; v) = f(t; v) + g(t; v)·w(t; v),    w(t;v) := ∂y(t;v)/∂v
+   *   f(t; v)    = ṗ(v) + q̇(v)·y(t;v) + ṙ(v)·y(t;v)²
+   *   g(t; v)    = q(v) + 2·r(v)·y(t;v)
    * </pre>
    *
-   * Substituting y(t) = Σ a_k·t^{kμ} and matching powers gives Müntz
+   * Substituting y(t;v) = Σ a_k(v)·t^{kμ} and matching powers gives Müntz
    * coefficients
    *
    * <pre>
-   *   f_0 = c₀'(v),                    f_k = c₁'(v)·a_k + c₂'(v)·Σ_{j=1}^{k-1} a_j·a_{k-j}   for k≥1
-   *   g_0 = c₁(v),                     g_k = 2·c₂(v)·a_k                                     for k≥1
+   *   f_0(v) = ṗ(v),                      f_k(v) = q̇(v)·a_k(v) + ṙ(v)·Σ_{j=1..k-1} a_j(v)·a_{k-j}(v)
+   *   g_0(v) = q(v),                      g_k(v) = 2·r(v)·a_k(v)                     for k≥1
    * </pre>
    *
-   * Then w_n is determined by a linear recurrence
+   * Then w_n(v) is determined by a linear recurrence
    *
    * <pre>
-   *   w_1     = f_0 / Γ(μ+1)
-   *   w_{n+1} = ( Γ(nμ+1) / Γ((n+1)μ+1) ) · ( f_n + Σ_{j=0}^{n-1} g_{n-1-j}·w_{j+1} ),  n≥1
+   *   w_1(v)     = ṗ(v) / Γ(μ+1)
+   *   w_{n+1}(v) = ( Γ(nμ+1) / Γ((n+1)μ+1) ) · ( f_n(v) + Σ_{j=0..n-1} g_{n-1-j}(v)·w_{j+1}(v) ),  n≥1
    * </pre>
    *
-   * The solution w(t) = Σ w_k·t^{kμ} is itself a Müntz–Padé function, so the
-   * partial is returned as a fresh {@link MuntzPadeFunction} sharing the same
-   * α and the new w-sequence.
+   * The solution w(t;v) = Σ w_k(v)·t^{kμ} is itself a Müntz–Padé function, so
+   * the partial is returned as a fresh {@link MuntzPadeFunction} sharing the
+   * same α and the new curried w-sequence.
    * </p>
    */
   @Override
-  public Jacobian<Complex, Complex, ? extends Function<Complex, Complex>> jacobian(String[] variables)
+  public Jacobian<Complex, ComplexFunction, ? extends Function<Complex, ComplexFunction>> jacobian(String[] variables)
   {
     if (variables == null || variables.length == 0)
     {
       throw new IllegalArgumentException("variables must be a non-empty array");
     }
-    ComplexFunction[] partials = new ComplexFunction[variables.length];
+    ComplexFunctional[] partials = new ComplexFunctional[variables.length];
     for (int i = 0; i < variables.length; i++)
     {
       String name = variables[i];
@@ -369,12 +270,12 @@ public class RiccatiMittagLefflerFunction extends
       }
       partials[i] = partialDerivativeWithRespectToV();
     }
-    return new Jacobian<Complex, Complex, ComplexFunction>(this, variables, partials);
+    return new Jacobian<Complex, ComplexFunction, ComplexFunctional>(this, variables, partials);
   }
 
   /**
-   * Build w(t) = ∂y/∂v as a {@link MuntzPadeFunction} with the linear-Volterra
-   * Müntz coefficients w_k.
+   * Build w(t;v) = ∂y/∂v as a {@link MuntzPadeFunction} with the
+   * linear-Volterra curried Müntz coefficients k ↦ v ↦ w_k(v).
    *
    * <p>p, q, r already live in {@link #context} as compiled
    * {@link ComplexFunction}s. Their v-partials are obtained via the universal
@@ -384,20 +285,12 @@ public class RiccatiMittagLefflerFunction extends
    * {@link #context} under the names ṗ, q̇, ṙ so the f, g, w expressions can
    * resolve them by name like any other Context-scoped function.
    */
-  private ComplexFunction partialDerivativeWithRespectToV()
+  private ComplexFunctional partialDerivativeWithRespectToV()
   {
-    // p_dv, q_dv, r_dv : ∂p/∂v, ∂q/∂v, ∂r/∂v — fresh ComplexFunctions sharing
-    // this.context. The cloned Expression compiles under className equal to
-    // <orig>_d<var>, so the registered function name must match that exact
-    // string for the JVM to resolve the field descriptor `L<name>;` to the
-    // actual loaded class on the shared ExpressionClassLoader.
     ComplexFunction p_dv = (ComplexFunction) p.derivative("v");
     ComplexFunction q_dv = (ComplexFunction) q.derivative("v");
     ComplexFunction r_dv = (ComplexFunction) r.derivative("v");
 
-    // Register them by name in the same Context. Both `instance` and
-    // `expression` are set so generateFunctionInitializer finds the source
-    // Expression for v/μ-propagation field-injection.
     var pMap = context.registerFunctionMapping("p_dv", Complex.class, Complex.class, ComplexFunction.class);
     pMap.instance   = p_dv;
     pMap.expression = (Expression) p_dv.getExpression();
@@ -409,24 +302,24 @@ public class RiccatiMittagLefflerFunction extends
     rMap.expression = (Expression) r_dv.getExpression();
 
     // Forward-declare w so its self-reference resolves; a is already in context.
-    context.registerFunctionMapping("w", Integer.class, Complex.class, ComplexSequence.class);
+    context.registerFunctionMapping("w", arb.Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
 
-    // f_k:  k=0 → ṗ(v);    k≥1 → q̇(v)·a(k) + ṙ(v)·Σ_{j=1}^{k-1} a(j)·a(k-j)
-    String fExpr = "f:k➔when(k=0, p_dv(v),"
-                 + " else, q_dv(v)*a(k) + r_dv(v)*sum(j➔a(j)*a(k-j){j=1..k-1}))";
-    Sequence.parseCompileAndRegister("f", Complex.class, fExpr, ComplexSequence.class, context);
+    // f(k)(v) :  k=0 → ṗ(v);  k≥1 → q̇(v)·a(k)(v) + ṙ(v)·Σ_{j=1..k-1} a(j)(v)·a(k-j)(v)
+    String fExpr = "f:k➔v➔when(k=0, p_dv(v),"
+                 + " else, q_dv(v)*a(k)(v) + r_dv(v)*sum(j➔a(j)(v)*a(k-j)(v){j=1..k-1}))";
+    Sequence.parseCompileAndRegister("f", ComplexFunction.class, fExpr, ComplexFunctionSequence.class, context);
 
-    // g_k:  k=0 → q(v);     k≥1 → 2·r(v)·a(k)
-    String gExpr = "g:k➔when(k=0, q(v), else, 2*r(v)*a(k))";
-    Sequence.parseCompileAndRegister("g", Complex.class, gExpr, ComplexSequence.class, context);
+    // g(k)(v) :  k=0 → q(v);  k≥1 → 2·r(v)·a(k)(v)
+    String gExpr = "g:k➔v➔when(k=0, q(v), else, 2*r(v)*a(k)(v))";
+    Sequence.parseCompileAndRegister("g", ComplexFunction.class, gExpr, ComplexFunctionSequence.class, context);
 
-    // w_k linear Volterra recurrence (qrh_muntz §7.8):
-    //   w(1) = ṗ(v)/Γ(μ+1)
-    //   w(k) = Γ((k-1)μ+1)/Γ(kμ+1) · (f(k-1) + Σ_{j=0..k-2} g(k-2-j)·w(j+1))   [k≥2]
-    String wExpr = "w:k➔when(k=1, p_dv(v)/Γ(μ+1),"
+    // w(k)(v) linear Volterra recurrence:
+    //   w(1)(v) = ṗ(v)/Γ(μ+1)
+    //   w(k)(v) = Γ((k-1)μ+1)/Γ(kμ+1) · (f(k-1)(v) + Σ_{j=0..k-2} g(k-2-j)(v)·w(j+1)(v))   [k≥2]
+    String wExpr = "w:k➔v➔when(k=1, p_dv(v)/Γ(μ+1),"
                  + " else, (Γ((k-1)*μ+1)/Γ(k*μ+1))"
-                 + "       *(f(k-1) + sum(j➔g(k-2-j)*w(j+1){j=0..k-2})))";
-    ComplexSequence w = ComplexSequence.express(wExpr, context);
+                 + "       *(f(k-1)(v) + sum(j➔g(k-2-j)(v)*w(j+1)(v){j=0..k-2})))";
+    ComplexFunctionSequence w = ComplexFunctionSequence.express(wExpr, context);
 
     return new MuntzPadeFunction("∂y/∂v", α, w);
   }

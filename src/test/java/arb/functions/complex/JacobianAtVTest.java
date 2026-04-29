@@ -4,6 +4,7 @@ import arb.Complex;
 import arb.Real;
 import arb.functions.Function;
 import arb.functions.Jacobian;
+import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.MuntzPadeFunction;
 import arb.functions.real.RealNullaryFunction;
 import junit.framework.TestCase;
@@ -68,11 +69,10 @@ public class JacobianAtVTest extends
 
     try ( RiccatiMittagLefflerFunction eq = new RiccatiMittagLefflerFunction(μ, pSrc, qSrc, rSrc))
     {
-      // Set v = 1.
-      eq.v.set(1, 0);
-      eq.invalidateCache();
+      Complex v = new Complex();
+      v.set(1, 0);
 
-      Jacobian<Complex, Complex, ? extends Function<Complex, Complex>> J =
+      Jacobian<Complex, ComplexFunction, ? extends Function<Complex, ComplexFunction>> J =
         eq.jacobian(new String[] { "v" });
       assertEquals("variable count", 1,    J.variables.length);
       assertEquals("variable name",  "v",  J.variables[0]);
@@ -81,13 +81,13 @@ public class JacobianAtVTest extends
 
       MuntzPadeFunction w = (MuntzPadeFunction) J.partials[0];
 
-      // w_1, w_2, w_3 closed-form against the partial's first three Müntz coefficients.
+      // w_1, w_2, w_3 closed-form against the partial's first three Müntz coefficients at v=1.
       try ( Complex coeffs   = Complex.newVector(3);
             Real    expected = new Real();
             Real    actualRe = new Real();
             Real    actualIm = new Real())
       {
-        w.coefficientsAt(3, bits, coeffs);
+        w.coefficientsAt(v, 3, bits, coeffs);
 
         // w_1 = 1 / Γ(0.6+1) = 1/Γ(1.6)
         expected.set(RealNullaryFunction.express("1/Γ(1.6)").evaluate());
