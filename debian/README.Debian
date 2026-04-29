@@ -1,53 +1,77 @@
 arb4j for Debian
 ================
 
-arb4j is a Java binding to the FLINT/Arb arbitrary-precision ball-arithmetic
-library together with a JIT bytecode compiler for symbolic expressions.
-A symbolic expression is parsed into a tree, then lowered to a fresh
-`java.lang.Class` whose `evaluate` method is the compiled value of the
-expression.
+arb4j is a Java binding to FLINT/Arb arbitrary-precision ball arithmetic
+together with a JIT bytecode compiler for the symbolic expression
+language documented at `/usr/share/doc/arb4j/`. A source string in the
+expression language is parsed, type-checked, ASM-compiled into a fresh
+`java.lang.Class` extending one of the typed function interfaces, and
+loaded — the resulting object's `evaluate` method is the compiled value
+of the expression.
 
 
-Mathematical scope
-------------------
+The expression language at a glance
+-----------------------------------
 
-The expression compiler is a symbolic engine. It manipulates real and
-complex closed-form objects from the unicode-rich language documented at
-`/usr/share/arb4j/`. It does **not** silently invoke quadrature, finite
-differences, or any other numerical fallback — those must be requested
-by name. Examples of what can be expressed verbatim:
+Every example below is a literal source string accepted by the parser
+exactly as written. The arrow `➔` separates the bound variable from the
+body. Ranges in n-ary operators use `{k = a..b}` (`..` may also be
+written as the single-character ellipsis `…`).
 
-  ┌──────────────────────────────────────────────────────────────────┐
-  │   d                                                              │
-  │  ─── f(x)            symbolic differentiation                    │
-  │   dx                                                             │
-  │                                                                  │
-  │     ⌠ b                                                          │
-  │     │   f(x) dx      symbolic integration                        │
-  │     ⌡ a                                                          │
-  │                                                                  │
-  │            ∞                                                     │
-  │           ───                                                    │
-  │   f(x) =  ╲    aₖ · xᵏ        Müntz / Padé approximants          │
-  │           ╱                                                      │
-  │           ───                                                    │
-  │           k=0                                                    │
-  │                                                                  │
-  │                  ⎛ d ⎞ μ                                         │
-  │   D μ f(t)  =   ⎜───⎟  f(t)   Caputo fractional derivative      │
-  │      C          ⎝ dt⎠                                            │
-  │                                                                  │
-  │                  ∞                                               │
-  │                 ⌠                                                │
-  │   ℒ {f}(s) =   │   f(t) · e⁻ˢᵗ dt    Laplace transform           │
-  │                 ⌡                                                │
-  │                  0                                               │
-  └──────────────────────────────────────────────────────────────────┘
+  Differentiation, prefix `∂`, function form `diff`, dotted accent for ̇order
 
-The Riccati–Mittag-Leffler family, the rough Heston characteristic
-function, the Müntz/Padé pair, and a long catalogue of orthogonal-
-polynomial sequences are first-class compiled functions; see the
-javadocs under `/usr/share/doc/arb4j/api/`.
+      f ➔ ∂f                                     # ∂f/∂x via the implicit independent variable
+      f ➔ diff(f)                                # function form, identical
+      f̈                                          # second derivative, dotted-accent shorthand
+
+  Symbolic integration, prefix `∫` or `int`
+
+      ∫ f(x) dx                                  # antiderivative as a polynomial / rational function
+      int(f(x), x, a, b)                         # definite integral, inclusive limits
+
+  Caputo fractional derivative `Đ`, Riemann–Liouville integral `Iᵅ`
+
+      Đ^μ f                                      # Caputo  Đ^μ f
+      fracdiff(f, μ)                             # function form
+      fracint(f, α)                              # Riemann–Liouville  Iᵅ f
+
+  N-ary fold over a bound integer index — Σ for sum, Π for product
+
+      sum(k ➔ a(k)·zᵏ {k = 0..M−1})              # polynomial Σ aₖ zᵏ
+      Σ a(k)·zᵏ {k = 0..M−1}                     # sigil form, identical
+      prod(k ➔ 1 + α·xᵏ {k = 1..n})              # Π (1 + α xᵏ)
+
+  Three-term recurrence for orthogonal polynomials
+
+      P : n ➔ when(n = 0, p₀,
+                   n = 1, p₁,
+                   else,  (A(n−1)·x + B(n−1))·P(n−1) − C(n−1)·P(n−2))
+
+  Müntz cluster — mutually-recursive polynomial-valued sequences
+
+      S : k ➔ sum(j ➔ a(j)·a(k−1−j) {j = 1..k−2})
+      a : k ➔ when(k = 1, p(v)/Γ(μ+1),
+                   else,  (Γ((k−1)·μ + 1) / Γ(k·μ + 1))·(q(v)·a(k−1) + r(v)·S(k)))
+
+  Special functions, recognised as named nodes
+
+      Γ(z)                                       # gamma
+      ζ(s)                                       # Riemann zeta
+      Z(t)                                       # Hardy Z
+      ℰ(α, β, z)                                 # Mittag-Leffler
+      J(n, x)                                    # Bessel J_n(x)
+      W(x)                                       # Lambert W
+      pFq([a₁, …, aₚ]; [b₁, …, b_q]; z)         # generalised hypergeometric
+
+The cardinal rule of the language is that **the codomain type chooses
+the algebra**: the same `a · b` compiles to `acb_add` when both sides
+are `Complex`, to `acb_poly_add` when both are `ComplexPolynomial`, to
+`acb_mat_add` when both are `ComplexMatrix`. The same `sum(k ➔ … {k=a..b})`
+folds with the appropriate algebra's `add`. Polynomials are objects you
+multiply, sums are folds over an index, and there is no separate
+"polynomial expression language" or "matrix expression language" — there
+is one language, and the algebra it speaks is chosen by the type of the
+result.
 
 
 Package layout
@@ -93,18 +117,14 @@ The `arb4j` Debian package follows FHS:
 Classpath model
 ---------------
 
-Logically the classpath the JVM resolves at runtime is
+The runtime classpath the JVM resolves is
 
-         /usr/share/java/arb4j.jar   ⊕   ⨁         /usr/share/arb4j/lib/d.jar
-                                          d ∈ Δ
+    ARB4J_CLASSPATH = /usr/share/java/arb4j.jar : Δ
 
-where Δ is the set of transitive runtime dependencies enumerated by
-
-  $ cat /usr/share/arb4j/class.path
-
-|Δ| is the number of dependency jars shipped (currently 46). The thin jar
-plus that set is the entire classpath; nothing is relocated and there is
-no fat jar.
+where Δ is the colon-joined contents of `/usr/share/arb4j/class.path`,
+i.e. the |Δ| transitive runtime dependencies enumerated one per slot
+(currently |Δ| = 46). The thin jar plus that set is the entire
+classpath; nothing is relocated and there is no fat jar.
 
 
 Native library resolution
@@ -112,35 +132,34 @@ Native library resolution
 
 Every wrapper in `/usr/bin/` sources `/usr/share/arb4j/env.sh` and passes
 
-  -Djava.library.path=$ARB4J_NATIVE_DIR
-  LD_LIBRARY_PATH=$ARB4J_NATIVE_DIR
+    -Djava.library.path=$ARB4J_NATIVE_DIR
+    LD_LIBRARY_PATH=$ARB4J_NATIVE_DIR
 
-to the JVM, so `System.loadLibrary("arblib")` resolves `libarblib.so` from
-`/usr/lib/jni/`. The JavaFX linux-classifier `.so` files and J2V8's
+to the JVM, so `System.loadLibrary("arblib")` resolves `libarblib.so`
+from `/usr/lib/jni/`. The JavaFX linux-classifier `.so` files and J2V8's
 `libj2v8_linux_x86_64.so` are extracted out of their dependency jars at
 package-build time by `debian/rules` (`unzip -j -o '*.so'` over each
 `/usr/share/arb4j/lib/javafx-*-linux.jar` and
 `/usr/share/arb4j/lib/j2v8_linux_*.jar`).
 
-JavaFX is therefore present on the *classpath* but is not a resolved JPMS
-module. `com.sun.javafx.application.LauncherImpl` aborts with
+JavaFX is therefore present on the *classpath* but is not a resolved
+JPMS module. `com.sun.javafx.application.LauncherImpl` aborts with
 
-  Error: JavaFX runtime components are missing, and are required to run
-  this application
+    Error: JavaFX runtime components are missing, and are required to
+    run this application
 
 whenever the configured main class extends `javafx.application.Application`.
 The fix in this package is `arb.applications.Launcher` — a class that
 does **not** extend `Application`. It calls
 
-  Application.launch(
-    Class.forName(argv[0]).asSubclass(Application.class),
-    Arrays.copyOfRange(argv, 1, argv.length)
-  )
+    Application.launch(
+        Class.forName(argv[0]).asSubclass(Application.class),
+        Arrays.copyOfRange(argv, 1, argv.length))
 
 so the JVM never sees an `Application` subclass on the command line and
 the guard never fires. Every wrapper in `/usr/bin/` ends with
 
-  ... -classpath $CLASSPATH arb.applications.Launcher $@
+    ... -classpath $CLASSPATH arb.applications.Launcher $@
 
 and the per-app script just passes its FQCN through `$@`. The rewrite
 that produces this shape from the source tree's `bin/*` is performed by
@@ -154,7 +173,7 @@ JavaFX 26 on Linux uses GTK via `libglassgtk3.so`. There is no Monocle
 path in the openjfx artifacts shipped with this package; headless runs
 need a real X protocol stream:
 
-  $ xvfb-run -a /usr/bin/Expressor
+    $ xvfb-run -a /usr/bin/Expressor
 
 Two helpers under `/usr/bin/` wrap that pattern:
 
@@ -174,17 +193,19 @@ Two helpers under `/usr/bin/` wrap that pattern:
 Trying it out
 -------------
 
-  $ /usr/bin/Expressor                                 # graphical expression editor
-  $ /usr/bin/snapshot arb.applications.Expressor /tmp/expressor.png 3
-  $ XVFB_SCREEN=2560x1440x24 /usr/bin/snapshot \
-        arb.applications.ReferenceBrowser /tmp/refbrowser.png 3
+    $ /usr/bin/Expressor                                 # graphical expression editor
+    $ /usr/bin/snapshot arb.applications.Expressor /tmp/expressor.png 3
+    $ XVFB_SCREEN=2560x1440x24 /usr/bin/snapshot \
+          arb.applications.ReferenceBrowser /tmp/refbrowser.png 3
 
 Or from a jshell session preloaded with the right classpath and JavaFX
 configuration:
 
-  $ /usr/bin/arbshell
-  jshell> Real.named("x").set("π/4", 256).cos(256, new Real());
-   ⇒ 0.70710678118654752440084436210484903928483593768847403...
+    $ /usr/bin/arbshell
+    jshell> import arb.functions.real.RealFunction;
+    jshell> var f = RealFunction.express("x ➔ exp(−x²)·cos(π·x)");
+    jshell> f.evaluate(new arb.Real("0.25", 256), 256, new arb.Real());
+    jshell> var P = arb.functions.polynomials.orthogonal.real.HermitePolynomials.instance.evaluate(5);
 
 
 Reporting issues
@@ -193,4 +214,4 @@ Reporting issues
   https://github.com/crowlogic/arb4j/issues
 
 
- -- Stephen Crowley <stephencrowley214@gmail.com>  Wed, 29 Apr 2026 11:55:00 -0500
+ -- Stephen Crowley <stephencrowley214@gmail.com>  Wed, 29 Apr 2026 12:00:00 -0500
