@@ -386,6 +386,12 @@
 				<artifactId>maven-dependency-plugin</artifactId>
 				<version>3.6.1</version>
 				<executions>
+					<!--
+						Development classpath: paths point into the local ~/.m2
+						repository so a checkout's bin/* wrappers can resolve
+						dependencies straight out of Maven's cache. Bound to
+						generate-sources so it is in place before any compile.
+					-->
 					<execution>
 						<id>build-classpath</id>
 						<phase>generate-sources</phase>
@@ -395,6 +401,45 @@
 						<configuration>
 							<outputFile>${project.basedir}/class.path</outputFile>
 							<includeScope>runtime</includeScope>
+						</configuration>
+					</execution>
+					<!--
+						Debian classpath: same dependency set, but rewritten so
+						every entry sits at /usr/share/arb4j/lib/<basename>.jar.
+						debian/rules ships this file as /usr/share/arb4j/class.path
+						and env.sh exports ARB4J_CLASSPATH=$ARB4J_JAR:<file>.
+					-->
+					<execution>
+						<id>build-classpath-debian</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>build-classpath</goal>
+						</goals>
+						<configuration>
+							<outputFile>${project.build.directory}/class.path.debian</outputFile>
+							<includeScope>runtime</includeScope>
+							<prefix>/usr/share/arb4j/lib</prefix>
+							<stripVersion>false</stripVersion>
+						</configuration>
+					</execution>
+					<!--
+						Stage every runtime dependency jar into target/dependency
+						so debian/rules can copy them into /usr/share/arb4j/lib
+						and unzip the JavaFX linux-classifier and j2v8 jars to
+						extract their .so files into /usr/lib/jni.
+					-->
+					<execution>
+						<id>copy-dependencies-debian</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/dependency</outputDirectory>
+							<includeScope>runtime</includeScope>
+							<stripVersion>false</stripVersion>
+							<overWriteReleases>true</overWriteReleases>
+							<overWriteSnapshots>true</overWriteSnapshots>
 						</configuration>
 					</execution>
 				</executions>

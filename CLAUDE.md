@@ -46,33 +46,51 @@ is supplementary.
   a different banner than 4.4.0; the version-banner diff is cosmetic.
 - Run the full regression suite (`mvn install`) — never compile in a loop.
 
-## Shaded fat jar
+## Thin jar + class.path
 
-`maven-shade-plugin` rolls every transitive dependency into
-`build/arb4j-<version>.jar` (≈32 MB). Third-party libs are relocated under
-`org.arblib.shaded.*`. JavaFX classes stay at canonical `javafx.*` paths
-because user code references them directly.
+The Debian package ships the thin jar plus one discrete jar per
+transitive runtime dependency. There is no shade plugin; there is no
+relocation. Every dependency lives at canonical coordinates under
+`/usr/share/arb4j/lib/`, and `/usr/share/arb4j/class.path` is a single
+colon-separated line listing each one as
+`/usr/share/arb4j/lib/<basename>.jar`.
 
-JavaFX linux-classifier native libraries (`libglass.so`, `libprism_*.so`,
-`libjavafx_*.so`, `libdecora_sse.so`, `libglassgtk3.so`) sit at the jar
-root, alongside `libj2v8_linux_x86_64.so`. The Debian rules unzip every
-`.so` from the shaded jar into `/usr/lib/jni` so the JVM resolves them via
-`-Djava.library.path=$ARB4J_NATIVE_DIR`.
+Two `maven-dependency-plugin` executions in `pom.xml` produce the
+staged outputs at `prepare-package` time, so a plain `mvn install`
+(which is what `debian/rules override_dh_auto_build` runs via
+`make install`) leaves them in the build tree:
 
-## Launching JavaFX from a fat jar
+- `build-classpath-debian` writes `build/class.path.debian` with
+  `<prefix>/usr/share/arb4j/lib</prefix>` rewriting every entry.
+- `copy-dependencies-debian` copies every runtime-scope jar into
+  `build/dependency/`.
 
-`com.sun.javafx.application.LauncherImpl` aborts with
+`debian/rules override_dh_auto_install` then:
+
+- installs `build/arb4j-<version>.jar` to `/usr/share/java/arb4j-<version>.jar`
+  (with `arb4j.jar` symlink)
+- installs every `build/dependency/*.jar` to `/usr/share/arb4j/lib/`
+- installs `build/class.path.debian` to `/usr/share/arb4j/class.path`
+- iterates over `javafx-*-linux.jar` and `j2v8_linux_*.jar` under
+  `/usr/share/arb4j/lib/` and `unzip -j -o '*.so'` each one into
+  `/usr/lib/jni/`. `unzip` exits status 11 when a jar contains no
+  `.so` entries; the rule tolerates that by `|| true`.
+
+`/usr/share/arb4j/env.sh` exports
+`ARB4J_CLASSPATH=$ARB4J_JAR:$(tr '\n' ':' < $ARB4J_HOME/class.path | sed 's/:$//')`.
+
+## Launching JavaFX without a JPMS module
+
+JavaFX rides on the classpath, not as a resolved JPMS module. That
+triggers `com.sun.javafx.application.LauncherImpl`'s
 `Error: JavaFX runtime components are missing, and are required to run this application`
-whenever the configured main class extends `javafx.application.Application`
-*and* `javafx.graphics` is not a resolved JPMS module. Because the fat jar
-puts JavaFX on the classpath (unnamed module), that guard fires every
-time.
-
-The fix is `arb.applications.Launcher` — a class that does **not** extend
-`Application` and calls `Application.launch(Class.forName(argv[0]).asSubclass(Application.class), tail)`.
+guard whenever the JVM's configured main class extends
+`javafx.application.Application`. The fix is `arb.applications.Launcher`
+— a class that does **not** extend `Application` and calls
+`Application.launch(Class.forName(argv[0]).asSubclass(Application.class), tail)`.
 Every `/usr/bin/<wrapper>` ends with
 `-classpath $CLASSPATH arb.applications.Launcher $@`, so the per-app
-script just passes its FQCN through `$@`.
+script passes its FQCN through `$@`.
 
 `debian/install-bin.sh` performs the rewrite at `dh_auto_install` time:
 
@@ -82,18 +100,17 @@ script just passes its FQCN through `$@`.
   `$OPENS` shell variable (no JPMS module ⇒ nothing to open)
 - substitutes `arb.applications.Launcher $@` for the bare `$@` tail
 
-## FHS Debian layout (`dad73f4` and later)
+## FHS Debian layout
 
 | path | contents |
 |---|---|
-| `/usr/share/java/arb4j.jar` | shaded fat jar (versioned + symlink) |
-| `/usr/lib/jni/libarblib.so` + javafx natives + libj2v8 | unzipped from fat jar |
-| `/usr/share/arb4j/env.sh` | exports `ARB4J_HOME`, `ARB4J_JAR`, `ARB4J_NATIVE_DIR`, `ARB4J_CLASSPATH=$ARB4J_JAR` |
+| `/usr/share/java/arb4j-<version>.jar` + `arb4j.jar` symlink | thin jar (project classes only) |
+| `/usr/share/arb4j/lib/*.jar` | every transitive runtime dependency, one jar each |
+| `/usr/share/arb4j/class.path` | colon-separated `/usr/share/arb4j/lib/<basename>.jar` for every dependency |
+| `/usr/lib/jni/libarblib.so` + javafx natives + libj2v8 | unzipped from `lib/javafx-*-linux.jar` and `lib/j2v8_linux_*.jar` |
+| `/usr/share/arb4j/env.sh` | exports `ARB4J_HOME`, `ARB4J_JAR`, `ARB4J_NATIVE_DIR`, `ARB4J_LIB_DIR`, and `ARB4J_CLASSPATH=$ARB4J_JAR:<class.path-contents>` |
 | `/usr/share/arb4j/{pom.xml,version,shell.start}` | runtime metadata + jshell preamble |
 | `/usr/bin/<wrapper>` | every `bin/*` (except `updateClasspath`) rewritten by `debian/install-bin.sh` |
-
-There is no `/usr/share/arb4j/lib/` and no `/usr/share/arb4j/class.path`
-— the fat jar is the entire classpath.
 
 Build: `JAVA_HOME=/tmp/jdk-26+35 PATH=$JAVA_HOME/bin:$PATH dpkg-buildpackage -b -us -uc -nc -d`.
 The `-d` flag skips the missing `openjdk-26-jdk` build dep (the JDK is

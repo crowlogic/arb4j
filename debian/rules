@@ -12,6 +12,7 @@ DOCDEST := $(CURDIR)/debian/$(DOCPKG)
 JAR_DIR  := $(DESTDIR)/usr/share/java
 JNI_DIR  := $(DESTDIR)/usr/lib/jni
 HOME_DIR := $(DESTDIR)/usr/share/$(PKG)
+LIB_DIR  := $(HOME_DIR)/lib
 BIN_DIR  := $(DESTDIR)/usr/bin
 DOC_DIR  := $(DOCDEST)/usr/share/doc/$(PKG)/api
 
@@ -28,27 +29,35 @@ override_dh_auto_build:
 override_dh_auto_test:
 
 override_dh_auto_install:
-	install -d $(JAR_DIR) $(JNI_DIR) $(HOME_DIR) $(BIN_DIR) $(DOC_DIR)
+	install -d $(JAR_DIR) $(JNI_DIR) $(HOME_DIR) $(LIB_DIR) $(BIN_DIR) $(DOC_DIR)
 	install -m 0644 libarblib.so                  $(JNI_DIR)/libarblib.so
-	# Shaded fat jar: every transitive dependency relocated under
-	# org.arblib.shaded.* (third-party libs) or kept at canonical paths
-	# (javafx.*). JavaFX is not shipped by the runtime OpenJDK, so the
-	# javafx classes and their linux-classifier native libs ride inside
-	# arb4j.jar.
+	# Thin jar: only arb4j's own classes. Every transitive runtime
+	# dependency ships as a discrete jar under /usr/share/arb4j/lib
+	# and is enumerated in /usr/share/arb4j/class.path. env.sh exports
+	# ARB4J_CLASSPATH = $ARB4J_JAR:<class.path-contents>.
 	install -m 0644 build/$(PKG)-$(VER).jar       $(JAR_DIR)/$(PKG)-$(VER).jar
 	ln -sf $(PKG)-$(VER).jar                      $(JAR_DIR)/$(PKG).jar
+	# Copy every transitive runtime dep into /usr/share/arb4j/lib.
+	# maven-dependency-plugin's copy-dependencies execution staged
+	# them into build/dependency at prepare-package time.
+	install -m 0644 build/dependency/*.jar        $(LIB_DIR)/
+	# Install the Debian-prefixed class.path. The build-classpath-debian
+	# execution rewrote every entry to /usr/share/arb4j/lib/<basename>.jar.
+	install -m 0644 build/class.path.debian       $(HOME_DIR)/class.path
 	cp -a build/apidocs/.                         $(DOC_DIR)/
 	install -m 0755 debian/env.sh.in              $(HOME_DIR)/env.sh
 	install -m 0644 pom.xml                       $(HOME_DIR)/pom.xml
 	install -m 0644 shell.start                   $(HOME_DIR)/shell.start
 	echo $(VER)                                 > $(HOME_DIR)/version
-	# Extract every .so from the shaded jar into /usr/lib/jni so the
-	# JVM can resolve them via -Djava.library.path. JavaFX's native
-	# libraries (libglass, libprism_es2, libjavafx_iio, libdecora_sse,
-	# libglassgtk3, libjavafx_font*, libprism_sw, libprism_common) live
-	# at the jar root once the linux-classifier artifacts are unpacked,
-	# alongside libj2v8_linux_x86_64.so from the j2v8 dependency.
-	cd $(JNI_DIR) && unzip -j -o $(CURDIR)/build/$(PKG)-$(VER).jar '*.so'
+	# Extract every .so from the JavaFX linux-classifier and j2v8
+	# native-binding jars into /usr/lib/jni so the JVM can resolve
+	# them via -Djava.library.path. unzip exits with status 11 when
+	# a jar contains no .so entries, which is fine for non-native
+	# dependency jars; tolerate it.
+	for jar in $(LIB_DIR)/javafx-*-linux.jar $(LIB_DIR)/j2v8_linux_*.jar; do \
+	  [ -f "$$jar" ] || continue; \
+	  ( cd $(JNI_DIR) && unzip -j -o "$$jar" '*.so' ) || true; \
+	done
 	# Stage every wrapper from bin/ into /usr/bin with paths rewritten
 	# to the FHS layout. See debian/install-bin.sh.
 	debian/install-bin.sh bin $(BIN_DIR)
