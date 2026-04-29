@@ -70,11 +70,13 @@ Personal Use of the Licensed Work is permitted without a Production
 Use License.
 
 Production Use of the Licensed Work is permitted without a Production
-Use License only during a single evaluation period of thirty (30)
+Use License only during a single evaluation period of ninety (90)
 consecutive calendar days, beginning on the first day of Production
-Use. After that thirty-day period expires, every continuing or
+Use. After that ninety-day period expires, every continuing or
 subsequent Production Use of the Licensed Work requires a Production
-Use License.
+Use License. The evaluation period does not renew, and use of any
+subsequent version of the Licensed Work by the same You does not
+start a new evaluation period.
 
 No verbal agreement, email exchange, or other correspondence modifies
 the terms of this License or the Additional Use Grant. Any exception,
