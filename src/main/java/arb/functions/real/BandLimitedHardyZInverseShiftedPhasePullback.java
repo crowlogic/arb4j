@@ -1,35 +1,40 @@
-// Band-Limitation of the Warped Hardy Z-Function
-//   Spectral Support of the Cramér Measure on [-1,1]   (Crowley, April 2026)
-//
-// Static factory methods returning compiled arb4j Function instances for
-// every closed-form expression in the proof. Asymptotic relations
-// (O(t^{-1/4}), ≪, ∼) are not arb4j expressions and are omitted.
-//
-// All factories share a single Context populated with:
-//   Θ   : MonotonicRiemannSiegelThetaFunction (warp; default c = 3 > 2.6860917)
-//   dΘ  : Θ.derivative()         (= ϑ′ + c)
-//   d2Θ : second derivative of Θ (= ϑ″, since c·t contributes 0)
-//   g   : Θ⁻¹                    (the inverse warp)
-//   Z   : Hardy Z function       (already a parser keyword, registered for clarity)
-//   ϑ   : Riemann–Siegel theta   (parser keyword)
-//
-// Usage in arbshell:
-//   /open scripts/band-limitation.arb
-//   var ZtildeF  = BandLimitation.Ztilde();
-//   var phiNF    = BandLimitation.Φn();
-//   var omegaF   = BandLimitation.ωn();
-//   var IbpF     = BandLimitation.In();      // throws on integration: development driver
-//   var fourierF = BandLimitation.cesaroFourier();   // throws: development driver
+package arb.functions.real;
 
-import arb.*;
+import arb.RealConstants;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
-import arb.functions.real.*;
-import arb.functions.complex.*;
-import arb.functions.Function;
+import arb.functions.complex.ComplexFunction;
 
-public class BandLimitation
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
+public class BandLimitedHardyZInverseShiftedPhasePullback
 {
-  public static final Context ctx;
+//Band-Limitation of the Warped Hardy Z-Function
+//Spectral Support of the Cramér Measure on [-1,1]   (Crowley, April 2026)
+//
+//Static factory methods returning compiled arb4j Function instances for
+//every closed-form expression in the proof. Asymptotic relations
+//(O(t^{-1/4}), ≪, ∼) are not arb4j expressions and are omitted.
+//
+//All factories share a single Context populated with:
+//Θ   : MonotonicRiemannSiegelThetaFunction (warp; default c = 3 > 2.6860917)
+//dΘ  : Θ.derivative()         (= ϑ′ + c)
+//d2Θ : second derivative of Θ (= ϑ″, since c·t contributes 0)
+//g   : Θ⁻¹                    (the inverse warp)
+//Z   : Hardy Z function       (already a parser keyword, registered for clarity)
+//ϑ   : Riemann–Siegel theta   (parser keyword)
+//
+//Usage in arbshell:
+  /// open scripts/band-limitation.arb
+//var ZtildeF  = BandLimitation.Ztilde();
+//var phiNF    = BandLimitation.Φn();
+//var omegaF   = BandLimitation.ωn();
+//var IbpF     = BandLimitation.In();      // throws on integration: development driver
+//var fourierF = BandLimitation.cesaroFourier();   // throws: development driver
+  public static final Context                             ctx;
 
   public static final MonotonicRiemannSiegelThetaFunction Θ;
   public static final RealFunction                        dΘ;
@@ -41,13 +46,13 @@ public class BandLimitation
     Θ   = new MonotonicRiemannSiegelThetaFunction();
     dΘ  = Θ.derivative();
     d2Θ = RealFunction.express("d2Θ:t➔diff(diff(ϑ(t),t),t)", new Context());
-    g   = (RealFunction) Θ.inverse();
+    g   = Θ.invert(RealConstants.zero, 20, 128);
 
     ctx = new Context();
-    ctx.registerFunction("Θ",   Θ);
-    ctx.registerFunction("dΘ",  dΘ);
+    ctx.registerFunction("Θ", Θ);
+    ctx.registerFunction("dΘ", dΘ);
     ctx.registerFunction("d2Θ", d2Θ);
-    ctx.registerFunction("g",   g);
+    ctx.registerFunction("g", g);
   }
 
   // ── Constants ────────────────────────────────────────────────────────────
@@ -92,11 +97,12 @@ public class BandLimitation
     return RealFunction.express("Ztilde:u➔Z(g(u))", ctx);
   }
 
-  /** Riemann–Siegel main sum  Z_RS(t) = 2·Σ n^{-½}·cos(ϑ(t) − t·log n) {n=1…N(t)}. */
+  /**
+   * Riemann–Siegel main sum Z_RS(t) = 2·Σ n^{-½}·cos(ϑ(t) − t·log n) {n=1…N(t)}.
+   */
   public static RealFunction ZRiemannSiegel()
   {
-    return RealFunction.express(
-      "ZRS:t➔2*Σn➔n^(-1/2)*cos(ϑ(t)-t*log(n)){n=1…⌊√(t/(2*π))⌋}");
+    return RealFunction.express("ZRS:t➔2*Σn➔n^(-1/2)*cos(ϑ(t)-t*log(n)){n=1…⌊√(t/(2*π))⌋}");
   }
 
   // ── Phase data (auto-curried two-argument forms per #975) ────────────────
@@ -130,29 +136,30 @@ public class BandLimitation
   /** Iₙ(ξ,T) := ∫_{uₙ}^{Θ(T)} exp(i·(Φₙ(u) − ξ·u)) du. */
   public static ComplexFunction In()
   {
-    return ComplexFunction.express(
-      "In:(n,ξ,T)➔int(exp(ⅈ*(ϑ(g(u))-g(u)*log(n)-ξ*u)),u=Θ(2*π*n^2)…Θ(T))", ctx);
+    return ComplexFunction.express("In:(n,ξ,T)➔int(exp(ⅈ*(ϑ(g(u))-g(u)*log(n)-ξ*u)),u=Θ(2*π*n^2)…Θ(T))", ctx);
   }
 
-  /** Cesàro–Fourier transform  (1/Θ(T))·∫₀^{Θ(T)} Z̃(u)·e^{−iξu} du. */
+  /** Cesàro–Fourier transform (1/Θ(T))·∫₀^{Θ(T)} Z̃(u)·e^{−iξu} du. */
   public static ComplexFunction cesaroFourier()
   {
-    return ComplexFunction.express(
-      "F:(ξ,T)➔int(Z(g(u))*exp(-ⅈ*ξ*u),u=0…Θ(T))/Θ(T)", ctx);
+    return ComplexFunction.express("F:(ξ,T)➔int(Z(g(u))*exp(-ⅈ*ξ*u),u=0…Θ(T))/Θ(T)", ctx);
   }
 
-  /** Spectral density Φ(ξ) := lim |F_T(ξ)|² / Θ(T) — Cesàro-mean form, finite-T witness. */
+  /**
+   * Spectral density Φ(ξ) := lim |F_T(ξ)|² / Θ(T) — Cesàro-mean form, finite-T
+   * witness.
+   */
   public static ComplexFunction spectralDensity()
   {
-    return ComplexFunction.express(
-      "Φ:(ξ,T)➔abs(int(Z(g(u))*exp(-ⅈ*ξ*u),u=0…Θ(T)))^2/Θ(T)", ctx);
+    return ComplexFunction.express("Φ:(ξ,T)➔abs(int(Z(g(u))*exp(-ⅈ*ξ*u),u=0…Θ(T)))^2/Θ(T)", ctx);
   }
 
-  /** Cramér spectral integral  Z(t) = ∫_{-1}^{1} e^{iξΘ(t)} dĜ(ξ).
-   *  Compiled here with a placeholder density Φ(ξ) standing in for dĜ/dξ. */
+  /**
+   * Cramér spectral integral Z(t) = ∫_{-1}^{1} e^{iξΘ(t)} dĜ(ξ). Compiled here
+   * with a placeholder density Φ(ξ) standing in for dĜ/dξ.
+   */
   public static ComplexFunction cramerIntegral()
   {
-    return ComplexFunction.express(
-      "Zrep:t➔int(exp(ⅈ*ξ*Θ(t))*Φ(ξ),ξ=-1…1)", ctx);
+    return ComplexFunction.express("Zrep:t➔int(exp(ⅈ*ξ*Θ(t))*Φ(ξ),ξ=-1…1)", ctx);
   }
 }
