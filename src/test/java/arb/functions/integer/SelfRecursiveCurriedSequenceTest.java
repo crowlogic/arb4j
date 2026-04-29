@@ -113,4 +113,35 @@ public class SelfRecursiveCurriedSequenceTest extends
     assertEquals(6.0, out.re().doubleValue(), 1e-30);
     assertTrue(out.im().isZero());
   }
+
+  /**
+   * Minimal mutually-recursive curried pair: {@code a} references {@code S},
+   * {@code S} references {@code a}, both curried {@code k➔v➔...}, no sum,
+   * no external referenced functions, no Context variables besides the bound
+   * arguments. Recurrence: {@code S(k)(v) = a(k-1)(v)·a(k-1)(v)} and
+   * {@code a(k)(v) = when(k=1, v, else, S(k)(v))}. With {@code k=2, v=2}:
+   * {@code a(1)(v) = v = 2}, {@code S(2)(v) = 4}, {@code a(2)(v) = 4}.
+   */
+  public static void testMinimalMutuallyRecursiveCurriedPair()
+  {
+    Context ctx = new Context();
+    ctx.registerFunctionMapping("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
+    String sExpr = "S:k➔v➔a(k-1)(v)·a(k-1)(v)";
+    Sequence.parseCompileAndRegister("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
+
+    String                  aExpr = "a:k➔v➔when(k=1, v, else, S(k)(v))";
+    ComplexFunctionSequence a     = ComplexFunctionSequence.express(aExpr, ctx);
+
+    Integer                 k     = new Integer();
+    k.set(2);
+    Complex         v   = new Complex();
+    v.set(2, 0);
+    Complex         out = new Complex();
+
+    ComplexFunction a2  = a.evaluate(k, 1, 128, null);
+    a2.evaluate(v, 1, 128, out);
+
+    assertEquals(4.0, out.re().doubleValue(), 1e-30);
+    assertTrue(out.im().isZero());
+  }
 }
