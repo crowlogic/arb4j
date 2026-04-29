@@ -2,6 +2,7 @@ package arb.functions.integer;
 
 import arb.Complex;
 import arb.Integer;
+import arb.Real;
 import arb.expressions.Context;
 import arb.functions.complex.ComplexFunction;
 import junit.framework.TestCase;
@@ -130,6 +131,40 @@ public class SelfRecursiveCurriedSequenceTest extends
     Sequence.parseCompileAndRegister("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
 
     String                  aExpr = "a:k➔v➔when(k=1, v, else, S(k)(v))";
+    ComplexFunctionSequence a     = ComplexFunctionSequence.express(aExpr, ctx);
+
+    Integer                 k     = new Integer();
+    k.set(2);
+    Complex         v   = new Complex();
+    v.set(2, 0);
+    Complex         out = new Complex();
+
+    ComplexFunction a2  = a.evaluate(k, 1, 128, null);
+    a2.evaluate(v, 1, 128, out);
+
+    assertEquals(4.0, out.re().doubleValue(), 1e-30);
+    assertTrue(out.im().isZero());
+  }
+
+  /**
+   * Minimal mutually-recursive curried pair plus a Real Context variable
+   * {@code μ} used multiplicatively in {@code a}'s recursive case. With
+   * {@code μ = 1} the arithmetic is identical to
+   * {@link #testMinimalMutuallyRecursiveCurriedPair}, so {@code a(2)(2) = 4}.
+   */
+  public static void testMinimalMutuallyRecursiveCurriedPairWithMu()
+  {
+    Context ctx = new Context();
+    Real μ      = new Real();
+    μ.set("1", 128);
+    μ.setName("μ");
+    ctx.registerVariable(μ);
+
+    ctx.registerFunctionMapping("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
+    String sExpr = "S:k➔v➔a(k-1)(v)·a(k-1)(v)";
+    Sequence.parseCompileAndRegister("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
+
+    String                  aExpr = "a:k➔v➔when(k=1, v, else, μ·S(k)(v))";
     ComplexFunctionSequence a     = ComplexFunctionSequence.express(aExpr, ctx);
 
     Integer                 k     = new Integer();
