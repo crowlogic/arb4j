@@ -3,7 +3,10 @@ package arb.expressions;
 import static org.objectweb.asm.Opcodes.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -735,6 +738,22 @@ public class Compiler
                                                     .build();
 
     decompiler.decompile();
+
+    String classFileName = file.getName();
+    String javaFileName  = classFileName.endsWith(".class") ? classFileName.substring(0, classFileName.length() - ".class".length()) + ".java" : classFileName + ".java";
+    Path   javaFile      = compiledClassDir.toPath().resolve(javaFileName);
+    if (Files.exists(javaFile))
+    {
+      try
+      {
+        String content = Files.readString(javaFile);
+        Files.writeString(javaFile, content.replace("this.", ""));
+      }
+      catch (IOException cause)
+      {
+        throw new CompilerException("failed to post-process decompiled " + javaFile, cause);
+      }
+    }
   }
 
   public static boolean doesBuiltinFunctionExist(String functionName, boolean bitless, Class<?> domainType, Class<?> coDomainType)
