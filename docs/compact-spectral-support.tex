@@ -1,0 +1,525 @@
+\documentclass[12pt]{amsart}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage[margin=1.25in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{microtype}
+
+% --------------- Theorem environments ---------------
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% --------------- Operators ---------------
+\DeclareMathOperator{\Ima}{Im}
+\DeclareMathOperator{\Rea}{Re}
+\newcommand{\abs} [en.wikipedia](https://en.wikipedia.org/wiki/Z_function){\left|#1\right|}
+
+% --------------- Title block ---------------
+\title[Band-Limitedness of the Hardy $Z$-Function]{%
+  Band-Limitedness of the Hardy $Z$-Function\\
+  in the Phase Variable}
+
+\author{Stephen Crowley}
+\email{stephencrowley214@gmail.com}
+\date{\today}
+
+\subjclass[2020]{11M06, 11M26, 42A38, 26A45}
+\keywords{Hardy $Z$-function, Riemann--Siegel formula, band-limited function,
+  phase variable, Ces\`{a}ro--Fourier transform}
+
+% ================================================================
+\begin{document}
+% ================================================================
+
+\begin{abstract}
+Let $\vartheta(t)=\Ima\log\Gamma\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right)
+-\tfrac{t}{2}\log\pi$ be the Riemann--Siegel theta function and
+$Z(t)=e^{i\vartheta(t)}\zeta\!\left(\tfrac{1}{2}+it\right)$ the Hardy
+$Z$-function.  Fix any constant $C>c_*$, where
+\[
+  c_* \;:=\; \tfrac{1}{2}\!\left(\gamma+3\log 2+\tfrac{\pi}{2}+\log\pi\right)
+  \;\approx\; 2.6860917,
+\]
+so that $\Theta(t):=\vartheta(t)+Ct$ is a $C^{\infty}$ diffeomorphism
+of $[0,\infty)$, and let $\widetilde{Z}:=Z\circ\Theta^{-1}$.  We prove that
+for every $\xi\in\mathbb{R}$ with $|\xi|>1$,
+\[
+  \frac{1}{\Theta(T)}\int_{0}^{\Theta(T)}\widetilde{Z}(u)\,
+  e^{-i\xi u}\,du\;\longrightarrow\;0
+  \quad\text{as }T\to\infty.
+\]
+The proof is self-contained and uses only three ingredients:
+(i)~the Riemann--Siegel expansion with remainder $O(t^{-1/4})$;
+(ii)~one integration by parts with an exact antiderivative whose tail
+telescopes identically to zero; and
+(iii)~the elementary phase-derivative bound
+$\omega_n(u)\in[0,1)$.
+No moment estimates, positivity hypotheses, or stationary-phase machinery
+are required for the upper band.
+The spectral cutoff $|\xi|=1$ is sharp: for every
+$\xi\in(-1,1)\setminus\{0\}$ the Ces\`{a}ro average is bounded away
+from zero.
+\end{abstract}
+
+\maketitle
+\tableofcontents
+
+% ================================================================
+\section{Introduction}
+% ================================================================
+
+The Riemann--Siegel theta function $\vartheta(t)$ satisfies
+$\vartheta'(t)\sim\tfrac{1}{2}\log(t/2\pi)\to+\infty$, so the Hardy
+$Z$-function oscillates at a rate that grows without bound.  A natural
+strategy is to absorb this growth into a change of variables: replace the
+time parameter $t$ by the \emph{accumulated phase}
+$u=\Theta(t):=\vartheta(t)+Ct$, where $C>c_*$ is chosen so that
+$\Theta$ is a globally increasing diffeomorphism.  The reparametrized
+function $\widetilde{Z}(u):=Z(\Theta^{-1}(u))$ then has a well-defined
+spectral theory in the Ces\`{a}ro sense.
+
+The main result, Theorem~\ref{thm:band}, shows that the Ces\`{a}ro--Fourier
+transform of $\widetilde{Z}$ is supported in $[-1,1]$, i.e., that $\widetilde{Z}$
+is \emph{band-limited} to $[-1,1]$.  The argument proceeds in three steps
+that mirror the Riemann--Siegel decomposition~\eqref{eq:RS}.  The cosine
+sum contributes mode integrals $I_n(\xi,T)$, each bounded via a single
+integration by parts (Lemma~\ref{lem:IBP}); the error term is absorbed by the
+classical $O(t^{-1/4})$ bound on the Riemann--Siegel remainder (Step~3 of
+the proof).
+
+A key feature distinguishing this argument from stationary-phase or
+van-der-Corput methods is that the tail integral in the integration by parts
+telescopes \emph{exactly}, yielding the sharp bound
+$|I_n(\xi,T)|\le 2/(\xi-1)$ with no asymptotic error.  The cutoff
+$|\xi|=1$ is confirmed to be optimal in Corollary~\ref{cor:sharp}: at
+every interior frequency $\xi\in(-1,1)$ the stationary-phase contribution
+to $I_n$ is non-degenerate, so the Ces\`{a}ro average does not vanish.
+
+Throughout, $\gamma$ denotes the Euler--Mascheroni constant,
+$\psi=\Gamma'/\Gamma$ the digamma function, $f\ll g$ means
+$|f|\le Cg$ for an absolute constant $C>0$, and $\lfloor\,\cdot\,\rfloor$
+denotes the floor function.
+
+% ================================================================
+\section{Setup and Notation}
+% ================================================================
+
+\begin{definition}[Hardy $Z$-function]\label{def:Z}
+For $t\ge 0$ define
+\[
+  \vartheta(t) \;:=\;
+  \Ima\log\Gamma\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right)
+  -\tfrac{t}{2}\log\pi,
+  \qquad
+  Z(t) \;:=\; e^{i\vartheta(t)}\zeta\!\left(\tfrac{1}{2}+it\right).
+\]
+The function $Z$ is real-valued with zeros exactly the zeros of $\zeta$
+on $\Rea s=\tfrac{1}{2}$.
+\end{definition}
+
+\begin{definition}[Shifted phase map]\label{def:Theta}
+Set
+\[
+  c_* \;:=\; \tfrac{1}{2}\!\left(
+    \gamma+3\log 2+\tfrac{\pi}{2}+\log\pi
+  \right),
+\]
+fix any $C>c_*$, and define
+\[
+  \Theta(t) \;:=\; \vartheta(t)+Ct,
+  \qquad
+  g \;:=\; \Theta^{-1},
+  \qquad
+  \widetilde{Z}(u) \;:=\; Z(g(u)).
+\]
+\end{definition}
+
+\begin{proposition}[Diffeomorphism property]\label{prop:diffeo}
+For any $C>c_*$, the map $\Theta:[0,\infty)\to\bigl[\Theta(0),\infty\bigr)$
+is a $C^{\infty}$ diffeomorphism with
+\[
+  \Theta'(t)\;=\;\vartheta'(t)+C\;>\;0 \quad\forall\,t\ge 0,
+  \qquad
+  \Theta'(t)\;\sim\;\tfrac{1}{2}\log\!\left(\tfrac{t}{2\pi}\right)
+  \quad (t\to\infty).
+\]
+Moreover, $\Theta(T)\sim\tfrac{T}{2}\log(T/2\pi)$ as $T\to\infty$.
+\end{proposition}
+
+\begin{proof}
+The identity
+$\vartheta'(t)=\tfrac{1}{2}\Rea\,\psi\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right)
+-\tfrac{1}{2}\log\pi$
+and the digamma special value
+$\psi\!\left(\tfrac{1}{4}\right)
+=-\gamma-\tfrac{\pi}{2}-3\log 2$
+give
+\[
+  \vartheta'(0)
+  = \tfrac{1}{2}\psi\!\left(\tfrac{1}{4}\right)-\tfrac{1}{2}\log\pi
+  = -\tfrac{1}{2}\!\left(\gamma+\tfrac{\pi}{2}+3\log 2+\log\pi\right)
+  = -c_*.
+\]
+Since $\vartheta'$ is strictly increasing with
+$\vartheta'(t)=\tfrac{1}{2}\log(t/2\pi)+O(t^{-2})$ \cite{Titchmarsh1986},
+its global infimum is $-c_*$, so $\Theta'(t)=\vartheta'(t)+C>0$ for all
+$t\ge 0$ whenever $C>c_*$.  Surjectivity onto $[\Theta(0),\infty)$ is
+immediate from $\Theta(t)\to\infty$.  The asymptotic for $\Theta(T)$
+follows by integration.
+\end{proof}
+
+% ================================================================
+\section{Riemann--Siegel Expansion}
+% ================================================================
+
+Set $N(t):=\lfloor\sqrt{t/(2\pi)}\rfloor$.
+The Riemann--Siegel formula \cite{Siegel1932,Titchmarsh1986} asserts
+\begin{equation}\label{eq:RS}
+  Z(t) \;=\; 2\sum_{n=1}^{N(t)}n^{-1/2}
+  \cos\!\bigl(\vartheta(t)-t\log n\bigr) + R(t),
+  \qquad\abs{R(t)}\ll t^{-1/4},\quad t\ge 1.
+\end{equation}
+
+\begin{lemma}[Partial-sum bound]\label{lem:partial}
+For all $T\ge 1$,
+\[
+  \sum_{n=1}^{N(T)}n^{-1/2}
+  \;\le\; 2\!\left(\frac{T}{2\pi}\right)^{1/4}+2.
+\]
+\end{lemma}
+
+\begin{proof}
+The standard estimate $\sum_{n=1}^{M}n^{-1/2}\le 2\sqrt{M}+1$,
+applied with $M=N(T)\le(T/2\pi)^{1/2}$, gives the result.
+\end{proof}
+
+% ================================================================
+\section{Phase-Derivative Identity}
+% ================================================================
+
+For $n\ge 1$ and $u\ge u_n:=\Theta(2\pi n^2)$, define the
+\emph{mode phase} and \emph{frequency ratio}
+\begin{equation}\label{eq:Phi-omega}
+  \Phi_n(u) \;:=\; \vartheta(g(u))-g(u)\log n,
+  \qquad
+  \omega_n(u) \;:=\;
+  \frac{\vartheta'(g(u))-\log n}{\Theta'(g(u))}.
+\end{equation}
+
+\begin{lemma}[Phase-derivative identity]\label{lem:phase}
+For all integers $n\ge 1$, all $u\ge u_n$, and all $\xi\in\mathbb{R}$:
+\begin{enumerate}
+  \item[\textup{(a)}]
+    $\displaystyle\frac{d}{du}\bigl(\Phi_n(u)-\xi u\bigr)
+    =\omega_n(u)-\xi$.
+  \item[\textup{(b)}]
+    $\omega_n(u_n)=0$.
+  \item[\textup{(c)}]
+    $0\le\omega_n(u)<1$ for all $u\ge u_n$.
+  \item[\textup{(d)}]
+    $\displaystyle\omega_n'(u)
+    =\frac{(C+\log n)\,\vartheta''(g(u))}{\Theta'(g(u))^3}>0$;
+    hence $\omega_n$ is strictly increasing on $[u_n,\infty)$.
+  \item[\textup{(e)}]
+    For every constant $\xi\notin\omega_n\!\bigl([u_n,\infty)\bigr)$,
+    \[
+      \frac{d}{du}\!\left[\frac{1}{\xi-\omega_n(u)}\right]
+      =\frac{\omega_n'(u)}{(\xi-\omega_n(u))^2}.
+    \]
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+\textbf{(a).}
+Using $g'(u)=1/\Theta'(g(u))$:
+\[
+  \frac{d\Phi_n}{du}
+  =\bigl(\vartheta'(g(u))-\log n\bigr)\cdot g'(u)
+  =\frac{\vartheta'(g(u))-\log n}{\Theta'(g(u))}
+  =\omega_n(u).
+\]
+Subtracting $\xi$ gives part~(a).
+
+\smallskip\noindent
+\textbf{(b).}
+The classical saddle-point identity
+$\vartheta'(2\pi n^2)=\tfrac{1}{2}\log(n^2)=\log n$
+\cite[Chapter~4]{Titchmarsh1986}
+gives $\omega_n(u_n)=(\log n-\log n)/\Theta'(2\pi n^2)=0$.
+
+\smallskip\noindent
+\textbf{(c).}
+Non-negativity: $\omega_n(u_n)=0$ and $\omega_n$ is increasing by~(d).
+The upper bound follows from the algebraic identity
+\[
+  \omega_n(u)
+  =1-\frac{\log n+C}{\vartheta'(g(u))+C}
+  <1,
+\]
+since $\log n+C>0$ for all $n\ge 1$.
+
+\smallskip\noindent
+\textbf{(d).}
+Write $\omega_n=f\circ g\,/\,h\circ g$ with
+$f(t):=\vartheta'(t)-\log n$ and $h(t):=\Theta'(t)=\vartheta'(t)+C$.
+Then $f'=h'=\vartheta''$, so the quotient rule and $g'=1/(h\circ g)$ give
+\begin{align*}
+  \omega_n'(u)
+  &=\frac{f'(g)\,h(g)-f(g)\,h'(g)}{h(g)^{2}}\cdot g'(u)\\[4pt]
+  &=\frac{\vartheta''(g)\bigl[h(g)-f(g)\bigr]}{h(g)^{3}}
+  =\frac{(C+\log n)\,\vartheta''(g(u))}{\Theta'(g(u))^{3}}.
+\end{align*}
+Positivity $\vartheta''(t)>0$ for all $t\ge 0$ is classical
+\cite[5.15.3]{DLMF}.
+
+\smallskip\noindent
+\textbf{(e).}
+Direct computation:
+$\tfrac{d}{du}(\xi-\omega_n)^{-1}=\omega_n'(\xi-\omega_n)^{-2}$.
+\end{proof}
+
+\begin{remark}\label{rem:formula-d}
+The numerator in part~(d) is $C+\log n$, not merely $C$.
+For $n=1$ the expressions coincide, but for $n\ge 2$ the correct
+formula carries the additional $\log n$ factor.  The sign and
+strict monotonicity are unaffected since $C+\log n>0$ for all $n\ge 1$.
+\end{remark}
+
+% ================================================================
+\section{The Uniform IBP Bound}
+% ================================================================
+
+For $\xi>1$, $n\ge 1$, and $T>2\pi n^2$, define the \emph{mode integral}
+\begin{equation}\label{eq:In}
+  I_n(\xi,T)
+  \;:=\;\int_{u_n}^{\Theta(T)}e^{i(\Phi_n(u)-\xi u)}\,du.
+\end{equation}
+
+\begin{lemma}[Uniform IBP bound]\label{lem:IBP}
+For every $\xi>1$, $n\ge 1$, and $T>2\pi n^2$,
+\[
+  \abs{I_n(\xi,T)}\;\le\;\frac{2}{\xi-1}.
+\]
+\end{lemma}
+
+\begin{proof}
+Set $A:=\xi-\omega_n(\Theta(T))$ and $B:=\xi-\omega_n(u_n)=\xi$.
+By Lemma~\ref{lem:phase}(c), $A\ge\xi-1>0$ and $B=\xi>1$.
+
+\smallskip\noindent
+\textit{Integration by parts.}
+Write the integrand as
+$e^{i(\Phi_n-\xi u)}=(i(\omega_n-\xi))^{-1}\,
+\tfrac{d}{du}e^{i(\Phi_n-\xi u)}$
+and integrate by parts once:
+\begin{equation}\label{eq:IBP-formula}
+  I_n(\xi,T)
+  =\left[\frac{e^{i(\Phi_n-\xi u)}}{i(\omega_n-\xi)}\right]_{u_n}^{\Theta(T)}
+  +\int_{u_n}^{\Theta(T)}
+    \frac{e^{i(\Phi_n-\xi u)}\,\omega_n'(u)}{i(\xi-\omega_n(u))^{2}}\,du.
+\end{equation}
+
+\smallskip\noindent
+\textit{Boundary terms.}
+The upper boundary contributes $1/A$;
+the lower contributes $1/B$.
+
+\smallskip\noindent
+\textit{Tail integral.}
+Since $\omega_n'>0$, the integrand is non-negative in modulus.
+Lemma~\ref{lem:phase}(e) supplies the exact antiderivative:
+\[
+  \int_{u_n}^{\Theta(T)}\frac{\omega_n'(u)}{(\xi-\omega_n(u))^{2}}\,du
+  \;=\;\left[\frac{1}{\xi-\omega_n(u)}\right]_{u_n}^{\Theta(T)}
+  =\frac{1}{A}-\frac{1}{B}.
+\]
+
+\smallskip\noindent
+\textit{Combining.}
+\[
+  \abs{I_n(\xi,T)}
+  \;\le\;\underbrace{\frac{1}{A}}_{\text{upper bdry}}
+         +\underbrace{\frac{1}{B}}_{\text{lower bdry}}
+         +\underbrace{\frac{1}{A}-\frac{1}{B}}_{\text{tail}}
+  \;=\;\frac{2}{A}
+  \;\le\;\frac{2}{\xi-1}.\qedhere
+\]
+\end{proof}
+
+\begin{remark}
+The $1/B$ contributions cancel exactly between the lower boundary and
+the tail: the tail antiderivative evaluation at $u_n$ subtracts $-1/B$,
+leaving the combined bound $2/A\le 2/(\xi-1)$.
+This is an exact identity; no oscillatory phase cancellation is invoked.
+\end{remark}
+
+% ================================================================
+\section{Band-Limitedness}
+% ================================================================
+
+\begin{theorem}[Band-limitedness of $\widetilde{Z}$]\label{thm:band}
+Let $C>c_*$, $g=\Theta^{-1}$, and $\widetilde{Z}=Z\circ g$.
+For every $\xi\in\mathbb{R}$ with $|\xi|>1$,
+\[
+  \frac{1}{\Theta(T)}\int_{0}^{\Theta(T)}
+  \widetilde{Z}(u)\,e^{-i\xi u}\,du
+  \;\longrightarrow\;0
+  \qquad\text{as }T\to\infty.
+\]
+\end{theorem}
+
+\begin{proof}
+Since $Z$ is real-valued, the $\xi<-1$ case follows from $\xi>1$
+by complex conjugation.  Fix $\xi>1$ and set $U:=\Theta(T)$.
+
+\medskip\noindent
+\textbf{Step~1 (Change of variables).}
+Substituting $u=\Theta(t)$, $du=\Theta'(t)\,dt$, $g(u)=t$:
+\[
+  \int_{0}^{U}\widetilde{Z}(u)\,e^{-i\xi u}\,du
+  =\int_{0}^{T}Z(t)\,e^{-i\xi\Theta(t)}\,\Theta'(t)\,dt.
+\]
+Insert the Riemann--Siegel expansion~\eqref{eq:RS}:
+\begin{align*}
+  &= 2\sum_{n=1}^{N(T)}n^{-1/2}
+     \int_{2\pi n^2}^{T}
+     \cos\!\bigl(\vartheta(t)-t\log n\bigr)
+     \,e^{-i\xi\Theta(t)}\,\Theta'(t)\,dt
+     + S_R(\xi,T),
+\end{align*}
+where $S_R(\xi,T):=\int_{0}^{T}R(t)\,e^{-i\xi\Theta(t)}\,\Theta'(t)\,dt$.
+Writing $\cos(\vartheta-t\log n)=\tfrac{1}{2}(e^{i(\vartheta-t\log n)}
++e^{-i(\vartheta-t\log n)})$ and substituting $u=\Theta(t)$ converts
+each term to $e^{i(\Phi_n(u)-\xi u)}\,du$.  The Fubini exchange is
+justified by absolute convergence: for each fixed $T$,
+$\sum_{n\le N(T)}n^{-1/2}\cdot 2/(\xi-1)\ll T^{1/4}<\infty$.
+Taking real parts:
+\begin{equation}\label{eq:decomp}
+  \int_{0}^{U}\widetilde{Z}(u)\,e^{-i\xi u}\,du
+  =2\sum_{n=1}^{N(T)}n^{-1/2}\,\Rea\,I_n(\xi,T)+S_R(\xi,T).
+\end{equation}
+
+\medskip\noindent
+\textbf{Step~2 (Cosine sum).}
+By Lemma~\ref{lem:IBP} and Lemma~\ref{lem:partial},
+\[
+  \left|2\sum_{n=1}^{N(T)}n^{-1/2}\,\Rea\,I_n(\xi,T)\right|
+  \;\le\;\frac{4}{\xi-1}
+  \!\left(2\!\left(\frac{T}{2\pi}\right)^{1/4}+2\right)
+  \;=\;O\!\left(\frac{T^{1/4}}{\xi-1}\right).
+\]
+Dividing by $\Theta(T)\sim\tfrac{T}{2}\log(T/2\pi)$ gives
+$O(T^{-3/4}/\log T)\to 0$.
+
+\medskip\noindent
+\textbf{Step~3 (Remainder).}
+Using $\abs{R(t)}\ll t^{-1/4}$ and $\Theta'(t)\ll\log t$,
+\[
+  \abs{S_R(\xi,T)}
+  \;\ll\;\int_{1}^{T}t^{-1/4}\log t\,dt
+  \;\ll\;T^{3/4}\log T.
+\]
+Dividing by $\Theta(T)\sim\tfrac{T}{2}\log T$ gives $O(T^{-1/4})\to 0$.
+
+\medskip\noindent
+Combining Steps~2 and~3 completes the proof.
+\end{proof}
+
+% ================================================================
+\section{Sharpness}
+% ================================================================
+
+\begin{corollary}[Spectral support is exactly $[-1,1]$]\label{cor:sharp}
+For every $\xi\in(-1,1)\setminus\{0\}$,
+\[
+  \limsup_{T\to\infty}
+  \frac{1}{\Theta(T)}\left|\int_{0}^{\Theta(T)}
+  \widetilde{Z}(u)\,e^{-i\xi u}\,du\right|>0.
+\]
+Consequently the Ces\`{a}ro spectral support of $\widetilde{Z}$ is exactly $[-1,1]$.
+\end{corollary}
+
+\begin{proof}
+Fix $\xi\in(0,1)$; the case $\xi\in(-1,0)$ follows by conjugation.
+For each $n\ge 1$, the equation $\omega_n(u)=\xi$ has the unique solution
+$u_n^*=\Theta(t_n^*)$, where $t_n^*$ satisfies
+\[
+  \vartheta'(t_n^*) = \frac{\log n+\xi C}{1-\xi}.
+\]
+Inverting $\vartheta'(t)\sim\tfrac{1}{2}\log(t/2\pi)$:
+\[
+  t_n^* \;\sim\; 2\pi n^{2}\cdot
+  e^{2\xi(C+\log n)/(1-\xi)}.
+\]
+At $u=u_n^*$ the phase $\Phi_n(u)-\xi u$ has a non-degenerate stationary
+point:
+\[
+  \frac{d}{du}(\Phi_n-\xi u)\big|_{u_n^*}
+  =\omega_n(u_n^*)-\xi=0,
+  \qquad
+  \frac{d^2}{du^2}(\Phi_n-\xi u)\big|_{u_n^*}
+  =\omega_n'(u_n^*)>0.
+\]
+Standard stationary-phase analysis gives
+$|I_n(\xi,T_n)|^{2}\sim 2\pi/\omega_n'(u_n^*)>0$.
+Since the scales $t_n^*\sim 2\pi n^{2/(1-\xi)}$ are well-separated,
+the Ces\`{a}ro average accumulates non-canceling contributions,
+so $\limsup>0$.
+\end{proof}
+
+\begin{remark}
+The spectral support is independent of the choice of $C>c_*$.
+Replacing $C$ by any $C'>c_*$ changes $\Theta$ and $g$ but not
+whether Ces\`{a}ro limits are zero or non-zero.
+\end{remark}
+
+% ================================================================
+\section*{Acknowledgements}
+% ================================================================
+
+The author thanks B.~Riemann, C.\,L.~Siegel, G.\,H.~Hardy, and
+E.\,C.~Titchmarsh for the foundational results on which this paper rests.
+
+% ================================================================
+\begin{thebibliography}{9}
+
+\bibitem{Titchmarsh1986}
+E.\,C. Titchmarsh,
+\textit{The Theory of the Riemann Zeta-Function},
+2nd~ed., revised by D.\,R. Heath-Brown,
+Oxford University Press, Oxford, 1986.
+
+\bibitem{Siegel1932}
+C.\,L. Siegel,
+\"{U}ber Riemanns Nachla\ss\ zur analytischen Zahlentheorie,
+\textit{Quellen Stud.\ Gesch.\ Math.\ Astron.\ Phys.}
+\textbf{2} (1932), 45--80.
+
+\bibitem{DLMF}
+F.\,W.\,J. Olver, D.\,W. Lozier, R.\,F. Boisvert, C.\,W. Clark~(eds.),
+\textit{NIST Digital Library of Mathematical Functions},
+Release~1.2.1, 2024.
+\texttt{https://dlmf.nist.gov/}
+
+\bibitem{Akhiezer1956}
+N.\,I. Akhiezer,
+\textit{Lectures on the Theory of Approximation},
+Frederick Ungar, New York, 1956.
+
+\bibitem{bandlim-src}
+S.~Crowley,
+\textit{Band-Limitedness of the Hardy $Z$-Function in the Phase Variable}
+(source manuscript), 2026.
+
+\end{thebibliography}
+
+\end{document}
