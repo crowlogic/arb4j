@@ -1262,23 +1262,20 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       }
     }
 
-    String name        = functionName.replaceAll("√", "sqrt").replaceAll("J0", "J_0").replaceAll("ζ", "zeta");
+    String name           = functionName.replaceAll("√", "sqrt").replaceAll("J0", "J_0").replaceAll("ζ", "zeta");
 
-    String baseTypeset = format(name.equals("sqrt") ? "\\%s{%s}" : "\\%s(%s)", name, arg == null ? "" : arg.typeset());
+    String argTypeset     = arg == null ? "" : arg.typeset();
 
-    if (derivativeOrder == 0)
+    String derivativeMark = derivativeOrder == 0 ? ""
+                          : derivativeOrder <= 3 ? "'".repeat(derivativeOrder)
+                          : "^{(" + derivativeOrder + ")}";
+
+    if (name.equals("sqrt"))
     {
-      return baseTypeset;
+      return format("\\%s{%s}%s", name, argTypeset, derivativeMark);
     }
-    else if (derivativeOrder <= 3)
-    {
-      String primes = "'".repeat(derivativeOrder);
-      return baseTypeset.replace("(", primes + "(");
-    }
-    else
-    {
-      return baseTypeset.replace("(", "^{(" + derivativeOrder + ")}(");
-    }
+
+    return format("\\%s%s\\left(%s\\right)", name, derivativeMark, argTypeset);
   }
 
   public boolean isExponential()
