@@ -18,16 +18,15 @@ import arb.functions.ComplexFunctional;
 import arb.functions.integer.ComplexFunctionSequence;
 import arb.solvers.HankelSystem;
 
-
 /**
  * Müntz–Padé re-summation of a Puiseux power series in {t^{kμ}}_{k≥1} into a
  * globally convergent diagonal Padé approximant in z = t^μ, currying the
  * external parameter v through the Müntz coefficient sequence.
  *
  * <p>
- * The mathematical object is fully characterized by the pair (μ, k ↦ v ↦ a_k(v)):
- * a fractional order μ ∈ (0,1), and a curried sequence of v-dependent Müntz
- * coefficients. The formal series at fixed v
+ * The mathematical object is fully characterized by the pair (μ, k ↦ v ↦
+ * a_k(v)): a fractional order μ ∈ (0,1), and a curried sequence of v-dependent
+ * Müntz coefficients. The formal series at fixed v
  *
  * <pre>
  *   y(t; v) = Σ_{k≥1} a_k(v) · t^{kμ}
@@ -42,8 +41,8 @@ import arb.solvers.HankelSystem;
  *
  * built from the first 2M coefficients via a Hankel system, converges to the
  * meromorphic continuation under the de Montessus de Ballore and
- * Nuttall–Pommerenke theorems. Order M is selected as the smallest integer
- * for which the successive-difference bound
+ * Nuttall–Pommerenke theorems. Order M is selected as the smallest integer for
+ * which the successive-difference bound
  *
  * <pre>
  *   |y(t; v) − R_M(t^μ; v)| ≤ |Δ_M(z)|² / (|Δ_{M-1}(z)| − |Δ_M(z)|)
@@ -64,11 +63,11 @@ import arb.solvers.HankelSystem;
  *      {@link TheArb4jLibrary}
  */
 public class MuntzPadeFunction implements
-                                ComplexFunctional,
-                                AutoCloseable
+                               ComplexFunctional,
+                               AutoCloseable
 {
 
-  private static final Logger log = LoggerFactory.getLogger(MuntzPadeFunction.class);
+  private static final Logger          log  = LoggerFactory.getLogger(MuntzPadeFunction.class);
 
   /** Fractional order μ ∈ (0,1). */
   public final Real                    α;
@@ -93,7 +92,8 @@ public class MuntzPadeFunction implements
 
   public MuntzPadeFunction(String name, Real α, ComplexFunctionSequence a)
   {
-    this(α, a);
+    this(α,
+         a);
     this.name = name;
   }
 
@@ -102,12 +102,11 @@ public class MuntzPadeFunction implements
   // ────────────────────────────────────────────────────────────────────────
 
   /**
-   * The functional output at v is a callable {@link ComplexFunction}
-   * t ↦ R_M(t; v) = P_M(t^μ; v) / Q_M(t^μ; v) at the order M selected from
-   * bits at a representative point z = (1)^μ. The {@code result} parameter is
-   * unused — function references are immutable handles, so a fresh
-   * {@link MuntzPadeApproximantAtV} is returned and the caller takes
-   * ownership.
+   * The functional output at v is a callable {@link ComplexFunction} t ↦ R_M(t;
+   * v) = P_M(t^μ; v) / Q_M(t^μ; v) at the order M selected from bits at a
+   * representative point z = (1)^μ. The {@code result} parameter is unused —
+   * function references are immutable handles, so a fresh
+   * {@link MuntzPadeApproximantAtV} is returned and the caller takes ownership.
    */
   @Override
   public ComplexFunction evaluate(Complex v, int order, int bits, ComplexFunction result)
@@ -120,7 +119,8 @@ public class MuntzPadeFunction implements
     }
     DiagonalPade pade = new DiagonalPade(M);
     padePade(v, M, bits, pade);
-    return new MuntzPadeApproximantAtV(α, pade);
+    return new MuntzPadeApproximantAtV(α,
+                                       pade);
   }
 
   // ────────────────────────────────────────────────────────────────────────
@@ -143,8 +143,7 @@ public class MuntzPadeFunction implements
   {
     if (result == null || result.dim < n)
     {
-      throw new IllegalArgumentException("result vector must have dim ≥ " + n + ", got "
-                                         + (result == null ? "null" : result.dim));
+      throw new IllegalArgumentException("result vector must have dim ≥ " + n + ", got " + (result == null ? "null" : result.dim));
     }
     try ( Integer kIdx = new Integer())
     {
@@ -158,10 +157,10 @@ public class MuntzPadeFunction implements
   }
 
   /**
-   * Smallest integer M for which the successive-difference bound at z falls
-   * below 2^(−bits) for the Müntz reorganization at v. Stall-guarded: returns
-   * M−1 if the bound fails to decrease between successive orders. Builds the
-   * (P,Q) cache out to the chosen M as a side effect.
+   * Smallest integer M for which the successive-difference bound at z falls below
+   * 2^(−bits) for the Müntz reorganization at v. Stall-guarded: returns M−1 if
+   * the bound fails to decrease between successive orders. Builds the (P,Q) cache
+   * out to the chosen M as a side effect.
    */
   public int chooseOrderForPrecision(Complex v, Complex z, int bits)
   {
@@ -187,11 +186,7 @@ public class MuntzPadeFunction implements
           log.debug("chooseOrderForPrecision: M={} bound={} prev={}", M, bound, prevBound);
           if (bound.compareTo(prevBound) >= 0)
           {
-            log.debug("chooseOrderForPrecision: bound stalled at M={} (prev={}, curr={}); returning M-1={}",
-                      M,
-                      prevBound,
-                      bound,
-                      M - 1);
+            log.debug("chooseOrderForPrecision: bound stalled at M={} (prev={}, curr={}); returning M-1={}", M, prevBound, bound, M - 1);
             disposeCache(padeCache);
             return M - 1;
           }
@@ -212,8 +207,8 @@ public class MuntzPadeFunction implements
 
   /**
    * Diagonal (M, M) Padé pair filled into the caller-supplied
-   * {@link DiagonalPade} at the supplied v. Falls back to lower orders on
-   * Hankel singularity.
+   * {@link DiagonalPade} at the supplied v. Falls back to lower orders on Hankel
+   * singularity.
    *
    * @return the result parameter (fluent)
    */
@@ -241,13 +236,12 @@ public class MuntzPadeFunction implements
         currentM--;
       }
     }
-    throw new ArithmeticException("All Padé orders ≤ " + M
-                                  + " produced singular Hankel matrices at v=" + v);
+    throw new ArithmeticException("All Padé orders ≤ " + M + " produced singular Hankel matrices at v=" + v);
   }
 
   /**
-   * Diagonal (M, M) Padé numerator and denominator at v.
-   * result[0] = P_M(·; v), result[1] = Q_M(·; v).
+   * Diagonal (M, M) Padé numerator and denominator at v. result[0] = P_M(·; v),
+   * result[1] = Q_M(·; v).
    */
   public ComplexPolynomial[] padePolynomials(Complex v, int M, int bits, ComplexPolynomial[] result)
   {
@@ -282,27 +276,19 @@ public class MuntzPadeFunction implements
     DiagonalPade pade = new DiagonalPade(M);
     padePade(v, M, bits, pade);
     return pade;
-    //return pade.asFunction();
   }
 
   /**
-   * The a-posteriori successive-difference bound at z evaluated against the
-   * (P,Q) cache built for the supplied v at the given precision.
+   * The a-posteriori successive-difference bound at z evaluated against the (P,Q)
+   * cache built for the supplied v at the given precision.
    */
-  public Real successiveDifferenceErrorBound(Complex v,
-                                             List<DiagonalPade> padeCache,
-                                             int M,
-                                             Complex z,
-                                             int bits,
-                                             Real result)
+  public Real successiveDifferenceErrorBound(Complex v, List<DiagonalPade> padeCache, int M, Complex z, int bits, Real result)
   {
     if (M < 2)
     {
       throw new IllegalArgumentException("Successive-difference bound requires M ≥ 2, got " + M);
     }
-    try ( Complex valM   = Complex.named("R_M(z;v)");
-          Complex valMm1 = Complex.named("R_{M-1}(z;v)");
-          Complex valMm2 = Complex.named("R_{M-2}(z;v)"))
+    try ( var valM = Complex.named("R_M(z;v)"); var valMm1 = Complex.named("R_{M-1}(z;v)"); var valMm2 = Complex.named("R_{M-2}(z;v)"))
     {
       padeCache.get(M - 1).evaluate(z, 1, bits, valM);
       padeCache.get(M - 2).evaluate(z, 1, bits, valMm1);
@@ -314,19 +300,11 @@ public class MuntzPadeFunction implements
       {
         padeCache.get(M - 3).evaluate(z, 1, bits, valMm2);
       }
-      try ( Complex deltaM   = new Complex();
-            Complex deltaMm1 = new Complex();
-            Real    absM     = new Real();
-            Real    absMm1   = new Real();
-            Real    num      = new Real();
-            Real    denom    = new Real())
+      try ( var deltaM = new Complex(); var deltaMm1 = new Complex(); var absM = result.borrowVariable(); var absMm1 = result.borrowVariable();
+            var num = result.borrowVariable(); var denom = result.borrowVariable();)
       {
-        valM.sub(valMm1, bits, deltaM);
-        valMm1.sub(valMm2, bits, deltaMm1);
-        deltaM.abs(bits, absM);
-        deltaMm1.abs(bits, absMm1);
-        absM.mul(absM, bits, num);
-        absMm1.sub(absM, bits, denom);
+        valM.sub(valMm1, bits, deltaM).abs(bits, absM).mul(absM, bits, num);
+        valMm1.sub(valMm2, bits, deltaMm1).abs(bits, absMm1).sub(absM, bits, denom);
         return num.div(denom, bits, result);
       }
     }
@@ -337,14 +315,10 @@ public class MuntzPadeFunction implements
   // ────────────────────────────────────────────────────────────────────────
 
   /**
-   * Grow the per-call (P,Q) cache out to order M at the supplied v. Returns
-   * the (possibly resized) coefficient buffer holding a_1(v)..a_{2M}(v).
+   * Grow the per-call (P,Q) cache out to order M at the supplied v. Returns the
+   * (possibly resized) coefficient buffer holding a_1(v)..a_{2M}(v).
    */
-  private Complex ensureOrder(Complex v,
-                              List<DiagonalPade> padeCache,
-                              Complex cachedAlpha,
-                              int M,
-                              int bits)
+  private Complex ensureOrder(Complex v, List<DiagonalPade> padeCache, Complex cachedAlpha, int M, int bits)
   {
     if (M < 1)
     {
@@ -384,11 +358,11 @@ public class MuntzPadeFunction implements
   }
 
   /**
-   * Hook for subclasses to supply a Context whose variables are imported
-   * into each cached {@link DiagonalPade}'s sub-Context, so user-facing
-   * variables (e.g. μ in the Riccati–Mittag-Leffler setting) continue
-   * to resolve when the rational function is evaluated. Default returns
-   * null (a fresh empty sub-Context).
+   * Hook for subclasses to supply a Context whose variables are imported into
+   * each cached {@link DiagonalPade}'s sub-Context, so user-facing variables
+   * (e.g. μ in the Riccati–Mittag-Leffler setting) continue to resolve when the
+   * rational function is evaluated. Default returns null (a fresh empty
+   * sub-Context).
    */
   protected Context padeParentContext()
   {
@@ -407,8 +381,9 @@ public class MuntzPadeFunction implements
 
     qMat.resize(M, 1);
 
-    try ( HankelSystem  hankel = new HankelSystem(coeff, M);
-          ComplexMatrix neg_b  = ComplexMatrix.newMatrix(M, 1))
+    try ( HankelSystem hankel = new HankelSystem(coeff,
+                                                 M);
+          ComplexMatrix neg_b = ComplexMatrix.newMatrix(M, 1))
     {
       for (int i = 0; i < M; i++)
       {
@@ -432,11 +407,10 @@ public class MuntzPadeFunction implements
 
       // P_M(z) = [A(z)·Q_M(z)]_{<M+1}, where A(z) = Σ_{k=1..2M} a_k(v)·z^{k-1}.
       // Polynomial multiplication folds the convolution
-      //   p_n = a_n(v) + Σ_{j=1..n-1} q_j·a_{n-j}(v),  n = 1..M
+      // p_n = a_n(v) + Σ_{j=1..n-1} q_j·a_{n-j}(v), n = 1..M
       // in one call; the slice keeps only the first M+1 coefficients (with
       // p_0 = 0 since A has no z^{-1} term and the leading term of Q is 1).
-      try ( ComplexPolynomial A    = new ComplexPolynomial();
-            ComplexPolynomial AQ   = new ComplexPolynomial())
+      try ( ComplexPolynomial A = new ComplexPolynomial(); ComplexPolynomial AQ = new ComplexPolynomial())
       {
         A.fitLength(2 * M);
         A.setLength(2 * M);
