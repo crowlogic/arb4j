@@ -445,7 +445,9 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if (Integer.class.equals(indexType))
     {
-      Compiler.generateVirtualMethodInvocation(mv, reference.type(), "get", reference.type(), indexType);
+      Class<?> elementType = resolveIndexedElementType(reference.type(), indexType);
+      Compiler.generateVirtualMethodInvocation(mv, reference.type(), "get", elementType, indexType);
+      generatedType = elementType;
     }
     else
     {
@@ -453,6 +455,26 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       {
         throw new CompilerException("Unhandled indexType " + indexType);
       }
+    }
+  }
+
+  /**
+   * The element type of {@code container} subscripted by {@code indexType} is
+   * the return type of the reflective method {@code get(indexType)}. For
+   * vector-like containers ({@link arb.Real}, {@link arb.Complex}) this
+   * coincides with the container type; for matrix-like containers (an M×1
+   * column vector exposed by {@link arb.ComplexMatrix#get(arb.Integer)}) the
+   * element type is the entry type {@link arb.Complex}.
+   */
+  private static Class<?> resolveIndexedElementType(Class<?> container, Class<?> indexType)
+  {
+    try
+    {
+      return container.getMethod("get", indexType).getReturnType();
+    }
+    catch (NoSuchMethodException e)
+    {
+      throw new CompilerException(container.getSimpleName() + " has no get(" + indexType.getSimpleName() + ") method for subscript access");
     }
   }
 
@@ -752,6 +774,19 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       if (reference.type == null)
       {
         resolveReference();
+      }
+
+      // A subscripted reference q[j] has the element type, not the container
+      // type. For Real/Complex vectors the two coincide (get(Integer) returns
+      // the same type as the container); for ComplexMatrix the column-vector
+      // entry type is Complex.
+      if (reference.index != null)
+      {
+        Class<?> indexType = reference.index.type();
+        if (Integer.class.equals(indexType))
+        {
+          return resolveIndexedElementType(reference.type(), indexType);
+        }
       }
 
       return reference.type();

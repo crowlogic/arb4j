@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import arb.Complex;
 import arb.ComplexMatrix;
 import arb.ComplexPolynomial;
+import arb.Integer;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -78,10 +79,31 @@ public class MuntzPadeFunction implements
   private int                      cacheBits    = 0;
   private boolean                  cacheValid   = false;
 
+  // ── compiled Müntz-Padé back-substitution ──────────────────────
+  // The numerator coefficients are p_n = a_n + Σ_{j=1..n-1} q_j · a_{n-j}
+  // for n=1..M (with p_0 = 0). The q-vector is the just-computed denominator
+  // coefficients, exposed to the expression as the column-vector view of an
+  // M×1 ComplexMatrix via bracket-subscript syntax q[j]. The matrix is held
+  // as a stable field, resized in place to the current M before each solve,
+  // so the compiled expression's captured field reference stays valid while
+  // the native dimensions match the Hankel system at every call.
+  private final ComplexMatrix              qMat         = new ComplexMatrix().setName("q");
+  private final ComplexSequence            numeratorSeq;
+  private final Integer                    scratchN     = new Integer();
+
   public MuntzPadeFunction(Real α, ComplexSequence a)
   {
-    this.α = α;
-    this.a = a;
+    this.α            = α;
+    this.a            = a;
+    this.numeratorSeq = compileNumeratorSequence();
+  }
+
+  private ComplexSequence compileNumeratorSequence()
+  {
+    Context ctx = new Context();
+    ctx.registerFunction("a", a);
+    ctx.registerVariable(qMat);
+    return ComplexSequence.express("P", "n➔a(n)+sum(j➔q[j]·a(n-j){j=1..n-1})", ctx);
   }
 
   public MuntzPadeFunction(String name, Real α, ComplexSequence a)
@@ -89,6 +111,7 @@ public class MuntzPadeFunction implements
     this(α, a);
     this.name = name;
   }
+
 
   // ────────────────────────────────────────────────────────────────────────
   // ComplexFunction.evaluate
@@ -401,6 +424,7 @@ public class MuntzPadeFunction implements
       cachedAlpha.close();
       cachedAlpha = null;
     }
+    qMat.close();
   }
 
   /**
@@ -430,9 +454,10 @@ public class MuntzPadeFunction implements
     ComplexPolynomial P_M = result.P;
     ComplexPolynomial Q_M = result.Q;
 
+    qMat.resize(M, 1);
+
     try ( HankelSystem  hankel = new HankelSystem(coeff, M);
-          ComplexMatrix neg_b  = ComplexMatrix.newMatrix(M, 1);
-          ComplexMatrix qMat   = ComplexMatrix.newMatrix(M, 1))
+          ComplexMatrix neg_b  = ComplexMatrix.newMatrix(M, 1))
     {
       for (int i = 0; i < M; i++)
       {
@@ -454,26 +479,15 @@ public class MuntzPadeFunction implements
         Q_M.set(j, qMat.get(j - 1, 0));
       }
 
-      // P(z) = (z·A(z)·Q(z)) mod z^{M+1}, where A(z) = Σ_{k=0..M-1} a_{k+1}·z^k
-      // is the truncation of the input Müntz series f(z) = z·A(z). The convolution
-      // p_n = Σ_{j=0..n-1} q_j·a_{n-j} for n=1..M is exactly [z^{n-1}](A·Q), so
-      // we form B(z) = A(z)·Q(z) and copy B[0..M-1] into P[1..M].
+      // p_n = a_n + Σ_{j=1..n-1} q_j·a_{n-j}, n = 1..M, computed by the compiled
+      // numerator sequence. The fold over j is the n-ary sum the language was
+      // built for; the only Java loop here is the top-level dispatch over n.
       P_M.fitLength(M + 1);
       P_M.setLength(M + 1);
       P_M.get(0).zero();
-      try ( ComplexPolynomial A = new ComplexPolynomial(); ComplexPolynomial B = new ComplexPolynomial())
+      for (int n = 1; n <= M; n++)
       {
-        A.fitLength(M);
-        A.setLength(M);
-        for (int k = 0; k < M; k++)
-        {
-          A.get(k).set(coeff.get(k));
-        }
-        A.mul(Q_M, bits, B);
-        for (int n = 1; n <= M; n++)
-        {
-          P_M.get(n).set(B.get(n - 1));
-        }
+        numeratorSeq.evaluate(scratchN.set(n), 1, bits, P_M.get(n));
       }
       return result;
     }

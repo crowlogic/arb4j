@@ -28,7 +28,7 @@ import arb.utensils.text.tables.TextTable;
  *      {@link TheArb4jLibrary}
  */
 
-public class ComplexMatrix implements AutoCloseable, Iterable<Complex>, Ring<ComplexMatrix>, Becomable<ComplexMatrix> {
+public class ComplexMatrix implements AutoCloseable, Iterable<Complex>, Ring<ComplexMatrix>, Becomable<ComplexMatrix>, Named {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
@@ -118,10 +118,23 @@ public class ComplexMatrix implements AutoCloseable, Iterable<Complex>, Ring<Com
     return null;
   }
   
+  @Override
   public ComplexMatrix setName(String string) 
   {
     this.name = string;
     return this;
+  }
+
+  @Override
+  public boolean isRenameable()
+  {
+    return true;
+  }
+
+  @Override
+  public String getName()
+  {
+    return name;
   }
 
   public Complex getRow(int i) 
@@ -292,6 +305,21 @@ public class ComplexMatrix implements AutoCloseable, Iterable<Complex>, Ring<Com
   public Complex get(int i, int j) 
   {
     return getRow(i).get(j);
+  }
+
+  /**
+   * Column-vector view: the j-th element of the first column (1-indexed).
+   * For an M×1 matrix this is exactly the j-th entry of the column vector.
+   * Mirrors {@link Real#get(Integer)} and {@link Complex#get(Integer)} so that
+   * a {@code ComplexMatrix} registered as a context variable can be subscripted
+   * with {@code mat[j]} in the expression language.
+   *
+   * @param k 1-based row index
+   * @return entry at (k-1, 0)
+   */
+  public Complex get(Integer k)
+  {
+    return get(k.getSignedValue() - 1, 0);
   }
 
   public String name;
@@ -478,9 +506,10 @@ public class ComplexMatrix implements AutoCloseable, Iterable<Complex>, Ring<Com
    */
   public ComplexMatrix clear() 
   {
-    if (swigCMemOwn) 
+    if (swigCMemOwn && initialized) 
 	{      
       acb_mat_clear(this);
+      initialized = false;
     }
     return this;
   }
@@ -495,8 +524,33 @@ public class ComplexMatrix implements AutoCloseable, Iterable<Complex>, Ring<Com
   public ComplexMatrix init(int rows, int cols) 
   {
     acb_mat_init(this, rows, cols);
+    this.rows = null;
+    this.initialized = true;
     return this;
   } 
+
+  /**
+   * Resize the native matrix in place: clears any prior arb matrix allocation
+   * (if one was previously bound via {@link #init(int, int)}), allocates a
+   * fresh {@code rows×cols} matrix at the same Java object identity, and
+   * invalidates the row pointer cache. Java references to this matrix held
+   * by other objects (e.g. compiled expression fields) remain valid across
+   * the resize.
+   *
+   * @param rows new row count
+   * @param cols new column count
+   * @return this
+   */
+  public ComplexMatrix resize(int rows, int cols)
+  {
+    if (initialized)
+    {
+      acb_mat_clear(this);
+    }
+    return init(rows, cols);
+  }
+
+  private boolean initialized = false;
   
 
   public void setEntries(Complex value) {
