@@ -28,7 +28,7 @@ public class FloorNode<D, R, F extends Function<? extends D, ? extends R>> exten
   @Override
   public String typeset()
   {
-    return String.format("\\lfloor{%s}\\rfloor", arg.typeset());
+    return String.format("\\left\\lfloor %s \\right\\rfloor", arg.typeset());
   }
 
   @Override

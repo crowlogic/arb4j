@@ -1230,7 +1230,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if ("floor".equals(functionName))
     {
-      String floorTypeset = String.format("\\lfloor{%s}\\rfloor", arg == null ? "" : arg.typeset());
+      String floorTypeset = String.format("\\left\\lfloor %s \\right\\rfloor", arg == null ? "" : arg.typeset());
       if (derivativeOrder == 0)
       {
         return floorTypeset;
@@ -1247,7 +1247,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if ("ceil".equals(functionName))
     {
-      String ceilTypeset = String.format("\\lceil{%s}\\rceil", arg == null ? "" : arg.typeset());
+      String ceilTypeset = String.format("\\left\\lceil %s \\right\\rceil", arg == null ? "" : arg.typeset());
       if (derivativeOrder == 0)
       {
         return ceilTypeset;

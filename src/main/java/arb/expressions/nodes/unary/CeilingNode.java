@@ -28,7 +28,7 @@ public class CeilingNode<D, R, F extends Function<? extends D, ? extends R>> ext
   @Override
   public String typeset()
   {
-    return String.format("\\lceil{%s}\\rceil", arg.typeset());
+    return String.format("\\left\\lceil %s \\right\\rceil", arg.typeset());
   }
 
   @Override
