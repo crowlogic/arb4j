@@ -866,90 +866,53 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   protected void propagateContextVariablesToOperand()
   {
-    expression.registerInitializer(mv ->
+    if (expression.getContext() != null && expression.getContext().variables != null)
     {
-      propagateContextFunctionsToOperand(mv);
-      propagateReferencedVariablesToOperand(mv);
-    });
-  }
-
-  /**
-   * Emits, into the enclosing class's {@code initialize()} method, a
-   * PUTFIELD copy {@code this.<operand>.<name> = this.<name>} for every
-   * variable name in the operand's referenced-variables map, excluding the
-   * operand's own independent variable. The parent class declares a
-   * same-named, same-typed peer field for every such name because
-   * the operand body is spliced into the parent's parse tree, so every
-   * VariableNode in the spliced subtree registered itself directly onto
-   * the parent's referencedVariables at parse time. Reference assignment,
-   * no Context lookup, no lazy allocation.
-   */
-  protected void propagateReferencedVariablesToOperand(MethodVisitor mv)
-  {
-    String operandDescriptor = String.format("L%s;", operandFunctionFieldName);
-    var operandIndependent = operandExpression.getIndependentVariable();
-    String operandIndependentName = operandIndependent == null ? null : operandIndependent.reference.name;
-
-    operandExpression.getReferencedVariables().forEach((peerName, peerNode) ->
-    {
-      if (peerName.equals(operandIndependentName))
+      expression.registerInitializer(mv ->
       {
-        return;
-      }
-      String peerDescriptor = peerNode.type().descriptorString();
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, expression.className, operandFunctionFieldName, operandDescriptor);
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, expression.className, peerName, peerDescriptor);
-      mv.visitFieldInsn(PUTFIELD, operandFunctionFieldName, peerName, peerDescriptor);
-    });
+        expression.getContext().variableEntries().forEach(entry -> propagateContextVariableToOperand(mv, entry));
+      });
+    }
   }
 
-  /**
-   * Emits, into the enclosing class's {@code initialize()} method, the
-   * statements that propagate the live {@link Context} and every named
-   * function field that the operand body references from {@code this} into
-   * {@code this.<operandFieldName>}. The first emitted statement assigns
-   * {@code this.<operandFieldName>.context = this.context} so that the
-   * operand's own {@code initialize()} — and any subsequent
-   * {@link Context} lookup it performs — sees the same registry as its
-   * enclosing class.
-   *
-   * <p>Without this emitted call the operand's {@code initialize()} runs the
-   * compiled
-   * {@code if (this.<g> == null) this.<g> = new <g>()} guard for every
-   * Context-registered function {@code g} appearing in the operand body,
-   * allocating fresh, un-injected, empty-cache copies whose recursive
-   * dependencies recurse to allocate further fresh copies, exhausting the
-   * heap. Pre-injecting from the live registry breaks that chain.
-   */
-  protected void propagateContextFunctionsToOperand(MethodVisitor mv)
+
+  protected void propagateContextVariableToOperand(MethodVisitor mv, Entry<String, Named> entry)
   {
-    String operandDescriptor = String.format("L%s;", operandFunctionFieldName);
-    String contextDescriptor = Context.class.descriptorString();
-
-    // this.<operand>.context = this.context;
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(GETFIELD, expression.className, operandFunctionFieldName, operandDescriptor);
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(GETFIELD, expression.className, "context", contextDescriptor);
-    mv.visitFieldInsn(PUTFIELD, operandFunctionFieldName, "context", contextDescriptor);
-
-    // For each function the operand references, copy this.<name> into
-    // this.<operand>.<name>. The parent class declares a same-named field
-    // of the same descriptor for every name in the operand's referenced
-    // functions, because the operand body is spliced into the parent's
-    // scope and the parent's getReferencedFunctions() therefore contains
-    // every entry the operand references.
-    operandExpression.getReferencedFunctions().forEach((peerName, peerMapping) ->
+    String fieldName = entry.getKey();
+    Named  val       = entry.getValue();
+    if (val != null)
     {
-      String peerDescriptor = peerMapping.functionFieldDescriptor();
+      Class<?> fieldType                = val.getClass();
+      String   fieldTypeDescriptor      = fieldType.descriptorString();
+      String   operandClassInternalName = operandFunctionFieldName;
+
+      Label    notNull                  = new Label();
+      Label    end                      = new Label();
+
       loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, expression.className, operandFunctionFieldName, operandDescriptor);
+      mv.visitFieldInsn(GETFIELD, expression.className, operandFunctionFieldName, String.format("L%s;", operandFunctionFieldName));
+      mv.visitFieldInsn(GETFIELD, operandClassInternalName, fieldName, fieldTypeDescriptor);
+      mv.visitJumpInsn(IFNONNULL, notNull);
+
       loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, expression.className, peerName, peerDescriptor);
-      mv.visitFieldInsn(PUTFIELD, operandFunctionFieldName, peerName, peerDescriptor);
-    });
+      mv.visitFieldInsn(GETFIELD, expression.className, operandFunctionFieldName, String.format("L%s;", operandFunctionFieldName));
+      Compiler.generateNewObjectInstruction(mv, fieldType);
+      Compiler.duplicateTopOfTheStack(mv);
+      Compiler.invokeDefaultConstructor(mv, fieldType);
+      mv.visitFieldInsn(PUTFIELD, operandClassInternalName, fieldName, fieldTypeDescriptor);
+
+      mv.visitLabel(notNull);
+
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(GETFIELD, expression.className, operandFunctionFieldName, String.format("L%s;", operandFunctionFieldName));
+      mv.visitFieldInsn(GETFIELD, operandClassInternalName, fieldName, fieldTypeDescriptor);
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(GETFIELD, expression.className, fieldName, fieldTypeDescriptor);
+      Compiler.generateVirtualMethodInvocation(mv, fieldType, "set", fieldType, fieldType);
+      mv.visitInsn(Opcodes.POP);
+
+      mv.visitLabel(end);
+    }
   }
 
   private void parseLowerLimit()
@@ -975,7 +938,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   protected void generateCodeToPropagateIndependentUpstreamVariablesToOperand(MethodVisitor mv, VariableNode<D, R, F> independentVariableNode)
   {
-    operandExpression.getUpstreamInputVariables()
+    operandExpression.getReferencedVariables()
                      .entrySet()
                      .forEach(entry -> generateCodeToPropagateIndependentUpstreamVariablesToOperand(mv, independentVariableNode, entry));
   }
