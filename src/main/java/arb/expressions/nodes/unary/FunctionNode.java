@@ -1203,6 +1203,10 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       return String.format("(%s)!", arg == null ? "" : arg);
     }
+    if ("floor".equals(functionName))
+    {
+      return String.format("⌊%s⌋", arg == null ? "" : arg);
+    }
     return String.format("%s(%s)", functionName, arg == null ? "" : arg).replaceAll("sqrt", "√").replaceAll("J0", "J₀");
   }
 
@@ -1218,6 +1222,23 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     if ("abs".equals(functionName))
     {
       return String.format("|%s|", arg.typeset());
+    }
+
+    if ("floor".equals(functionName))
+    {
+      String floorTypeset = String.format("\\lfloor{%s}\\rfloor", arg == null ? "" : arg.typeset());
+      if (derivativeOrder == 0)
+      {
+        return floorTypeset;
+      }
+      else if (derivativeOrder <= 3)
+      {
+        return floorTypeset + "'".repeat(derivativeOrder);
+      }
+      else
+      {
+        return floorTypeset + "^{(" + derivativeOrder + ")}";
+      }
     }
 
     String name        = functionName.replaceAll("√", "sqrt").replaceAll("J0", "J_0").replaceAll("ζ", "zeta");
