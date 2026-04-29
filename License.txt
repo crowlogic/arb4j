@@ -1,4 +1,20 @@
-arb4j  is the Licensed Work
+===Parameters===
+
+Licensor:        Stephen Andrew Crowley <stephencrowley214@gmail.com>
+Licensed Work:   arb4j (and every transformation of its source code,
+                 including compiled .class files and the .class files
+                 produced at run time by arb4j's expression compiler).
+Use Grant:       See "Additional Use Grant" below.
+Change Date:     2048-11-24 17:38 America/Chicago, or the fourth
+                 anniversary of the first publicly available
+                 distribution of a specific version of the Licensed
+                 Work, whichever comes first.
+Change License:  GNU Lesser General Public License version 3.0 or any
+                 later version (a license compatible with the GNU
+                 General Public License version 2.0 or any later
+                 version).
+
+arb4j is the Licensed Work
 
 by Author and Licensor  Stephen Crowley <stephencrowley214@gmail.com>
 
@@ -73,15 +89,19 @@ the Covenants of Licensor below
 In consideration of the right to use this License's text and the “Business Source License” name and trademark, Licensor covenants to MariaDB, and to all other 
 recipients of the licensed work to be provided by Licensor:
 
-to specify as the Change License the Lesser General Public License (LGPL) or any later version, or a license that is compatible with Lesser General Public License (LGPL)
- or a later version, where “compatible” means that software provided under the Change License can be included in a program with software provided under the 
- Lesser General Public License (LGPL) 3.0. Licensor may specify additional Change Licenses without limitation. To either:
+1. To specify as the Change License the GPL Version 2.0 or any later version, or a license that is compatible with GPL Version 2.0 or a later version,
+   where “compatible” means that software provided under the Change License can be included in a program with software provided under GPL Version 2.0 or
+   a later version. Licensor may specify additional Change Licenses without limitation.
 
-a) specify an additional grant of rights to use that does not impose any additional restriction on the right granted in this License, as the Additional Use Grant; 
+2. To either: (a) specify an additional grant of rights to use that does not impose any additional restriction on the right granted in this License, as
+   the Additional Use Grant; or (b) insert the text “None”.
 
-or
+3. To specify a Change Date.
 
-b) to specify a new change date but not to modify this License in any other way.
+4. Not to modify this License in any other way.
+
+The Change License selected by Licensor for the Licensed Work is the GNU Lesser General Public License version 3.0 or any later version, which is
+compatible with the GNU General Public License version 2.0 or any later version.
 
 ===Notice===
 
