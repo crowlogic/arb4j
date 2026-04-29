@@ -1,0 +1,10 @@
+--- !!arb.expressions.SerializedExpression
+coDomain: arb.Real
+context:
+  input:
+  - arb.Real
+  - 13.400000000000000000000000000000000000 +/- 3.77e-38
+domain: arb.Real
+expression: floor(√(t/(2*π)))
+function: arb.functions.real.RealFunction
+...
