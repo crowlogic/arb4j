@@ -9,11 +9,29 @@ is supplementary.
 ## Build/test conventions
 
 - Maven only. Never Gradle.
-- JDK 26: `JAVA_HOME=/tmp/jdk-26+35 PATH=$JAVA_HOME/bin:$PATH`.
+- JDK 26: `JAVA_HOME=/home/user/jdk26 PATH=$JAVA_HOME/bin:$PATH`. The Oracle
+  tarball is unpacked there; if it isn't present, fetch and extract
+  `https://download.oracle.com/java/26/latest/jdk-26_linux-x64_bin.tar.gz`
+  before building.
 - Compiled output goes to `build/classes`, not `target/`.
-- Read `DEVELOPING.md` before touching the build.
-- `.swig` files must be updated whenever `Real` or `Complex` change.
-- Run the full regression suite (`mvn test`) — never compile in a loop.
+- Working tree lives at `/home/user/workspace/arb4j`. Never create a
+  parallel checkout under `/tmp` — there is exactly one tree, and it
+  persists across sandbox restarts.
+- Build flow from a fresh checkout (does both native and Java):
+  ```
+  cd /home/user/workspace/arb4j
+  JAVA_HOME=/home/user/jdk26 PATH=$JAVA_HOME/bin:$PATH make            # SWIG + clang -> libarblib.so
+  JAVA_HOME=/home/user/jdk26 PATH=$JAVA_HOME/bin:$PATH mvn install     # full test suite + install jar
+  ```
+  Surefire passes `-Djava.library.path=${project.basedir}` so
+  `libarblib.so` must sit at the repo root (the Makefile builds it there).
+- Native sources: `native/*.i` (SWIG) -> `src/main/java/arb/*.java` (generated).
+  **Never edit `src/main/java/arb/<RootClass>.java` files that have the
+  SWIG header banner.** Edit the corresponding `.i` file in `native/` and
+  re-run `make`. The Makefile regenerates `arb_wrap.c` and the Java
+  bindings under `src/main/java/arb/`. SWIG version 4.3.0 (Debian) writes
+  a different banner than 4.4.0; the version-banner diff is cosmetic.
+- Run the full regression suite (`mvn install`) — never compile in a loop.
 
 ## Shaded fat jar
 
