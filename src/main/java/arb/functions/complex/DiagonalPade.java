@@ -44,14 +44,6 @@ public final class DiagonalPade implements
   /** Denominator polynomial. */
   public final ComplexPolynomial Q;
 
-  /**
-   * Optional parent Context whose variables are imported into the sub-Context.
-   */
-  private final Context          parent;
-
-  // Lazily-built artefacts ---------------------------------------------------
-  private Context                subContext;
-  private ComplexFunction        compiled;
 
   /**
    * Allocate a (P, Q) pair of Padé order M with capacity M+1 each. The parent
@@ -59,24 +51,17 @@ public final class DiagonalPade implements
    * polynomials start zero-length; the producer (typically a Hankel solve) fills
    * them via {@link #set}.
    */
-  public DiagonalPade(int M, Context parent)
+  public DiagonalPade(int M)
   {
     if (M < 0)
     {
       throw new IllegalArgumentException("Padé order M must be ≥ 0, got " + M);
     }
     this.M      = M;
-    this.parent = parent;
     this.P      = new ComplexPolynomial();
     this.Q      = new ComplexPolynomial();
     this.P.fitLength(Math.max(1, M + 1));
     this.Q.fitLength(Math.max(1, M + 1));
-  }
-
-  public DiagonalPade(int M)
-  {
-    this(M,
-         null);
   }
 
   // ── Producer-side mutation; fluent return of `this` ───────────────────────
@@ -93,7 +78,6 @@ public final class DiagonalPade implements
     Q.fitLength(1);
     Q.setLength(1);
     Q.get(0).posInf();
-    invalidateCompiled();
     return this;
   }
 
@@ -106,16 +90,6 @@ public final class DiagonalPade implements
     return P.getLength() == 1 && !P.get(0).isFinite();
   }
 
-  /**
-   * Producer notification that P and Q have been re-populated; drops any compiled
-   * function so the next {@link #asFunction} rebuilds against the new
-   * coefficients.
-   */
-  public DiagonalPade onCoefficientsChanged()
-  {
-    invalidateCompiled();
-    return this;
-  }
 
   // ── ComplexFunction.evaluate (the rational function R_M) ──────────────────
 
@@ -133,27 +107,12 @@ public final class DiagonalPade implements
     }
   }
 
-  private void invalidateCompiled()
-  {
-    if (compiled != null)
-    {
-      try
-      {
-        compiled.close();
-      }
-      catch (Exception ignored)
-      {
-      }
-      compiled = null;
-    }
-  }
 
   // ── Lifecycle ─────────────────────────────────────────────────────────────
 
   @Override
   public void close()
   {
-    invalidateCompiled();
     P.close();
     Q.close();
     // subContext, if any, is closed by closing its registered functions —

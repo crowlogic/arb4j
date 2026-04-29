@@ -118,7 +118,7 @@ public class MuntzPadeFunction implements
       zRep.set(1, 0);
       M = chooseOrderForPrecision(v, zRep, bits);
     }
-    DiagonalPade pade = new DiagonalPade(M, padeParentContext());
+    DiagonalPade pade = new DiagonalPade(M);
     padePade(v, M, bits, pade);
     return new MuntzPadeApproximantAtV(α, pade);
   }
@@ -236,7 +236,7 @@ public class MuntzPadeFunction implements
         solveHankel(v, coeff, currentM, bits, result);
         if (!result.isSingularSentinel())
         {
-          return result.onCoefficientsChanged();
+          return result;
         }
         currentM--;
       }
@@ -279,7 +279,7 @@ public class MuntzPadeFunction implements
     {
       return ComplexFunction.express("0");
     }
-    DiagonalPade pade = new DiagonalPade(M, padeParentContext());
+    DiagonalPade pade = new DiagonalPade(M);
     padePade(v, M, bits, pade);
     return pade;
     //return pade.asFunction();
@@ -367,7 +367,7 @@ public class MuntzPadeFunction implements
     Context parentCtx = padeParentContext();
     for (int m = currentTop + 1; m <= M; m++)
     {
-      DiagonalPade pade = new DiagonalPade(m, parentCtx);
+      DiagonalPade pade = new DiagonalPade(m);
       solveHankel(v, coeff, m, bits, pade);
       padeCache.add(pade);
     }
