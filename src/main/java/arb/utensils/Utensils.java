@@ -22,6 +22,7 @@ import org.yaml.snakeyaml.constructor.Constructor;
 
 import arb.Field;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.exceptions.CompilerException;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.FunctionMapping;
 import arb.expressions.SerializedExpression;
@@ -336,6 +337,61 @@ public class Utensils
       return null;
     }
     return image;
+  }
+
+  /**
+   * Detect a non-self-loop directed cycle in the
+   * {@link Dependency#dependsOn} graph and throw
+   * {@link CompilerException} naming the cycle. Self-loops are ignored
+   * because self-recursion is a supported configuration; only mutual
+   * cycles such as {@code a ↔ S} are rejected (issue #997).
+   *
+   * Three-colour DFS: WHITE vertices are unvisited, GRAY vertices are on
+   * the current path, BLACK vertices are fully processed. A GRAY hit on a
+   * neighbour distinct from the current vertex is a back-edge and a cycle.
+   */
+  public static void detectStructuralCycle(Map<String, Dependency> dependencies)
+  {
+    Set<String>  black = new HashSet<>();
+    Set<String>  gray  = new LinkedHashSet<>();
+    for (String vertex : dependencies.keySet())
+    {
+      if (!black.contains(vertex))
+      {
+        detectStructuralCycleVisit(vertex, dependencies, gray, black);
+      }
+    }
+  }
+
+  private static void detectStructuralCycleVisit(String vertex,
+                                                 Map<String, Dependency> dependencies,
+                                                 Set<String> gray,
+                                                 Set<String> black)
+  {
+    gray.add(vertex);
+    Dependency info = dependencies.get(vertex);
+    if (info != null)
+    {
+      for (String neighbour : info.dependsOn)
+      {
+        if (neighbour.equals(vertex))
+        {
+          continue;
+        }
+        if (gray.contains(neighbour))
+        {
+          List<String> path = new ArrayList<>(gray);
+          path.add(neighbour);
+          throw new CompilerException("structural cycle detected in function reference graph: " + String.join(" → ", path));
+        }
+        if (!black.contains(neighbour))
+        {
+          detectStructuralCycleVisit(neighbour, dependencies, gray, black);
+        }
+      }
+    }
+    gray.remove(vertex);
+    black.add(vertex);
   }
 
   public static List<Dependency> sortDependencies(Map<String, Dependency> dependencies, Map<String, FunctionMapping<?, ?, ?>> mappings)

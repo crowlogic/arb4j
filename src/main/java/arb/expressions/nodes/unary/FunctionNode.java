@@ -405,7 +405,17 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     if (functionName != null && functionName.equals(expression.functionName))
     {
-      designateAsRecursiveFunction(type());
+      expression.recursive = true;
+      logger.debug("FunctionNode<init> self-test: functionName={} expression=#{} expression.context=#{} mappingAfterLookup=#{} contextual={}",
+                functionName,
+                System.identityHashCode(expression),
+                System.identityHashCode(expression.getContext()),
+                System.identityHashCode(mapping),
+                contextual);
+      if (mapping == null)
+      {
+        designateAsRecursiveFunction(type());
+      }
     }
 
   }
@@ -414,6 +424,12 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     mapping    = expression.getContext().getFunctionMapping(functionName);
     contextual = mapping != null;
+    logger.debug("lookupFunctionInContext: functionName={} expression=#{} expression.context=#{} contextEntries={} mappingFound=#{}",
+              functionName,
+              System.identityHashCode(expression),
+              System.identityHashCode(expression.getContext()),
+              expression.getContext().functions.keySet(),
+              System.identityHashCode(mapping));
     if (contextual)
     {
       expression.registerReferencedFunction(functionName, mapping);
@@ -485,15 +501,11 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   private void designateAsRecursiveFunction(Class<?> resultType)
   {
     contextual = true;
-    mapping    = new FunctionMapping<>();
     if (generatedType == null)
     {
       generatedType = resultType;
     }
-    mapping.coDomain     = generatedType;
-    mapping.domain       = getDomainType();
-    mapping.functionName = functionName;
-    expression.recursive = true;
+    mapping = registerSelfReferrentialFunctionMapping();
   }
 
   @Override
@@ -1068,6 +1080,11 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public FunctionMapping<D, R, F> registerSelfReferrentialFunctionMapping()
   {
+    logger.debug("registerSelfReferrentialFunctionMapping: functionName={} expression=#{} expression.context=#{} contextEntries={}",
+              functionName,
+              System.identityHashCode(expression),
+              System.identityHashCode(expression.getContext()),
+              expression.getContext() == null ? "null" : expression.getContext().functions.keySet());
     var mapping = expression.getContext().registerFunctionMapping(functionName,
                                                              null,
                                                              expression.domainType,

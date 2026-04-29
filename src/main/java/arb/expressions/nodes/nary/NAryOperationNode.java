@@ -906,11 +906,11 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   }
 
   /**
-   * Emits, into the enclosing class's {@code initialize()} method, a single
-   * call to {@link Context#injectFunctionReferencesIntoOperand(Object, Context)}
-   * passing {@code this.<operandFieldName>} as the operand instance and
-   * {@code this.context} as the live registry. The call also assigns
-   * {@code this.<operandFieldName>.context = this.context} first so that the
+   * Emits, into the enclosing class's {@code initialize()} method, the
+   * statements that propagate the live {@link Context} and every named
+   * function field that the operand body references from {@code this} into
+   * {@code this.<operandFieldName>}. The first emitted statement assigns
+   * {@code this.<operandFieldName>.context = this.context} so that the
    * operand's own {@code initialize()} — and any subsequent
    * {@link Context} lookup it performs — sees the same registry as its
    * enclosing class.

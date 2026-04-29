@@ -1206,8 +1206,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       invokeDefaultConstructor(mv, typeInternalName);
       putField(mv, className, mapping.functionName, fieldDescriptor);
       // Propagate the parent's context field into the new instance's context
-      // field so the new instance's own initialize() and its downstream
-      // injectFunctionReferencesIntoOperand calls see the live, populated
+      // field so the new instance's own initialize() sees the live, populated
       // Context. Without this, the new instance keeps its field-initializer
       // default (an empty `new Context()`), which has no functions or
       // variables registered, and every nested function reference (e.g. He)
@@ -1469,6 +1468,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return classVisitor;
     }
     context.populateFunctionReferenceGraph();
+    Utensils.detectStructuralCycle(context.functionReferenceGraph);
     dependencies = Utensils.sortDependencies(context.functionReferenceGraph, getReferencedFunctions());
 
     if (saveGraphs)
@@ -2567,12 +2567,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       propagateContext(mv, functional);
       // Also propagate the context field itself so the curried inner
-      // expression's own initialize() — which calls
-      // Context.injectFunctionReferencesIntoOperand(child, this.context) —
-      // sees a live, populated Context. Without this the inner func
-      // instance has context=null and every nested
-      // injectFunctionReferencesIntoOperand call short-circuits, leaving
-      // function fields like `He` un-wired.
+      // expression's own initialize() — which propagates context-registered
+      // function references through the inlined per-name PUTFIELD statements
+      // emitted by propagateContextFunctionsToOperand — sees a live,
+      // populated Context. Without this the inner func instance has
+      // context=null, leaving function fields like `He` un-wired.
       String contextTypeDesc = Context.class.descriptorString();
       duplicateTopOfTheStack(mv);
       loadThisOntoStack(mv);
@@ -2697,9 +2696,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                               assignments));
     }
 
-    boolean haveLiveInstance = nestedFunction.instance != null
-                               && nestedFunction.isGenerated()
-                               && !nestedFunction.instance.getClass().isSynthetic();
+    boolean haveLiveInstance = nestedFunction.instance != null && nestedFunction.isGenerated();
 
     // Pre-registered branch: a mapping created via
     // Function.parseCompileAndRegister has no `instance` yet (deferred to
@@ -2739,12 +2736,21 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       // generates the bytecode for the nested class, breaking the
       // chicken-and-egg with the parent's own compile by going through the
       // shared ExpressionClassLoader.
-      if (haveRegisteredExpression && !nestedExpression.variablesDeclared)
-      {
-        nestedExpression.compile();
-      }
+      // For two expressions sharing the same Context, the set of context
+      // variables declared as fields is identical (both iterate
+      // context.variableEntryStream() in declareVariables). When the nested
+      // expression has not yet reached declareVariables — which happens
+      // every time it sits on a mutual-recursion cycle with the parent
+      // (a ↔ S in the fractional Riccati Müntz recurrence, issue #982) —
+      // substitute the parent's own filter, predicting that the sibling
+      // will declare the same context fields. ASM GETFIELD/PUTFIELD
+      // resolve field references by string at first execution, by which
+      // point the entire cycle has finished compile() and declared its
+      // fields.
       var variableStream         = context.variableClassStream();
-      var declaredVariableStream = variableStream.filter(variable -> nestedExpression.hasDeclaredVariable(variable.getLeft()));
+      var declaredVariableStream = nestedExpression.variablesDeclared
+                                 ? variableStream.filter(variable -> nestedExpression.hasDeclaredVariable(variable.getLeft()))
+                                 : variableStream.filter(variable -> hasDeclaredVariable(variable.getLeft()));
       String nestedClassInternalName = haveLiveInstance ? Type.getInternalName(nestedFunction.type())
                                                         : nestedFunction.expression.className;
       initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv),
@@ -3594,14 +3600,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected MethodVisitor generateSelfReference(MethodVisitor mv)
   {
     // Self-reference codegen for recursive functions.
-    //
-    // Previously this emitted `this.<self> = new <self>()` UNCONDITIONALLY at
-    // the end of initialize(). For non-self function references, codegen
-    // already wraps the `new` in a null-guard via
-    // constructReferencedFunctionInstanceIfItIsNull (line 1083); the self path
-    // was the only one missing that guard. The unconditional `new` clobbered
-    // any reference written by Context.injectFunctionReferences, defeating
-    // sharing/memoization arrangements set up at instantiation time.
     //
     // Emit the same null-guarded pattern used for non-self refs: if the field
     // already holds a non-null reference (because injection wired it), keep

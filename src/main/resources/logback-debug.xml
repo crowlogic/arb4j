@@ -5,8 +5,17 @@
 		</encoder>
 	</appender>
 
+	<appender name="file" class="ch.qos.logback.core.FileAppender">
+		<file>/tmp/arb4j-debug.log</file>
+		<append>false</append>
+		<encoder>
+			<pattern>[%thread] %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
 	<root level="DEBUG">
 		<appender-ref ref="console" />
+		<appender-ref ref="file" />
 	</root>
 
 	<logger name="arb.expressions.Expression" level="DEBUG" />

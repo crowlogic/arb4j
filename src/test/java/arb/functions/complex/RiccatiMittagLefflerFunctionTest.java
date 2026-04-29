@@ -28,7 +28,7 @@ public class RiccatiMittagLefflerFunctionTest extends
    * <p>
    * Closed form: a₁ = c₀ / Γ(μ+1) = 1/Γ(1.6) ≈ 1.119184587280...
    */
-  public static void testConstructionAndFirstMuntzCoefficient()
+  public void testConstructionAndFirstMuntzCoefficient()
   {
     int  bits = 128;
     Real μ    = new Real();
@@ -85,7 +85,7 @@ public class RiccatiMittagLefflerFunctionTest extends
    * drops by a factor of ~10 per increment in M in this regime.
    * </p>
    */
-  public static void testChooseOrderForPrecisionMonotoneInBits()
+  public void testChooseOrderForPrecisionMonotoneInBits()
   {
     int  baseBits = 64;
     Real μ        = new Real();
@@ -129,7 +129,7 @@ public class RiccatiMittagLefflerFunctionTest extends
    * order selection or evaluate — it pins the algebra of padePolynomials and
    * muntzCoefficientsAtV directly.
    */
-  public static void testPadeInterpolationDefiningProperty()
+  public void testPadeInterpolationDefiningProperty()
   {
     int  bits = 256;
     Real μ    = new Real();

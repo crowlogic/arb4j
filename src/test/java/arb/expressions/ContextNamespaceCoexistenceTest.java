@@ -19,7 +19,6 @@ import junit.framework.TestCase;
  *
  * @see Context#injectVariableReferences
  * @see Context#injectFunctionReferences
- * @see Context#injectFunctionReferencesIntoOperand
  */
 public class ContextNamespaceCoexistenceTest extends
                                              TestCase
