@@ -142,7 +142,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean shouldCache()
   {
-    return domainType.equals(Integer.class) && !isGeneratedFunctional() && upstreamExpression == null;
+    return domainType.equals(Integer.class) && upstreamExpression == null;
   }
 
   protected void declareCacheField(ClassVisitor cw)
@@ -1949,16 +1949,27 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     Compiler.cast(mv, coDomainType);
     Compiler.duplicateTopOfTheStack(mv);
     mv.visitJumpInsn(Opcodes.IFNULL, cacheMiss);
-    // cache hit: result.set(cached); return result
-    // stack: cached(coDomainType)
-    mv.visitVarInsn(Opcodes.ALOAD, 4);
-    mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
-    mv.visitInsn(Opcodes.SWAP); // stack: result(cast), cached
-    Compiler.generateVirtualMethodInvocation(mv, coDomainType, "set", coDomainType, coDomainType);
-    mv.visitInsn(Opcodes.POP);
-    mv.visitVarInsn(Opcodes.ALOAD, 4);
-    mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
-    mv.visitInsn(Opcodes.ARETURN);
+    if (isGeneratedFunctional())
+    {
+      // Functional cache hit: return the cached function reference directly.
+      // Function references are immutable handles — sharing them across callers
+      // is correct, no buffer-aliasing hazard, no per-call deep copy needed.
+      // stack: cached(coDomainType)
+      mv.visitInsn(Opcodes.ARETURN);
+    }
+    else
+    {
+      // Value-type cache hit: result.set(cached); return result
+      // stack: cached(coDomainType)
+      mv.visitVarInsn(Opcodes.ALOAD, 4);
+      mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
+      mv.visitInsn(Opcodes.SWAP); // stack: result(cast), cached
+      Compiler.generateVirtualMethodInvocation(mv, coDomainType, "set", coDomainType, coDomainType);
+      mv.visitInsn(Opcodes.POP);
+      mv.visitVarInsn(Opcodes.ALOAD, 4);
+      mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
+      mv.visitInsn(Opcodes.ARETURN);
+    }
     Compiler.designateLabel(mv, cacheMiss);
     Compiler.pop(mv);
   }
@@ -1982,12 +1993,41 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * After rootNode.generate() has left the computed result on the stack: allocate
-   * a fresh copy, copy result into it, poke into the cache, and return the
-   * result.
+   * After rootNode.generate() / generateFunctionalElement has left the computed
+   * result on the stack: poke into the cache and return.
+   *
+   * Value-type codomain: allocate a fresh copy via {@code new coDomainType()},
+   * copy result into it via {@code set()}, poke the copy. The deep copy keeps
+   * cache slots from sharing internal MPFR/FLINT buffers with the caller's
+   * result instance.
+   *
+   * Generated functional codomain: function references are immutable handles,
+   * so the on-stack reference produced by {@link #generateFunctionalElement}
+   * is poked directly. No {@code <init>()} (interfaces are not instantiable),
+   * no {@code set(F)} (function references have no in-place set semantics).
    */
   protected void generateCachePokeEpilogue(MethodVisitor mv)
   {
+    if (isGeneratedFunctional())
+    {
+      // stack on entry: <functionInstance> (left by generateFunctionalElement)
+      // dup so we can poke a copy of the reference and return one
+      mv.visitInsn(Opcodes.DUP);
+
+      // poke(cache, index, functionInstance) — keys-map is local cacheArrayListSlot,
+      // key is local cacheIndexSlot, value is the dup'd reference on stack
+      mv.visitVarInsn(Opcodes.ALOAD, cacheArrayListSlot);
+      mv.visitInsn(Opcodes.SWAP); // stack: cache, functionInstance
+      mv.visitVarInsn(Opcodes.ALOAD, cacheIndexSlot);
+      mv.visitInsn(Opcodes.SWAP); // stack: cache, index, functionInstance
+      Compiler.invokeStaticMethod(mv, Function.class, "poke", Object.class, TreeMap.class, arb.Integer.class, Object.class);
+      mv.visitInsn(Opcodes.POP); // discard poke return value
+
+      // return the original functionInstance still on the stack (under the dup)
+      mv.visitInsn(Opcodes.ARETURN);
+      return;
+    }
+
     int freshCopySlot = allocateLocalVariableSlot();
 
     // stack on entry: <result> (left by rootNode.generate)
