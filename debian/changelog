@@ -125,9 +125,36 @@ arb4j (0.99.9.9.10) UNRELEASED; urgency=low
     coefficient linear solve into arb.solvers (#990 step 1); dead
     pz/qz scratch dropped from evaluatePadeAtCachedOrder (#990 step
     4); try-with-resources on H, neg_b, qMat in solveHankel.
-  * Closes: #990, #993. Test suite 790/790 green on JDK 26.
+  * Auto-curry parser shapes (#975). Expression accepts
+    (p₁,…,pₙ)=body and name(p₁,…,pₙ)=body as declaration
+    forms equivalent to the chain p₁➔p₂➔…➔pₙ➔body, and
+    f(a₁,…,aₙ) at any call site as equivalent to the chained
+    application f(a₁)(a₂)…(aₙ). parseExplicitInputVariableIfPresent
+    recognises the new shapes, returns the first parameter name, and
+    stashes the remainder in pendingParameterList; parseInputVariableAssignment
+    drains that list by recursing into the cloned sub-expression, producing
+    an AST byte-for-byte equal to the equivalent arrow chain. The
+    outer-level evaluateOptionalIndependentVariableSpecification routes
+    to parseInputVariableAssignment when parameters remain, and
+    parse(boolean) skips the redundant resolve() when rootNode is
+    already populated. resolvePostfixOperators's '(' branch reads the
+    comma-separated argument list and folds it into nested
+    FunctionalEvaluationNodes; the reified-functional domain promotion
+    is exposed as the new public static helper
+    FunctionalEvaluationNode.promoteDomainToScalarOfReifiedFunctional
+    and invoked once before the first argument so P(3)(x) continues to
+    work. AutoCurryTest pins the equivalences over rootNode.toString().
+  * CachedNode.accept descends into the delegate so nested StaticNodes
+    inside SharedNodes are visible to nodeStream; fixes the t/(2·π)
+    NaN that surfaced in ceil(√(t/(2·π)))-floor(√(t/(2·π))) when
+    common-subexpression elimination buried the (2·π) StaticNode under
+    a SharedNode delegate. SharedNode overrides so only the canonical
+    instance descends. SharedNodeStaticHoistingTest pins the regression.
+  * LogGammaJetNode and FunctionNode typeset lnΓ with auto-sizing \left
+    … \right delimiters.
+  * Closes: #975, #990, #993. Test suite 805/805 green on JDK 26.
 
- -- Stephen Crowley <stephencrowley214@gmail.com>  Wed, 29 Apr 2026 02:55:00 -0500
+ -- Stephen Crowley <stephencrowley214@gmail.com>  Wed, 29 Apr 2026 15:08:00 -0500
 
 arb4j (0.99.9.9.9) UNRELEASED; urgency=low
 
