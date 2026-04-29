@@ -281,7 +281,8 @@ public class MuntzPadeFunction implements
     }
     DiagonalPade pade = new DiagonalPade(M, padeParentContext());
     padePade(v, M, bits, pade);
-    return pade.asFunction();
+    return pade;
+    //return pade.asFunction();
   }
 
   /**

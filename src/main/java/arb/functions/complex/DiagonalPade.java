@@ -16,24 +16,24 @@ import arb.expressions.Context;
  * <p>
  * Holds the two coefficient polynomials as owned native allocations, exposes
  * the rational evaluation directly via {@link #evaluate}, and lazily compiles
- * the symbolic expression z ↦ P(z)/Q(z) the first time {@link #asFunction}
- * is called. The compiled function is cached on the pair for the pair's
- * lifetime; the optional parent {@link Context} supplied at construction has
- * its variables imported into a private sub-Context so user-supplied free
- * variables (e.g. v, μ in the Riccati–Mittag-Leffler setting) continue to
- * resolve when the rational function is evaluated.
+ * the symbolic expression z ↦ P(z)/Q(z) the first time {@link #asFunction} is
+ * called. The compiled function is cached on the pair for the pair's lifetime;
+ * the optional parent {@link Context} supplied at construction has its
+ * variables imported into a private sub-Context so user-supplied free variables
+ * (e.g. v, μ in the Riccati–Mittag-Leffler setting) continue to resolve when
+ * the rational function is evaluated.
  *
  * <p>
- * Singular Hankel solves are signaled by the sentinel pair (P, Q) =
- * (∞, ∞) — both polynomials of length 1 with their constant term set to
- * positive infinity. Callers test {@link #isSingularSentinel}.
+ * Singular Hankel solves are signaled by the sentinel pair (P, Q) = (∞, ∞) —
+ * both polynomials of length 1 with their constant term set to positive
+ * infinity. Callers test {@link #isSingularSentinel}.
  *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
 public final class DiagonalPade implements
-                              ComplexFunction,
-                              AutoCloseable
+                                ComplexFunction,
+                                AutoCloseable
 {
   /** Padé order — the common degree bound on P and Q. */
   public final int               M;
@@ -44,7 +44,9 @@ public final class DiagonalPade implements
   /** Denominator polynomial. */
   public final ComplexPolynomial Q;
 
-  /** Optional parent Context whose variables are imported into the sub-Context. */
+  /**
+   * Optional parent Context whose variables are imported into the sub-Context.
+   */
   private final Context          parent;
 
   // Lazily-built artefacts ---------------------------------------------------
@@ -54,8 +56,8 @@ public final class DiagonalPade implements
   /**
    * Allocate a (P, Q) pair of Padé order M with capacity M+1 each. The parent
    * Context is optional; pass null to start with an empty sub-Context. The
-   * polynomials start zero-length; the producer (typically a Hankel solve)
-   * fills them via {@link #set}.
+   * polynomials start zero-length; the producer (typically a Hankel solve) fills
+   * them via {@link #set}.
    */
   public DiagonalPade(int M, Context parent)
   {
@@ -73,7 +75,8 @@ public final class DiagonalPade implements
 
   public DiagonalPade(int M)
   {
-    this(M, null);
+    this(M,
+         null);
   }
 
   // ── Producer-side mutation; fluent return of `this` ───────────────────────
@@ -95,8 +98,8 @@ public final class DiagonalPade implements
   }
 
   /**
-   * @return true iff P[0] = +∞ — set by {@link #markSingular} or by a
-   *         downstream Hankel solver that detected a singular system.
+   * @return true iff P[0] = +∞ — set by {@link #markSingular} or by a downstream
+   *         Hankel solver that detected a singular system.
    */
   public boolean isSingularSentinel()
   {
@@ -104,9 +107,9 @@ public final class DiagonalPade implements
   }
 
   /**
-   * Producer notification that P and Q have been re-populated; drops any
-   * compiled function so the next {@link #asFunction} rebuilds against the
-   * new coefficients.
+   * Producer notification that P and Q have been re-populated; drops any compiled
+   * function so the next {@link #asFunction} rebuilds against the new
+   * coefficients.
    */
   public DiagonalPade onCoefficientsChanged()
   {
@@ -122,38 +125,12 @@ public final class DiagonalPade implements
   @Override
   public Complex evaluate(Complex z, int order, int bits, Complex result)
   {
-    try ( Complex pz = new Complex(); Complex qz = new Complex())
+    try ( var pz = result.borrowVariable(); var qz = result.borrowVariable())
     {
       P.evaluate(z, order, bits, pz);
       Q.evaluate(z, order, bits, qz);
       return pz.div(qz, bits, result);
     }
-  }
-
-  // ── Symbolic representation ───────────────────────────────────────────────
-
-  /**
-   * The compiled symbolic ComplexFunction z ↦ P(z)/Q(z). Built once and
-   * memoized; any mutation of P or Q must be followed by
-   * {@link #onCoefficientsChanged()} to invalidate.
-   */
-  public ComplexFunction asFunction()
-  {
-    if (compiled == null)
-    {
-      if (subContext == null)
-      {
-        subContext = new Context();
-        if (parent != null && parent.variables != null)
-        {
-          parent.variables.forEach((name, var) -> subContext.variables.put(name, var));
-        }
-      }
-      subContext.registerFunction("P", P.setName("P"));
-      subContext.registerFunction("Q", Q.setName("Q"));
-      compiled = ComplexFunction.express("ℛ", "z➔P(z)/Q(z)", subContext);
-    }
-    return compiled;
   }
 
   private void invalidateCompiled()
