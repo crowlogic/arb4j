@@ -80,8 +80,31 @@ arb4j (0.99.9.9.10) UNRELEASED; urgency=low
     instance whose closure under self-application yields Hessians for
     free; closes #991 Phase 1.
   * Closes: #984, #991. Test suite 786/786 green.
+  * Expression.shouldCache enables peek/poke memoization for generated
+    functionals (#993). The !isGeneratedFunctional() clause is dropped
+    so integer-domain sequences whose codomain is a function type now
+    receive the integer-keyed TreeMap memo. generateCachePeek and
+    generateCachePokeEpilogue gain functional-codomain branches: peek
+    returns the cached function reference directly (no result.set, no
+    out-parameter aliasing); poke dups the function instance left on
+    the stack by generateFunctionalElement, pokes it under k, and
+    returns it (no <init>, no set). Function references are immutable
+    handles, so the deep-copy-on-hit dance used for value-type
+    codomains is skipped. The Müntz–Padé recurrence
+    a:k➔v➔…·a(k-1)(v)+r(v)·S(k)(v),
+    S:k➔v➔sum(j➔a(j)(v)·a(k-1-j)(v){j=1..k-2}) drops from O(M³) to
+    O(M²) per v.
+  * MuntzPadeFunction.solveHankel: Padé numerator built from the
+    compiled functional n➔a(n)+sum(j➔q[j]·a(n-j){j=1..n-1}) (#990
+    step 3 redo with the q[j] component-access bracket form);
+    DiagonalPade encapsulates the (P,Q) pair and its sub-Context
+    lifecycle (#990 step 2); HankelSystem extracts the Hankel
+    coefficient linear solve into arb.solvers (#990 step 1); dead
+    pz/qz scratch dropped from evaluatePadeAtCachedOrder (#990 step
+    4); try-with-resources on H, neg_b, qMat in solveHankel.
+  * Closes: #990, #993. Test suite 790/790 green on JDK 26.
 
- -- Stephen Crowley <stephencrowley214@gmail.com>  Tue, 28 Apr 2026 11:58:00 -0500
+ -- Stephen Crowley <stephencrowley214@gmail.com>  Wed, 29 Apr 2026 02:55:00 -0500
 
 arb4j (0.99.9.9.9) UNRELEASED; urgency=low
 
