@@ -1365,6 +1365,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     context.populateFunctionReferenceGraph();
     Utensils.detectStructuralCycle(context.functionReferenceGraph);
+    detectUnresolvedSiblingInCluster();
     dependencies = Utensils.sortDependencies(context.functionReferenceGraph, getReferencedFunctions());
 
     if (saveGraphs)
@@ -1384,6 +1385,50 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
 
     return classVisitor;
+  }
+
+  /**
+   * Structural fail-fast on the parse-tree state that produces exponential
+   * runtime cost. Walks {@link #getReferencedFunctions()} and throws when
+   * any entry's {@code mapping.expression} shares this Context and has a
+   * null {@code rootNode}. With no parse tree on the sibling, the lift
+   * cannot observe the sibling's back-references to this expression, so
+   * peer fields cannot be declared and the generated code falls back to
+   * fresh-instance allocation per recursive call.
+   */
+  protected void detectUnresolvedSiblingInCluster()
+  {
+    for (var entry : getReferencedFunctions().entrySet())
+    {
+      String                   siblingName    = entry.getKey();
+      FunctionMapping<?, ?, ?> siblingMapping = entry.getValue();
+      if (siblingMapping == null || siblingMapping.expression == null)
+      {
+        continue;
+      }
+      Expression<?, ?, ?> siblingExpression = siblingMapping.expression;
+      if (siblingExpression == this)
+      {
+        continue;
+      }
+      if (siblingExpression.context != this.context)
+      {
+        continue;
+      }
+      if (siblingExpression.rootNode != null)
+      {
+        continue;
+      }
+      throw new CompilerException("unresolved sibling '"
+                                  + siblingName
+                                  + "' in the same Context as '"
+                                  + functionName
+                                  + "': sibling has no rootNode at field-declaration time, so any back-reference from the sibling to '"
+                                  + functionName
+                                  + "' is invisible to the peer-field lift. The generated code will allocate fresh peer instances per recursive call and run in exponential time. Resolve the sibling's body before compiling '"
+                                  + functionName
+                                  + "', or refactor the cluster to remove mutual recursion.");
+    }
   }
 
   protected void declareIntermediateVariables(ClassVisitor classVisitor)

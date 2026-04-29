@@ -28,7 +28,7 @@ import junit.framework.TestCase;
 public class SelfRecursiveCurriedSequenceTest extends
                                               TestCase
 {
-  public static void testSelfRecursiveInnerCurryIsPreserved()
+  public void testSelfRecursiveInnerCurryIsPreserved()
   {
     Context                 ctx    = new Context();
     String                  source = "a:k➔v➔when(k=1, v, else, a(k-1)(v)+v)";
@@ -61,7 +61,7 @@ public class SelfRecursiveCurriedSequenceTest extends
    * {@code a(3)(v) = a(2)(v) + S(3)(v) = v + v²}. With {@code v=2},
    * {@code a(3)(2) = 2 + 4 = 6}.
    */
-  public static void testMutuallyRecursiveCurriedSequencesPreserveInnerCurry()
+  public void testMutuallyRecursiveCurriedSequencesPreserveInnerCurry()
   {
     Context ctx = new Context();
     ctx.registerFunctionMapping("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
@@ -91,7 +91,7 @@ public class SelfRecursiveCurriedSequenceTest extends
    * referring to {@code v} directly. With {@code p(v) = v} the arithmetic is
    * identical, so {@code a(3)(2) = 6} remains exact.
    */
-  public static void testMutuallyRecursiveCurriedSequencesWithExternalReferencedFunction()
+  public void testMutuallyRecursiveCurriedSequencesWithExternalReferencedFunction()
   {
     Context ctx = new Context();
     ComplexFunction.express("p", "v➔v", ctx);
@@ -123,7 +123,7 @@ public class SelfRecursiveCurriedSequenceTest extends
    * {@code a(k)(v) = when(k=1, v, else, S(k)(v))}. With {@code k=2, v=2}:
    * {@code a(1)(v) = v = 2}, {@code S(2)(v) = 4}, {@code a(2)(v) = 4}.
    */
-  public static void testMinimalMutuallyRecursiveCurriedPair()
+  public void testMinimalMutuallyRecursiveCurriedPair()
   {
     Context ctx = new Context();
     ctx.registerFunctionMapping("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
@@ -152,7 +152,7 @@ public class SelfRecursiveCurriedSequenceTest extends
    * {@code μ = 1} the arithmetic is identical to
    * {@link #testMinimalMutuallyRecursiveCurriedPair}, so {@code a(2)(2) = 4}.
    */
-  public static void testMinimalMutuallyRecursiveCurriedPairWithMu()
+  public void testMinimalMutuallyRecursiveCurriedPairWithMu()
   {
     Context ctx = new Context();
     Real μ      = new Real();
@@ -186,7 +186,7 @@ public class SelfRecursiveCurriedSequenceTest extends
    * {@code μ = 1}: {@code S(2)(v) = v·v = 4}, and
    * {@code a(2)(v) = (2·1)·S(2)(v) = 8}. So {@code a(2)(2) = 8}.
    */
-  public static void testMinimalMutuallyRecursiveCurriedPairWithKTimesMu()
+  public void testMinimalMutuallyRecursiveCurriedPairWithKTimesMu()
   {
     Context ctx = new Context();
     Real μ      = new Real();
@@ -221,7 +221,7 @@ public class SelfRecursiveCurriedSequenceTest extends
    * {@code Γ(k·μ+1) = Γ(3) = 2}, {@code S(2)(v) = v·v = 4}, and
    * {@code a(2)(v) = 2·S(2)(v) = 8}. So {@code a(2)(2) = 8}.
    */
-  public static void testMinimalMutuallyRecursiveCurriedPairWithGammaOfKMu()
+  public void testMinimalMutuallyRecursiveCurriedPairWithGammaOfKMu()
   {
     Context ctx = new Context();
     Real μ      = new Real();
@@ -258,7 +258,7 @@ public class SelfRecursiveCurriedSequenceTest extends
    * with the prefactor and {@code r} dropped. With {@code p(v)=v}: {@code a(1)(v) = v = 2},
    * {@code S(2)(v) = a(1)(v)·a(1)(v) = 4}, {@code a(2)(v) = p(v)·a(1)(v) + S(2)(v) = 2·2 + 4 = 8}.
    */
-  public static void testMutuallyRecursiveCurriedPairWithExternalFunctionMultiplyingRecursiveSelfCall()
+  public void testMutuallyRecursiveCurriedPairWithExternalFunctionMultiplyingRecursiveSelfCall()
   {
     Context ctx = new Context();
     ComplexFunction.express("p", "v➔v", ctx);
@@ -288,7 +288,7 @@ public class SelfRecursiveCurriedSequenceTest extends
    * {@code S(k)(v)}. With {@code p(v) = v}, {@code k = 2, v = 2}:
    * {@code a(1)(v) = v = 2}, {@code S(2)(v) = 4}, {@code a(2)(v) = p(v)·S(2)(v) = 2·4 = 8}.
    */
-  public static void testMutuallyRecursiveCurriedPairWithExternalFunctionMultiplyingPeerCall()
+  public void testMutuallyRecursiveCurriedPairWithExternalFunctionMultiplyingPeerCall()
   {
     Context ctx = new Context();
     ComplexFunction.express("p", "v➔v", ctx);
@@ -324,7 +324,7 @@ public class SelfRecursiveCurriedSequenceTest extends
    * Γ(k+1)=k!, ratio = (k-1)!/k! = 1/k. So a(1)(v)=v, a(2)(v)=(1/2)·(v·v+v·S(2)(v)),
    * S(2)(v)=sum(j=1..0,...) = 0 (empty sum), thus a(2)(v)=v·v/2. With v=2, a(2)(2)=2.
    */
-  public static void testBonanzaiShapeWithExternalFunctionsAndGammaAndMu()
+  public void testBonanzaiShapeWithExternalFunctionsAndGammaAndMu()
   {
     Context ctx = new Context();
     Real μ      = new Real();
@@ -363,7 +363,7 @@ public class SelfRecursiveCurriedSequenceTest extends
    * {@code S(k>2)(v) = 0}; {@code a(k=1)(v) = v}, {@code a(k>1)(v) = S(k)(v)}.
    * With {@code k=2, v=2}: {@code a(2)(2) = 4}.
    */
-  public static void testMutuallyRecursiveCurriedPairWithWhenInPeer()
+  public void testMutuallyRecursiveCurriedPairWithWhenInPeer()
   {
     Context ctx = new Context();
     ctx.registerFunctionMapping("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
@@ -383,6 +383,38 @@ public class SelfRecursiveCurriedSequenceTest extends
     a2.evaluate(v, 1, 128, out);
 
     assertEquals(4.0, out.re().doubleValue(), 1e-30);
+    assertTrue(out.im().isZero());
+  }
+
+  /**
+   * Minimal single-function curried integer-recursive sequence with no peer
+   * cluster and no mutual recursion. Body recurses through the curried
+   * operand back into the sequence: {@code a(k-1)(v)}. Tests whether the
+   * generator produces a terminating evaluation for {@code a(2)(3)} when
+   * the only recursion is self-referential through the operand. Hypothesis
+   * under test: the operand-allocation-per-call pattern in the generator
+   * causes non-terminating evaluation independently of any peer cluster.
+   *
+   * Closed form: {@code a(1)(v) = v}, {@code a(k)(v) = a(k-1)(v) + v},
+   * therefore {@code a(k)(v) = k·v}. With {@code k = 2}, {@code v = 3},
+   * the expected result is {@code 6}.
+   */
+  public void testMinimalSingleSelfRecursiveCurriedSequence()
+  {
+    Context ctx = new Context();
+    String  aExpr = "a:k➔v➔when(k=1, v, else, a(k-1)(v) + v)";
+    ComplexFunctionSequence a = ComplexFunctionSequence.express(aExpr, ctx);
+
+    Integer k = new Integer();
+    k.set(2);
+    Complex v = new Complex();
+    v.set(3, 0);
+    Complex out = new Complex();
+
+    ComplexFunction a2 = a.evaluate(k, 1, 128, null);
+    a2.evaluate(v, 1, 128, out);
+
+    assertEquals(6.0, out.re().doubleValue(), 1e-30);
     assertTrue(out.im().isZero());
   }
 }
