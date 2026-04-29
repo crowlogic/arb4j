@@ -61,7 +61,7 @@ for every $\xi\in\mathbb{R}$ with $|\xi|>1$,
 The proof is self-contained and uses only three ingredients:
 (i)~the Riemann--Siegel expansion with remainder $O(t^{-1/4})$;
 (ii)~one integration by parts with an exact antiderivative whose tail
-telescopes identically to zero; and
+telescopes identically; and
 (iii)~the elementary phase-derivative bound
 $\omega_n(u)\in[0,1)$.
 No moment estimates, positivity hypotheses, or stationary-phase machinery
@@ -89,17 +89,17 @@ function $\widetilde{Z}(u):=Z(\Theta^{-1}(u))$ then has a well-defined
 spectral theory in the Ces\`{a}ro sense.
 
 The main result, Theorem~\ref{thm:band}, shows that the Ces\`{a}ro--Fourier
-transform of $\widetilde{Z}$ is supported in $[-1,1]$, i.e., that $\widetilde{Z}$
-is \emph{band-limited} to $[-1,1]$.  The argument proceeds in three steps
-that mirror the Riemann--Siegel decomposition~\eqref{eq:RS}.  The cosine
-sum contributes mode integrals $I_n(\xi,T)$, each bounded via a single
-integration by parts (Lemma~\ref{lem:IBP}); the error term is absorbed by the
-classical $O(t^{-1/4})$ bound on the Riemann--Siegel remainder (Step~3 of
-the proof).
+transform of $\widetilde{Z}$ is supported in $[-1,1]$, i.e., that
+$\widetilde{Z}$ is \emph{band-limited} to $[-1,1]$.  The argument proceeds
+in three steps that mirror the Riemann--Siegel decomposition~\eqref{eq:RS}.
+The cosine sum contributes mode integrals $I_n(\xi,T)$, each bounded via
+a single integration by parts (Lemma~\ref{lem:IBP}); the error term is
+absorbed by the classical $O(t^{-1/4})$ bound on the Riemann--Siegel
+remainder.
 
 A key feature distinguishing this argument from stationary-phase or
-van-der-Corput methods is that the tail integral in the integration by parts
-telescopes \emph{exactly}, yielding the sharp bound
+van-der-Corput methods is that the tail integral telescopes
+\emph{exactly} via an antiderivative identity, yielding the sharp bound
 $|I_n(\xi,T)|\le 2/(\xi-1)$ with no asymptotic error.  The cutoff
 $|\xi|=1$ is confirmed to be optimal in Corollary~\ref{cor:sharp}: at
 every interior frequency $\xi\in(-1,1)$ the stationary-phase contribution
@@ -161,8 +161,7 @@ The identity
 $\vartheta'(t)=\tfrac{1}{2}\Rea\,\psi\!\left(\tfrac{1}{4}+\tfrac{it}{2}\right)
 -\tfrac{1}{2}\log\pi$
 and the digamma special value
-$\psi\!\left(\tfrac{1}{4}\right)
-=-\gamma-\tfrac{\pi}{2}-3\log 2$
+$\psi\!\left(\tfrac{1}{4}\right)=-\gamma-\tfrac{\pi}{2}-3\log 2$
 give
 \[
   \vartheta'(0)
@@ -270,7 +269,7 @@ since $\log n+C>0$ for all $n\ge 1$ and $C>0$.
 
 \smallskip\noindent
 \textbf{(d).}
-Write $\omega_n=f\circ g\,/\,h\circ g$ with
+Write $\omega_n=f\circ g/(h\circ g)$ with
 $f(t):=\vartheta'(t)-\log n$ and $h(t):=\Theta'(t)=\vartheta'(t)+C$.
 Then $f'=h'=\vartheta''$, so the quotient rule and $g'=1/(h\circ g)$ give
 \begin{align*}
@@ -279,9 +278,8 @@ Then $f'=h'=\vartheta''$, so the quotient rule and $g'=1/(h\circ g)$ give
   &=\frac{\vartheta''(g)\bigl[h(g)-f(g)\bigr]}{h(g)^{3}}
   =\frac{(C+\log n)\,\vartheta''(g(u))}{\Theta'(g(u))^{3}}.
 \end{align*}
-Positivity of $\vartheta''(t)=\tfrac{1}{4}\Rea\,\psi'\!\left(
-\tfrac{1}{4}+\tfrac{it}{2}\right)$
-for all $t\ge 0$ is classical \cite[5.15.3]{DLMF}.
+Positivity $\vartheta''(t)>0$ for all $t\ge 0$ is classical
+\cite[5.15.3]{DLMF}.
 
 \smallskip\noindent
 \textbf{(e).}
@@ -291,9 +289,9 @@ $\tfrac{d}{du}(\xi-\omega_n)^{-1}=\omega_n'(\xi-\omega_n)^{-2}$.
 
 \begin{remark}\label{rem:formula-d}
 The numerator in part~(d) is $C+\log n$, not merely $C$.
-For $n=1$ the expressions coincide, but for $n\ge 2$ the correct
-formula carries the additional $\log n$ factor.  The sign and
-strict monotonicity are unaffected since $C+\log n>0$ for all $n\ge 1$.
+For $n=1$ the expressions coincide; for $n\ge 2$ the correct formula
+carries the additional $\log n$ factor.  The sign and strict
+monotonicity are unaffected since $C+\log n>0$ for all $n\ge 1$.
 \end{remark}
 
 % ================================================================
@@ -332,8 +330,7 @@ and integrate by parts once:
 
 \smallskip\noindent
 \textit{Boundary terms.}
-The upper boundary contributes at most $1/A$;
-the lower contributes $1/B$.
+The upper boundary contributes at most $1/A$; the lower contributes $1/B$.
 
 \smallskip\noindent
 \textit{Tail integral.}
@@ -344,24 +341,23 @@ is non-negative, and Lemma~\ref{lem:phase}(e) supplies the exact antiderivative:
   \;=\;\left[\frac{1}{\xi-\omega_n(u)}\right]_{u_n}^{\Theta(T)}
   =\frac{1}{A}-\frac{1}{B}.
 \]
-No asymptotic approximation is used; this is an identity.
+This is an identity, not an asymptotic.
 
 \smallskip\noindent
 \textit{Combining.}
 \[
   \abs{I_n(\xi,T)}
-  \;\le\;\underbrace{\frac{1}{A}}_{\text{upper bdry}}
-         +\underbrace{\frac{1}{B}}_{\text{lower bdry}}
-         +\underbrace{\frac{1}{A}-\frac{1}{B}}_{\text{tail}}
+  \;\le\;\frac{1}{A}+\frac{1}{B}
+         +\!\left(\frac{1}{A}-\frac{1}{B}\right)
   \;=\;\frac{2}{A}
   \;\le\;\frac{2}{\xi-1}.\qedhere
 \]
 \end{proof}
 
 \begin{remark}
-The $1/B$ contributions cancel exactly between the lower boundary and
-the tail antiderivative, leaving the combined bound $2/A\le 2/(\xi-1)$.
-This is an exact identity; no oscillatory phase cancellation is invoked.
+The $1/B$ contributions from the lower boundary and the tail
+antiderivative cancel exactly, leaving the combined bound
+$2/A\le 2/(\xi-1)$.  No oscillatory phase cancellation is invoked.
 \end{remark}
 
 % ================================================================
@@ -391,16 +387,16 @@ Substituting $u=\Theta(t)$, $du=\Theta'(t)\,dt$, $g(u)=t$:
   =\int_{0}^{T}Z(t)\,e^{-i\xi\Theta(t)}\,\Theta'(t)\,dt.
 \]
 Insert the Riemann--Siegel expansion~\eqref{eq:RS}:
-\begin{align*}
-  &=2\sum_{n=1}^{N(T)}n^{-1/2}
+\[
+  =2\sum_{n=1}^{N(T)}n^{-1/2}
      \int_{2\pi n^2}^{T}
      \cos\!\bigl(\vartheta(t)-t\log n\bigr)
      \,e^{-i\xi\Theta(t)}\,\Theta'(t)\,dt
      + S_R(\xi,T),
-\end{align*}
+\]
 where $S_R(\xi,T):=\int_{0}^{T}R(t)\,e^{-i\xi\Theta(t)}\,\Theta'(t)\,dt$
-and the lower limit has been shifted from $0$ to $2\pi n^2$ at the cost
-of an $O(1)$ error absorbed into the constants.
+and the lower limit has been shifted from $0$ to $2\pi n^2$ at the
+cost of an $O(1)$ error absorbed into the constants.
 Writing $\cos(\vartheta-t\log n)=\tfrac{1}{2}(e^{i(\vartheta-t\log n)}
 +e^{-i(\vartheta-t\log n)})$ and substituting $u=\Theta(t)$ converts
 each term to $e^{i(\Phi_n(u)-\xi u)}\,du$ (or its conjugate).
@@ -443,7 +439,7 @@ Combining Steps~2 and~3 completes the proof.
 \section{Sharpness}
 % ================================================================
 
-\begin{corollary}[Spectral support is exactly $[-1,1]$]\label{cor:sharp}
+\begin{corollary}[{Spectral support is exactly $[-1,1]$}]\label{cor:sharp}
 For every $\xi\in(-1,1)\setminus\{0\}$,
 \[
   \limsup_{T\to\infty}
@@ -479,15 +475,15 @@ Standard stationary-phase analysis gives
 $|I_n(\xi,T_n)|^{2}\sim 2\pi/\omega_n'(u_n^*)>0$
 for $T_n$ chosen with $\Theta(T_n)\gg u_n^*$.
 Since the scales $t_n^*$ are well-separated, the contributions to the
-Ces\`{a}ro average from distinct modes do not cancel, and
-$\limsup_{T\to\infty}\Theta(T)^{-1}\bigl|\int_{0}^{\Theta(T)}
-\widetilde{Z}(u)e^{-i\xi u}\,du\bigr|>0$.
+Ces\`{a}ro average from distinct modes do not cancel, and the
+$\limsup$ is bounded away from zero.
 \end{proof}
 
 \begin{remark}
 The spectral support is independent of the choice of $C>c_*$.
-Replacing $C$ by any $C'>c_*$ changes $\Theta$ and $g$ but leaves
-the question of whether the Ces\`{a}ro average vanishes unaffected.
+Replacing $C$ by any $C'>c_*$ changes $\Theta$ and $g=\Theta^{-1}$ but
+leaves the question of whether the Ces\`{a}ro average vanishes
+unaffected.
 \end{remark}
 
 % ================================================================
@@ -495,7 +491,8 @@ the question of whether the Ces\`{a}ro average vanishes unaffected.
 % ================================================================
 
 The author thanks B.~Riemann, C.\,L.~Siegel, G.\,H.~Hardy, and
-E.\,C.~Titchmarsh for the foundational results on which this paper rests.
+E.\,C.~Titchmarsh for the foundational results on which this paper
+rests.
 
 % ================================================================
 \begin{thebibliography}{9}
