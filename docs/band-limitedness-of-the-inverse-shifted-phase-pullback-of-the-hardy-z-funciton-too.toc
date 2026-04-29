@@ -1,0 +1,13 @@
+\contentsline {section}{\tocsection {}{1}{Introduction}}{2}{section.1}%
+\contentsline {section}{\tocsection {}{2}{Setup and Notation}}{2}{section.2}%
+\contentsline {section}{\tocsection {}{3}{Riemann--Siegel Expansion}}{3}{section.3}%
+\contentsline {section}{\tocsection {}{4}{Phase-Derivative Identity}}{3}{section.4}%
+\contentsline {section}{\tocsection {}{5}{The Uniform IBP Bound}}{5}{section.5}%
+\contentsline {section}{\tocsection {}{6}{Band-Limitedness}}{6}{section.6}%
+\contentsline {section}{\tocsection {}{7}{Sharpness}}{7}{section.7}%
+\contentsline {section}{\tocsection {}{8}{Higher Cumulant Spectra}}{8}{section.8}%
+\contentsline {subsection}{\tocsubsection {}{8.1}{Cumulant densities and polyspectra}}{8}{subsection.8.1}%
+\contentsline {subsection}{\tocsubsection {}{8.2}{Multi-mode IBP}}{8}{subsection.8.2}%
+\contentsline {subsection}{\tocsubsection {}{8.3}{Band-limitedness of $\Phi _s$}}{9}{subsection.8.3}%
+\contentsline {section}{\tocsection {}{}{Acknowledgements}}{10}{section*.2}%
+\contentsline {section}{\tocsection {}{}{References}}{10}{section*.3}%

@@ -28,19 +28,19 @@
     the Hardy <math|Z>-function. Fix any constant
     <math|C\<gtr\>c<rsub|\<ast\>>>, where
 
-    <\equation*>
+    <\equation>
       c<rsub|\<ast\>><space|0.27em>:=<space|0.27em><tfrac|1|2><space|-0.17em><left|(>\<gamma\>+3log
-      2+<tfrac|\<pi\>|2>+log \<pi\><right|)><space|0.27em>\<approx\><space|0.27em>2.6860917,
-    </equation*>
+      2+<tfrac|\<pi\>|2>+log \<pi\><right|)><space|0.27em>\<approx\><space|0.27em>2.6860917
+    </equation>
 
     so that <math|\<Theta\>(t):=\<vartheta\>(t)+C*t> is a
     <math|C<rsup|\<infty\>>> diffeomorphism of <math|[0,\<infty\>)>, and let
     <math|<wide|Z|~>:=Z\<circ\>\<Theta\><rsup|-1>>. We prove that for every
     <math|\<xi\>\<in\>\<bbb-R\>> with <math|\|\<xi\>\|\<gtr\>1>,
 
-    <\equation*>
-      <frac|1|\<Theta\>(T)><big|int><rsub|0><rsup|\<Theta\>(T)><wide|Z|~>(u)<space|0.17em>e<rsup|-i\<xi\>u><space|0.17em>d*u<space|0.27em>\<longrightarrow\><space|0.27em>0<space|1em><text|as>T\<to\>\<infty\>.
-    </equation*>
+    <\equation>
+      <frac|1|\<Theta\>(T)><big|int><rsub|0><rsup|\<Theta\>(T)><wide|Z|~>(u)<space|0.17em>e<rsup|-i\<xi\>u><space|0.17em>d*u<space|0.27em>\<longrightarrow\><space|0.27em>0<space|1em><text|as>T\<to\>\<infty\>
+    </equation>
 
     The proof is self-contained and uses only three ingredients: (i)<nbsp>the
     Riemann--Siegel expansion with remainder <math|O(t<rsup|-1/4>>);
@@ -54,7 +54,41 @@
   </abstract>>
 
   <\table-of-contents|toc>
-    \;
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|1.<space|2spc>Introduction>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-1><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|2.<space|2spc>Setup
+    and Notation> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-2><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|3.<space|2spc>Riemann\USiegel
+    Expansion> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-3><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|4.<space|2spc>Phase-Derivative
+    Identity> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-4><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|5.<space|2spc>The
+    Uniform IBP Bound> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-5><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|6.<space|2spc>Band-Limitedness>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-6><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|7.<space|2spc>Sharpness>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-7><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|Acknowledgements>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-8><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-9><vspace|0.5fn>
   </table-of-contents>
 
   <section|Introduction>
@@ -102,11 +136,15 @@
   <\definition>
     [Hardy <math|Z>-function]<label|def:Z> For <math|t\<ge\>0> define
 
-    <\equation*>
+    <\equation>
       \<vartheta\><around|(|t|)><space|0.27em>\<assign\><space|0.27em><Ima>log
       \<Gamma\>*<space|-0.17em><around*|(|<tfrac|1|4>+<tfrac|i*t|2>|)>-<tfrac|t|2>log
-      \<pi\>,<space|2em>Z<around|(|t|)><space|0.27em>\<assign\><space|0.27em>e<rsup|i*\<vartheta\><around|(|t|)>>*\<zeta\>*<space|-0.17em><around*|(|<tfrac|1|2>+i*t|)>.
-    </equation*>
+      \<pi\>
+    </equation>
+
+    <\equation>
+      Z<around|(|t|)><space|0.27em>\<assign\><space|0.27em>e<rsup|i*\<vartheta\><around|(|t|)>>*\<zeta\>*<space|-0.17em><around*|(|<tfrac|1|2>+i*t|)>
+    </equation>
 
     The function <math|Z> is real-valued with zeros exactly the zeros of
     <math|\<zeta\>> on <math|<Rea>s=<tfrac|1|2>>.
@@ -115,16 +153,16 @@
   <\definition>
     [Shifted phase map]<label|def:Theta> Set
 
-    <\equation*>
+    <\equation>
       c<rsub|\<ast\>><space|0.27em>\<assign\><space|0.27em><tfrac|1|2><space|-0.17em><around*|(|\<gamma\>+3*log
-      2+<tfrac|\<pi\>|2>+log \<pi\>|)>,
-    </equation*>
+      2+<tfrac|\<pi\>|2>+log \<pi\>|)>
+    </equation>
 
     fix any <math|C\<gtr\>c<rsub|\<ast\>>>, and define
 
-    <\equation*>
-      \<Theta\><around|(|t|)><space|0.27em>\<assign\><space|0.27em>\<vartheta\><around|(|t|)>+C*t,<space|2em>g<space|0.27em>\<assign\><space|0.27em>\<Theta\><rsup|-1>,<space|2em><wide|Z|~><around|(|u|)><space|0.27em>\<assign\><space|0.27em>Z<around|(|g<around|(|u|)>|)>.
-    </equation*>
+    <\equation>
+      \<Theta\><around|(|t|)><space|0.27em>\<assign\><space|0.27em>\<vartheta\><around|(|t|)>+C*t,<space|2em>g<space|0.27em>\<assign\><space|0.27em>\<Theta\><rsup|-1>,<space|2em><wide|Z|~><around|(|u|)><space|0.27em>\<assign\><space|0.27em>Z<around|(|g<around|(|u|)>|)>
+    </equation>
   </definition>
 
   <\proposition>
@@ -133,10 +171,10 @@
     <math|\<Theta\>:<around|[|0,\<infty\>|)>\<to\><around*|[|\<Theta\><around|(|0|)>,\<infty\>|)>>
     is a <math|C<rsup|\<infty\>>> diffeomorphism with
 
-    <\equation*>
+    <\equation>
       \<Theta\><rprime|'><around|(|t|)><space|0.27em>=<space|0.27em>\<vartheta\><rprime|'><around|(|t|)>+C<space|0.27em>\<gtr\><space|0.27em>0<space|1em>\<forall\><space|0.17em>t\<ge\>0,<space|2em>\<Theta\><rprime|'><around|(|t|)><space|0.27em>\<sim\><space|0.27em><tfrac|1|2>log
-      <space|-0.17em><around*|(|<tfrac|t|2*\<pi\>>|)>*<space|1em><around|(|t\<to\>\<infty\>|)>.
-    </equation*>
+      <space|-0.17em><around*|(|<tfrac|t|2*\<pi\>>|)>*<space|1em><around|(|t\<to\>\<infty\>|)>
+    </equation>
 
     Moreover, <math|\<Theta\><around|(|T|)>\<sim\><tfrac|T|2>log
     <around|(|T/2*\<pi\>|)>> as <math|T\<to\>\<infty\>>.
@@ -148,11 +186,11 @@
     <math|\<psi\><space|-0.17em><around*|(|<tfrac|1|4>|)>=-\<gamma\>-<tfrac|\<pi\>|2>-3*log
     2> give
 
-    <\equation*>
+    <\equation>
       \<vartheta\><rprime|'><around|(|0|)>=<tfrac|1|2>\<psi\><space|-0.17em><around*|(|<tfrac|1|4>|)>-<tfrac|1|2>log
       \<pi\>=-<tfrac|1|2><space|-0.17em><around*|(|\<gamma\>+<tfrac|\<pi\>|2>+3*log
       2+log \<pi\>|)>=-c<rsub|\<ast\>>.
-    </equation*>
+    </equation>
 
     Since <math|\<vartheta\><rprime|'>> is strictly increasing with
     <math|\<vartheta\><rprime|'><around|(|t|)>=<tfrac|1|2>log
@@ -173,15 +211,21 @@
   <\equation>
     <label|eq:RS>Z<around|(|t|)><space|0.27em>=<space|0.27em>2*<big|sum><rsub|n=1><rsup|N<around|(|t|)>>n<rsup|-1/2>*cos
     <space|-0.17em><around*|(|\<vartheta\><around|(|t|)>-t*log
-    n|)>+R<around|(|t|)>,<space|2em><abs|R<around|(|t|)>>\<ll\>t<rsup|-1/4>,<space|1em>t\<ge\>1.
+    n|)>+R<around|(|t|)>
+  </equation>
+
+  where
+
+  <\equation>
+    <abs|R<around|(|t|)>>\<ll\>t<rsup|-<frac|1|4>>\<forall\>t\<ge\>1
   </equation>
 
   <\lemma>
     [Partial-sum bound]<label|lem:partial> For all <math|T\<ge\>1>,
 
-    <\equation*>
-      <big|sum><rsub|n=1><rsup|N<around|(|T|)>>n<rsup|-1/2><space|0.27em>\<le\><space|0.27em>2<space|-0.17em><around*|(|<frac|T|2*\<pi\>>|)><rsup|1/4>+2.
-    </equation*>
+    <\equation>
+      <big|sum><rsub|n=1><rsup|N<around|(|T|)>>n<rsup|-1/2><space|0.27em>\<le\><space|0.27em>2<space|-0.17em><around*|(|<frac|T|2*\<pi\>>|)><rsup|1/4>+2
+    </equation>
   </lemma>
 
   <\proof>
@@ -193,12 +237,18 @@
   <section|Phase-Derivative Identity>
 
   For <math|n\<ge\>1> and <math|u\<ge\>u<rsub|n>\<assign\>\<Theta\>*<around|(|2*\<pi\>*n<rsup|2>|)>>,
-  define the <em|mode phase> and <em|frequency ratio>
+  define the <em|phase mode>\ 
 
   <\equation>
     <label|eq:Phi-omega>\<Phi\><rsub|n><around|(|u|)><space|0.27em>\<assign\><space|0.27em>\<vartheta\><around|(|g<around|(|u|)>|)>-g<around|(|u|)>*log
-    n,<space|2em>\<omega\><rsub|n><around|(|u|)><space|0.27em>\<assign\><space|0.27em><frac|\<vartheta\><rprime|'><around|(|g<around|(|u|)>|)>-log
-    n|\<Theta\><rprime|'><around|(|g<around|(|u|)>|)>>.
+    n
+  </equation>
+
+  and <em|frequency ratio>
+
+  <\equation>
+    \<omega\><rsub|n><around|(|u|)><space|0.27em>\<assign\><space|0.27em><frac|\<vartheta\><rprime|'><around|(|g<around|(|u|)>|)>-log
+    n|\<Theta\><rprime|'><around|(|g<around|(|u|)>|)>>
   </equation>
 
   <\lemma>
@@ -207,7 +257,7 @@
     <math|\<xi\>\<in\>\<bbb-R\>>:
 
     <\enumerate>
-      <item*|<with|font-shape|right|(a)>><math|<with|math-display|true|<frac|d|d*u>*<around*|(|\<Phi\><rsub|n><around|(|u|)>-\<xi\>*u|)>=\<omega\><rsub|n><around|(|u|)>-\<xi\>>>.
+      <item*|<with|font-shape|right|(a)>><math|<with|math-display|true|<frac|d|d*u>*<around*|(|\<Phi\><rsub|n><around|(|u|)>-\<xi\>*u|)>=\<omega\><rsub|n><around|(|u|)>-\<xi\>>>
 
       <item*|<with|font-shape|right|(b)>><math|\<omega\><rsub|n><around|(|u<rsub|n>|)>=0>.
 
@@ -222,20 +272,20 @@
       <item*|<with|font-shape|right|(e)>>For every constant
       <math|\<xi\>\<nin\>\<omega\><rsub|n><space|-0.17em><around*|(|<around|[|u<rsub|n>,\<infty\>|)>|)>>,
 
-      <\equation*>
-        <frac|d|d*u><space|-0.17em><around*|[|<frac|1|\<xi\>-\<omega\><rsub|n><around|(|u|)>>|]>=<frac|\<omega\><rsub|n><rprime|'><around|(|u|)>|<around|(|\<xi\>-\<omega\><rsub|n><around|(|u|)>|)><rsup|2>>.
-      </equation*>
+      <\equation>
+        <frac|d|d*u><space|-0.17em><around*|[|<frac|1|\<xi\>-\<omega\><rsub|n><around|(|u|)>>|]>=<frac|\<omega\><rsub|n><rprime|'><around|(|u|)>|<around|(|\<xi\>-\<omega\><rsub|n><around|(|u|)>|)><rsup|2>>
+      </equation>
     </enumerate>
   </lemma>
 
   <\proof>
     <with|font-series|bold|(a).> Using <math|g<rprime|'><around|(|u|)>=1/\<Theta\><rprime|'><around|(|g<around|(|u|)>|)>>:
 
-    <\equation*>
+    <\equation>
       <frac|d*\<Phi\><rsub|n>|d*u>=<around*|(|\<vartheta\><rprime|'><around|(|g<around|(|u|)>|)>-log
       n|)>\<cdot\>g<rprime|'><around|(|u|)>=<frac|\<vartheta\><rprime|'><around|(|g<around|(|u|)>|)>-log
-      n|\<Theta\><rprime|'><around|(|g<around|(|u|)>|)>>=\<omega\><rsub|n><around|(|u|)>.
-    </equation*>
+      n|\<Theta\><rprime|'><around|(|g<around|(|u|)>|)>>=\<omega\><rsub|n><around|(|u|)>
+    </equation>
 
     Subtracting <math|\<xi\>> gives part<nbsp>(a).
 
@@ -250,10 +300,10 @@
     <math|\<omega\><rsub|n>> is increasing by<nbsp>(d). The upper bound
     follows from the algebraic identity
 
-    <\equation*>
+    <\equation>
       \<omega\><rsub|n><around|(|u|)>=1-<frac|log
-      n+C|\<vartheta\><rprime|'><around|(|g<around|(|u|)>|)>+C>\<less\>1,
-    </equation*>
+      n+C|\<vartheta\><rprime|'><around|(|g<around|(|u|)>|)>+C>\<less\>1
+    </equation>
 
     since <math|log n+C\<gtr\>0> for all <math|n\<ge\>1> and
     <math|C\<gtr\>0>.
@@ -265,10 +315,10 @@
     Then <math|f<rprime|'>=h<rprime|'>=\<vartheta\><rprime|''>>, so the
     quotient rule and <math|g<rprime|'>=1/<around|(|h\<circ\>g|)>> give
 
-    <\align*>
-      <tformat|<table|<row|<cell|\<omega\><rsub|n><rprime|'><around|(|u|)>>|<cell|=<frac|f<rprime|'><around|(|g|)>*<space|0.17em>h<around|(|g|)>-f<around|(|g|)>*<space|0.17em>h<rprime|'><around|(|g|)>|h<around|(|g|)><rsup|2>>\<cdot\>g<rprime|'><around|(|u|)>>>|<row|<cell|<vspace*|4pt>>|<cell|=<frac|\<vartheta\><rprime|''><around|(|g|)>*<around*|[|h<around|(|g|)>-f<around|(|g|)>|]>|h<around|(|g|)><rsup|3>>=<frac|<around|(|C+log
-      n|)>*<space|0.17em>\<vartheta\><rprime|''><around|(|g<around|(|u|)>|)>|\<Theta\><rprime|'><around|(|g<around|(|u|)>|)><rsup|3>>.>>>>
-    </align*>
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|\<omega\><rsub|n><rprime|'><around|(|u|)>>|<cell|=<frac|f<rprime|'><around|(|g|)>*<space|0.17em>h<around|(|g|)>-f<around|(|g|)>*<space|0.17em>h<rprime|'><around|(|g|)>|h<around|(|g|)><rsup|2>>\<cdot\>g<rprime|'><around|(|u|)>>>|<row|<cell|<vspace*|4pt>>|<cell|=<frac|\<vartheta\><rprime|''><around|(|g|)>*<around*|[|h<around|(|g|)>-f<around|(|g|)>|]>|h<around|(|g|)><rsup|3>>=<frac|<around|(|C+log
+      n|)>*<space|0.17em>\<vartheta\><rprime|''><around|(|g<around|(|u|)>|)>|\<Theta\><rprime|'><around|(|g<around|(|u|)>|)><rsup|3>>>>>>>
+    </equation>
 
     Positivity of <math|\<vartheta\><rprime|''><around|(|t|)>=<tfrac|1|4><Rea><space|0.17em>\<psi\><rprime|'>*<space|-0.17em><around*|(|<tfrac|1|4>+<tfrac|i*t|2>|)>>
     for all <math|t\<ge\>0> is classical <cite-detail|DLMF|5.15.3>.
@@ -314,7 +364,7 @@
     and integrate by parts once:
 
     <\equation>
-      <label|eq:IBP-formula>I<rsub|n><around|(|\<xi\>,T|)>=<around*|[|<frac|e<rsup|i*<around|(|\<Phi\><rsub|n>-\<xi\>*u|)>>|i*<around|(|\<omega\><rsub|n>-\<xi\>|)>>|]><rsub|u<rsub|n>><rsup|\<Theta\><around|(|T|)>>+<big|int><rsub|u<rsub|n>><rsup|\<Theta\><around|(|T|)>><frac|e<rsup|i*<around|(|\<Phi\><rsub|n>-\<xi\>*u|)>>*<space|0.17em>\<omega\><rsub|n><rprime|'><around|(|u|)>|i*<around|(|\<xi\>-\<omega\><rsub|n><around|(|u|)>|)><rsup|2>>*<space|0.17em>d*u.
+      <label|eq:IBP-formula>I<rsub|n><around|(|\<xi\>,T|)>=<around*|[|<frac|e<rsup|i*<around|(|\<Phi\><rsub|n>-\<xi\>*u|)>>|i*<around|(|\<omega\><rsub|n>-\<xi\>|)>>|]><rsub|u<rsub|n>><rsup|\<Theta\><around|(|T|)>>+<big|int><rsub|u<rsub|n>><rsup|\<Theta\><around|(|T|)>><frac|e<rsup|i*<around|(|\<Phi\><rsub|n>-\<xi\>*u|)>>*<space|0.17em>\<omega\><rsub|n><rprime|'><around|(|u|)>|i*<around|(|\<xi\>-\<omega\><rsub|n><around|(|u|)>|)><rsup|2>>*<space|0.17em>d*u
     </equation>
 
     <vspace*|0.5fn><no-indent><with|font-shape|italic|Boundary terms.> The
@@ -327,19 +377,19 @@
     non-negative, and Lemma<nbsp><reference|lem:phase>(e) supplies the exact
     antiderivative:
 
-    <\equation*>
-      <big|int><rsub|u<rsub|n>><rsup|\<Theta\><around|(|T|)>><frac|\<omega\><rsub|n><rprime|'><around|(|u|)>|<around|(|\<xi\>-\<omega\><rsub|n><around|(|u|)>|)><rsup|2>>*<space|0.17em>d*u<space|0.27em>=<space|0.27em><around*|[|<frac|1|\<xi\>-\<omega\><rsub|n><around|(|u|)>>|]><rsub|u<rsub|n>><rsup|\<Theta\><around|(|T|)>>=<frac|1|A>-<frac|1|B>.
-    </equation*>
+    <\equation>
+      <big|int><rsub|u<rsub|n>><rsup|\<Theta\><around|(|T|)>><frac|\<omega\><rsub|n><rprime|'><around|(|u|)>|<around|(|\<xi\>-\<omega\><rsub|n><around|(|u|)>|)><rsup|2>>*<space|0.17em>d*u<space|0.27em>=<space|0.27em><around*|[|<frac|1|\<xi\>-\<omega\><rsub|n><around|(|u|)>>|]><rsub|u<rsub|n>><rsup|\<Theta\><around|(|T|)>>=<frac|1|A>-<frac|1|B>
+    </equation>
 
     No asymptotic approximation is used; this is an identity.
 
     <vspace*|0.5fn><no-indent><with|font-shape|italic|Combining.>
 
-    <\equation*>
-      <abs|I<rsub|n><around|(|\<xi\>,T|)>><space|0.27em>\<le\><space|0.27em><wide*|<frac|1|A>|\<wide-underbrace\>><rsub|<text|upper
+    <\equation>
+      <tabular|<tformat|<cwith|2|2|1|1|cell-halign|r>|<table|<row|<cell|<abs|I<rsub|n><around|(|\<xi\>,T|)>>\<le\><space|0.27em>>|<cell|<wide*|<frac|1|A>|\<wide-underbrace\>><rsub|<text|upper
       bdry>>+<wide*|<frac|1|B>|\<wide-underbrace\>><rsub|<text|lower
-      bdry>>+<wide*|<frac|1|A>-<frac|1|B>|\<wide-underbrace\>><rsub|tail><space|0.27em>=<space|0.27em><frac|2|A><space|0.27em>\<le\><space|0.27em><frac|2|\<xi\>-1>.
-    </equation*>
+      bdry>>+<wide*|<frac|1|A>-<frac|1|B>|\<wide-underbrace\>><rsub|tail><space|0.27em>>>|<row|<cell|=>|<cell|<frac|2|A><space|0.27em>\<le\><space|0.27em><frac|2|\<xi\>-1>>>>>>
+    </equation>
   </proof>
 
   <\remark>
@@ -357,10 +407,10 @@
     <math|<wide|Z|~>=Z\<circ\>g>. For every <math|\<xi\>\<in\>\<bbb-R\>> with
     <math|<around|\||\<xi\>|\|>\<gtr\>1>,
 
-    <\equation*>
+    <\equation>
       <frac|1|\<Theta\><around|(|T|)>>*<big|int><rsub|0><rsup|\<Theta\><around|(|T|)>><wide|Z|~><around|(|u|)>*<space|0.17em>e<rsup|-i*\<xi\>*u>*<space|0.17em>d*u<space|0.27em>\<longrightarrow\><space|0.27em>0*<space|2em><text|as
-      >T\<to\>\<infty\>.
-    </equation*>
+      >T\<to\>\<infty\>
+    </equation>
   </theorem>
 
   <\proof>
@@ -373,20 +423,25 @@
     <math|d*u=\<Theta\><rprime|'><around|(|t|)>*<space|0.17em>d*t>,
     <math|g<around|(|u|)>=t>:
 
-    <\equation*>
-      <big|int><rsub|0><rsup|U><wide|Z|~><around|(|u|)>*<space|0.17em>e<rsup|-i*\<xi\>*u>*<space|0.17em>d*u=<big|int><rsub|0><rsup|T>Z<around|(|t|)>*<space|0.17em>e<rsup|-i*\<xi\>*\<Theta\><around|(|t|)>>*<space|0.17em>\<Theta\><rprime|'><around|(|t|)>*<space|0.17em>d*t.
-    </equation*>
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|<big|int><rsub|0><rsup|U><wide|Z|~><around|(|u|)>*<space|0.17em>e<rsup|-i*\<xi\>*u>*<space|0.17em>d*u>|<cell|=<big|int><rsub|0><rsup|T>Z<around|(|t|)>*<space|0.17em>e<rsup|-i*\<xi\>*\<Theta\><around|(|t|)>>*<space|0.17em>\<Theta\><rprime|'><around|(|t|)>*<space|0.17em>d*t>>>>>
+    </equation>
 
     Insert the Riemann\USiegel expansion<nbsp><eqref|eq:RS>:
 
-    <\align*>
-      <tformat|<table|<row|<cell|>|<cell|=2*<big|sum><rsub|n=1><rsup|N<around|(|T|)>>n<rsup|-1/2>*<big|int><rsub|2*\<pi\>*n<rsup|2>><rsup|T>cos
+    <\equation>
+      =2*<big|sum><rsub|n=1><rsup|N<around|(|T|)>>n<rsup|-1/2>*<big|int><rsub|2*\<pi\>*n<rsup|2>><rsup|T>cos
       <space|-0.17em><around*|(|\<vartheta\><around|(|t|)>-t*log
-      n|)>*<space|0.17em>e<rsup|-i*\<xi\>*\<Theta\><around|(|t|)>>*<space|0.17em>\<Theta\><rprime|'><around|(|t|)>*<space|0.17em>d*t+S<rsub|R><around|(|\<xi\>,T|)>,>>>>
-    </align*>
+      n|)>*<space|0.17em>e<rsup|-i*\<xi\>*\<Theta\><around|(|t|)>>*<space|0.17em>\<Theta\><rprime|'><around|(|t|)>*<space|0.17em>d*t+S<rsub|R><around|(|\<xi\>,T|)>
+    </equation>
 
-    where <math|S<rsub|R><around|(|\<xi\>,T|)>\<assign\><big|int><rsub|0><rsup|T>R<around|(|t|)>*<space|0.17em>e<rsup|-i*\<xi\>*\<Theta\><around|(|t|)>>*<space|0.17em>\<Theta\><rprime|'><around|(|t|)>*<space|0.17em>d*t>
-    and the lower limit has been shifted from <math|0> to
+    where
+
+    <\equation>
+      S<rsub|R><around|(|\<xi\>,T|)>\<assign\><big|int><rsub|0><rsup|T>R<around|(|t|)>*<space|0.17em>e<rsup|-i*\<xi\>*\<Theta\><around|(|t|)>>*<space|0.17em>\<Theta\><rprime|'><around|(|t|)>*<space|0.17em>d*t
+    </equation>
+
+    \ and the lower limit has been shifted from <math|0> to
     <math|2*\<pi\>*n<rsup|2>> at the cost of an <math|O<around|(|1|)>> error
     absorbed into the constants. Writing <math|cos
     <around|(|\<vartheta\>-t*log n|)>=<tfrac|1|2><around|(|e<rsup|i*<around|(|\<vartheta\>-t*log
@@ -394,20 +449,24 @@
     <math|u=\<Theta\><around|(|t|)>> converts each term to
     <math|e<rsup|i*<around|(|\<Phi\><rsub|n><around|(|u|)>-\<xi\>*u|)>>*<space|0.17em>d*u>
     (or its conjugate). The Fubini exchange is justified by absolute
-    convergence: for each fixed <math|T>,
-    <math|<big|sum><rsub|n\<le\>N<around|(|T|)>>n<rsup|-1/2>\<cdot\>2/<around|(|\<xi\>-1|)>\<ll\>T<rsup|1/4>\<less\>\<infty\>>.
-    Taking real parts:
+    convergence: for each fixed <math|T>
 
     <\equation>
-      <label|eq:decomp><big|int><rsub|0><rsup|U><wide|Z|~><around|(|u|)>*<space|0.17em>e<rsup|-i*\<xi\>*u>*<space|0.17em>d*u=2*<big|sum><rsub|n=1><rsup|N<around|(|T|)>>n<rsup|-1/2><space|0.17em><Rea><space|0.17em>I<rsub|n><around|(|\<xi\>,T|)>+S<rsub|R><around|(|\<xi\>,T|)>.
+      <big|sum><rsub|n\<le\>N<around|(|T|)>>n<rsup|-1/2>\<cdot\>2/<around|(|\<xi\>-1|)>\<ll\>T<rsup|1/4>\<less\>\<infty\>
+    </equation>
+
+    ,. Taking real parts:
+
+    <\equation>
+      <label|eq:decomp><big|int><rsub|0><rsup|U><wide|Z|~><around|(|u|)>*<space|0.17em>e<rsup|-i*\<xi\>*u>*<space|0.17em>d*u=2*<big|sum><rsub|n=1><rsup|N<around|(|T|)>>n<rsup|-1/2><space|0.17em><Rea><space|0.17em>I<rsub|n><around|(|\<xi\>,T|)>+S<rsub|R><around|(|\<xi\>,T|)>
     </equation>
 
     <vspace*|1fn><no-indent><with|font-series|bold|Step<nbsp>2 (Cosine sum).>
     By Lemma<nbsp><reference|lem:IBP> and Lemma<nbsp><reference|lem:partial>,
 
-    <\equation*>
-      <around*|\||2*<big|sum><rsub|n=1><rsup|N<around|(|T|)>>n<rsup|-1/2><space|0.17em><Rea><space|0.17em>I<rsub|n><around|(|\<xi\>,T|)>|\|><space|0.27em>\<le\><space|0.27em><frac|4|\<xi\>-1>*<space|-0.17em><around*|(|2<space|-0.17em><around*|(|<frac|T|2*\<pi\>>|)><rsup|1/4>+2|)><space|0.27em>=<space|0.27em>O<space|-0.17em><around*|(|<frac|T<rsup|1/4>|\<xi\>-1>|)>.
-    </equation*>
+    <\equation>
+      <text|><tabular|<tformat|<table|<row|<cell|<around*|\||2*<big|sum><rsub|n=1><rsup|N<around|(|T|)>>n<rsup|-1/2><space|0.17em><Rea><space|0.17em>I<rsub|n><around|(|\<xi\>,T|)>|\|>>|<cell|\<le\><space|0.27em><frac|4|\<xi\>-1>*<space|-0.17em><around*|(|2<space|-0.17em><around*|(|<frac|T|2*\<pi\>>|)><rsup|1/4>+2|)>>>|<row|<cell|>|<cell|<space|0.27em>=<space|0.27em>O<space|-0.17em><around*|(|<frac|T<rsup|1/4>|\<xi\>-1>|)>>>>>>
+    </equation>
 
     Dividing by <math|\<Theta\><around|(|T|)>\<sim\><tfrac|T|2>log
     <around|(|T/2*\<pi\>|)>> gives <math|O<around|(|T<rsup|-3/4>/log
@@ -417,10 +476,10 @@
     Using <math|<abs|R<around|(|t|)>>\<ll\>t<rsup|-1/4>> and
     <math|\<Theta\><rprime|'><around|(|t|)>\<ll\>log t>,
 
-    <\equation*>
+    <\equation>
       <abs|S<rsub|R><around|(|\<xi\>,T|)>><space|0.27em>\<ll\><space|0.27em><big|int><rsub|1><rsup|T>t<rsup|-1/4>*log
-      t*<space|0.17em>d*t<space|0.27em>\<ll\><space|0.27em>T<rsup|3/4>*log T.
-    </equation*>
+      t*<space|0.17em>d*t<space|0.27em>\<ll\><space|0.27em>T<rsup|3/4>*log T
+    </equation>
 
     Dividing by <math|\<Theta\><around|(|T|)>\<sim\><tfrac|T|2>log T> gives
     <math|O<around|(|T<rsup|-1/4>|)>\<to\>0>.
@@ -435,9 +494,9 @@
     [Spectral support is exactly <math|<around|[|-1,1|]>>]<label|cor:sharp>
     For every <math|\<xi\>\<in\><around|(|-1,1|)>\<setminus\><around|{|0|}>>,
 
-    <\equation*>
-      limsup<rsub|T\<to\>\<infty\>> <frac|1|\<Theta\><around|(|T|)>><around*|\||<big|int><rsub|0><rsup|\<Theta\><around|(|T|)>><wide|Z|~><around|(|u|)>*<space|0.17em>e<rsup|-i*\<xi\>*u>*<space|0.17em>d*u|\|>\<gtr\>0.
-    </equation*>
+    <\equation>
+      limsup<rsub|T\<to\>\<infty\>> <frac|1|\<Theta\><around|(|T|)>><around*|\||<big|int><rsub|0><rsup|\<Theta\><around|(|T|)>><wide|Z|~><around|(|u|)>*<space|0.17em>e<rsup|-i*\<xi\>*u>*<space|0.17em>d*u|\|>\<gtr\>0
+    </equation>
 
     Consequently the Cesàro spectral support of <math|<wide|Z|~>> is exactly
     <math|<around|[|-1,1|]>>.
@@ -450,34 +509,50 @@
     has the unique solution <math|u<rsub|n><rsup|\<ast\>>=\<Theta\><around|(|t<rsub|n><rsup|\<ast\>>|)>>,
     where <math|t<rsub|n><rsup|\<ast\>>> satisfies
 
-    <\equation*>
-      \<vartheta\><rprime|'><around|(|t<rsub|n><rsup|\<ast\>>|)><space|0.27em>=<space|0.27em><frac|log
-      n+\<xi\>*C|1-\<xi\>>.
-    </equation*>
+    <\equation>
+      \<vartheta\><rprime|'><around|(|t<rsub|n><rsup|\<ast\>>|)><space|0.27em>=<frac|log
+      n+\<xi\>*C|1-\<xi\>>
+    </equation>
 
     Inverting <math|\<vartheta\><rprime|'><around|(|t|)>\<sim\><tfrac|1|2>log
     <around|(|t/2*\<pi\>|)>>:
 
-    <\equation*>
+    <\equation>
       t<rsub|n><rsup|\<ast\>><space|0.27em>\<sim\><space|0.27em>2*\<pi\>*n<rsup|2>\<cdot\>e<rsup|2*\<xi\>*<around|(|C+log
-      n|)>/<around|(|1-\<xi\>|)>>.
-    </equation*>
+      n|)>/<around|(|1-\<xi\>|)>>
+    </equation>
+
+    <with|font-series|bold|font-shape|italic|TODO: Solve with Lambert-W
+    function and carry the remainder bounds.>
 
     At <math|u=u<rsub|n><rsup|\<ast\>>> the phase
     <math|\<Phi\><rsub|n><around|(|u|)>-\<xi\>*u> has a non-degenerate
     stationary point:
 
-    <\equation*>
-      <frac|d|d*u>*<around|(|\<Phi\><rsub|n>-\<xi\>*u|)><mid|\|><rsub|u<rsub|n><rsup|\<ast\>>>=\<omega\><rsub|n><around|(|u<rsub|n><rsup|\<ast\>>|)>-\<xi\>=0,<space|2em><frac|d<rsup|2>|d*u<rsup|2>>*<around|(|\<Phi\><rsub|n>-\<xi\>*u|)><mid|\|><rsub|u<rsub|n><rsup|\<ast\>>>=\<omega\><rsub|n><rprime|'><around|(|u<rsub|n><rsup|\<ast\>>|)>\<gtr\>0.
-    </equation*>
+    <\equation>
+      <frac|d|d*u>*<around|(|\<Phi\><rsub|n>-\<xi\>*u|)><mid|\|><rsub|u<rsub|n><rsup|\<ast\>>>=\<omega\><rsub|n><around|(|u<rsub|n><rsup|\<ast\>>|)>-\<xi\>=0<text|>
+    </equation>
 
-    Standard stationary-phase analysis gives
-    <math|<around|\||I<rsub|n><around|(|\<xi\>,T<rsub|n>|)>|\|><rsup|2>\<sim\>2*\<pi\>/\<omega\><rsub|n><rprime|'><around|(|u<rsub|n><rsup|\<ast\>>|)>\<gtr\>0>
-    for <math|T<rsub|n>> chosen with <math|\<Theta\><around|(|T<rsub|n>|)>\<gg\>u<rsub|n><rsup|\<ast\>>>.
+    <\equation>
+      <space|2em><frac|d<rsup|2>|d*u<rsup|2>>*<around|(|\<Phi\><rsub|n>-\<xi\>*u|)><mid|\|><rsub|u<rsub|n><rsup|\<ast\>>>=\<omega\><rsub|n><rprime|'><around|(|u<rsub|n><rsup|\<ast\>>|)>\<gtr\>0
+    </equation>
+
+    Standard stationary-phase analysis gives\ 
+
+    <\equation>
+      <around|\||I<rsub|n><around|(|\<xi\>,T<rsub|n>|)>|\|><rsup|2>\<sim\>2*\<pi\>/\<omega\><rsub|n><rprime|'><around|(|u<rsub|n><rsup|\<ast\>>|)>\<gtr\>0
+    </equation>
+
+    \ for <math|T<rsub|n>> chosen with <math|\<Theta\><around|(|T<rsub|n>|)>\<gg\>u<rsub|n><rsup|\<ast\>>>.
     Since the scales <math|t<rsub|n><rsup|\<ast\>>> are well-separated, the
     contributions to the Cesàro average from distinct modes do not cancel,
-    and <math|limsup<rsub|T\<to\>\<infty\>>
-    \<Theta\><around|(|T|)><rsup|-1><around*|\||<big|int><rsub|0><rsup|\<Theta\><around|(|T|)>><wide|Z|~><around|(|u|)>*e<rsup|-i*\<xi\>*u>*<space|0.17em>d*u|\|>\<gtr\>0>.
+    and
+
+    <\equation>
+      limsup<rsub|T\<to\>\<infty\>> \<Theta\><around|(|T|)><rsup|-1><around*|\||<big|int><rsub|0><rsup|\<Theta\><around|(|T|)>><wide|Z|~><around|(|u|)>*e<rsup|-i*\<xi\>*u>*<space|0.17em>d*u|\|>\<gtr\>0
+    </equation>
+
+    \;
   </proof>
 
   <\remark>
@@ -523,39 +598,44 @@
 <\initial>
   <\collection>
     <associate|font-base-size|12>
+    <associate|page-height|auto>
+    <associate|page-medium|paper>
+    <associate|page-type|letter>
+    <associate|page-width|auto>
   </collection>
 </initial>
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-1|<tuple|1|2>>
+    <associate|auto-10|<tuple|11|?>>
     <associate|auto-2|<tuple|2|2>>
     <associate|auto-3|<tuple|3|3>>
     <associate|auto-4|<tuple|4|3>>
-    <associate|auto-5|<tuple|5|4>>
-    <associate|auto-6|<tuple|6|5>>
-    <associate|auto-7|<tuple|7|6>>
+    <associate|auto-5|<tuple|5|5>>
+    <associate|auto-6|<tuple|6|6>>
+    <associate|auto-7|<tuple|7|7>>
     <associate|auto-8|<tuple|11|7>>
     <associate|auto-9|<tuple|11|7>>
-    <associate|bib-Akhiezer1956|<tuple|Akhiezer1956|7>>
-    <associate|bib-DLMF|<tuple|DLMF|7>>
+    <associate|bib-Akhiezer1956|<tuple|Akhiezer1956|8>>
+    <associate|bib-DLMF|<tuple|DLMF|8>>
     <associate|bib-Siegel1932|<tuple|Siegel1932|7>>
     <associate|bib-Titchmarsh1986|<tuple|Titchmarsh1986|7>>
-    <associate|bib-bandlim-src|<tuple|bandlim-src|7>>
-    <associate|cor:sharp|<tuple|10|6>>
+    <associate|bib-bandlim-src|<tuple|bandlim-src|8>>
+    <associate|cor:sharp|<tuple|10|7>>
     <associate|def:Theta|<tuple|2|2>>
     <associate|def:Z|<tuple|1|2>>
-    <associate|eq:IBP-formula|<tuple|4|5>>
-    <associate|eq:In|<tuple|3|4>>
-    <associate|eq:Phi-omega|<tuple|2|3>>
-    <associate|eq:RS|<tuple|1|3>>
-    <associate|eq:decomp|<tuple|5|6>>
-    <associate|lem:IBP|<tuple|7|4>>
+    <associate|eq:IBP-formula|<tuple|19|5>>
+    <associate|eq:In|<tuple|18|5>>
+    <associate|eq:Phi-omega|<tuple|12|3>>
+    <associate|eq:RS|<tuple|9|3>>
+    <associate|eq:decomp|<tuple|27|6>>
+    <associate|lem:IBP|<tuple|7|5>>
     <associate|lem:partial|<tuple|4|3>>
-    <associate|lem:phase|<tuple|5|3>>
-    <associate|prop:diffeo|<tuple|3|2>>
-    <associate|rem:formula-d|<tuple|6|4>>
-    <associate|thm:band|<tuple|9|5>>
+    <associate|lem:phase|<tuple|5|4>>
+    <associate|prop:diffeo|<tuple|3|3>>
+    <associate|rem:formula-d|<tuple|6|5>>
+    <associate|thm:band|<tuple|9|6>>
   </collection>
 </references>
 
