@@ -179,4 +179,38 @@ public class SelfRecursiveCurriedSequenceTest extends
     assertEquals(4.0, out.re().doubleValue(), 1e-30);
     assertTrue(out.im().isZero());
   }
+
+  /**
+   * Mutually-recursive curried pair with arithmetic combining the bound
+   * integer index {@code k} and a Real Context variable {@code μ}. With
+   * {@code μ = 1}: {@code S(2)(v) = v·v = 4}, and
+   * {@code a(2)(v) = (2·1)·S(2)(v) = 8}. So {@code a(2)(2) = 8}.
+   */
+  public static void testMinimalMutuallyRecursiveCurriedPairWithKTimesMu()
+  {
+    Context ctx = new Context();
+    Real μ      = new Real();
+    μ.set("1", 128);
+    μ.setName("μ");
+    ctx.registerVariable(μ);
+
+    ctx.registerFunctionMapping("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
+    String sExpr = "S:k➔v➔a(k-1)(v)·a(k-1)(v)";
+    Sequence.parseCompileAndRegister("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
+
+    String                  aExpr = "a:k➔v➔when(k=1, v, else, (k·μ)·S(k)(v))";
+    ComplexFunctionSequence a     = ComplexFunctionSequence.express(aExpr, ctx);
+
+    Integer                 k     = new Integer();
+    k.set(2);
+    Complex         v   = new Complex();
+    v.set(2, 0);
+    Complex         out = new Complex();
+
+    ComplexFunction a2  = a.evaluate(k, 1, 128, null);
+    a2.evaluate(v, 1, 128, out);
+
+    assertEquals(8.0, out.re().doubleValue(), 1e-30);
+    assertTrue(out.im().isZero());
+  }
 }
