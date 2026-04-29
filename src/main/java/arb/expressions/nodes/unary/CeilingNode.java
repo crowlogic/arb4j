@@ -22,7 +22,7 @@ public class CeilingNode<D, R, F extends Function<? extends D, ? extends R>> ext
   @Override
   public String toString()
   {
-    return String.format("⌈%s⌉", arg.typeset());
+    return String.format("⌈%s⌉", arg);
   }
 
   @Override

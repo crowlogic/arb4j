@@ -1207,6 +1207,10 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       return String.format("⌊%s⌋", arg == null ? "" : arg);
     }
+    if ("ceil".equals(functionName))
+    {
+      return String.format("⌈%s⌉", arg == null ? "" : arg);
+    }
     return String.format("%s(%s)", functionName, arg == null ? "" : arg).replaceAll("sqrt", "√").replaceAll("J0", "J₀");
   }
 
@@ -1238,6 +1242,23 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       else
       {
         return floorTypeset + "^{(" + derivativeOrder + ")}";
+      }
+    }
+
+    if ("ceil".equals(functionName))
+    {
+      String ceilTypeset = String.format("\\lceil{%s}\\rceil", arg == null ? "" : arg.typeset());
+      if (derivativeOrder == 0)
+      {
+        return ceilTypeset;
+      }
+      else if (derivativeOrder <= 3)
+      {
+        return ceilTypeset + "'".repeat(derivativeOrder);
+      }
+      else
+      {
+        return ceilTypeset + "^{(" + derivativeOrder + ")}";
       }
     }
 
