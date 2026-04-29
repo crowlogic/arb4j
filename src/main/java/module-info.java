@@ -7,8 +7,7 @@
  */
 module arb4j
 {
-  requires java.base;
-
+  requires transitive java.base;
   requires transitive java.desktop;
   requires transitive java.instrument;
   requires transitive java.logging;
@@ -30,15 +29,12 @@ module arb4j
   requires transitive org.slf4j;
   requires transitive vineflower;
   requires transitive ch.qos.logback.classic;
-
+  exports arb;
   exports arb.applications;
   exports arb.applications.expressor;
   exports arb.stochastic;
-  exports arb;
   exports arb.expressions.context;
-
   exports arb.documentation;
-
   exports arb.documentation.references;
   exports arb.equations;
   exports arb.expressions;
@@ -49,7 +45,6 @@ module arb4j
   exports arb.algebra;
   exports arb.geometry;
   exports arb.exceptions;
-
   exports arb.functions;
   exports arb.functions.algebraic;
   exports arb.utensils.text.tables;
@@ -68,5 +63,4 @@ module arb4j
   exports arb.stochastic.processes;
   exports arb.utensils;
   exports arb.viz;
-
 }
