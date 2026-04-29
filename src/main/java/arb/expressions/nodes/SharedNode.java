@@ -2,6 +2,8 @@ package arb.expressions.nodes;
 
 import static org.objectweb.asm.Opcodes.*;
 
+import java.util.function.Consumer;
+
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
 
@@ -87,6 +89,22 @@ public class SharedNode<D, R, F extends Function<? extends D, ? extends R>> exte
       generateCastTo(mv, resultType);
     }
     return mv;
+  }
+
+  /**
+   * Reference instances do not own a computation — only the canonical instance
+   * does. Recursing into a reference's delegate would expose every node again
+   * to traversals (notably static-node enumeration) and emit duplicate
+   * computations.
+   */
+  @Override
+  public void accept(Consumer<Node<D, R, F>> t)
+  {
+    t.accept(this);
+    if (isCanonical)
+    {
+      delegate.accept(t);
+    }
   }
 
   @Override

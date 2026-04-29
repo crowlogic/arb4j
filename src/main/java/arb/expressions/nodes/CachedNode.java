@@ -101,5 +101,6 @@ public abstract class CachedNode<D, R, F extends Function<? extends D, ? extends
   public void accept(Consumer<Node<D, R, F>> t)
   {
     t.accept(this);
+    delegate.accept(t);
   }
 }

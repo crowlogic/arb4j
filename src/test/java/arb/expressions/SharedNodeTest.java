@@ -55,11 +55,14 @@ public class SharedNodeTest extends
     var expr = RealFunction.parse("tanh(log(1+x²))/(1+x²)");
     expr.optimize();
 
-    List<SharedNode<Real, Real, RealFunction>> shared = collectSharedNodes(expr);
-    assertEquals("expected exactly 2 SharedNodes for the two occurrences of 1+x²", 2, shared.size());
+    List<SharedNode<Real, Real, RealFunction>> outer =
+      collectSharedNodes(expr).stream()
+                              .filter(s -> "1+(x^2)".equals(s.delegate.toString()))
+                              .toList();
+    assertEquals("expected exactly 2 SharedNodes for the two occurrences of 1+x²", 2, outer.size());
 
-    long canonicalCount = shared.stream().filter(s -> s.isCanonical).count();
-    long referenceCount = shared.stream().filter(s -> !s.isCanonical).count();
+    long canonicalCount = outer.stream().filter(s -> s.isCanonical).count();
+    long referenceCount = outer.stream().filter(s -> !s.isCanonical).count();
     assertEquals("expected exactly 1 canonical SharedNode", 1, canonicalCount);
     assertEquals("expected exactly 1 reference SharedNode", 1, referenceCount);
   }
@@ -73,11 +76,14 @@ public class SharedNodeTest extends
     var expr = RealFunction.parse("tanh(log(1+x²))/(1+x²)");
     expr.optimize();
 
-    List<SharedNode<Real, Real, RealFunction>> shared = collectSharedNodes(expr);
-    assertEquals(2, shared.size());
+    List<SharedNode<Real, Real, RealFunction>> outer =
+      collectSharedNodes(expr).stream()
+                              .filter(s -> "1+(x^2)".equals(s.delegate.toString()))
+                              .toList();
+    assertEquals(2, outer.size());
 
-    String fieldName0 = shared.get(0).fieldName;
-    String fieldName1 = shared.get(1).fieldName;
+    String fieldName0 = outer.get(0).fieldName;
+    String fieldName1 = outer.get(1).fieldName;
     assertNotNull("SharedNode field name must not be null", fieldName0);
     assertEquals("both SharedNodes must share the same field name", fieldName0, fieldName1);
   }
