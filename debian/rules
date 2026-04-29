@@ -23,7 +23,7 @@ override_dh_auto_clean:
 
 override_dh_auto_build:
 	$(MAKE) libarblib.so
-	$(MAKE) jar
+	$(MAKE) debian-install
 	$(MAKE) documentation
 
 override_dh_auto_test:

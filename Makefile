@@ -40,3 +40,6 @@ doc: docs
 
 install: libarblib.so
 	mvn install -Dmaven.test.skip=true
+
+debian-install: libarblib.so
+	mvn -Pdebian install -Dmaven.test.skip=true

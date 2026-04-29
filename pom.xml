@@ -403,45 +403,6 @@
 							<includeScope>runtime</includeScope>
 						</configuration>
 					</execution>
-					<!--
-						Debian classpath: same dependency set, but rewritten so
-						every entry sits at /usr/share/arb4j/lib/<basename>.jar.
-						debian/rules ships this file as /usr/share/arb4j/class.path
-						and env.sh exports ARB4J_CLASSPATH=$ARB4J_JAR:<file>.
-					-->
-					<execution>
-						<id>build-classpath-debian</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>build-classpath</goal>
-						</goals>
-						<configuration>
-							<outputFile>${project.build.directory}/class.path.debian</outputFile>
-							<includeScope>runtime</includeScope>
-							<prefix>/usr/share/arb4j/lib</prefix>
-							<stripVersion>false</stripVersion>
-						</configuration>
-					</execution>
-					<!--
-						Stage every runtime dependency jar into target/dependency
-						so debian/rules can copy them into /usr/share/arb4j/lib
-						and unzip the JavaFX linux-classifier and j2v8 jars to
-						extract their .so files into /usr/lib/jni.
-					-->
-					<execution>
-						<id>copy-dependencies-debian</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.build.directory}/dependency</outputDirectory>
-							<includeScope>runtime</includeScope>
-							<stripVersion>false</stripVersion>
-							<overWriteReleases>true</overWriteReleases>
-							<overWriteSnapshots>true</overWriteSnapshots>
-						</configuration>
-					</execution>
 				</executions>
 			</plugin>
 
@@ -450,11 +411,12 @@
 
 	<profiles>
 		<!--
-		  Debian packaging produces a self-contained fat jar with every
-		  transitive dep relocated under org.arblib.shaded.*. The default
-		  `mvn install` ships a thin jar so downstream Maven consumers
-		  (bonanzai, etc.) resolve their own transitive graph normally.
-		  Activate with: mvn -Pdebian package
+		  Debian packaging profile.  Default `mvn install` produces only
+		  the thin jar that downstream Maven consumers (bonanzai, etc.)
+		  resolve against; it does NOT copy every runtime jar into
+		  target/dependency and does NOT emit class.path.debian.  Those
+		  staging steps run only when this profile is active, which
+		  debian/rules turns on via `mvn -Pdebian package`.
 		-->
 		<profile>
 			<id>debian</id>
@@ -462,21 +424,48 @@
 				<plugins>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-shade-plugin</artifactId>
+						<artifactId>maven-dependency-plugin</artifactId>
 						<executions>
+							<!--
+								Debian classpath: rewrites every entry to
+								/usr/share/arb4j/lib/<basename>.jar.
+								debian/rules ships this file as
+								/usr/share/arb4j/class.path and env.sh
+								exports ARB4J_CLASSPATH=$ARB4J_JAR:<file>.
+							-->
 							<execution>
-								<id>fat-jar</id>
-								<phase>package</phase>
+								<id>build-classpath-debian</id>
+								<phase>prepare-package</phase>
+								<goals>
+									<goal>build-classpath</goal>
+								</goals>
+								<configuration>
+									<outputFile>${project.build.directory}/class.path.debian</outputFile>
+									<includeScope>runtime</includeScope>
+									<prefix>/usr/share/arb4j/lib</prefix>
+									<stripVersion>false</stripVersion>
+								</configuration>
 							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-antrun-plugin</artifactId>
-						<executions>
+							<!--
+								Stage every runtime dependency jar into
+								target/dependency so debian/rules can copy
+								them into /usr/share/arb4j/lib and unzip the
+								JavaFX linux-classifier and j2v8 jars to
+								extract their .so entries into /usr/lib/jni.
+							-->
 							<execution>
-								<id>rewrite-logback-xml-in-fat-jar</id>
-								<phase>package</phase>
+								<id>copy-dependencies-debian</id>
+								<phase>prepare-package</phase>
+								<goals>
+									<goal>copy-dependencies</goal>
+								</goals>
+								<configuration>
+									<outputDirectory>${project.build.directory}/dependency</outputDirectory>
+									<includeScope>runtime</includeScope>
+									<stripVersion>false</stripVersion>
+									<overWriteReleases>true</overWriteReleases>
+									<overWriteSnapshots>true</overWriteSnapshots>
+								</configuration>
 							</execution>
 						</executions>
 					</plugin>
