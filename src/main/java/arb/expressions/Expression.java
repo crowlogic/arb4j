@@ -174,7 +174,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected void declareDerivativeCacheField(ClassVisitor cw)
   {
-    cw.visitField(Opcodes.ACC_PUBLIC, "derivativeCache", arrayListDescriptor, null, null);
+    String signature = "L" + arrayListInternal + "<" + Type.getDescriptor(functionClass) + ">;";
+    cw.visitField(Opcodes.ACC_PUBLIC, "derivativeCache", arrayListDescriptor, signature, null);
   }
 
   protected void generateDerivativeCacheFieldInitializer(MethodVisitor mv)
