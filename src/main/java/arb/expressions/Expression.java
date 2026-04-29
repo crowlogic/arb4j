@@ -766,7 +766,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   private final HashMap<String, FunctionMapping<?, ?, ?>> referencedFunctions = new HashMap<>();
 
-  private HashMap<String, VariableNode<D, C, F>>          referencedVariables = new HashMap<>();
+  private HashMap<String, VariableNode<D, C, F>>          referencedVariables       = new HashMap<>();
+
+  private HashMap<String, VariableNode<D, C, F>>          upstreamInputVariables    = new HashMap<>();
 
   public Node<D, C, F>                                    rootNode;
 
@@ -1167,6 +1169,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       if (instructions == null)
       {
         optimize();
+        verifyReferencedSetsAreSupersetsOfDescendants();
         generate();
       }
       assert context != null : "context is null for " + this + " and superExpression=" + upstreamExpression + " superExpression.context=" + upstreamExpression.context;
@@ -1215,19 +1218,23 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       loadThisOntoStack(mv);
       mv.visitFieldInsn(GETFIELD, className, "context", contextTypeDesc);
       mv.visitFieldInsn(PUTFIELD, typeInternalName, "context", contextTypeDesc);
-      // After storing the new instance, immediately inject context function
-      // references into it so its own initialize() finds non-null peer fields
-      // and never hits the `if (this.X == null) this.X = new X()` null-guards
-      // that cause unbounded allocation chains.
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, className, mapping.functionName, fieldDescriptor);
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, className, "context", contextTypeDesc);
-      mv.visitMethodInsn(INVOKESTATIC,
-                         Type.getInternalName(Context.class),
-                         "injectFunctionReferencesIntoOperand",
-                         "(Ljava/lang/Object;Larb/expressions/Context;)V",
-                         false);
+      // For each function the new instance references, copy this.<name>
+      // into <child>.<name>. The parent class declares a same-named field
+      // of the same descriptor for every name in the child expression's
+      // referenced functions, because the child's body is spliced into
+      // the parent's scope. This replaces the prior reflective walk of
+      // Context.functions and the null-guard `if (this.X == null) this.X
+      // = new X()` initialize() chains that caused unbounded allocation.
+      for (var entry : mapping.expression.getReferencedFunctions().entrySet())
+      {
+        String peerName       = entry.getKey();
+        String peerDescriptor = entry.getValue().functionFieldDescriptor();
+        loadThisOntoStack(mv);
+        mv.visitFieldInsn(GETFIELD, className, mapping.functionName, fieldDescriptor);
+        loadThisOntoStack(mv);
+        mv.visitFieldInsn(GETFIELD, className, peerName, peerDescriptor);
+        mv.visitFieldInsn(PUTFIELD, typeInternalName, peerName, peerDescriptor);
+      }
       mv.visitLabel(alreadyInitialized);
     }
   }
@@ -1382,6 +1389,75 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         {
           canonical.updateMax(jetNode.getCoefficientIndex());
         }
+      }
+    });
+  }
+
+  /**
+   * Asserts the upstream-superset invariant: for every {@link Node} in this
+   * expression's AST, every ancestor expression in the {@link #upstreamExpression}
+   * chain (starting from the node's owning {@code expression}) has
+   * {@link #referencedFunctions} and {@link #referencedVariables} key-sets
+   * that are supersets of the descendant expression's key-sets.
+   *
+   * The invariant says that any function or variable referenced inside an
+   * inner expression must already be visible to every enclosing expression at
+   * the moment compilation begins, so that field-emission sites that iterate
+   * a nested expression's referenced sets find the corresponding fields
+   * declared on the outer class.
+   *
+   * Throws {@link CompilerException} on the first violation, naming the
+   * missing keys, the descendant expression (className, identityHashCode),
+   * and the ancestor expression.
+   */
+  protected void verifyReferencedSetsAreSupersetsOfDescendants()
+  {
+    if (rootNode == null)
+    {
+      return;
+    }
+    rootNode.accept(node ->
+    {
+      Expression<?, ?, ?> child = node.expression;
+      if (child == null)
+      {
+        return;
+      }
+      Expression<?, ?, ?> ancestor = child.upstreamExpression;
+      while (ancestor != null)
+      {
+        Set<String> ancestorFunctions = ancestor.getReferencedFunctions().keySet();
+        Set<String> childFunctions    = child.getReferencedFunctions().keySet();
+        if (!ancestorFunctions.containsAll(childFunctions))
+        {
+          Set<String> missing = new LinkedHashSet<>(childFunctions);
+          missing.removeAll(ancestorFunctions);
+          throw new CompilerException(String.format("upstream-superset invariant violated for referencedFunctions: ancestor %s#%s is missing %s present in descendant %s#%s (node %s#%s)",
+                                                    ancestor.className,
+                                                    System.identityHashCode(ancestor),
+                                                    missing,
+                                                    child.className,
+                                                    System.identityHashCode(child),
+                                                    node.getClass().getSimpleName(),
+                                                    System.identityHashCode(node)));
+        }
+        Set<String> ancestorVariables = ancestor.getReferencedVariables().keySet();
+        Set<String> childVariables    = child.getReferencedVariables().keySet();
+        if (!ancestorVariables.containsAll(childVariables))
+        {
+          Set<String> missing = new LinkedHashSet<>(childVariables);
+          missing.removeAll(ancestorVariables);
+          throw new CompilerException(String.format("upstream-superset invariant violated for referencedVariables: ancestor %s#%s is missing %s present in descendant %s#%s (node %s#%s)",
+                                                    ancestor.className,
+                                                    System.identityHashCode(ancestor),
+                                                    missing,
+                                                    child.className,
+                                                    System.identityHashCode(child),
+                                                    node.getClass().getSimpleName(),
+                                                    System.identityHashCode(node)));
+        }
+        child    = ancestor;
+        ancestor = ancestor.upstreamExpression;
       }
     });
   }
@@ -1551,7 +1627,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected Stream<Entry<String, VariableNode<D, C, F>>> upstreamInputVariableEntryStream()
   {
-    return referencedVariableEntryStream().filter(predicate);
+    return upstreamInputVariables.entrySet().stream();
+  }
+
+  public VariableNode<D, C, F> registerUpstreamInputVariable(VariableNode<D, C, F> variableNode)
+  {
+    return upstreamInputVariables.put(variableNode.reference.name, variableNode);
+  }
+
+  public Map<String, VariableNode<D, C, F>> getUpstreamInputVariables()
+  {
+    return Collections.unmodifiableMap(upstreamInputVariables);
   }
 
   protected Stream<Entry<String, VariableNode<D, C, F>>> referencedVariableEntryStream()
@@ -1729,6 +1815,28 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     placeholderVariable = subExpr.setIndependentVariable(variableNode.spliceInto(subExpr));
     subExpr.rootNode    = subExpr.resolve();
+
+    VariableNode<D, C, F> myIndependent = getIndependentVariable();
+    subExpr.referencedFunctions.forEach((peerName, peerMapping) ->
+    {
+      if (!referencedFunctions.containsKey(peerName))
+      {
+        referencedFunctions.put(peerName, (FunctionMapping) peerMapping);
+      }
+    });
+    subExpr.referencedVariables.forEach((peerName, peerVar) ->
+    {
+      if (peerVar.equals(myIndependent))
+      {
+        return;
+      }
+      if (!referencedVariables.containsKey(peerName))
+      {
+        referencedVariables.put(peerName, (VariableNode) peerVar);
+      }
+    });
+
+
 
     setCursorFrom(subExpr);
 
@@ -2470,22 +2578,23 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       loadThisOntoStack(mv);
       mv.visitFieldInsn(GETFIELD, className, "context", contextTypeDesc);
       mv.visitFieldInsn(PUTFIELD, functional.className, "context", contextTypeDesc);
-      // Inject context-registered Java function references (e.g. He, a
-      // ProbabilistHermitePolynomials registered with mapping.instance != null
-      // and mapping.expression == null) into the curried inner instance. The
-      // operand-construction path (constructReferencedFunctionInstanceIfItIsNull)
-      // already does this for nested operand classes, but the curried
-      // sub-expression construction did not. Without this call, fields like
-      // hermiteOnefunc.He remain null because the inner's own initialize()
-      // body has no allocation block for Java-coded functions.
-      duplicateTopOfTheStack(mv);
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, className, "context", contextTypeDesc);
-      mv.visitMethodInsn(INVOKESTATIC,
-                         Type.getInternalName(Context.class),
-                         "injectFunctionReferencesIntoOperand",
-                         "(Ljava/lang/Object;Larb/expressions/Context;)V",
-                         false);
+      // For each function the curried inner instance references, copy
+      // this.<name> into <child>.<name>. The parent class declares a
+      // same-named field of the same descriptor for every name in the
+      // child's referenced functions, because the child's body is spliced
+      // into the parent's scope. The child reference is on top of the
+      // stack here (from the new/dup/<init> at the head of this method);
+      // each iteration DUPs to preserve it for the next iteration and for
+      // the trailing invokeInitializationMethod call.
+      for (var entry : functional.getReferencedFunctions().entrySet())
+      {
+        String peerName       = entry.getKey();
+        String peerDescriptor = entry.getValue().functionFieldDescriptor();
+        duplicateTopOfTheStack(mv);
+        loadThisOntoStack(mv);
+        mv.visitFieldInsn(GETFIELD, className, peerName, peerDescriptor);
+        mv.visitFieldInsn(PUTFIELD, functional.className, peerName, peerDescriptor);
+      }
     }
 
     invokeInitializationMethod(mv, functional);
@@ -5811,10 +5920,25 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public VariableNode<D, C, F> registerReferencedVariable(VariableNode<D, C, F> variableNode)
   {
-    assert !variableNode.equals(getIndependentVariable()) : "independent variables of this or any upstream expression are always assumed to be referenced. this is for context variables only: not adding "
-                                                            + variableNode
-                                                            + " to the referencedVariables of "
-                                                            + this.toStringExtended();
+    if (variableNode.equals(getIndependentVariable()))
+    {
+      throw new CompilerException("refusing to register independent variable "
+                                  + variableNode
+                                  + " as a referenced context variable of "
+                                  + this.toStringExtended());
+    }
+    for (Expression<?, ?, ?> ancestor = (Expression<?, ?, ?>) upstreamExpression; ancestor != null; ancestor = ancestor.upstreamExpression)
+    {
+      if (variableNode.equals(ancestor.getIndependentVariable()))
+      {
+        throw new CompilerException("refusing to register "
+                                    + variableNode
+                                    + " as a referenced context variable of "
+                                    + this.toStringExtended()
+                                    + " because it is the independent variable of upstream expression "
+                                    + ancestor.toStringExtended());
+      }
+    }
     return referencedVariables.put(variableNode.reference.name, variableNode);
   }
 
@@ -5882,6 +6006,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                   "logΓ",
                                                                   "si");
 
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public Expression<D, C, F> registerReferencedFunction(String referencedFunctionName, FunctionMapping<?, ?, ?> referenceFunctionMapping)
   {
     if (BUILTIN_FUNCTION_NAMES.contains(referencedFunctionName))
@@ -5893,6 +6018,29 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                   + ". Rename the function.");
     }
     referencedFunctions.put(referencedFunctionName, referenceFunctionMapping);
+    Expression<?, ?, ?> mappingExpression = referenceFunctionMapping == null ? null : referenceFunctionMapping.expression;
+    if (mappingExpression != null && mappingExpression != this)
+    {
+      mappingExpression.referencedFunctions.forEach((peerName, peerMapping) ->
+      {
+        if (!referencedFunctions.containsKey(peerName))
+        {
+          referencedFunctions.put(peerName, (FunctionMapping) peerMapping);
+        }
+      });
+      VariableNode<?, ?, ?> myIndependent = getIndependentVariable();
+      mappingExpression.referencedVariables.forEach((peerName, peerVar) ->
+      {
+        if (peerVar.equals(myIndependent))
+        {
+          return;
+        }
+        if (!referencedVariables.containsKey(peerName))
+        {
+          referencedVariables.put(peerName, (VariableNode) peerVar);
+        }
+      });
+    }
     return this;
   }
 

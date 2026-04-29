@@ -240,9 +240,8 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       if (upstreamInput)
       {
-        expression.registerReferencedVariable(this);
+        expression.registerUpstreamInputVariable(this);
       }
-
       if (Expression.traceNodes)
       {
         logger.debug("resolveReference UPSTREAM: {}", resolutionStateString());

@@ -866,14 +866,43 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   protected void propagateContextVariablesToOperand()
   {
-    if (expression.getContext() != null && expression.getContext().variables != null)
+    expression.registerInitializer(mv ->
     {
-      expression.registerInitializer(mv ->
+      propagateContextFunctionsToOperand(mv);
+      propagateReferencedVariablesToOperand(mv);
+    });
+  }
+
+  /**
+   * Emits, into the enclosing class's {@code initialize()} method, a
+   * PUTFIELD copy {@code this.<operand>.<name> = this.<name>} for every
+   * variable name in the operand's referenced-variables map, excluding the
+   * operand's own independent variable. The parent class declares a
+   * same-named, same-typed peer field for every such name because
+   * the operand body is spliced into the parent's parse tree, so every
+   * VariableNode in the spliced subtree registered itself directly onto
+   * the parent's referencedVariables at parse time. Reference assignment,
+   * no Context lookup, no lazy allocation.
+   */
+  protected void propagateReferencedVariablesToOperand(MethodVisitor mv)
+  {
+    String operandDescriptor = String.format("L%s;", operandFunctionFieldName);
+    var operandIndependent = operandExpression.getIndependentVariable();
+    String operandIndependentName = operandIndependent == null ? null : operandIndependent.reference.name;
+
+    operandExpression.getReferencedVariables().forEach((peerName, peerNode) ->
+    {
+      if (peerName.equals(operandIndependentName))
       {
-        expression.getContext().variableEntries().forEach(entry -> propagateContextVariableToOperand(mv, entry));
-        propagateContextFunctionsToOperand(mv);
-      });
-    }
+        return;
+      }
+      String peerDescriptor = peerNode.type().descriptorString();
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(GETFIELD, expression.className, operandFunctionFieldName, operandDescriptor);
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(GETFIELD, expression.className, peerName, peerDescriptor);
+      mv.visitFieldInsn(PUTFIELD, operandFunctionFieldName, peerName, peerDescriptor);
+    });
   }
 
   /**
@@ -906,55 +935,21 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     mv.visitFieldInsn(GETFIELD, expression.className, "context", contextDescriptor);
     mv.visitFieldInsn(PUTFIELD, operandFunctionFieldName, "context", contextDescriptor);
 
-    // Context.injectFunctionReferencesIntoOperand(this.<operand>, this.context);
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(GETFIELD, expression.className, operandFunctionFieldName, operandDescriptor);
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(GETFIELD, expression.className, "context", contextDescriptor);
-    mv.visitMethodInsn(INVOKESTATIC,
-                       Type.getInternalName(Context.class),
-                       "injectFunctionReferencesIntoOperand",
-                       "(Ljava/lang/Object;Larb/expressions/Context;)V",
-                       false);
-  }
-
-  protected void propagateContextVariableToOperand(MethodVisitor mv, Entry<String, Named> entry)
-  {
-    String fieldName = entry.getKey();
-    Named  val       = entry.getValue();
-    if (val != null)
+    // For each function the operand references, copy this.<name> into
+    // this.<operand>.<name>. The parent class declares a same-named field
+    // of the same descriptor for every name in the operand's referenced
+    // functions, because the operand body is spliced into the parent's
+    // scope and the parent's getReferencedFunctions() therefore contains
+    // every entry the operand references.
+    operandExpression.getReferencedFunctions().forEach((peerName, peerMapping) ->
     {
-      Class<?> fieldType                = val.getClass();
-      String   fieldTypeDescriptor      = fieldType.descriptorString();
-      String   operandClassInternalName = operandFunctionFieldName;
-
-      Label    notNull                  = new Label();
-      Label    end                      = new Label();
-
+      String peerDescriptor = peerMapping.functionFieldDescriptor();
       loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, expression.className, operandFunctionFieldName, String.format("L%s;", operandFunctionFieldName));
-      mv.visitFieldInsn(GETFIELD, operandClassInternalName, fieldName, fieldTypeDescriptor);
-      mv.visitJumpInsn(IFNONNULL, notNull);
-
+      mv.visitFieldInsn(GETFIELD, expression.className, operandFunctionFieldName, operandDescriptor);
       loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, expression.className, operandFunctionFieldName, String.format("L%s;", operandFunctionFieldName));
-      Compiler.generateNewObjectInstruction(mv, fieldType);
-      Compiler.duplicateTopOfTheStack(mv);
-      Compiler.invokeDefaultConstructor(mv, fieldType);
-      mv.visitFieldInsn(PUTFIELD, operandClassInternalName, fieldName, fieldTypeDescriptor);
-
-      mv.visitLabel(notNull);
-
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, expression.className, operandFunctionFieldName, String.format("L%s;", operandFunctionFieldName));
-      mv.visitFieldInsn(GETFIELD, operandClassInternalName, fieldName, fieldTypeDescriptor);
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, expression.className, fieldName, fieldTypeDescriptor);
-      Compiler.generateVirtualMethodInvocation(mv, fieldType, "set", fieldType, fieldType);
-      mv.visitInsn(Opcodes.POP);
-
-      mv.visitLabel(end);
-    }
+      mv.visitFieldInsn(GETFIELD, expression.className, peerName, peerDescriptor);
+      mv.visitFieldInsn(PUTFIELD, operandFunctionFieldName, peerName, peerDescriptor);
+    });
   }
 
   private void parseLowerLimit()
@@ -980,7 +975,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   protected void generateCodeToPropagateIndependentUpstreamVariablesToOperand(MethodVisitor mv, VariableNode<D, R, F> independentVariableNode)
   {
-    operandExpression.getReferencedVariables()
+    operandExpression.getUpstreamInputVariables()
                      .entrySet()
                      .forEach(entry -> generateCodeToPropagateIndependentUpstreamVariablesToOperand(mv, independentVariableNode, entry));
   }
