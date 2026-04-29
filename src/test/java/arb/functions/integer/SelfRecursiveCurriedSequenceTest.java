@@ -281,4 +281,34 @@ public class SelfRecursiveCurriedSequenceTest extends
     assertEquals(8.0, out.re().doubleValue(), 1e-30);
     assertTrue(out.im().isZero());
   }
+
+  /**
+   * Mutually-recursive curried pair where {@code a}'s recursive case multiplies
+   * an external referenced function {@code p(v)} by the peer mutual call
+   * {@code S(k)(v)}. With {@code p(v) = v}, {@code k = 2, v = 2}:
+   * {@code a(1)(v) = v = 2}, {@code S(2)(v) = 4}, {@code a(2)(v) = p(v)·S(2)(v) = 2·4 = 8}.
+   */
+  public static void testMutuallyRecursiveCurriedPairWithExternalFunctionMultiplyingPeerCall()
+  {
+    Context ctx = new Context();
+    ComplexFunction.express("p", "v➔v", ctx);
+    ctx.registerFunctionMapping("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
+    String sExpr = "S:k➔v➔a(k-1)(v)·a(k-1)(v)";
+    Sequence.parseCompileAndRegister("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
+
+    String                  aExpr = "a:k➔v➔when(k=1, v, else, p(v)·S(k)(v))";
+    ComplexFunctionSequence a     = ComplexFunctionSequence.express(aExpr, ctx);
+
+    Integer                 k     = new Integer();
+    k.set(2);
+    Complex         v   = new Complex();
+    v.set(2, 0);
+    Complex         out = new Complex();
+
+    ComplexFunction a2  = a.evaluate(k, 1, 128, null);
+    a2.evaluate(v, 1, 128, out);
+
+    assertEquals(8.0, out.re().doubleValue(), 1e-30);
+    assertTrue(out.im().isZero());
+  }
 }
