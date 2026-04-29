@@ -213,4 +213,39 @@ public class SelfRecursiveCurriedSequenceTest extends
     assertEquals(8.0, out.re().doubleValue(), 1e-30);
     assertTrue(out.im().isZero());
   }
+
+  /**
+   * Mutually-recursive curried pair with {@code Γ} applied to {@code k·μ+1}
+   * in {@code a}'s recursive case — the exact arithmetic shape of the
+   * rough-Heston Riccati Müntz recurrence factor. With {@code μ = 1, k = 2}:
+   * {@code Γ(k·μ+1) = Γ(3) = 2}, {@code S(2)(v) = v·v = 4}, and
+   * {@code a(2)(v) = 2·S(2)(v) = 8}. So {@code a(2)(2) = 8}.
+   */
+  public static void testMinimalMutuallyRecursiveCurriedPairWithGammaOfKMu()
+  {
+    Context ctx = new Context();
+    Real μ      = new Real();
+    μ.set("1", 128);
+    μ.setName("μ");
+    ctx.registerVariable(μ);
+
+    ctx.registerFunctionMapping("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
+    String sExpr = "S:k➔v➔a(k-1)(v)·a(k-1)(v)";
+    Sequence.parseCompileAndRegister("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
+
+    String                  aExpr = "a:k➔v➔when(k=1, v, else, Γ(k·μ+1)·S(k)(v))";
+    ComplexFunctionSequence a     = ComplexFunctionSequence.express(aExpr, ctx);
+
+    Integer                 k     = new Integer();
+    k.set(2);
+    Complex         v   = new Complex();
+    v.set(2, 0);
+    Complex         out = new Complex();
+
+    ComplexFunction a2  = a.evaluate(k, 1, 128, null);
+    a2.evaluate(v, 1, 128, out);
+
+    assertEquals(8.0, out.re().doubleValue(), 1e-30);
+    assertTrue(out.im().isZero());
+  }
 }
