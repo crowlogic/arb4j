@@ -311,4 +311,78 @@ public class SelfRecursiveCurriedSequenceTest extends
     assertEquals(8.0, out.re().doubleValue(), 1e-30);
     assertTrue(out.im().isZero());
   }
+
+  /**
+   * Bonanzai rough-Heston Riccati shape, arb4j-only: three external referenced
+   * functions {@code p, q, r}, the Real Context variable {@code μ}, gamma
+   * function {@code Γ} applied to {@code k·μ+1} and {@code (k-1)·μ+1}, and
+   * the recurrence {@code a:k➔v➔when(k=1, p(v)/Γ(μ+1), else,
+   * (Γ((k-1)·μ+1)/Γ(k·μ+1))·(q(v)·a(k-1)(v)+r(v)·S(k)(v)))} with
+   * {@code S:k➔v➔sum(j➔a(j)(v)·a(k-1-j)(v){j=1..k-2})}.
+   * <p>
+   * With {@code p(v)=q(v)=r(v)=v} and {@code μ=1}: Γ(μ+1)=1, Γ((k-1)+1)=Γ(k),
+   * Γ(k+1)=k!, ratio = (k-1)!/k! = 1/k. So a(1)(v)=v, a(2)(v)=(1/2)·(v·v+v·S(2)(v)),
+   * S(2)(v)=sum(j=1..0,...) = 0 (empty sum), thus a(2)(v)=v·v/2. With v=2, a(2)(2)=2.
+   */
+  public static void testBonanzaiShapeWithExternalFunctionsAndGammaAndMu()
+  {
+    Context ctx = new Context();
+    Real μ      = new Real();
+    μ.set("1", 128);
+    μ.setName("μ");
+    ctx.registerVariable(μ);
+
+    ComplexFunction.express("p", "v➔v", ctx);
+    ComplexFunction.express("q", "v➔v", ctx);
+    ComplexFunction.express("r", "v➔v", ctx);
+
+    ctx.registerFunctionMapping("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
+    String sExpr = "S:k➔v➔sum(j➔a(j)(v)*a(k-1-j)(v){j=1..k-2})";
+    Sequence.parseCompileAndRegister("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
+
+    String                  aExpr = "a:k➔v➔when(k=1, p(v)/Γ(μ+1),"
+                                  + " else, (Γ((k-1)·μ+1)/Γ(k·μ+1))·(q(v)·a(k-1)(v)+r(v)·S(k)(v)))";
+    ComplexFunctionSequence a     = ComplexFunctionSequence.express(aExpr, ctx);
+
+    Integer                 k     = new Integer();
+    k.set(2);
+    Complex         v   = new Complex();
+    v.set(2, 0);
+    Complex         out = new Complex();
+
+    ComplexFunction a2  = a.evaluate(k, 1, 128, null);
+    a2.evaluate(v, 1, 128, out);
+
+    assertEquals(2.0, out.re().doubleValue(), 1e-30);
+    assertTrue(out.im().isZero());
+  }
+
+  /**
+   * Mutually-recursive curried pair where {@code S} itself uses {@code when}
+   * to terminate — both peers piecewise. {@code S(k=2)(v) = a(1)(v)·a(1)(v) = v·v},
+   * {@code S(k>2)(v) = 0}; {@code a(k=1)(v) = v}, {@code a(k>1)(v) = S(k)(v)}.
+   * With {@code k=2, v=2}: {@code a(2)(2) = 4}.
+   */
+  public static void testMutuallyRecursiveCurriedPairWithWhenInPeer()
+  {
+    Context ctx = new Context();
+    ctx.registerFunctionMapping("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
+    String sExpr = "S:k➔v➔when(k=2, a(1)(v)·a(1)(v), else, 0)";
+    Sequence.parseCompileAndRegister("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
+
+    String                  aExpr = "a:k➔v➔when(k=1, v, else, S(k)(v))";
+    ComplexFunctionSequence a     = ComplexFunctionSequence.express(aExpr, ctx);
+
+    Integer                 k     = new Integer();
+    k.set(2);
+    Complex         v   = new Complex();
+    v.set(2, 0);
+    Complex         out = new Complex();
+
+    ComplexFunction a2  = a.evaluate(k, 1, 128, null);
+    a2.evaluate(v, 1, 128, out);
+
+    assertEquals(4.0, out.re().doubleValue(), 1e-30);
+    assertTrue(out.im().isZero());
+  }
 }
