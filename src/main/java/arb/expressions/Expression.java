@@ -545,6 +545,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Class<F>                                       compiledClass;
 
+  /**
+   * Re-entrancy guard for {@link #compile()}. Set to {@code true} for the
+   * duration of a top-level compile. A nested {@code compile()} call on the
+   * same Expression object (which can happen when peer mappings in a mutually
+   * recursive cluster cross-reference each other through
+   * {@link #generateFunctionInitializer}) returns immediately without
+   * re-running parse, optimize, generate, or load. The outer compile's
+   * bytecode reference to the peer's class name is resolved lazily by the JVM
+   * at the parent's first {@code initialize()} call — by which point the
+   * recursive compile chain has defined every class in the cluster (issue
+   * #994).
+   */
+  private boolean                                       compileInProgress = false;
+
   HashMap<Class<?>, AtomicInteger>                      constantCounts                = new HashMap<>();
 
   private Context                                       context;
@@ -1134,6 +1148,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       return this;
     }
+    if (compileInProgress)
+    {
+      return this;
+    }
     if (context == null)
     {
       context = new Context();
@@ -1143,14 +1161,22 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       log.debug(String.format("#%s: compile(expression=%s, className=%s, context=%s)\n", System.identityHashCode(this), getExpression(), className, context));
     }
-    if (instructions == null)
+    compileInProgress = true;
+    try
     {
-      optimize();
-      generate();
+      if (instructions == null)
+      {
+        optimize();
+        generate();
+      }
+      assert context != null : "context is null for " + this + " and superExpression=" + upstreamExpression + " superExpression.context=" + upstreamExpression.context;
+      assert !className.isEmpty() : "className is empty";
+      compiledClass = loadFunctionClass(className, instructions, context);
     }
-    assert context != null : "context is null for " + this + " and superExpression=" + upstreamExpression + " superExpression.context=" + upstreamExpression.context;
-    assert !className.isEmpty() : "className is empty";
-    compiledClass = loadFunctionClass(className, instructions, context);
+    finally
+    {
+      compileInProgress = false;
+    }
     return this;
   }
 
@@ -2586,8 +2612,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // later via generateSelfReference (Expression.java:2488). Emitting an
     // injection block here would dereference `this.<self>` before that
     // allocation runs and crash with NPE on the very first invocation.
-    boolean isSelfReference = nestedFunction.functionName != null
-                              && nestedFunction.functionName.equals(this.functionName);
+    boolean isSelfReference = nestedFunction.functionName != null && nestedFunction.functionName.equals(functionName);
 
     boolean haveRegisteredExpression = !haveLiveInstance
                                        && !isSelfReference
@@ -5739,13 +5764,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
       return this;
     }
+    String body = rootNode.toString();
     if (getIndependentVariable() != null)
     {
-      setExpression(String.format("%s➔%s", getIndependentVariable().getName(), rootNode.toString()));
+      setExpression(String.format("%s➔%s", getIndependentVariable().getName(), body));
     }
     else
     {
-      setExpression(rootNode.toString());
+      setExpression(body);
     }
     return this;
   }

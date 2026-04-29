@@ -438,5 +438,32 @@
 				</plugins>
 			</build>
 		</profile>
+
+		<!--
+		  Tracing profile: enable expression-compiler debug logging plus the
+		  static `arb4j.trace` and `arb4j.traceNodes` flags so a single
+		  invocation of `mvn -Ptrace test -Dtest=Foo#bar` reproduces the
+		  exact diagnostic stream used while debugging splice/curry issues
+		  (see issue #994).
+		-->
+		<profile>
+			<id>trace</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<argLine>-ea --illegal-native-access=allow
+								--sun-misc-unsafe-memory-access=allow
+								-Djava.library.path=${project.basedir}
+								-Darb4j.trace=true
+								-Darb4j.traceNodes=true
+								-Dlogback.configurationFile=logback-debug.xml</argLine>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 	</profiles>
 </project>

@@ -1,6 +1,21 @@
 arb4j (0.99.9.9.10) UNRELEASED; urgency=low
 
   [ Stephen Crowley ]
+  * Issue #994: Re-entrancy guard on Expression.compile() ends the
+    recompile cascade in mutually-recursive curried sequence clusters.
+    A peer's generateFunctionInitializer at line 2609 forced
+    nestedExpression.compile() when variablesDeclared was false; for
+    a ⇔ S where each references the other through a curried
+    ComplexFunctionSequence (k➔v➔body), this re-entered compile()
+    on an Expression whose generateFunctionalElement had already
+    consumed its placeholderVariable, producing an inner functional
+    Expression with independentVariable=null and crashing splice with
+    UndefinedReference 'v'. compileInProgress flag short-circuits the
+    re-entrant call; the outer compile's symbolic class-name reference
+    in bytecode is resolved at JVM-load time when the recursive
+    compile chain has finished. Test
+    SelfRecursiveCurriedSequenceTest covers self-recursive and
+    mutually-recursive curried sequence cases.
   * Universal lazy ∂/∂v on every Expression-compiled Function. Function
     grows derivative(VariableReference) and derivative(String) defaults;
     Expression.derivative(VariableReference) does pure-Java AST surgery
