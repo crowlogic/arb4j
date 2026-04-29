@@ -82,4 +82,35 @@ public class SelfRecursiveCurriedSequenceTest extends
     assertEquals(6.0, out.re().doubleValue(), 1e-30);
     assertTrue(out.im().isZero());
   }
+
+  /**
+   * Same {@code a ↔ S} mutual recursion as the green case above, but with one
+   * change: an external referenced function {@code p(v) = v} is registered in
+   * the Context first, and {@code a}'s base case calls {@code p(v)} instead of
+   * referring to {@code v} directly. With {@code p(v) = v} the arithmetic is
+   * identical, so {@code a(3)(2) = 6} remains exact.
+   */
+  public static void testMutuallyRecursiveCurriedSequencesWithExternalReferencedFunction()
+  {
+    Context ctx = new Context();
+    ComplexFunction.express("p", "v➔v", ctx);
+    ctx.registerFunctionMapping("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
+    String sExpr = "S:k➔v➔sum(j➔a(j)(v)*a(k-1-j)(v){j=1..k-2})";
+    Sequence.parseCompileAndRegister("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
+
+    String                  aExpr = "a:k➔v➔when(k=1, p(v), else, a(k-1)(v)+S(k)(v))";
+    ComplexFunctionSequence a     = ComplexFunctionSequence.express(aExpr, ctx);
+
+    Integer                 k     = new Integer();
+    k.set(3);
+    Complex         v   = new Complex();
+    v.set(2, 0);
+    Complex         out = new Complex();
+
+    ComplexFunction a3  = a.evaluate(k, 1, 128, null);
+    a3.evaluate(v, 1, 128, out);
+
+    assertEquals(6.0, out.re().doubleValue(), 1e-30);
+    assertTrue(out.im().isZero());
+  }
 }
