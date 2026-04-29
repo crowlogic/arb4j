@@ -174,7 +174,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected void declareDerivativeCacheField(ClassVisitor cw)
   {
-    String signature = "L" + arrayListInternal + "<" + Type.getDescriptor(functionClass) + ">;";
+    String signature = "L" + arrayListInternal + "<L" + functionInternal + "<" + Type.getDescriptor(domainType) + Type.getDescriptor(coDomainType) + ">;>;";
     cw.visitField(Opcodes.ACC_PUBLIC, "derivativeCache", arrayListDescriptor, signature, null);
   }
 
@@ -905,7 +905,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public String allocateIntermediateVariable(MethodVisitor methodVisitor, Class<?> type)
   {
-    Class<?> actualType               = type.isInterface() ? scalarType(type) : type;
+    Class<?> actualType               = (type.isInterface() && !Function.class.isAssignableFrom(type)) ? scalarType(type) : type;
     String   intermediateVariableName = newIntermediateVariable(actualType);
     assert intermediateVariableName != null : "intermediateVariableName is null for type " + type;
     loadThisAndFieldOntoStack(methodVisitor, intermediateVariableName, actualType);
@@ -914,7 +914,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public String allocateIntermediateVariable(MethodVisitor methodVisitor, String prefix, Class<?> type)
   {
-    Class<?> actualType               = type.isInterface() ? scalarType(type) : type;
+    Class<?> actualType               = (type.isInterface() && !Function.class.isAssignableFrom(type)) ? scalarType(type) : type;
     String   intermediateVariableName = newIntermediateVariable(prefix, actualType);
     loadFieldOntoStack(loadThisOntoStack(methodVisitor), intermediateVariableName, actualType.descriptorString());
     return intermediateVariableName;
