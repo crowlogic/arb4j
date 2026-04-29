@@ -39,10 +39,22 @@ or processed by code originating with the Licensed Work, that is
 either (a) made by an Organization, or (b) commercial or financial in
 nature, where “commercial or financial in nature” means any use that
 produces, is intended to produce, or is incidental to the production
-of revenue, fee income, profit, or pecuniary benefit for any party.
+of revenue, fee income, profit, or pecuniary benefit for any party,
+including without limitation: trading, market-making, brokerage,
+portfolio management, asset management, hedging, arbitrage, liquidity
+provision, signal generation for any account that holds money or
+financial instruments, quantitative research conducted with the
+intent (immediate or eventual) to deploy capital, pricing or risk
+systems used in connection with any of the foregoing, and any
+back-office, middle-office, or front-office function that supports
+any of the foregoing.  Production Use under clause (b) applies
+regardless of whether the user is a single natural person and
+regardless of whether the activity is profitable in any given
+period.
 
 “Personal Use” means any use of the Licensed Work that is not
-Production Use.
+Production Use.  Personal Use is permitted indefinitely without a
+Production Use License.
 
 “Production Use License” means a written license, issued and signed
 (including by electronic signature) by the Licensor, that authorises
@@ -66,8 +78,8 @@ by MariaDB plc, All Rights Reserved
 
 ===Additional Use Grant===
 
-Personal Use of the Licensed Work is permitted without a Production
-Use License.
+Personal Use of the Licensed Work is permitted indefinitely without
+a Production Use License.
 
 Production Use of the Licensed Work is permitted without a Production
 Use License only during a single evaluation period of ninety (90)
