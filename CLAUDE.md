@@ -1,5 +1,17 @@
 # arb4j — operating notes
 
+## Read and obey `axioms.md` first
+
+Before making any compiler, expression, generated-code, or test change, read
+`axioms.md` in the repository root. Its axioms are mandatory invariants, not
+suggestions. If a proposed change conflicts with `axioms.md`, the proposed
+change is wrong.
+
+Do not infer compiler behavior from convenience, analogy, or "same class"
+reasoning when an axiom states the invariant. In particular, recursive generated
+function fields are separate generated instances, not aliases to `this`, and
+`referencedVariables` is for context variables only.
+
 ## **NEVER READ SUREFIRE REPORTS. EVER.**
 
 **Files under `target/surefire-reports/` and `build/surefire-reports/` are FORBIDDEN as a source of truth.** They are written at the end of a Maven test run and persist across sessions, configurations, and code edits. Reading them and reporting their contents as the current behavior of a test is a banned operation.
