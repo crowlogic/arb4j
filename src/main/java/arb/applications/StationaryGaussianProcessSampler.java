@@ -597,13 +597,14 @@ public abstract class StationaryGaussianProcessSampler extends
   {
     XYChart chart = new XYChart(new DefaultNumericAxis("Δt",
                                                        ""),
-                                new DefaultNumericAxis("Correlation",
+                                new DefaultNumericAxis("Covariance",
                                                        ""));
     chart.setTitle("Covariance");
     populateAutoCorrelationDatasets(chart, sampler, samplePath);
-    chart.getYAxis().setAutoRanging(false);
-    chart.getYAxis().setMin(-0.5);
-    chart.getYAxis().setMax(1.05);
+    // Autocovariance is no longer normalized to a unit peak, so the
+    // y-axis must adapt to the actual signal amplitude.  Lag-0 is
+    // C(0) = ⟨Z²⟩ — for raw Hardy Z on [0, L] this can be tens or more.
+    chart.getYAxis().setAutoRanging(true);
     chart.getXAxis().setAutoRanging(false);
     chart.getXAxis().setMin(0);
     chart.getXAxis().setMax(sampler.autocorrelationLength);
@@ -620,7 +621,7 @@ public abstract class StationaryGaussianProcessSampler extends
    */
   void populateAutoCorrelationDatasets(XYChart chart, StationaryGaussianProcessSampler sampler, Complex samplePath)
   {
-    int      maxLag = (int) (sampler.autocorrelationLength / sampler.dt) + 1;
+    int maxLag = (int) (sampler.autocorrelationLength / sampler.dt) + 1;
     if (maxLag > sampler.N)
     {
       maxLag = sampler.N;
@@ -628,10 +629,20 @@ public abstract class StationaryGaussianProcessSampler extends
     double[] times  = new double[maxLag];
     double[] theory = new double[maxLag];
     sampler.getKernel(times, theory);
-    var      kernelFn    = sampler.getKernel();
-    String   theoryLabel = kernelFn == null ? "Theoretical Covariance (none)"
-                                            : "Theoretical Covariance " + kernelFn;
-    double[] empirical   = Statistics.autocorr(samplePath.re().doubleValues(), maxLag);
+    var    kernelFn    = sampler.getKernel();
+    String theoryLabel = kernelFn == null ? "Theoretical Covariance (none)"
+                                          : "Theoretical Covariance " + kernelFn;
+
+    // Arb-typed empirical autocovariance: C(k) = (1/(N-k)) Σ Z[i] Z[i+k],
+    // no division by variance, lag-0 = ⟨Z²⟩. Computed at the working bit
+    // precision via Real.autocovariance and then cast to double[] only at
+    // the chart-feeding edge.
+    double[] empirical;
+    try (Real cov = Real.newVector(maxLag))
+    {
+      samplePath.re().autocovariance(maxLag, bits, cov);
+      empirical = cov.doubleValues();
+    }
     chart.getDatasets().clear();
     chart.getDatasets().addAll(new DoubleDataSet("Empirical").set(times, empirical),
                                new DoubleDataSet(theoryLabel).set(times, theory));

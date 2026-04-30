@@ -1150,6 +1150,12 @@ import arb.utensils.Utensils;
    * Empirical autocorrelation ρ(k) = (1/(N−k))·Σᵢ Z[i]·Z[i+k] / ⟨Z²⟩ for
    * lags k = 0..maxLagSteps−1, with ρ(0) defined as 1. Direct arb-typed
    * port of Statistics.autocorr(double[], int).
+   *
+   * <p>This is the variance-normalized autocorrelation: every value is
+   * divided by ⟨Z²⟩ and ρ(0) is therefore unity by construction. The
+   * actual second-order statistic — the autocovariance, whose lag-0
+   * value is ⟨Z²⟩ itself and which preserves the amplitude of the
+   * underlying signal — is provided by {@link #autocovariance(int, int, Real)}.
    */
   public Real autocorrelation(int maxLagSteps, int bits, Real result)
   {
@@ -1181,6 +1187,136 @@ import arb.utensils.Utensils;
           cov.add(prod, bits, cov);
         }
         cov.div(n - k, bits, result.get(k)).div(meanSq, bits, result.get(k));
+      });
+    }
+    return result;
+  }
+
+  /**
+   * Raw empirical autocovariance C(k) = (1/(N−k))·Σᵢ Z[i]·Z[i+k] for
+   * lags k = 0..maxLagSteps−1, computed entirely in arb-typed arithmetic
+   * at the requested precision. The mean is <em>not</em> subtracted; the
+   * lag-0 value C(0) = ⟨Z²⟩ is the uncentered second moment, retaining
+   * the amplitude of the underlying signal — no centering, no division
+   * by variance, no rescaling to a unit peak. Equivalent to
+   * {@link #autocovariance(int, int, boolean, Real)} with
+   * {@code subtractMean = false}.
+   *
+   * <p>If a caller wants the centered statistic
+   * (1/(N−k))·Σᵢ (Z[i]−Z̄)·(Z[i+k]−Z̄) they can either subtract the mean
+   * from the input vector beforehand, or invoke the four-argument
+   * overload with {@code subtractMean = true}.
+   *
+   * @param maxLagSteps total lag count, including lag 0
+   * @param bits        arithmetic precision
+   * @param result      length-maxLagSteps Real vector that receives C(k)
+   * @return result
+   */
+  public Real autocovariance(int maxLagSteps, int bits, Real result)
+  {
+    return autocovariance(maxLagSteps, bits, false, result);
+  }
+
+  /**
+   * Empirical autocovariance C(k) for lags k = 0..maxLagSteps−1, computed
+   * entirely in arb-typed arithmetic at the requested precision.
+   *
+   * <p>If {@code subtractMean} is {@code false} the raw uncentered
+   * statistic
+   * \[ C(k) = \frac{1}{N-k} \sum_{i=0}^{N-k-1} Z_i \, Z_{i+k} \]
+   * is returned, so C(0) = ⟨Z²⟩.
+   *
+   * <p>If {@code subtractMean} is {@code true} the centered statistic
+   * \[ C(k) = \frac{1}{N-k} \sum_{i=0}^{N-k-1} (Z_i - \bar Z)(Z_{i+k} - \bar Z) \]
+   * is returned, so C(0) is the sample variance.
+   *
+   * <p>The inner per-lag accumulation reuses the same per-thread scratch
+   * pair as {@link #autocorrelation(int, int, Real)}, so an O(N²) lag
+   * sweep performs no Real allocation beyond the output vector and the
+   * already-cached two-Real scratch per worker. The k = 1..maxLagSteps−1
+   * lags run in a parallel stream; lag 0 is computed serially and
+   * written into result.get(0). When {@code subtractMean = true} the
+   * mean Z̄ is computed once serially up front and captured by the
+   * parallel workers via a final local; the per-lag inner loop then
+   * fuses the centering with the product accumulation so still no
+   * extra allocation occurs inside the parallel section.
+   *
+   * @param maxLagSteps  total lag count, including lag 0
+   * @param bits         arithmetic precision
+   * @param subtractMean if {@code true}, subtract Z̄ from each sample
+   *                     before forming products
+   * @param result       length-maxLagSteps Real vector that receives C(k)
+   * @return result
+   */
+  public Real autocovariance(int maxLagSteps, int bits, boolean subtractMean, Real result)
+  {
+    int n = this.dim;
+    try ( Real meanSq = new Real(); Real product = new Real(); Real mean = new Real())
+    {
+      if (subtractMean)
+      {
+        mean.zero();
+        for (int i = 0; i < n; i++)
+        {
+          mean.add(get(i), bits, mean);
+        }
+        mean.div(n, bits, mean);
+      }
+      else
+      {
+        mean.zero();
+      }
+      meanSq.zero();
+      for (int i = 0; i < n; i++)
+      {
+        if (subtractMean)
+        {
+          get(i).sub(mean, bits, product);
+          product.mul(product, bits, product);
+        }
+        else
+        {
+          get(i).mul(get(i), bits, product);
+        }
+        meanSq.add(product, bits, meanSq);
+      }
+      meanSq.div(n, bits, meanSq);
+      result.get(0).set(meanSq);
+      final boolean center = subtractMean;
+      final Real    mu     = mean;
+      java.util.stream.IntStream.range(1, maxLagSteps).parallel().forEach(k ->
+      {
+        if (n - k <= 0)
+        {
+          result.get(k).zero();
+          return;
+        }
+        Real[] scratch = autocorrelationScratch.get();
+        Real cov  = scratch[0];
+        Real prod = scratch[1];
+        cov.zero();
+        if (center)
+        {
+          try ( Real a = new Real(); Real b = new Real())
+          {
+            for (int i = 0; i < n - k; i++)
+            {
+              get(i).sub(mu, bits, a);
+              get(i + k).sub(mu, bits, b);
+              a.mul(b, bits, prod);
+              cov.add(prod, bits, cov);
+            }
+          }
+        }
+        else
+        {
+          for (int i = 0; i < n - k; i++)
+          {
+            get(i).mul(get(i + k), bits, prod);
+            cov.add(prod, bits, cov);
+          }
+        }
+        cov.div(n - k, bits, result.get(k));
       });
     }
     return result;
