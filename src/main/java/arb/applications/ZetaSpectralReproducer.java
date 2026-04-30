@@ -4,9 +4,9 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Locale;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -18,58 +18,63 @@ import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.ZetaSpectralRandomMeasure;
-import arb.functions.real.RealFunction;
-import arb.functions.complex.ComplexFunction;
-import arb.functions.RealToComplexFunction;
+import arb.stochastic.Charts;
+import io.fair_acc.chartfx.XYChart;
+import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
+import io.fair_acc.dataset.spi.DoubleDataSet;
+import io.fair_acc.dataset.utils.DataSetStyleBuilder;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 /**
- * Java reproducer of {@code zeta_spectral_gemini.py}, computed end-to-end
- * via the {@code nint} expression-compiler operator.
+ * Java reproducer of the spectral-measure half of {@code zeta_spectral_gemini.py},
+ * computed end-to-end via the {@code nint} expression-compiler operator.
  *
- * <p>The pipeline matches the Python script step-for-step:
+ * <p>The pipeline computes Φ(ω) over the spectral grid:
+ * for each ω, evaluate {@link ZetaSpectralRandomMeasure}, which is the
+ * compiled expression
+ * <pre>ν ➔ nint(t ➔ ζ(½+ⅈ*t)·√(diff(ϑ(t),t))·exp(-ⅈ*ν*ϑ(t)),
+ *              t = T0 … Tmax,
+ *              dt = (Tmax-T0)/Nt) / (2π)</pre>
+ * at ω. The {@code nint} operator's trapezoid integrator amortizes
+ * evaluation across an outer parameter sweep, so each ω requires exactly
+ * {@code Nt} ζ evaluations \u2014 identical to the {@code numpy.trapezoid}
+ * cost in the reference script.
  *
- * <ol>
- *   <li><b>Spectral density.</b> For each ω in the spectral grid, evaluate
- *       {@link ZetaSpectralRandomMeasure}, which is the compiled expression
- *       <pre>ν ➔ nint(t ➔ ζ(½+ⅈ*t)·√(diff(ϑ(t),t))·exp(-ⅈ*ν*ϑ(t)),
- *                    t = T0 … Tmax,
- *                    dt = (Tmax-T0)/Nt) / (2π)</pre>
- *       at ω. The {@code nint} operator's trapezoid integrator amortizes
- *       evaluation across an outer parameter sweep, so each ω requires
- *       exactly {@code Nt} ζ evaluations \u2014 identical to the
- *       {@code numpy.trapezoid} cost in the reference script.</li>
+ * <h2>Storage and arithmetic</h2>
  *
- *   <li><b>Precompute (θ(t), ζ(½+ⅈt)) on a τ-grid.</b> Same dense {@code Nt}
- *       grid as step 1; we need θ(t) values to build τ = θ(t) for the
- *       reconstruction step, and ζ(½+ⅈt) for the comparison plot.</li>
+ * Every grid (ω and Φ(ω)) is held in arbitrary-precision {@code arb.Real}
+ * / {@code arb.Complex} vectors via {@link Real#newVector(int)} and
+ * {@link Complex#newVector(int)}. The cumulative-power difference
+ * {@code |dΦ_k|² = |Φ_k - Φ_{k-1}|²} is also computed at the working
+ * precision via FLINT-backed {@link Complex#sub} and {@link Complex#norm}.
+ * IEEE-754 {@code double} appears only at two boundaries: the chartfx
+ * {@code DoubleDataSet} feed (rendering edge) and the CSV writer
+ * (file-format edge).
  *
- *   <li><b>Direct inverse-Fourier reconstruction.</b> On the τ-grid built
- *       from the precomputed θ(t), evaluate
- *       {@code ζ_st(τ) = Σ_k Φ(ω_k) · exp(ⅈ·τ·ω_k) · Δω}.</li>
- * </ol>
+ * <h2>Outputs</h2>
  *
- * Outputs three CSV files in the working directory:
  * <ul>
- *   <li>{@code spectral_density.csv} — columns
- *       {@code omega, Re_Phi, Im_Phi}.</li>
- *   <li>{@code precompute_grid.csv} — columns
- *       {@code t, theta, theta_prime, Re_zeta, Im_zeta}.</li>
- *   <li>{@code zeta_st_reconstruction.csv} — columns
- *       {@code tau, Re_zeta, Re_zeta_st} (real parts on the τ-grid; the
- *       Python plot draws exactly these two traces).</li>
+ *   <li>{@code spectral_density.csv} \u2014
+ *       columns {@code omega, Re_Phi, Im_Phi, cum_power_empirical, cum_power_theory}.</li>
+ *   <li>One on-screen JavaFX/chartfx window with two stacked panels
+ *       matching {@code spectral_random_measure.png}: top \u2014 Re Φ(ω)
+ *       in black and Im Φ(ω) in blue; bottom \u2014 empirical cumulative
+ *       |dΦ|² in black and theoretical flat-density ramp in red dashed.</li>
  * </ul>
  *
  * <h2>Parameters</h2>
- * The Python defaults ({@code N_T = 80,000}, {@code N_OMEGA = 2560}) require
- * {@code 2,560 × 80,000 = 2.05 × 10^8} ζ evaluations. That is hours of
- * wall time at any reasonable precision \u2014 manageable on a multi-core
- * box, but not interactive. The defaults below are chosen for a fast
- * smoke-run that completes in minutes; pass command-line overrides for a
- * full Python-parity run.
+ *
+ * The Python defaults ({@code N_T = 80,000}, {@code N_OMEGA = 2560})
+ * require {@code 2,560 × 80,000 = 2.05 × 10^8} ζ evaluations. The defaults
+ * below are chosen for a fast smoke-run that completes in minutes; pass
+ * command-line overrides for full Python-parity.
  *
  * <pre>
  *   java arb.applications.ZetaSpectralReproducer \
- *        [Nt=80000] [Nomega=2560] [Tmax=1000.0] [bits=64]
+ *        [Nt=4000] [Nomega=256] [Tmax=1000.0] [bits=64]
  * </pre>
  *
  * @see ZetaSpectralRandomMeasure
@@ -77,7 +82,8 @@ import arb.functions.RealToComplexFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class ZetaSpectralReproducer
+public class ZetaSpectralReproducer extends
+                                    Application
 {
   /** First Riemann\u2013Siegel-theta zero \u2014 same as the Python script. */
   static final double T0_DEFAULT     = 6.289835988;
@@ -88,82 +94,154 @@ public class ZetaSpectralReproducer
   static final int    NOMEGA_DEFAULT = 256;    // smoke run; use 2560 for parity
   static final int    BITS_DEFAULT   = 64;
 
+  static int          NT;
+  static int          NOMEGA;
+  static double       TMAX;
+  static int          BITS;
+
+  // Outputs of the headless computation phase, populated by computeAll()
+  // and consumed by start() to build the JavaFX scene graph and the CSV.
+  Real                omegas;            // length NOMEGA
+  Complex             phi;               // length NOMEGA, Φ(ω_k)
+  Real                cumPowerEmpirical; // length NOMEGA, cumulative |dΦ_k|²
+  Real                cumPowerTheory;    // length NOMEGA, flat-density ramp
+  Real                dOmega;            // (OMEGA_MAX - OMEGA_MIN) / NOMEGA, exact at BITS
+
   public static void main(String[] args) throws Exception
   {
-    int    Nt     = args.length > 0 ? Integer.parseInt(args[0]) : NT_DEFAULT;
-    int    Nomega = args.length > 1 ? Integer.parseInt(args[1]) : NOMEGA_DEFAULT;
-    double Tmax   = args.length > 2 ? Double.parseDouble(args[2]) : TMAX_DEFAULT;
-    int    bits   = args.length > 3 ? Integer.parseInt(args[3]) : BITS_DEFAULT;
+    NT     = args.length > 0 ? Integer.parseInt(args[0])   : NT_DEFAULT;
+    NOMEGA = args.length > 1 ? Integer.parseInt(args[1])   : NOMEGA_DEFAULT;
+    TMAX   = args.length > 2 ? Double.parseDouble(args[2]) : TMAX_DEFAULT;
+    BITS   = args.length > 3 ? Integer.parseInt(args[3])   : BITS_DEFAULT;
 
-    int    workers = Runtime.getRuntime().availableProcessors();
+    int workers = Runtime.getRuntime().availableProcessors();
 
     System.out.printf(Locale.ROOT,
                       "[main] T=[%.6f, %.1f] N_t=%d N_omega=%d bits=%d workers=%d%n",
-                      T0_DEFAULT, Tmax, Nt, Nomega, bits, workers);
+                      T0_DEFAULT, TMAX, NT, NOMEGA, BITS, workers);
 
+    Application.launch(ZetaSpectralReproducer.class, args);
+  }
+
+  @Override
+  public void start(Stage primaryStage) throws Exception
+  {
     long t0 = System.currentTimeMillis();
 
-    // ── Step 1: spectral density Φ(ω) on ω = linspace(-3, 3, Nomega, endpoint=False)
-    System.out.println("[density] computing Φ(ω) over the ω-grid...");
-    double[] omegas    = linspaceEndpointFalse(OMEGA_MIN, OMEGA_MAX, Nomega);
-    double   dOmega    = (OMEGA_MAX - OMEGA_MIN) / Nomega;
-    double[] phiRe     = new double[Nomega];
-    double[] phiIm     = new double[Nomega];
-    runSpectralDensity(omegas, phiRe, phiIm, Tmax, Nt, bits, workers);
-    writeSpectralDensityCsv(omegas, phiRe, phiIm, Path.of("spectral_density.csv"));
+    int workers = Runtime.getRuntime().availableProcessors();
+    computeAll(NT, NOMEGA, TMAX, BITS, workers);
+
     System.out.printf(Locale.ROOT,
-                      "[density] done in %.2fs%n",
+                      "[main] compute total %.2fs%n",
                       (System.currentTimeMillis() - t0) / 1000.0);
 
-    // ── Step 2: precompute (θ, θ', ζ) on the dense t-grid
-    long t1 = System.currentTimeMillis();
-    System.out.println("[pre] precomputing (θ, θ', ζ) on the dense t-grid...");
-    double[] tGrid       = linspaceInclusive(T0_DEFAULT, Tmax, Nt);
-    double[] thetaVals   = new double[Nt];
-    double[] thetaPrime  = new double[Nt];
-    double[] zetaRe      = new double[Nt];
-    double[] zetaIm      = new double[Nt];
-    runPrecompute(tGrid, thetaVals, thetaPrime, zetaRe, zetaIm, bits, workers);
-    writePrecomputeCsv(tGrid, thetaVals, thetaPrime, zetaRe, zetaIm,
-                       Path.of("precompute_grid.csv"));
-    System.out.printf(Locale.ROOT,
-                      "[pre] done in %.2fs%n",
-                      (System.currentTimeMillis() - t1) / 1000.0);
+    // CSV output: arbitrary-precision values, cast to double at the file-format edge.
+    Path csv = Path.of("spectral_density.csv");
+    writeSpectralDensityCsv(csv);
+    System.out.printf(Locale.ROOT, "[csv] wrote %s%n", csv.toAbsolutePath());
 
-    // ── Step 3: direct inverse-Fourier reconstruction on τ = θ(t)
-    long t2 = System.currentTimeMillis();
-    System.out.println("[rec] reconstructing ζ_st on the τ-grid...");
-    double[] zetaStRe = reconstructZetaSt(thetaVals, omegas, dOmega, phiRe, phiIm);
-    writeReconstructionCsv(thetaVals, zetaRe, zetaStRe,
-                           Path.of("zeta_st_reconstruction.csv"));
-    System.out.printf(Locale.ROOT,
-                      "[rec] done in %.2fs%n",
-                      (System.currentTimeMillis() - t2) / 1000.0);
+    // Two stacked panels in one window: Φ(ω) on top, cumulative power on bottom.
+    XYChart phiChart   = buildPhiChart();
+    XYChart powerChart = buildPowerChart();
+    Charts.configureChart(phiChart,   true);
+    Charts.configureChart(powerChart, true);
 
-    System.out.printf(Locale.ROOT,
-                      "[main] total %.2fs; outputs: spectral_density.csv, precompute_grid.csv, zeta_st_reconstruction.csv%n",
-                      (System.currentTimeMillis() - t0) / 1000.0);
+    VBox root = new VBox(phiChart, powerChart);
+    VBox.setVgrow(phiChart,   javafx.scene.layout.Priority.ALWAYS);
+    VBox.setVgrow(powerChart, javafx.scene.layout.Priority.ALWAYS);
+
+    primaryStage.setTitle("Cumulative Spectral Measure  Φ(ω) = ∫ dΦ");
+    Scene scene = new Scene(root, 1400, 900);
+    primaryStage.setScene(scene);
+    primaryStage.show();
   }
 
   // ─────────────────────────────────────────────────────────────────────
-  // Step 1: parallel ω-sweep over Φ(ω) via ZetaSpectralRandomMeasure.
+  // Top-level orchestrator. Allocates every arbitrary-precision vector
+  // and runs the pipeline.
+  // ─────────────────────────────────────────────────────────────────────
+  void computeAll(int Nt, int Nomega, double Tmax, int bits, int workers) throws Exception
+  {
+    // ── ω-grid (linspace endpoint=False) and dω, in arb.Real
+    omegas = Real.newVector(Nomega);
+    dOmega = new Real();
+    try (Real range = new Real(); Real n = new Real())
+    {
+      range.set(OMEGA_MAX - OMEGA_MIN);
+      n.set(Nomega);
+      range.div(n, bits, dOmega);
+      for (int k = 0; k < Nomega; k++)
+      {
+        try (Real kReal = new Real(); Real shift = new Real())
+        {
+          kReal.set(k);
+          kReal.mul(dOmega, bits, shift);
+          omegas.get(k).set(OMEGA_MIN).add(shift, bits);
+        }
+      }
+    }
+
+    // ── Spectral density Φ(ω)
+    phi = Complex.newVector(Nomega);
+    System.out.println("[density] computing Φ(ω) over the ω-grid...");
+    long t1 = System.currentTimeMillis();
+    runSpectralDensity(omegas, phi, Tmax, Nt, bits, workers);
+    System.out.printf(Locale.ROOT,
+                      "[density] done in %.2fs%n",
+                      (System.currentTimeMillis() - t1) / 1000.0);
+
+    // ── Cumulative power: arbitrary-precision first-difference + cumulative sum
+    cumPowerEmpirical = Real.newVector(Nomega);
+    cumPowerTheory    = Real.newVector(Nomega);
+    try (Complex prev = new Complex();
+         Complex diff = new Complex();
+         Real    mag  = new Real();
+         Real    acc  = new Real())
+    {
+      prev.set(0);
+      acc.set(0);
+      for (int k = 0; k < Nomega; k++)
+      {
+        phi.get(k).sub(prev, bits, diff);
+        diff.norm(bits, mag);     // |dΦ_k|
+        mag.mul(mag, bits);       // |dΦ_k|²
+        acc.add(mag, bits);
+        cumPowerEmpirical.get(k).set(acc);
+        prev.set(phi.get(k));
+      }
+      // Theoretical ramp: total · k / (Nomega - 1)
+      try (Real total = new Real(); Real Nm1 = new Real(); Real kReal = new Real(); Real scale = new Real())
+      {
+        total.set(cumPowerEmpirical.get(Nomega - 1));
+        Nm1.set(Nomega - 1);
+        for (int k = 0; k < Nomega; k++)
+        {
+          kReal.set(k);
+          total.mul(kReal, bits, scale);
+          scale.div(Nm1, bits, cumPowerTheory.get(k));
+        }
+      }
+    }
+  }
+
+  // ─────────────────────────────────────────────────────────────────────
+  // Parallel ω-sweep over Φ(ω) via ZetaSpectralRandomMeasure.
   //
-  // Each worker thread holds its OWN ZetaSpectralRandomMeasure instance —
+  // Each worker thread holds its own ZetaSpectralRandomMeasure instance —
   // the underlying nint integrator is stateful (cumulative trapezoid cache)
   // and the per-evaluate rebind in init() is not thread-safe across a
   // single instance.
   // ─────────────────────────────────────────────────────────────────────
-  static void runSpectralDensity(double[] omegas,
-                                 double[] phiRe,
-                                 double[] phiIm,
+  static void runSpectralDensity(Real omegas,
+                                 Complex phi,
                                  double Tmax,
                                  int Nt,
                                  int bits,
                                  int workers)
       throws Exception
   {
-    int           N        = omegas.length;
-    AtomicInteger progress = new AtomicInteger(0);
+    int           N           = omegas.size();
+    AtomicInteger progress    = new AtomicInteger(0);
     int           reportEvery = Math.max(1, N / 16);
 
     ExecutorService pool = Executors.newFixedThreadPool(workers);
@@ -182,92 +260,17 @@ public class ZetaSpectralReproducer
         final int ki = k;
         futures.add(pool.submit(() ->
         {
-          try (Real    nu     = new Real(Double.toString(omegas[ki]), bits);
-               Complex result = new Complex())
-          {
-            ZetaSpectralRandomMeasure phi = tlPhi.get();
-            phi.evaluate(nu, 1, bits, result);
-            phiRe[ki] = result.re().getMid().doubleValue();
-            phiIm[ki] = result.im().getMid().doubleValue();
-          }
+          ZetaSpectralRandomMeasure phiFn = tlPhi.get();
+          phiFn.evaluate(omegas.get(ki), 1, bits, phi.get(ki));
           int p = progress.incrementAndGet();
           if (p == 1 || p == N || p % reportEvery == 0)
           {
             System.out.printf(Locale.ROOT,
                               "[density] %d/%d  ω=%+.4f  Φ=%+.3e %+.3ei%n",
-                              p, N, omegas[ki], phiRe[ki], phiIm[ki]);
-          }
-        }));
-      }
-      for (Future<?> f : futures)
-      {
-        f.get(); // surfaces any worker exception
-      }
-      pool.shutdown();
-      pool.awaitTermination(7, TimeUnit.DAYS);
-    }
-    finally
-    {
-      if (!pool.isTerminated())
-      {
-        pool.shutdownNow();
-      }
-    }
-  }
-
-  // ─────────────────────────────────────────────────────────────────────
-  // Step 2: parallel precompute of (θ(t), θ'(t), ζ(½+ⅈt)) on the t-grid,
-  // each via expression-compiled functions.
-  // ─────────────────────────────────────────────────────────────────────
-  static void runPrecompute(double[] tGrid,
-                            double[] thetaVals,
-                            double[] thetaPrime,
-                            double[] zetaRe,
-                            double[] zetaIm,
-                            int bits,
-                            int workers)
-      throws Exception
-  {
-    int           N        = tGrid.length;
-    AtomicInteger progress = new AtomicInteger(0);
-    int           reportEvery = Math.max(1, N / 16);
-
-    ExecutorService pool = Executors.newFixedThreadPool(workers);
-    try
-    {
-      ThreadLocal<RealFunction>          tlTheta      =
-          ThreadLocal.withInitial(() -> RealFunction.express("t➔ϑ(t)"));
-      ThreadLocal<RealFunction>          tlThetaPrime =
-          ThreadLocal.withInitial(() -> RealFunction.express("t➔diff(ϑ(t),t)"));
-      ThreadLocal<RealToComplexFunction> tlZeta       =
-          ThreadLocal.withInitial(() -> RealToComplexFunction.express("t➔ζ(½+ⅈ*t)"));
-
-      List<Future<?>> futures = new ArrayList<>();
-      for (int j = 0; j < N; j++)
-      {
-        final int ji = j;
-        futures.add(pool.submit(() ->
-        {
-          try (Real    t   = new Real(Double.toString(tGrid[ji]), bits);
-               Real    th  = new Real();
-               Real    thp = new Real();
-               Complex z   = new Complex())
-          {
-            tlTheta.get().evaluate(t, 1, bits, th);
-            tlThetaPrime.get().evaluate(t, 1, bits, thp);
-            tlZeta.get().evaluate(t, 1, bits, z);
-
-            thetaVals[ji]  = th.getMid().doubleValue();
-            thetaPrime[ji] = thp.getMid().doubleValue();
-            zetaRe[ji]     = z.re().getMid().doubleValue();
-            zetaIm[ji]     = z.im().getMid().doubleValue();
-          }
-          int p = progress.incrementAndGet();
-          if (p == 1 || p == N || p % reportEvery == 0)
-          {
-            System.out.printf(Locale.ROOT,
-                              "[pre] %d/%d  t=%9.3f  θ=%+9.3f  θ'=%+9.3f  Re ζ=%+8.3f%n",
-                              p, N, tGrid[ji], thetaVals[ji], thetaPrime[ji], zetaRe[ji]);
+                              p, N,
+                              omegas.get(ki).doubleValue(),
+                              phi.get(ki).re().doubleValue(),
+                              phi.get(ki).im().doubleValue());
           }
         }));
       }
@@ -288,132 +291,116 @@ public class ZetaSpectralReproducer
   }
 
   // ─────────────────────────────────────────────────────────────────────
-  // Step 3: direct ζ_st(τ) = Σ_k Φ(ω_k) · exp(ⅈ·τ·ω_k) · Δω.
-  // Returns Re ζ_st only (matching the Python plot, which displays Re).
+  // CSV writer.  Lossy double-cast at the file-format edge only.
   // ─────────────────────────────────────────────────────────────────────
-  static double[] reconstructZetaSt(double[] tau,
-                                    double[] omegas,
-                                    double dOmega,
-                                    double[] phiRe,
-                                    double[] phiIm)
+  void writeSpectralDensityCsv(Path out) throws IOException
   {
-    int      M    = tau.length;
-    int      K    = omegas.length;
-    double[] zRe  = new double[M];
-
-    for (int i = 0; i < M; i++)
-    {
-      double accRe = 0.0;
-      double accIm = 0.0;
-      double t     = tau[i];
-      for (int k = 0; k < K; k++)
-      {
-        double w  = omegas[k];
-        double c  = Math.cos(t * w);
-        double s  = Math.sin(t * w);
-        // Φ * exp(ⅈ τ ω) = (Re + ⅈ Im) * (c + ⅈ s)
-        accRe += phiRe[k] * c - phiIm[k] * s;
-        accIm += phiRe[k] * s + phiIm[k] * c;
-      }
-      zRe[i] = accRe * dOmega;
-      // accIm * dOmega is dropped — Python plots Re only and the imaginary
-      // residual is discretization noise that vanishes in the limit
-      // dOmega→0 because the underlying random measure is conjugate-symmetric.
-    }
-    return zRe;
-  }
-
-  // ─────────────────────────────────────────────────────────────────────
-  // Grid helpers, same semantics as numpy.linspace.
-  // ─────────────────────────────────────────────────────────────────────
-  static double[] linspaceInclusive(double a, double b, int n)
-  {
-    double[] x = new double[n];
-    if (n == 1)
-    {
-      x[0] = a;
-      return x;
-    }
-    double step = (b - a) / (n - 1);
-    for (int i = 0; i < n; i++)
-    {
-      x[i] = a + i * step;
-    }
-    return x;
-  }
-
-  static double[] linspaceEndpointFalse(double a, double b, int n)
-  {
-    double[] x    = new double[n];
-    double   step = (b - a) / n;
-    for (int i = 0; i < n; i++)
-    {
-      x[i] = a + i * step;
-    }
-    return x;
-  }
-
-  // ─────────────────────────────────────────────────────────────────────
-  // CSV writers.
-  // ─────────────────────────────────────────────────────────────────────
-  static void writeSpectralDensityCsv(double[] omegas,
-                                      double[] phiRe,
-                                      double[] phiIm,
-                                      Path out)
-      throws IOException
-  {
+    int N = omegas.size();
     try (BufferedWriter w = Files.newBufferedWriter(out))
     {
-      w.write("omega,Re_Phi,Im_Phi\n");
-      for (int k = 0; k < omegas.length; k++)
-      {
-        w.write(String.format(Locale.ROOT,
-                              "%.10g,%.10g,%.10g%n",
-                              omegas[k], phiRe[k], phiIm[k]));
-      }
-    }
-  }
-
-  static void writePrecomputeCsv(double[] t,
-                                 double[] theta,
-                                 double[] thetaPrime,
-                                 double[] zRe,
-                                 double[] zIm,
-                                 Path out)
-      throws IOException
-  {
-    try (BufferedWriter w = Files.newBufferedWriter(out))
-    {
-      w.write("t,theta,theta_prime,Re_zeta,Im_zeta\n");
-      for (int j = 0; j < t.length; j++)
+      w.write("omega,Re_Phi,Im_Phi,cum_power_empirical,cum_power_theory\n");
+      for (int k = 0; k < N; k++)
       {
         w.write(String.format(Locale.ROOT,
                               "%.10g,%.10g,%.10g,%.10g,%.10g%n",
-                              t[j], theta[j], thetaPrime[j], zRe[j], zIm[j]));
+                              omegas           .get(k).doubleValue(),
+                              phi              .get(k).re().doubleValue(),
+                              phi              .get(k).im().doubleValue(),
+                              cumPowerEmpirical.get(k).doubleValue(),
+                              cumPowerTheory   .get(k).doubleValue()));
       }
     }
   }
 
-  static void writeReconstructionCsv(double[] tau,
-                                     double[] zRe,
-                                     double[] zStRe,
-                                     Path out)
-      throws IOException
+  // ─────────────────────────────────────────────────────────────────────
+  // Top panel: Re Φ(ω) (black) and Im Φ(ω) (blue) versus ω.
+  // ─────────────────────────────────────────────────────────────────────
+  XYChart buildPhiChart()
   {
-    try (BufferedWriter w = Files.newBufferedWriter(out))
+    int      N    = omegas.size();
+    double[] xs   = new double[N];
+    double[] reys = new double[N];
+    double[] imys = new double[N];
+    for (int k = 0; k < N; k++)
     {
-      w.write("tau,Re_zeta,Re_zeta_st\n");
-      for (int i = 0; i < tau.length; i++)
-      {
-        w.write(String.format(Locale.ROOT,
-                              "%.10g,%.10g,%.10g%n",
-                              tau[i], zRe[i], zStRe[i]));
-      }
+      xs[k]   = omegas.get(k).doubleValue();
+      reys[k] = phi.get(k).re().doubleValue();
+      imys[k] = phi.get(k).im().doubleValue();
     }
+
+    DefaultNumericAxis xAxis = new DefaultNumericAxis("ω", "");
+    DefaultNumericAxis yAxis = new DefaultNumericAxis("Φ(ω)", "");
+    XYChart            chart = new XYChart(xAxis, yAxis);
+    chart.setTitle("Cumulative Spectral Measure  Φ(ω) = ∫ dΦ");
+    xAxis.setAutoRanging(false);
+    xAxis.setMin(-3.25);
+    xAxis.setMax(3.25);
+    xAxis.setAutoRangeRounding(false);
+    xAxis.setTickUnit(0.25);
+    yAxis.setAutoRanging(true);
+
+    DoubleDataSet rePhi = new DoubleDataSet("Re Φ(ω)").set(xs, reys);
+    DoubleDataSet imPhi = new DoubleDataSet("Im Φ(ω)").set(xs, imys);
+
+    rePhi.setStyle(DataSetStyleBuilder.instance()
+                                      .setLineColor("black")
+                                      .setMarkerColor("black")
+                                      .setLineWidth(2)
+                                      .build());
+    imPhi.setStyle(DataSetStyleBuilder.instance()
+                                      .setLineColor("dodgerblue")
+                                      .setMarkerColor("dodgerblue")
+                                      .setLineWidth(2)
+                                      .build());
+
+    chart.getDatasets().setAll(rePhi, imPhi);
+    return chart;
   }
 
-  // suppress unused-import warning for ComplexFunction; kept as a deliberate
-  // signpost to the reader of the file.
-  @SuppressWarnings("unused")
-  private static final Class<?> KEEP_IMPORT = ComplexFunction.class;
+  // ─────────────────────────────────────────────────────────────────────
+  // Bottom panel: empirical cumulative |dΦ|² (black) vs theoretical
+  // flat-density ramp (red dashed).
+  // ─────────────────────────────────────────────────────────────────────
+  XYChart buildPowerChart()
+  {
+    int      N      = omegas.size();
+    double[] xs     = new double[N];
+    double[] emp    = new double[N];
+    double[] theory = new double[N];
+    for (int k = 0; k < N; k++)
+    {
+      xs[k]     = omegas           .get(k).doubleValue();
+      emp[k]    = cumPowerEmpirical.get(k).doubleValue();
+      theory[k] = cumPowerTheory   .get(k).doubleValue();
+    }
+
+    DefaultNumericAxis xAxis = new DefaultNumericAxis("ω", "");
+    DefaultNumericAxis yAxis = new DefaultNumericAxis("Power", "");
+    XYChart            chart = new XYChart(xAxis, yAxis);
+    chart.setTitle("Spectral Distribution Function");
+    xAxis.setAutoRanging(false);
+    xAxis.setMin(-3.25);
+    xAxis.setMax(3.25);
+    xAxis.setAutoRangeRounding(false);
+    xAxis.setTickUnit(0.25);
+    yAxis.setAutoRanging(true);
+
+    DoubleDataSet empDs   = new DoubleDataSet("Empirical: cumulative sum of |dΦ|²").set(xs, emp);
+    DoubleDataSet theoDs  = new DoubleDataSet("Theoretical shape (flat spectral density)").set(xs, theory);
+
+    empDs.setStyle(DataSetStyleBuilder.instance()
+                                      .setLineColor("black")
+                                      .setMarkerColor("black")
+                                      .setLineWidth(2)
+                                      .build());
+    theoDs.setStyle(DataSetStyleBuilder.instance()
+                                       .setLineColor("red")
+                                       .setMarkerColor("red")
+                                       .setLineWidth(2)
+                                       .setLineDashes(new double[]{8, 4})
+                                       .build());
+
+    chart.getDatasets().setAll(empDs, theoDs);
+    return chart;
+  }
 }
