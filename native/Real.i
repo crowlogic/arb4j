@@ -1160,34 +1160,22 @@ import arb.utensils.Utensils;
   public Real autocorrelation(int maxLagSteps, int bits, Real result)
   {
     int n = this.dim;
-    try ( Real meanSq = new Real(); Real product = new Real())
+    try ( Real meanSq = new Real())
     {
-      meanSq.zero();
-      for (int i = 0; i < n; i++)
-      {
-        get(i).mul(get(i), bits, product);
-        meanSq.add(product, bits, meanSq);
-      }
+      arblib.arb_dot(meanSq, null, 0, this, 1, this, 1, n, bits);
       meanSq.div(n, bits, meanSq);
       result.get(0).set(1);
-      java.util.stream.IntStream.range(1, maxLagSteps).parallel().forEach(k ->
+      for (int k = 1; k < maxLagSteps; k++)
       {
         if (n - k <= 0)
         {
           result.get(k).zero();
-          return;
+          continue;
         }
-        Real[] scratch = autocorrelationScratch.get();
-        Real cov = scratch[0];
-        Real prod = scratch[1];
-        cov.zero();
-        for (int i = 0; i < n - k; i++)
-        {
-          get(i).mul(get(i + k), bits, prod);
-          cov.add(prod, bits, cov);
-        }
-        cov.div(n - k, bits, result.get(k)).div(meanSq, bits, result.get(k));
-      });
+        Real out = result.get(k);
+        arblib.arb_dot(out, null, 0, slice(0, n - k), 1, slice(k, n), 1, n - k, bits);
+        out.div(n - k, bits, out).div(meanSq, bits, out);
+      }
     }
     return result;
   }
@@ -1251,73 +1239,44 @@ import arb.utensils.Utensils;
   public Real autocovariance(int maxLagSteps, int bits, boolean subtractMean, Real result)
   {
     int n = this.dim;
-    try ( Real meanSq = new Real(); Real product = new Real(); Real mean = new Real())
+    Real source = this;
+    Real centered = null;
+    try
     {
       if (subtractMean)
       {
-        mean.zero();
-        for (int i = 0; i < n; i++)
+        try ( Real mean = new Real())
         {
-          mean.add(get(i), bits, mean);
+          sum(bits, mean).div(n, bits, mean);
+          centered = Real.newVector(n);
+          for (int i = 0; i < n; i++)
+          {
+            get(i).sub(mean, bits, centered.get(i));
+          }
         }
-        mean.div(n, bits, mean);
+        source = centered;
       }
-      else
-      {
-        mean.zero();
-      }
-      meanSq.zero();
-      for (int i = 0; i < n; i++)
-      {
-        if (subtractMean)
-        {
-          get(i).sub(mean, bits, product);
-          product.mul(product, bits, product);
-        }
-        else
-        {
-          get(i).mul(get(i), bits, product);
-        }
-        meanSq.add(product, bits, meanSq);
-      }
-      meanSq.div(n, bits, meanSq);
-      result.get(0).set(meanSq);
-      final boolean center = subtractMean;
-      final Real    mu     = mean;
-      java.util.stream.IntStream.range(1, maxLagSteps).parallel().forEach(k ->
+      Real lag0 = result.get(0);
+      arblib.arb_dot(lag0, null, 0, source, 1, source, 1, n, bits);
+      lag0.div(n, bits, lag0);
+      for (int k = 1; k < maxLagSteps; k++)
       {
         if (n - k <= 0)
         {
           result.get(k).zero();
-          return;
+          continue;
         }
-        Real[] scratch = autocorrelationScratch.get();
-        Real cov  = scratch[0];
-        Real prod = scratch[1];
-        cov.zero();
-        if (center)
-        {
-          try ( Real a = new Real(); Real b = new Real())
-          {
-            for (int i = 0; i < n - k; i++)
-            {
-              get(i).sub(mu, bits, a);
-              get(i + k).sub(mu, bits, b);
-              a.mul(b, bits, prod);
-              cov.add(prod, bits, cov);
-            }
-          }
-        }
-        else
-        {
-          for (int i = 0; i < n - k; i++)
-          {
-            get(i).mul(get(i + k), bits, prod);
-            cov.add(prod, bits, cov);
-          }
-        }
-        cov.div(n - k, bits, result.get(k));
-      });
+        Real out = result.get(k);
+        arblib.arb_dot(out, null, 0, source.slice(0, n - k), 1, source.slice(k, n), 1, n - k, bits);
+        out.div(n - k, bits, out);
+      }
+    }
+    finally
+    {
+      if (centered != null)
+      {
+        centered.close();
+      }
     }
     return result;
   }
