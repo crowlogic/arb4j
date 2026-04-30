@@ -47,11 +47,28 @@ public class NumericalComplexFunctionIntegral implements
 
   /**
    * Bind the integrand and the grid parameters and seed the cumulative cache at
-   * j=0 with F(a)=0. Idempotent on a single instance: throws if called twice.
+   * j=0 with F(a)=0. May be called repeatedly to rebind — each call discards
+   * any previously sampled grid and reseeds. This is required when the
+   * enclosing expression's evaluate() runs multiple times with different
+   * outer free variables (e.g. ν in the Kösters–Tu spectral integral): the
+   * cumulative cache from a previous binding is no longer valid, since the
+   * integrand is effectively a different function.
    */
   public NumericalComplexFunctionIntegral init(RealToComplexFunction source, double a, double dt, int bits)
   {
-    assert !initialized : "NumericalComplexFunctionIntegral already initialized";
+    if (initialized)
+    {
+      if (yValues != null)
+      {
+        yValues.close();
+        yValues = null;
+      }
+      if (cumulative != null)
+      {
+        cumulative.close();
+        cumulative = null;
+      }
+    }
     this.source = source;
     this.a      = a;
     this.dt     = dt;

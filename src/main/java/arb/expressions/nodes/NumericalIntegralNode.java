@@ -1,6 +1,8 @@
 package arb.expressions.nodes;
 
+import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 import arb.Complex;
 import arb.Real;
@@ -152,7 +154,16 @@ public class NumericalIntegralNode<D, C, F extends Function<? extends D, ? exten
     this.integrandMapping = mapping;
     expression.registerReferencedFunction(mapping.functionName, mapping);
 
-    expression.registerInitializer(this::generateIntegratorInitializer);
+    // Do NOT register the integrator init() as an initialize()-time hook.
+    // The integrand may reference free variables from the outer expression's
+    // scope (e.g. ν, x). Those are propagated to the integrand's instance
+    // fields by the standard upstream-input-variable propagation, which
+    // runs at evaluate() time, not at initialize() time. Calling init()
+    // during initialize() would pre-sample the trapezoid grid before the
+    // integrand's free-variable fields are wired, producing NPE on first
+    // sample. Instead, init() is emitted at the head of generate() — see
+    // generate() — so the cumulative cache is seeded once per evaluate()
+    // call, after all free variables have been wired.
   }
 
   /**
@@ -206,17 +217,19 @@ public class NumericalIntegralNode<D, C, F extends Function<? extends D, ? exten
   }
 
   /**
-   * Emit the bytecode that runs at {@code initialize()} time on the generated
-   * class. Calls
+   * Emit the bytecode that runs at the head of {@code evaluate()} on the
+   * generated outer class. Calls
    * {@code this.<nintField>.init(this.<integrandField>, lower, dt, bits)}
-   * which seeds the cumulative cache at j=0 and binds the integrand. The
-   * integrand sub-expression's field has already been wired by
-   * {@code generateReferencedFunctionInstances} earlier in the init body.
+   * which seeds the cumulative cache at j=0 and binds the integrand.
+   *
+   * <p>This must run at evaluate() time, not initialize() time: the
+   * integrand may close over outer-scope free variables (e.g. ν, x), and
+   * those instance fields on the integrand are wired by the standard
+   * upstream-input-variable propagation only at evaluate() time. Running
+   * init() before that wiring would NPE on the first integrand sample.
    */
   protected void generateIntegratorInitializer(MethodVisitor mv)
   {
-    expression.generationContext = GenerationContext.Initialization;
-
     Class<?> codomain      = expression.coDomainType;
     boolean  isComplex     = Complex.class.equals(codomain);
     Class<?> integratorCls = isComplex ? NumericalComplexFunctionIntegral.class
@@ -231,7 +244,7 @@ public class NumericalIntegralNode<D, C, F extends Function<? extends D, ? exten
     // integrand sub-expression's className as the GETFIELD owner (it is
     // designed for use from inside the sub-expression's own generated code),
     // which produces a verifier failure here because we are inside the outer
-    // class's initialize() method. The integrand field lives on the outer
+    // class's evaluate() method. The integrand field lives on the outer
     // class — use that classname as the GETFIELD owner instead.
     expression.loadThisAndFieldOntoStack(mv,
                                          integrandMapping.functionName,
@@ -243,11 +256,10 @@ public class NumericalIntegralNode<D, C, F extends Function<? extends D, ? exten
     // Stack: dt (as double)
     pushDtAsDouble(mv);
 
-    // Stack: bits (as int) — the initialize() method has no `bits` parameter,
-    // so we fix the per-sample arithmetic precision used during cache priming
-    // to a sensible default. Subsequent evaluate() calls use the caller-supplied
-    // bits, which is independent of the trapezoid grid pre-sampling precision.
-    mv.visitLdcInsn(DEFAULT_INIT_BITS);
+    // Stack: bits (as int) — use the caller-supplied `bits` parameter from
+    // the surrounding evaluate(…, int bits, …). This matches the precision
+    // requested for the result.
+    Compiler.loadBitsParameterOntoStack(mv);
 
     // Invoke init(source, a, dt, bits) — returns this; pop the return.
     Compiler.generateVirtualMethodInvocation(mv,
@@ -259,6 +271,104 @@ public class NumericalIntegralNode<D, C, F extends Function<? extends D, ? exten
                                              double.class,
                                              int.class);
     mv.visitInsn(org.objectweb.asm.Opcodes.POP);
+  }
+
+  /**
+   * Emit evaluate-time bytecode that copies free variables referenced by
+   * the integrand from the outer expression's evaluate-time scope into the
+   * integrand instance's matching variable fields. Two cases:
+   *
+   * <ol>
+   *   <li><b>The outer's independent variable.</b> Lives in the evaluate()
+   *       parameter slot, not as a field on the outer class. Loaded via
+   *       {@link Compiler#loadInputParameter} and {@code .set()} into the
+   *       integrand's matching var field. Models on
+   *       {@link arb.expressions.nodes.nary.NAryOperationNode#generateCodeToPropagateIndependentVariableToOperand}.</li>
+   *   <li><b>Upstream input variables that ARE fields on the outer class.</b>
+   *       Field-to-field copy by value. Models on
+   *       {@link arb.expressions.nodes.nary.NAryOperationNode#generateCodeToPropagateIndependentUpstreamVariablesToOperand}.</li>
+   * </ol>
+   *
+   * The integrand's own integration variable (e.g. {@code t}) is NOT
+   * propagated here — it is bound per-sample by the integrator at each
+   * trapezoid panel. Context variables are also skipped: they are
+   * propagated by the standard {@code propagateContext} initializer.
+   */
+  protected void propagateUpstreamVariablesToIntegrand(MethodVisitor mv)
+  {
+    Expression<?, ?, ?>          integrand           = integrandExpression;
+    String                       integrandClassName  = integrand.className;
+    String                       integrandFieldDesc  = integrandMapping.functionFieldDescriptor();
+    String                       integrandFieldName  = integrandMapping.functionName;
+
+    var                          outerIndependent    = expression.getIndependentVariable();
+    String                       outerIndependentName =
+        outerIndependent == null ? null : outerIndependent.getName();
+
+    for (var entry : integrand.getReferencedVariables().entrySet())
+    {
+      String varName = entry.getKey();
+      var    varNode = entry.getValue();
+
+      // Skip the integrand's own integration variable — bound per-sample
+      // by the trapezoid integrator, not by us.
+      if (varNode.isIndependent)
+      {
+        continue;
+      }
+
+      Class<?> varType = varNode.type();
+      if (varType == null || varType.equals(Object.class))
+      {
+        continue;
+      }
+
+      // Skip context variables — handled by the standard context
+      // propagation in initialize().
+      if (expression.getContext() != null && expression.getContext().getVariable(varName) != null)
+      {
+        continue;
+      }
+
+      String varDesc = varType.descriptorString();
+
+      // ── Null-guarded allocate of integrand.<varName> if needed ──
+      // Stack: empty
+      Label fieldNotNull = new Label();
+      expression.loadThisAndFieldOntoStack(mv, integrandFieldName, integrandFieldDesc);
+      // Stack: integrand
+      mv.visitFieldInsn(Opcodes.GETFIELD, integrandClassName, varName, varDesc);
+      // Stack: integrand.<varName>|null
+      mv.visitJumpInsn(Opcodes.IFNONNULL, fieldNotNull);
+
+      // Null branch: integrand.<varName> = new VarType()
+      expression.loadThisAndFieldOntoStack(mv, integrandFieldName, integrandFieldDesc);
+      Compiler.generateNewObjectInstruction(mv, varType);
+      Compiler.duplicateTopOfTheStack(mv);
+      Compiler.invokeDefaultConstructor(mv, varType);
+      mv.visitFieldInsn(Opcodes.PUTFIELD, integrandClassName, varName, varDesc);
+
+      mv.visitLabel(fieldNotNull);
+
+      // ── Copy by value: integrand.<varName>.set(<source>) ──
+      // Load destination: integrand.<varName>
+      expression.loadThisAndFieldOntoStack(mv, integrandFieldName, integrandFieldDesc);
+      mv.visitFieldInsn(Opcodes.GETFIELD, integrandClassName, varName, varDesc);
+
+      // Load source — either the evaluate() input parameter (if this is
+      // the outer's independent variable) or a field on the outer class.
+      if (outerIndependentName != null && varName.equals(outerIndependentName))
+      {
+        Compiler.cast(Compiler.loadInputParameter(mv), varType);
+      }
+      else
+      {
+        expression.loadThisAndFieldOntoStack(mv, varName, varType);
+      }
+
+      Compiler.generateVirtualMethodInvocation(mv, varType, "set", varType, varType);
+      mv.visitInsn(Opcodes.POP);
+    }
   }
 
   /**
@@ -314,6 +424,25 @@ public class NumericalIntegralNode<D, C, F extends Function<? extends D, ? exten
     boolean  isComplex     = Complex.class.equals(codomain);
     Class<?> integratorCls = isComplex ? NumericalComplexFunctionIntegral.class
                                        : NumericalRealFunctionIntegral.class;
+
+    // Wire the integrand instance's free-variable fields from the outer
+    // expression's evaluate-time inputs BEFORE seeding the trapezoid grid.
+    // Without this, init() would pre-sample with null `this.x` (or any
+    // other outer-scope variable the integrand closes over) and NPE on
+    // the first sample. This is the same evaluate-time pattern that
+    // NAryOperationNode.propagateInputToOperand uses for sum/product
+    // operands; nint must do it explicitly because its integrand is held
+    // as a long-lived field on the outer class rather than constructed
+    // by generateFunctionalElement at each evaluate().
+    propagateUpstreamVariablesToIntegrand(mv);
+
+    // Seed the cumulative trapezoid cache here, at evaluate() time, AFTER
+    // free-variable propagation has wired the integrand's instance fields.
+    // The init() call binds (integrand, lower, dt, bits) and pre-samples
+    // F[0..N]. It is idempotent for repeated evaluate() calls with the
+    // same parameter values, but is re-run on every evaluate() so that a
+    // change to an outer free variable like ν is reflected in the grid.
+    generateIntegratorInitializer(mv);
 
     String tmpFieldName = expression.newIntermediateVariable("nintTmp", resultType, true);
 

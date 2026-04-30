@@ -46,11 +46,30 @@ public class NumericalRealFunctionIntegral implements
 
   /**
    * Bind the integrand and the grid parameters and seed the cumulative cache at
-   * j=0 with F(a)=0. Idempotent on a single instance: throws if called twice.
+   * j=0 with F(a)=0. May be called repeatedly to rebind — each call discards
+   * any previously sampled grid and reseeds. This is required when the
+   * enclosing expression's evaluate() runs multiple times with different
+   * outer free variables (e.g. an outer parameter sweep where the integrand
+   * closes over the outer's input variable): the cumulative cache from a
+   * previous binding is no longer valid, since the integrand is effectively
+   * a different function.
    */
   public NumericalRealFunctionIntegral init(RealFunction source, double a, double dt, int bits)
   {
-    assert !initialized : "NumericalRealFunctionIntegral already initialized";
+    if (initialized)
+    {
+      // Release previously allocated buffers before rebinding.
+      if (yValues != null)
+      {
+        yValues.close();
+        yValues = null;
+      }
+      if (cumulative != null)
+      {
+        cumulative.close();
+        cumulative = null;
+      }
+    }
     this.source = source;
     this.a      = a;
     this.dt     = dt;
