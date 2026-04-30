@@ -404,6 +404,7 @@ public class SelfRecursiveCurriedSequenceTest extends
     ComplexFunction S3 = ((ComplexFunctionSequence) S).evaluate(k, 1, 128, null);
     Object          sfuncA = S3.getClass().getField("a").get(S3);
     assertNotNull("Sfunc must declare and receive recursive a through the functional path", sfuncA);
+    assertSame("Sfunc must receive the same recursive a carried by afunc", afuncA, sfuncA);
 
     Object operand = S3.getClass().getField("operandF0001").get(S3);
     assertNotNull("Sfunc must create generated summation operand", operand);
@@ -411,6 +412,7 @@ public class SelfRecursiveCurriedSequenceTest extends
     Object operandA = operand.getClass().getField("a").get(operand);
     assertNotNull("generated summation operand must receive recursive a", operandA);
     assertSame("Sfunc and its operand must share the same recursive a reference", sfuncA, operandA);
+    assertSame("operand must not allocate a fresh recursive a", afuncA, operandA);
   }
 
   /**
