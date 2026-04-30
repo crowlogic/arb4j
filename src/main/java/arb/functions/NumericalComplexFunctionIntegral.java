@@ -21,17 +21,37 @@ public class NumericalComplexFunctionIntegral implements
                                               RealToComplexFunction,
                                               AutoCloseable
 {
-  final RealToComplexFunction source;
-  final double                a;
-  final double                dt;
-  final int                   bits;
+  RealToComplexFunction source;
+  double                a;
+  double                dt;
+  int                   bits;
+  boolean               initialized;
 
-  Complex                     yValues;    // sampled integrand values f(a + j*dt)
-  Complex                     cumulative; // cumulative[j] = F(a + j*dt)
-  int                         count;      // number of points sampled so far
+  Complex               yValues;    // sampled integrand values f(a + j*dt)
+  Complex               cumulative; // cumulative[j] = F(a + j*dt)
+  int                   count;      // number of points sampled so far
+
+  /**
+   * No-arg constructor for use by the expression-compiler intermediate-variable
+   * machinery. {@link #init(RealToComplexFunction, double, double, int)} must
+   * be called before {@link #evaluate(Real, int, int, Complex)}.
+   */
+  public NumericalComplexFunctionIntegral()
+  {
+  }
 
   public NumericalComplexFunctionIntegral(RealToComplexFunction source, double a, double dt, int bits)
   {
+    init(source, a, dt, bits);
+  }
+
+  /**
+   * Bind the integrand and the grid parameters and seed the cumulative cache at
+   * j=0 with F(a)=0. Idempotent on a single instance: throws if called twice.
+   */
+  public NumericalComplexFunctionIntegral init(RealToComplexFunction source, double a, double dt, int bits)
+  {
+    assert !initialized : "NumericalComplexFunctionIntegral already initialized";
     this.source = source;
     this.a      = a;
     this.dt     = dt;
@@ -45,7 +65,9 @@ public class NumericalComplexFunctionIntegral implements
       source.evaluate(t0, 1, bits, yValues.get(0));
     }
     cumulative.get(0).zero();
-    count = 1;
+    count       = 1;
+    initialized = true;
+    return this;
   }
 
   @Override
@@ -96,7 +118,15 @@ public class NumericalComplexFunctionIntegral implements
   @Override
   public void close()
   {
-    yValues.close();
-    cumulative.close();
+    if (yValues != null)
+    {
+      yValues.close();
+      yValues = null;
+    }
+    if (cumulative != null)
+    {
+      cumulative.close();
+      cumulative = null;
+    }
   }
 }
