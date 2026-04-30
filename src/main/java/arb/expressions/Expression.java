@@ -142,14 +142,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean shouldCache()
   {
-    return domainType.equals(Integer.class) && !isGeneratedFunctional() && superExpression == null;
+    return domainType.equals(Integer.class) && upstreamExpression == null;
   }
 
   protected void declareCacheField(ClassVisitor cw)
   {
     if (shouldCache())
     {
-      cw.visitField(Opcodes.ACC_PRIVATE | Opcodes.ACC_FINAL, "cache", Type.getDescriptor(TreeMap.class), null, null);
+      String signature = "L" + Type.getInternalName(TreeMap.class) + "<" + Type.getDescriptor(arb.Integer.class) + Type.getDescriptor(coDomainType) + ">;";
+      cw.visitField(Opcodes.ACC_PRIVATE | Opcodes.ACC_FINAL, "cache", Type.getDescriptor(TreeMap.class), signature, null);
     }
   }
 
@@ -173,7 +174,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected void declareDerivativeCacheField(ClassVisitor cw)
   {
-    cw.visitField(Opcodes.ACC_PUBLIC, "derivativeCache", arrayListDescriptor, null, null);
+    String signature = "L" + arrayListInternal + "<L" + functionInternal + "<" + Type.getDescriptor(domainType) + Type.getDescriptor(coDomainType) + ">;>;";
+    cw.visitField(Opcodes.ACC_PUBLIC, "derivativeCache", arrayListDescriptor, signature, null);
   }
 
   protected void generateDerivativeCacheFieldInitializer(MethodVisitor mv)
@@ -399,7 +401,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     while (cursor != null)
     {
       chain.addFirst(cursor);
-      cursor = cursor.superExpression;
+      cursor = cursor.upstreamExpression;
     }
 
     for (int i = 0; i < chain.size() - 1; i++)
@@ -528,13 +530,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public File                            compiledClassDir = new File("compiled");
 
-  public Expression<?, ?, ?>             superExpression;
+  public Expression<?, ?, ?>             upstreamExpression;
 
   public final List<Expression<?, ?, ?>> subExpressions   = new ArrayList<>();
 
   public Expression<?, ?, ?> getSuperExpression()
   {
-    return superExpression;
+    return upstreamExpression;
   }
 
   public char                                           character                     = 0;
@@ -547,7 +549,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   HashMap<Class<?>, AtomicInteger>                      constantCounts                = new HashMap<>();
 
-  public Context                                        context;
+  private Context                                       context;
 
   HashSet<String>                                       declaredIntermediateVariables = new HashSet<>();
 
@@ -637,8 +639,25 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     CursorState saved = saveCursor();
     pendingInputVariableBounds = null;
+    pendingParameterList       = null;
     try
     {
+      if (character == '(')
+      {
+        List<String> params = parseParenParameterList();
+        skipSpaces();
+        if (params != null && !params.isEmpty() && character == '=')
+        {
+          nextCharacter();
+          String first = params.get(0);
+          List<String> rest = params.subList(1, params.size());
+          pendingParameterList = rest.isEmpty() ? null : new ArrayList<>(rest);
+          return first;
+        }
+        restoreCursor(saved);
+        return null;
+      }
+
       String name = parseName();
       if (name == null || name.isEmpty())
       {
@@ -646,24 +665,47 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         return null;
       }
       skipSpaces();
-      if (character == '∈') // ∈
+      if (character == '∈')
       {
         nextCharacter();
         pendingInputVariableBounds = parseIntervalBounds();
         skipSpaces();
       }
-      if (character == '➔') // ➔
+      if (character == '➔')
       {
         nextCharacter();
         return name;
       }
+      if (character == '(')
+      {
+        List<String> params = parseParenParameterList();
+        skipSpaces();
+        if (params != null && !params.isEmpty() && character == '=')
+        {
+          nextCharacter();
+          if (functionName != null && !functionName.equals(name))
+          {
+            throw new CompilerException("function name '" + name + "' specified in declaration head conflicts with already-declared functionName='" + functionName + "'");
+          }
+          if (functionName == null)
+          {
+            functionName = name;
+          }
+          String first = params.get(0);
+          List<String> rest = params.subList(1, params.size());
+          pendingParameterList = rest.isEmpty() ? null : new ArrayList<>(rest);
+          return first;
+        }
+      }
       pendingInputVariableBounds = null;
+      pendingParameterList       = null;
       restoreCursor(saved);
       return null;
     }
     catch (RuntimeException e)
     {
       pendingInputVariableBounds = null;
+      pendingParameterList       = null;
       restoreCursor(saved);
       return null;
     }
@@ -677,6 +719,65 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * @see <a href="https://github.com/crowlogic/arb4j/issues/878">#878</a>
    */
   VariableReference.Bounds pendingInputVariableBounds;
+
+  /**
+   * Parameter list captured by {@link #parseExplicitInputVariableIfPresent}
+   * when the declaration shape is {@code name(p₁,…,pₙ)=body} or
+   * {@code (p₁,…,pₙ)=body}. Holds the params after the first; the first
+   * is returned directly. Consumed and cleared by
+   * {@link #parseInputVariableAssignment}.
+   *
+   * @see <a href="https://github.com/crowlogic/arb4j/issues/975">#975</a>
+   */
+  List<String>             pendingParameterList;
+
+  /**
+   * Reads a parenthesised parameter list of the form
+   * {@code '(' name (',' name)* ')'} starting at the current cursor (which must
+   * be on the opening {@code '('}). The opening paren is consumed; on success
+   * the closing {@code ')'} is also consumed and the list of parameter names is
+   * returned. Returns {@code null} when malformed; the caller is responsible
+   * for restoring its own cursor snapshot.
+   *
+   * @see <a href="https://github.com/crowlogic/arb4j/issues/975">#975</a>
+   */
+  protected List<String> parseParenParameterList()
+  {
+    if (!nextCharacterIs('('))
+    {
+      return null;
+    }
+    List<String> params = new ArrayList<>();
+    skipSpaces();
+    if (nextCharacterIs(')'))
+    {
+      return params;
+    }
+    while (true)
+    {
+      skipSpaces();
+      if (!isIdentifierCharacter())
+      {
+        return null;
+      }
+      String name = parseName();
+      if (name == null || name.isEmpty())
+      {
+        return null;
+      }
+      params.add(name);
+      skipSpaces();
+      if (nextCharacterIs(','))
+      {
+        continue;
+      }
+      if (nextCharacterIs(')'))
+      {
+        return params;
+      }
+      return null;
+    }
+  }
 
   /**
    * Parses an interval specification of the form {@code (a,b)}, {@code [a,b]},
@@ -767,14 +868,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       {
         return true;
       }
-      e = e.superExpression;
+      e = e.upstreamExpression;
     }
     return false;
   }
 
   public Expression(Class<? extends D> domain, Class<? extends C> coDomain, Class<? extends F> function)
   {
-    this.superExpression                  = null;
+    this.upstreamExpression                  = null;
     this.domainType                       = domain;
     this.coDomainType                     = coDomain;
     this.functionClass                    = function;
@@ -818,7 +919,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                     Expression<?, ?, ?> ascenentExpression)
   {
     assert className != null : "className needs to be specified";
-    this.superExpression                  = ascenentExpression;
+    this.upstreamExpression                  = ascenentExpression;
     this.className                        = className;
     this.domainType                       = domain;
     this.coDomainType                     = codomain;
@@ -903,7 +1004,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public String allocateIntermediateVariable(MethodVisitor methodVisitor, Class<?> type)
   {
-    Class<?> actualType               = type.isInterface() ? scalarType(type) : type;
+    Class<?> actualType               = (type.isInterface() && !Function.class.isAssignableFrom(type)) ? scalarType(type) : type;
     String   intermediateVariableName = newIntermediateVariable(actualType);
     assert intermediateVariableName != null : "intermediateVariableName is null for type " + type;
     loadThisAndFieldOntoStack(methodVisitor, intermediateVariableName, actualType);
@@ -912,7 +1013,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public String allocateIntermediateVariable(MethodVisitor methodVisitor, String prefix, Class<?> type)
   {
-    Class<?> actualType               = type.isInterface() ? scalarType(type) : type;
+    Class<?> actualType               = (type.isInterface() && !Function.class.isAssignableFrom(type)) ? scalarType(type) : type;
     String   intermediateVariableName = newIntermediateVariable(prefix, actualType);
     loadFieldOntoStack(loadThisOntoStack(methodVisitor), intermediateVariableName, actualType.descriptorString());
     return intermediateVariableName;
@@ -924,9 +1025,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       return getIndependentVariable();
     }
-    if (superExpression != null)
+    if (upstreamExpression != null)
     {
-      var immediatelyUpstreamIndependentVariable = superExpression.getIndependentVariable();
+      var immediatelyUpstreamIndependentVariable = upstreamExpression.getIndependentVariable();
       if (immediatelyUpstreamIndependentVariable != null)
       {
         return immediatelyUpstreamIndependentVariable;
@@ -946,9 +1047,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean anySuperIndependentVariableIsNamed(String name)
   {
-    if (superExpression != null)
+    if (upstreamExpression != null)
     {
-      if (superExpression.thisOrAnySuperIndependentVariableIsNamed(name))
+      if (upstreamExpression.thisOrAnySuperIndependentVariableIsNamed(name))
       {
         return true;
       }
@@ -1036,7 +1137,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                        getExpression(),
                                        context,
                                        functionName,
-                                       superExpression);
+                                       upstreamExpression);
     expr.context = context;
     expr.setIndependentVariable(independentVariable);
 
@@ -1051,6 +1152,80 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public Expression<D, C, F> cloneExpression()
   {
     return (Expression<D, C, F>) clone();
+  }
+
+  /**
+   * Deep clone: produces a fresh {@link Expression} sharing this Expression's
+   * {@link Context} and structural metadata, with its own {@link #rootNode}
+   * spliced from {@code this.rootNode} so that AST surgery on the copy does
+   * not mutate the original. Resets compilation state ({@code compiledClass},
+   * {@code instructions}, {@code optimized}, {@code instance}) so the clone
+   * recompiles on first use.
+   *
+   * <p>If {@code rootNode} is null on the source, {@link #parse(boolean)} is
+   * driven first so the deep clone always returns an Expression carrying a
+   * concrete AST.
+   */
+  public Expression<D, C, F> deepCloneExpression()
+  {
+    if (rootNode == null)
+    {
+      parse(true);
+    }
+    Expression<D, C, F> copy = cloneExpression();
+    copy.rootNode      = rootNode.spliceInto(copy);
+    copy.compiledClass = null;
+    copy.instructions  = null;
+    copy.optimized     = false;
+    copy.instance      = null;
+    return copy;
+  }
+
+  /**
+   * Per-variable partial-derivative cache, keyed by {@code VariableReference.name}.
+   * Populated lazily by {@link #derivative(VariableReference)}; entries are
+   * fully compiled, ready-to-evaluate Functions.
+   */
+  private final java.util.Map<String, F> partialDerivativeCache = new java.util.HashMap<>();
+
+  /**
+   * Lazy on-demand symbolic partial derivative w.r.t. {@code variable}, returned
+   * as a fresh compiled {@link Function}. The work is pure-Java AST surgery on
+   * the already-parsed {@link #rootNode} — no source re-parsing — followed by
+   * a single bytecode-generation pass for the differentiated tree.
+   *
+   * <p>The variable is matched by name only ({@link VariableNode#equals} keys
+   * on {@link VariableReference#name}), so a free-floating reference handle is
+   * sufficient and no splice into the host AST is required. If {@code rootNode}
+   * does not depend on {@code variable}, {@link Node#simplify} collapses the
+   * differentiated tree to the literal-zero node and the returned Function
+   * evaluates to 0 in the codomain.
+   *
+   * <p>Results are memoized per variable name.
+   */
+  @SuppressWarnings("unchecked")
+  public synchronized F derivative(VariableReference<?, ?, ?> variable)
+  {
+    F cached = partialDerivativeCache.get(variable.name);
+    if (cached != null)
+    {
+      return cached;
+    }
+
+    if (rootNode == null)
+    {
+      parse(true);
+    }
+
+    Expression<D, C, F> partial = deepCloneExpression();
+    partial.className = className + "_d" + variable.name;
+
+    VariableNode<D, C, F> probe = new VariableNode<>(partial, new VariableReference<>(variable.name), false);
+    partial.rootNode = partial.rootNode.differentiate(probe).simplify();
+
+    F instance = partial.instantiate();
+    partialDerivativeCache.put(variable.name, instance);
+    return instance;
   }
 
   public Expression<D, C, F> compile()
@@ -1071,13 +1246,21 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     if (instructions == null)
     {
-      optimize();
-      generate();
+      optimizeAndGenerate();
     }
-    assert context != null : "context is null for " + this + " and superExpression=" + superExpression + " superExpression.context=" + superExpression.context;
+    assert context != null : "context is null for " + this + " and superExpression=" + upstreamExpression + " superExpression.context=" + upstreamExpression.context;
     assert !className.isEmpty() : "className is empty";
     compiledClass = loadFunctionClass(className, instructions, context);
     return this;
+  }
+
+  private void optimizeAndGenerate()
+  {
+    optimize();
+    generate();
+    assert context != null : "context is null for " + this + " and superExpression=" + upstreamExpression + " superExpression.context=" + upstreamExpression.context;
+    assert !className.isEmpty() : "className is empty";
+    compiledClass = loadFunctionClass(className, instructions, context);
   }
 
   protected void constructReferencedFunctionInstanceIfItIsNull(MethodVisitor mv, FunctionMapping<?, ?, ?> mapping)
@@ -1103,8 +1286,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       invokeDefaultConstructor(mv, typeInternalName);
       putField(mv, className, mapping.functionName, fieldDescriptor);
       // Propagate the parent's context field into the new instance's context
-      // field so the new instance's own initialize() and its downstream
-      // injectFunctionReferencesIntoOperand calls see the live, populated
+      // field so the new instance's own initialize() sees the live, populated
       // Context. Without this, the new instance keeps its field-initializer
       // default (an empty `new Context()`), which has no functions or
       // variables registered, and every nested function reference (e.g. He)
@@ -1115,19 +1297,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       loadThisOntoStack(mv);
       mv.visitFieldInsn(GETFIELD, className, "context", contextTypeDesc);
       mv.visitFieldInsn(PUTFIELD, typeInternalName, "context", contextTypeDesc);
-      // After storing the new instance, immediately inject context function
-      // references into it so its own initialize() finds non-null peer fields
-      // and never hits the `if (this.X == null) this.X = new X()` null-guards
-      // that cause unbounded allocation chains.
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, className, mapping.functionName, fieldDescriptor);
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, className, "context", contextTypeDesc);
-      mv.visitMethodInsn(INVOKESTATIC,
-                         Type.getInternalName(Context.class),
-                         "injectFunctionReferencesIntoOperand",
-                         "(Ljava/lang/Object;Larb/expressions/Context;)V",
-                         false);
+    
       mv.visitLabel(alreadyInitialized);
     }
   }
@@ -1150,7 +1320,22 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     Class<?> type           = Context.class;
     String   typeDescriptor = type.descriptorString();
-    cw.visitField(ACC_PUBLIC, "context", typeDescriptor, null, null);
+    cw.visitField(ACC_PROTECTED, "context", typeDescriptor, null, null);
+    return cw;
+  }
+
+  /**
+   * Generated classes get a public {@code expression} field holding the
+   * {@link Expression} that produced them. The field is populated by
+   * {@link #instantiate()} immediately after construction, and lets every
+   * compiled Function answer {@link arb.functions.Function#getExpression()}
+   * and {@link arb.functions.Function#derivative(VariableReference)} without
+   * any extra registry. Consumers that don't want the back-pointer may null
+   * it out at any time.
+   */
+  private ClassVisitor declareSourceExpressionField(ClassVisitor cw)
+  {
+    cw.visitField(ACC_PUBLIC, "expression", Type.getDescriptor(Expression.class), null, null);
     return cw;
   }
 
@@ -1178,6 +1363,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       cw.visitField(Opcodes.ACC_PUBLIC, "staticPrecision", "I", null, null);
     }
     declareContext(cw);
+    declareSourceExpressionField(cw);
     declareCacheField(cw);
     if (!coDomainType.isInterface())
     {
@@ -1277,6 +1463,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return classVisitor;
     }
     context.populateFunctionReferenceGraph();
+    Utensils.detectStructuralCycle(context.functionReferenceGraph);
     dependencies = Utensils.sortDependencies(context.functionReferenceGraph, getReferencedFunctions());
 
     if (saveGraphs)
@@ -1352,9 +1539,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected void declareVariables(ClassVisitor classVisitor)
   {
     // Declare the parent's independent variable as a field so we can receive it
-    if (superExpression != null)
+    if (upstreamExpression != null)
     {
-      var upstreamIndependentVariableNode = superExpression.getIndependentVariable();
+      var upstreamIndependentVariableNode = upstreamExpression.getIndependentVariable();
       if (upstreamIndependentVariableNode != null && !upstreamIndependentVariableNode.type().equals(Object.class))
       {
         String upstreamIndVarName = upstreamIndependentVariableNode.reference.name;
@@ -1417,9 +1604,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return false;
     }
 
-    if (superExpression != null)
+    if (upstreamExpression != null)
     {
-      VariableNode<?, ?, ?> upstreamIndependentVariable = superExpression.getIndependentVariable();
+      VariableNode<?, ?, ?> upstreamIndependentVariable = upstreamExpression.getIndependentVariable();
       if (upstreamIndependentVariable != null && varName.equals(upstreamIndependentVariable.getName()))
       {
         return false;
@@ -1603,7 +1790,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     Expression<D, C, F> subExpr      = cloneExpression();
     subExpr.clearIndependentVariable();
-    subExpr.superExpression = this;
+    subExpr.upstreamExpression = this;
     if (isGeneratedFunctional())
     {
       subExpr.functionClass = (Class) coDomainType;
@@ -1612,7 +1799,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       this.functionalChild  = subExpr;
     }
     placeholderVariable = subExpr.setIndependentVariable(variableNode.spliceInto(subExpr));
-    subExpr.rootNode    = subExpr.resolve();
+
+    List<String> remainingParams = pendingParameterList;
+    pendingParameterList = null;
+    if (remainingParams != null && !remainingParams.isEmpty())
+    {
+      String       headParam = remainingParams.get(0);
+      List<String> tailParams = remainingParams.subList(1, remainingParams.size());
+      subExpr.pendingParameterList = tailParams.isEmpty() ? null : new ArrayList<>(tailParams);
+      subExpr.rootNode = subExpr.parseInputVariableAssignment(headParam);
+    }
+    else
+    {
+      subExpr.rootNode = subExpr.resolve();
+    }
 
     setCursorFrom(subExpr);
 
@@ -1652,13 +1852,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (inputVariableName != null)
     {
       assureInputNameHasNotAlreadyBeenAssociatedWithAContextVariable(inputVariableName);
-      VariableNode<D, C, F> newRef = newVariableNode(inputVariableName);
-      if (pendingInputVariableBounds != null)
+      if (pendingParameterList != null && !pendingParameterList.isEmpty() && coDomainType.isInterface())
       {
-        newRef.reference.bounds    = pendingInputVariableBounds;
-        pendingInputVariableBounds = null;
+        rootNode = parseInputVariableAssignment(inputVariableName);
       }
-      assignInputVariable(newRef);
+      else
+      {
+        VariableNode<D, C, F> newRef = newVariableNode(inputVariableName);
+        if (pendingInputVariableBounds != null)
+        {
+          newRef.reference.bounds    = pendingInputVariableBounds;
+          pendingInputVariableBounds = null;
+        }
+        assignInputVariable(newRef);
+      }
     }
 
     return this;
@@ -1774,6 +1981,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
       generateGetNameMethod(classVisitor);
       generateGetContextMethod(classVisitor);
+      generateGetExpressionMethod(classVisitor);
 
       generateToStringMethod(classVisitor);
       generateTypesetMethod(classVisitor);
@@ -1858,16 +2066,27 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     Compiler.cast(mv, coDomainType);
     Compiler.duplicateTopOfTheStack(mv);
     mv.visitJumpInsn(Opcodes.IFNULL, cacheMiss);
-    // cache hit: result.set(cached); return result
-    // stack: cached(coDomainType)
-    mv.visitVarInsn(Opcodes.ALOAD, 4);
-    mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
-    mv.visitInsn(Opcodes.SWAP); // stack: result(cast), cached
-    Compiler.generateVirtualMethodInvocation(mv, coDomainType, "set", coDomainType, coDomainType);
-    mv.visitInsn(Opcodes.POP);
-    mv.visitVarInsn(Opcodes.ALOAD, 4);
-    mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
-    mv.visitInsn(Opcodes.ARETURN);
+    if (isGeneratedFunctional())
+    {
+      // Functional cache hit: return the cached function reference directly.
+      // Function references are immutable handles — sharing them across callers
+      // is correct, no buffer-aliasing hazard, no per-call deep copy needed.
+      // stack: cached(coDomainType)
+      mv.visitInsn(Opcodes.ARETURN);
+    }
+    else
+    {
+      // Value-type cache hit: result.set(cached); return result
+      // stack: cached(coDomainType)
+      mv.visitVarInsn(Opcodes.ALOAD, 4);
+      mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
+      mv.visitInsn(Opcodes.SWAP); // stack: result(cast), cached
+      Compiler.generateVirtualMethodInvocation(mv, coDomainType, "set", coDomainType, coDomainType);
+      mv.visitInsn(Opcodes.POP);
+      mv.visitVarInsn(Opcodes.ALOAD, 4);
+      mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
+      mv.visitInsn(Opcodes.ARETURN);
+    }
     Compiler.designateLabel(mv, cacheMiss);
     Compiler.pop(mv);
   }
@@ -1891,12 +2110,41 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * After rootNode.generate() has left the computed result on the stack: allocate
-   * a fresh copy, copy result into it, poke into the cache, and return the
-   * result.
+   * After rootNode.generate() / generateFunctionalElement has left the computed
+   * result on the stack: poke into the cache and return.
+   *
+   * Value-type codomain: allocate a fresh copy via {@code new coDomainType()},
+   * copy result into it via {@code set()}, poke the copy. The deep copy keeps
+   * cache slots from sharing internal MPFR/FLINT buffers with the caller's
+   * result instance.
+   *
+   * Generated functional codomain: function references are immutable handles,
+   * so the on-stack reference produced by {@link #generateFunctionalElement}
+   * is poked directly. No {@code <init>()} (interfaces are not instantiable),
+   * no {@code set(F)} (function references have no in-place set semantics).
    */
   protected void generateCachePokeEpilogue(MethodVisitor mv)
   {
+    if (isGeneratedFunctional())
+    {
+      // stack on entry: <functionInstance> (left by generateFunctionalElement)
+      // dup so we can poke a copy of the reference and return one
+      mv.visitInsn(Opcodes.DUP);
+
+      // poke(cache, index, functionInstance) — keys-map is local cacheArrayListSlot,
+      // key is local cacheIndexSlot, value is the dup'd reference on stack
+      mv.visitVarInsn(Opcodes.ALOAD, cacheArrayListSlot);
+      mv.visitInsn(Opcodes.SWAP); // stack: cache, functionInstance
+      mv.visitVarInsn(Opcodes.ALOAD, cacheIndexSlot);
+      mv.visitInsn(Opcodes.SWAP); // stack: cache, index, functionInstance
+      Compiler.invokeStaticMethod(mv, Function.class, "poke", Object.class, TreeMap.class, arb.Integer.class, Object.class);
+      mv.visitInsn(Opcodes.POP); // discard poke return value
+
+      // return the original functionInstance still on the stack (under the dup)
+      mv.visitInsn(Opcodes.ARETURN);
+      return;
+    }
+
     int freshCopySlot = allocateLocalVariableSlot();
 
     // stack on entry: <result> (left by rootNode.generate)
@@ -1993,7 +2241,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     // Only root expressions create their own Context.
     // Child arg classes receive the parent's context via initialize() (#842)
-    if (context != null && superExpression == null)
+    if (context != null && upstreamExpression == null)
     {
       generateContextInitializer(mv);
     }
@@ -2130,7 +2378,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     accept(containingExpression -> log.debug("#{}: logVariables: independentVariable={} superExpression={}",
                                              System.identityHashCode(containingExpression),
                                              containingExpression.getIndependentVariable(),
-                                             containingExpression.superExpression));
+                                             containingExpression.upstreamExpression));
 
   }
 
@@ -2301,34 +2549,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (context != null)
     {
       propagateContext(mv, functional);
-      // Also propagate the context field itself so the curried inner
-      // expression's own initialize() — which calls
-      // Context.injectFunctionReferencesIntoOperand(child, this.context) —
-      // sees a live, populated Context. Without this the inner func
-      // instance has context=null and every nested
-      // injectFunctionReferencesIntoOperand call short-circuits, leaving
-      // function fields like `He` un-wired.
-      String contextTypeDesc = Context.class.descriptorString();
-      duplicateTopOfTheStack(mv);
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, className, "context", contextTypeDesc);
-      mv.visitFieldInsn(PUTFIELD, functional.className, "context", contextTypeDesc);
-      // Inject context-registered Java function references (e.g. He, a
-      // ProbabilistHermitePolynomials registered with mapping.instance != null
-      // and mapping.expression == null) into the curried inner instance. The
-      // operand-construction path (constructReferencedFunctionInstanceIfItIsNull)
-      // already does this for nested operand classes, but the curried
-      // sub-expression construction did not. Without this call, fields like
-      // hermiteOnefunc.He remain null because the inner's own initialize()
-      // body has no allocation block for Java-coded functions.
-      duplicateTopOfTheStack(mv);
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, className, "context", contextTypeDesc);
-      mv.visitMethodInsn(INVOKESTATIC,
-                         Type.getInternalName(Context.class),
-                         "injectFunctionReferencesIntoOperand",
-                         "(Ljava/lang/Object;Larb/expressions/Context;)V",
-                         false);
     }
 
     invokeInitializationMethod(mv, functional);
@@ -2431,9 +2651,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                               assignments));
     }
 
-    boolean haveLiveInstance = nestedFunction.instance != null
-                               && nestedFunction.isGenerated()
-                               && !nestedFunction.instance.getClass().isSynthetic();
+    boolean haveLiveInstance = nestedFunction.instance != null && nestedFunction.isGenerated();
 
     // Pre-registered branch: a mapping created via
     // Function.parseCompileAndRegister has no `instance` yet (deferred to
@@ -2455,8 +2673,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // later via generateSelfReference (Expression.java:2488). Emitting an
     // injection block here would dereference `this.<self>` before that
     // allocation runs and crash with NPE on the very first invocation.
-    boolean isSelfReference = nestedFunction.functionName != null
-                              && nestedFunction.functionName.equals(this.functionName);
+    boolean isSelfReference = nestedFunction.functionName != null && nestedFunction.functionName.equals(functionName);
 
     boolean haveRegisteredExpression = !haveLiveInstance
                                        && !isSelfReference
@@ -2474,12 +2691,21 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       // generates the bytecode for the nested class, breaking the
       // chicken-and-egg with the parent's own compile by going through the
       // shared ExpressionClassLoader.
-      if (haveRegisteredExpression && !nestedExpression.variablesDeclared)
-      {
-        nestedExpression.compile();
-      }
+      // For two expressions sharing the same Context, the set of context
+      // variables declared as fields is identical (both iterate
+      // context.variableEntryStream() in declareVariables). When the nested
+      // expression has not yet reached declareVariables — which happens
+      // every time it sits on a mutual-recursion cycle with the parent
+      // (a ↔ S in the fractional Riccati Müntz recurrence, issue #982) —
+      // substitute the parent's own filter, predicting that the sibling
+      // will declare the same context fields. ASM GETFIELD/PUTFIELD
+      // resolve field references by string at first execution, by which
+      // point the entire cycle has finished compile() and declared its
+      // fields.
       var variableStream         = context.variableClassStream();
-      var declaredVariableStream = variableStream.filter(variable -> nestedExpression.hasDeclaredVariable(variable.getLeft()));
+      var declaredVariableStream = nestedExpression.variablesDeclared
+                                 ? variableStream.filter(variable -> nestedExpression.hasDeclaredVariable(variable.getLeft()))
+                                 : variableStream.filter(variable -> hasDeclaredVariable(variable.getLeft()));
       String nestedClassInternalName = haveLiveInstance ? Type.getInternalName(nestedFunction.type())
                                                         : nestedFunction.expression.className;
       initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv),
@@ -2509,6 +2735,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     Compiler.annotateWithOverride(methodVisitor);
 
     Compiler.getFieldFromThis(methodVisitor, className, "context", Context.class);
+
+    Compiler.generateReturnFromMethod(methodVisitor);
+    return classVisitor;
+  }
+
+  protected ClassVisitor generateGetExpressionMethod(ClassVisitor classVisitor)
+  {
+    var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, "getExpression", Compiler.getMethodDescriptor(Expression.class), null, null);
+
+    methodVisitor.visitCode();
+    Compiler.annotateWithOverride(methodVisitor);
+
+    Compiler.getFieldFromThis(methodVisitor, className, "expression", Expression.class);
 
     Compiler.generateReturnFromMethod(methodVisitor);
     return classVisitor;
@@ -3173,7 +3412,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                               : funcMapping.functionName;
       
       // Share parent's context with child arg class (#842)
-      if (nestedExpr.superExpression != null)
+      if (nestedExpr.upstreamExpression != null)
       {
         String contextTypeDesc = Context.class.descriptorString();
         // Generate: this.<funcFieldName>.context = this.context
@@ -3197,7 +3436,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         }
 
         // Skip if already declared as upstream independent variable
-        if (superExpression != null && superExpression.getIndependentVariable() != null && varName.equals(superExpression.getIndependentVariable().getName()))
+        if (upstreamExpression != null && upstreamExpression.getIndependentVariable() != null && varName.equals(upstreamExpression.getIndependentVariable().getName()))
         {
           continue;
         }
@@ -3316,14 +3555,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected MethodVisitor generateSelfReference(MethodVisitor mv)
   {
     // Self-reference codegen for recursive functions.
-    //
-    // Previously this emitted `this.<self> = new <self>()` UNCONDITIONALLY at
-    // the end of initialize(). For non-self function references, codegen
-    // already wraps the `new` in a null-guard via
-    // constructReferencedFunctionInstanceIfItIsNull (line 1083); the self path
-    // was the only one missing that guard. The unconditional `new` clobbered
-    // any reference written by Context.injectFunctionReferences, defeating
-    // sharing/memoization arrangements set up at instantiation time.
     //
     // Emit the same null-guarded pattern used for non-self refs: if the field
     // already holds a non-null reference (because injection wired it), keep
@@ -3455,7 +3686,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // propagated by value to this class as a field, but the predicate in
     // upstreamInputVariableEntryStream() explicitly excludes it.
     // Include it here since the field holds a concrete value at runtime.
-    Expression<?, ?, ?> ancestor = superExpression;
+    Expression<?, ?, ?> ancestor = upstreamExpression;
     while (ancestor != null)
     {
       if (ancestor.getIndependentVariable() != null)
@@ -3467,7 +3698,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
           runtimeVars.add(Map.entry(name, ref));
         }
       }
-      ancestor = ancestor.superExpression;
+      ancestor = ancestor.upstreamExpression;
     }
 
     String namePrefix = (functionName != null && !functionName.isEmpty()) ? functionName + ":" : "";
@@ -3727,16 +3958,224 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                           f);
   }
 
-  public F instantiate()
+  public synchronized F instantiate()
   {
+    log.debug("instantiate[{}]: ENTER thread={} functionName={} referencedFunctions={}",
+              System.identityHashCode(this),
+              Thread.currentThread().getName(),
+              functionName,
+              getReferencedFunctions().keySet());
 
-    instance = newInstance();
+    F freshInstance = newInstance();
+    log.debug("instantiate[{}]: newInstance -> {}@{}",
+              System.identityHashCode(this),
+              freshInstance.getClass().getName(),
+              System.identityHashCode(freshInstance));
 
-    instantiateAndInjectReferencedFunctions(instance);
+    instantiateAndInjectReferencedFunctions(freshInstance);
+    logReferencedFunctionFieldState(freshInstance, "after instantiateAndInjectReferencedFunctions");
 
-    injectReferences(instance);
+    injectReferences(freshInstance);
+    logReferencedFunctionFieldState(freshInstance, "after injectReferences");
 
-    return instance;
+    cloneNonReentrantReferencedFunctions(freshInstance);
+    logReferencedFunctionFieldState(freshInstance, "after cloneNonReentrantReferencedFunctions");
+
+    populateSourceExpressionBackPointer(freshInstance);
+
+    instance = freshInstance;
+    return freshInstance;
+  }
+
+  /**
+   * Set the public {@code expression} field declared by
+   * {@link #declareSourceExpressionField} on a freshly constructed instance.
+   * Reflective; tolerates absence of the field on hand-written subclasses.
+   */
+  private void populateSourceExpressionBackPointer(F freshInstance)
+  {
+    try
+    {
+      java.lang.reflect.Field field = freshInstance.getClass().getField("expression");
+      field.set(freshInstance, this);
+    }
+    catch (NoSuchFieldException ignored)
+    {
+      // Hand-written Function subclass without the back-pointer field; fine.
+    }
+    catch (IllegalAccessException iae)
+    {
+      Utensils.wrapOrThrow(iae);
+    }
+  }
+
+  /**
+   * Diagnostic dump of the actual {@link Object#identityHashCode} of every
+   * referenced-function field on {@code parentInstance}, plus the same
+   * identityHashCode for any {@code public} {@link arb.functions.Function}
+   * fields declared by {@code parentInstance}'s class. Use this to verify
+   * by-eye that two consecutive {@code instantiate()} calls produce parents
+   * whose referenced-function fields point at distinct objects.
+   */
+  protected void logReferencedFunctionFieldState(F parentInstance, String label)
+  {
+    if (!log.isDebugEnabled())
+    {
+      return;
+    }
+    Class<?> parentClass = parentInstance.getClass();
+    StringBuilder sb = new StringBuilder();
+    sb.append("instantiate[").append(System.identityHashCode(this))
+      .append("] ").append(label)
+      .append(" parent=").append(System.identityHashCode(parentInstance))
+      .append(" thread=").append(Thread.currentThread().getName())
+      .append(" fields={");
+    boolean first = true;
+    for (java.lang.reflect.Field f : parentClass.getFields())
+    {
+      if (!arb.functions.Function.class.isAssignableFrom(f.getType()))
+      {
+        continue;
+      }
+      try
+      {
+        Object value = f.get(parentInstance);
+        if (!first)
+        {
+          sb.append(", ");
+        }
+        first = false;
+        sb.append(f.getName()).append("=");
+        if (value == null)
+        {
+          sb.append("null");
+        }
+        else
+        {
+          sb.append(value.getClass().getSimpleName())
+            .append("@").append(System.identityHashCode(value));
+        }
+      }
+      catch (IllegalAccessException iae)
+      {
+        // skip
+      }
+    }
+    sb.append("}");
+    log.debug(sb.toString());
+  }
+
+  /**
+   * After {@link #instantiateAndInjectReferencedFunctions} and
+   * {@link #injectReferences} have wired the parent's referenced-function
+   * fields to the canonical singleton instances cached in their
+   * {@link FunctionMapping}s, replace each such field with a fresh prototype
+   * clone obtained via {@link arb.functions.Function#cloneFunction()} when
+   * the singleton supports it. This is what makes the same compiled parent
+   * expression safe to evaluate from multiple worker threads concurrently
+   * via repeated {@link #instantiate()} calls: each fresh parent ends up
+   * holding its own private chain of referenced functions, so the
+   * non-reentrant evaluation registers of generated DSL classes are not
+   * shared between workers.
+   *
+   * <p>For referenced functions whose {@code cloneFunction()} throws
+   * {@link UnsupportedOperationException} — the inherited default — the
+   * field is left pointing at the canonical singleton, preserving the
+   * pre-existing single-instance semantics. So adding this pass cannot
+   * regress any function that did not already opt into the prototype
+   * pattern.
+   */
+  protected void cloneNonReentrantReferencedFunctions(F parentInstance)
+  {
+    if (context == null)
+    {
+      log.debug("cloneNonReentrantReferencedFunctions: context is null on {} for parent {}",
+                functionName,
+                parentInstance.getClass().getName());
+      return;
+    }
+    log.debug("cloneNonReentrantReferencedFunctions: ENTER parent={} thread={} keys={}",
+              System.identityHashCode(parentInstance),
+              Thread.currentThread().getName(),
+              getReferencedFunctions().keySet());
+    Class<?> parentClass = parentInstance.getClass();
+    for (var entry : getReferencedFunctions().entrySet())
+    {
+      String referencedFunctionName = entry.getKey();
+
+      if (referencedFunctionName.equals(functionName))
+      {
+        log.debug("  skip self-reference {}", referencedFunctionName);
+        continue;
+      }
+
+      java.lang.reflect.Field parentField;
+      try
+      {
+        parentField = parentClass.getField(referencedFunctionName);
+      }
+      catch (NoSuchFieldException nsfe)
+      {
+        log.debug("  skip {} : no public field on {}",
+                  referencedFunctionName,
+                  parentClass.getName());
+        continue;
+      }
+
+      Object current;
+      try
+      {
+        current = parentField.get(parentInstance);
+      }
+      catch (IllegalAccessException iae)
+      {
+        log.debug("  skip {} : illegal access on field", referencedFunctionName);
+        continue;
+      }
+      if (!(current instanceof arb.functions.Function))
+      {
+        log.debug("  skip {} : current value not a Function ({})",
+                  referencedFunctionName,
+                  current == null ? "null" : current.getClass().getName());
+        continue;
+      }
+      arb.functions.Function<?, ?> singleton = (arb.functions.Function<?, ?>) current;
+      log.debug("  field {} : current={}@{}",
+                referencedFunctionName,
+                singleton.getClass().getSimpleName(),
+                System.identityHashCode(singleton));
+      arb.functions.Function<?, ?> fresh;
+      try
+      {
+        fresh = singleton.cloneFunction();
+      }
+      catch (UnsupportedOperationException uoe)
+      {
+        log.debug("  skip {} : cloneFunction() unsupported on {}",
+                  referencedFunctionName,
+                  singleton.getClass().getName());
+        continue;
+      }
+      log.debug("  field {} : cloned -> {}@{}",
+                referencedFunctionName,
+                fresh.getClass().getSimpleName(),
+                System.identityHashCode(fresh));
+      try
+      {
+        parentField.set(parentInstance, fresh);
+      }
+      catch (IllegalAccessException iae)
+      {
+        Utensils.wrapOrThrow("failed to set parent field " + referencedFunctionName + " with cloned function on " + parentClass.getName(), iae);
+      }
+      // Re-run the same context-variable / function injection that
+      // instantiateAndInjectReferencedFunctions performs, so the cloned
+      // referenced function sees the parent's Context.
+      context.injectVariableReferences(fresh);
+      context.injectFunctionReferences(fresh);
+    }
+    log.debug("cloneNonReentrantReferencedFunctions: EXIT parent={}",
+              System.identityHashCode(parentInstance));
   }
 
   /**
@@ -4265,7 +4704,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     var functionalExpression = new Expression<Object, Object, Function<?, ?>>(funcDomain,
                                                                               funcCoDomain,
                                                                               funcClass);
-    functionalExpression.superExpression = this;
+    functionalExpression.upstreamExpression = this;
     this.functionalChild                 = functionalExpression;
     if (context == null)
     {
@@ -4346,7 +4785,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     try
     {
-      return instance = compiledClass.getDeclaredConstructor().newInstance();
+      // No side-write to the `instance` field here — instantiate() is the
+      // only caller that should publish a freshly constructed instance,
+      // and only after wiring is complete. Doing the assignment here used
+      // to clobber another thread's in-flight instance during concurrent
+      // instantiate() calls.
+      return compiledClass.getDeclaredConstructor().newInstance();
     }
     catch (Exception e)
     {
@@ -4574,7 +5018,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       log.debug("#{}: parseRoot expression='{}'\n", System.identityHashCode(this), getExpression());
     }
 
-    rootNode = resolve();
+    if (rootNode == null)
+    {
+      rootNode = resolve();
+    }
     assert rootNode != null : "parse(): resolve() returned null for expression='" + getExpression() + "'";
 
     if (position < getExpression().length() && character != '=')
@@ -4805,12 +5252,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   @SuppressWarnings("hiding")
   public <A, B, Q extends Function<? extends A, ? extends B>> FunctionMapping<A, B, Q> registerSubexpression(Expression<A, B, Q> expr)
   {
-    if (expr.superExpression == null)
+    if (expr.upstreamExpression == null)
     {
-      expr.superExpression = this;
+      expr.upstreamExpression = this;
       subExpressions.add(expr);
     }
-    else if (expr.superExpression != this && !subExpressions.contains(expr))
+    else if (expr.upstreamExpression != this && !subExpressions.contains(expr))
     {
       subExpressions.add(expr);
     }
@@ -4966,8 +5413,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     case "int":
       return new IntegralNode<>(this,
                                 true);
-    case "nint":
-      return new NumericalIntegralNode<>(this);
     case "sum":
       return new SumNode<>(this,
                            true);
@@ -4987,6 +5432,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return new WhenNode<>(this);
     case "fracdiff":
       return new CaputoFractionalDerivativeNode<>(this);
+    case "fracint":
+      return new RiemannLiouvilleFractionalIntegralNode<>(this);
     case "diff":
       return new DerivativeNode<>(this,
                                   true);
@@ -5108,8 +5555,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     node = resolveAbsoluteValue(node);
     if (nextCharacterIs('('))
     {
-      node = new FunctionalEvaluationNode<>(this,
-                                            node);
+      FunctionalEvaluationNode.promoteDomainToScalarOfReifiedFunctional(this, node);
+      Node<D, C, F> arg = resolve();
+      node = new FunctionalEvaluationNode<>(this, node, arg);
+      while (nextCharacterIs(','))
+      {
+        node = new FunctionalEvaluationNode<>(this, node, resolve());
+      }
+      require(')');
     }
     return node;
   }
@@ -5290,7 +5743,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       {
         return true;
       }
-      cursor = cursor.superExpression;
+      cursor = cursor.upstreamExpression;
     }
     return false;
   }
@@ -5382,13 +5835,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
       return this;
     }
+    String body = rootNode.toString();
     if (getIndependentVariable() != null)
     {
-      setExpression(String.format("%s➔%s", getIndependentVariable().getName(), rootNode.toString()));
+      setExpression(String.format("%s➔%s", getIndependentVariable().getName(), body));
     }
     else
     {
-      setExpression(rootNode.toString());
+      setExpression(body);
     }
     return this;
   }
@@ -5411,12 +5865,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   @Override
   public void accept(Consumer<Expression<?, ?, ?>> t)
   {
-    assert superExpression != this;
+    assert upstreamExpression != this;
     t.accept(this);
 
-    if (superExpression != null)
+    if (upstreamExpression != null)
     {
-      superExpression.accept(t);
+      upstreamExpression.accept(t);
     }
 
   }
@@ -5454,13 +5908,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return context;
   }
 
+  public Expression<D, C, F> setContext(Context context)
+  {
+    this.context = context;
+    return this;
+  }
+
   public String getTypeString()
   {
     return String.format("%s=%s->%s", functionClass.getSimpleName(), domainType.getSimpleName(), coDomainType.getSimpleName());
   }
 
   public static final Set<String> BUILTIN_FUNCTION_NAMES = Set.of("int",
-                                                                  "nint",
                                                                   "sum",
                                                                   "ℰ",
                                                                   "MittagLeffler",
@@ -5526,7 +5985,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       superExpressions.add(e);
     }
-    while ((e = e.superExpression) != null);
+    while ((e = e.upstreamExpression) != null);
     return superExpressions;
   }
 
