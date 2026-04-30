@@ -650,8 +650,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         if (params != null && !params.isEmpty() && character == '=')
         {
           nextCharacter();
-          String first = params.get(0);
-          List<String> rest = params.subList(1, params.size());
+          String       first = params.get(0);
+          List<String> rest  = params.subList(1, params.size());
           pendingParameterList = rest.isEmpty() ? null : new ArrayList<>(rest);
           return first;
         }
@@ -686,14 +686,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
           nextCharacter();
           if (functionName != null && !functionName.equals(name))
           {
-            throw new CompilerException("function name '" + name + "' specified in declaration head conflicts with already-declared functionName='" + functionName + "'");
+            throw new CompilerException("function name '"
+                                        + name
+                                        + "' specified in declaration head conflicts with already-declared functionName='"
+                                        + functionName
+                                        + "'");
           }
           if (functionName == null)
           {
             functionName = name;
           }
-          String first = params.get(0);
-          List<String> rest = params.subList(1, params.size());
+          String       first = params.get(0);
+          List<String> rest  = params.subList(1, params.size());
           pendingParameterList = rest.isEmpty() ? null : new ArrayList<>(rest);
           return first;
         }
@@ -722,10 +726,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   VariableReference.Bounds pendingInputVariableBounds;
 
   /**
-   * Parameter list captured by {@link #parseExplicitInputVariableIfPresent}
-   * when the declaration shape is {@code name(p₁,…,pₙ)=body} or
-   * {@code (p₁,…,pₙ)=body}. Holds the params after the first; the first
-   * is returned directly. Consumed and cleared by
+   * Parameter list captured by {@link #parseExplicitInputVariableIfPresent} when
+   * the declaration shape is {@code name(p₁,…,pₙ)=body} or
+   * {@code (p₁,…,pₙ)=body}. Holds the params after the first; the first is
+   * returned directly. Consumed and cleared by
    * {@link #parseInputVariableAssignment}.
    *
    * @see <a href="https://github.com/crowlogic/arb4j/issues/975">#975</a>
@@ -735,10 +739,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   /**
    * Reads a parenthesised parameter list of the form
    * {@code '(' name (',' name)* ')'} starting at the current cursor (which must
-   * be on the opening {@code '('}). The opening paren is consumed; on success
-   * the closing {@code ')'} is also consumed and the list of parameter names is
-   * returned. Returns {@code null} when malformed; the caller is responsible
-   * for restoring its own cursor snapshot.
+   * be on the opening {@code '('}). The opening paren is consumed; on success the
+   * closing {@code ')'} is also consumed and the list of parameter names is
+   * returned. Returns {@code null} when malformed; the caller is responsible for
+   * restoring its own cursor snapshot.
    *
    * @see <a href="https://github.com/crowlogic/arb4j/issues/975">#975</a>
    */
@@ -876,7 +880,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Expression(Class<? extends D> domain, Class<? extends C> coDomain, Class<? extends F> function)
   {
-    this.upstreamExpression                  = null;
+    this.upstreamExpression               = null;
     this.domainType                       = domain;
     this.coDomainType                     = coDomain;
     this.functionClass                    = function;
@@ -920,7 +924,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                     Expression<?, ?, ?> ascenentExpression)
   {
     assert className != null : "className needs to be specified";
-    this.upstreamExpression                  = ascenentExpression;
+    this.upstreamExpression               = ascenentExpression;
     this.className                        = className;
     this.domainType                       = domain;
     this.coDomainType                     = codomain;
@@ -1158,14 +1162,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   /**
    * Deep clone: produces a fresh {@link Expression} sharing this Expression's
    * {@link Context} and structural metadata, with its own {@link #rootNode}
-   * spliced from {@code this.rootNode} so that AST surgery on the copy does
-   * not mutate the original. Resets compilation state ({@code compiledClass},
+   * spliced from {@code this.rootNode} so that AST surgery on the copy does not
+   * mutate the original. Resets compilation state ({@code compiledClass},
    * {@code instructions}, {@code optimized}, {@code instance}) so the clone
    * recompiles on first use.
    *
-   * <p>If {@code rootNode} is null on the source, {@link #parse(boolean)} is
-   * driven first so the deep clone always returns an Expression carrying a
-   * concrete AST.
+   * <p>
+   * If {@code rootNode} is null on the source, {@link #parse(boolean)} is driven
+   * first so the deep clone always returns an Expression carrying a concrete AST.
    */
   public Expression<D, C, F> deepCloneExpression()
   {
@@ -1183,26 +1187,29 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * Per-variable partial-derivative cache, keyed by {@code VariableReference.name}.
-   * Populated lazily by {@link #derivative(VariableReference)}; entries are
-   * fully compiled, ready-to-evaluate Functions.
+   * Per-variable partial-derivative cache, keyed by
+   * {@code VariableReference.name}. Populated lazily by
+   * {@link #derivative(VariableReference)}; entries are fully compiled,
+   * ready-to-evaluate Functions.
    */
   private final java.util.Map<String, F> partialDerivativeCache = new java.util.HashMap<>();
 
   /**
    * Lazy on-demand symbolic partial derivative w.r.t. {@code variable}, returned
    * as a fresh compiled {@link Function}. The work is pure-Java AST surgery on
-   * the already-parsed {@link #rootNode} — no source re-parsing — followed by
-   * a single bytecode-generation pass for the differentiated tree.
+   * the already-parsed {@link #rootNode} — no source re-parsing — followed by a
+   * single bytecode-generation pass for the differentiated tree.
    *
-   * <p>The variable is matched by name only ({@link VariableNode#equals} keys
-   * on {@link VariableReference#name}), so a free-floating reference handle is
+   * <p>
+   * The variable is matched by name only ({@link VariableNode#equals} keys on
+   * {@link VariableReference#name}), so a free-floating reference handle is
    * sufficient and no splice into the host AST is required. If {@code rootNode}
    * does not depend on {@code variable}, {@link Node#simplify} collapses the
    * differentiated tree to the literal-zero node and the returned Function
    * evaluates to 0 in the codomain.
    *
-   * <p>Results are memoized per variable name.
+   * <p>
+   * Results are memoized per variable name.
    */
   @SuppressWarnings("unchecked")
   public synchronized F derivative(VariableReference<?, ?, ?> variable)
@@ -1221,7 +1228,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     Expression<D, C, F> partial = deepCloneExpression();
     partial.className = className + "_d" + variable.name;
 
-    VariableNode<D, C, F> probe = new VariableNode<>(partial, new VariableReference<>(variable.name), false);
+    VariableNode<D, C, F> probe = new VariableNode<>(partial,
+                                                     new VariableReference<>(variable.name),
+                                                     false);
     partial.rootNode = partial.rootNode.differentiate(probe).simplify();
 
     F instance = partial.instantiate();
@@ -1249,7 +1258,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       optimizeAndGenerate();
     }
-    assert context != null : "context is null for " + this + " and superExpression=" + upstreamExpression + " superExpression.context=" + upstreamExpression.context;
+    assert context != null : "context is null for "
+                             + this
+                             + " and superExpression="
+                             + upstreamExpression
+                             + " superExpression.context="
+                             + upstreamExpression.context;
     assert !className.isEmpty() : "className is empty";
     compiledClass = loadFunctionClass(className, instructions, context);
     return this;
@@ -1259,7 +1273,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     optimize();
     generate();
-    assert context != null : "context is null for " + this + " and superExpression=" + upstreamExpression + " superExpression.context=" + upstreamExpression.context;
+    assert context != null : "context is null for "
+                             + this
+                             + " and superExpression="
+                             + upstreamExpression
+                             + " superExpression.context="
+                             + upstreamExpression.context;
     assert !className.isEmpty() : "className is empty";
     compiledClass = loadFunctionClass(className, instructions, context);
   }
@@ -1276,9 +1295,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       // Riccati Müntz recurrence, issue #982). The class is resolved lazily
       // by the JVM when the opcode first executes — by which point the outer
       // compile chain has defined every class in the recursive cluster.
-      String typeInternalName = mapping.functionName;
-      String fieldDescriptor  = mapping.functionFieldDescriptor();
-      var alreadyInitialized  = new Label();
+      String typeInternalName   = mapping.functionName;
+      String fieldDescriptor    = mapping.functionFieldDescriptor();
+      var    alreadyInitialized = new Label();
       loadThisOntoStack(mv).visitFieldInsn(GETFIELD, className, mapping.functionName, fieldDescriptor);
       mv.visitJumpInsn(Opcodes.IFNONNULL, alreadyInitialized);
       loadThisOntoStack(mv);
@@ -1298,7 +1317,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       loadThisOntoStack(mv);
       mv.visitFieldInsn(GETFIELD, className, "context", contextTypeDesc);
       mv.visitFieldInsn(PUTFIELD, typeInternalName, "context", contextTypeDesc);
-    
+
       mv.visitLabel(alreadyInitialized);
     }
   }
@@ -1329,10 +1348,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * Generated classes get a public {@code expression} field holding the
    * {@link Expression} that produced them. The field is populated by
    * {@link #instantiate()} immediately after construction, and lets every
-   * compiled Function answer {@link arb.functions.Function#getExpression()}
-   * and {@link arb.functions.Function#derivative(VariableReference)} without
-   * any extra registry. Consumers that don't want the back-pointer may null
-   * it out at any time.
+   * compiled Function answer {@link arb.functions.Function#getExpression()} and
+   * {@link arb.functions.Function#derivative(VariableReference)} without any
+   * extra registry. Consumers that don't want the back-pointer may null it out at
+   * any time.
    */
   private ClassVisitor declareSourceExpressionField(ClassVisitor cw)
   {
@@ -1805,10 +1824,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     pendingParameterList = null;
     if (remainingParams != null && !remainingParams.isEmpty())
     {
-      String       headParam = remainingParams.get(0);
+      String       headParam  = remainingParams.get(0);
       List<String> tailParams = remainingParams.subList(1, remainingParams.size());
       subExpr.pendingParameterList = tailParams.isEmpty() ? null : new ArrayList<>(tailParams);
-      subExpr.rootNode = subExpr.parseInputVariableAssignment(headParam);
+      subExpr.rootNode             = subExpr.parseInputVariableAssignment(headParam);
     }
     else
     {
@@ -2116,13 +2135,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    *
    * Value-type codomain: allocate a fresh copy via {@code new coDomainType()},
    * copy result into it via {@code set()}, poke the copy. The deep copy keeps
-   * cache slots from sharing internal MPFR/FLINT buffers with the caller's
-   * result instance.
+   * cache slots from sharing internal MPFR/FLINT buffers with the caller's result
+   * instance.
    *
-   * Generated functional codomain: function references are immutable handles,
-   * so the on-stack reference produced by {@link #generateFunctionalElement}
-   * is poked directly. No {@code <init>()} (interfaces are not instantiable),
-   * no {@code set(F)} (function references have no in-place set semantics).
+   * Generated functional codomain: function references are immutable handles, so
+   * the on-stack reference produced by {@link #generateFunctionalElement} is
+   * poked directly. No {@code <init>()} (interfaces are not instantiable), no
+   * {@code set(F)} (function references have no in-place set semantics).
    */
   protected void generateCachePokeEpilogue(MethodVisitor mv)
   {
@@ -2652,7 +2671,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                               assignments));
     }
 
-    boolean haveLiveInstance = nestedFunction.instance != null && nestedFunction.isGenerated();
+    boolean haveLiveInstance         = nestedFunction.instance != null && nestedFunction.isGenerated();
 
     // Pre-registered branch: a mapping created via
     // Function.parseCompileAndRegister has no `instance` yet (deferred to
@@ -2674,16 +2693,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // later via generateSelfReference (Expression.java:2488). Emitting an
     // injection block here would dereference `this.<self>` before that
     // allocation runs and crash with NPE on the very first invocation.
-    boolean isSelfReference = nestedFunction.functionName != null && nestedFunction.functionName.equals(functionName);
+    boolean isSelfReference          = nestedFunction.functionName != null && nestedFunction.functionName.equals(functionName);
 
-    boolean haveRegisteredExpression = !haveLiveInstance
-                                       && !isSelfReference
-                                       && nestedFunction.expression != null
-                                       && nestedFunction.expression.className != null;
+    boolean haveRegisteredExpression =
+                                     !haveLiveInstance && !isSelfReference && nestedFunction.expression != null && nestedFunction.expression.className != null;
 
     if (haveLiveInstance || haveRegisteredExpression)
     {
-      var nestedExpression           = nestedFunction.expression;
+      var    nestedExpression        = nestedFunction.expression;
       // Force the nested expression to declare its fields if it hasn't yet.
       // For mappings registered via parseCompileAndRegister, declareVariables
       // has not run, so declaredVariables is still empty — querying it
@@ -2703,12 +2720,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       // resolve field references by string at first execution, by which
       // point the entire cycle has finished compile() and declared its
       // fields.
-      var variableStream         = context.variableClassStream();
-      var declaredVariableStream = nestedExpression.variablesDeclared
-                                 ? variableStream.filter(variable -> nestedExpression.hasDeclaredVariable(variable.getLeft()))
-                                 : variableStream.filter(variable -> hasDeclaredVariable(variable.getLeft()));
-      String nestedClassInternalName = haveLiveInstance ? Type.getInternalName(nestedFunction.type())
-                                                        : nestedFunction.expression.className;
+      var    variableStream          = context.variableClassStream();
+      var    declaredVariableStream  =
+                                    nestedExpression.variablesDeclared ? variableStream.filter(variable -> nestedExpression.hasDeclaredVariable(variable.getLeft()))
+                                                                       : variableStream.filter(variable -> hasDeclaredVariable(variable.getLeft()));
+      String nestedClassInternalName = haveLiveInstance ? Type.getInternalName(nestedFunction.type()) : nestedFunction.expression.className;
       initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv),
                                                      className,
                                                      nestedClassInternalName,
@@ -2828,20 +2844,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected boolean          optimized                      = false;
 
   /**
-   * Emit the cycle-safe {@code public void invalidateCache(Set)} override
-   * (and a no-arg shim that calls it with a fresh identity set) that:
+   * Emit the cycle-safe {@code public void invalidateCache(Set)} override (and a
+   * no-arg shim that calls it with a fresh identity set) that:
    * <ol>
-   *   <li>returns immediately if {@code alreadyInvalidated.add(this)} is
-   *       {@code false} (already visited — prevents unbounded recursion in
-   *       the mutually-recursive Müntz {@code a ↔ S} cluster and any other
-   *       cycle in the function graph);</li>
-   *   <li>resets {@code this.staticPrecision = -1} when this expression has
-   *       hoisted static subexpressions, forcing the next {@code evaluate()}
-   *       call to re-run {@code evaluateStaticSubexpressions};</li>
-   *   <li>recursively calls {@code invalidateCache(set)} on every
-   *       inlined nested {@link Function} field (the
-   *       {@link #referencedFunctions} entries) so their hoisted
-   *       v-dependent subtrees are also flushed.</li>
+   * <li>returns immediately if {@code alreadyInvalidated.add(this)} is
+   * {@code false} (already visited — prevents unbounded recursion in the
+   * mutually-recursive Müntz {@code a ↔ S} cluster and any other cycle in the
+   * function graph);</li>
+   * <li>resets {@code this.staticPrecision = -1} when this expression has hoisted
+   * static subexpressions, forcing the next {@code evaluate()} call to re-run
+   * {@code evaluateStaticSubexpressions};</li>
+   * <li>recursively calls {@code invalidateCache(set)} on every inlined nested
+   * {@link Function} field (the {@link #referencedFunctions} entries) so their
+   * hoisted v-dependent subtrees are also flushed.</li>
    * </ol>
    * Emitted whenever {@link #hasStaticNodes} is true OR
    * {@link #referencedFunctions} is non-empty — otherwise the {@link Function}
@@ -2856,11 +2871,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     String setInternal = Type.getInternalName(Set.class);
 
     // public void invalidateCache(Set alreadyInvalidated)
-    var mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
-                                      "invalidateCache",
-                                      "(L" + setInternal + ";)V",
-                                      "(L" + setInternal + "<L" + functionInternal + "<**>;>;)V",
-                                      null);
+    var    mv          = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
+                                                  "invalidateCache",
+                                                  "(L" + setInternal + ";)V",
+                                                  "(L" + setInternal + "<L" + functionInternal + "<**>;>;)V",
+                                                  null);
     mv.visitCode();
     // if (!alreadyInvalidated.add(this)) return;
     var notVisited = new Label();
@@ -2879,7 +2894,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     if (shouldCache())
     {
-      // this.cache.clear()  — the per-index memoisation table is keyed only on
+      // this.cache.clear() — the per-index memoisation table is keyed only on
       // the domain index k, so any change to other Context variables (e.g. v in
       // the Müntz a/S recurrence) must drop every entry, otherwise a(k) returns
       // the previous v's value at the same k.
@@ -2887,7 +2902,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       mv.visitFieldInsn(Opcodes.GETFIELD, className, "cache", Type.getDescriptor(TreeMap.class));
       mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, Type.getInternalName(TreeMap.class), "clear", "()V", false);
     }
-    // for each inlined nested Function field f: if (this.f != null) this.f.invalidateCache(alreadyInvalidated);
+    // for each inlined nested Function field f: if (this.f != null)
+    // this.f.invalidateCache(alreadyInvalidated);
     for (var mapping : referencedFunctions.values())
     {
       var skip = new Label();
@@ -2897,36 +2913,25 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       loadThisOntoStack(mv);
       mv.visitFieldInsn(Opcodes.GETFIELD, className, mapping.functionName, mapping.functionFieldDescriptor());
       mv.visitVarInsn(Opcodes.ALOAD, 1);
-      mv.visitMethodInsn(Opcodes.INVOKEINTERFACE,
-                         functionInternal,
-                         "invalidateCache",
-                         "(L" + setInternal + ";)V",
-                         true);
+      mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, functionInternal, "invalidateCache", "(L" + setInternal + ";)V", true);
       mv.visitLabel(skip);
     }
     mv.visitInsn(Opcodes.RETURN);
     mv.visitMaxs(0, 0);
     mv.visitEnd();
 
-    // public void invalidateCache()  { invalidateCache(Collections.newSetFromMap(new IdentityHashMap())); }
+    // public void invalidateCache() { invalidateCache(Collections.newSetFromMap(new
+    // IdentityHashMap())); }
     var shim = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, "invalidateCache", "()V", null, null);
     shim.visitCode();
     loadThisOntoStack(shim);
-    String idMapInternal = Type.getInternalName(IdentityHashMap.class);
+    String idMapInternal       = Type.getInternalName(IdentityHashMap.class);
     String collectionsInternal = Type.getInternalName(Collections.class);
     shim.visitTypeInsn(Opcodes.NEW, idMapInternal);
     shim.visitInsn(Opcodes.DUP);
     shim.visitMethodInsn(Opcodes.INVOKESPECIAL, idMapInternal, "<init>", "()V", false);
-    shim.visitMethodInsn(Opcodes.INVOKESTATIC,
-                         collectionsInternal,
-                         "newSetFromMap",
-                         "(Ljava/util/Map;)Ljava/util/Set;",
-                         false);
-    shim.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                         className,
-                         "invalidateCache",
-                         "(L" + setInternal + ";)V",
-                         false);
+    shim.visitMethodInsn(Opcodes.INVOKESTATIC, collectionsInternal, "newSetFromMap", "(Ljava/util/Map;)Ljava/util/Set;", false);
+    shim.visitMethodInsn(Opcodes.INVOKEVIRTUAL, className, "invalidateCache", "(L" + setInternal + ";)V", false);
     shim.visitInsn(Opcodes.RETURN);
     shim.visitMaxs(0, 0);
     shim.visitEnd();
@@ -3409,9 +3414,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
 
       String funcTypeDesc    = funcMapping.functionFieldDescriptor();
-      String nestedClassName = funcMapping.expression != null ? funcMapping.expression.className
-                                                              : funcMapping.functionName;
-      
+      String nestedClassName = funcMapping.expression != null ? funcMapping.expression.className : funcMapping.functionName;
+
       // Share parent's context with child arg class (#842)
       if (nestedExpr.upstreamExpression != null)
       {
@@ -3437,7 +3441,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         }
 
         // Skip if already declared as upstream independent variable
-        if (upstreamExpression != null && upstreamExpression.getIndependentVariable() != null && varName.equals(upstreamExpression.getIndependentVariable().getName()))
+        if (upstreamExpression != null && upstreamExpression.getIndependentVariable() != null
+                      && varName.equals(upstreamExpression.getIndependentVariable().getName()))
         {
           continue;
         }
@@ -3569,11 +3574,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * Phase 2 of the allocate-all-then-wire-all initialization pattern (issue
-   * #1000 point #3). For every referenced function {@code g} registered on
-   * this expression, walk {@code g.expression.getReferencedFunctions()}; for
-   * every peer {@code h} that {@code g} also references and that this
-   * expression has as a field — including the back-edge case where
+   * Phase 2 of the allocate-all-then-wire-all initialization pattern (issue #1000
+   * point #3). For every referenced function {@code g} registered on this
+   * expression, walk {@code g.expression.getReferencedFunctions()}; for every
+   * peer {@code h} that {@code g} also references and that this expression has as
+   * a field — including the back-edge case where
    * {@code h.equals(this.functionName)} — emit
    *
    * <pre>
@@ -3582,15 +3587,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * </pre>
    *
    * This statically resolves every cyclic peer reference at the codegen layer.
-   * Because the parent's own peer fields (and its self-field) have been
-   * populated by {@link Context#injectFunctionReferences} before
-   * {@code initialize()} ever runs, the values copied into the operand are
-   * the registry-canonical instances. The operand's own
-   * {@code initialize()}, when later invoked, finds every peer non-null and
-   * skips the {@code new <peer>()} allocation branch in
-   * {@link #constructReferencedFunctionInstanceIfItIsNull} thanks to the
-   * existing {@code IFNONNULL} guard. Cycle closed by aliasing, not by
-   * allocation.
+   * Because the parent's own peer fields (and its self-field) have been populated
+   * by {@link Context#injectFunctionReferences} before {@code initialize()} ever
+   * runs, the values copied into the operand are the registry-canonical
+   * instances. The operand's own {@code initialize()}, when later invoked, finds
+   * every peer non-null and skips the {@code new <peer>()} allocation branch in
+   * {@link #constructReferencedFunctionInstanceIfItIsNull} thanks to the existing
+   * {@code IFNONNULL} guard. Cycle closed by aliasing, not by allocation.
    */
   protected void wirePeerReferencesIntoReferencedFunctionInstances(MethodVisitor mv)
   {
@@ -3601,7 +3604,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     for (var peerEntry : thisRefs.entrySet())
     {
-      String peerName = peerEntry.getKey();
+      String                   peerName    = peerEntry.getKey();
       FunctionMapping<?, ?, ?> peerMapping = peerEntry.getValue();
       if (peerMapping == null || peerMapping.expression == null)
       {
@@ -3616,9 +3619,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         continue;
       }
       String peerFieldDescriptor = peerMapping.functionFieldDescriptor();
-      String peerInternalName = peerFieldDescriptor.substring(1, peerFieldDescriptor.length() - 1);
-      var peerExpression = peerMapping.expression;
-      var peerOwnRefs = peerExpression.getReferencedFunctions();
+      String peerInternalName    = peerFieldDescriptor.substring(1, peerFieldDescriptor.length() - 1);
+      var    peerExpression      = peerMapping.expression;
+      var    peerOwnRefs         = peerExpression.getReferencedFunctions();
       if (peerOwnRefs == null || peerOwnRefs.isEmpty())
       {
         // The peer's expression may reference the enclosing class by name even
@@ -3632,7 +3635,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
       for (var hEntry : peerOwnRefs.entrySet())
       {
-        String hName = hEntry.getKey();
+        String                   hName    = hEntry.getKey();
         FunctionMapping<?, ?, ?> hMapping = hEntry.getValue();
         if (hMapping == null)
         {
@@ -3668,12 +3671,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * Emit {@code this.<peer>.<self> = this} when this expression is named and
-   * the peer's generated class declares a field {@code <self>} whose type is
-   * assignable from this class. This is the explicit codegen of the
-   * back-edge for mutual-recursion cycles where the operand expression's own
-   * referenced-function map may not record the enclosing class. Uses
-   * reflection only on the already-loaded peer Class<?>; no registry lookup.
+   * Emit {@code this.<peer>.<self> = this} when this expression is named and the
+   * peer's generated class declares a field {@code <self>} whose type is
+   * assignable from this class. This is the explicit codegen of the back-edge for
+   * mutual-recursion cycles where the operand expression's own
+   * referenced-function map may not record the enclosing class. Uses reflection
+   * only on the already-loaded peer Class<?>; no registry lookup.
    */
   protected void emitBackEdgeSelfLift(MethodVisitor mv, String peerName, String peerInternalName)
   {
@@ -3701,14 +3704,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       return;
     }
-    var peerExpr = peerMapping.expression;
+    var     peerExpr              = peerMapping.expression;
     boolean peerDeclaresSelfField = false;
     if (peerExpr.declaredVariables != null && peerExpr.declaredVariables.contains(functionName))
     {
       peerDeclaresSelfField = true;
     }
-    if (!peerDeclaresSelfField && peerExpr.getReferencedFunctions() != null
-        && peerExpr.getReferencedFunctions().containsKey(functionName))
+    if (!peerDeclaresSelfField && peerExpr.getReferencedFunctions() != null && peerExpr.getReferencedFunctions().containsKey(functionName))
     {
       peerDeclaresSelfField = true;
     }
@@ -3718,7 +3720,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     String peerFieldDescriptor = peerMapping.functionFieldDescriptor();
     String selfFieldDescriptor;
-    var selfMapping = (context != null) ? context.getFunctionMapping(functionName) : null;
+    var    selfMapping         = (context != null) ? context.getFunctionMapping(functionName) : null;
     if (selfMapping != null)
     {
       selfFieldDescriptor = selfMapping.functionFieldDescriptor();
@@ -3746,8 +3748,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       mapping = context.getFunctionMapping(functionName);
     }
     assert mapping != null : "no function mapping for " + functionName + " in " + context.toStringExtended();
-    String fieldDescriptor  = mapping.functionFieldDescriptor();
-    var    alreadyAssigned  = new Label();
+    String fieldDescriptor = mapping.functionFieldDescriptor();
+    var    alreadyAssigned = new Label();
     loadThisOntoStack(mv).visitFieldInsn(GETFIELD, className, functionName, fieldDescriptor);
     mv.visitJumpInsn(IFNONNULL, alreadyAssigned);
     constructNewObject(loadThisOntoStack(mv), functionName);
@@ -3763,8 +3765,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * For each peer FunctionMapping (other than self) whose Expression has an
    * intermediate variable typed as the self class, emit:
    *
-   *   if (!this.<peer>.isInitialized) { this.<peer>.initialize(); }
-   *   this.<peer>.<intermediateVarName>.<selfFieldName> = this;
+   * if (!this.<peer>.isInitialized) { this.<peer>.initialize(); }
+   * this.<peer>.<intermediateVarName>.<selfFieldName> = this;
    *
    * This reproduces, in the bytecode emitted from generateSelfReference, the
    * inner-operand self-injection that the working a.java performs after the
@@ -3789,10 +3791,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       {
         continue;
       }
-      String peerFieldDescriptor = peerMapping.functionFieldDescriptor();
-      String peerInternalName = peerFieldDescriptor.substring(1, peerFieldDescriptor.length() - 1);
-      java.util.List<NAryOperationNode<?, ?, ?>> naryNodes = new java.util.ArrayList<>();
-      peerMapping.expression.rootNode.accept(node -> {
+      String                                     peerFieldDescriptor = peerMapping.functionFieldDescriptor();
+      String                                     peerInternalName    = peerFieldDescriptor.substring(1, peerFieldDescriptor.length() - 1);
+      java.util.List<NAryOperationNode<?, ?, ?>> naryNodes           = new java.util.ArrayList<>();
+      peerMapping.expression.rootNode.accept(node ->
+      {
         if (node instanceof NAryOperationNode<?, ?, ?> nary)
         {
           naryNodes.add(nary);
@@ -3815,8 +3818,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
           continue;
         }
         String operandFieldDescriptor = opMapping.functionFieldDescriptor();
-        String operandInternalName = operandFieldDescriptor.substring(1, operandFieldDescriptor.length() - 1);
-        Label peerAlreadyInitialized = new Label();
+        String operandInternalName    = operandFieldDescriptor.substring(1, operandFieldDescriptor.length() - 1);
+        Label  peerAlreadyInitialized = new Label();
         loadThisOntoStack(mv);
         mv.visitFieldInsn(GETFIELD, className, peerName, peerFieldDescriptor);
         mv.visitFieldInsn(GETFIELD, peerInternalName, "isInitialized", "Z");
@@ -4145,13 +4148,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     instance = newInstance();
 
     instantiateAndInjectReferencedFunctions(instance);
-
     injectReferences(instance);
+    populateSourceExpressionBackPointer(instance);
 
     return instance;
   }
 
-  
 //  public synchronized F instantiate()
 //  {
 //    log.debug("instantiate[{}]: ENTER thread={} functionName={} referencedFunctions={}",
@@ -4197,7 +4199,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     catch (NoSuchFieldException ignored)
     {
-      // Hand-written Function subclass without the back-pointer field; fine.
+      Utensils.wrapOrThrow(ignored);
     }
     catch (IllegalAccessException iae)
     {
@@ -4206,46 +4208,44 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * Fix-up pass run by {@link #instantiate()} after the top-level instance
-   * has been constructed. For every entry in {@link #getReferencedFunctions()}
-   * whose {@link FunctionMapping#instance} is still {@code null} but whose
+   * Fix-up pass run by {@link #instantiate()} after the top-level instance has
+   * been constructed. For every entry in {@link #getReferencedFunctions()} whose
+   * {@link FunctionMapping#instance} is still {@code null} but whose
    * {@link FunctionMapping#expression} is available — the typical
    * forward-declared case produced by
    * {@code Function.parseCompileAndRegister(...)} when implementing the
-   * prototype-then-real pattern required for mutually-recursive sequences
-   * such as {@code a ↔ S} in the fractional Riccati Müntz recurrence
-   * (issue #982) — this method materialises the dependent instance and
-   * wires it onto the parent.
+   * prototype-then-real pattern required for mutually-recursive sequences such as
+   * {@code a ↔ S} in the fractional Riccati Müntz recurrence (issue #982) — this
+   * method materialises the dependent instance and wires it onto the parent.
    *
-   * <p>The materialisation is reflection-based and performs three steps for
-   * each such referenced mapping {@code g}:
+   * <p>
+   * The materialisation is reflection-based and performs three steps for each
+   * such referenced mapping {@code g}:
    *
    * <ol>
-   *   <li>{@code g.instantiate()} — compiles {@code g}'s expression if
-   *       needed and constructs an instance, recursively running this same
-   *       fix-up on {@code g} itself.</li>
-   *   <li>{@link Context#injectVariableReferences} on the new instance —
-   *       publishes every Context variable whose name matches a public
-   *       field on the dependent class (e.g. {@code v}, {@code μ}). This is
-   *       the step that the bytecode emitted by
-   *       {@code generateInitializationCode} omits for mappings registered
-   *       via {@code parseCompileAndRegister}, since the v/μ-injection
-   *       block in {@code initialize()} is only emitted for mappings that
-   *       had a non-null {@code instance} at codegen time
-   *       (Expression.java line 2377).</li>
-   *   <li>Reflectively assigns {@code parent.<g.functionName> = g.instance}
-   *       so the bytecode in {@code parent.initialize()} short-circuits its
-   *       {@code if (this.<g> == null) this.<g> = new <g>()} guard and
-   *       leaves the now-fully-injected instance in place.</li>
+   * <li>{@code g.instantiate()} — compiles {@code g}'s expression if needed and
+   * constructs an instance, recursively running this same fix-up on {@code g}
+   * itself.</li>
+   * <li>{@link Context#injectVariableReferences} on the new instance — publishes
+   * every Context variable whose name matches a public field on the dependent
+   * class (e.g. {@code v}, {@code μ}). This is the step that the bytecode emitted
+   * by {@code generateInitializationCode} omits for mappings registered via
+   * {@code parseCompileAndRegister}, since the v/μ-injection block in
+   * {@code initialize()} is only emitted for mappings that had a non-null
+   * {@code instance} at codegen time (Expression.java line 2377).</li>
+   * <li>Reflectively assigns {@code parent.<g.functionName> = g.instance} so the
+   * bytecode in {@code parent.initialize()} short-circuits its
+   * {@code if (this.<g> == null) this.<g> = new <g>()} guard and leaves the
+   * now-fully-injected instance in place.</li>
    * </ol>
    *
-   * <p>The bytecode-level skip in the {@code else} branch of
+   * <p>
+   * The bytecode-level skip in the {@code else} branch of
    * {@code generateFunctionInitializer} (Expression.java:2388) remains a
    * deliberately supported configuration — callers who do <em>not</em> want
-   * automatic Context-variable propagation into their referenced functions
-   * can still construct an {@link Expression} and drive
-   * {@link #newInstance()} directly without going through
-   * {@link #instantiate()}.
+   * automatic Context-variable propagation into their referenced functions can
+   * still construct an {@link Expression} and drive {@link #newInstance()}
+   * directly without going through {@link #instantiate()}.
    */
   protected void instantiateAndInjectReferencedFunctions(F parentInstance)
   {
@@ -4257,7 +4257,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     for (var entry : getReferencedFunctions().entrySet())
     {
       String                   referencedFunctionName = entry.getKey();
-      FunctionMapping<?, ?, ?>  mapping                = entry.getValue();
+      FunctionMapping<?, ?, ?> mapping                = entry.getValue();
 
       // Skip self-references — handled by generateSelfReference at codegen
       // time and by the bytecode in initialize().
@@ -4329,7 +4329,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       // Inject Context variables (v, μ, ...) into the dependent instance's
       // own fields. This is the v/μ-propagation that the bytecode emitted
       // for mappings registered via parseCompileAndRegister fails to do.
-      @SuppressWarnings({ "unchecked", "rawtypes" })
+      @SuppressWarnings(
+      { "unchecked", "rawtypes" })
       Function<?, ?> referencedFunction = (Function) referencedInstance;
       context.injectVariableReferences(referencedFunction);
       context.injectFunctionReferences(referencedFunction);
@@ -4732,7 +4733,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                               funcCoDomain,
                                                                               funcClass);
     functionalExpression.upstreamExpression = this;
-    this.functionalChild                 = functionalExpression;
+    this.functionalChild                    = functionalExpression;
     if (context == null)
     {
       context = new Context();
@@ -5603,10 +5604,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       FunctionalEvaluationNode.promoteDomainToScalarOfReifiedFunctional(this, node);
       Node<D, C, F> arg = resolve();
-      node = new FunctionalEvaluationNode<>(this, node, arg);
+      node = new FunctionalEvaluationNode<>(this,
+                                            node,
+                                            arg);
       while (nextCharacterIs(','))
       {
-        node = new FunctionalEvaluationNode<>(this, node, resolve());
+        node = new FunctionalEvaluationNode<>(this,
+                                              node,
+                                              resolve());
       }
       require(')');
     }
