@@ -371,7 +371,7 @@ public class SelfRecursiveCurriedSequenceTest extends
    * Sfunc.operandF0001   -> operand with same field a
    * </pre>
    */
-  public void testBonanzaiShapeGeneratedObjectGraphCarriesRecursiveA() throws Exception
+  public static void testBonanzaiShapeGeneratedObjectGraphCarriesRecursiveA() throws Exception
   {
     Context ctx = new Context();
     Real μ      = new Real();
