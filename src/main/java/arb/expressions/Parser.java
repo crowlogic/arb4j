@@ -1,6 +1,5 @@
 package arb.expressions;
 
-import java.text.Normalizer;
 import java.util.*;
 
 import arb.Fraction;
@@ -389,7 +388,7 @@ public class Parser
              .replace("/", "Slash")
              .replace(".", "Point")
              .replace("{", "")
-             .replace("}", "")             
+             .replace("}", "")
              .replace("₍", "")
              .replace("₎", "")
              .replace(">", "Gt")
@@ -405,9 +404,9 @@ public class Parser
     {
       str = (isDigit(str.charAt(0)) ? "_" : "") + str;
     }
-    {
-      return str;
-    }
+
+    return normalize(str);
+
   }
 
   public static final HashSet<Character> SUBSCRIPT_CHARACTERS         = new HashSet<Character>(Arrays.asList('₀',
@@ -736,8 +735,8 @@ public class Parser
 
   /**
    * Replace characters that are illegal in JVM field names with safe
-   * alternatives. The structural key retains the original characters for
-   * semantic comparison; only the field names used in bytecode are sanitized.
+   * alternatives. The structural key retains the original characters for semantic
+   * comparison; only the field names used in bytecode are sanitized.
    */
   public static String sanitizeFieldName(String raw)
   {
