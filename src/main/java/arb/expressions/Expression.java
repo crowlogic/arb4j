@@ -2571,27 +2571,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       propagateContext(mv, functional);
     }
 
-    propagateSelfReferenceToFunctional(mv, functional);
-
     invokeInitializationMethod(mv, functional);
 
     return functional.compile();
-  }
-
-  protected void propagateSelfReferenceToFunctional(MethodVisitor mv, Expression<?, ?, ?> functional)
-  {
-    if (functionName == null || functionName.isEmpty() || functional.getReferencedFunctions() == null
-        || !functional.getReferencedFunctions().containsKey(functionName))
-    {
-      return;
-    }
-
-    FunctionMapping<?, ?, ?> selfMapping = context == null ? null : context.getFunctionMapping(functionName);
-    String                   fieldType   = selfMapping == null ? ("L" + className + ";") : selfMapping.functionFieldDescriptor();
-
-    duplicateTopOfTheStack(mv);
-    loadThisOntoStack(mv);
-    putField(mv, functional.className, functionName, fieldType);
   }
 
   /**
@@ -4776,17 +4758,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     functionalExpression.rootNode            = rootNode.spliceInto(functionalExpression);
     functionalExpression.rootNode.isRootNode = rootNode.isRootNode;
-    // Carry referenced functions over to the functional child.  The child is
-    // the generated class that actually executes the curried body; if it does
-    // not declare the same function fields, construction code in the parent has
-    // nothing to copy into it.  This is required for recursive curried sequence
-    // clusters such as a:k➔v➔... and S:k➔v➔sum(...a(j)(v)...): Sfunc must
-    // declare field a so S.evaluate(k) can set Sfunc.a = this.a, and Sfunc can
-    // in turn set operandF0001.a = this.a.
+    // Carry hand-wired context-function references (mappings with no
+    // expression — e.g. `He` registered as a ProbabilistHermitePolynomials
+    // instance) over to the functional. The functional is the user-facing
+    // generated class that actually executes the body; without these
+    // entries it would not declare a field for the context function and
+    // propagateContextFunctionReferences would emit no PUTFIELD when the
+    // outer class constructs it. Compiled-peer mappings (expression != null)
+    // are deliberately excluded to avoid materialising phantom mutual
+    // cycles in the structural-cycle detector.
     for (var refEntry : referencedFunctions.entrySet())
     {
       var refMapping = refEntry.getValue();
-      if (refMapping != null)
+      if (refMapping != null && refMapping.expression == null)
       {
         functionalExpression.registerReferencedFunction(refEntry.getKey(), refMapping);
       }

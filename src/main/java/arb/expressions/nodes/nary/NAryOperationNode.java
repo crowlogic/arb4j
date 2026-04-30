@@ -564,7 +564,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     operandExpression.updateStringRepresentation();
     registerOperand(operandFunctionFieldName, operandExpression);
     propagateContextVariablesToOperand();
-    propagateContextFunctionsToOperand();
   }
 
   /**
@@ -874,49 +873,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
         expression.getContext().variableEntries().forEach(entry -> propagateContextVariableToOperand(mv, entry));
       });
     }
-  }
-
-  protected void propagateContextFunctionsToOperand()
-  {
-    if (expression.getContext() == null || expression.getContext().functions == null || operandExpression == null
-        || operandExpression.getReferencedFunctions().isEmpty())
-    {
-      return;
-    }
-
-    operandExpression.getReferencedFunctions().forEach((name, mapping) ->
-    {
-      if (!name.equals(expression.functionName))
-      {
-        expression.registerReferencedFunction(name, mapping);
-      }
-    });
-
-    expression.registerInitializer(mv ->
-    {
-      operandExpression.getReferencedFunctions()
-                       .entrySet()
-                       .stream()
-                       .filter(entry -> !entry.getKey().equals(expression.functionName))
-                       .forEach(entry -> propagateContextFunctionToOperand(mv, entry));
-    });
-  }
-
-  protected void propagateContextFunctionToOperand(MethodVisitor mv, Entry<String, FunctionMapping<?, ?, ?>> entry)
-  {
-    FunctionMapping<?, ?, ?> mapping = entry.getValue();
-    if (mapping == null)
-    {
-      return;
-    }
-
-    String fieldName        = entry.getKey();
-    String fieldDescriptor  = mapping.functionFieldDescriptor();
-    String operandDescriptor = String.format("L%s;", operandFunctionFieldName);
-
-    expression.loadFieldOntoStack(loadThisOntoStack(mv), operandFunctionFieldName, operandDescriptor);
-    expression.loadFieldOntoStack(loadThisOntoStack(mv), fieldName, fieldDescriptor);
-    mv.visitFieldInsn(PUTFIELD, operandFunctionFieldName, fieldName, fieldDescriptor);
   }
 
 
