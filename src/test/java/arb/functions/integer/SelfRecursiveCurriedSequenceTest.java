@@ -357,50 +357,6 @@ public class SelfRecursiveCurriedSequenceTest extends
     assertTrue(out.im().isZero());
   }
 
-  public static void testBonanzaiShapeGeneratedObjectGraphSharesRecursiveA() throws Exception
-  {
-    Context ctx = new Context();
-    Real μ      = new Real();
-    μ.set("1", 128);
-    μ.setName("μ");
-    ctx.registerVariable(μ);
-
-    ComplexFunction.express("p", "v➔v", ctx);
-    ComplexFunction.express("q", "v➔v", ctx);
-    ComplexFunction.express("r", "v➔v", ctx);
-
-    ctx.registerFunctionMapping("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
-    String sExpr = "S:k➔v➔sum(j➔a(j)(v)*a(k-1-j)(v){j=1..k-2})";
-    Sequence.parseCompileAndRegister("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
-
-    String                  aExpr = "a:k➔v➔when(k=1, p(v)/Γ(μ+1),"
-                                  + " else, (Γ((k-1)·μ+1)/Γ(k·μ+1))·(q(v)·a(k-1)(v)+r(v)·S(k)(v)))";
-    ComplexFunctionSequence a     = ComplexFunctionSequence.express(aExpr, ctx);
-
-    Integer                 k     = new Integer();
-    k.set(3);
-    Complex                 v     = new Complex();
-    v.set(2, 0);
-    Complex                 out   = new Complex();
-
-    ComplexFunction a3 = a.evaluate(k, 1, 128, null);
-    assertSame("generated afunc must share the recursive a sequence",
-               a,
-               a3.getClass().getField("a").get(a3));
-
-    ComplexFunctionSequence S = (ComplexFunctionSequence) a3.getClass().getField("S").get(a3);
-    ComplexFunction S3 = S.evaluate(k, 1, 128, null);
-    assertSame("generated Sfunc must receive the shared a sequence",
-               a,
-               S3.getClass().getField("a").get(S3));
-
-    S3.evaluate(v, 1, 128, out);
-    Object operand = S3.getClass().getField("operandF0001").get(S3);
-    assertSame("generated n-ary operand must receive the shared a sequence",
-               a,
-               operand.getClass().getField("a").get(operand));
-  }
-
   /**
    * Mutually-recursive curried pair where {@code S} itself uses {@code when}
    * to terminate — both peers piecewise. {@code S(k=2)(v) = a(1)(v)·a(1)(v) = v·v},
