@@ -3,10 +3,7 @@ package arb.expressions;
 import static org.objectweb.asm.Opcodes.*;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -24,6 +21,8 @@ import arb.Integer;
 import arb.exceptions.CompilerException;
 import arb.expressions.nodes.LiteralConstantNode;
 import arb.functions.Function;
+import arb.functions.NumericalComplexFunctionIntegral;
+import arb.functions.NumericalRealFunctionIntegral;
 import arb.functions.RealToComplexFunction;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.integer.*;
@@ -86,9 +85,6 @@ public class Compiler
 
   public static final String              objectDesc         = Type.getInternalName(Object.class);
 
-  /** ASM has no V26 constant in 9.9.1; the JVMS class-file major number for JDK 26 is 70. */
-  public static final int                 V26                = 70;
-
   public static HashSet<Class<?>>         realScalarTypes    = new HashSet<>(Arrays.asList(AlgebraicNumber.class,
                                                                                            Integer.class,
                                                                                            Real.class,
@@ -131,6 +127,8 @@ public class Compiler
     typePrefixes.put(ComplexFunction.class, "Fℂ");
     typePrefixes.put(RealFunction.class, "Fℝ");
     typePrefixes.put(RealToComplexFunction.class, "Fℝℂ");
+    typePrefixes.put(NumericalRealFunctionIntegral.class, "∫Fℝ");
+    typePrefixes.put(NumericalComplexFunctionIntegral.class, "∫Fℂ");
   }
 
   public static void addNullCheckForField(MethodVisitor mv, String className, String fieldName, String fieldDesc)
@@ -258,7 +256,7 @@ public class Compiler
 
     classSignature = expression.getFunctionClassTypeSignature(expression.functionClass);
 
-    classVisitor.visit(V26, ACC_PUBLIC | ACC_SUPER, className, classSignature, objectDesc, expression.implementedInterfaces());
+    classVisitor.visit(V25 | V_PREVIEW, ACC_PUBLIC | ACC_SUPER, className, classSignature, objectDesc, expression.implementedInterfaces());
 
     return classVisitor;
   }
@@ -738,22 +736,6 @@ public class Compiler
                                                     .build();
 
     decompiler.decompile();
-
-    String classFileName = file.getName();
-    String javaFileName  = classFileName.endsWith(".class") ? classFileName.substring(0, classFileName.length() - ".class".length()) + ".java" : classFileName + ".java";
-    Path   javaFile      = compiledClassDir.toPath().resolve(javaFileName);
-    if (Files.exists(javaFile))
-    {
-      try
-      {
-        String content = Files.readString(javaFile);
-        Files.writeString(javaFile, content.replace("this.", ""));
-      }
-      catch (IOException cause)
-      {
-        throw new CompilerException("failed to post-process decompiled " + javaFile, cause);
-      }
-    }
   }
 
   public static boolean doesBuiltinFunctionExist(String functionName, boolean bitless, Class<?> domainType, Class<?> coDomainType)
