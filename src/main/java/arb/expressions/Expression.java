@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import arb.*;
 import arb.Integer;
 import arb.exceptions.CompilerException;
+import arb.exceptions.CyclicFunctionReferenceException;
 import arb.expressions.context.Dependency;
 import arb.expressions.nodes.*;
 import arb.expressions.nodes.Node;
@@ -3549,7 +3550,187 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public void generateReferencedFunctionInstances(MethodVisitor mv)
   {
+    // Phase 1: allocate-all. For every referenced function f registered on
+    // this expression, emit `if (this.<f> == null) this.<f> = new <f>()` and
+    // propagate this.context onto the freshly allocated instance. After this
+    // loop every direct peer field is non-null and shares this.context with
+    // the parent.
     getReferencedFunctions().values().forEach(mapping -> constructReferencedFunctionInstanceIfItIsNull(mv, mapping));
+    // Phase 2: wire-all. For every peer g of this expression, copy this.<h>
+    // into this.<g>.<h> for every peer h that g's expression references —
+    // including the back-edge h == functionName (this class's own name),
+    // which is wired by Context.injectFunctionReferences on this instance
+    // before evaluate() ever runs. This is the static, fully compile-time
+    // resolution of the cycle: every operand allocation along every recursive
+    // path inherits the parent's reference identity for every peer it shares
+    // with the parent. No registry lookup, no reflection, no per-evaluate
+    // copies — pure GETFIELD/PUTFIELD.
+    wirePeerReferencesIntoReferencedFunctionInstances(mv);
+  }
+
+  /**
+   * Phase 2 of the allocate-all-then-wire-all initialization pattern (issue
+   * #1000 point #3). For every referenced function {@code g} registered on
+   * this expression, walk {@code g.expression.getReferencedFunctions()}; for
+   * every peer {@code h} that {@code g} also references and that this
+   * expression has as a field — including the back-edge case where
+   * {@code h.equals(this.functionName)} — emit
+   *
+   * <pre>
+   *   getfield this.&lt;h&gt;
+   *   putfield this.&lt;g&gt;.&lt;h&gt;
+   * </pre>
+   *
+   * This statically resolves every cyclic peer reference at the codegen layer.
+   * Because the parent's own peer fields (and its self-field) have been
+   * populated by {@link Context#injectFunctionReferences} before
+   * {@code initialize()} ever runs, the values copied into the operand are
+   * the registry-canonical instances. The operand's own
+   * {@code initialize()}, when later invoked, finds every peer non-null and
+   * skips the {@code new <peer>()} allocation branch in
+   * {@link #constructReferencedFunctionInstanceIfItIsNull} thanks to the
+   * existing {@code IFNONNULL} guard. Cycle closed by aliasing, not by
+   * allocation.
+   */
+  protected void wirePeerReferencesIntoReferencedFunctionInstances(MethodVisitor mv)
+  {
+    var thisRefs = getReferencedFunctions();
+    if (thisRefs == null || thisRefs.isEmpty())
+    {
+      return;
+    }
+    for (var peerEntry : thisRefs.entrySet())
+    {
+      String peerName = peerEntry.getKey();
+      FunctionMapping<?, ?, ?> peerMapping = peerEntry.getValue();
+      if (peerMapping == null || peerMapping.expression == null)
+      {
+        continue;
+      }
+      // Skip self-references: Phase 1 deliberately does not allocate
+      // this.<self> (the class's own name aliases to `this` at runtime, not
+      // to a fresh peer instance), so this.<self> is null and there is
+      // nothing to wire from or onto for the self-edge here.
+      if (functionName != null && functionName.equals(peerName))
+      {
+        continue;
+      }
+      String peerFieldDescriptor = peerMapping.functionFieldDescriptor();
+      String peerInternalName = peerFieldDescriptor.substring(1, peerFieldDescriptor.length() - 1);
+      var peerExpression = peerMapping.expression;
+      var peerOwnRefs = peerExpression.getReferencedFunctions();
+      if (peerOwnRefs == null || peerOwnRefs.isEmpty())
+      {
+        // The peer's expression may reference the enclosing class by name even
+        // when its own getReferencedFunctions() is empty — happens when the
+        // back-edge is implicit in the cycle's strongly connected component
+        // and never registered on the operand expression. Best-effort: still
+        // try to lift this.<self> onto peer.<self> if peer's class declares
+        // a field of that name with a Function-assignable type.
+        emitBackEdgeSelfLift(mv, peerName, peerInternalName);
+        continue;
+      }
+      for (var hEntry : peerOwnRefs.entrySet())
+      {
+        String hName = hEntry.getKey();
+        FunctionMapping<?, ?, ?> hMapping = hEntry.getValue();
+        if (hMapping == null)
+        {
+          continue;
+        }
+        // The self-edge h == functionName is handled by emitBackEdgeSelfLift
+        // below (which puts `this`, not this.<self>, into peer.<self>) since
+        // this.<self> is not a field on this class.
+        if (functionName != null && functionName.equals(hName))
+        {
+          continue;
+        }
+        // Only wire fields the parent itself owns — peer h must be a
+        // registered referenced-function on this expression. Skip peers
+        // that exist only on the operand's local scope.
+        if (!thisRefs.containsKey(hName))
+        {
+          continue;
+        }
+        String hFieldDescriptor = hMapping.functionFieldDescriptor();
+        // Stack: empty
+        loadThisOntoStack(mv);
+        mv.visitFieldInsn(GETFIELD, className, peerName, peerFieldDescriptor);
+        // Stack: this.<peer>
+        loadThisOntoStack(mv);
+        mv.visitFieldInsn(GETFIELD, className, hName, hFieldDescriptor);
+        // Stack: this.<peer>, this.<h>
+        mv.visitFieldInsn(PUTFIELD, peerInternalName, hName, hFieldDescriptor);
+        // Stack: empty
+      }
+      emitBackEdgeSelfLift(mv, peerName, peerInternalName);
+    }
+  }
+
+  /**
+   * Emit {@code this.<peer>.<self> = this} when this expression is named and
+   * the peer's generated class declares a field {@code <self>} whose type is
+   * assignable from this class. This is the explicit codegen of the
+   * back-edge for mutual-recursion cycles where the operand expression's own
+   * referenced-function map may not record the enclosing class. Uses
+   * reflection only on the already-loaded peer Class<?>; no registry lookup.
+   */
+  protected void emitBackEdgeSelfLift(MethodVisitor mv, String peerName, String peerInternalName)
+  {
+    if (functionName == null || className == null)
+    {
+      return;
+    }
+    // The self-edge wires the parent's `this` onto peer.<self>. Wiring
+    // self onto self is meaningless (peer == self means there is no peer
+    // instance distinct from `this`).
+    if (functionName.equals(peerName))
+    {
+      return;
+    }
+    // Best-effort: only emit when the peer expression is in fact this
+    // expression's referenced-functions map (true for operand expressions
+    // since registerOperand registered the operand mapping on this). The
+    // emitted bytecode references the field by name; the JVM resolves it on
+    // first execution. If the peer class lacks a field named functionName
+    // the verifier or class loader would fail at link time; we therefore
+    // gate emission on the runtime class shape when known and otherwise
+    // suppress.
+    var peerMapping = getReferencedFunctions().get(peerName);
+    if (peerMapping == null || peerMapping.expression == null)
+    {
+      return;
+    }
+    var peerExpr = peerMapping.expression;
+    boolean peerDeclaresSelfField = false;
+    if (peerExpr.declaredVariables != null && peerExpr.declaredVariables.contains(functionName))
+    {
+      peerDeclaresSelfField = true;
+    }
+    if (!peerDeclaresSelfField && peerExpr.getReferencedFunctions() != null
+        && peerExpr.getReferencedFunctions().containsKey(functionName))
+    {
+      peerDeclaresSelfField = true;
+    }
+    if (!peerDeclaresSelfField)
+    {
+      return;
+    }
+    String peerFieldDescriptor = peerMapping.functionFieldDescriptor();
+    String selfFieldDescriptor;
+    var selfMapping = (context != null) ? context.getFunctionMapping(functionName) : null;
+    if (selfMapping != null)
+    {
+      selfFieldDescriptor = selfMapping.functionFieldDescriptor();
+    }
+    else
+    {
+      selfFieldDescriptor = "L" + className + ";";
+    }
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(GETFIELD, className, peerName, peerFieldDescriptor);
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(PUTFIELD, peerInternalName, functionName, selfFieldDescriptor);
   }
 
   protected MethodVisitor generateSelfReference(MethodVisitor mv)
@@ -3978,6 +4159,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     injectReferences(freshInstance);
     logReferencedFunctionFieldState(freshInstance, "after injectReferences");
 
+    verifyFieldGraphAcyclic(freshInstance);
+
     cloneNonReentrantReferencedFunctions(freshInstance);
     logReferencedFunctionFieldState(freshInstance, "after cloneNonReentrantReferencedFunctions");
 
@@ -4176,6 +4359,202 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     log.debug("cloneNonReentrantReferencedFunctions: EXIT parent={}",
               System.identityHashCode(parentInstance));
+  }
+
+  /**
+   * Postcondition verifier for the {@code allocate-all-then-wire-all}
+   * initialization pattern required when the referenced-function graph
+   * contains a cycle. Walks the live field graph rooted at
+   * {@code rootInstance}, considering only fields whose declared type is
+   * assignable to {@link arb.functions.Function} and whose name is a key in
+   * {@code context.functions}. Throws
+   * {@link CyclicFunctionReferenceException} if any
+   * {@link FunctionMapping} is reached via two distinct instance identities.
+   *
+   * <p>This implements the predicate stated verbatim in arb4j issue #1000:
+   *
+   * <blockquote>"In the field graph at runtime, are there two distinct
+   * instances of the same {@code FunctionMapping} reachable from the live
+   * root?"</blockquote>
+   *
+   * <p>The check is O(|edges in the live field graph|), bounded by an
+   * {@link IdentityHashMap}-keyed visited set so it cannot stack-overflow
+   * regardless of cycle depth. It is purely a runtime field-graph walk —
+   * never an AST walk; the previous AST-based attempt in
+   * {@code Utensils.detectStructuralCycle} was reverted because it ran at
+   * the wrong layer (issue #1000 point #10).
+   *
+   * <p>The verifier is positioned in {@link #instantiate()} between
+   * {@link #injectReferences} (which writes the registry-canonical wirings)
+   * and {@link #cloneNonReentrantReferencedFunctions} (which legitimately
+   * introduces additional instances for {@code Cloneable} function classes
+   * and would therefore produce false positives if run before this point
+   * was checked).
+   *
+   * <p>Self-references — a field of the root that points back at the root —
+   * are accepted: the registry's canonical {@code m} is reachable from
+   * {@code m} via the self-edge, and the second visit to the same identity
+   * succeeds without violating the predicate.
+   */
+  void verifyFieldGraphAcyclic(F rootInstance)
+  {
+    if (rootInstance == null || context == null || context.functions == null || context.functions.isEmpty())
+    {
+      return;
+    }
+    IdentityHashMap<Object, Boolean>                  visited   = new IdentityHashMap<>();
+    IdentityHashMap<FunctionMapping<?, ?, ?>, Object> firstSeen = new IdentityHashMap<>();
+    Deque<String>                                     path      = new ArrayDeque<>();
+    // Seed firstSeen with the root if the registry knows it as the
+    // canonical instance of some FunctionMapping. The root is reachable
+    // from itself; without this seed a duplicate of the root's own mapping
+    // reached via a back-edge (e.g. g.f -> ghost-f) would not be detected
+    // because the comparison reference for that mapping would not yet be
+    // populated.
+    for (var entry : context.functions.entrySet())
+    {
+      FunctionMapping<?, ?, ?> mapping = entry.getValue();
+      if (mapping != null && mapping.instance == rootInstance)
+      {
+        firstSeen.put(mapping, rootInstance);
+        break;
+      }
+    }
+    path.push("<root>");
+    walkFieldGraphForCycleCheck(rootInstance, visited, firstSeen, path);
+    path.pop();
+  }
+
+  /**
+   * Probe an instance's public {@code context} field, if any, and report
+   * whether it points at a {@link Context} other than this expression's
+   * own. Returns {@code false} when the field is absent, null, or refers
+   * to the same Context — meaning "continue walking". Returns {@code true}
+   * when the instance is part of a different Context — meaning "do not
+   * recurse into this instance's referenced-function fields". Used by
+   * {@link #walkFieldGraphForCycleCheck} to keep the verifier scoped to
+   * the registry that owns the root.
+   */
+  private boolean instanceBelongsToForeignContext(Object instance)
+  {
+    try
+    {
+      java.lang.reflect.Field ctxField = instance.getClass().getField("context");
+      if (!Context.class.isAssignableFrom(ctxField.getType()))
+      {
+        return false;
+      }
+      Object owner = ctxField.get(instance);
+      return owner != null && owner != this.context;
+    }
+    catch (NoSuchFieldException nsfe)
+    {
+      return false;
+    }
+    catch (IllegalAccessException iae)
+    {
+      return false;
+    }
+  }
+
+  void walkFieldGraphForCycleCheck(Object instance,
+                                    IdentityHashMap<Object, Boolean> visited,
+                                    IdentityHashMap<FunctionMapping<?, ?, ?>, Object> firstSeen,
+                                    Deque<String> path)
+  {
+    if (instance == null || visited.containsKey(instance))
+    {
+      return;
+    }
+    visited.put(instance, Boolean.TRUE);
+    Class<?> instanceClass = instance.getClass();
+    for (java.lang.reflect.Field field : instanceClass.getFields())
+    {
+      if (!Function.class.isAssignableFrom(field.getType()))
+      {
+        continue;
+      }
+      String                   fieldName = field.getName();
+      FunctionMapping<?, ?, ?> mapping   = context.functions.get(fieldName);
+      if (mapping == null)
+      {
+        continue;
+      }
+      // Apply the same filter Context.injectFunctionReferences uses (via
+      // findAssignableField): only consider fields whose declared type is
+      // assignable FROM the registry's canonical instance type. Without
+      // this filter the verifier walks fields that share a name with a
+      // registry entry by coincidence (e.g. a hand-written Sequence's
+      // internal companion-field named after the registry mapping) and
+      // false-positives on legitimate patterns. The check mirrors the
+      // injector predicate so the verifier walks exactly the edges the
+      // registry would write to and no others.
+      if (mapping.instance == null || !field.getType().isAssignableFrom(mapping.instance.getClass()))
+      {
+        continue;
+      }
+      // Skip instances that don't belong to our Context. Hand-written
+      // function classes (e.g. JacobiPolynomialSequence) construct their
+      // own internal Context with its own FunctionMappings; from the
+      // outer registry's perspective such an instance is a single opaque
+      // value and its inner field-graph is not the outer cycle's concern.
+      // Without this guard the verifier descends into a sibling namespace
+      // and false-positives on the inner Context's mappings.
+      if (instanceBelongsToForeignContext(instance))
+      {
+        continue;
+      }
+      Object value;
+      try
+      {
+        value = field.get(instance);
+      }
+      catch (IllegalAccessException iae)
+      {
+        continue;
+      }
+      if (value == null)
+      {
+        continue;
+      }
+      Object prior = firstSeen.get(mapping);
+      if (prior != null && prior != value)
+      {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Two distinct instances of FunctionMapping '").append(mapping.functionName).append("' are reachable from the root:\n");
+        sb.append("  first   : ").append(prior.getClass().getName()).append("@").append(System.identityHashCode(prior)).append(" (registry-canonical)\n");
+        sb.append("  second  : ").append(value.getClass().getName()).append("@").append(System.identityHashCode(value));
+        sb.append(" reachable via ");
+        Iterator<String> it = path.descendingIterator();
+        boolean firstSegment = true;
+        while (it.hasNext())
+        {
+          if (!firstSegment)
+          {
+            sb.append(".");
+          }
+          sb.append(it.next());
+          firstSegment = false;
+        }
+        sb.append(".").append(fieldName).append("\n");
+        sb.append("This indicates allocate-and-wire-per-frame initialization rather than the\n");
+        sb.append("required allocate-all-then-wire-all pattern; see issue #1000 point #3.");
+        throw new CyclicFunctionReferenceException(sb.toString());
+      }
+      if (prior == null)
+      {
+        firstSeen.put(mapping, value);
+      }
+      path.push(fieldName);
+      try
+      {
+        walkFieldGraphForCycleCheck(value, visited, firstSeen, path);
+      }
+      finally
+      {
+        path.pop();
+      }
+    }
   }
 
   /**
@@ -4730,6 +5109,23 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     functionalExpression.rootNode            = rootNode.spliceInto(functionalExpression);
     functionalExpression.rootNode.isRootNode = rootNode.isRootNode;
+    // Carry hand-wired context-function references (mappings with no
+    // expression — e.g. `He` registered as a ProbabilistHermitePolynomials
+    // instance) over to the functional. The functional is the user-facing
+    // generated class that actually executes the body; without these
+    // entries it would not declare a field for the context function and
+    // propagateContextFunctionReferences would emit no PUTFIELD when the
+    // outer class constructs it. Compiled-peer mappings (expression != null)
+    // are deliberately excluded to avoid materialising phantom mutual
+    // cycles in the structural-cycle detector.
+    for (var refEntry : referencedFunctions.entrySet())
+    {
+      var refMapping = refEntry.getValue();
+      if (refMapping != null && refMapping.expression == null)
+      {
+        functionalExpression.registerReferencedFunction(refEntry.getKey(), refMapping);
+      }
+    }
     functionalExpression.updateStringRepresentation();
     return functionalExpression;
   }

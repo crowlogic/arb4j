@@ -433,6 +433,31 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     if (contextual)
     {
       expression.registerReferencedFunction(functionName, mapping);
+      // Propagate the registration up the upstream-expression chain so every
+      // ancestor user-facing class also declares a field for this context
+      // function. Without this, a context function referenced only inside
+      // an inner operand expression (e.g. `He` inside Σi➔...{i=0…j} on the
+      // top-level Δ-sequence) is invisible to the parent: the parent class
+      // declares no field, Context.injectFunctionReferences has nothing to
+      // populate, propagateContextFunctionReferences emits no PUTFIELD when
+      // constructing the inner functional, and Phase-2 wire-all has nothing
+      // to copy onto the operand. All ancestors share the same Context, so
+      // registering the same mapping on each is consistent; the resulting
+      // PUTFIELDs are pure compile-time wiring (issue #1000 point #3).
+      // Only propagate to ancestors when the mapping has no expression (i.e.
+      // a hand-wired context instance like `He`). Mappings with an expression
+      // are compiled peers whose wiring is handled by Phase-2 wire-all;
+      // propagating them upstream would materialise phantom cycles (a→S→a)
+      // that the structural-cycle detector rejects.
+      if (mapping.expression == null)
+      {
+        arb.expressions.Expression<?, ?, ?> ancestor = expression.upstreamExpression;
+        while (ancestor != null)
+        {
+          ancestor.registerReferencedFunction(functionName, mapping);
+          ancestor = ancestor.upstreamExpression;
+        }
+      }
       generatedType = mapping.coDomain;
     }
   }
