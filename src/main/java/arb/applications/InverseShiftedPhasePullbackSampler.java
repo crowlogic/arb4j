@@ -72,7 +72,7 @@ public class InverseShiftedPhasePullbackSampler extends
   public InverseShiftedPhasePullbackSampler()
   {
     this(new FloatInterval(0,
-                           2000),
+                           4000),
          0.01);
   }
 

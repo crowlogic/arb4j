@@ -18,14 +18,14 @@ mp.mp.dps = 30
 
 I      = mp.mpc(0, 1)
 T0     = 6.289835988
-T_MAX  = 1000.0
+T_MAX  = 1000.0*3
 T_DISPLAY_MAX = 100.0
 
-N_T     = 80000
-N_OMEGA = 2560
+N_T     = 40000*3
+N_OMEGA = 5000
 N_WORKERS = os.cpu_count()
 
-OMEGAS  = np.linspace(-3.0, 3.0, N_OMEGA, endpoint=False)
+OMEGAS  = np.linspace(-5.0, 5.0, N_OMEGA, endpoint=False)
 D_OMEGA = OMEGAS[1] - OMEGAS[0]
 
 

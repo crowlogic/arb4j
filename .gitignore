@@ -6,3 +6,6 @@
 /libarblib.so
 /*.log
 /class.path
+/precompute_grid.csv
+/spectral_density.csv
+/zeta_st_reconstruction.csv

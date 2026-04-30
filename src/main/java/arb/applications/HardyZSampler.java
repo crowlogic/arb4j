@@ -70,8 +70,8 @@ public class HardyZSampler extends
    */
   public HardyZSampler()
   {
-    this(new FloatInterval(0,
-                           2000),
+    this(new FloatInterval(2000,
+                           4000),
          0.01);
   }
 
