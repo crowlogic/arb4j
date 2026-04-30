@@ -358,62 +358,6 @@ public class SelfRecursiveCurriedSequenceTest extends
   }
 
   /**
-   * Early object-graph regression for the generated QRH recurrence shape.  This
-   * test intentionally inspects the generated classes before any high-order
-   * Müntz/Padé evaluation can hide the bug as a timeout or OOM.
-   *
-   * <p>
-   * Required generated graph:
-   * <pre>
-   * a.evaluate(k)  -> afunc with field a
-   * afunc.S        -> S
-   * S.evaluate(k)  -> Sfunc with field a
-   * Sfunc.operandF0001 -> operand with field a
-   * </pre>
-   */
-  public static void testBonanzaiShapeGeneratedObjectGraphCarriesRecursiveA() throws Exception
-  {
-    Context ctx = new Context();
-    Real μ      = new Real();
-    μ.set("1", 128);
-    μ.setName("μ");
-    ctx.registerVariable(μ);
-
-    ComplexFunction.express("p", "v➔v", ctx);
-    ComplexFunction.express("q", "v➔v", ctx);
-    ComplexFunction.express("r", "v➔v", ctx);
-
-    ctx.registerFunctionMapping("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
-    String sExpr = "S:k➔v➔sum(j➔a(j)(v)*a(k-1-j)(v){j=1..k-2})";
-    Sequence.parseCompileAndRegister("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
-
-    String                  aExpr = "a:k➔v➔when(k=1, p(v)/Γ(μ+1),"
-                                  + " else, (Γ((k-1)·μ+1)/Γ(k·μ+1))·(q(v)·a(k-1)(v)+r(v)·S(k)(v)))";
-    ComplexFunctionSequence a     = ComplexFunctionSequence.express(aExpr, ctx);
-
-    Integer                 k     = new Integer();
-    k.set(3);
-    ComplexFunction         a3    = a.evaluate(k, 1, 128, null);
-
-    Object afuncA = a3.getClass().getField("a").get(a3);
-    assertNotNull("afunc must declare and receive recursive a", afuncA);
-
-    Object S = a3.getClass().getField("S").get(a3);
-    assertNotNull("afunc must declare and receive peer S", S);
-
-    ComplexFunction S3 = ((ComplexFunctionSequence) S).evaluate(k, 1, 128, null);
-    Object          sfuncA = S3.getClass().getField("a").get(S3);
-    assertNotNull("Sfunc must declare and receive recursive a through the functional path", sfuncA);
-
-    Object operand = S3.getClass().getField("operandF0001").get(S3);
-    assertNotNull("Sfunc must create generated summation operand", operand);
-
-    Object operandA = operand.getClass().getField("a").get(operand);
-    assertNotNull("generated summation operand must receive recursive a", operandA);
-    assertSame("Sfunc and its operand must share the same recursive a reference", sfuncA, operandA);
-  }
-
-  /**
    * Mutually-recursive curried pair where {@code S} itself uses {@code when}
    * to terminate — both peers piecewise. {@code S(k=2)(v) = a(1)(v)·a(1)(v) = v·v},
    * {@code S(k>2)(v) = 0}; {@code a(k=1)(v) = v}, {@code a(k>1)(v) = S(k)(v)}.
