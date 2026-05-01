@@ -1,8 +1,5 @@
 package arb.functions.complex;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +10,6 @@ import arb.Integer;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.Context;
 import arb.functions.ComplexFunctional;
 import arb.functions.integer.ComplexFunctionSequence;
 import arb.solvers.HankelSystem;
@@ -158,50 +154,67 @@ public class MuntzPadeFunction implements
 
   /**
    * Smallest integer M for which the successive-difference bound at z falls below
-   * 2^(−bits) for the Müntz reorganization at v. Stall-guarded: returns M−1 if
-   * the bound fails to decrease between successive orders. Builds the (P,Q) cache
-   * out to the chosen M as a side effect.
+   * 2^(−bits). Stall-guarded: returns M−1 if the bound fails to decrease between
+   * successive orders.
+   *
+   * <p>
+   * Note: {@code a} is a {@link ComplexFunctionSequence} whose integer domain is
+   * automatically cached, so repeated calls to {@code a.evaluate(k,...)} inside
+   * {@link #padePade} are O(1) after the first evaluation — no local coefficient
+   * cache is needed here.
    */
   public int chooseOrderForPrecision(Complex v, Complex z, int bits)
   {
-    List<DiagonalPade> padeCache   = new ArrayList<>();
-    Complex            cachedAlpha = null;
-    try
+    try ( Real bound = new Real(); Real prevBound = new Real(); Real threshold = new Real())
     {
-      cachedAlpha = ensureOrder(v, padeCache, cachedAlpha, 2, bits);
-      try ( Real bound = new Real(); Real prevBound = new Real(); Real threshold = new Real())
-      {
-        threshold.one();
-        threshold.mul2e(-bits, threshold);
+      threshold.one();
+      threshold.mul2e(-bits, threshold);
 
-        int M = 2;
-        successiveDifferenceErrorBound(v, padeCache, M, z, bits, bound);
+      int          M    = 2;
+      DiagonalPade rMm2 = null;
+      DiagonalPade rMm1 = buildPade(v, 1, bits);
+      DiagonalPade rM   = buildPade(v, 2, bits);
+
+      try
+      {
+        successiveDifferenceErrorBound(rMm2, rMm1, rM, z, bits, bound);
         log.debug("chooseOrderForPrecision: M={} bound={} threshold=2^(-{})", M, bound, bits);
+
         while (bound.compareTo(threshold) > 0)
         {
           prevBound.set(bound);
           M++;
-          cachedAlpha = ensureOrder(v, padeCache, cachedAlpha, M, bits);
-          successiveDifferenceErrorBound(v, padeCache, M, z, bits, bound);
+
+          if (rMm2 != null)
+          {
+            rMm2.close();
+          }
+          rMm2 = rMm1;
+          rMm1 = rM;
+          rM   = buildPade(v, M, bits);
+
+          successiveDifferenceErrorBound(rMm2, rMm1, rM, z, bits, bound);
           log.debug("chooseOrderForPrecision: M={} bound={} prev={}", M, bound, prevBound);
+
           if (bound.compareTo(prevBound) >= 0)
           {
-            log.debug("chooseOrderForPrecision: bound stalled at M={} (prev={}, curr={}); returning M-1={}", M, prevBound, bound, M - 1);
-            disposeCache(padeCache);
+            log.debug("chooseOrderForPrecision: stalled at M={}, returning M-1={}", M, M - 1);
             return M - 1;
           }
         }
-        log.debug("chooseOrderForPrecision: chose M={} for bits={}", M, bits);
-        disposeCache(padeCache);
-        return M;
       }
-    }
-    finally
-    {
-      if (cachedAlpha != null)
+      finally
       {
-        cachedAlpha.close();
+        if (rMm2 != null)
+        {
+          rMm2.close();
+        }
+        rMm1.close();
+        rM.close();
       }
+
+      log.debug("chooseOrderForPrecision: chose M={} for bits={}", M, bits);
+      return M;
     }
   }
 
@@ -279,29 +292,35 @@ public class MuntzPadeFunction implements
   }
 
   /**
-   * The a-posteriori successive-difference bound at z evaluated against the (P,Q)
-   * cache built for the supplied v at the given precision.
+   * The a-posteriori successive-difference bound at z for the three consecutive
+   * Padé approximants R_{M-2}, R_{M-1}, R_M. Pass {@code rMm2 = null} when M=2
+   * to treat R_0 as identically zero.
    */
-  public Real successiveDifferenceErrorBound(Complex v, List<DiagonalPade> padeCache, int M, Complex z, int bits, Real result)
+  public Real successiveDifferenceErrorBound(DiagonalPade rMm2,
+                                              DiagonalPade rMm1,
+                                              DiagonalPade rM,
+                                              Complex z,
+                                              int bits,
+                                              Real result)
   {
-    if (M < 2)
+    try ( Complex valM = new Complex(); Complex valMm1 = new Complex(); Complex valMm2 = new Complex())
     {
-      throw new IllegalArgumentException("Successive-difference bound requires M ≥ 2, got " + M);
-    }
-    try ( var valM = Complex.named("R_M(z;v)"); var valMm1 = Complex.named("R_{M-1}(z;v)"); var valMm2 = Complex.named("R_{M-2}(z;v)"))
-    {
-      padeCache.get(M - 1).evaluate(z, 1, bits, valM);
-      padeCache.get(M - 2).evaluate(z, 1, bits, valMm1);
-      if (M - 2 == 0)
+      rM.evaluate(z, 1, bits, valM);
+      rMm1.evaluate(z, 1, bits, valMm1);
+      if (rMm2 == null)
       {
         valMm2.zero();
       }
       else
       {
-        padeCache.get(M - 3).evaluate(z, 1, bits, valMm2);
+        rMm2.evaluate(z, 1, bits, valMm2);
       }
-      try ( var deltaM = new Complex(); var deltaMm1 = new Complex(); var absM = result.borrowVariable(); var absMm1 = result.borrowVariable();
-            var num = result.borrowVariable(); var denom = result.borrowVariable();)
+      try ( Complex deltaM   = new Complex();
+            Complex deltaMm1 = new Complex();
+            Real absM        = result.borrowVariable();
+            Real absMm1      = result.borrowVariable();
+            Real num         = result.borrowVariable();
+            Real denom       = result.borrowVariable())
       {
         valM.sub(valMm1, bits, deltaM).abs(bits, absM).mul(absM, bits, num);
         valMm1.sub(valMm2, bits, deltaMm1).abs(bits, absMm1).sub(absM, bits, denom);
@@ -314,59 +333,11 @@ public class MuntzPadeFunction implements
   // Internals
   // ────────────────────────────────────────────────────────────────────────
 
-  /**
-   * Grow the per-call (P,Q) cache out to order M at the supplied v. Returns the
-   * (possibly resized) coefficient buffer holding a_1(v)..a_{2M}(v).
-   */
-  private Complex ensureOrder(Complex v, List<DiagonalPade> padeCache, Complex cachedAlpha, int M, int bits)
+  private DiagonalPade buildPade(Complex v, int M, int bits)
   {
-    if (M < 1)
-    {
-      return cachedAlpha;
-    }
-    int currentTop = padeCache.size();
-    if (currentTop >= M)
-    {
-      return cachedAlpha;
-    }
-    log.debug("ensureOrder: growing Padé cache from M={} to M={} at bits={}", currentTop, M, bits);
-
-    if (cachedAlpha != null)
-    {
-      cachedAlpha.close();
-    }
-    Complex coeff = Complex.newVector(2 * M);
-    coefficientsAt(v, 2 * M, bits, coeff);
-
-    Context parentCtx = padeParentContext();
-    for (int m = currentTop + 1; m <= M; m++)
-    {
-      DiagonalPade pade = new DiagonalPade(m);
-      solveHankel(v, coeff, m, bits, pade);
-      padeCache.add(pade);
-    }
-    return coeff;
-  }
-
-  private void disposeCache(List<DiagonalPade> padeCache)
-  {
-    for (DiagonalPade pade : padeCache)
-    {
-      pade.close();
-    }
-    padeCache.clear();
-  }
-
-  /**
-   * Hook for subclasses to supply a Context whose variables are imported into
-   * each cached {@link DiagonalPade}'s sub-Context, so user-facing variables
-   * (e.g. μ in the Riccati–Mittag-Leffler setting) continue to resolve when the
-   * rational function is evaluated. Default returns null (a fresh empty
-   * sub-Context).
-   */
-  protected Context padeParentContext()
-  {
-    return null;
+    DiagonalPade pade = new DiagonalPade(M);
+    padePade(v, M, bits, pade);
+    return pade;
   }
 
   private DiagonalPade solveHankel(Complex v, Complex coeff, int M, int bits, DiagonalPade result)
