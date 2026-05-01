@@ -39,14 +39,14 @@ import arb.functions.real.RealFunction;
  * enclosing expression. That compiled {@code Sequence} is held as a field on
  * the outer generated class and called once per loop iteration.
  *
- * <h2>Index variable — method-local, not a field</h2> The index variable
- * ({@code k} above) is allocated as a method-local {@code arb.Integer} in the
- * {@code evaluate()} bytecode (local slot {@code indexVariableLocalSlot}). It
- * is never registered in the {@link Context} and never declared as a class
- * field. This avoids polluting the shared context and eliminates the need to
- * temporarily mutate context state during operand parsing. The operand receives
- * the index value as the first argument to its {@code evaluate()} call each
- * iteration.
+ * <h2>Index variable — class field, not a method local</h2> The index variable
+ * ({@code k} above) is declared as an {@code arb.Integer} field on the
+ * generated class via {@link Expression#newIntermediateVariable}. Its generated
+ * field name is stored in {@link #indexVariableGeneratedFieldName} and is
+ * distinct from the logical index name held in {@link #indexVariableFieldName}.
+ * Being a proper field means the {@code close()} method emitted by the compiler
+ * will release its native memory, eliminating the per-call allocation and
+ * native-memory leak that existed when it was a method-local.
  *
  * <h2>Operand expression initialisation sequence</h2> {@link #parseOperand()}
  * constructs the child {@link Expression} with the three-argument constructor,
@@ -67,20 +67,20 @@ import arb.functions.real.RealFunction;
  * emits:
  * 
  * <pre>
- * arb.Integer index = new arb.Integer(); // local slot 5
+ * // index is a field — allocated once at construction, closed by close()
  * accumulator.identity();
- * index.set(lowerLimit);
- * cachedUpper.set(upperLimit);
- * while (index.compareTo(cachedUpper) &lt;= 0)
+ * this.index.set(lowerLimit);
+ * this.cachedUpper.set(upperLimit);
+ * while (this.index.compareTo(this.cachedUpper) &lt;= 0)
  * {
- *   accumulator = accumulator.operation(operand.evaluate(index, bits, scratch), bits);
- *   index.increment();
+ *   accumulator = accumulator.operation(operand.evaluate(this.index, bits, scratch), bits);
+ *   this.index.increment();
  * }
  * result.set(accumulator);
  * </pre>
  * 
- * All of {@code accumulator}, {@code cachedUpper}, and {@code scratch} are
- * intermediate variables allocated on the outer generated class.
+ * All of {@code accumulator}, {@code cachedUpper}, {@code scratch}, and
+ * {@code index} are fields on the outer generated class.
  *
  * @param <D> domain type of the enclosing expression
  * @param <R> codomain / result type
@@ -95,13 +95,13 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   public static final Logger                      logger                         = LoggerFactory.getLogger(NAryOperationNode.class);
 
   /**
-   * Local variable slot in the generated {@code evaluate()} method for the
-   * {@code arb.Integer} index variable. Dynamically allocated via
-   * {@link Expression#allocateLocalVariableSlot()} to avoid conflicts with cache
-   * locals or other generated code. Assigned in
-   * {@link #allocateLocalIndexVariable(MethodVisitor)}.
+   * The generated field name on the outer class for the {@code arb.Integer}
+   * index variable (e.g. {@code jℤ0003}). Distinct from
+   * {@link #indexVariableFieldName} which holds the logical name used inside the
+   * operand expression (e.g. {@code j}). Assigned in
+   * {@link #declareIndexVariableField()}.
    */
-  public int                                      indexVariableLocalSlot         = -1;
+  public String                                   indexVariableGeneratedFieldName;
 
   public static String                            operandEvaluateMethodSignature = Compiler.getMethodDescriptor(Object.class,
                                                                                                                 Object.class,
@@ -325,7 +325,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     resultType = assignTypes(resultType);
 
     assignFieldNamesIfNecessary(resultType);
-    allocateLocalIndexVariable(mv);
+    declareIndexVariableField();
 
     propagateInputToOperand(mv);
     initializeResultVariable(mv, resultType);
@@ -343,23 +343,25 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   }
 
   /**
-   * Emits bytecode to allocate a fresh {@code arb.Integer} in local slot
-   * {@code indexVariableLocalSlot}:
-   * 
-   * <pre>
-   *   NEW arb/Integer
-   *   DUP
-   *   INVOKESPECIAL arb/Integer.&lt;init&gt;()V
-   *   ASTORE 5
-   * </pre>
+   * Registers the {@code arb.Integer} index variable as an intermediate field on
+   * the generated class. The generated field name (e.g. {@code jℤ0003}) is
+   * stored in {@link #indexVariableGeneratedFieldName}; it is distinct from the
+   * logical index name in {@link #indexVariableFieldName} (e.g. {@code j}) which
+   * the operand expression uses to reference it.
+   *
+   * <p>
+   * Because the field is registered through
+   * {@link Expression#newIntermediateVariable}, the compiler-emitted
+   * {@code close()} method will call {@code close()} on it automatically,
+   * releasing its native ARB memory without any manual effort.
    */
-  protected void allocateLocalIndexVariable(MethodVisitor mv)
+  protected void declareIndexVariableField()
   {
-    indexVariableLocalSlot = expression.allocateLocalVariableSlot();
-    Compiler.generateNewObjectInstruction(mv, Integer.class);
-    Compiler.duplicateTopOfTheStack(mv);
-    Compiler.invokeDefaultConstructor(mv, Integer.class);
-    mv.visitVarInsn(ASTORE, indexVariableLocalSlot);
+    assert indexVariableFieldName != null : "indexVariableFieldName must be set before declareIndexVariableField";
+    if (indexVariableGeneratedFieldName == null)
+    {
+      indexVariableGeneratedFieldName = expression.newIntermediateVariable(indexVariableFieldName, Integer.class);
+    }
   }
 
   public Class<?> assignTypes(Class<?> resultType)
@@ -486,14 +488,15 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   }
 
   /**
-   * Loads the method-local {@code arb.Integer} index variable from local slot
-   * {@code indexVariableLocalSlot} onto the operand stack.
+   * Loads the {@code arb.Integer} index field (named
+   * {@link #indexVariableGeneratedFieldName}) from {@code this} onto the operand
+   * stack via {@code GETFIELD}.
    */
   MethodVisitor loadIndexVariable(MethodVisitor methodVisitor)
   {
     assert indexVariableFieldName != null : String.format("indexVariableFieldName is null %s\n", this);
-    assert indexVariableLocalSlot >= 0 : "indexVariableLocalSlot not yet allocated";
-    methodVisitor.visitVarInsn(ALOAD, indexVariableLocalSlot);
+    assert indexVariableGeneratedFieldName != null : "indexVariableGeneratedFieldName not yet declared — call declareIndexVariableField() first";
+    loadFieldFromThis(methodVisitor, indexVariableGeneratedFieldName, Integer.class);
     return methodVisitor;
   }
 
@@ -573,10 +576,10 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
    * operand's input and triggers resolution of all deferred variable references.
    *
    * <p>
-   * The index variable is <em>not</em> registered in the {@link Context} — it
-   * lives as a method-local {@code arb.Integer} in slot
-   * {@code indexVariableLocalSlot}, allocated by
-   * {@link #allocateLocalIndexVariable(MethodVisitor)}.
+   * The index variable is declared as a field on the generated class (not a
+   * method local) by {@link #declareIndexVariableField()}, which is called from
+   * {@link #generate(MethodVisitor, Class)} once {@link #indexVariableFieldName}
+   * is known.
    */
   public Node<D, R, F> parseOperatorLimitSpecifications()
   {
@@ -1143,11 +1146,12 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                                                   lowerLimit.spliceInto(newExpression),
                                                                   upperLimit.spliceInto(newExpression));
     nAryOperationNode.assignFieldNamesIfNecessary(newExpression.coDomainType);
-    nAryOperationNode.indexVariableFieldName   = this.indexVariableFieldName;
-    nAryOperationNode.parsed                   = this.parsed;
-    nAryOperationNode.functionClass            = newExpression.className;
-    nAryOperationNode.operandFunctionFieldName = this.operandFunctionFieldName;
-    nAryOperationNode.operandMapping           = (FunctionMapping<Integer, S, Sequence<S>>) (FunctionMapping<?, ?, ?>) this.operandMapping;
+    nAryOperationNode.indexVariableFieldName          = this.indexVariableFieldName;
+    nAryOperationNode.indexVariableGeneratedFieldName = this.indexVariableGeneratedFieldName;
+    nAryOperationNode.parsed                          = this.parsed;
+    nAryOperationNode.functionClass                   = newExpression.className;
+    nAryOperationNode.operandFunctionFieldName        = this.operandFunctionFieldName;
+    nAryOperationNode.operandMapping                  = (FunctionMapping<Integer, S, Sequence<S>>) (FunctionMapping<?, ?, ?>) this.operandMapping;
     newExpression.registerReferencedFunction(this.operandFunctionFieldName, this.operandMapping);
     return nAryOperationNode;
   }
