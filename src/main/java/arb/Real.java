@@ -58,6 +58,9 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
   }
 
 
+	private static final ThreadLocal<Real[]> autocorrelationScratch =
+	  ThreadLocal.withInitial(() -> new Real[] { new Real(), new Real() });
+
 	public RealPolynomial add( Real z, int bits, RealPolynomial result )
 	{
 	  return result.set(this).add(z,bits,result);
