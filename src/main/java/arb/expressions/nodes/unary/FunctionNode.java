@@ -412,10 +412,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                 System.identityHashCode(expression.getContext()),
                 System.identityHashCode(mapping),
                 contextual);
-      if (mapping == null)
-      {
-        designateAsRecursiveFunction(type());
-      }
+      designateAsRecursiveFunction(type());
     }
 
   }
@@ -530,7 +527,10 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       generatedType = resultType;
     }
+    if ( mapping == null )
+    {
     mapping = registerSelfReferrentialFunctionMapping();
+    }
   }
 
   @Override
