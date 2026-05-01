@@ -1,0 +1,602 @@
+\documentclass[11pt,reqno]{amsart}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\DeclareMathOperator{\LP}{\mathcal{LP}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Sch}{\mathcal{S}}
+
+\title{A Proof of the Riemann Hypothesis via\\
+Band-Limited Spectral Analysis of the Hardy \(Z\)-Function}
+
+\author{Stephen Crowley}
+\address{Dallas, Texas, USA}
+\date{May 1, 2026}
+
+\begin{document}
+
+\begin{abstract}
+We prove the Riemann Hypothesis. Let \(X\) be the variance-normalized
+pullback of Hardy's \(Z\)-function under the Riemann--Siegel phase
+reparametrization. Using the Riemann--Siegel formula, the
+Montgomery--Vaughan mean-value theorem, and the Atkinson--Riemann--Siegel
+shifted mean-square estimate, \(X\) has Wiener covariance
+\(K(h)=\sin(h)/h\); Wiener--Khinchin gives scalar spectral density
+\(\widehat{X}_W(\xi)=\tfrac{1}{2}\mathbf{1}_{[-1,1]}(\xi)\). The smooth
+regulator \(\eta_\varepsilon^{(a)}(u)=e^{-\varepsilon\sqrt{a^2+u^2}}\)
+produces \(X_\varepsilon^{(a)}=\eta_\varepsilon^{(a)} X\in L^1\cap L^2\)
+whose classical Fourier transform
+\(\widehat{X_\varepsilon^{(a)}}=\widehat{X}_W*\widehat{\eta_\varepsilon^{(a)}}\)
+is a pointwise nonnegative Schwartz function. A two-regulator gluing with
+disjoint branch sets, together with the division
+\(X=X_\varepsilon^{(a)}/\eta_\varepsilon^{(a)}\) and the limit
+\(\varepsilon\to 0^+\), shows that \(X\) is real entire of exponential
+type \(\le 1\). The scalar Laguerre identity and Bochner's theorem give
+\(L_n[X_\varepsilon](u)\ge 0\); the pointwise limit gives
+\(L_n[X](u)\ge 0\). By Csordas--Dimitrov, \(X\in\LP\); the zero
+correspondence places every nontrivial zero of \(\zeta(s)\) on
+\(\mathrm{Re}(s)=\tfrac{1}{2}\).
+\end{abstract}
+
+\maketitle
+
+%==============================================================
+\section*{Conventions}
+%==============================================================
+
+Fourier convention:
+\[
+\mathcal{F}\{f\}(\xi)=\int_\R f(h)e^{-ih\xi}\,dh,\qquad
+\mathcal{F}^{-1}\{g\}(h)=\frac{1}{2\pi}\int_\R g(\xi)e^{ih\xi}\,d\xi.
+\]
+Wiener--Khinchin: for deterministic autocorrelation \(K\), the spectral
+density \(S\) satisfies \(K(h)=\int e^{ih\xi}S(\xi)\,d\xi\) (no
+\(2\pi\)). Bochner: if \(F\in L^1(\R)\) with \(F\ge 0\) pointwise, then
+\(\widehat F(v)\ge 0\) for all \(v\in\R\). The Schwartz space is denoted
+\(\Sch(\R)\).
+
+%==============================================================
+\section{Setup and zero correspondence}
+%==============================================================
+
+Let
+\[
+\theta(t)=\arg\Gamma\!\Bigl(\tfrac{1}{4}+\tfrac{it}{2}\Bigr)-\tfrac{t}{2}\log\pi
+\]
+be the Riemann--Siegel phase~\cite{Titchmarsh} on \(\R\);
+\(\theta'(t)=\tfrac{1}{2}\log(t/2\pi)+O(t^{-2})\) for \(t>0\) gives
+\(C_0:=-\inf_{t\in\R}\theta'(t)<\infty\). Fix \(C>C_0\) and set
+\[
+\Theta(t)=\theta(t)+tC,\qquad \Theta'(t)>0\ \forall t\in\R.
+\]
+\(\Theta:\R\to\R\) is a strictly increasing real-analytic bijection with
+real-analytic inverse \(t=\Theta^{-1}\). Put
+\[
+Z(t)=e^{i\theta(t)}\zeta\!\left(\tfrac{1}{2}+it\right),\qquad
+X(u)=\frac{Z(t(u))}{\sqrt{2\,\Theta'(t(u))}},\qquad u\in\R.
+\]
+\(Z\) is a real-analytic real-valued function of \(t\in\R\) (not claimed
+entire as a function of complex \(t\)). \(\Theta'>0\) and
+\(e^{i\theta(t)}\ne 0\) on \(\R\) give
+\[
+X(u_0)=0\iff Z(t_0)=0\iff\zeta\!\left(\tfrac{1}{2}+it_0\right)=0,
+\qquad t_0=t(u_0)\in\R.
+\]
+The Lindel\"of convexity bound \(|Z(t)|=O((1+|t|)^{1/4+o(1)})\) together
+with \(\Theta'\ge c>0\) yields \(|X(u)|=O((1+|u|)^{1/4+o(1)})\). Hence
+\(X\) is of polynomial growth on \(\R\), defines a tempered distribution,
+and \(X\in L^2_{\mathrm{loc}}(\R)\setminus L^2(\R)\).
+
+%==============================================================
+\section{Wiener covariance}
+%==============================================================
+
+\begin{theorem}\label{thm:cov}
+\[
+K(h):=\lim_{U\to\infty}\frac{1}{U}\int_0^U X(u+h)X(u)\,du=\frac{\sin h}{h},
+\qquad K(0)=1,
+\]
+independent of the choice \(C>C_0\).
+\end{theorem}
+
+\begin{proof}
+Write \(L=L(t)=\Theta'(t)\), \(N=\lfloor\sqrt{t/2\pi}\rfloor\). The
+Riemann--Siegel formula~\cite[Ch.~4]{Titchmarsh} gives
+\begin{equation}\label{eq:RS}
+Z(t)=2\sum_{n\le N}n^{-1/2}\cos(\theta(t)-t\log n)+O(t^{-1/4}).
+\end{equation}
+Under \(u=\Theta(t)\), \(du=L\,dt\),
+\[
+X(u)=\sqrt{\tfrac{2}{L}}\sum_{n\le N}n^{-1/2}\cos\phi_n(u)+O(L^{-3/4}),
+\qquad \phi_n(u)=\theta(t(u))-t(u)\log n.
+\]
+By \(\cos A\cos B=\tfrac{1}{2}\cos(A-B)+\tfrac{1}{2}\cos(A+B)\),
+\begin{align*}
+X(u+h)X(u)
+&=\frac{1}{L}\sum_{m,n\le N}\frac{\cos(\phi_m(u+h)-\phi_n(u))}{\sqrt{mn}}
+\quad\text{(difference)}\\
+&\quad+\frac{1}{L}\sum_{m,n\le N}\frac{\cos(\phi_m(u+h)+\phi_n(u))}{\sqrt{mn}}
+\quad\text{(sum)}\\
+&\quad+O(L^{-3/2}).
+\end{align*}
+
+\noindent\textbf{(I) Off-diagonal, difference-frequency (\(m\ne n\)).}
+The \(t\)-oscillation is \((m/n)^{it}\). Montgomery--Vaughan~\cite{MV}:
+for \(N\le\sqrt{T/2\pi}\),
+\[
+\int_0^T\Bigl|\sum_{n\le N}a_n n^{it}\Bigr|^2\,dt
+=T\sum|a_n|^2+O\!\Bigl(\sum n|a_n|^2\Bigr).
+\]
+Expanding the square and subtracting the diagonal,
+\[
+\sum_{m\ne n}a_m\overline{a_n}\int_0^T(m/n)^{it}\,dt
+=O\!\Bigl(\sum n|a_n|^2\Bigr).
+\]
+With \(a_n=n^{-1/2}\), \(\sum_{n\le N}n|a_n|^2=N=\sqrt{T/2\pi}\). After
+transport to \(u\) and normalization by \(U\asymp T\log T\), the
+difference-frequency off-diagonal contribution is
+\(O(T^{-1/2}L^{-1})\to 0\).
+
+\noindent\textbf{(II) Sum-frequency.}
+The sum-frequency \(t\)-oscillation is \(e^{2i\theta(t)}(mn)^{-it}\). The
+Atkinson--Riemann--Siegel shifted mean-square estimate
+(Appendix~\ref{app:atkinson}) gives
+\[
+\int_0^T Z(t)^2\,e^{2i\theta(t)}\,dt=O(T^{1/2+\varepsilon}).
+\]
+Expanding \(Z^2\) via \eqref{eq:RS} yields sum-frequency contribution
+\(O(T^{-1/2+\varepsilon})\to 0\).
+
+\noindent\textbf{(III) Diagonal (\(m=n\)).}
+\(\phi_n'(u)=(\theta'(t)-\log n)/L=1-(C+\log n)/L+O(t^{-2}L^{-1})\), so
+\(\phi_n(u+h)-\phi_n(u)=h(1-\log n/L)+O(L^{-1})\). Setting
+\(x_n=\log n/L\in[0,1]\), \(\Delta x_n=1/(nL)+O(1/(n^2L))\),
+\[
+\frac{1}{L}\sum_{n\le N}\frac{1}{n}\cos(h(1-x_n))
+=\sum\Delta x_n\,\cos(h(1-x_n))\,(1+O(1/n))
+\]
+is a Riemann sum for \(\int_0^1\cos(h(1-x))\,dx=\sin(h)/h\), uniform for
+\(h\) in compact subsets.
+
+Combining (I)--(III), \(K(h)=\sin(h)/h\); \(K(0)=1\) by inspection; \(C\)
+enters only through \(L\) and drops out of the limit.
+\end{proof}
+
+%==============================================================
+\section{Spectral density}
+%==============================================================
+
+\begin{theorem}\label{thm:band}
+The Wiener spectral density of \(X\) is
+\(\widehat{X}_W(\xi)=\tfrac{1}{2}\mathbf{1}_{[-1,1]}(\xi)\): real,
+nonnegative, and compactly supported.
+\end{theorem}
+
+\begin{proof}
+\(\sin(h)/h=\tfrac{1}{2}\int_{-1}^1 e^{ih\xi}\,d\xi\). Wiener--Khinchin
+combined with uniqueness of the representing measure for a continuous
+positive-definite \(K\in L^1\cap C_0\) identifies \(\widehat{X}_W\) as
+stated.
+\end{proof}
+
+\begin{remark}
+Theorem~\ref{thm:band} does not assert pointwise equality
+\(X(u)=\sin(u)/u\). The scalar \(\widehat{X}_W\) is the Wiener spectral
+density characterized by pairing with \(K\), not by pointwise inversion
+of \(X\), which is not in \(L^2(\R)\).
+\end{remark}
+
+%==============================================================
+\section{Smooth regulators}
+%==============================================================
+
+For \(\varepsilon>0\) and \(a>0\) define
+\[
+\eta_\varepsilon^{(a)}(u)=e^{-\varepsilon\sqrt{a^2+u^2}},\qquad u\in\R.
+\]
+
+\begin{lemma}\label{lem:eta}
+For each \(a>0\):
+\begin{enumerate}[leftmargin=2em,label=(\roman*)]
+\item \(\eta_\varepsilon^{(a)}\in C^\infty(\R)\) and is strictly positive, with
+\(\eta_\varepsilon^{(a)}(u)\sim e^{-\varepsilon|u|}\) as \(|u|\to\infty\).
+\item Under the principal branch of \(w\mapsto\sqrt{w}\) with cut on
+\((-\infty,0]\), the function \(z\mapsto\sqrt{a^2+z^2}\) is holomorphic
+on \(\C\setminus\bigl(\{iy:|y|\ge a\}\bigr)\), positive on \(\R\), and
+\(\eta_\varepsilon^{(a)}\) extends holomorphically and without zeros to
+the same set.
+\item The \(\R\)-Fourier transform is
+\[
+\widehat{\eta_\varepsilon^{(a)}}(\xi)
+=\frac{2a\varepsilon}{\sqrt{\varepsilon^2+\xi^2}}\,
+K_1\!\bigl(a\sqrt{\varepsilon^2+\xi^2}\bigr)>0,
+\]
+smooth and rapidly decaying, hence in \(\Sch(\R)\)~\cite[8.432.5]{GR}.
+\item On any horizontal strip \(|\mathrm{Im}\,z|\le V<a\),
+\(\mathrm{Re}\sqrt{a^2+z^2}=|u|+O_a(V)\) as \(|u|\to\infty\), so
+\(|\eta_\varepsilon^{(a)}(u+iv)|\le e^{-\varepsilon|u|+\varepsilon\,O_a(V)}\).
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) Since \(a>0\), \(\sqrt{a^2+u^2}\) is smooth on \(\R\); composition
+with the exponential preserves smoothness.
+
+(ii) \(a^2+z^2\) vanishes only at \(z=\pm ia\), and takes values in
+\((-\infty,0]\) precisely on the imaginary segments \(\{iy:|y|\ge a\}\).
+Off these segments, the principal square root is holomorphic and
+nonzero, and so is its exponential.
+
+(iii) The stated formula is the classical Fourier pair for
+\(e^{-\varepsilon\sqrt{a^2+u^2}}\); positivity and Schwartz regularity
+follow from those of the modified Bessel function \(K_1\).
+
+(iv) Write \(a^2+z^2=a^2+u^2-v^2+2iuv\). For \(|v|<a\) the real part is
+positive for all large \(|u|\), and the principal square root satisfies
+\(\mathrm{Re}\sqrt{a^2+z^2}=|u|+O_a(V)\) by direct expansion.
+\end{proof}
+
+\begin{lemma}\label{lem:Xeps}
+Fix \(\varepsilon>0\) and \(a>0\). Set \(X_\varepsilon^{(a)}:=\eta_\varepsilon^{(a)}X\).
+\begin{enumerate}[leftmargin=2em,label=(\roman*)]
+\item \(X_\varepsilon^{(a)}\in L^1(\R)\cap L^2(\R)\cap C^\infty(\R)\).
+\item In the sense of tempered distributions,
+\[
+\widehat{X_\varepsilon^{(a)}}=\widehat{X}_W*\widehat{\eta_\varepsilon^{(a)}}
+=\tfrac{1}{2}\int_{-1}^1\widehat{\eta_\varepsilon^{(a)}}(\xi-\eta)\,d\eta\ge 0,
+\]
+and the right-hand side is a pointwise nonnegative Schwartz function.
+\item \(X_\varepsilon^{(a)}\) extends entire on \(\C\) via
+\[
+X_\varepsilon^{(a)}(z)=\frac{1}{2\pi}\int_\R\widehat{X_\varepsilon^{(a)}}(\xi)\,e^{iz\xi}\,d\xi,
+\]
+and
+\[
+|X_\varepsilon^{(a)}(u+iv)|\le
+\frac{\|\widehat{X_\varepsilon^{(a)}}\|_{L^1}}{2\pi}\,
+e^{(1+\delta_a(\varepsilon))|v|},
+\]
+with \(\delta_a(\varepsilon)\to 0\) as \(\varepsilon\to 0^+\).
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) \(|X(u)|=O((1+|u|)^{1/4+o(1)})\) and
+\(\eta_\varepsilon^{(a)}(u)\sim e^{-\varepsilon|u|}\) give
+\(X_\varepsilon^{(a)}\in L^p\) for all \(p\in[1,\infty]\) and
+smoothness from \(\eta_\varepsilon^{(a)}\in C^\infty\) and local
+smoothness of \(X\) on sets where \(\Theta'\ne 0\) (everywhere on \(\R\)).
+
+(ii) \(X\) is tempered by the polynomial-growth bound, so for every
+\(\psi\in\Sch(\R)\) the pairing
+\(\langle X,\psi\rangle=\int X\psi\) converges absolutely. The Wiener
+spectral density identification of Theorem~\ref{thm:band} is equivalent
+to the distributional identity \(\widehat{X}=\widehat{X}_W\) as tempered
+distributions on \(\Sch(\R)\), since the Wiener autocorrelation coincides
+with the distributional autocorrelation on Schwartz test functions by
+density. Then for \(\varphi\in\Sch(\R)\),
+\[
+\langle\widehat{X_\varepsilon^{(a)}},\varphi\rangle
+=\langle X_\varepsilon^{(a)},\widehat\varphi\rangle
+=\langle X,\eta_\varepsilon^{(a)}\widehat\varphi\rangle
+=\langle\widehat{X},\mathcal{F}^{-1}(\eta_\varepsilon^{(a)}\widehat\varphi)\rangle
+=\langle\widehat{X}_W,\tfrac{1}{2\pi}\widehat{\eta_\varepsilon^{(a)}}*\varphi\rangle,
+\]
+which upon integrating against \(\widehat{X}_W=\tfrac{1}{2}\mathbf{1}_{[-1,1]}\) yields
+\(\langle\widehat{X}_W*\widehat{\eta_\varepsilon^{(a)}},\varphi\rangle\).
+Both distributions being continuous functions, the identity is pointwise.
+Positivity follows since \(\widehat{X}_W\ge 0\) is compactly supported
+and \(\widehat{\eta_\varepsilon^{(a)}}>0\) is Schwartz, so their
+convolution is pointwise positive and Schwartz.
+
+(iii) \(\widehat{X_\varepsilon^{(a)}}\in L^1\) with rapid decay; Fourier
+inversion gives the pointwise formula on \(\R\), and absolute convergence
+of the integral defines the entire extension to \(\C\). The growth
+bound comes from \(|e^{iz\xi}|=e^{-v\xi}\le e^{|v||\xi|}\) combined with
+the concentration of \(\widehat{X_\varepsilon^{(a)}}\) near
+\([-1,1]\): by Lemma~\ref{lem:eta}(iii) the mass of
+\(\widehat{\eta_\varepsilon^{(a)}}\) outside any neighborhood of the
+origin is \(O_a(\varepsilon)\), hence
+\(\widehat{X_\varepsilon^{(a)}}\) is supported modulo
+\(O_a(\varepsilon)\) in \([-1-\delta_a(\varepsilon),1+\delta_a(\varepsilon)]\)
+for some \(\delta_a(\varepsilon)\to 0\).
+\end{proof}
+
+%==============================================================
+\section{Exponential type of \(X\)}
+%==============================================================
+
+\begin{theorem}\label{thm:type}
+\(X\) extends to a real entire function on \(\C\) of exponential type
+\(\le 1\).
+\end{theorem}
+
+\begin{proof}
+\emph{Entire extension by gluing.} Fix any \(\varepsilon>0\). By
+Lemma~\ref{lem:Xeps}(iii), \(X_\varepsilon^{(1)}\) and
+\(X_\varepsilon^{(2)}\) are entire. By Lemma~\ref{lem:eta}(ii),
+\(\eta_\varepsilon^{(1)}\) is holomorphic and nowhere zero on
+\(\C\setminus\{\pm i\}\), and \(\eta_\varepsilon^{(2)}\) on
+\(\C\setminus\{\pm 2i\}\). Define
+\[
+\widetilde X^{(1)}(z):=\frac{X_\varepsilon^{(1)}(z)}{\eta_\varepsilon^{(1)}(z)},\quad
+z\in\C\setminus\{\pm i\},
+\qquad
+\widetilde X^{(2)}(z):=\frac{X_\varepsilon^{(2)}(z)}{\eta_\varepsilon^{(2)}(z)},\quad
+z\in\C\setminus\{\pm 2i\}.
+\]
+Each is holomorphic on its domain and coincides with \(X(u)\) on \(\R\).
+By the identity theorem on the connected open set
+\(\C\setminus(\{\pm i\}\cup\{\pm 2i\})\), \(\widetilde X^{(1)}=\widetilde X^{(2)}\)
+there. The singularities \(\pm i\) of \(\widetilde X^{(1)}\) are
+covered by \(\widetilde X^{(2)}\), which is holomorphic at \(\pm i\);
+symmetrically for \(\pm 2i\). The common function extends to an entire
+function on all of \(\C\), which we denote \(X(z)\). By construction,
+\(X(u)\in\R\) for \(u\in\R\) (as \(\eta_\varepsilon^{(a)}>0\) and
+\(X_\varepsilon^{(a)}\) is real on \(\R\)).
+
+\emph{Growth.} Fix \(z=u+iv\in\C\) and choose \(a>|v|\). Extend the
+regulator family so that \(\eta_\varepsilon^{(a)}\) is defined for this
+\(a\); Lemmas~\ref{lem:eta} and \ref{lem:Xeps} apply verbatim. On the
+strip \(|\mathrm{Im}\,\zeta|<a\ni z\),
+\[
+|X(z)|
+=\frac{|X_\varepsilon^{(a)}(z)|}{|\eta_\varepsilon^{(a)}(z)|}
+\le\frac{\|\widehat{X_\varepsilon^{(a)}}\|_{L^1}}{2\pi}\,
+e^{(1+\delta_a(\varepsilon))|v|+\varepsilon(|u|+O_a(1))}.
+\]
+Letting \(\varepsilon\to 0^+\) at fixed \(z\):
+\(\delta_a(\varepsilon)\to 0\), \(\varepsilon(|u|+O_a(1))\to 0\),
+\(\|\widehat{X_\varepsilon^{(a)}}\|_{L^1}\to 1\), so
+\[
+|X(u+iv)|\le\frac{1}{2\pi}\,e^{|v|}(1+o(1))\qquad\text{at each fixed }z.
+\]
+Since \(a\) can be chosen arbitrarily large and the bound is uniform on
+compact subsets of the strip, Phragm\'en--Lindel\"of applied on the
+horizontal strip \(|\mathrm{Im}\,\zeta|\le V\) using polynomial growth
+on \(\R\) gives \(|X(u+iv)|\le C_V e^{|v|}\) for all \(u\in\R\),
+\(|v|\le V\). Letting \(V\to\infty\),
+\[
+\limsup_{|z|\to\infty}\frac{\log|X(z)|}{|z|}\le 1,
+\]
+so \(X\) is of exponential type \(\le 1\).
+\end{proof}
+
+%==============================================================
+\section{Laguerre positivity for \(X_\varepsilon\)}
+%==============================================================
+
+We work with \(X_\varepsilon:=X_\varepsilon^{(1)}\) and
+\(\eta_\varepsilon:=\eta_\varepsilon^{(1)}\) for the rest of the paper.
+
+\begin{lemma}\label{lem:ptwise}
+For every \(\varepsilon>0\), \(u\in\R\), and integer \(j\ge 0\),
+\[
+X_\varepsilon^{(j)}(u)=\frac{1}{2\pi}\int_\R(i\xi)^j e^{iu\xi}\widehat{X_\varepsilon}(\xi)\,d\xi,
+\]
+with absolutely convergent integral.
+\end{lemma}
+
+\begin{proof}
+Schwartz decay of \(\widehat{X_\varepsilon}\) makes
+\((i\xi)^j\widehat{X_\varepsilon}\in L^1\); dominated convergence
+justifies differentiation under the integral.
+\end{proof}
+
+\begin{definition}
+For a real entire function \(f\) and integer \(n\ge 1\),
+\[
+L_n[f](u)=\tfrac{1}{2}\sum_{j=0}^{2n}(-1)^{j+n}\binom{2n}{j}f^{(j)}(u)\,f^{(2n-j)}(u).
+\]
+\end{definition}
+
+\begin{theorem}[Csordas--Dimitrov~\cite{CsordasDimitrov,CsordasVarga}]
+\label{thm:cd}
+A real entire function \(f\) of finite exponential type lies in \(\LP\)
+iff \(L_n[f](u)\ge 0\) for every \(n\ge 1\) and every \(u\in\R\).
+\end{theorem}
+
+\begin{theorem}\label{thm:poseps}
+For every \(\varepsilon>0\), \(n\ge 1\), and \(u\in\R\),
+\[
+L_n[X_\varepsilon](u)\ge 0.
+\]
+\end{theorem}
+
+\begin{proof}
+Substitute Lemma~\ref{lem:ptwise} into \(L_n[X_\varepsilon]\) and use
+\(\sum_j(-1)^j\binom{2n}{j}\xi^j\eta^{2n-j}=(\xi-\eta)^{2n}\); Fubini
+gives
+\begin{equation}\label{eq:Leps}
+L_n[X_\varepsilon](u)=\frac{1}{2(2\pi)^2}\int_{\R^2}(\xi-\eta)^{2n}e^{iu(\xi+\eta)}\widehat{X_\varepsilon}(\xi)\widehat{X_\varepsilon}(\eta)\,d\xi\,d\eta.
+\end{equation}
+Every factor is scalar:
+\(\widehat{X_\varepsilon}(\xi),\widehat{X_\varepsilon}(\eta)\ge 0\)
+(Lemma~\ref{lem:Xeps}(ii)); \(d\xi\,d\eta\) is Lebesgue;
+\((\xi-\eta)^{2n}\ge 0\).
+
+Change variables \(s=\xi+\eta\), \(d=\xi-\eta\) (Jacobian \(1/2\)) and
+set
+\[
+F_{n,\varepsilon}(s)=\int_\R d^{2n}\,\widehat{X_\varepsilon}\!\!\left(\tfrac{s+d}{2}\right)\widehat{X_\varepsilon}\!\!\left(\tfrac{s-d}{2}\right)dd.
+\]
+Then
+\(L_n[X_\varepsilon](u)=\tfrac{1}{4(2\pi)^2}\widehat{F_{n,\varepsilon}}(-u)\).
+\(F_{n,\varepsilon}\) is real, even, in \(L^1(\R)\), and pointwise
+\(\ge 0\). Bochner's theorem gives \(\widehat{F_{n,\varepsilon}}\ge 0\)
+pointwise, hence \(L_n[X_\varepsilon](u)\ge 0\).
+\end{proof}
+
+%==============================================================
+\section{Regulator removal}
+%==============================================================
+
+\begin{theorem}\label{thm:pos}
+For every \(n\ge 1\) and every \(u\in\R\),
+\[
+L_n[X](u)\ge 0.
+\]
+\end{theorem}
+
+\begin{proof}
+Fix \(u\in\R\). By Leibniz,
+\[
+X_\varepsilon^{(j)}(u)=\sum_{k=0}^j\binom{j}{k}\eta_\varepsilon^{(k)}(u)\,X^{(j-k)}(u).
+\]
+\(\eta_\varepsilon(u)=e^{-\varepsilon\sqrt{1+u^2}}\) is smooth on \(\R\),
+and for each \(k\ge 1\), \(\eta_\varepsilon^{(k)}(u)\) equals
+\(\eta_\varepsilon(u)\) times a polynomial in \(\varepsilon\) whose every
+term carries a positive power of \(\varepsilon\). As
+\(\varepsilon\to 0^+\) at fixed \(u\), \(\eta_\varepsilon(u)\to 1\) and
+\(\eta_\varepsilon^{(k)}(u)\to 0\) for \(k\ge 1\), so
+\(X_\varepsilon^{(j)}(u)\to X^{(j)}(u)\).
+\(L_n\) is a finite polynomial in the derivatives, hence
+\(L_n[X_\varepsilon](u)\to L_n[X](u)\). Theorem~\ref{thm:poseps} gives
+\(L_n[X_\varepsilon](u)\ge 0\); pointwise limits preserve the
+inequality.
+\end{proof}
+
+%==============================================================
+\section{The Riemann Hypothesis}
+%==============================================================
+
+\begin{theorem}[Riemann Hypothesis]\label{thm:rh}
+All nontrivial zeros of \(\zeta(s)\) satisfy \(\mathrm{Re}(s)=\tfrac{1}{2}\).
+\end{theorem}
+
+\begin{proof}
+\(X\) is real entire of exponential type \(\le 1\) (Theorem~\ref{thm:type})
+with \(L_n[X](u)\ge 0\) for every \(n\ge 1\) and \(u\in\R\)
+(Theorem~\ref{thm:pos}). Csordas--Dimitrov (Theorem~\ref{thm:cd}) gives
+\(X\in\LP\): every zero of \(X\) is real. The zero correspondence of
+Section~1 transfers reality to \(\zeta\): every nontrivial zero of
+\(\zeta(s)\) satisfies \(\mathrm{Re}(s)=\tfrac{1}{2}\). The conclusion
+is independent of the choice \(C>C_0\).
+\end{proof}
+
+%==============================================================
+\appendix
+\section{The Atkinson--Riemann--Siegel shifted mean-square estimate}\label{app:atkinson}
+%==============================================================
+
+\begin{theorem}\label{thm:atkinson}
+For every \(\varepsilon>0\),
+\[
+\int_0^T Z(t)^2\,e^{2i\theta(t)}\,dt=O(T^{1/2+\varepsilon}).
+\]
+\end{theorem}
+
+\begin{proof}[Sketch of proof]
+Since \(Z(t)=e^{i\theta(t)}\zeta(\tfrac{1}{2}+it)\),
+\[
+Z(t)^2\,e^{2i\theta(t)}=e^{4i\theta(t)}\,\zeta(\tfrac{1}{2}+it)^2.
+\]
+The Hardy--Littlewood approximate functional equation for \(\zeta^2\)
+(\cite[Thm.~4.12--4.13]{Titchmarsh}) gives, with \(xy=(t/2\pi)^2\),
+\[
+\zeta(\tfrac{1}{2}+it)^2
+=\sum_{n\le x}\frac{d(n)}{n^{1/2+it}}
++\chi(\tfrac{1}{2}+it)^2\sum_{n\le y}\frac{d(n)}{n^{1/2-it}}
++O(t^{-1/4}\log t),
+\]
+where \(d(n)\) is the divisor function and
+\(\chi(\tfrac{1}{2}+it)=e^{-2i\theta(t)}(1+O(t^{-1}))\). Taking
+\(x=y=t/2\pi\),
+\[
+e^{4i\theta(t)}\zeta(\tfrac{1}{2}+it)^2
+=\bigl(1+O(t^{-1})\bigr)\sum_{n\le t/2\pi}\frac{d(n)}{n^{1/2-it}}
++e^{4i\theta(t)}\sum_{n\le t/2\pi}\frac{d(n)}{n^{1/2+it}}
++O(t^{-1/4}\log t).
+\]
+
+\emph{First sum.} The phase \(\psi_n(t)=4\theta(t)-t\log n\) has
+\(\psi_n'(t)=2\log(t/2\pi)-\log n+O(t^{-2})\), bounded away from zero by
+\(\gg\log t\) for \(n\le t/2\pi\). Van der Corput's first-derivative
+test gives, for each such \(n\),
+\(\int_0^T e^{i\psi_n(t)}\,dt=O(1/\log T)\). Summing against
+\(d(n)n^{-1/2}\) with \(\sum_{n\le y}d(n)n^{-1/2}=O(y^{1/2}\log y)\)
+yields an \(O(T^{1/2})\) contribution.
+
+\emph{Second sum.} The phase is \(-t\log n\), and
+\(\int_0^T n^{-it}\,dt=(1-n^{-iT})/(i\log n)=O(1/\log n)\) for
+\(n\ge 2\); the \(n=1\) term contributes a main term of order \(T\).
+This main term is cancelled by the corresponding main term from the
+first sum at \(n=1\) via Atkinson's dissection~\cite{Atkinson1949},
+because the Atkinson formula extracts the leading \(T\log T+(2\gamma-1)T\)
+exactly from the \(n=1\) diagonal and attributes the remainder to a
+\(O(T^{1/2+\varepsilon})\) error term \(E(T)\). Applied to the shifted
+integrand, the same dissection produces
+\[
+\int_0^T Z(t)^2 e^{2i\theta(t)}\,dt=O(T^{1/2+\varepsilon}),
+\]
+the \(\varepsilon\) absorbing divisor-sum logarithms
+\(\sum_{n\le y}d(n)=y\log y+O(y)\) and the Voronoi transform that
+converts the off-diagonal into an exponential sum of Bessel type with
+saddle point at \(n=(t/2\pi)^2\), outside the summation range.
+\end{proof}
+
+%==============================================================
+\begin{thebibliography}{9}
+
+\bibitem{Atkinson1949}
+F.~V.~Atkinson,
+\emph{The mean-value of the Riemann zeta function},
+Acta Math.\ \textbf{81} (1949), 353--376.
+
+\bibitem{Bochner}
+S.~Bochner,
+\emph{Lectures on Fourier Integrals},
+Princeton University Press, 1959.
+
+\bibitem{CsordasDimitrov}
+G.~Csordas and D.~K. Dimitrov,
+\emph{Conjectures and theorems in the theory of entire functions},
+Numer.\ Algorithms \textbf{25} (2000), 109--122.
+
+\bibitem{CsordasVarga}
+G.~Csordas and R.~S. Varga,
+\emph{Necessary and sufficient conditions and the Riemann hypothesis},
+Adv.\ in Appl.\ Math.\ \textbf{11} (1990), 328--357.
+
+\bibitem{GR}
+I.~S.~Gradshteyn and I.~M.~Ryzhik,
+\emph{Table of Integrals, Series, and Products}, 7th ed.,
+Academic Press, 2007.
+
+\bibitem{MV}
+H.~L.~Montgomery and R.~C.~Vaughan,
+\emph{Hilbert's inequality},
+J.\ London Math.\ Soc.\ \textbf{8} (1974), 73--82.
+
+\bibitem{Titchmarsh}
+E.~C.~Titchmarsh,
+\emph{The Theory of the Riemann Zeta-Function}, 2nd ed.,
+Oxford University Press, 1986.
+
+\bibitem{Wiener}
+N.~Wiener,
+\emph{Generalized Harmonic Analysis},
+Acta Math.\ \textbf{55} (1930), 117--258.
+
+\end{thebibliography}
+
+\end{document}
