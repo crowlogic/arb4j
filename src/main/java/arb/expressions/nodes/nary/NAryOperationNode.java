@@ -95,11 +95,10 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   public static final Logger                      logger                         = LoggerFactory.getLogger(NAryOperationNode.class);
 
   /**
-   * The generated field name on the outer class for the {@code arb.Integer}
-   * index variable (e.g. {@code jℤ0003}). Distinct from
-   * {@link #indexVariableFieldName} which holds the logical name used inside the
-   * operand expression (e.g. {@code j}). Assigned in
-   * {@link #declareIndexVariableField()}.
+   * The generated field name on the outer class for the {@code arb.Integer} index
+   * variable (e.g. {@code jℤ0003}). Distinct from {@link #indexVariableFieldName}
+   * which holds the logical name used inside the operand expression (e.g.
+   * {@code j}). Assigned in {@link #declareIndexVariableField()}.
    */
   public String                                   indexVariableGeneratedFieldName;
 
@@ -344,10 +343,10 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   /**
    * Registers the {@code arb.Integer} index variable as an intermediate field on
-   * the generated class. The generated field name (e.g. {@code jℤ0003}) is
-   * stored in {@link #indexVariableGeneratedFieldName}; it is distinct from the
-   * logical index name in {@link #indexVariableFieldName} (e.g. {@code j}) which
-   * the operand expression uses to reference it.
+   * the generated class. The generated field name (e.g. {@code jℤ0003}) is stored
+   * in {@link #indexVariableGeneratedFieldName}; it is distinct from the logical
+   * index name in {@link #indexVariableFieldName} (e.g. {@code j}) which the
+   * operand expression uses to reference it.
    *
    * <p>
    * Because the field is registered through
@@ -360,7 +359,9 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     assert indexVariableFieldName != null : "indexVariableFieldName must be set before declareIndexVariableField";
     if (indexVariableGeneratedFieldName == null)
     {
-      indexVariableGeneratedFieldName = expression.newIntermediateVariable(indexVariableFieldName, Integer.class);
+      indexVariableGeneratedFieldName =
+                                      expression.newIntermediateVariable(expression.getNextIntermediateVariableFieldName(indexVariableFieldName, generatedType),
+                                                                         Integer.class);
     }
   }
 
@@ -624,7 +625,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       expression.require('=');
       this.lowerLimit = expression.resolve();
       expression.require('\u2026');
-      this.upperLimit = expression.resolve();
+      this.upperLimit             = expression.resolve();
       this.indexVariableFieldName = firstFamilyIndexName;
       operandExpression.continueParsingFrom(expression);
       var loNode = this.lowerLimit.spliceInto(operandExpression);
@@ -632,9 +633,15 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       registerFamilyFunction(operandExpression, specifiedName, firstFamilyIndexName, loNode, hiNode, operandExpression.rootNode);
       expression.continueParsingFrom(operandExpression);
       operandExpression.rootNode.resolveFunctions();
-      expression.getContext().functions.values().forEach(fm -> { if (fm.expression != null && fm.expression.rootNode != null) fm.expression.rootNode.resolveFunctions(); });
+      expression.getContext().functions.values().forEach(fm ->
+      {
+        if (fm.expression != null && fm.expression.rootNode != null)
+          fm.expression.rootNode.resolveFunctions();
+      });
       parseMultisumIndices();
-      if (expression.nextCharacterIs('}')) { }
+      if (expression.nextCharacterIs('}'))
+      {
+      }
       return this;
     }
 
@@ -707,20 +714,19 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                       Node<Integer, R, Sequence<R>> hiNode,
                                       Node<Integer, R, Sequence<R>> bodyNode)
   {
-    String arrayFieldName =
-        currentOperandExpression.getNextIntermediateVariableFieldName(familyName + "Arr", int[].class);
+    String arrayFieldName = currentOperandExpression.getNextIntermediateVariableFieldName(familyName + "Arr", int[].class);
     currentOperandExpression.newIntermediateVariable(arrayFieldName, int[].class);
 
     @SuppressWarnings("rawtypes")
-    FunctionMapping<Integer, arb.Integer, IntegerFunction> familyMapping =
-        currentOperandExpression.getContext().registerFunctionMapping(familyName,
-                                                                 null,
-                                                                 arb.Integer.class,
-                                                                 arb.Integer.class,
-                                                                 IntegerFunction.class,
-                                                                 false,
-                                                                 null,
-                                                                 null);
+    FunctionMapping<Integer, arb.Integer, IntegerFunction> familyMapping = currentOperandExpression.getContext()
+                                                                                                   .registerFunctionMapping(familyName,
+                                                                                                                            null,
+                                                                                                                            arb.Integer.class,
+                                                                                                                            arb.Integer.class,
+                                                                                                                            IntegerFunction.class,
+                                                                                                                            false,
+                                                                                                                            null,
+                                                                                                                            null);
 
     familyMapping.functionFieldDescriptor(true);
     currentOperandExpression.registerReferencedFunction(familyName, familyMapping);
@@ -784,7 +790,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
       var extraLower = currentOperandExpression.resolve();
       currentOperandExpression.require('\u2026');
-      var extraUpper = currentOperandExpression.resolve();
+      var    extraUpper             = currentOperandExpression.resolve();
 
       String innerOperandFieldName  = currentOperandExpression.getNextIntermediateVariableFieldName("operand", Function.class);
 
@@ -822,14 +828,15 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     innerLevel.functionClass            = currentOperandExpression.className;
     innerLevel.assignFieldNamesIfNecessary(innerOperandExpression.coDomainType);
 
-    innerLevel.operandMapping = currentOperandExpression.getContext().registerFunctionMapping(innerOperandFieldName,
-                                                                                         null,
-                                                                                         Integer.class,
-                                                                                         innerOperandExpression.coDomainType,
-                                                                                         Sequence.class,
-                                                                                         true,
-                                                                                         innerOperandExpression,
-                                                                                         innerOperandFieldName);
+    innerLevel.operandMapping = currentOperandExpression.getContext()
+                                                        .registerFunctionMapping(innerOperandFieldName,
+                                                                                 null,
+                                                                                 Integer.class,
+                                                                                 innerOperandExpression.coDomainType,
+                                                                                 Sequence.class,
+                                                                                 true,
+                                                                                 innerOperandExpression,
+                                                                                 innerOperandFieldName);
     return innerLevel;
   }
 
@@ -877,7 +884,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       });
     }
   }
-
 
   protected void propagateContextVariableToOperand(MethodVisitor mv, Entry<String, Named> entry)
   {
@@ -1050,14 +1056,15 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     assert operandFunctionFieldName != null : "operandFunctionFieldName shan't be null";
 
-    operandMapping = expression.getContext().registerFunctionMapping(operandFunctionFieldName,
-                                                                null,
-                                                                Integer.class,
-                                                                operandExpression.coDomainType,
-                                                                Sequence.class,
-                                                                true,
-                                                                operandExpression,
-                                                                expr);
+    operandMapping = expression.getContext()
+                               .registerFunctionMapping(operandFunctionFieldName,
+                                                        null,
+                                                        Integer.class,
+                                                        operandExpression.coDomainType,
+                                                        Sequence.class,
+                                                        true,
+                                                        operandExpression,
+                                                        expr);
     if (Expression.traceNodes)
     {
       logger.debug(String.format("\nregisterOperand(operandExpression=%s,\noperandMapping=%s\n)\n\n", operandExpression, operandMapping));
