@@ -1,4 +1,3 @@
-fix recursion for multivar functions
 constant subexpression extraction
 move intermediateVariableCounters from Context to Expression
-fix leaked index variable in NARYOperationNode
+todo: support package prefixes in the expression compiler and somehow make the package name dynamically set by the junit test name so the decompiled output from different tests doesnt overwrite each other in the output dir

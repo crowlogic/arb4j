@@ -743,7 +743,7 @@
 
 <\initial>
   <\collection>
-    <associate|magnification|1.2>
+    <associate|magnification|1>
     <associate|page-height|auto>
     <associate|page-medium|paper>
     <associate|page-type|letter>
@@ -753,41 +753,41 @@
 
 <\references>
   <\collection>
-    <associate|app:sumfreq|<tuple|9|11|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-1|<tuple|?|2|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-10|<tuple|9|11|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-11|<tuple|16|11|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-2|<tuple|1|3|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-3|<tuple|2|4|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-4|<tuple|3|5|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-5|<tuple|4|6|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-6|<tuple|5|8|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-7|<tuple|6|9|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-8|<tuple|7|10|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-9|<tuple|8|10|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|bib-CsordasVishnyakova|<tuple|CsordasVishnyakova|11|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|bib-GR|<tuple|GR|11|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|bib-Ivic|<tuple|Ivic|11|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|bib-MV|<tuple|MV|11|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|bib-Titchmarsh|<tuple|Titchmarsh|11|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Leps|<tuple|33|10|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:RS|<tuple|13|4|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:convid|<tuple|24|7|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:strip-ext|<tuple|27|7|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|lem:Xeps|<tuple|8|7|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|lem:eta|<tuple|7|6|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|lem:ptwise|<tuple|10|9|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|sec:reg|<tuple|4|6|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|sec:type|<tuple|5|8|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|thm:band|<tuple|3|5|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|thm:cov|<tuple|2|4|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|thm:cv|<tuple|12|10|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|thm:pos|<tuple|14|10|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|thm:poseps|<tuple|13|10|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|thm:rh|<tuple|15|10|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|thm:stone|<tuple|5|5|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|thm:sumfreq|<tuple|16|11|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|thm:type|<tuple|9|8|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|app:sumfreq|<tuple|9|8|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-1|<tuple|?|1|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-10|<tuple|9|8|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-11|<tuple|16|8|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-2|<tuple|1|2|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-3|<tuple|2|2|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-4|<tuple|3|3|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-5|<tuple|4|4|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-6|<tuple|5|6|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-7|<tuple|6|7|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-8|<tuple|7|7|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-9|<tuple|8|8|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-CsordasVishnyakova|<tuple|CsordasVishnyakova|8|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-GR|<tuple|GR|8|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-Ivic|<tuple|Ivic|8|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-MV|<tuple|MV|8|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-Titchmarsh|<tuple|Titchmarsh|8|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:Leps|<tuple|33|7|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:RS|<tuple|13|3|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:convid|<tuple|24|5|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:strip-ext|<tuple|27|5|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|lem:Xeps|<tuple|8|5|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|lem:eta|<tuple|7|4|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|lem:ptwise|<tuple|10|7|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|sec:reg|<tuple|4|4|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|sec:type|<tuple|5|6|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|thm:band|<tuple|3|3|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|thm:cov|<tuple|2|2|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|thm:cv|<tuple|12|7|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|thm:pos|<tuple|14|7|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|thm:poseps|<tuple|13|7|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|thm:rh|<tuple|15|8|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|thm:stone|<tuple|5|4|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|thm:sumfreq|<tuple|16|8|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|thm:type|<tuple|9|6|../.TeXmacs/texts/scratch/no_name_3.tm>>
   </collection>
 </references>
 
