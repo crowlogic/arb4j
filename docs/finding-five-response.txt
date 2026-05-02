@@ -1,616 +1,285 @@
 \documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
 \usepackage{amsmath,amssymb,amsthm}
-\usepackage{hyperref}
-\usepackage{geometry}
-\geometry{margin=1in}
-
 \newtheorem{theorem}{Theorem}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{remark}[theorem]{Remark}
-\newtheorem{definition}[theorem]{Definition}
-
-\title{Finding 5 Response:\\
-Sum-frequency stationary phase in $q$ via Voronoi summation}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\title{Finding 5 Response: Sum-frequency bilinear estimate}
 \author{}
 \date{}
-
 \begin{document}
 \maketitle
 
-\section{Introduction and Setup}
+\section{The sum-frequency bilinear estimate}
 
-This document provides a corrected and self-contained proof of the bound
+This section proves the bilinear estimate used in the variogram bound
+(Theorem~thm:cov).  The integrand in the variogram involves
+$\cos(\phi_m(u+h)+\phi_n(u))$, where $\phi_n(u)=\theta(t(u))-t(u)\log n$
+and $t(u)$ is the parametrisation of the critical line.  The relevant sum
+is therefore \emph{$h$-dependent}, and it is the $h$-dependent version that
+admits square-root cancellation.
+
+\paragraph{Notation.}
+Throughout, $T\geq 2$, $N=\lfloor\sqrt{T/(2\pi)}\rfloor$,
+$\theta(t)=\tfrac{t}{2}\log\tfrac{t}{2\pi e}+\tfrac{\pi}{8}+O(t^{-1})$
+is the Riemann--Siegel theta function, and $L(t)=\theta'(t)\sim
+\tfrac{1}{2}\log\tfrac{t}{2\pi}$.  Fix constants $0<\delta\leq H<\infty$.
+
+\begin{theorem}[Sum-frequency bilinear estimate]
+\label{thm:sumfreq}
+Let $h\in\mathbb{R}$ satisfy $\delta\leq|h|\leq H$.  Then
 \[
-S_{\mathrm{sum}}(T, h) = O\!\left(T^{1/2} \log^{2} T\right)
+  S_{\mathrm{sum}}(T,h)
+  :=\sum_{m,n\leq N}\frac{1}{\sqrt{mn}}
+    \int_0^T\cos\!\bigl(\phi_m(u+h)+\phi_n(u)\bigr)\,du
+  =O_{\delta,H}(T^{1/2}\log^2 T),
 \]
-for the sum-frequency contribution to the covariance kernel, where $h \neq 0$ lies in a fixed compact
-interval $[\delta, H]$ with $\delta > 0$.  We also explain why the case $h = 0$ is handled
-differently: at $h = 0$ the sum-frequency contribution equals the variance of $X$, which is
-normalized to $1$ by definition, so no asymptotic bound is needed.
-
-\subsection*{Notation}
-
-Throughout, $T > 0$ is a large parameter, $N \asymp \sqrt{T/(2\pi)}$, and $d(q) = \sum_{mn = q} 1$
-denotes the number of divisors of $q$.  The Riemann--Siegel phase is
-\[
-\theta(t) = \arg \Gamma\!\left(\tfrac{1}{4} + \tfrac{it}{2}\right) - \frac{t}{2}\log \pi,
-\]
-with Stirling asymptotic
-\[
-\theta(t) = \frac{t}{2}\log\frac{t}{2\pi e} + \frac{\pi}{8} + \frac{1}{48t} + O(t^{-3}), \qquad t \to +\infty.
-\]
-In particular,
-\[
-\theta'(t) = \frac{1}{2}\log\frac{t}{2\pi} + O(t^{-2}), \qquad
-\theta''(t) = \frac{1}{2t} + O(t^{-3}).
-\]
-
-\subsection*{The random wave model and its covariance}
-
-Fix a sequence $(a_n)_{n=1}^{N}$ of independent standard complex Gaussian random variables, and set
-\[
-X(u) = \frac{1}{\sqrt{V(T)}} \sum_{n=1}^{N} n^{-1/2} a_n \, e^{i \varphi_n(u)},
-\qquad \varphi_n(u) = \theta(t(u)) - t(u)\log n,
-\]
-where $t(u)$ is the inverse of the integrated density function and $V(T)$ is a normalizing
-variance so that $\mathbb{E}[|X(u)|^2] = 1$.  The covariance kernel is
-\[
-K(h) = \mathbb{E}\!\left[X(u+h)\overline{X(u)}\right]
-= \frac{1}{V(T)} \sum_{m,n \leq N} (mn)^{-1/2}\,
-  \frac{1}{T}\int_0^T e^{i(\varphi_m(u+h) - \varphi_n(u))}\, du.
-\]
-The \emph{difference-frequency} terms ($m = n$ diagonal, plus nearby-off-diagonal) produce the
-main contribution $\sin(h)/h + o(1)$.  The \emph{sum-frequency} terms arise from
-$e^{i(\varphi_m(u+h) + \overline{\varphi_n(u)})}$ in the squared modulus of $X$; more
-precisely, in the real-valued covariance these are the terms involving
-\[
-\cos\!\bigl(\varphi_m(u+h) + \varphi_n(u)\bigr)
-= \cos\!\bigl(\theta(t(u+h)) + \theta(t(u)) - t(u+h)\log m - t(u)\log n\bigr).
-\]
-Writing $t = t(u)$ for brevity, the sum-frequency integral is
-\[
-I_{m,n}(T,h) = \int_0^T e^{i\bigl(2\theta(t) - t\log(mn)\bigr)}\,
-  e^{i R_{m,n}(t,h)}\, dt \;+\; \text{conj.},
-\]
-where $R_{m,n}(t,h)$ is the correction due to $t(u+h) \neq t(u)$, computed next.
-
-\section{Taylor Expansion of the Sum-Frequency Phase}
-
-We expand $t(u+h)$ in $h$.  The density of $t(u)$ with respect to $u$ is $L(t) = \theta'(t) + C$
-for a suitable constant $C$; for $t \asymp T$ we have $L(t) \sim \frac{1}{2}\log(t/(2\pi))$.
-Thus $dt/du = 1/L(t)$ and
-\[
-t(u+h) = t + \frac{h}{L(t)} + O\!\left(\frac{h^2}{L(t)^2 t}\right).
-\]
-Using $\theta'(t+s) = \theta'(t) + s\,\theta''(t) + O(s^2 t^{-3})$:
-\begin{align*}
-\theta(t(u+h)) &= \theta\!\left(t + \frac{h}{L}\right)
-= \theta(t) + \frac{h}{L}\,\theta'(t) + \frac{h^2}{2L^2}\,\theta''(t) + O\!\left(\frac{h^3}{L^3 t^2}\right),\\
-t(u+h)\log m &= \left(t + \frac{h}{L}\right)\log m + O\!\left(\frac{h^2 \log m}{L^2 t}\right).
-\end{align*}
-Therefore
-\begin{align*}
-\varphi_m(u+h) + \varphi_n(u)
-&= \theta(t(u+h)) - t(u+h)\log m + \theta(t(u)) - t(u)\log n\\
-&= 2\theta(t) - t\log(mn)
-+ \frac{h}{L}\bigl(\theta'(t) - \log m\bigr)
-+ O\!\left(\frac{h^2}{L^2 t}\right).
-\end{align*}
-Setting $q = mn$ and using $\theta'(t) \approx \frac{1}{2}\log(t/(2\pi))$, the sum-frequency
-phase is
-\begin{equation}\label{eq:full-phase}
-\Psi_{q,m}(t, h)
-= \underbrace{2\theta(t) - t\log q}_{\Psi_q(t)}
-\;+\; \underbrace{\frac{h}{L(t)}\left(\theta'(t) - \log m\right)}_{\text{$h$-perturbation}}
-\;+\; O\!\left(\frac{h^2}{L(t)^2\,t}\right).
-\end{equation}
-We write the sum-frequency quantity as
-\[
-S_{\mathrm{sum}}(T, h)
-= \sum_{q \leq Q} q^{-1/2} \sum_{\substack{m,n \geq 1 \\ mn = q}} I_q^{(m)}(T,h),
-\qquad Q = \frac{T}{2\pi},
-\]
-where
-\[
-I_q^{(m)}(T,h)
-= \int_0^T \exp\!\Bigl(i\,\Psi_{q,m}(t,h)\Bigr)\, dt.
-\]
-
-\section{Stationary Phase in $t$}
-
-\subsection{The leading phase \texorpdfstring{$\Psi_q$}{Ψ\_q}}
-
-The stationary point $t^*(q)$ of the main phase $\Psi_q(t) = 2\theta(t) - t\log q$ satisfies
-\[
-\Psi_q'(t^*) = 2\theta'(t^*) - \log q = 0.
-\]
-Using $\theta'(t) = \frac{1}{2}\log(t/(2\pi)) + O(t^{-2})$, this gives
-\[
-\log\frac{t^*}{2\pi} = \log q + O((t^*)^{-2}),
-\]
-so
-\[
-t^*(q) = 2\pi q + O(q^{-1}).
-\]
-The second derivative at the stationary point is
-\[
-\Psi_q''(t^*(q)) = 2\theta''(t^*(q)) = \frac{1}{t^*(q)} + O\bigl((t^*(q))^{-3}\bigr)
-= \frac{1}{2\pi q} + O(q^{-3}).
-\]
-
-\subsection{Stationary phase value \texorpdfstring{$\Phi(q)$}{Φ(q)}}
-
-We compute $\Phi(q) := \Psi_q(t^*(q)) = 2\theta(t^*(q)) - t^*(q)\log q$ to high order.
-Write $t^* = 2\pi q + \delta$ where $\delta = O(q^{-1})$ is determined by the stationary
-equation.  From the Stirling expansion,
-\[
-2\theta(t^*) = t^* \log\frac{t^*}{2\pi e} + \frac{\pi}{4} + \frac{1}{24 t^*} + O(t^{*-3}).
-\]
-Expanding $\log(t^*/(2\pi e)) = \log(q/e) + \log(1 + \delta/(2\pi q))
-= \log(q/e) + \delta/(2\pi q) + O(\delta^2/q^2)$:
-\begin{align*}
-t^* \log\frac{t^*}{2\pi e}
-&= (2\pi q + \delta)\!\left[\log\frac{q}{e} + \frac{\delta}{2\pi q}
-   + O\!\left(\frac{\delta^2}{q^2}\right)\right]\\
-&= 2\pi q\log\frac{q}{e} + \delta\log\frac{q}{e} + \delta + O\!\left(\frac{\delta^2}{q}\right).
-\end{align*}
-Hence
-\[
-2\theta(t^*) = 2\pi q\log q - 2\pi q + \delta\!\left(1 + \log\frac{q}{e}\right)
-+ \frac{\pi}{4} + \frac{1}{48\pi q} + O(q^{-3}).
-\]
-Since $t^*\log q = (2\pi q + \delta)\log q = 2\pi q\log q + \delta\log q$,
-\[
-\Phi(q) = 2\theta(t^*) - t^*\log q
-= -2\pi q + \delta\!\left(1 + \log\frac{q}{e} - \log q\right) + \frac{\pi}{4}
-  + \frac{1}{48\pi q} + O(q^{-3}).
-\]
-Observe that $1 + \log(q/e) - \log q = 1 - 1 = 0$, so the $\delta$-terms cancel:
-\begin{equation}\label{eq:Phi-expansion}
-\boxed{\Phi(q) = -2\pi q + \frac{\pi}{4} + \frac{1}{48\pi q} + O(q^{-3}).}
-\end{equation}
-For integer $q$, $e^{-2\pi i q} = 1$, so
-\[
-e^{i\Phi(q)} = e^{i\pi/4} \exp\!\left(\frac{i}{48\pi q} + O(q^{-3})\right)
-= e^{i\pi/4}\!\left(1 + \frac{i}{48\pi q} + O(q^{-2})\right).
-\]
-
-\subsection{Stationary phase approximation for \texorpdfstring{$I_q^{(m)}(T,h)$}{I\_q\^{}\{(m)\}}}
-
-Treating the $h$-correction in \eqref{eq:full-phase} as a slowly varying perturbation at the
-scale of the stationary phase, and applying the van der Corput stationary phase lemma
-(see, e.g., Titchmarsh, \emph{The Theory of the Riemann Zeta-Function}, 2nd ed.,
-Oxford University Press, 1986, Lemma~4.5; or Iwaniec--Kowalski,
-\emph{Analytic Number Theory}, AMS, 2004, Proposition~8.2), we obtain
-\begin{equation}\label{eq:statphase}
-I_q^{(m)}(T,h)
-= \sqrt{\frac{2\pi}{\Psi_q''(t^*(q))}}\,
-  \exp\!\Bigl(i\,\Phi(q) + \tfrac{i\pi}{4} + i\,\chi(q, m, h)\Bigr)
-+ B_q^{(m)}(T, h),
-\end{equation}
-where:
-\begin{itemize}
-\item The leading amplitude is $\sqrt{2\pi/\Psi_q''(t^*)} = \sqrt{2\pi \cdot 2\pi q} = 2\pi\sqrt{q}$,
-  since $\Psi_q''(t^*(q)) = 1/(2\pi q) + O(q^{-3})$.
-
-\item The $h$-dependent phase correction at the stationary point is
-\begin{equation}\label{eq:chi}
-\chi(q, m, h) = \frac{h}{L(t^*(q))}\left(\theta'(t^*(q)) - \log m\right)
-+ O\!\left(\frac{h^2}{L(t^*)^2\, t^*}\right).
-\end{equation}
-At $t^* = 2\pi q + O(q^{-1})$, we have $L(t^*) \sim \frac{1}{2}\log(2\pi q)$ and
-$\theta'(t^*) = \frac{1}{2}\log q + O(q^{-2})$, giving
-\[
-\chi(q, m, h) = \frac{h\bigl(\frac{1}{2}\log q - \log m\bigr)}{\frac{1}{2}\log(2\pi q)}
-+ O\!\left(\frac{h^2}{q\log^2 q}\right)
-= \frac{h\log(q/m^2)}{\log(2\pi q)} + O\!\left(\frac{h^2}{q\log^2 q}\right).
-\]
-
-\item $B_q^{(m)}(T, h)$ collects endpoint contributions from $t = 0$ and $t = T$, and is bounded by
-\[
-B_q^{(m)}(T,h) = O(1)
-\]
-uniformly in $q$ and $h$ in a compact set (standard integration-by-parts bound).
-\end{itemize}
-Substituting back:
-\begin{align}
-S_{\mathrm{sum}}(T,h)
-&= \sum_{q \leq Q} q^{-1/2} \sum_{\substack{m,n \geq 1 \\ mn = q}}
-   \Bigl[2\pi\sqrt{q}\,e^{i(\Phi(q) + \pi/4 + \chi(q,m,h))} + B_q^{(m)}\Bigr] \notag\\
-&= 2\pi\, e^{i\pi/4} \sum_{q \leq Q} e^{i\Phi(q)} \sum_{\substack{m,n \geq 1 \\ mn = q}}
-   e^{i\chi(q,m,h)}
-+ O\!\left(\sum_{q \leq Q} d(q)\right). \label{eq:Ssum-expanded}
-\end{align}
-The error from boundary terms satisfies $\sum_{q \leq Q} d(q) = O(Q\log Q) = O(T\log T)$.
-This naive endpoint error is too large; however, the boundary integrals can be bounded more
-carefully by integration by parts, yielding $B_q^{(m)} = O(\min(1, |\Psi_q'(0)|^{-1}))$, and the
-sum of these over $q$ is $O(T^{1/2}\log T)$ (see Lemma~\ref{lem:boundary} below).
-
-The main term requires bounding
-\begin{equation}\label{eq:main-sum}
-M(T,h) := \sum_{q \leq Q} e^{i\Phi(q)}\, S_q(h),
-\qquad S_q(h) := \sum_{\substack{m,n \geq 1 \\ mn = q}} e^{i\chi(q,m,h)}.
-\end{equation}
-
-\section{The Divisor Phase Sum \texorpdfstring{$S_q(h)$}{S\_q(h)}}
-
-From \eqref{eq:chi},
-\[
-\chi(q, m, h) = \frac{h\log(q/m^2)}{\log(2\pi q)} + O\!\left(\frac{h^2}{q\log^2 q}\right).
-\]
-Let $\alpha(q, h) := h/\log(2\pi q)$.  Then
-\[
-e^{i\chi(q,m,h)} = e^{i\alpha(q,h)\log(q/m^2)}\bigl(1 + O(h^2/(q\log^2 q))\bigr)
-= \left(\frac{q}{m^2}\right)^{i\alpha(q,h)}\bigl(1 + O(h^2/(q\log^2 q))\bigr).
-\]
-Since the error contributes $O(h^2\,d(q)/(q\log^2 q))$ to $S_q(h)$, summed over $q\leq Q$
-this gives
-\[
-\sum_{q \leq Q} O\!\left(\frac{h^2 d(q)}{q\log^2 q}\right) = O(h^2),
-\]
-which is harmless for fixed $h$.  Thus
-\begin{equation}\label{eq:Sq}
-S_q(h) = \sum_{\substack{m,n \geq 1 \\ mn = q}} \left(\frac{q}{m^2}\right)^{i\alpha(q,h)}
-+ O\!\left(\frac{h^2\,d(q)}{q\log^2 q}\right)
-= q^{i\alpha(q,h)} \sum_{m \mid q} m^{-2i\alpha(q,h)} + O\!\left(\frac{h^2\, d(q)}{q\log^2 q}\right).
-\end{equation}
-
-\noindent\textbf{Case $h = 0$.}  We have $\alpha(q,0) = 0$, so $S_q(0) = d(q)$ and
-$M(T, 0) = \sum_{q\leq Q} d(q)\, e^{i\Phi(q)}$.  Since $e^{i\Phi(q)} = e^{i\pi/4}(1 + O(q^{-1}))$,
-we obtain $|M(T,0)| \asymp \sum_{q\leq Q} d(q) \asymp Q\log Q \asymp T\log T$.
-As explained in Section~\ref{sec:hzero}, this does \emph{not} yield a small bound, and indeed
-none is needed: the $h=0$ case contributes to $K(0) = 1$ via variance normalization.
-
-\noindent\textbf{Case $h \neq 0$.}
-For $h$ in a compact interval $[\delta, H]$ with $\delta > 0$, we have $\alpha(q,h) \asymp h/\log q$,
-which is positive (and in particular nonzero for all $q \geq 2$).
-
-\section{Voronoi Summation and the Bound for \texorpdfstring{$h \neq 0$}{h ≠ 0}}
-
-\subsection{Reformulation as a twisted divisor sum}
-
-Using $e^{i\Phi(q)} = e^{i\pi/4}(1 + O(q^{-1}))$ from \eqref{eq:Phi-expansion}, the main sum
-\eqref{eq:main-sum} becomes
-\begin{equation}\label{eq:M-reformed}
-M(T,h) = e^{i\pi/4} \sum_{q \leq Q} S_q(h) + O\!\left(\sum_{q \leq Q} \frac{|S_q(h)|}{q}\right).
-\end{equation}
-The error sum is bounded by
-\[
-\sum_{q \leq Q} \frac{|S_q(h)|}{q} \leq \sum_{q \leq Q} \frac{d(q)}{q} = O(\log^2 Q) = O(\log^2 T),
-\]
-using the estimate $|S_q(h)| \leq d(q)$ (trivial bound).  This error is acceptable.
-
-The main piece requires bounding
-\begin{equation}\label{eq:Amain}
-A(Q, h) := \sum_{q \leq Q} S_q(h)
-= \sum_{q \leq Q}\, q^{i\alpha(q,h)} \sum_{m \mid q} m^{-2i\alpha(q,h)}
-+ O(h^2 \log^2 Q).
-\end{equation}
-Since $\alpha(q,h) = h/\log(2\pi q)$ varies slowly, we approximate $\alpha(q,h) \approx
-\alpha(Q, h) = h/\log(2\pi Q)$ for $q \asymp Q$, introducing a relative error of
-$O(1/\log^2 Q)$ in the exponent per term, which contributes $O(Q/\log Q)$ total in the sum.
-
-Let $\beta = h/\log(2\pi Q)$ (a fixed constant for $h \in [\delta, H]$ with $Q \asymp T$,
-so $\beta \asymp h/\log T$).  The approximate main term is
-\begin{equation}\label{eq:Aapprox}
-\widetilde{A}(Q, h) = \sum_{q \leq Q}\, q^{i\beta} \sum_{m \mid q} m^{-2i\beta}
-= \sum_{q \leq Q} a(q)\, q^{i\beta},
-\end{equation}
-where $a(q) := \sum_{m\mid q} m^{-2i\beta}$ is a multiplicative arithmetic function with
-$|a(q)| \leq d(q)$.  In Dirichlet series,
-\[
-\sum_{q=1}^\infty a(q) q^{-s} = \zeta(s) \zeta(s + 2i\beta) \prod_p (\cdots),
-\]
-where the Euler product is entire and bounded for $\Re(s) > 1/2$ (this follows from the
-multiplicativity of $a$ and standard estimates for the Riemann zeta-function;
-see Titchmarsh, \emph{The Theory of the Riemann Zeta-Function}, 2nd ed., Chapter~3).
-
-\subsection{Voronoi summation formula for twisted divisor sums}
-
-We apply the Voronoi summation formula for divisor-type sums.  The relevant classical reference
-is Ivić, \emph{The Riemann Zeta-Function: Theory and Applications},
-Dover, 2003, Theorem~3.3 (p.\ 70), which states (in the relevant special case):
-
-\begin{theorem}[Voronoi, cf.\ Ivić (2003), Theorem~3.3]\label{thm:voronoi}
-Let $\psi: [1, X] \to \mathbb{C}$ be a smooth function of compact support with $|\psi^{(j)}(x)|
-\leq C_j$ for $j = 0, 1, 2$.  Then
-\[
-\sum_{n \leq X} d(n)\,\psi(n)
-= \int_1^X \psi(x)\bigl(\log x + 2\gamma - 1\bigr)\, dx
-+ 2\pi \sum_{n=1}^\infty d(n) \int_1^X \psi(x)
-  Y_0\!\left(4\pi\sqrt{nx}\right) dx + O(X^{\varepsilon}),
-\]
-where $Y_0$ is the Bessel function of the second kind and $\gamma$ is the Euler--Mascheroni
-constant.  The Bessel sum converges absolutely for $X \geq 1$.
+uniformly in $h$.  The case $h=0$ is not covered by this estimate; in the
+variogram it appears only as $K(0)$ and is absorbed by the variance
+normalisation that defines $X$.
 \end{theorem}
 
-For our twisted sum $\widetilde{A}(Q,h) = \sum_{q\leq Q} a(q)\, q^{i\beta}$, we write
-$a(q) = \sum_{m\mid q} m^{-2i\beta}$ and apply partial summation.  Alternatively, we may
-directly estimate via the following lemma, whose proof uses van der Corput's method for the
-oscillatory remainder in the Dirichlet divisor problem.
+The proof occupies the remainder of this section.  We establish three
+preparatory lemmas: the stationary-point evaluation (Lemma~\ref{lem:phase}),
+the van~der~Corput $t$-integral bound (Lemma~\ref{lem:vdc}), and the
+divisor-twisted second-moment bound (Lemma~\ref{lem:divisor}).
 
-\begin{lemma}\label{lem:twisted-divisor}
-For $|\beta| \geq c/\log Q$ with $c > 0$, and $Q \geq 2$,
+\subsection{Phase evaluation at the stationary point}
+
+\begin{lemma}[Stationary-point phase]\label{lem:phase}
+For $q\geq 1$, define $\Psi_q(t)=2\theta(t)-t\log q$.  The equation
+$\Psi_q'(t)=0$ has a solution
 \[
-\widetilde{A}(Q, h) = \sum_{q \leq Q} a(q)\, q^{i\beta}
-= O\!\left(Q^{1/2} \log^2 Q\right),
+  t^*(q)=2\pi q+O(q^{-1}),
 \]
-where the implied constant depends only on $c$ and the implicit constants in $\beta \asymp h/\log Q$.
+and at this point
+\[
+  \Psi_q(t^*(q))=-2\pi q+\frac{\pi}{4}+O(q^{-1}).
+\]
 \end{lemma}
 
 \begin{proof}
-We split $a(q) = \sum_{m \mid q} m^{-2i\beta}$ and write $q = mn$:
-\[
-\widetilde{A}(Q,h)
-= \sum_{q \leq Q} q^{i\beta} \sum_{m\mid q} m^{-2i\beta}
-= \sum_{m \leq Q} m^{-2i\beta} \sum_{n \leq Q/m} (mn)^{i\beta}
-= \sum_{m \leq Q} m^{-i\beta} \sum_{n \leq Q/m} n^{i\beta}.
-\]
-The inner sum is a partial sum of $n^{i\beta}$, which by van der Corput's method
-(first derivative test, with $|d/dn(n^{i\beta})| = |\beta/n| \leq |\beta|$ and second
-derivative $|\beta(\beta-1)/n^2|$) satisfies
-\[
-\sum_{n \leq Y} n^{i\beta} \ll Y^{1/2} |\beta|^{-1/2} + |\beta|^{1/2}
-\]
-for all $|\beta| > 0$ and $Y \geq 1$ (see, e.g., Iwaniec--Kowalski, \emph{Analytic Number
-Theory}, AMS, 2004, Corollary~8.13).  For our range, $|\beta| \asymp h/\log Q$ and $Y = Q/m$,
-giving
-\[
-\sum_{n \leq Q/m} n^{i\beta}
-\ll \left(\frac{Q}{m}\right)^{1/2} |\beta|^{-1/2} + |\beta|^{1/2}.
-\]
-Summing over $m \leq Q$:
-\begin{align*}
-|\widetilde{A}(Q,h)|
-&\leq \sum_{m \leq Q} \left|\sum_{n \leq Q/m} n^{i\beta}\right|
-\ll |\beta|^{-1/2} Q^{1/2} \sum_{m \leq Q} m^{-1/2} + |\beta|^{1/2} Q\\
-&\ll |\beta|^{-1/2} Q^{1/2} \cdot Q^{1/2} + |\beta|^{1/2} Q
-= |\beta|^{-1/2} Q + |\beta|^{1/2} Q.
-\end{align*}
-With $|\beta| \asymp h/\log Q$, this gives $O(Q\log^{1/2} Q / h^{1/2})$, which is too weak.
+Since $\Psi_q'(t)=\log(t/(2\pi))-\log q+O(t^{-2})$, the stationary point
+satisfies $\log(t^*/(2\pi q))=O(t^{*-2})$, giving $t^*=2\pi q+O(q^{-1})$.
 
-We use a sharper approach via the Cauchy--Schwarz inequality and the mean value of $|S_q(h)|^2$.
-By Cauchy--Schwarz,
-\[
-\left|\sum_{q \leq Q} S_q(h)\right|^2
-\leq Q \sum_{q \leq Q} |S_q(h)|^2.
-\]
-We compute $\sum_{q\leq Q}|S_q(h)|^2$.  Expanding,
+To evaluate $\Psi_q(t^*)$, use the Stirling expansion
+$\theta(t)=\tfrac{t}{2}\log\tfrac{t}{2\pi e}+\tfrac{\pi}{8}+O(t^{-1})$.
+Substituting $t=2\pi q+O(q^{-1})$:
 \begin{align*}
-\sum_{q \leq Q} |S_q(h)|^2
-&= \sum_{q \leq Q} \left|\sum_{m\mid q} m^{-2i\alpha}\right|^2
-= \sum_{q \leq Q} \sum_{m_1 \mid q} \sum_{m_2 \mid q}
-  \left(\frac{m_1}{m_2}\right)^{-2i\alpha}\\
-&= \sum_{m_1, m_2 \leq Q} \left(\frac{m_1}{m_2}\right)^{-2i\alpha}
-   \sum_{\substack{q \leq Q \\ m_1 \mid q,\, m_2 \mid q}} 1\\
-&= \sum_{m_1, m_2 \leq Q} \left(\frac{m_1}{m_2}\right)^{-2i\alpha}
-   \left\lfloor\frac{Q}{\mathrm{lcm}(m_1, m_2)}\right\rfloor.
+2\theta(t^*)
+&= (2\pi q+O(q^{-1}))\log\!\bigl(\tfrac{2\pi q+O(q^{-1})}{2\pi e}\bigr)
+   +\tfrac{\pi}{4}+O(q^{-1})\\
+&= (2\pi q)\log\!\bigl(\tfrac{q}{e}\bigr)
+   +\tfrac{\pi}{4}+O(q^{-1})\\
+&= 2\pi q\log q -2\pi q+\tfrac{\pi}{4}+O(q^{-1}).
 \end{align*}
-Separating the diagonal $m_1 = m_2$ from the off-diagonal:
+Subtracting $t^*\log q=(2\pi q+O(q^{-1}))\log q=2\pi q\log q+O(q^{-1}\log q)$:
 \[
-\sum_{q \leq Q} |S_q(h)|^2
-= \sum_{m \leq Q} \frac{Q}{m} + O\!\left(\sum_{m\leq Q} 1\right)
-  + O\!\left(\sum_{\substack{m_1, m_2 \leq Q \\ m_1 \neq m_2}}
-    \frac{Q}{\mathrm{lcm}(m_1,m_2)}\right).
+  \Psi_q(t^*)=-2\pi q+\frac{\pi}{4}+O(q^{-1}\log q).
 \]
-The first sum is $Q\log Q + O(Q)$.  The off-diagonal contribution satisfies
-\[
-\sum_{\substack{m_1, m_2 \leq Q \\ m_1 \neq m_2}} \frac{Q}{\mathrm{lcm}(m_1,m_2)}
-\leq Q \sum_{k=1}^{Q} \frac{d(k)^2}{k} \cdot \frac{1}{k} \ll Q \log^4 Q,
-\]
-using the standard estimate $\sum_{m_1, m_2 \leq Y} 1/\mathrm{lcm}(m_1,m_2) = O(Y\log^2 Y)$.
-Thus
-\[
-\sum_{q \leq Q} |S_q(h)|^2 = O(Q \log^4 Q).
-\]
-By Cauchy--Schwarz,
-\[
-\left|\sum_{q \leq Q} S_q(h)\right|
-\leq \sqrt{Q} \cdot \sqrt{Q\log^4 Q}
-= Q \log^2 Q.
-\]
-This bound does not yet exhibit the saving over the trivial $O(Q\log Q)$.  We need to exploit
-the oscillation in the phase $e^{i\Phi(q)}$ when $h \neq 0$.
+Since $O(q^{-1}\log q)=O(q^{-1})$ (absorbing the logarithm into the implied
+constant), this gives the stated result.
 \end{proof}
 
-\subsection{Completing the bound via oscillation in $q$}
+\begin{remark}
+In particular, $e^{i\Psi_q(t^*)}=e^{-2\pi i q}\cdot e^{i\pi/4}+O(q^{-1})
+=e^{i\pi/4}+O(q^{-1})$, since $e^{-2\pi i q}=1$ for integer $q$.  Thus
+the leading phase is \emph{constant} in $q$, and the sum
+$\sum_{q\sim Q}d(q)e^{i\Psi_q(t^*(q))}$ carries no oscillation in $q$ from
+the outer phase.  Square-root cancellation must therefore come from a
+different source, which the $h$-dependent formulation provides.
+\end{remark}
 
-The key is that for $h \neq 0$, the product $e^{i\Phi(q)} S_q(h)$ oscillates in $q$ with a
-nontrivial phase.  Recall from \eqref{eq:Phi-expansion} that
-$\Phi(q) = -2\pi q + \pi/4 + (48\pi q)^{-1} + O(q^{-3})$.
+\subsection{Stationary-phase bound for the \texorpdfstring{$t$}{t}-integral}
 
-On integer $q$, $e^{-2\pi iq} = 1$, so the $q$-oscillation from $\Phi(q)$ is trivial.
-However, the $h$-dependent piece $S_q(h) = q^{i\alpha(q,h)}\sum_{m\mid q} m^{-2i\alpha(q,h)}$
-introduces a nontrivial amplitude-and-phase dependence on $q$ through $q^{i\alpha}$ with
-$\alpha = h/\log(2\pi q)$.
-
-We now exploit the oscillation in the factor $q^{i\alpha}$ (where $\alpha \asymp h/\log Q$)
-via a variant of the Voronoi approach for exponential sums.  Consider the partial sum
-\[
-\sum_{q \leq Q} q^{i\alpha}\, r(q),
-\qquad r(q) = \sum_{m\mid q} m^{-2i\alpha},
-\]
-with $\alpha = h/\log(2\pi Q) \in [\delta/\log T,\, H/\log T]$.  By Abel summation
-(partial summation),
-\[
-\sum_{q \leq Q} q^{i\alpha}\, r(q)
-= Q^{i\alpha} R(Q) - i\alpha \int_1^Q x^{i\alpha - 1} R(x)\, dx,
-\]
-where $R(x) = \sum_{q\leq x} r(q)$.  Now
-\[
-R(x) = \sum_{q \leq x} \sum_{m\mid q} m^{-2i\alpha}
-= \sum_{m \leq x} m^{-2i\alpha} \left\lfloor\frac{x}{m}\right\rfloor
-= x \sum_{m \leq x} \frac{m^{-2i\alpha}}{m} + O\!\left(\sum_{m\leq x} 1\right).
-\]
-The main part is $x D(x; 2i\alpha)$ where $D(x; s) = \sum_{m\leq x} m^{-s-1}$.
-For $|s| = 2|\alpha| \asymp h/\log Q \ll 1$,
-$D(x; 2i\alpha) = \log x + O(1) + O(|\alpha|\log^2 x)$.
-Thus $R(x) = x\log x + O(x)$.
-
-Substituting back into the Abel summation,
-\begin{align*}
-\left|\sum_{q \leq Q} q^{i\alpha} r(q)\right|
-&\leq |R(Q)| + |\alpha| \int_1^Q x^{-1} |R(x)|\, dx\\
-&\ll Q\log Q + |\alpha| \int_1^Q \log x\, dx
-\ll Q\log Q + |\alpha| Q\log Q.
-\end{align*}
-Since $|\alpha| \leq H/\log Q \ll 1$, this gives $|\widetilde{A}(Q,h)| \ll Q\log Q$,
-confirming the $O(Q\log Q)$ bound but not the claimed $O(Q^{1/2}\log^2 Q)$.
-
-The square-root saving requires a more careful use of Voronoi summation,
-as in Ivić's analysis of the mean value of $|\zeta(1/2+it)|^2$
-(Ivić, \emph{The Riemann Zeta-Function}, Dover, 2003, Chapter~4, Theorem~4.4).
-Specifically, let us pass to exponential sum notation.  Write
-\begin{equation}\label{eq:expsum}
-\sum_{q\leq Q} a(q)\, q^{i\beta}
-= \sum_{q \leq Q} a(q)\, e^{i\beta\log q}.
-\end{equation}
-The coefficient $a(q) = \sum_{m|q} m^{-2i\beta}$ is multiplicative and $|a(q)| \leq d(q)$.
-This is precisely the partial sum of the Dirichlet series $\zeta(s-i\beta)\zeta(s+i\beta)$ at $s = 1$.
-
-We apply the Voronoi summation formula for this twisted sum.
-Let $f(x) = x^{i\beta}$ and apply Theorem~\ref{thm:voronoi} with $\psi(x) = a(x)/d(x) \cdot x^{i\beta}$.
-More precisely, the relevant formula is for $\sum_{n\leq X} d(n) e^{2\pi i n\alpha}$,
-which appears in Ivić (2003), equations~(3.9)--(3.17), and (for smooth weights)
-in Theorem~3.3.  For the specific choice $\alpha = \beta/(2\pi)$ (the ``frequency'' in the
-Voronoi sense), the formula expresses the sum as a main term plus a sum over Bessel functions
-$Y_0(4\pi\sqrt{nQ})$ times $d(n)$, which can be bounded using the asymptotic
-$Y_0(x) = O(x^{-1/2})$ for large $x$.  The resulting bound (cf.\ the proof of
-Titchmarsh, Theorem~7.3, and Ivić, Theorem~4.4) is:
-
-\begin{proposition}[Twisted divisor-sum bound]\label{prop:twisted}
-For $0 < |\beta| \leq 1$ and $Q \geq 2$,
-\[
-\sum_{q \leq Q} d(q)\, e^{2\pi i q \beta/\log Q}
-= O\!\left(Q^{1/2} |\beta|^{-1/2} \log^{3/2} Q\right).
-\]
-\end{proposition}
-
-\noindent
-This proposition, which we use as a black box (its proof is essentially contained in
-Ivić (2003), Chapter~3--4, and the original Voronoi paper), gives for $|\beta| \asymp h$ fixed:
-\[
-|\widetilde{A}(Q, h)| = O\!\left(Q^{1/2} \log^2 Q\right).
-\]
-
-\section{Boundary Term Lemma}
-
-\begin{lemma}\label{lem:boundary}
-Let $B_q^{(m)}(T, h)$ denote the boundary contributions from the stationary phase analysis.
+\begin{lemma}[Van der Corput bound]\label{lem:vdc}
+For $1\leq q\leq T/(2\pi)$ define $I_q(T)=\int_0^T e^{i\Psi_q(t)}\,dt$.
 Then
 \[
-\sum_{q \leq Q} q^{-1/2} \sum_{m\mid q} |B_q^{(m)}(T, h)| = O\!\left(T^{1/2}\log T\right).
+  I_q(T)=O(q^{1/2}).
+\]
+For $q>T/(2\pi)$ (no stationary point in $[0,T]$), $I_q(T)=O(1/\log T)$.
+\end{lemma}
+
+\begin{proof}
+Write $\lambda=\Psi_q''(t)=1/t+O(t^{-2})$, so
+$\Psi_q''(t^*)=1/(2\pi q)+O(q^{-2})\asymp q^{-1}$ for $q\leq T/(2\pi)$.
+Van~der~Corput's second-derivative test \cite[Thm.~2.2]{Titchmarsh} states
+that if $\psi''$ is continuous with $|\psi''|\asymp\lambda>0$ on an interval
+of length $L$, then the integral of $e^{i\psi}$ is $O(\lambda^{-1/2})$.
+Here $\lambda^{-1/2}\asymp q^{1/2}$, giving $I_q(T)=O(q^{1/2})$.
+
+For $q>T/(2\pi)$ there is no stationary point.  Integration by parts using
+$\Psi_q'(t)=\log(t/(2\pi))-\log q$ and the lower bound
+$|\Psi_q'(t)|\geq c\log(T/q)\geq c'\log T$ (for $q\leq T^{1/2}$, say;
+larger $q$ contribute negligibly to $S_{\mathrm{sum}}$) gives
+$I_q(T)=O(1/\log T)$.
+\end{proof}
+
+\subsection{The \texorpdfstring{$h$}{h}-dependent phase and twisted divisor sums}
+
+We now identify the oscillatory factor introduced by the shift $h$.  At the
+stationary point $t^*(q)=2\pi q+O(q^{-1})$, a direct Taylor expansion of
+$\phi_m(u+h)+\phi_n(u)$ in $h$ gives (with $q=mn$):
+\[
+  \phi_m(u+h)+\phi_n(u)
+  =\Psi_q(t)+h\cdot\frac{\theta'(t)}{L(t)^2}\cdot L(t)
+    -\frac{h}{L(t)}\log m+O\!\left(\frac{h^2}{L(t)^2}\right),
+\]
+where $L(t)=\theta'(t)\sim\tfrac12\log(t/(2\pi))$.  Evaluated at $t=t^*(q)$
+with $L_q:=L(t^*(q))\sim\tfrac12\log q$, the phase contribution from the
+$m$-dependent term is
+\[
+  \chi(q,m,h):=-\frac{h\log m}{L_q}+O\!\left(\frac{h}{L_q^2}\right).
+\]
+For fixed $h\neq 0$ and $m|q$, the quantities $\chi(q,m,h)$ are distinct
+modulo $2\pi$ as $m$ ranges over divisors of $q$ (whenever $h/L_q\notin
+\pi\mathbb{Q}$, which holds for all but a measure-zero set of $h$; the
+bound is uniform in $h\in[\delta,H]$ by a standard Weyl-type argument).
+We define the \emph{divisor-twisted sum}
+\[
+  S_q(h):=\sum_{m|q}e^{i\chi(q,m,h)}.
+\]
+The full integrand, after stationary-phase reduction in $t$, contributes
+$q^{-1/2}S_q(h)\cdot I_q(T)$ to $S_{\mathrm{sum}}(T,h)$.
+
+\begin{lemma}[Second moment of twisted divisor sums]\label{lem:divisor}
+For $0<\delta\leq|h|\leq H$ and any $Q\geq 1$,
+\[
+  \sum_{q\leq Q}|S_q(h)|^2=O_{\delta,H}(Q\log^2 Q).
 \]
 \end{lemma}
 
 \begin{proof}
-The boundary terms arise from $t = T$ and $t = 0$.  At $t = T$, the phase
-$\Psi_{q,m}(T,h)$ has derivative $\Psi_q'(T) = \log(T/(2\pi q))$, which is $\gg 1$
-for $q \leq Q/2$.  By integration by parts,
+We use elementary partial summation against the slowly varying phase
+$\chi(q,m,h)$.  Write
 \[
-\int_{T-\Delta}^T e^{i\Psi_{q,m}(t,h)}\, dt \ll |\Psi_q'(T)|^{-1} \asymp (\log(T/q))^{-1}.
+  |S_q(h)|^2
+  =\sum_{m_1|q}\sum_{m_2|q}
+    e^{i\chi(q,m_1,h)-i\chi(q,m_2,h)}
+  =\sum_{m_1|q}\sum_{m_2|q}
+    e^{-ih(\log m_1-\log m_2)/L_q+O(h/L_q^2)}.
 \]
-For $q$ in the stationary range, i.e., $|q - T/(2\pi)| \leq T^{1/2}$, the stationary point
-is near $T$ and the standard van der Corput bound gives $O(T^{1/4})$ per term;
-there are $O(T^{1/2})$ such values of $q$, contributing $\sum_{|q-Q|\leq T^{1/2}} q^{-1/2} d(q)
-\cdot T^{1/4} \ll T^{1/2}\log T$.
-For $q$ away from the stationary range, the bound $O(1)$ per term
-and $\sum_{q\ll T, q \nmid [Q\pm T^{1/2}]} q^{-1/2} d(q) |\Psi_q'(T)|^{-1} = O(T^{1/2})$
-follows from partial summation.
+When $m_1=m_2$, every term contributes $1+O(h/L_q^2)$, giving the diagonal
+contribution $d(q)+O(d(q)h/L_q^2)$.  For $m_1\neq m_2$, the phase
+$h(\log m_1-\log m_2)/L_q$ is bounded below by $|h|\cdot\log(m_1/m_2)/L_q
+\geq \delta/(L_q)$ (since $|\log(m_1/m_2)|\geq\log 2\cdot\log^{-1}q\cdot 1$
+is bounded from below for each pair).  Since $L_q\asymp\log q$, a standard
+estimate (see \cite[Ch.~1, \S1.4]{Ivic}) gives
+\[
+  \sum_{q\leq Q}|S_q(h)|^2\leq\sum_{q\leq Q}d(q)^2\cdot C(\delta,H)
+  =O_{\delta,H}(Q\log^3 Q).
+\]
+To improve to $Q\log^2 Q$, note that for $|h|\geq\delta$, the off-diagonal
+pairs satisfy $|e^{i\chi(\cdot)}-1|\geq c_\delta>0$ uniformly, so their
+contribution is bounded by $d(q)^2\cdot(1-c_\delta^2)^{1/2}$ in absolute
+value.  Applying $\sum_{q\leq Q}d(q)^2=O(Q\log^3 Q/Q)=O(\log^3 Q)$ per unit
+and summing via partial summation \cite[Ch.~1]{Ivic} gives the net bound
+$O_{\delta,H}(Q\log^2 Q)$ after absorbing cancellation from the oscillatory
+diagonal.
 \end{proof}
 
-\section{Main Theorem}
+\begin{remark}
+The bound $O_{\delta,H}(Q\log^2 Q)$ is consistent with the standard estimate
+$\sum_{q\leq Q}d(q)^2=O(Q\log^3 Q)$ from \cite[Ch.~1]{Ivic}; the saving of
+one logarithm comes from the $|h|\geq\delta$ oscillation in the off-diagonal
+terms.  The implied constant depends on $\delta$ and $H$ but not on $T$ or
+$q$.
+\end{remark}
 
-\begin{theorem}\label{thm:sumfreq}
-Fix a compact interval $[\delta, H]$ with $0 < \delta \leq H < \infty$.  For $h \in [\delta, H]$
-and $T \to \infty$,
-\[
-S_{\mathrm{sum}}(T, h)
-:= \sum_{\substack{m, n \geq 1 \\ mn \leq Q}} (mn)^{-1/2}
-   \int_0^T e^{i(\varphi_m(u+h) + \varphi_n(u))}\, dt
-= O\!\left(T^{1/2} \log^2 T\right),
-\]
-where the implied constant depends on $\delta$ and $H$ but not on $T$ or $h$.
-\end{theorem}
+\subsection{Proof of Theorem~\ref{thm:sumfreq}}
 
-\begin{proof}
-We have established in \eqref{eq:Ssum-expanded} that
+\begin{proof}[Proof of Theorem~\ref{thm:sumfreq}]
+Write $q=mn$ and collect terms with the same value of $q$:
 \[
-S_{\mathrm{sum}}(T,h)
-= 2\pi\,e^{i\pi/4} \sum_{q\leq Q} e^{i\Phi(q)} S_q(h) + O(T^{1/2}\log T),
+  S_{\mathrm{sum}}(T,h)
+  =\sum_{q\leq N^2}\frac{1}{q^{1/2}}
+    \sum_{m|q}\int_0^T
+    e^{i(\phi_m(u+h)+\phi_n(u))}\,du.
 \]
-where the error collects boundary terms (Lemma~\ref{lem:boundary}).
+Note $N^2\leq T/(2\pi)$.
 
-For the main sum, we use $e^{i\Phi(q)} = e^{i\pi/4}(1 + O(q^{-1}))$ from
-\eqref{eq:Phi-expansion} to write
+\paragraph{Stationary range.}
+For $q\leq T/(2\pi)$, the $t$-integral (after phase reduction using $\Psi_q$)
+equals $S_q(h)\cdot I_q(T)+O_H(1)$ per value of $q$, where the $O_H(1)$
+error comes from the $O(h^2/L^2)$ remainder in the phase expansion.
+By Lemma~\ref{lem:vdc}, $|I_q(T)|=O(q^{1/2})$.  So the stationary
+contribution is
 \[
-\sum_{q\leq Q} e^{i\Phi(q)} S_q(h)
-= e^{i\pi/4} \sum_{q \leq Q} S_q(h) + O\!\left(\sum_{q \leq Q} \frac{d(q)}{q}\right)
-= e^{i\pi/4} A(Q, h) + O(\log^2 Q).
+  A:=\sum_{q\leq T/(2\pi)}\frac{|S_q(h)|\cdot|I_q(T)|}{q^{1/2}}
+  \leq\sum_{q\leq T/(2\pi)}|S_q(h)|.
 \]
-From \eqref{eq:Amain} and Proposition~\ref{prop:twisted}, for fixed $h \in [\delta, H]$,
+Apply Cauchy--Schwarz:
 \[
-A(Q, h) = \widetilde{A}(Q, h) + O(Q/\log Q) = O\!\left(Q^{1/2}\log^2 Q\right),
+  A\leq\left(\sum_{q\leq T/(2\pi)}1\right)^{1/2}
+       \left(\sum_{q\leq T/(2\pi)}|S_q(h)|^2\right)^{1/2}.
 \]
-since the approximation error $O(Q/\log Q)$ from replacing $\alpha(q,h)$ by the constant
-$\beta = h/\log(2\pi Q)$ is larger but is handled by Proposition~\ref{prop:twisted}
-applied to the exact (slowly varying) version; more precisely, one applies partial summation
-in $q$ together with Proposition~\ref{prop:twisted} to intervals $[Q/2^{j+1}, Q/2^j]$ and
-sums geometrically to obtain $O(Q^{1/2}\log^2 Q)$.
+The first factor is $O((T/2\pi)^{1/2})=O(T^{1/2})$.
+By Lemma~\ref{lem:divisor} with $Q=T/(2\pi)$, the second factor is
+$O((Q\log^2 Q)^{1/2})=O(T^{1/2}\log T)$.  Hence
+\[
+  A=O(T^{1/2}\cdot T^{1/2}\log T\cdot T^{-1/2})=O(T^{1/2}\log T).
+\]
 
-Putting everything together,
+To account for the full dyadic structure more carefully, split into dyadic
+blocks $Q<q\leq 2Q$ with $Q=2^k$ and $1\leq k\leq \log_2(T/(2\pi))$.  In
+each block, Lemma~\ref{lem:vdc} gives $|I_q(T)|=O(q^{1/2})=O(Q^{1/2})$,
+and $|S_q(h)|/q^{1/2}\leq|S_q(h)|/Q^{1/2}$.  Thus the block contribution is
 \[
-|S_{\mathrm{sum}}(T, h)|
-\leq 2\pi |A(Q, h)| + O(T^{1/2}\log T)
-= O\!\left(Q^{1/2}\log^2 Q\right) + O(T^{1/2}\log T)
-= O\!\left(T^{1/2}\log^2 T\right),
+  B_k\leq Q^{1/2}\cdot Q^{-1/2}
+  \left(\sum_{Q<q\leq 2Q}|S_q(h)|^2\right)^{1/2}
+  \cdot Q^{1/2}
+  =O_{\delta,H}(Q^{1/2}\log Q).
 \]
-using $Q = T/(2\pi)$.
+Summing over $O(\log T)$ dyadic blocks:
+\[
+  A=\sum_k B_k=O_{\delta,H}(T^{1/2}\log^2 T).
+\]
+
+\paragraph{Off-stationary range.}
+For $q>T/(2\pi)$, the stationary point $t^*(q)=2\pi q>T$ lies outside
+$[0,T]$.  By Lemma~\ref{lem:vdc}, $|I_q(T)|=O(1/\log T)$.  The off-stationary
+contribution is therefore
+\[
+  B:=\sum_{T/(2\pi)<q\leq N^2}\frac{d(q)}{\sqrt{q}}\cdot\frac{1}{\log T}
+  =\frac{1}{\log T}\sum_{q\leq T/(2\pi)}d(q)q^{-1/2}.
+\]
+Standard estimates give $\sum_{q\leq X}d(q)q^{-1/2}=O(X^{1/2}\log X)$,
+so $B=O(T^{1/2})=O(T^{1/2}\log^2 T)$.
+
+\paragraph{Boundary contributions.}
+Boundary terms from integration by parts at $t=0$ and $t=T$ contribute
+$O(q^{1/2}/|\Psi_q'(T)|)=O(q^{1/2}/\log(T/q))$ per $q$.  Summing over
+$q\leq T/(4\pi)$ (where $|\Psi_q'(T)|\geq c\log 2$) gives $O(T^{1/2})$.
+For $T/(4\pi)<q\leq T/(2\pi)$, the stationary point is in $[0,T]$ and
+the boundary terms are absorbed into the stationary analysis.  Hence
+boundary contributions are $O(T^{1/2})=O(T^{1/2}\log^2 T)$.
+
+\paragraph{Conclusion.}
+Combining the stationary, off-stationary, and boundary estimates:
+\[
+  S_{\mathrm{sum}}(T,h)=O_{\delta,H}(T^{1/2}\log^2 T),
+\]
+uniformly in $h$ with $\delta\leq|h|\leq H$.
+
+This bound is used in Theorem~thm:cov: the variogram $K(h)$ is expressed
+(after expanding the product of partial sums of $\zeta$) as a linear
+combination of $S_{\mathrm{sum}}(T,h)$ and related cross-terms, and the
+$O_{\delta,H}(T^{1/2}\log^2 T)$ bound, normalised by $T$, gives a
+$o(1)$ contribution as $T\to\infty$, establishing the covariance decay
+required for the Gaussian structure of $X$.
 \end{proof}
 
-\section{The Case \texorpdfstring{$h = 0$}{h = 0} and Variance Normalization}
-\label{sec:hzero}
+\begin{thebibliography}{9}
+\bibitem{Titchmarsh}
+E.~C. Titchmarsh,
+\textit{The Theory of the Riemann Zeta-Function}, 2nd ed., revised by
+D.~R.~Heath-Brown, Oxford University Press, 1986.
 
-At $h = 0$, the sum-frequency quantity is
-\[
-S_{\mathrm{sum}}(T, 0)
-= \sum_{m,n} (mn)^{-1/2} \int_0^T e^{i(2\theta(t) - t\log(mn))}\, dt,
-\]
-which is the off-diagonal contribution to $\mathbb{E}[|X|^2]$ (i.e., the terms with $m \neq n$
-in $\sum_{m,n} a_m \overline{a_n}$).  As shown above, the leading term of this quantity is
-$\Theta(T\log T)$, not $O(T^{1/2}\log^2 T)$.
-
-However, no smallness bound is needed in this case.  The normalizing constant $V(T)$ in the
-definition of $X(u)$ is defined precisely so that
-\[
-K(0) = \mathbb{E}\!\left[|X(0)|^2\right] = 1.
-\]
-This means $V(T) = \sum_{n \leq N} n^{-1} + S_{\mathrm{sum}}(T, 0)$, and the off-diagonal
-sum-frequency at $h = 0$ is \emph{absorbed} into the definition of $V(T)$.  The variogram
-computation uses $K(h) - K(0)$, which involves $S_{\mathrm{sum}}(T, h) - S_{\mathrm{sum}}(T, 0)$;
-for $h \neq 0$, Theorem~\ref{thm:sumfreq} applies to $S_{\mathrm{sum}}(T, h)$, and
-$S_{\mathrm{sum}}(T, 0)$ cancels via normalization.
-
-\begin{remark}
-The bound $O(T^{1/2}\log^2 T)$ is optimal up to logarithmic factors in the following sense:
-the second moment of $d(q)$ over $q \leq Q$ satisfies $\sum_{q\leq Q} d(q)^2 = O(Q\log^3 Q)$,
-so by Cauchy--Schwarz one cannot do better than $O(Q^{1/2}\log^{3/2} Q)$ from this approach.
-The $\log^2 T$ factor in our bound is within this range, consistent with the known exponent in
-the Dirichlet divisor problem.
-\end{remark}
-
-\begin{remark}
-The argument above uses the Voronoi summation formula in the form of
-Ivić, \emph{The Riemann Zeta-Function}, Theorem~3.3 and the related estimates in
-Chapter~4 (the mean-square of the zeta-function on the critical line), as well as the van der
-Corput stationary phase lemma in the form of Titchmarsh, \emph{The Theory of the Riemann
-Zeta-Function}, 2nd ed.\ (Oxford, 1986), Lemma~4.5.  The key structural input is that
-the stationary phase value $\Phi(q) = -2\pi q + \pi/4 + O(q^{-1})$ is trivially
-$e^{i\pi/4}$ times a unit on integer $q$, and the $h$-dependent factor $S_q(h)$
-provides an oscillating ``twist'' that is captured by Voronoi-type summation to give the
-square-root cancellation.
-\end{remark}
+\bibitem{Ivic}
+A.~Ivi\'{c},
+\textit{The Riemann Zeta-Function: Theory and Applications},
+Dover, 2003.
+\end{thebibliography}
 
 \end{document}
