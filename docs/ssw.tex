@@ -1,0 +1,419 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[activate={true,nocompatibility},final,kerning=true,spacing=true,factor=1100,stretch=10,shrink=10,expansion=false]{microtype}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{hyperref}
+\usepackage[capitalise]{cleveref}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=MidnightBlue,
+  pdftitle={Explicit formulas for the Segal--Shale--Weil representation},
+  pdfauthor={Perplexity Computer}
+}
+
+\newcommand{\Sp}{\operatorname{Sp}}
+\newcommand{\Mp}{\operatorname{Mp}}
+\newcommand{\GL}{\operatorname{GL}}
+\newcommand{\SL}{\operatorname{SL}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\rk}{\operatorname{rk}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\Lag}{\operatorname{Lag}}
+\newcommand{\Maslov}{\tau}
+\newcommand{\Schwartz}{\mathcal{S}}
+\newcommand{\F}{F}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\half}{\tfrac{1}{2}}
+\newcommand{\inv}{^{-1}}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\title{Explicit formulas for the Segal--Shale--Weil representation:\\
+Schwartz models, Bruhat $2$-cocycles, multipliers}
+\author{Compiled from Rao (1993), Kashiwara--Vergne (1978),\\
+Kudla (1996), Lion--Vergne (1980), Bluher (1996), and successors}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Setting and notation}
+
+Throughout, $\F$ is a local field of characteristic $\ne 2$ (so $\F = \R, \C$, or a non-archimedean local field of residue characteristic $\ne 2$); the formulas below are stated in the form that uniformly covers all three cases except where flagged.
+Fix a nontrivial additive character $\psi : \F \to \C^\times$.
+
+Let $(W,\langle\,,\rangle)$ be a $2n$-dimensional symplectic space over $\F$, with a complete polarisation $W = X \oplus Y$ into transversal Lagrangians.
+With respect to this decomposition write elements of $\Sp(W)$ as $g = \begin{pmatrix} a & b \\ c & d \end{pmatrix}$, where $a:X\to X,\ b:X\to Y,\ c:Y\to X,\ d:Y\to Y$ satisfy the symplectic relations.
+
+The Siegel parabolic $P = P_Y$ is the stabiliser of $Y$:
+\[
+P = \left\{ \begin{pmatrix} a & b \\ 0 & (a^\vee)\inv \end{pmatrix} : a \in \GL(X),\ b\,a^{-1} = (b\,a^{-1})^t \right\}.
+\]
+Its Levi is $M = \{ m(a) := \diag(a,(a^\vee)\inv) : a \in \GL(X)\}$ and its unipotent radical is
+$N = \{ n(b) := \begin{psmallmatrix} 1 & b \\ 0 & 1 \end{psmallmatrix} : b \in \Hom(X,Y),\ b = b^t \}$.
+Bruhat decomposition: $\Sp(W) = \bigsqcup_{0 \le j \le n} P\,w_j\,P$, where $w_j = \diag(w_j', I_{2(n-j)})$ and $w_n$ is the long Weyl element exchanging the two halves.
+
+By $\Schwartz(X)$ we denote the Bruhat--Schwartz space (Schwartz functions in the archimedean case; locally constant compactly supported functions in the non-archimedean case).
+
+Set $\Mp(W)$ for the metaplectic two-fold cover of $\Sp(W)$ when $\F = \R$; in the non-archimedean case the same notation refers to the unique nontrivial topological double cover constructed via the cocycle below [Weil1964].
+
+\section{Schr\"odinger model: explicit operators on \texorpdfstring{$\Schwartz(X)$}{S(X)}}
+\label{sec:schrodinger}
+
+The Stone--von Neumann theorem produces, up to a scalar, a unique unitary action of $\Sp(W)$ on $\Schwartz(X)$ implementing the symplectic action on the Heisenberg group. The resulting projective representation is the \emph{Segal--Shale--Weil} (or oscillator, or Weil) representation. We denote any choice of lift by $r = r_\psi$ and the resulting cocycle by $c$, so that
+\begin{equation}\label{eq:cocycle-defining}
+r(g_1)\,r(g_2) \;=\; c(g_1,g_2)\,r(g_1 g_2),\qquad |c| = 1.
+\end{equation}
+The standard Schr\"odinger formulas for elements of $P$ and for the long Weyl element $w_n$ are (Kudla \cite[Ch.~II, Prop.~2.3]{Kudla1996}; Rao \cite[\S 3]{Rao1993}; Lion--Vergne [LV1980]):
+\begin{align}
+r\bigl(m(a)\bigr)\phi(x) &\;=\; |\det a|^{1/2}\,\phi(x\,a),
+\label{eq:Levi}\\[2pt]
+r\bigl(n(b)\bigr)\phi(x) &\;=\; \psi\!\left(\tfrac{1}{2}\langle x,xb\rangle\right)\phi(x),
+\label{eq:N}\\[2pt]
+r(w_n)\phi(x) &\;=\; \gamma\,\widehat{\phi}(x)
+\;=\; \gamma\int_{Y}\psi\bigl(-\langle x,y\rangle\bigr)\,\phi(y)\,dy,
+\label{eq:wn}
+\end{align}
+where $dy$ on $Y$ is the $\psi$-self-dual Haar measure and $\gamma = \gamma(\psi\circ q_X)\inv$ is the inverse Weil index attached to the standard quadratic form on $X$ (\cref{sec:weil-index}). For a partial Weyl element $w_j$ ($j$ rank), \cref{eq:wn} becomes a partial Fourier transform on the corresponding $j$ coordinates; see \cite[\S 3]{Rao1993} and \cite[Ch.~I]{Kudla1996}.
+
+\subsection*{Closed form for a general element}
+
+For $g = \begin{psmallmatrix} a & b \\ c & d \end{psmallmatrix} \in \Sp(W)$, with $\rk(c) = j$, Rao \cite[Lemma 3.2]{Rao1993} and Kudla \cite[Prop.~2.3]{Kudla1996} give
+\begin{equation}\label{eq:general-r}
+r(g)\phi(x) \;=\; \int_{\ker(c)\backslash Y}
+\psi\!\left(
+  \tfrac{1}{2}\langle x a, x b\rangle
+  \;-\; \langle x b, y c\rangle
+  \;+\; \tfrac{1}{2}\langle y c, y d\rangle
+\right)\,\phi(x a + y c)\,d\mu_g(y),
+\end{equation}
+where $d\mu_g$ is the unique Haar measure on $\ker(c)\backslash Y$ making $r(g)$ an isometry of $L^2(X)$. The integrand is a quadratic phase; on $P$ (where $c = 0$) it reduces to \crefrange{eq:Levi}{eq:N}, and on $w_n$ (where $c$ is invertible) it reduces to \cref{eq:wn}.
+
+Equivalently (Rao's "intertwining" form): set $f_g(x,y^*) = \psi(\text{quadratic form attached to } g)$; then $r(g)$ is an integral operator with kernel built from $f_g$ and a Haar measure $\mu_g$ on the quotient $Y^*/\ker\gamma_g$, normalised so that $r$ is unitary \cite[Thm.~3.5]{Rao1993}.
+
+\section{The Weil index of a quadratic character}
+\label{sec:weil-index}
+
+\begin{definition}[Weil index, [Weil1964]]
+Let $(V,B)$ be a non-degenerate quadratic space over $\F$ with associated form $q(v) = \tfrac{1}{2}B(v,v)$, and let $\phi_q(v) = \psi(q(v))$. Choose Haar measures on $V$ and its $\psi$-dual $V^*$ that are mutually $\psi$-dual. Then there exists a constant $\gamma(\psi\circ q) = \gamma(\phi_q) \in \C$ with $|\gamma|=1$ such that, as tempered distributions,
+\[
+\widehat{\phi_q\,dv} \;=\; \gamma(\phi_q)\,|q|^{-1/2}\,\phi_{q^*}^{-1}\,dv^*.
+\]
+\end{definition}
+
+The Weil index has the following key properties:
+\begin{enumerate}[leftmargin=2em,itemsep=2pt]
+  \item $\gamma(\psi\circ q)$ depends only on the isometry class of $q$ \cite[\S 14]{Weil1964}.
+  \item It is multiplicative on orthogonal direct sums: $\gamma(\psi\circ(q_1 \perp q_2)) = \gamma(\psi\circ q_1)\,\gamma(\psi\circ q_2)$.
+  \item It is an $8$-th root of unity when $\dim V$ is rational, and explicitly, for the diagonal form $q = \sum a_i x_i^2$ in $m$ variables,
+  \begin{equation}\label{eq:gamma-diag}
+    \gamma(\psi\circ q) \;=\; \gamma(\det q,\psi)\,\gamma(\psi)^m\,\varepsilon(q),
+    \qquad \varepsilon(q) = \prod_{i<j}(a_i,a_j)_\F,
+  \end{equation}
+  where $(\,\cdot\,,\,\cdot\,)_\F$ is the Hilbert symbol and $\gamma(a,\psi)$ is the relative Weil index $\gamma(\psi\circ ax^2)/\gamma(\psi\circ x^2)$, valued in $\{\pm 1, \pm i\}$.
+\end{enumerate}
+
+\begin{lemma}[Modified Weil-index identity; [Kudla1996], Ch.~I]
+For $b \in \Hom(X,Y)$ symmetric and invertible, and $f \in \Schwartz(X)$,
+\[
+\int_Y\!\!\int_X
+\psi\!\left(
+  \tfrac{1}{2}\langle x,xb\rangle
+  + \langle x,y\rangle
+  - \tfrac{1}{2}\langle y,y\,b\inv\rangle
+\right)
+f(xb)\,dx\,dy
+\;=\; \gamma(\phi_b)\,|b|^{-1/2}\!\int_Y f(y)\,dy.
+\]
+This identity is the engine that converts the formal manipulation \cref{eq:general-r} into a unitary operator and that produces the cocycle of \cref{sec:cocycle} as a product of Weil indices.
+\end{lemma}
+
+\section{The Rao cocycle relative to Bruhat decomposition}
+\label{sec:cocycle}
+
+Fix the Lagrangian $Y$. The non-trivial cocycle attached to the section $r$ above admits a clean closed form in terms of the Weil index of the \emph{Leray invariant} of a triple of Lagrangians.
+
+\begin{definition}[Leray invariant]
+Given an ordered triple $(Y_0,Y_1,Y_2)$ of Lagrangians in $W$, in suitably generic position there exists a symmetric $b \in \Hom(Y_1,Y_0)$ with $Y_2 = Y_1\,n(b)$. The isometry class of the quadratic form $q_b(y) = \tfrac{1}{2}\langle y, y b\rangle$ on $Y_1$ is independent of all auxiliary choices, and is called the \emph{Leray invariant} $L(Y_0,Y_1,Y_2) \in W(\F)$ (Witt group).
+\end{definition}
+
+\begin{theorem}[Rao, [Rao1993] Thm.~4.1]\label{thm:rao}
+With the section $r$ defined by \cref{eq:Levi,eq:N,eq:wn}, \cref{eq:general-r} and the standard normalisation \cite[Thm.~3.5]{Rao1993},
+\begin{equation}\label{eq:rao-cocycle}
+c^Y(g_1,g_2) \;=\; \gamma\!\left(\psi\circ L\bigl(Y,\;Y g_1\inv,\;Y g_2 g_1\inv\bigr)\right)\inv .
+\end{equation}
+Equivalently, $c^Y(g_1,g_2) = \gamma\!\bigl(\psi\circ L(Y, Y g_1\inv, Y (g_1 g_2)\inv\,g_1\inv)\bigr)\inv$ in the conventions of Kudla \cite[Thm.~3.1]{Kudla1996}.
+\end{theorem}
+
+\noindent
+The cocycle satisfies (Rao \cite[\S 4]{Rao1993}):
+\begin{enumerate}[leftmargin=2em,itemsep=2pt]
+\item \emph{$P$-bi-invariance.} $c(p_1 g_1 p_1', p_2\inv g_2 p_2) = c(g_1,g_2)$ for $p_1,p_1',p_2 \in P$.
+\item \emph{Vanishing on Weyl pairs.} $c(g_1,g_2) = 1$ whenever $g_1 g_2 \in W^P$ (the Weyl group representatives).
+\item \emph{Inversion.} $c(g, g\inv) = 1$ \cite[Cor.~4.2]{Rao1993} since the Leray invariant is then trivial.
+\item \emph{Tensor compatibility.} For block-diagonal pairs $g = \diag(g_S)$ and $g'$,
+\[
+c(g,g') = \prod_S c_S(g_S, g_S').
+\]
+\end{enumerate}
+
+\subsection*{Big-cell special case (recovers Weil's original formula)}
+
+If $g_1 = w_n u_1 p_1$ and $g_2 = w_n u_2 p_2$ both lie in the open Bruhat cell $P w_n P$, formula \cref{eq:rao-cocycle} reduces to
+\[
+c(g_1,g_2) \;=\; \gamma\!\left(\psi\circ q_{u_1\inv + u_2}\right),
+\]
+which is exactly the cocycle written by Weil \cite[Thm.~3, p.~164]{Weil1964} on the big cell.
+
+\subsection*{Two-dimensional ($\Sp_2 = \SL_2$) case}
+
+For $g_j = \begin{psmallmatrix} a_j & b_j \\ c_j & d_j \end{psmallmatrix} \in \SL_2(\F)$, Rao \cite[Cor.~4.3]{Rao1993} gives
+\begin{equation}\label{eq:rao-sl2}
+c(g_1,g_2) \;=\;
+\begin{cases}
+1, & \text{if } b_1 = 0,\ b_2 = 0,\text{ or } c_1 c_2 \in (\F^\times)^2,\\[2pt]
+\gamma_\F\bigl(c_1 c_2(c_1 a_2 + d_1 c_2)\,b_1 b_2\bigr), & \text{otherwise.}
+\end{cases}
+\end{equation}
+For $\F = \R$ this agrees with the Kubota cocycle $c^K(g_1,g_2) = (x(g_1),\,x(g_1 g_2)/x(g_2))_\R$ where $x(g) = c$ if $c \ne 0$ and $x(g) = d$ otherwise; cf.\ Bluher \cite[Prop.~10(c)]{Bluher1996}.
+
+\section{Normalised metaplectic cocycle and multiplier}
+\label{sec:multiplier}
+
+To pass from the $\C^1$-valued cocycle $c$ to a $\{\pm 1\}$-valued metaplectic $2$-cocycle one introduces a coboundary correction.
+
+\begin{definition}[Rao multiplier, [Rao1993] Def.~5.2]
+For $g \in \Sp(W)$ in the Bruhat cell $\Omega_j = P w_j P$, define
+\[
+x(g) \;\in\; \F^\times / (\F^\times)^2,\qquad
+x(p_1 w_j p_2) := \det\bigl(p_1 p_2|_Y\bigr)\!\!\pmod{(\F^\times)^2}.
+\]
+This is well defined: $x(w_j) = 1$, $x(m(a)) = \det(a)$. The \emph{Rao multiplier} is
+\begin{equation}\label{eq:multiplier}
+m(g) \;=\; \frac{\gamma_\F(x(g),\eta)}{\gamma_\F(\eta)^{j(g)}},\qquad
+\eta := \psi^{1/2}\ \text{(formal),}
+\end{equation}
+i.e., $\beta_{e,\psi}(g) = \gamma(x(g),\eta)\inv\gamma(\eta)^{-j(g)}$ in Kudla's notation.
+\end{definition}
+
+\begin{theorem}[Normalised cocycle, [Rao1993] Thm.~5.3]\label{thm:rao-norm}
+Setting $\widetilde r(g) := m(g)\,r(g)$, the resulting cocycle $\widetilde c$ takes values in $\{\pm 1\}$. Explicitly, with $g_1 \in \Omega_{j_1}$, $g_2 \in \Omega_{j_2}$, $g_1 g_2 \in \Omega_{j}$, and Leray invariant $q$ on a space of dimension $\ell$, set $t = j_1 + j_2 - j - \ell$. Then
+\begin{equation}\label{eq:rao-norm-cocycle}
+\widetilde c(g_1,g_2)
+=
+\bigl(x(g_1),x(g_2)\bigr)_\F
+\bigl(-x(g_1)x(g_2),\,x(g_1 g_2)\bigr)_\F
+\bigl((-1)^t,\det q\bigr)_\F\,
+(-1,-1)_\F^{\,t(t-1)/2}\,
+h_\F(q),
+\end{equation}
+where $h_\F(q)$ is the Hasse--Witt invariant of $q$ and $(\,\cdot\,,\,\cdot\,)_\F$ is the Hilbert symbol.
+\end{theorem}
+
+Special evaluations \cite[Cor.~5.4--5.5]{Rao1993}:
+\begin{align}
+\widetilde c(g,g\inv) &\;=\; \bigl(x(g),(-1)^{j}x(g)\bigr)_\F\,(-1,-1)_\F^{j/2},\\
+\widetilde c(w_{S_1},w_{S_2}) &\;=\; (-1,-1)_\F^{\,|S_1\cap S_2|(|S_1\cap S_2|+1)/2}.
+\end{align}
+Over a finite field or over $\C$ all these symbols vanish: $\widetilde c \equiv 1$, recovering the linearity of the Weil representation in those cases.
+
+\section{Lion--Vergne form: cocycle as a Maslov index}
+\label{sec:lv}
+
+A choice-free reformulation, due to Lion and Vergne, expresses $c$ on $\R$ as an exponentiated triple Maslov / Kashiwara index of Lagrangians.
+
+\begin{definition}[Kashiwara triple index]
+For an ordered triple $(\ell_1,\ell_2,\ell_3)$ of Lagrangians in $(W,\langle\,,\rangle)$, the symmetric form on $\ell_1 \oplus \ell_2 \oplus \ell_3$ defined by
+\[
+q_B(x_1+x_2+x_3) \;=\; \langle x_1,x_2\rangle + \langle x_2,x_3\rangle + \langle x_3,x_1\rangle
+\]
+has, over $\R$, a well-defined signature $\Maslov(\ell_1,\ell_2,\ell_3) := \sgn(q_B) \in \Z$. Over a $p$-adic field, $\Maslov$ takes values in the Witt group $W(\F_p)$.
+\end{definition}
+
+\begin{theorem}[Lion--Vergne, [LV1980]]\label{thm:lv}
+Over $\F = \R$, fix a Lagrangian $\ell_0$. Then
+\begin{equation}\label{eq:lv-cocycle}
+c(g_1,g_2) \;=\; \exp\!\left(-\frac{i\pi}{4}\,\Maslov\!\bigl(\ell_0,\,\ell_0\, g_1,\,\ell_0\, g_2 g_1\bigr)\right).
+\end{equation}
+Over a $p$-adic field of residue characteristic $\ne 2$,
+\begin{equation}\label{eq:lv-padic}
+c_p(g_1,g_2) \;=\; \gamma_p\!\left(\Maslov_p(\ell_0,\,\ell_0 g_1,\,\ell_0 g_2 g_1)\right)\inv,
+\end{equation}
+where $\gamma_p : W(\F_p) \to \C^\times$ is a fixed character of the Witt group; in either case the resulting class lies in $H^2(\Sp(W);\Z/2\Z)$.
+\end{theorem}
+
+The relation between the Lion--Vergne cocycle and Rao's expression is precisely that the Leray invariant $L(\ell_0,\ell_0 g_1\inv,\ell_0 g_2 g_1\inv)$ \emph{is} the class of the form $q_B$ in $W(\F)$; the two formulations are isomorphic encodings of the same $\Sp(W)$-equivariant function on triples of Lagrangians.
+
+\section{Maximal-compact splitting and the Bluher cocycle}
+\label{sec:bluher}
+
+Bluher [Bluher1996] constructs an explicit section $r^+:\Sp(2m,\R)\to \widetilde\Sp(2m,\R)$ whose cocycle $c^+$ admits a closed form on the maximal compact subgroup. Write $K = U(m) \hookrightarrow \Sp(2m,\R)$ via $u(A+iB) = \begin{psmallmatrix} A & B \\ -B & A \end{psmallmatrix}$.
+
+\begin{theorem}[[Bluher1996], Prop.~10]\label{thm:bluher}
+Let $k \in K$ have eigenvalues $e^{i\theta_1},\dots,e^{i\theta_m}$ with $-\pi < \theta_j \le \pi$, and set $\theta = \sum\theta_j$, $\delta = \sum\delta_j$ where
+\[
+\delta_j = \begin{cases}
+-1, & \theta_j \in (-\pi,0),\\
+0, & \theta_j = 0,\\
+1, & \theta_j \in (0,\pi),\\
+2, & \theta_j = \pi.
+\end{cases}
+\]
+Then $r^+(k) = e^{-i\theta m / 4}\,e^{i\pi\delta/2}\,k(k)$, where $k:K\to\widetilde\Sp$ is the canonical compact splitting characterised by $k(k)\Phi_0 = \Phi_0$ on the Gaussian $\Phi_0(x)=e^{-\pi\|x\|^2}$. The associated cocycle satisfies
+\[
+c^+(p g_1, g_2) = c^+(g_1,g_2) = c^+(g_1, g_2 p)
+\quad\text{for all } p \in P^+ = \{p\in P : \det(a)>0\},
+\]
+and for $m=1$ coincides with the Kubota cocycle on $\SL_2(\R)$.
+\end{theorem}
+
+\begin{proposition}[[Bluher1996], Prop.~2]
+Explicit lifts to $\widetilde\Sp(2m,\F)$:
+\[
+(\det A,-1)_\F^{1/2}\,a(A) \;\in\; \widetilde\Sp,\qquad
+n(B) \;\in\; \widetilde\Sp,\qquad
+\gamma(1)\,T_j \;\in\; \widetilde\Sp.
+\]
+\end{proposition}
+
+\section{Comparative summary}
+\label{sec:comparison}
+
+\begin{longtable}{p{0.20\textwidth} p{0.36\textwidth} p{0.16\textwidth} p{0.20\textwidth}}
+\toprule
+\textbf{Variant} & \textbf{Cocycle / multiplier} & \textbf{Values} & \textbf{Locus where simplest} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Variant} & \textbf{Cocycle / multiplier} & \textbf{Values} & \textbf{Locus where simplest} \\
+\midrule
+\endhead
+Weil (1964) original
+& $c(g_1,g_2) = \gamma(\psi\circ q_{u_1\inv+u_2})$ on $P w_n P$ only
+& $\C^1$ ($8$th roots $\cdot$ phase)
+& Big Bruhat cell\\
+\addlinespace
+Rao (1993)
+& $c^Y(g_1,g_2) = \gamma(\psi\circ L(Y,Yg_1\inv,Yg_2 g_1\inv))\inv$
+& $\C^1$
+& All cells; $P$-biinvariant\\
+\addlinespace
+Rao normalised
+& $\widetilde c$ via multiplier $m(g) = \gamma(x(g),\eta)\gamma(\eta)^{-j(g)}$, formula \cref{eq:rao-norm-cocycle}
+& $\{\pm 1\}$
+& All Bruhat cells\\
+\addlinespace
+Kashiwara index / Lion--Vergne (1980)
+& $c(g_1,g_2) = \exp\!\bigl(-\tfrac{i\pi}{4}\Maslov(\ell_0,\ell_0 g_1,\ell_0 g_2 g_1)\bigr)$ ($\R$); $\gamma_p(\Maslov_p)\inv$ ($p$-adic)
+& $\Z/8\Z\hookrightarrow \C^1$, in fact $\Z/2\Z$
+& Choice-free in Lagrangians\\
+\addlinespace
+Kubota / $\SL_2$ form
+& $c^K(g_1,g_2) = (x(g_1), x(g_1 g_2)/x(g_2))_\F$
+& $\{\pm 1\}$
+& $n=1$ only\\
+\addlinespace
+Bluher (1996) $r^+$
+& $r^+(k) = e^{-i\theta m/4} e^{i\pi\delta/2} k(k)$ on $K$; $r^+(p_1 w p_2)= r_P(p_1)\varepsilon(w) r_P(p_2)$
+& $\{\pm 1\}$
+& Maximal compact $K$\\
+\addlinespace
+Kashiwara--Vergne (1978)
+& Action by $\mathfrak{sp}(W)$ via degree-$\le 2$ differential operators (oscillator); decomposition under reductive dual pairs $(G,G')$
+& Lie-algebra
+& Fock model; harmonic decomposition\\
+\addlinespace
+Thomas (2008)
+& Character $\Theta(g)$ as a Weil index of a Maslov form, choice-free; pulled back from $\Mp(W\oplus W)$
+& $\C$ on conjugacy classes
+& Character computations\\
+\bottomrule
+\end{longtable}
+
+\section{The Kashiwara--Vergne harmonic-polynomial framework}
+\label{sec:kv}
+
+A complementary, infinitesimal viewpoint is provided by Kashiwara and Vergne [KV1978]. In the Fock (Bargmann) model of the Schr\"odinger representation, the symplectic Lie algebra $\mathfrak{sp}(W)$ acts by polynomials of degree $\le 2$ in creation and annihilation operators $a_i^\dagger,a_i$ satisfying $[a_i,a_j^\dagger] = \delta_{ij}$. Quadratic monomials in $a^\dagger a^\dagger$, $a a$, $a^\dagger a$ generate the (complexified) symplectic algebra and integrate, via the metaplectic cover, to the Segal--Shale--Weil representation.
+
+The principal results of [KV1978] are:
+\begin{enumerate}[leftmargin=2em,itemsep=2pt]
+\item For a reductive dual pair $(G,G')$ in $\Sp(W)$ with $G$ compact, the restriction of the oscillator representation to $\widetilde G \times \widetilde{G'}$ decomposes multiplicity-freely:
+\[
+\omega \;\cong\; \bigoplus_{\sigma \in \widehat{G}}\sigma \otimes \theta(\sigma),
+\]
+with each $\theta(\sigma)$ an irreducible unitarisable highest-weight module of $\widetilde{G'}$.
+\item For the dual pair $(O(p,q),\Sp(2n,\R))$ the irreducible constituents of the oscillator representation, restricted to the compact factor, are realised in spaces of \emph{harmonic polynomials} on the polarised vector space — polynomials annihilated by all $G$-invariant constant-coefficient differential operators on the relevant Lagrangian — and these spaces classify the unitary highest-weight representations of the non-compact partner.
+\item The list of unitarisable highest-weight modules of $\mathfrak{su}(n,n)$ obtained this way is exactly the \emph{Kashiwara--Vergne list} [KV1978,Jakobsen2021], parametrised by Young diagrams of width $\le n-1$.
+\end{enumerate}
+The Kashiwara--Vergne realisation is dual to the Schr\"odinger picture of \cref{sec:schrodinger}: it works on the Lie-algebra level inside the Fock model, while the Rao / Lion--Vergne formulas work at the group level. The two are reconciled by the Cayley transform mapping the Schr\"odinger and Fock models, whose explicit kernel is itself a Weil-index Gaussian.
+
+\section{Recent activity (post-1990 highlights)}
+\label{sec:recent}
+
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt]
+\item \textbf{Rao 1993} [Rao1993]: the canonical reference for explicit Schwartz-model formulas and the closed-form $\C^1$ and $\{\pm 1\}$ cocycles.
+\item \textbf{Bluher 1996} [Bluher1996]: explicit section $r^+$ on $\Sp(2m,\F)$ and its compatibility with the Kubota cocycle.
+\item \textbf{Kudla 1994 / 1996} [Kudla1994,Kudla1996]: splittings of metaplectic covers of dual reductive pairs, and a streamlined exposition of the Schwartz-model action.
+\item \textbf{Thomas 2008} [Thomas2008]: choice-free character formula for the Weil representation, expressed via Weil index of a Maslov-type form on $W\oplus W$.
+\item \textbf{Pan 2001} [Pan2001]: explicit splitting formulas for metaplectic covers restricted to several reductive dual pairs.
+\item \textbf{Zemel 2012} [Zemel2015]: $p$-adic computation of the Weil representation of discriminant forms, free of theta-function inputs.
+\item \textbf{Prasad 2009} [Prasad2009]: simple algebraic re-derivation of character/decomposition formulas for finite-abelian-group Weil representations.
+\item \textbf{Jakobsen 2021} [Jakobsen2021]: reconstruction of the Kashiwara--Vergne list of unitary highest-weight modules of $\mathfrak{su}(n,n)$ via Weyl-algebra homomorphisms; quantum analogue.
+\item \textbf{Trias 2026} [Trias2026]: $\ell$-modular Stone--von Neumann theorem, modular Weil representation and an analogue of Rao's metaplectic cocycle in characteristic $\ell \ne p$, including the surprising splitting at $\ell = 2$.
+\item \textbf{Wang 2025--2026} [Wang2025,Wang2026]: Siegel modular forms from the Weil representation, with explicit $8$-th roots of unity arising from comparing Rao, Kudla, Perrin, Lion--Vergne and Satake--Takase $2$-cocycles.
+\item \textbf{Wei Li 2024} [LiWenWei2024]: behaviour of the metaplectic cocycle and endoscopic transfer factors under variation of the additive character $\psi$.
+\end{itemize}
+
+\section{Variants of the cocycle and how they are related}
+
+The various $2$-cocycles in the literature differ by coboundaries that fall into two classes:
+\begin{enumerate}[leftmargin=2em,itemsep=2pt]
+\item \emph{Choice of section}, i.e.\ choice of distinguished representatives in each Bruhat cell. Different sections produce cocycles differing by a coboundary $\partial f(g_1,g_2) = f(g_1)f(g_2)/f(g_1 g_2)$ where $f$ is the relative phase between the two sections. This is how Rao's $c$ and Bluher's $c^+$ are related.
+\item \emph{Choice of polarisation/Lagrangian}. Different Lagrangians $Y, Y'$ produce cocycles $c^Y, c^{Y'}$ that differ by an explicit coboundary built from a partial Fourier transform; Kudla \cite[Ch.~II]{Kudla1996} writes this coboundary in terms of $\beta_{e,\psi}$ and $\mu_V$.
+\end{enumerate}
+The cohomology class is a single element of $H^2(\Sp(W);\C^1)$ (or, after normalisation, of $H^2(\Sp(W);\Z/2\Z)$ in the local non-archimedean and real cases) — this class is intrinsic; the formulas above are explicit cocycle representatives differing by coboundaries.
+
+\section{References}
+
+The following list expands the citations above. URLs point to publisher pages, preprint servers, or stable repositories; all were accessed in 2026.
+
+\begin{description}[leftmargin=1.6em,labelindent=0pt,itemsep=2pt]
+\item[{[Weil1964]}] A.~Weil. \emph{Sur certains groupes d'op\'erateurs unitaires}. Acta Math.\ 111 (1964), 143--211. \href{https://doi.org/10.1007/BF02391012}{doi:10.1007/BF02391012}.
+\item[{[KV1978]}] M.~Kashiwara, M.~Vergne. \emph{On the Segal--Shale--Weil representations and harmonic polynomials}. Invent.\ Math.\ 44 (1978), 1--47. \href{https://doi.org/10.1007/BF01389900}{doi:10.1007/BF01389900}.
+\item[{[LV1980]}] G.~Lion, M.~Vergne. \emph{The Weil representation, Maslov index and theta series}. Progress in Math.\ 6, Birkh\"auser, 1980. PDF: \href{https://webhomes.maths.ed.ac.uk/~v1ranick/papers/lionvergne.pdf}{webhomes.maths.ed.ac.uk/\textasciitilde{}v1ranick/papers/lionvergne.pdf}.
+\item[{[Rao1993]}] R.~Ranga Rao. \emph{On some explicit formulas in the theory of Weil representation}. Pacific J.\ Math.\ 157 (1993), no.\ 2, 335--371. \href{https://doi.org/10.2140/pjm.1993.157.335}{doi:10.2140/pjm.1993.157.335}. Open access: \href{https://projecteuclid.org/journals/pacific-journal-of-mathematics/volume-157/issue-2/On-some-explicit-formulas-in-the-theory-of-Weil-representation/pjm/1102634748.pdf}{Project Euclid PDF}.
+\item[{[Kudla1994]}] S.~Kudla. \emph{Splitting metaplectic covers of dual reductive pairs}. Israel J.\ Math.\ 87 (1994), 361--401.
+\item[{[Bluher1996]}] A.~Bluher. \emph{The Weil representation and Gauss sums}. Pacific J.\ Math.\ 173 (1996), 357--399. PDF: \href{https://msp.org/pjm/1996/173-2/pjm-v173-n2-p04-s.pdf}{msp.org/pjm/1996/173-2}.
+\item[{[Kudla1996]}] S.~Kudla. \emph{Notes on the local theta correspondence}. Lectures, European School in Group Theory (1996). PDF: \href{https://www.math.utoronto.ca/skudla/castle.pdf}{www.math.utoronto.ca/skudla/castle.pdf}.
+\item[{[Pan2001]}] S.-Y.~Pan. \emph{Splittings of the metaplectic covers of some reductive dual pairs}. Pacific J.\ Math.\ 199 (2001), 163--226. \href{https://doi.org/10.2140/pjm.2001.199.163}{doi:10.2140/pjm.2001.199.163}.
+\item[{[Thomas2008]}] T.~Thomas. \emph{The character of the Weil representation}. J.\ London Math.\ Soc.\ 77 (2008), 221--239. \href{https://doi.org/10.1112/jlms/jdm098}{doi:10.1112/jlms/jdm098}.
+\item[{[Prasad2009]}] A.~Prasad. \emph{On character values and decomposition of the Weil representation associated to a finite abelian group}. \href{https://arxiv.org/abs/0903.1486}{arXiv:0903.1486}.
+\item[{[Zemel2015]}] S.~Zemel. \emph{A $p$-adic approach to the Weil representation of discriminant forms arising from even lattices}. Ann.\ Math.\ Qu\'ebec 39 (2015), 61--89. \href{https://doi.org/10.1007/s40316-015-0034-6}{doi:10.1007/s40316-015-0034-6}.
+\item[{[Jakobsen2021]}] H.~P.~Jakobsen. \emph{Determinantal ideals and the canonical commutation relations: classically or quantized}. Comm.\ Math.\ Phys.\ 391 (2022), 753--801. \href{https://doi.org/10.1007/s00220-022-04524-5}{doi:10.1007/s00220-022-04524-5}.
+\item[{[LiWenWei2024]}] Wen-Wei Li. \emph{Variation of additive characters in the transfer for $\Mp(2n)$}. \href{https://arxiv.org/abs/2411.03091}{arXiv:2411.03091}.
+\item[{[Wang2025]}] Chun-Hui Wang. \emph{Siegel modular forms associated to Weil representations}. \href{https://www.semanticscholar.org/paper/0e902df0b61766d02a8d841e7466d9d8701c9d7d}{Preprint, 2025}.
+\item[{[Wang2026]}] Chun-Hui Wang. \emph{Siegel modular forms associated to Weil representations: $\SL_2(\R)$ and $\GL_2(\R)$ cases}. \href{https://www.semanticscholar.org/paper/6352373528908c09a8009f1e1f2d775d9af06093}{Preprint, 2026}.
+\item[{[Trias2026]}] J.~Trias. \emph{Modular Weil representation and compatibility of cuspidals with congruences}. \href{https://arxiv.org/abs/2601.16132}{arXiv:2601.16132}.
+\item[{[Garrigan]}] T.~Garrigan. \emph{The Segal--Shale--Weil representation, the indices of Kashiwara and Maslov, and quantum mechanics}. LMU. PDF: \href{https://digitalcommons.lmu.edu/cgi/viewcontent.cgi?article=1116&context=math_fac}{digitalcommons.lmu.edu}.
+\end{description}
+
+\end{document}
