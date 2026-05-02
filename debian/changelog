@@ -16,6 +16,18 @@ arb4j (0.99.9.9.10) UNRELEASED; urgency=low
     PSD chart still renders the empirical scatter on top of the
     theoretical 1/(π√(1−f²)) curve inside [0,1] and the covariance
     chart still tracks J₀(2πt).
+  * PSD chart draws the asymmetric χ²_2 95% confidence bar per bin.
+    populatePowerSpectralDensityDatasets builds an asymmetric RealDataSet
+    for the empirical curve: ln(1+Ŝ) goes into re().getMid(), the +error
+    distance ln(1+Ŝ/0.0506) − ln(1+Ŝ) into re().getRad(), the −error
+    distance ln(1+Ŝ) − ln(1+Ŝ/3.689) into im().getRad(). New helper
+    newPeriodogramErrorBarRenderer installs an ErrorDataSetRenderer with
+    ErrorStyle.ERRORBARS so chartfx queries the dataset's DataSetError
+    surface for asymmetric whiskers. The bars are wide because the
+    single-realization periodogram has enormous χ²_2 variance per bin
+    — that's the truth, not a rendering bug; smoothing or averaging
+    multiple realizations narrows them. Tests 816/816 still green;
+    RandomWaveSampler smoke screenshot confirms bars draw.
   * RealDataSet implements ChartFX DataSetError so the default
     ErrorDataSetRenderer draws error bars without a custom renderer.
     Two error modes chosen at construction:

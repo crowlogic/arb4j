@@ -744,42 +744,105 @@ public abstract class StationaryGaussianProcessSampler extends
       positiveFrequencies              .get(i).set(frequencies         .get(i));
       theoreticalPowerSpectralDensities.get(i).set(powerSpectralDensity.get(i));
     }
-    chart.getRenderers().setAll(newScatterChartRenderer(), new ErrorDataSetRenderer());
+    chart.getRenderers().setAll(newPeriodogramErrorBarRenderer(), new ErrorDataSetRenderer());
     configurePowerSpectralDensityAxes(chart);
     populatePowerSpectralDensityDatasets(chart);
     return chart;
   }
 
+  /**
+   * χ² 95% interval lower divisor: 2/{χ²_{2,0.975}} = 2/7.378 ≈ 0.271,
+   * i.e. lower endpoint Ŝ/3.689. The single-segment raw periodogram is
+   * χ²_2 about the true PSD; this is its 95% lower critical value.
+   */
+  static final double CHI2_2_LOWER = 3.689;
+
+  /** χ² 95% interval upper divisor: 2/{χ²_{2,0.025}} = 2/0.0506 ≈ 39.498. */
+  static final double CHI2_2_UPPER = 0.0506;
+
   void populatePowerSpectralDensityDatasets(XYChart chart)
   {
     // Empirical PSD computed end-to-end in arb precision; only the per-cell
     // doubleValue() at the dataset edge crosses into double.
-    Real     empiricalPSD     = computePowerSpectralDensity(samplePath.re());
-    double[] xs               = new double[positiveFrequencyCount];
-    double[] empiricalLog1p   = new double[positiveFrequencyCount];
+    Real        empiricalPSD = computePowerSpectralDensity(samplePath.re());
+    RealDataSet empiricalDS  = new RealDataSet("Empirical",
+                                               positiveFrequencyCount,
+                                               spectralSupport,
+                                               true);                  // asymmetric χ²_2 bars
+    Complex     empY         = empiricalDS.getComplexYValues();
+    double[] xs              = new double[positiveFrequencyCount];
     double[] theoreticalLog1p = new double[positiveFrequencyCount];
-    try (Real one = Real.valueOf(1.0); Real tmp = new Real(); Real lg = new Real())
+
+    try ( Real one    = Real.valueOf(1.0);
+          Real chi2Lo = Real.valueOf(CHI2_2_LOWER);
+          Real chi2Hi = Real.valueOf(CHI2_2_UPPER);
+          Real lo     = new Real();
+          Real hi     = new Real();
+          Real tmp    = new Real();
+          Real ln1pLo = new Real();
+          Real ln1pHi = new Real();
+          Real ln1pCt = new Real())
     {
       for (int i = 0; i < positiveFrequencyCount; i++)
       {
         xs[i] = positiveFrequencies.get(i).doubleValue();
-        empiricalPSD.get(i).add(one, bits, tmp).log(bits, lg);
-        empiricalLog1p[i] = Math.max(0.0, lg.doubleValue());
-        theoreticalPowerSpectralDensities.get(i).add(one, bits, tmp).log(bits, lg);
-        theoreticalLog1p[i] = Math.max(0.0, lg.doubleValue());
+
+        Real bin = empiricalPSD.get(i);                                // Ŝ_k
+        bin.div(chi2Lo, bits, lo);                                     // Ŝ/3.689
+        bin.div(chi2Hi, bits, hi);                                     // Ŝ/0.0506
+
+        bin.add(one, bits, tmp).log(bits, ln1pCt);                     // ln(1+Ŝ)
+        lo .add(one, bits, tmp).log(bits, ln1pLo);                     // ln(1+Ŝ/3.689)
+        hi .add(one, bits, tmp).log(bits, ln1pHi);                     // ln(1+Ŝ/0.0506)
+
+        // x row
+        empiricalDS.getRealXValues().get(i).set(positiveFrequencies.get(i));
+
+        // y center: ln(1+Ŝ) into re().getMid()
+        empY.get(i).re().set(ln1pCt);
+
+        // +error distance into re().getRad()
+        ln1pHi.sub(ln1pCt, bits, tmp);
+        empY.get(i).re().getRad().set(Math.max(0.0, tmp.doubleValue()));
+
+        // −error distance into im().getRad()
+        ln1pCt.sub(ln1pLo, bits, tmp);
+        empY.get(i).im().getRad().set(Math.max(0.0, tmp.doubleValue()));
+
+        // Theoretical curve
+        theoreticalPowerSpectralDensities.get(i).add(one, bits, tmp).log(bits, ln1pCt);
+        theoreticalLog1p[i] = Math.max(0.0, ln1pCt.doubleValue());
       }
     }
     finally
     {
       empiricalPSD.close();
     }
-    var empiricalDataSet   = new DoubleDataSet("Empirical").set(xs, empiricalLog1p)
-                                                           .setStyle(Charts.empiricialFrequencyDatasetStyle);
+
+    empiricalDS.setStyle(Charts.empiricialFrequencyDatasetStyle);
     var theoreticalDataSet = new DoubleDataSet("Theoretical").set(xs, theoreticalLog1p)
                                                              .setStyle(Charts.theoreticalFrequencyDatasetStyle);
     var renderers = chart.getRenderers();
-    ((ErrorDataSetRenderer) renderers.get(0)).getDatasets().setAll(empiricalDataSet);
+    ((ErrorDataSetRenderer) renderers.get(0)).getDatasets().setAll(empiricalDS);
     ((ErrorDataSetRenderer) renderers.get(1)).getDatasets().setAll(theoreticalDataSet);
+  }
+
+  /**
+   * Renderer for the empirical periodogram: marker per bin plus the
+   * asymmetric χ²_2 95% confidence bar. {@link ErrorStyle#ERRORBARS}
+   * tells the renderer to query the dataset's {@code DataSetError}
+   * surface (which {@link RealDataSet} implements when constructed in
+   * asymmetric mode).
+   */
+  public ErrorDataSetRenderer newPeriodogramErrorBarRenderer()
+  {
+    final ErrorDataSetRenderer renderer = new ErrorDataSetRenderer();
+    renderer.setPolyLineStyle(LineStyle.NONE);
+    renderer.setErrorStyle(ErrorStyle.ERRORBARS);
+    renderer.setDrawMarker(true);
+    renderer.setDrawBubbles(false);
+    renderer.setAssumeSortedData(false);
+    return renderer;
   }
 
   public XYChart newRandomWhiteNoiseMeasureChart(Real frequencies, Complex whiteNoise)
