@@ -11,7 +11,11 @@ arb4j (0.99.9.9.10) UNRELEASED; urgency=low
     BandLimitedWhiteNoiseSampler and RandomWaveSampler updated to the
     new signatures. ingestPrecomputedSamplePath fixed to read the path
     from samplePath.re() (it was reading .im() which is always zero in
-    the path-based pipeline). Tests 816/816 green.
+    the path-based pipeline). Tests 816/816 green. Headless smoke run
+    via bin/snapshot arb.applications.RandomWaveSampler confirms the
+    PSD chart still renders the empirical scatter on top of the
+    theoretical 1/(π√(1−f²)) curve inside [0,1] and the covariance
+    chart still tracks J₀(2πt).
   * RealDataSet implements ChartFX DataSetError so the default
     ErrorDataSetRenderer draws error bars without a custom renderer.
     Two error modes chosen at construction:
