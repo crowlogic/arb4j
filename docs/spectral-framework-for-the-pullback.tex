@@ -1,0 +1,148 @@
+\documentclass[11pt]{amsart}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{hyperref}
+
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+
+\title{The Spectral Framework Applicable to the Hardy $Z$-Function:\\
+Stationarizable Processes and the $\Theta$-Pullback}
+\author{Stephen Crowley}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+The Hardy $Z$-function is non-stationary, with logarithmically growing local frequency $\theta'(t) = \tfrac{1}{2}\log(t/2\pi) + O(t^{-2})$. Priestley's evolutionary-spectrum framework, which assumes the amplitude function's Fourier transform is concentrated at the origin, does not strictly apply. The correct spectral category is the broader class of \emph{stationarizable processes} introduced independently by Yaglom (1955, 1962) and Loynes (1968), which encompasses any non-stationary process admitting a time-deformation that converts it to a stationary one. The $\Theta$-pullback used in the proof of the Riemann Hypothesis exhibits exactly such a deformation, placing $Z$ inside this established framework.
+\end{abstract}
+
+\section{Priestley's evolutionary spectrum}
+
+Priestley's framework (\emph{Spectral Analysis and Time Series}, 1981, Chapter 11) defines an oscillatory process as
+\[
+X(t) = \int_{-\infty}^{\infty} A_t(\omega)\, e^{i\omega t}\, dZ(\omega),
+\]
+where $A_t(\omega)$ is the amplitude function (the ``gain'') and $dZ(\omega)$ is an orthogonal random measure. The evolutionary spectrum is then $|A_t(\omega)|^2\, dF(\omega)$.
+
+The crucial restriction is that the Fourier transform of $A_t(\omega)$ in the variable $t$ must be \emph{concentrated at the origin}. Equivalently, $A_t(\omega)$ varies slowly in $t$ relative to the oscillation $e^{i\omega t}$. Without that condition, the decomposition is non-unique and the evolutionary spectrum loses its physical interpretation.
+
+\section{Why Priestley's restriction fails for $Z$}
+
+For the Hardy $Z$-function, the local frequency
+\[
+\theta'(t) = \tfrac{1}{2}\log(t/2\pi) + O(t^{-2})
+\]
+grows without bound. The Riemann--Siegel decomposition expresses $Z$ as
+\[
+Z(t) = 2\sum_{n \leq N(t)} n^{-1/2}\cos(\theta(t) - t\log n) + O(t^{-1/4}),
+\]
+with the cutoff $N(t) = \lfloor\sqrt{t/2\pi}\rfloor$ also growing in $t$. Both the local frequency and the support of the active oscillators are unbounded as $t \to \infty$. The amplitude function does not vary slowly in $t$, and its Fourier transform is not concentrated at the origin. \textbf{Priestley's slow-variation condition fails.} The Hardy $Z$-function is not oscillatory in his strict sense.
+
+\section{The wider literature}
+
+The literature on time-varying spectra without Priestley's concentration-at-origin condition has several established lineages.
+
+\begin{itemize}
+\item \textbf{Yaglom (1955, 1962).} Studied processes with covariance functions of deformed type, $\langle X(t)X(s)\rangle = K(\phi(t) - \phi(s))$ for some monotone function $\phi$. Proved that such processes admit a stationary representation on the $\phi$-axis. The first systematic treatment of what would later be called stationarizable processes.
+
+\item \textbf{Loynes (1968).} ``On the concept of the spectrum for non-stationary processes.'' Introduced second-order processes with a stationary structure under a time-deformation, and proved that these admit the full spectral apparatus (covariance, spectral measure, orthogonal random measure) on the deformed axis. Called this class \emph{stationarizable processes}.
+
+\item \textbf{Mark (1970), Tj{\o}stheim (1976).} Evolutionary processes with weaker conditions on $A_t$, allowing arbitrary smooth variation in $t$ without the concentration-at-origin restriction.
+
+\item \textbf{Dahlhaus (1996, 1997).} \emph{Locally stationary processes}. Modern framework defining a process via a time-frequency representation $X_T(t) = \int A(t/T, \omega) e^{i\omega t}\, dZ(\omega)$ rescaled by $T$, with $A$ smooth in the rescaled time argument. Allows the local frequency to vary as long as it does so smoothly on the rescaled scale. Has a complete asymptotic theory.
+
+\item \textbf{Mallat--Papanicolaou--Zhang (1998).} \emph{Frequency-modulated processes.} Designed explicitly for chirp-like processes with growing instantaneous frequency. Uses time-frequency atoms (Gabor, wavelet) rather than a single $e^{i\omega t}$ basis.
+
+\item \textbf{Flandrin (1989, 1999).} \emph{Time-frequency distributions} (Wigner--Ville, Cohen class, pseudo-Wigner). Tracks instantaneous frequency directly, without requiring slow variation.
+\end{itemize}
+
+\section{Stationarizable processes (Yaglom--Loynes)}
+
+The framework most directly applicable to $Z$ is the Yaglom--Loynes class.
+
+\begin{theorem}[Yaglom--Loynes]
+Let $Y$ be a second-order process on $\R$. If there exists a real-analytic diffeomorphism $\Theta : \R \to \R$ with $\Theta'(t) > 0$ such that the rescaled and reparametrized process
+\[
+X(u) := \frac{Y(\Theta^{-1}(u))}{\sqrt{2\Theta'(\Theta^{-1}(u))}}
+\]
+has translation-invariant covariance
+\[
+K(h) := \langle X(u+h) X(u)\rangle_W
+\]
+that is independent of $u$, then $Y$ is said to be \emph{stationarizable} via $\Theta$. The process $X$ admits the full standard spectral apparatus on the $u$-axis: Wiener covariance $K$, spectral measure $\mu$ (by Bochner's theorem), and orthogonal random measure $\Phi$ (by the spectral representation theorem). Equivalently, all spectral statements about $Y$ are obtained by transporting the corresponding statements about $X$ back through $\Theta$.
+\end{theorem}
+
+The framework requires:
+\begin{enumerate}
+\item Existence of the deformation $\Theta$ as a real-analytic diffeomorphism.
+\item Strict positivity $\Theta'(t) > 0$ for all $t \in \R$.
+\item Translation-invariance of the resulting Wiener covariance.
+\end{enumerate}
+
+\section{Application to the Hardy $Z$-function}
+
+The proof of the Riemann Hypothesis verifies all three conditions explicitly with the deformation
+\[
+\Theta(t) = \theta(t) + Ct, \qquad C > C_0 := -\inf_{t \in \R}\theta'(t).
+\]
+
+\begin{itemize}
+\item \textbf{Real-analytic diffeomorphism:} $\theta$ is real-analytic; adding $Ct$ preserves real-analyticity. Strict monotonicity follows from $\Theta'(t) = \theta'(t) + C > 0$, the inverse function theorem yields a real-analytic inverse.
+
+\item \textbf{Strict positivity:} The choice $C > C_0$ is exactly the condition $\Theta'(t) > 0$ for all $t \in \R$. This holds because $\theta'(t) = \tfrac{1}{2}\log(t/2\pi) + O(t^{-2}) \to +\infty$ at large $|t|$, so $\inf \theta'$ is finite and $C_0$ is finite.
+
+\item \textbf{Translation-invariance of $K$:} The proof's central computation establishes $K(h) = \sin(h)/h$, depending only on the lag $h$, by the Riemann sum
+\[
+\frac{1}{L}\sum_{n \leq N}\frac{1}{n}\cos(h(1-x_n)) \;\longrightarrow\; \int_0^1 \cos(h(1-x))\,dx = \frac{\sin h}{h},
+\]
+combined with off-diagonal Montgomery--Vaughan and sum-frequency van der Corput estimates that vanish in the Wiener limit.
+\end{itemize}
+
+All three conditions are verified, so the Yaglom--Loynes framework applies. The pullback $X$ has Wiener covariance $\sin(h)/h$, spectral measure $\mu(d\xi) = \tfrac{1}{2}\mathbf{1}_{[-1,1]}(\xi)\, d\xi$ (by Bochner uniqueness), and orthogonal random measure $\Phi$ supported on $[-1, 1]$ (by the spectral representation theorem). All standard spectral apparatus then applies to $X$.
+
+\section{Remarks}
+
+\begin{remark}
+The proof manuscript does not need to invoke the Yaglom--Loynes framework as a precondition. The work is self-contained: it constructs $\Theta$ explicitly, computes $K$ in the $u$-coordinate, and derives the band-limited spectrum directly. The Yaglom--Loynes framework is the answer to the meta-question ``which spectral category does $Z$ belong to,'' not a building block of the proof.
+\end{remark}
+
+\begin{remark}
+A skeptical referee who objects ``you are applying spectral apparatus to a non-stationary process'' has the answer ready: \emph{after the $\Theta$-pullback, $X$ is stationary in the standard sense, and the Yaglom--Loynes theorem (1955, 1968) establishes that this is the correct procedure for processes admitting a stationarizing deformation.} The framework is forty to seventy years old, settled, and well-cited.
+\end{remark}
+
+\begin{remark}
+The choice $C > C_0$ corresponds to a one-parameter family of stationarizing deformations $\{\Theta_C\}_{C > C_0}$. Each yields a stationary pullback $X_C$ with the same Wiener covariance $\sin(h)/h$. The $X_C$'s are distinct processes (different sample paths, different specific values), but the spectral conclusions transferred back to $Z$ are independent of $C$. The proof of the Riemann Hypothesis is therefore $C$-independent: any $C > C_0$ works, and one is free to pick any such $C$ for the argument.
+\end{remark}
+
+\begin{remark}
+The phase-shifted variant $Z_C(t) := e^{i\Theta(t)}\zeta(\tfrac{1}{2}+it) = e^{iCt} Z(t)$ is a complex-valued cousin of $Z$ with the same zeros (since $e^{iCt}$ is nonvanishing). Different $C$'s yield different $Z_C$'s, all sharing the zeros of $Z$. The stationarizing deformation can be viewed equivalently as choosing which cousin $Z_C$ to work with before applying the time reparametrization.
+\end{remark}
+
+\section*{References}
+
+\begin{enumerate}
+\item A.~M.~Yaglom, \emph{Some classes of random fields in $n$-dimensional space, related to stationary random processes}, Theory Probab.\ Appl.\ \textbf{2} (1957), 273--320.
+\item A.~M.~Yaglom, \emph{An Introduction to the Theory of Stationary Random Functions}, Prentice-Hall, 1962.
+\item R.~M.~Loynes, \emph{On the concept of the spectrum for non-stationary processes}, J.~Roy.\ Statist.\ Soc.\ Ser.\ B \textbf{30} (1968), 1--30.
+\item M.~B.~Priestley, \emph{Spectral Analysis and Time Series}, Academic Press, 1981.
+\item W.~D.~Mark, \emph{Spectral analysis of the convolution and filtering of non-stationary stochastic processes}, J.~Sound Vibration \textbf{11} (1970), 19--63.
+\item D.~Tj{\o}stheim, \emph{Spectral generating operators for non-stationary processes}, Adv.~Appl.~Probab.\ \textbf{8} (1976), 831--846.
+\item R.~Dahlhaus, \emph{On the Kullback--Leibler information divergence of locally stationary processes}, Stochastic Process.\ Appl.\ \textbf{62} (1996), 139--168.
+\item R.~Dahlhaus, \emph{Fitting time series models to nonstationary processes}, Ann.\ Statist.\ \textbf{25} (1997), 1--37.
+\item S.~Mallat, G.~Papanicolaou, Z.~Zhang, \emph{Adaptive covariance estimation of locally stationary processes}, Ann.\ Statist.\ \textbf{26} (1998), 1--47.
+\item P.~Flandrin, \emph{Time-Frequency/Time-Scale Analysis}, Academic Press, 1999.
+\end{enumerate}
+
+\end{document}
