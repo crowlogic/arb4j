@@ -142,6 +142,10 @@ public class InverseShiftedPhasePullbackSampler extends
           {
             for (int i = workerIndex; i < N; i += W)
             {
+              if (progress.isCancelled())
+              {
+                break;
+              }
               t.set(t0 + i * dt);
 
               long evalStart = System.nanoTime();
@@ -154,6 +158,7 @@ public class InverseShiftedPhasePullbackSampler extends
               slot.im().zero();
 
               long doneCount = completed.incrementAndGet();
+              progress.setFraction((double) doneCount / N);
               if (doneCount % progressInterval == 0 || doneCount == N)
               {
                 double pct        = 100.0 * doneCount / N;

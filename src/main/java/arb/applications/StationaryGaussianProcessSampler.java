@@ -11,6 +11,8 @@ import arb.functions.real.RealFunction;
 import arb.stochastic.Charts;
 import arb.stochastic.Statistics;
 import arb.stochastic.processes.ComplexWhiteNoiseProcess;
+import arb.viz.ProgressDialog;
+import arb.viz.ProgressReporter;
 import arb.viz.WindowManager;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
@@ -19,6 +21,7 @@ import io.fair_acc.chartfx.renderer.LineStyle;
 import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
 import io.fair_acc.dataset.spi.DoubleDataSet;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -64,6 +67,21 @@ public abstract class StationaryGaussianProcessSampler extends
    * the negative half is redundant; default is non-negative-only.
    */
   protected boolean             showNegativeFrequencies           = false;
+
+  /**
+   * Currently-active progress reporter, or {@link ProgressReporter#NULL}
+   * when no long-running task is in flight. Workers in {@link #prepareSamplePath()}
+   * and {@link #populateAutoCorrelationDatasets} tick this and check
+   * {@link ProgressReporter#isCancelled()} between iterations.
+   */
+  protected volatile ProgressReporter progress                    = ProgressReporter.NULL;
+
+  /**
+   * The primary {@link Stage} handed to {@link #start(Stage)}. Held so the
+   * sample-length and autocorrelation-refresh handlers can parent their
+   * progress dialogs to it.
+   */
+  protected Stage               primaryStage;
 
   /**
    * The single covariance XYChart created by
@@ -216,53 +234,66 @@ public abstract class StationaryGaussianProcessSampler extends
     {
       return;
     }
-    try
+    runWithProgress(primaryStage, "Resizing to L = " + newL, reporter ->
     {
-      double t0 = timeSpan.getA().doubleValue();
-      whiteNoise.close();
-      samplePath.close();
-      envelope.close();
-      samplingTimes.close();
-      randomMeasure.close();
-      timeSpan.close();
-      interval.close();
-
-      this.timeSpan               = new FloatInterval(t0, t0 + newL);
-      this.interval               = timeSpan.length(128, new Float());
-      this.L                      = interval.doubleValue();
-      this.N                      = (int) (L / dt);
-      this.N_IS_EVEN              = N % 2 == 0;
-      this.nyquistFrequency       = 1.0 / (2 * dt);
-      this.nyquistIndex           = N / 2;
-      this.positiveFrequencyCount = N / 2 + 1;
-      if (this.positiveFrequencies != null) this.positiveFrequencies.close();
-      this.positiveFrequencies    = Real.newVector(positiveFrequencyCount);
-      this.df                     = 1.0 / L;
-      if (this.theoreticalPowerSpectralDensities != null) this.theoreticalPowerSpectralDensities.close();
-      this.theoreticalPowerSpectralDensities = Real.newVector(positiveFrequencyCount);
-      this.whiteNoise             = Complex.newVector(N);
-      this.samplePath             = Complex.newVector(N);
-      this.envelope               = Real.newVector(N);
-      this.samplingTimes          = Real.newVector(N);
-      this.randomMeasure          = Complex.newVector(N);
-
-      prepareSamplePath();
-      // Refresh positiveFrequencies and theoreticalPowerSpectralDensities tables
-      // (filled inside the chart factory the first time around; recompute here).
-      for (int i = 0; i < positiveFrequencyCount; i++)
+      try
       {
-        positiveFrequencies              .get(i).set(frequencies          .get(i));
-        theoreticalPowerSpectralDensities.get(i).set(powerSpectralDensity .get(i));
+        // Storage reallocation — not thread-safe to do off-FX while the FX
+        // thread might still be repainting old datasets, but the modal
+        // dialog blocks user interaction so charts are quiescent.
+        double t0 = timeSpan.getA().doubleValue();
+        whiteNoise.close();
+        samplePath.close();
+        envelope.close();
+        samplingTimes.close();
+        randomMeasure.close();
+        timeSpan.close();
+        interval.close();
+
+        this.timeSpan               = new FloatInterval(t0, t0 + newL);
+        this.interval               = timeSpan.length(128, new Float());
+        this.L                      = interval.doubleValue();
+        this.N                      = (int) (L / dt);
+        this.N_IS_EVEN              = N % 2 == 0;
+        this.nyquistFrequency       = 1.0 / (2 * dt);
+        this.nyquistIndex           = N / 2;
+        this.positiveFrequencyCount = N / 2 + 1;
+        if (this.positiveFrequencies != null) this.positiveFrequencies.close();
+        this.positiveFrequencies    = Real.newVector(positiveFrequencyCount);
+        this.df                     = 1.0 / L;
+        if (this.theoreticalPowerSpectralDensities != null) this.theoreticalPowerSpectralDensities.close();
+        this.theoreticalPowerSpectralDensities = Real.newVector(positiveFrequencyCount);
+        this.whiteNoise             = Complex.newVector(N);
+        this.samplePath             = Complex.newVector(N);
+        this.envelope               = Real.newVector(N);
+        this.samplingTimes          = Real.newVector(N);
+        this.randomMeasure          = Complex.newVector(N);
+
+        prepareSamplePath();
+        if (reporter.isCancelled()) return;
+
+        // Refresh positiveFrequencies and theoreticalPowerSpectralDensities tables
+        // (filled inside the chart factory the first time around; recompute here).
+        for (int i = 0; i < positiveFrequencyCount; i++)
+        {
+          positiveFrequencies              .get(i).set(frequencies          .get(i));
+          theoreticalPowerSpectralDensities.get(i).set(powerSpectralDensity .get(i));
+        }
+
+        // Chart-dataset mutations have to land on the FX thread.
+        Platform.runLater(() ->
+        {
+          populateTimeDomainDatasets(timeDomainChart, spectralSupport, samplingTimes, samplePath, envelope);
+          populateRandomWhiteNoiseMeasureDatasets(whiteNoiseChart, frequencies, whiteNoise);
+          populateAutoCorrelationDatasets(covarianceChart, this, samplePath);
+          populatePowerSpectralDensityDatasets(powerSpectralDensityChart);
+        });
       }
-      populateTimeDomainDatasets(timeDomainChart, spectralSupport, samplingTimes, samplePath, envelope);
-      populateRandomWhiteNoiseMeasureDatasets(whiteNoiseChart, frequencies, whiteNoise);
-      populateAutoCorrelationDatasets(covarianceChart, this, samplePath);
-      populatePowerSpectralDensityDatasets(powerSpectralDensityChart);
-    }
-    catch (Exception e)
-    {
-      throw new RuntimeException("resize failed for L=" + newL, e);
-    }
+      catch (Exception e)
+      {
+        throw new RuntimeException("resize failed for L=" + newL, e);
+      }
+    });
   }
 
   protected HBox buildSampleLengthControlBar()
@@ -380,26 +411,45 @@ public abstract class StationaryGaussianProcessSampler extends
    */
   public StationaryGaussianProcessSampler generateSamplePathFromSpectrallyColoredOrthogonalRandomMeasure()
   {
+    progress.setMessage("Building frequency grid");
     frequencies          = generateFrequencies();
+    progress.setFraction(0.10);
+    if (progress.isCancelled()) return this;
+
+    progress.setMessage("Evaluating theoretical PSD");
     powerSpectralDensity = getPowerSpectralDensity(frequencies);
+    progress.setFraction(0.25);
+    if (progress.isCancelled()) return this;
 
     try ( var whiteNoiseProcess = new ComplexWhiteNoiseProcess())
     {
+      progress.setMessage("Coloring white noise with PSD");
       var W = generateSpectrallyColoredOrthogonalRandomMeasureFromWhiteNoise(seed, whiteNoiseProcess);
+      progress.setFraction(0.45);
+      if (progress.isCancelled()) return this;
+
       // Inverse DFT (arb convention includes 1/N), then re-scale by N so the
       // synthesized path uses the unnormalized inverse Σ_k W[k] exp(+2πi·k·n/N).
       // This preserves the historical amplitude of the seed-mode samplePath that
       // BandLimitedWhiteNoiseSampler and RandomWaveSampler are calibrated against.
+      progress.setMessage("Inverse DFT to time domain");
       W.applyInverseDiscreteFourierTransform(bits, samplePath).mul(N, bits);
+      progress.setFraction(0.65);
+      if (progress.isCancelled()) return this;
 
       var W2    = Complex.newVector(N);
       var Wdiff = Complex.newVector(N);
 
       // Forward DFT then divide by N inverts the unnormalized inverse above so that W2 ≈ W.
+      progress.setMessage("Round-trip DFT verification");
       samplePath.applyDiscreteFourierTransform(bits, W2).div(N, bits);
       W.sub(W2, bits, Wdiff);
+      progress.setFraction(0.85);
+      if (progress.isCancelled()) return this;
 
+      progress.setMessage("Computing envelope");
       calculateEnvelopeSamplingTimesAndValues();
+      progress.setFraction(1.00);
 
       return this;
 
@@ -732,8 +782,20 @@ public abstract class StationaryGaussianProcessSampler extends
         lengthField.setText(String.valueOf(parsed));
       }
       autocorrelationLength = parsed;
-      populateAutoCorrelationDatasets(covarianceChart, this, samplePath);
-      covarianceChart.getXAxis().setMax(autocorrelationLength);
+      runWithProgress(primaryStage,
+                      "Recomputing autocovariance (lag ≤ " + autocorrelationLength + ")",
+                      reporter ->
+      {
+        // populateAutoCorrelationDatasets does Real-typed arithmetic in arb
+        // for the empirical autocovariance and a per-lag kernel evaluation;
+        // both are heavy enough at large maxLag that we do them off-FX,
+        // then hop to FX for the chart mutation.
+        Platform.runLater(() ->
+        {
+          populateAutoCorrelationDatasets(covarianceChart, this, samplePath);
+          covarianceChart.getXAxis().setMax(autocorrelationLength);
+        });
+      });
     };
     refresh.setOnAction(e -> doRefresh.run());
     lengthField.setOnAction(e -> doRefresh.run());
@@ -980,20 +1042,88 @@ public abstract class StationaryGaussianProcessSampler extends
   public void start(Stage stage)
   {
     processParameters();
+    this.primaryStage = stage;
 
-    charts = generateAndConfigureCharts();
-
-    if (separateWindows)
+    // Show an empty window scaffold immediately; the modal progress dialog
+    // parents itself to it. The worker fills the charts asynchronously.
+    BorderPane root = new BorderPane();
+    root.setTop(buildSampleLengthControlBar());
+    Scene scene = new Scene(root);
+    stage.setScene(scene);
+    stage.setMaximized(true);
+    stage.setTitle(String.format("%s[seed=%s]", getClass().getSimpleName(), seed));
+    WindowManager.setStageIcon(stage, "GaussianProcessModeller.png");
+    WindowManager.installEscapeKeyCloseHandler(stage);
+    if (dark)
     {
-      initializeChartsInTheirOwnWindows(stage);
-      Stream.of(stages).forEach(Stage::show);
+      WindowManager.setMoreConduciveStyle(scene);
     }
-    else
-    {
-      initializeWindowContainingAllCharts(stage);
-      stage.show();
+    stage.show();
 
-    }
+    // Run the initial sample-path generation on a worker thread behind a
+    // modal progress dialog. The user can cancel; the window stays empty.
+    runWithProgress(stage, "Generating sample path", reporter ->
+    {
+      // Heavy compute on the worker thread.
+      prepareSamplePath();
+      if (reporter.isCancelled())
+      {
+        return;
+      }
+      // Chart construction touches the FX scene graph; must run on FX.
+      Platform.runLater(() ->
+      {
+        configureCharts();
+        if (separateWindows)
+        {
+          initializeChartsInTheirOwnWindows(stage);
+          Stream.of(stages).forEach(Stage::show);
+          stage.hide();   // the per-chart stages take over
+        }
+        else
+        {
+          BorderPane covariancePane = wrapCovarianceChartWithLengthControls();
+          GridPane   gridPane       = Charts.createGridPane(charts, covariancePane);
+          root.setCenter(gridPane);
+        }
+      });
+    });
+  }
+
+  /**
+   * Run {@code work} on a background daemon thread behind a modal
+   * {@link ProgressDialog} parented to {@code owner}. The dialog is
+   * dismissed automatically when the worker returns; the user may
+   * cancel early via the dialog's Cancel button, in which case
+   * {@link ProgressReporter#isCancelled()} flips and the worker is
+   * expected to abort cleanly. {@link #progress} is set to the dialog
+   * for the duration so anything called transitively can tick it.
+   */
+  protected void runWithProgress(Stage owner, String title, java.util.function.Consumer<ProgressReporter> work)
+  {
+    ProgressDialog dialog = new ProgressDialog(owner, title);
+    progress = dialog;
+    dialog.show();
+    Thread t = new Thread(() ->
+    {
+      try
+      {
+        work.accept(dialog);
+      }
+      catch (RuntimeException re)
+      {
+        // Surface the exception to stderr; the dialog still closes so
+        // the UI doesn't deadlock.
+        re.printStackTrace();
+      }
+      finally
+      {
+        progress = ProgressReporter.NULL;
+        dialog.close();
+      }
+    }, "sampler-worker");
+    t.setDaemon(true);
+    t.start();
   }
 
 }

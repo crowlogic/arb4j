@@ -43,6 +43,24 @@ arb4j (0.99.9.9.10) UNRELEASED; urgency=low
   * Tests 816/816 green throughout. RandomWaveSampler smoke screenshot
     confirms bars draw and the negative-frequency toggle flips both
     charts together.
+  * Modal progress dialog wraps every long-running computation in a
+    StationaryGaussianProcessSampler subclass: the initial sample-path
+    generation on start(), the resize handler driven by Sample length L
+    Apply, and the autocorrelation Refresh handler. New classes
+    arb.viz.ProgressDialog and arb.viz.ProgressReporter; new helper
+    runWithProgress(Stage, String, Consumer<ProgressReporter>) on the
+    parent. The worker runs on a daemon Thread, ticks the dialog's
+    ProgressBar, and checks isCancelled() between iterations. Cancel
+    aborts cleanly without mutating chart data. The dialog is auto-
+    dismissed on completion; the user can close it early via the Cancel
+    button. Threading split: heavy arb arithmetic on the worker, all
+    XYChart construction and dataset mutation marshalled to the FX
+    thread via Platform.runLater. The seed-based pipeline
+    (generateSamplePathFromSpectrallyColoredOrthogonalRandomMeasure)
+    ticks the reporter at five coarse stages with a setMessage status
+    string at each. The path-based pipeline
+    (InverseShiftedPhasePullbackSampler.prepareSamplePath) ticks per
+    bin from its existing AtomicLong counter. Tests 816/816 green.
   * RealDataSet implements ChartFX DataSetError so the default
     ErrorDataSetRenderer draws error bars without a custom renderer.
     Two error modes chosen at construction:
