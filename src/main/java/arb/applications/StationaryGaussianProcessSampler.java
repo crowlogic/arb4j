@@ -283,10 +283,17 @@ public abstract class StationaryGaussianProcessSampler extends
         // Chart-dataset mutations have to land on the FX thread.
         Platform.runLater(() ->
         {
-          populateTimeDomainDatasets(timeDomainChart, spectralSupport, samplingTimes, samplePath, envelope);
-          populateRandomWhiteNoiseMeasureDatasets(whiteNoiseChart, frequencies, whiteNoise);
-          populateAutoCorrelationDatasets(covarianceChart, this, samplePath);
-          populatePowerSpectralDensityDatasets(powerSpectralDensityChart);
+          try
+          {
+            populateTimeDomainDatasets(timeDomainChart, spectralSupport, samplingTimes, samplePath, envelope);
+            populateRandomWhiteNoiseMeasureDatasets(whiteNoiseChart, frequencies, whiteNoise);
+            populateAutoCorrelationDatasets(covarianceChart, this, samplePath);
+            populatePowerSpectralDensityDatasets(powerSpectralDensityChart);
+          }
+          catch (Throwable th)
+          {
+            th.printStackTrace();
+          }
         });
       }
       catch (Exception e)
@@ -448,8 +455,11 @@ public abstract class StationaryGaussianProcessSampler extends
       if (progress.isCancelled()) return this;
 
       progress.setMessage("Computing envelope");
+      System.err.println("[trace] before envelope");
       calculateEnvelopeSamplingTimesAndValues();
+      System.err.println("[trace] after envelope");
       progress.setFraction(1.00);
+      System.err.println("[trace] after setFraction(1.00), returning from generate...()");
 
       return this;
 
@@ -792,8 +802,15 @@ public abstract class StationaryGaussianProcessSampler extends
         // then hop to FX for the chart mutation.
         Platform.runLater(() ->
         {
-          populateAutoCorrelationDatasets(covarianceChart, this, samplePath);
-          covarianceChart.getXAxis().setMax(autocorrelationLength);
+          try
+          {
+            populateAutoCorrelationDatasets(covarianceChart, this, samplePath);
+            covarianceChart.getXAxis().setMax(autocorrelationLength);
+          }
+          catch (Throwable th)
+          {
+            th.printStackTrace();
+          }
         });
       });
     };
@@ -1065,7 +1082,9 @@ public abstract class StationaryGaussianProcessSampler extends
     runWithProgress(stage, "Generating sample path", reporter ->
     {
       // Heavy compute on the worker thread.
+      System.err.println("[trace] worker entering prepareSamplePath");
       prepareSamplePath();
+      System.err.println("[trace] worker returned from prepareSamplePath, cancelled=" + reporter.isCancelled());
       if (reporter.isCancelled())
       {
         return;
@@ -1073,18 +1092,30 @@ public abstract class StationaryGaussianProcessSampler extends
       // Chart construction touches the FX scene graph; must run on FX.
       Platform.runLater(() ->
       {
-        configureCharts();
-        if (separateWindows)
+        System.err.println("[trace] FX runLater entering configureCharts");
+        try
         {
-          initializeChartsInTheirOwnWindows(stage);
-          Stream.of(stages).forEach(Stage::show);
-          stage.hide();   // the per-chart stages take over
+          configureCharts();
+          System.err.println("[trace] FX after configureCharts, sep=" + separateWindows);
+          if (separateWindows)
+          {
+            initializeChartsInTheirOwnWindows(stage);
+            Stream.of(stages).forEach(Stage::show);
+            stage.hide();   // the per-chart stages take over
+          }
+          else
+          {
+            BorderPane covariancePane = wrapCovarianceChartWithLengthControls();
+            System.err.println("[trace] FX after wrapCov");
+            GridPane   gridPane       = Charts.createGridPane(charts, covariancePane);
+            System.err.println("[trace] FX after createGridPane");
+            root.setCenter(gridPane);
+            System.err.println("[trace] FX after setCenter");
+          }
         }
-        else
+        catch (Throwable th)
         {
-          BorderPane covariancePane = wrapCovarianceChartWithLengthControls();
-          GridPane   gridPane       = Charts.createGridPane(charts, covariancePane);
-          root.setCenter(gridPane);
+          th.printStackTrace();
         }
       });
     });
@@ -1110,11 +1141,11 @@ public abstract class StationaryGaussianProcessSampler extends
       {
         work.accept(dialog);
       }
-      catch (RuntimeException re)
+      catch (Throwable th)
       {
-        // Surface the exception to stderr; the dialog still closes so
-        // the UI doesn't deadlock.
-        re.printStackTrace();
+        // Anything that escapes the worker is a bug. Print it; the
+        // dialog still closes so the UI doesn't deadlock.
+        th.printStackTrace();
       }
       finally
       {

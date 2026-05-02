@@ -105,13 +105,18 @@ public class ProgressDialog implements
   /** Hide and release. Safe to call from any thread. */
   public void close()
   {
+    System.err.println("[trace] ProgressDialog.close() invoked from FX=" + Platform.isFxApplicationThread());
     if (Platform.isFxApplicationThread())
     {
       stage.close();
+      System.err.println("[trace] ProgressDialog stage.close() returned (on FX)");
     }
     else
     {
-      Platform.runLater(stage::close);
+      Platform.runLater(() -> {
+        stage.close();
+        System.err.println("[trace] ProgressDialog stage.close() returned (via runLater)");
+      });
     }
   }
 
