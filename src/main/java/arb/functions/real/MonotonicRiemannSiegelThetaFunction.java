@@ -71,32 +71,21 @@ public class MonotonicRiemannSiegelThetaFunction implements
   RealFunction               diffMonotoneϑ = RealFunction.express("diffmonotoneϑ:t->diff(ϑ(t),t)+c", context);
 
   /**
-   * Reentrant wrapper around {@code diffMonotoneϑ}. The compiled
-   * {@code diffMonotoneϑ} holds non-reentrant evaluation registers, so a
-   * single instance cannot be safely called from multiple worker threads
-   * simultaneously. The expression compiler currently does not propagate
-   * {@link Function#cloneFunction()} into referenced-function fields
-   * during {@link Function#instantiate()}, so a single shared {@link DPhi}
-   * ends up wired into every per-worker clone of an outer expression.
-   *
-   * <p>Workaround: each worker thread gets its own freshly-cloned
-   * {@link MonotonicRiemannSiegelThetaFunction} via {@link ThreadLocal},
-   * and {@link #evaluate} delegates to that thread-local clone's
-   * {@code diffMonotoneϑ}. The first {@code evaluate} call on a new
-   * thread pays the DSL parse + bytecode cost for that thread's private
-   * {@code monotoneϑ} and {@code diffmonotoneϑ}; subsequent calls reuse
-   * the cached clone.
+   * Thin reentrant wrapper around {@code diffMonotoneϑ}. The wrapper itself
+   * holds no mutable state — every {@code evaluate} call delegates to the
+   * enclosing {@link MonotonicRiemannSiegelThetaFunction}'s own
+   * {@code diffMonotoneϑ}. {@link #cloneFunction()} returns a wrapper
+   * bound to a freshly-cloned Φ, so that per-worker clones of dΦ do not
+   * share the non-reentrant evaluation registers of
+   * {@code diffMonotoneϑ} with each other.
    */
   public final class DPhi implements
                           RealFunction
   {
-    private final ThreadLocal<MonotonicRiemannSiegelThetaFunction> threadLocalClone =
-        ThreadLocal.withInitial(() -> new MonotonicRiemannSiegelThetaFunction(c.doubleValue()));
-
     @Override
     public Real evaluate(Real t, int order, int bits, Real res)
     {
-      return threadLocalClone.get().diffMonotoneϑ.evaluate(t, order, bits, res);
+      return diffMonotoneϑ.evaluate(t, order, bits, res);
     }
 
     @Override

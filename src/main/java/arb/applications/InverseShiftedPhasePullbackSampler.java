@@ -133,10 +133,24 @@ public class InverseShiftedPhasePullbackSampler extends
           ThreadStats s     = new ThreadStats();
           stats.put(tname, s);
 
-          // Each worker owns its own fresh instance of the compiled expression.
-          // The bytecode class is shared; only the per-evaluation register set
-          // is fresh.
-          RealFunction Fworker = compiledF.instantiate();
+          // Each worker compiles its own complete pipeline: a fresh
+          // MonotonicRiemannSiegelThetaFunction Φ, its derivative dΦ, a
+          // private Context, and a freshly-compiled
+          // F:t → Z(Φ⁻¹(t))/sqrt(dΦ(Φ⁻¹(t))). The expression compiler does
+          // not propagate cloneFunction() into referenced-function fields
+          // during instantiate(), so a single shared Φ + dΦ wired into
+          // all per-worker F clones races on RealPolynomial.coeffs and
+          // Φ's own scratch buffers. Building the whole chain per worker
+          // gives every thread its own non-shared state. The DSL parse +
+          // bytecode cost (≈20ms each on first call) is paid W times up
+          // front, then amortized across N/W evaluations per worker.
+          MonotonicRiemannSiegelThetaFunction Φw  = new MonotonicRiemannSiegelThetaFunction();
+          RealFunction                        dΦw = Φw.derivative();
+          Context                             ctxw = new Context();
+          ctxw.registerFunction("Φ", Φw);
+          ctxw.registerFunction("dΦ", dΦw);
+          RealFunction Fworker = RealFunction.compile("F:t->Z(Φ⁻¹(t))/sqrt(dΦ(Φ⁻¹(t)))", ctxw)
+                                             .instantiate();
 
           try ( Real t = Real.valueOf(0.0); Real Fval = Real.valueOf(0.0))
           {
