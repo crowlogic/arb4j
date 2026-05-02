@@ -94,7 +94,7 @@ public class StationaryGaussianProcessSamplerTest extends
         // Empirical PSD non-negative and finite at all bins.
         for (int k = 0; k < N; k++)
         {
-          double p = sampler.powerSpectralDensity[k];
+          double p = sampler.powerSpectralDensity.get(k).getMid().doubleValue();
           assertTrue("PSD[" + k + "] = " + p + " not finite/non-negative",
                      Double.isFinite(p) && p >= 0.0);
         }

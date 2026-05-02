@@ -1,6 +1,17 @@
 arb4j (0.99.9.9.10) UNRELEASED; urgency=low
 
   [ Stephen Crowley ]
+  * StationaryGaussianProcessSampler PSD pipeline runs end-to-end in
+    arb precision. powerSpectralDensity, theoreticalPowerSpectralDensities,
+    frequencies, and positiveFrequencies are arb.Real vectors instead of
+    double[]. computePowerSpectralDensity, generateFrequencies,
+    getPowerSpectralDensity, and getKernel take/return Real instead of
+    double[]. The double cast happens only at the chart-feeding edge,
+    where doubleValue() per cell goes into DoubleDataSet. Subclasses
+    BandLimitedWhiteNoiseSampler and RandomWaveSampler updated to the
+    new signatures. ingestPrecomputedSamplePath fixed to read the path
+    from samplePath.re() (it was reading .im() which is always zero in
+    the path-based pipeline). Tests 816/816 green.
   * RealDataSet implements ChartFX DataSetError so the default
     ErrorDataSetRenderer draws error bars without a custom renderer.
     Two error modes chosen at construction:

@@ -42,29 +42,28 @@ public class BandLimitedWhiteNoiseSampler extends
     return kernel;
   }
 
-  public void getKernel(double[] times, double[] values)
+  @Override
+  public void getKernel(Real times, Real values)
   {
-    assert times.length == values.length;
-    int numPoints = times.length;
+    assert times.size() == values.size();
+    int numPoints = times.size();
 
-    try ( Real val = new Real())
+    for (int i = 0; i < numPoints; i++)
     {
-      for (int i = 0; i < numPoints; i++)
-      {
-        var t = times[i] = i * dt;
-        values[i] = t == 0 ? 1 : kernel.eval(t);
-      }
+      double t = i * dt;
+      times.get(i).set(t);
+      values.get(i).set(t == 0 ? 1.0 : kernel.eval(t));
     }
   }
 
   @Override
-  public double[] getPowerSpectralDensity(double[] freq)
+  public Real getPowerSpectralDensity(Real freq)
   {
-    double[] psd = new double[freq.length];
-
-    for (int i = 0; i < freq.length; i++)
+    Real psd = Real.newVector(freq.size());
+    for (int i = 0; i < freq.size(); i++)
     {
-      psd[i] = Math.abs(freq[i]) <= 1.0 ? 1.0 : 0;
+      double f = freq.get(i).doubleValue();
+      psd.get(i).set(Math.abs(f) <= 1.0 ? 1.0 : 0.0);
     }
     return psd;
   }
