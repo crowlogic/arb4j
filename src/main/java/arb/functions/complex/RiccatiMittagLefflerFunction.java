@@ -189,11 +189,6 @@ public class RiccatiMittagLefflerFunction extends
   // evaluated.
   // ────────────────────────────────────────────────────────────────────────
 
-  @Override
-  protected Context padeParentContext()
-  {
-    return context;
-  }
 
   // ────────────────────────────────────────────────────────────────────────
   // Inspection methods preserved under the names the existing tests use

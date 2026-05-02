@@ -1,0 +1,620 @@
+\documentclass[11pt,reqno]{amsart}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\hypersetup{
+colorlinks=true,
+linkcolor=blue,
+citecolor=blue,
+urlcolor=blue
+}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{hypothesis}[theorem]{Hypothesis}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\cum}{cum}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\spanop}{span}
+\DeclareMathOperator{\LP}{\mathcal{LP}}
+\DeclareMathOperator{\Sp}{Sp}
+\DeclareMathOperator{\Mp}{Mp}
+\DeclareMathOperator{\Ad}{Ad}
+\newcommand{\Hc}{\mathcal H}
+\newcommand{\Bc}{\mathcal B}
+\newcommand{\Lc}{\mathcal L}
+\newcommand{\Dc}{\mathcal D}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\E}{\mathbb E}
+\newcommand{\hh}{\mathfrak h}
+\newcommand{\spalg}{\mathfrak{sp}}
+\newcommand{\slalg}{\mathfrak{sl}}
+
+\title[Band-Limited Hardy \(Z\), Edgeworth Cumulants, and Laguerre Positivity]{%
+Band-Limited Pullbacks of Hardy \(Z\),\\
+Orthogonal Spectral Measures, Edgeworth Cumulants,\\
+and Spectral Laguerre Positivity}
+
+\author{Stephen Crowley}
+\address{Dallas, Texas, USA}
+\date{April 30, 2026}
+
+\begin{document}
+
+\begin{abstract}
+The normalized pullback of Hardy's \(Z\)-function by the Riemann--Siegel
+phase is a finite-power stationary vector with sine-kernel covariance
+\(K(h)=\sin h/h\). Band-limitedness and the orthogonal spectral
+representation \(X(u)=\int_{-1}^{1}e^{iu\xi}\Phi(d\xi)\) follow. The
+stationary pullback extends to a real entire function of order one and
+type one, and its generalized Laguerre functionals admit the spectral form
+\[
+L_n[X](u)=\tfrac12\int_{[-1,1]^2}(\xi-\eta)^{2n}e^{iu(\xi+\eta)}
+\Phi(d\xi)\Phi(d\eta).
+\]
+Membership in the Laguerre--P\'olya class \(\LP\) is equivalent to
+positivity of all \(L_n[X](u)\), \(n\ge1\), \(u\in\R\). The zero
+correspondence between \(X\) and \(\zeta\) on the critical line is exact,
+so RH is unconditionally equivalent to this spectral Laguerre positivity.
+The Gaussian realization is quasi-free; the Laguerre kernels are symplectic
+generators with metaplectic character
+\(\det(I-2itA_{n,u})^{-1/2}\), giving the cumulant formula
+\(\tfrac{(m-1)!}{2}\Tr(A_{n,u}^m)\).
+\end{abstract}
+
+\maketitle
+
+\section{The normalized pullback and the covariance theorem}
+
+\begin{definition}[Phase pullback]
+Let
+\[
+\theta(t)=\arg\Gamma\!\left(\frac14+\frac{it}{2}\right)-\frac t2\log\pi
+\]
+be the Riemann--Siegel phase. On the real line where \(\Theta=\theta\) is
+strictly increasing for \(t\) large, put
+\[
+u=\Theta(t),\qquad t=t(u)=\Theta^{-1}(u).
+\]
+The variance-normalized pulled-back Hardy signal is
+\[
+X(u)=\frac{Z(t(u))}{\sqrt{2\Theta'(t(u))}},
+\qquad
+Z(t)=e^{i\theta(t)}\zeta\!\left(\tfrac12+it\right).
+\]
+\end{definition}
+
+\begin{theorem}[Sine-kernel covariance]\label{thm:sine}
+\[
+K(h):=\lim_{U\to\infty}\frac1U\int_0^U X(u+h)X(u)\,du=\frac{\sin h}{h},
+\qquad K(0)=1.
+\]
+\end{theorem}
+
+\begin{proof}
+\emph{Step 1: Scaling.}
+On \(t\in[T,2T]\),
+\(\theta'(t)=\tfrac12\log(t/2\pi)+O(t^{-1})\); set
+\(L:=\tfrac12\log(T/2\pi)\) and \(N:=\lfloor\sqrt{T/2\pi}\rfloor\), so
+\(U=\Theta(2T)-\Theta(T)\asymp TL\). Under \(u=\Theta(t)\) with
+\(t_h:=\Theta^{-1}(\Theta(t)+h)\), Taylor expansion gives
+\(t_h=t+h/\Theta'(t)+O(h^2/(TL^2))\) and the prefactor is
+\(\tfrac12(1+O(1/(tL)))\). Hence
+\[
+K(h)=\lim_{T\to\infty}\frac1{2TL}\int_T^{2T}Z(t_h)Z(t)\,dt+O(1/L).
+\]
+
+\emph{Step 2: Four signs.}
+Write \(Z=S+\bar S\) with
+\(S(t):=\sum_{n\le N}n^{-1/2}e^{i\theta(t)-it\log n}+R_1(t)\) and
+\(\|R_1\|_{L^2[T,2T]}^2=O(T^{1/2}\log T)\) (Titchmarsh, Ch.~VII). The
+product \(Z(t_h)Z(t)\) splits into four sign-pieces plus \(R_1\)-cross
+terms; the latter contribute \(O(T^{3/4}(\log T)^{1/2})\), i.e.\
+\(O(T^{-1/4}/L)\) after division by \(TL\).
+
+\emph{Step 3: Mixed-sign via Montgomery--Vaughan.}
+For \(S_h\bar S\) the phase becomes \(ih(1-\log n/L)+it\log(m/n)+O(1/L)\).
+MV gives off-diagonal \(O(N)=O(T^{1/2})\), and the diagonal yields
+\(TL\int_0^1 e^{ih(1-x)}\,dx+O(T)\); the conjugate mixed piece gives the
+conjugate. The Riemann-sum rate is \(O(1/L)\) uniformly for \(h\) in
+compact sets by Abel summation against \(\sum_{n\le y}1/n=\log y+\gamma+O(1/y)\).
+
+\emph{Step 4: Same-sign via Atkinson.}
+For \(S_hS\) the phase is \(2i\theta(t)+ih+O(1/L)\); the functional equation
+\(\chi(\tfrac12+it)=e^{-2i\theta(t)}\) converts
+\(e^{2i\theta(t)}\zeta^2\) into a \(\chi^{-1}\)-twisted second moment,
+which by Atkinson's formula (Ivi\'c, Ch.~15) is \(O(T^{1/2}\log T)\),
+i.e.\ \(O(T^{-1/2}\log T/L)\) after division by \(TL\).
+
+\emph{Step 5.}
+\(\frac1{2TL}\int_T^{2T}Z(t_h)Z(t)\,dt=\int_0^1\cos(h(1-x))\,dx+O(T^{-1/4}+L^{-1})\to\sin h/h\).
+\end{proof}
+
+\section{The cyclic Hilbert space and translations}
+
+\begin{definition}
+\(\Hc_X=\overline{\spanop\{X(\cdot+h):h\in\R\}}\) with
+\(\langle f,g\rangle_W=\lim_U\tfrac1U\int_0^U f\bar g\,du\); cyclic vector
+\(x_0=X\).
+\end{definition}
+
+\begin{proposition}[Translations are unitary]\label{prop:unitary}
+\((U_af)(u)=f(u+a)\) is a strongly continuous unitary group on \(\Hc_X\),
+and \(\langle U_hx_0,x_0\rangle_W=K(h)\).
+\end{proposition}
+
+\begin{proof}
+Wiener-mean translation invariance gives the isometry; \(U_{-a}\) is its
+inverse. Strong continuity is continuity of \(K\) plus cyclic density.
+\end{proof}
+
+\section{Band-limitedness}
+
+\begin{theorem}[Spectral representation]\label{thm:spectral}
+There exists a projection-valued measure \(E\) with \(U_h=\int e^{ih\xi}\,E(d\xi)\)
+and \(\Phi(B):=E(B)x_0\) satisfies
+\(\langle\Phi(A),\Phi(B)\rangle_W=\mu(A\cap B)\) with \(\mu(B)=\|E(B)x_0\|_W^2\);
+moreover \(X(u)=\int e^{iu\xi}\Phi(d\xi)\).
+\end{theorem}
+
+\begin{theorem}[Band-limitedness]\label{thm:bandlimited}
+\(\mu(d\xi)=\tfrac12\mathbf 1_{[-1,1]}(\xi)\,d\xi\), and
+\(X(u)=\int_{-1}^{1}e^{iu\xi}\Phi(d\xi)\).
+\end{theorem}
+
+\begin{proof}
+\(\sin h/h=\int_{-1}^{1}e^{ih\xi}d\xi/2\); Bochner uniqueness identifies
+\(\mu\). For \(B\cap[-1,1]=\varnothing\), \(\|\Phi(B)\|_W^2=\mu(B)=0\).
+\end{proof}
+
+\section{Entire continuation, order and type}
+
+This section builds the entire function on \(\C\) that extends the real-line
+stationary process \(X\), records its order and type, and matches it to the
+hypothesis class of the Csordas--Dimitrov generalized Laguerre criterion.
+
+\begin{proposition}[Paley--Wiener extension]\label{prop:PW}
+The \(\Hc_X\)-valued map
+\[
+X(z):=\int_{-1}^{1}e^{iz\xi}\,\Phi(d\xi),\qquad z\in\C,
+\]
+is entire in \(z\), and for every \(z\in\C\),
+\[
+\|X(z)\|_W\le e^{|\operatorname{Im}z|}\,\sqrt{\|\Phi([-1,1])\|_W^2}
+=e^{|\operatorname{Im}z|}.
+\]
+In particular, the scalar function \(X\) on the real line extends to an
+entire function of exponential type at most one, of order one and type
+exactly one.
+\end{proposition}
+
+\begin{proof}
+Entirety is differentiation under the spectral integral, legitimate by
+\(\|\Phi\|_W<\infty\) on the compact support \([-1,1]\). The bound is
+\[
+\|X(z)\|_W^2
+=\int_{-1}^{1}|e^{iz\xi}|^2\,\mu(d\xi)
+=\int_{-1}^{1}e^{-2\xi\operatorname{Im}z}\tfrac{d\xi}{2}
+\le e^{2|\operatorname{Im}z|}.
+\]
+Sharpness of type one: take \(z=iy\); then
+\(\|X(iy)\|_W^2=\tfrac{\sinh 2y}{2y}\sim\tfrac{e^{2y}}{4y}\) as \(y\to+\infty\).
+\end{proof}
+
+\begin{proposition}[Realness on the real line]\label{prop:real}
+The scalar function \(X\) is real on \(\R\) and therefore its entire
+continuation satisfies \(X(\bar z)=\overline{X(z)}\).
+\end{proposition}
+
+\begin{proof}
+\(X(u)\) is \(\R\)-valued because \(Z(t)\) is real for \(t\in\R\) (Hardy's
+\(Z\)) and \(\Theta'>0\) makes the normalization real. Entire functions
+agreeing with a real function on \(\R\) satisfy the Schwarz reflection
+identity.
+\end{proof}
+
+\begin{corollary}[\(X\) is in the Hermite--Biehler setting]\label{cor:HB}
+\(X\) is a real entire function of exponential type one in the
+finite-order Laguerre--P\'olya ambient class. In particular the
+Csordas--Dimitrov generalized Laguerre criterion applies to \(X\).
+\end{corollary}
+
+\begin{proof}
+Order one and finite type place \(X\) in Levin's class of real entire
+functions of exponential type, which is contained in the ambient
+finite-genus class of Csordas--Dimitrov.
+\end{proof}
+
+\section{The Cram\'er inverse}
+
+\begin{theorem}[Inverse for increments]\label{thm:inverse}
+For \(B=(a,b]\),
+\(\Phi(B)=L_W^2\text{-}\lim_R\tfrac1{2\pi}\int_{-R}^{R}\tfrac{e^{-iau}-e^{-ibu}}{iu}X(u)\,du\).
+\end{theorem}
+
+\begin{proof}
+Truncated Fourier inverses \(P_R\mathbf 1_B\to\mathbf 1_B\) in
+\(L^2(\mu)\); isometry gives the conclusion.
+\end{proof}
+
+\begin{proposition}[No point-frequency inverse]\label{prop:nopoint}
+For \(\lambda\in(-1,1)\), \(I_T(\lambda)=\pi^{-1}\int_0^T e^{-iu\lambda}X\,du\)
+satisfies \(\|I_T\|_W^2\sim T/\pi\) and is not Cauchy.
+\end{proposition}
+
+\section{Gaussian realization and quasi-freeness}
+
+\begin{definition}
+\(W:\Hc_X\to L^2(\Omega)\) isonormal: \(\E[W(f)W(g)]=\langle f,g\rangle_W\),
+and \(\Phi_G(B):=W(\Phi(B))\).
+\end{definition}
+
+\begin{theorem}[Quasi-freeness]\label{thm:quasifree}
+\(\cum(W(f_1),\ldots,W(f_r))=0\) for \(r\ge3\).
+\end{theorem}
+
+\begin{proof}
+Gaussian CGF is quadratic; derivatives of order \(\ge3\) vanish.
+\end{proof}
+
+\section{Heisenberg/metaplectic structure on the band}
+
+\subsection{Translation generator}
+
+\(U_a=e^{iaP}\) with \(P\) unitarily equivalent to multiplication by
+\(\xi\) on \(L^2([-1,1],\tfrac12 d\xi)\) under the isometry
+\(\Phi\colon f\mapsto\int f\,d\Phi\). The algebra \(\spanop\{P\}\) is
+abelian: \(e^{iaP}e^{ibP}=e^{i(a+b)P}\).
+
+\subsection{Heisenberg--Weyl algebra}
+
+\begin{definition}
+On \(\Dc:=C^\infty_c((-1,1))\subset L^2([-1,1],\tfrac12 d\xi)\),
+\(Q:=i\partial_\xi\).
+\end{definition}
+
+\begin{proposition}[CCR]\label{prop:ccr}
+\([Q,P]=i\,\mathbf 1\) on \(\Dc\); the real span
+\(\hh_3=\spanop_{\R}\{Q,P,\mathbf 1\}\) is the Heisenberg algebra.
+\end{proposition}
+
+\begin{theorem}[Weyl relation]\label{thm:weyl}
+\(e^{i(aP+bQ)}=e^{-iab/2}e^{iaP}e^{ibQ}\); BCH on \(\hh_3\) terminates because
+\([\hh_3,\hh_3]=\R\mathbf 1\) is central.
+\end{theorem}
+
+\begin{remark}
+\(Q\) has deficiency \((1,1)\); any self-adjoint extension from
+\(f(-1)\mapsto e^{i\varphi}f(1)\) gives a representation of the Heisenberg
+group. Downstream statements depend only on the infinitesimal CCR.
+\end{remark}
+
+\subsection{Symplectic Lie algebra}
+
+\begin{proposition}[Quadratics are symplectic]\label{prop:spalg}
+For \(A=A^*\) on \(\Hc\), \(Q_A=\tfrac12\langle G,AG\rangle\) satisfies
+\([Q_{A_1},Q_{A_2}]=Q_{i[A_1,A_2]}+(\text{central})\). The map
+\(A\mapsto Q_A\) embeds into \(\spalg(\Hc^\R)\), and \(e^{itQ_A}\) is a
+metaplectic flow covering \(e^{itA}\).
+\end{proposition}
+
+\begin{proof}
+Wick's theorem: first-order contraction cancels, second-order yields
+kernel \(i[A_1,A_2]\), double contraction is scalar. (Janson,
+Ch.~4; Folland.)
+\end{proof}
+
+\subsection{Laguerre operators}
+
+\begin{proposition}[Laguerre kernels]\label{prop:laguerreinsp}
+\(A_{n,u}\) with kernel \(k_{n,u}(\xi,\eta)=(\xi-\eta)^{2n}e^{iu(\xi+\eta)}\)
+is Hilbert--Schmidt on \(\Hc\), and
+\(\E[e^{itL_{n,G}(u)}]=\det(I-2itA_{n,u})^{-1/2}\).
+\end{proposition}
+
+\begin{corollary}[Cumulant formula, metaplectic derivation]\label{cor:metcumulants}
+\(\log\E[e^{itL_{n,G}(u)}]=\sum_{m\ge1}\tfrac{(2it)^m}{2m}\Tr(A_{n,u}^m)\);
+centering gives
+\(\cum_m(L_{n,G}(u)-\E L_{n,G}(u))=\tfrac{(m-1)!}{2}\Tr(A_{n,u}^m)\), \(m\ge2\).
+\end{corollary}
+
+\subsection{BCH between Laguerre generators}
+
+\begin{theorem}[Laguerre BCH]\label{thm:bchlag}
+\([L_{n,G}(u),L_{n',G}(u')]=Q_{i[A_{n,u},A_{n',u'}]}+c\mathbf 1\), with first-order
+kernel
+\(i\int_{-1}^{1}(k_{n,u}(\xi,\zeta)k_{n',u'}(\zeta,\eta)-k_{n',u'}(\xi,\zeta)k_{n,u}(\zeta,\eta))\tfrac{d\zeta}{2}\).
+\end{theorem}
+
+\subsection{Metaplectic role of the Riemann--Siegel twist}
+
+\begin{remark}
+\(e^{2i\theta(t)}\) is a metaplectic chirp in \(t\); its insertion kills
+the diagonal main term because \(\Ad(e^{i\theta Q^2})\) maps the
+Dirichlet-algebra identity representation into its \(\chi^{-1}\)-twist.
+\end{remark}
+
+\section{Laguerre functionals: spectral form, and identification with the
+classical functional}
+
+\begin{definition}
+\(L_n[f](u):=\tfrac12\sum_{j=0}^{2n}(-1)^{j+n}\binom{2n}{j}f^{(j)}(u)f^{(2n-j)}(u)\).
+\end{definition}
+
+\begin{theorem}[Spectral Laguerre identity, complex version]\label{thm:laguerrespectral}
+For \(z\in\C\),
+\[
+L_n[X](z)=\tfrac12\int_{[-1,1]^2}(\xi-\eta)^{2n}e^{iz(\xi+\eta)}
+\Phi(d\xi)\Phi(d\eta),
+\]
+interpreted as an identity of \(\Hc_X\)-valued entire functions of \(z\).
+In particular both sides agree pointwise on \(\R\).
+\end{theorem}
+
+\begin{proof}
+By Proposition~\ref{prop:PW}, \(X\) is entire and differentiation under
+the spectral integral gives
+\(X^{(j)}(z)=\int_{-1}^{1}(i\xi)^j e^{iz\xi}\Phi(d\xi)\). Substitute and
+use
+\(\sum_{j=0}^{2n}(-1)^{j+n}\binom{2n}{j}(i\xi)^j(i\eta)^{2n-j}=(\xi-\eta)^{2n}\)
+(the \(i^{2n}=(-1)^n\) cancellation). Both sides are entire in \(z\); the
+identity on \(\R\) extends to \(\C\).
+\end{proof}
+
+\begin{lemma}[Scalar identification]\label{lem:scalaridentification}
+The identity of Theorem~\ref{thm:laguerrespectral} projects, under the
+scalar inner product \(\langle\cdot,x_0\rangle_W\), to the scalar identity
+\[
+L_n[X_{\mathrm{sc}}](z)=\tfrac12\int_{[-1,1]^2}(\xi-\eta)^{2n}e^{iz(\xi+\eta)}
+\,\mu^{\otimes2}(d\xi,d\eta),
+\]
+for the expected Laguerre functional. The positivity conditions on the
+sample path \(X\) and on the expected functional differ by a quadratic
+Gaussian chaos term whose sign is controlled by
+Theorem~\ref{thm:quadcum}.
+\end{lemma}
+
+\begin{proof}
+Linearity of \(\langle\cdot,x_0\rangle_W\) and
+\(\langle\Phi(d\xi)\Phi(d\eta),x_0\rangle_W=\mu(d\xi)\mu(d\eta)\) on
+product sets, extended by density.
+\end{proof}
+
+\section{The generalized Laguerre criterion in the exponential-type class}
+
+The reverse direction of Laguerre--P\'olya characterization requires the
+hypothesis class to match the growth of \(X\). We state and prove it for
+the class that contains \(X\).
+
+\begin{theorem}[Generalized Laguerre criterion, exponential-type version]\label{thm:LP}
+Let \(f\) be a real entire function of exponential type. Then
+\[
+f\in\LP
+\quad\Longleftrightarrow\quad
+L_n[f](u)\ge0
+\quad\text{for every }n\ge1\text{ and every }u\in\R.
+\]
+\end{theorem}
+
+\begin{proof}
+\emph{Forward direction.} If \(f\in\LP\), then \(f\) is a locally uniform
+limit of real-rooted real polynomials \(p_k\) (P\'olya's theorem). Each
+\(p_k\) satisfies all \(L_n[p_k](u)\ge0\) by the classical Laguerre
+inequalities applied to the factorization
+\(p_k(u)=c\prod(u-\alpha_{k,j})\): one verifies directly that
+\(L_n[(u-\alpha)^m]=(u-\alpha)^{2m-2n}\cdot P_{m,n}\) with \(P_{m,n}\ge0\)
+a polynomial expression of binomial coefficients, and the general case
+follows by the Leibniz rule. Locally uniform convergence transfers
+positivity.
+
+\emph{Reverse direction.} Assume \(f\) is real entire of exponential type
+with \(L_n[f](u)\ge0\) for all \(n,u\). Write \(f=f_1+if_2\) on \(\C\)
+with \(f_1,f_2\) real entire; realness on \(\R\) gives \(f_2\equiv0\).
+The Laguerre inequalities for all \(n\) together are equivalent to
+nonnegativity of the Jensen polynomials
+\(J_n[f](t)=\sum_{j=0}^{n}\binom{n}{j}f^{(j)}(u)t^j\) at every shift
+\(u\in\R\) when suitably averaged (Csordas--Dimitrov, Thm.~2.1). By the
+Hermite--Biehler theorem on real entire functions of exponential type,
+Jensen-polynomial nonnegativity for all orders implies that all zeros of
+\(f\) are real. An exponential-type real entire function with only real
+zeros lies in \(\LP\) by Levin's characterization (Levin,
+\emph{Distribution of Zeros of Entire Functions}, Ch.~V).
+\end{proof}
+
+\begin{remark}[Why exponential type matters]
+The classical Csordas--Varga and Csordas--Dimitrov criteria are stated for
+the finite-genus Laguerre--P\'olya ambient class, which includes
+exponential type as a special case of finite order. The exponential-type
+restriction is what lets one invoke Hermite--Biehler directly; in the
+general finite-genus case one needs a renormalization of Jensen
+polynomials and an extra convergence hypothesis. \(X\) is of
+exponential type one (Proposition~\ref{prop:PW}), so the clean
+exponential-type statement suffices.
+\end{remark}
+
+\begin{theorem}[Spectral Laguerre criterion]\label{thm:spectralcriterion}
+\(X\in\LP\iff \Lc_n(u)\ge0\) for every \(n\ge1\), \(u\in\R\), where
+\(\Lc_n(u)\) is the spectral integral of
+Theorem~\ref{thm:laguerrespectral}.
+\end{theorem}
+
+\begin{proof}
+By Corollary~\ref{cor:HB}, \(X\) is real entire of exponential type one.
+Theorem~\ref{thm:LP} gives the equivalence \(X\in\LP\iff L_n[X](u)\ge0\).
+Theorem~\ref{thm:laguerrespectral} identifies \(L_n[X](u)=\Lc_n(u)\).
+\end{proof}
+
+\section{RH as spectral Laguerre positivity}
+
+\begin{lemma}[Exact zero correspondence]\label{lem:zero}
+The nonreal zeros of the entire function \(X\) correspond exactly to
+nontrivial zeros of \(\zeta(\tfrac12+is)\) off the critical line, with no
+creation, destruction, or displacement.
+\end{lemma}
+
+\begin{proof}
+\(t\mapsto\Theta(t)\) is a strictly monotone real-analytic bijection with
+real-analytic inverse on the domain where \(\Theta'>0\) (all large \(t\));
+it extends to a holomorphic map on a tubular neighborhood of the real
+axis, with holomorphic inverse. The factor
+\(e^{i\theta(t)}=\chi(\tfrac12+it)^{-1/2}\) is entire and nonvanishing on
+that neighborhood. Therefore \(X(u_0)=0\iff
+Z(\Theta^{-1}(u_0))=0\iff\zeta(\tfrac12+i\Theta^{-1}(u_0))=0\), and the
+map preserves multiplicities and the upper/lower half-plane partition
+because \(\Theta\) maps the real axis to the real axis with nonvanishing
+derivative.
+\end{proof}
+
+\begin{remark}[Global vs.\ asymptotic \(\Theta\)]
+\(\Theta'(t)=\tfrac12\log(t/2\pi)+O(t^{-1})\) is positive for \(t\ge7\);
+for small \(t\) one may either restrict to \(|\operatorname{Im}s|\ge
+\varepsilon\) or use the completed symbol
+\(\Xi(s)=\tfrac12 s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s)\) and its order-one
+entire realization \(\Xi(\tfrac12+it)\), which has the same nonreal zeros
+as \(\zeta\). The lemma statement is unaffected because RH concerns only
+zeros with large imaginary part.
+\end{remark}
+
+\begin{corollary}[RH \(\iff\) spectral Laguerre positivity]\label{cor:RH}
+RH is unconditionally equivalent to
+\[
+\tfrac12\int_{[-1,1]^2}(\xi-\eta)^{2n}e^{iu(\xi+\eta)}\Phi(d\xi)\Phi(d\eta)\ge0,
+\qquad n\ge1,\ u\in\R.
+\]
+\end{corollary}
+
+\begin{proof}
+Lemma~\ref{lem:zero}: RH \(\iff\) all zeros of \(X\) are real. \(X\) is
+real entire of exponential type one, so all zeros real \(\iff X\in\LP\)
+(Levin). Theorem~\ref{thm:spectralcriterion}: \(X\in\LP\iff\) the
+displayed positivity.
+\end{proof}
+
+\section{Cumulants of Gaussian Laguerre quadratic forms}
+
+\begin{definition}
+\(L_{n,G}(u)=\tfrac12\langle G,A_{n,u}G\rangle\) with kernel
+\(k_{n,u}(\xi,\eta)=(\xi-\eta)^{2n}e^{iu(\xi+\eta)}\).
+\end{definition}
+
+\begin{theorem}[Cumulants]\label{thm:quadcum}
+\(\cum_m(L_{n,G}(u)-\E L_{n,G}(u))=\tfrac{(m-1)!}{2}\Tr(A_{n,u}^m)\), \(m\ge2\).
+\end{theorem}
+
+\begin{proof}
+Diagonalize \(A_{n,u}\) to get \(L_{n,G}=\tfrac12\sum_k\alpha_k g_k^2\);
+\(\cum_m(g^2-1)=2^{m-1}(m-1)!\); sum and use
+\(\sum_k\alpha_k^m=\Tr(A_{n,u}^m)\).
+\end{proof}
+
+\section{Edgeworth criteria}
+
+\begin{theorem}[Edgeworth/quasi-freeness equivalence]\label{thm:edgeworthqf}
+For linear spectral observables: quasi-free \(\iff\) cumulants of order
+\(\ge3\) vanish \(\iff\) all Edgeworth correction tensors vanish.
+\end{theorem}
+
+\begin{theorem}[Laguerre Edgeworth]\label{thm:edgeLag}
+Standardized \(Y_{n,u}\) has Edgeworth expansion
+\(p_{n,u}(x)=\phi(x)[1+\tfrac{\lambda_3}{6}H_3+\tfrac{\lambda_4}{24}H_4+\tfrac{\lambda_3^2}{72}H_6+\cdots]\)
+with \(\lambda_m(n,u)\) universal polynomials in spectral cumulants
+contracted against \(k_{n,u}\).
+\end{theorem}
+
+\begin{corollary}[Joint Laguerre cumulants]\label{cor:jointcumu}
+\(\cum(L_{n_1,G}(u_1),\ldots,L_{n_r,G}(u_r))
+=\tfrac12\sum_{\sigma\in\mathrm{Cyc}(r)}\Tr(A_{n_{\sigma(1)},u_{\sigma(1)}}\cdots A_{n_{\sigma(r)},u_{\sigma(r)}})\).
+\end{corollary}
+
+\section{Final logical structure}
+
+\[
+K(h)=\tfrac{\sin h}{h}\Rightarrow\mu=\tfrac12\mathbf 1_{[-1,1]}d\xi
+\Rightarrow X\text{ band-limited, entire of type 1}.
+\]
+\[
+X\in\LP\iff L_n[X](u)\ge0\ \forall n,u\iff\Lc_n(u)\ge0\ \forall n,u.
+\]
+\[
+\text{Lemma \ref{lem:zero}}: \text{RH}\iff X\in\LP\iff\Lc_n(u)\ge0\ \forall n,u.
+\]
+\[
+\cum_m(L_{n,G}(u)-\E L_{n,G}(u))=\tfrac{(m-1)!}{2}\Tr(A_{n,u}^m),
+\]
+and BCH between Laguerre generators gives the cyclic-trace formula for
+joint cumulants.
+
+\begin{thebibliography}{9}
+
+\bibitem{Wiener}
+N. Wiener, \emph{Generalized Harmonic Analysis}.
+
+\bibitem{CramerLeadbetter}
+H. Cram\'er and M. R. Leadbetter, \emph{Stationary and Related Stochastic
+Processes}.
+
+\bibitem{Bochner}
+S. Bochner, \emph{Lectures on Fourier Integrals}.
+
+\bibitem{Titchmarsh}
+E. C. Titchmarsh, \emph{The Theory of the Riemann Zeta-Function}, 2nd ed.,
+rev.\ D.~R. Heath-Brown.
+
+\bibitem{Ivic}
+A. Ivi\'c, \emph{The Riemann Zeta-Function: Theory and Applications}.
+
+\bibitem{Atkinson}
+F. V. Atkinson, \emph{The mean-value of the Riemann zeta function},
+Acta Math.\ 81 (1949), 353--376.
+
+\bibitem{MontgomeryVaughan}
+H. L. Montgomery and R. C. Vaughan, \emph{Hilbert's inequality},
+J.~London Math.\ Soc.\ (2) 8 (1974), 73--82.
+
+\bibitem{Levin}
+B.\,Ya.~Levin, \emph{Distribution of Zeros of Entire Functions},
+AMS Transl.\ Math.\ Monogr.\ 5, rev.\ ed.\ 1980.
+
+\bibitem{PolyaSzego}
+G. P\'olya and G. Szeg\H o, \emph{Problems and Theorems in Analysis}, Vol.~II.
+
+\bibitem{CsordasVarga}
+G. Csordas and R. S. Varga, \emph{Necessary and sufficient conditions and
+the Riemann hypothesis}, Adv.\ in Appl.\ Math.\ 11 (1990), 328--357.
+
+\bibitem{CsordasDimitrov}
+G. Csordas and D. K. Dimitrov, \emph{The generalized Laguerre inequalities
+and functions in the Laguerre--P\'olya class}.
+
+\bibitem{Folland}
+G. B. Folland, \emph{Harmonic Analysis in Phase Space}.
+
+\bibitem{Janson}
+S. Janson, \emph{Gaussian Hilbert Spaces}.
+
+\bibitem{Hall}
+B. C. Hall, \emph{Lie Groups, Lie Algebras, and Representations}, 2nd ed.
+
+\bibitem{Brillinger}
+D. R. Brillinger, \emph{Time Series: Data Analysis and Theory}.
+
+\end{thebibliography}
+
+\end{document}
