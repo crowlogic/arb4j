@@ -26,7 +26,12 @@ public class Charts
 
   public static GridPane createGridPane(XYChart[] charts)
   {
-    return createGridPane(charts, null);
+    return createGridPane(charts, null, null);
+  }
+
+  public static GridPane createGridPane(XYChart[] charts, Node covarianceWrapper)
+  {
+    return createGridPane(charts, covarianceWrapper, null);
   }
 
   /**
@@ -42,7 +47,7 @@ public class Charts
    *                          this is what gets placed in the grid in the
    *                          bottom-left cell
    */
-  public static GridPane createGridPane(XYChart[] charts, Node covarianceWrapper)
+  public static GridPane createGridPane(XYChart[] charts, Node covarianceWrapper, Node psdWrapper)
   {
     GridPane gridPane = new GridPane();
     gridPane.setHgap(10);
@@ -67,14 +72,17 @@ public class Charts
       GridPane.setVgrow(chart, Priority.ALWAYS);
     }
 
-    Node bottomLeft = covarianceWrapper != null ? covarianceWrapper : charts[2];
-    GridPane.setHgrow(bottomLeft, Priority.ALWAYS);
-    GridPane.setVgrow(bottomLeft, Priority.ALWAYS);
+    Node bottomLeft  = covarianceWrapper != null ? covarianceWrapper : charts[2];
+    Node bottomRight = psdWrapper        != null ? psdWrapper        : charts[3];
+    GridPane.setHgrow(bottomLeft,  Priority.ALWAYS);
+    GridPane.setVgrow(bottomLeft,  Priority.ALWAYS);
+    GridPane.setHgrow(bottomRight, Priority.ALWAYS);
+    GridPane.setVgrow(bottomRight, Priority.ALWAYS);
 
-    gridPane.add(charts[0], 0, 0);
-    gridPane.add(charts[1], 1, 0);
-    gridPane.add(bottomLeft, 0, 1);
-    gridPane.add(charts[3], 1, 1);
+    gridPane.add(charts[0],   0, 0);
+    gridPane.add(charts[1],   1, 0);
+    gridPane.add(bottomLeft,  0, 1);
+    gridPane.add(bottomRight, 1, 1);
 
     return gridPane;
   }
@@ -87,6 +95,7 @@ public class Charts
   public static final String empiricialFrequencyDatasetStyle  = DataSetStyleBuilder.instance()
                                                                                    .setMarkerColor("darkgoldenrod")
                                                                                    .setLineColor("darkgoldenrod")
+                                                                                   .setMarkerSize(2)
                                                                                    .build();
   public static final String randomMeasureDatasetStyle        = DataSetStyleBuilder.instance().setMarkerType("circle").setMarkerSize(2).build();
   public static final String theoreticalFrequencyDatasetStyle = DataSetStyleBuilder.instance().setLineWidth(2).build();

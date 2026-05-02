@@ -23,6 +23,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -55,6 +56,14 @@ public abstract class StationaryGaussianProcessSampler extends
    * datasets and updates the chart in place. Default 25.0.
    */
   protected double              autocorrelationLength             = 25.0;
+
+  /**
+   * Whether the PSD chart's x-axis spans the full {@link #spectralSupport}
+   * (negative + positive frequencies) or only the non-negative half.
+   * For a real-valued process the periodogram is symmetric about zero, so
+   * the negative half is redundant; default is non-negative-only.
+   */
+  protected boolean             showNegativeFrequencies           = false;
 
   /**
    * The single covariance XYChart created by
@@ -279,7 +288,17 @@ public abstract class StationaryGaussianProcessSampler extends
     };
     apply.setOnAction(e -> doApply.run());
     lengthField.setOnAction(e -> doApply.run());
-    HBox bar = new HBox(8, lengthLabel, lengthField, apply);
+
+    CheckBox negFreqToggle = new CheckBox("Show negative frequencies");
+    negFreqToggle.setSelected(showNegativeFrequencies);
+    negFreqToggle.selectedProperty().addListener((obs, oldVal, newVal) ->
+    {
+      showNegativeFrequencies = newVal;
+      if (whiteNoiseChart           != null) configureFrequencyAxis(whiteNoiseChart);
+      if (powerSpectralDensityChart != null) configureFrequencyAxis(powerSpectralDensityChart);
+    });
+
+    HBox bar = new HBox(8, lengthLabel, lengthField, apply, negFreqToggle);
     bar.setAlignment(Pos.CENTER_LEFT);
     bar.setPadding(new Insets(4, 8, 4, 8));
     return bar;
@@ -334,7 +353,7 @@ public abstract class StationaryGaussianProcessSampler extends
 
   public void configureXAxisOfPowerSpectralDensityChart(XYChart chart)
   {
-    chart.getXAxis().setAutoRanging(true);
+    configureFrequencyAxis(chart);
   }
 
   public void configureYAxisOfPowerSpectralDensityChart(XYChart chart)
@@ -751,14 +770,17 @@ public abstract class StationaryGaussianProcessSampler extends
   }
 
   /**
-   * χ² 95% interval lower divisor: 2/{χ²_{2,0.975}} = 2/7.378 ≈ 0.271,
-   * i.e. lower endpoint Ŝ/3.689. The single-segment raw periodogram is
-   * χ²_2 about the true PSD; this is its 95% lower critical value.
+   * Indicative χ²_2 interquartile range divisors. The single-realization
+   * periodogram is χ²_2 about the true PSD; the IQR endpoints are
+   * 2/χ²_{2,0.75} and 2/χ²_{2,0.25}, giving lower Ŝ/3.476 and upper
+   * Ŝ/0.7213. A factor of ≈50 narrower than the 95% CI, so the bars
+   * visually communicate per-bin scale on the chart instead of saturating
+   * the y axis.
    */
-  static final double CHI2_2_LOWER = 3.689;
+  static final double CHI2_2_LOWER = 3.4759;   // 2/χ²_{2,0.25}
 
-  /** χ² 95% interval upper divisor: 2/{χ²_{2,0.025}} = 2/0.0506 ≈ 39.498. */
-  static final double CHI2_2_UPPER = 0.0506;
+  /** Upper IQR divisor: 2/χ²_{2,0.75} = 2/2.7726. */
+  static final double CHI2_2_UPPER = 0.72134;
 
   void populatePowerSpectralDensityDatasets(XYChart chart)
   {
@@ -853,9 +875,25 @@ public abstract class StationaryGaussianProcessSampler extends
                                                        ""));
     chart.setTitle("Random White Noise Measure");
     chart.getRenderers().setAll(newScatterChartRenderer());
-    chart.getXAxis().setAutoRanging(true);
     populateRandomWhiteNoiseMeasureDatasets(chart, frequencies, whiteNoise);
+    configureFrequencyAxis(chart);
     return chart;
+  }
+
+  /**
+   * Apply the current value of {@link #showNegativeFrequencies} to a
+   * frequency-axis chart. Used for both the white-noise measure chart
+   * and the PSD chart, since they share the same x-axis semantics:
+   * full {@link #spectralSupport} when negatives are shown, only the
+   * non-negative half otherwise.
+   */
+  protected void configureFrequencyAxis(XYChart chart)
+  {
+    chart.getXAxis().setAutoRanging(false);
+    double xMin = showNegativeFrequencies ? spectralSupport.getA().doubleValue() : 0.0;
+    double xMax = spectralSupport.getB().doubleValue();
+    chart.getXAxis().setMin(xMin);
+    chart.getXAxis().setMax(xMax);
   }
 
   void populateRandomWhiteNoiseMeasureDatasets(XYChart chart, Real frequencies, Complex whiteNoise)

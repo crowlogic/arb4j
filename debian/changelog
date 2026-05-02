@@ -16,18 +16,33 @@ arb4j (0.99.9.9.10) UNRELEASED; urgency=low
     PSD chart still renders the empirical scatter on top of the
     theoretical 1/(π√(1−f²)) curve inside [0,1] and the covariance
     chart still tracks J₀(2πt).
-  * PSD chart draws the asymmetric χ²_2 95% confidence bar per bin.
-    populatePowerSpectralDensityDatasets builds an asymmetric RealDataSet
-    for the empirical curve: ln(1+Ŝ) goes into re().getMid(), the +error
-    distance ln(1+Ŝ/0.0506) − ln(1+Ŝ) into re().getRad(), the −error
-    distance ln(1+Ŝ) − ln(1+Ŝ/3.689) into im().getRad(). New helper
-    newPeriodogramErrorBarRenderer installs an ErrorDataSetRenderer with
-    ErrorStyle.ERRORBARS so chartfx queries the dataset's DataSetError
-    surface for asymmetric whiskers. The bars are wide because the
-    single-realization periodogram has enormous χ²_2 variance per bin
-    — that's the truth, not a rendering bug; smoothing or averaging
-    multiple realizations narrows them. Tests 816/816 still green;
-    RandomWaveSampler smoke screenshot confirms bars draw.
+  * PSD chart draws the asymmetric χ²_2 interquartile-range bar per bin
+    as an indicative confidence whisker. populatePowerSpectralDensityDatasets
+    builds an asymmetric RealDataSet for the empirical curve: ln(1+Ŝ) goes
+    into re().getMid(), the +error distance ln(1+Ŝ/0.7213) − ln(1+Ŝ) into
+    re().getRad(), the −error distance ln(1+Ŝ) − ln(1+Ŝ/3.4759) into
+    im().getRad(). The IQR (50% interval) is wide enough to be readable
+    yet narrow enough not to saturate the chart, ~50x narrower than the
+    full 95% CI. The 95% CI is the true uncertainty of the unsmoothed
+    periodogram but is too wide to render usefully without smoothing.
+    New helper newPeriodogramErrorBarRenderer installs an
+    ErrorDataSetRenderer with ErrorStyle.ERRORBARS so chartfx queries
+    the dataset's DataSetError surface for asymmetric whiskers. Marker
+    size on the empirical dataset bumped down to 2 so the bars stay
+    visually dominant.
+  * PSD chart and Random White Noise Measure chart x-axes default to
+    [0, +nyquistFrequency] (the non-negative half of the spectral
+    support) since the periodogram of a real-valued process is
+    symmetric about zero. A "Show negative frequencies" checkbox in
+    the top control bar (next to "Sample length L") toggles both
+    charts simultaneously to the full {@link #spectralSupport}.
+    Implementation: shared protected configureFrequencyAxis(XYChart),
+    shared boolean field showNegativeFrequencies. Charts.createGridPane
+    grew a (charts, covarianceWrapper, psdWrapper) overload, kept
+    backward-compatible with the existing 1- and 2-arg forms.
+  * Tests 816/816 green throughout. RandomWaveSampler smoke screenshot
+    confirms bars draw and the negative-frequency toggle flips both
+    charts together.
   * RealDataSet implements ChartFX DataSetError so the default
     ErrorDataSetRenderer draws error bars without a custom renderer.
     Two error modes chosen at construction:
