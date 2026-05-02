@@ -48,13 +48,16 @@ See [#911](https://github.com/crowlogic/arb4j/issues/911) for a full audit of th
 
 ## Environment Setup (fresh machine)
 
-The build requires **JDK 25**, **Maven**, and **en_US.UTF-8** locale. On a fresh
+The build requires **JDK 26**, **Maven**, and **en_US.UTF-8** locale. On a fresh
 Debian/Ubuntu box run these once:
 
 ```bash
-# 1. Install JDK 25 and Maven
+# 1. Install JDK 26 and Maven. openjdk-26 is not yet packaged on every
+#    Debian release; the supported alternative is the Oracle tarball at
+#    https://download.oracle.com/java/26/latest/jdk-26_linux-x64_bin.tar.gz
+#    unpacked under /home/user/jdk26 (the location CLAUDE.md uses).
 sudo apt-get update
-sudo apt-get install -y openjdk-25-jdk-headless maven
+sudo apt-get install -y openjdk-26-jdk-headless maven
 
 # 2. Enable en_US.UTF-8 locale (required — Maven source files contain Unicode)
 sudo sed -i 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
@@ -65,7 +68,7 @@ sudo locale-gen
 ## Build & Test
 
 ```bash
-export LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 JAVA_HOME=/usr/lib/jvm/java-25-openjdk-amd64
+export LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 JAVA_HOME=/usr/lib/jvm/java-26-openjdk-amd64
 
 # Compile
 mvn compile

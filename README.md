@@ -307,12 +307,12 @@ TeXmacs formats of the same document respectively.
 
 ```bash
 sudo apt-get update
-sudo apt-get install -y openjdk-25-jdk-headless maven clang swig libflint-dev libxdo-dev
+sudo apt-get install -y openjdk-26-jdk-headless maven clang swig libflint-dev libxdo-dev
 ```
 
-**Java 25** is required (`--enable-preview` features). Set:
+**Java 26** is required. Set:
 ```bash
-export JAVA_HOME=/usr/lib/jvm/java-25-openjdk-amd64
+export JAVA_HOME=/usr/lib/jvm/java-26-openjdk-amd64
 ```
 
 **FLINT 3.3+** is required. The SWIG interface files target the FLINT 3.3 API. FLINT 3.0–3.2 temporarily renamed `flint_rand_struct` → `flint_rand_s`, `flint_rand_init` → `flint_randinit`, etc., and removed the `stride` field from `arb_mat_struct`/`acb_mat_struct`. FLINT 3.3 reverted all of these back to the original names. If your distro ships FLINT 3.1 or 3.2 (e.g., Debian trixie ships 3.1.3), you need to either install FLINT 3.3+ from source or apply the workarounds in the FLINT 3.1/3.2 section below.
@@ -329,7 +329,7 @@ export LC_ALL=en_US.UTF-8
 ### Build
 
 ```bash
-export JAVA_HOME=/usr/lib/jvm/java-25-openjdk-amd64 LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
+export JAVA_HOME=/usr/lib/jvm/java-26-openjdk-amd64 LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
 make clean && make
 mvn test
 ```
@@ -365,5 +365,5 @@ clang -g -O3 -fPIC -shared -Wno-int-conversion \
 | `flint_rand_struct` undeclared | You have FLINT 3.1/3.2 — upgrade to 3.3+ or apply the workarounds above |
 | `no member named 'stride'` | Same — FLINT 3.1/3.2 issue |
 | `java.lang.UnsatisfiedLinkError: no arblib` | `libarblib.so` is missing from project root — run `make` |
-| `release version 25 not supported` | `export JAVA_HOME=/usr/lib/jvm/java-25-openjdk-amd64` |
+| `release version 26 not supported` | `export JAVA_HOME=/usr/lib/jvm/java-26-openjdk-amd64` |
 

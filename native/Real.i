@@ -2043,7 +2043,44 @@ import arb.utensils.Utensils;
   }
  
    public int dim = 1;
-  
+
+  /**
+   * Cached element-array view of the radii of this {@link Real} vector.
+   * For a scalar (dim == 1) {@link #rad()} returns {@link #getRad()}
+   * directly and this field is never used.
+   */
+  Magnitude radView;
+
+  /**
+   * Strided {@link Magnitude} view over the radii of this {@link Real}
+   * vector. For dim == 1 returns the cell's own {@link #getRad()}. For
+   * dim &gt; 1 returns an element-array {@link Magnitude} whose
+   * {@code get(i)} aliases {@code this.get(i).getRad()}; no copy. Lazily
+   * constructed and cached.
+   *
+   * <p>Contiguity in arb storage is irrelevant: no FLINT vector op is
+   * called on {@link Magnitude} vectors in arb4j, so the element-array
+   * view is sufficient.
+   */
+  public Magnitude rad()
+  {
+    if (dim == 1)
+    {
+      return getRad();
+    }
+    if (radView == null || radView.dim != dim)
+    {
+      Magnitude v = new Magnitude(0, false);
+      v.dim = dim;
+      for (int i = 0; i < dim; i++)
+      {
+        v.set(i, get(i).getRad());
+      }
+      radView = v;
+    }
+    return radView;
+  }
+
   public int size()
   {
     return dim;

@@ -123,6 +123,17 @@ import static arb.arblib.*;
   public static final int BYTES = 16;
  
   int dim;
+
+  /**
+   * Element-array view backing. When non-null, this {@link Magnitude} is a
+   * vector whose cells are externally-owned references rather than slots
+   * in a contiguous arb-allocated buffer. Created by callers that build a
+   * strided view of {@link Magnitude}s belonging to other arb objects (for
+   * example {@link Real#rad()} on a {@link Real} vector). When non-null,
+   * {@link #get(int)} dereferences {@link #elements} instead of doing
+   * pointer arithmetic on {@link #swigCPtr}.
+   */
+  Magnitude[] elements;
  
   public Magnitude sub(Magnitude u, Magnitude res)
   {
@@ -142,12 +153,38 @@ import static arb.arblib.*;
     return this;
   }
      
-  public Magnitude get( int index )
+  public Magnitude get(int index)
   {
     assert index < dim;
-    return new Magnitude(swigCPtr + index * Magnitude.BYTES, false);  
-  } 
-  
+    if (elements != null)
+    {
+      return elements[index];
+    }
+    return new Magnitude(swigCPtr + index * Magnitude.BYTES, false);
+  }
+
+  /**
+   * Directly bind the i-th slot of this element-array view to {@code element}.
+   * Mirrors {@link Real#set(int, Real)}: replaces the reference rather than
+   * setting the value. Lazily allocates {@link #elements} on first use, which
+   * also flips this {@link Magnitude} from contiguous-vector mode to
+   * element-array-view mode.
+   */
+  public Magnitude set(int index, Magnitude element)
+  {
+    assert index < dim : String.format("index = %d >= dim = %d", index, dim);
+    if (elements == null)
+    {
+      elements = new Magnitude[dim];
+    }
+    return elements[index] = element;
+  }
+
+  public int size()
+  {
+    return dim;
+  }
+
  public static Magnitude newVector(int dim)
  {
     Magnitude array = _mag_vec_init(dim);    
