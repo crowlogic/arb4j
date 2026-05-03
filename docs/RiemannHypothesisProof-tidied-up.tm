@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|generic|parchment|framed-theorems>>
+<style|<tuple|generic|framed-theorems>>
 
 <\body>
   <\hide-preamble>
@@ -18,7 +18,7 @@
   <doc-data|<doc-title|A Proof of the Riemann Hypothesis
   via<next-line>Band-Limited Spectral Analysis of the Hardy
   <math|Z>-Function>|<doc-date|May 1, 2026>|<doc-author|<author-data|<author-name|Stephen
-  Crowley>|<author-affiliation|Dallas, Texas,>>>>
+  Crowley>>>>
 
   <abstract-data|<\abstract>
     Let <math|X> be the variance-normalized pullback of Hardy's
@@ -121,11 +121,11 @@
   </equation>
 
   Wiener\UKhinchin: for a continuous positive-definite autocorrelation
-  <math|K> on <math|<R>>, there exists a unique finite positive Borel
-  measure <math|\<mu\>> on <math|<R>>, the spectral measure, such that
+  <math|K> on <math|<R>>, there exists a unique finite positive Borel measure
+  <math|\<mu\>> on <math|<R>>, the spectral measure, such that
 
   <\equation>
-    K<around|(|h|)>=<big|int><rsub|<R>>e<rsup|i*h*\<xi\>>*<space|0.17em>\<mu\><around|(|d*\<xi\>|)>.
+    K<around|(|h|)>=<big|int><rsub|<R>>e<rsup|i*h*\<xi\>>*<space|0.17em>\<mu\><around|(|d*\<xi\>|)>
   </equation>
 
   When <math|\<mu\>> is absolutely continuous, write
@@ -316,8 +316,7 @@
 
   Let <math|<HX>> denote the Hilbert space completion of
   <math|span<around|{|X<around|(|\<cdummy\>+h|)>:h\<in\><R>|}>> under the
-  Wiener inner product
-  <math|<around|\<langle\>|f,g|\<rangle\>><rsub|W>:=lim<rsub|U\<rightarrow\>\<infty\>><tfrac|1|U>*<big|int><rsub|0><rsup|U>f<around|(|u|)><wide|g|\<bar\>><around|(|u|)>*d*u>,
+  Wiener inner product <math|<around|\<langle\>|f,g|\<rangle\>><rsub|W>:=lim<rsub|U\<rightarrow\>\<infty\>><tfrac|1|U>*<big|int><rsub|0><rsup|U>f<around|(|u|)><wide|g|\<bar\>><around|(|u|)>*d*u>,
   with cyclic vector <math|x<rsub|0>:=X>.
 
   <\theorem>
@@ -341,14 +340,12 @@
   <\proof>
     The translation group <math|U<rsub|h>*f=f*<around|(|\<cdummy\>+h|)>> is
     unitary on <math|<HX>> by Wiener-mean translation invariance, and
-    strongly continuous since
-    <math|<around|\<\|\|\>|U<rsub|h>*x<rsub|0>-x<rsub|0>|\<\|\|\>><rsub|W><rsup|2>=2*<around|(|K<around|(|0|)>-<text|Re>*K<around|(|h|)>|)>\<rightarrow\>0>
+    strongly continuous since <math|<around|\<\|\|\>|U<rsub|h>*x<rsub|0>-x<rsub|0>|\<\|\|\>><rsub|W><rsup|2>=2*<around|(|K<around|(|0|)>-<text|Re>*K<around|(|h|)>|)>\<rightarrow\>0>
     as <math|h\<rightarrow\>0> by continuity of <math|K> at the origin
     (Theorem<nbsp><reference|thm:cov>), extended to all of <math|<HX>> by
-    cyclic density. Stone's theorem yields a
-    projection-valued measure <math|E> with
-    <math|U<rsub|h>=<big|int>e<rsup|i*h*\<xi\>>*E*<around|(|d*\<xi\>|)>>. Set
-    <math|\<Phi\><around|(|B|)>=E<around|(|B|)>*x<rsub|0>>,
+    cyclic density. Stone's theorem yields a projection-valued measure
+    <math|E> with <math|U<rsub|h>=<big|int>e<rsup|i*h*\<xi\>>*E*<around|(|d*\<xi\>|)>>.
+    Set <math|\<Phi\><around|(|B|)>=E<around|(|B|)>*x<rsub|0>>,
     <math|\<mu\><around|(|B|)>=<around|\<\|\|\>|\<Phi\><around|(|B|)>|\<\|\|\>><rsub|W><rsup|2>>.
     Then <math|>
 
@@ -481,12 +478,13 @@
 
     (ii) The identity <math|<wide|X<rsub|\<varepsilon\>><rsup|<around|(|a|)>>|^>=<wide|X|^><rsub|W>\<ast\><wide|\<eta\><rsub|\<varepsilon\>><rsup|<around|(|a|)>>|^>>
     is the spectral-side image of the time-side product
-    <math|\<eta\><rsub|\<varepsilon\>><rsup|<around|(|a|)>>\<cdummy\>X>
-    under the convolution theorem for the product of a tempered distribution
-    with a Schwartz function (the latter has Fourier transform in <math|<Sch>>,
-    and the convolution of a finite Borel measure with a Schwartz function
-    is well-defined and pointwise). Concretely, via the orthogonal-measure
-    isometry of Theorem<nbsp><reference|thm:stone>: <math|X<rsub|\<varepsilon\>><rsup|<around|(|a|)>><around|(|u|)>=\<eta\><rsub|\<varepsilon\>><rsup|<around|(|a|)>><around|(|u|)>*<big|int><rsub|-1><rsup|1>e<rsup|i*u*\<xi\>>*\<Phi\>*<around|(|d*\<xi\>|)>>.
+    <math|\<eta\><rsub|\<varepsilon\>><rsup|<around|(|a|)>>\<cdummy\>X> under
+    the convolution theorem for the product of a tempered distribution with a
+    Schwartz function (the latter has Fourier transform in <math|<Sch>>, and
+    the convolution of a finite Borel measure with a Schwartz function is
+    well-defined and pointwise). Concretely, via the orthogonal-measure
+    isometry of Theorem<nbsp><reference|thm:stone>:
+    <math|X<rsub|\<varepsilon\>><rsup|<around|(|a|)>><around|(|u|)>=\<eta\><rsub|\<varepsilon\>><rsup|<around|(|a|)>><around|(|u|)>*<big|int><rsub|-1><rsup|1>e<rsup|i*u*\<xi\>>*\<Phi\>*<around|(|d*\<xi\>|)>>.
 
     <\equation>
       X<rsub|\<varepsilon\>><rsup|<around|(|a|)>><around|(|u|)>=\<eta\><rsub|\<varepsilon\>><rsup|<around|(|a|)>><around|(|u|)>*<big|int><rsub|-1><rsup|1>e<rsup|i*u*\<xi\>>*\<mathd\>
@@ -769,7 +767,7 @@
 
 <\initial>
   <\collection>
-    <associate|magnification|1.2>
+    <associate|magnification|1>
     <associate|page-height|auto>
     <associate|page-medium|paper>
     <associate|page-type|letter>
@@ -779,41 +777,41 @@
 
 <\references>
   <\collection>
-    <associate|app:sumfreq|<tuple|9|11|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-1|<tuple|?|2|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-10|<tuple|9|11|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-11|<tuple|16|11|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-2|<tuple|1|3|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-3|<tuple|2|4|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-4|<tuple|3|5|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-5|<tuple|4|6|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-6|<tuple|5|8|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-7|<tuple|6|9|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-8|<tuple|7|10|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-9|<tuple|8|10|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|bib-CsordasVishnyakova|<tuple|CsordasVishnyakova|11|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|bib-GR|<tuple|GR|11|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|bib-Ivic|<tuple|Ivic|11|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|bib-MV|<tuple|MV|11|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|bib-Titchmarsh|<tuple|Titchmarsh|11|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Leps|<tuple|33|10|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:RS|<tuple|13|4|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:convid|<tuple|24|7|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:strip-ext|<tuple|27|7|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|lem:Xeps|<tuple|8|7|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|lem:eta|<tuple|7|6|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|lem:ptwise|<tuple|10|9|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|sec:reg|<tuple|4|6|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|sec:type|<tuple|5|8|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|thm:band|<tuple|3|5|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|thm:cov|<tuple|2|4|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|thm:cv|<tuple|12|10|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|thm:pos|<tuple|14|10|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|thm:poseps|<tuple|13|10|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|thm:rh|<tuple|15|10|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|thm:stone|<tuple|5|5|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|thm:sumfreq|<tuple|16|11|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|thm:type|<tuple|9|8|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|app:sumfreq|<tuple|9|8>>
+    <associate|auto-1|<tuple|?|1>>
+    <associate|auto-10|<tuple|9|8>>
+    <associate|auto-11|<tuple|16|8>>
+    <associate|auto-2|<tuple|1|2>>
+    <associate|auto-3|<tuple|2|3>>
+    <associate|auto-4|<tuple|3|4>>
+    <associate|auto-5|<tuple|4|4>>
+    <associate|auto-6|<tuple|5|6>>
+    <associate|auto-7|<tuple|6|7>>
+    <associate|auto-8|<tuple|7|8>>
+    <associate|auto-9|<tuple|8|8>>
+    <associate|bib-CsordasVishnyakova|<tuple|CsordasVishnyakova|8>>
+    <associate|bib-GR|<tuple|GR|8>>
+    <associate|bib-Ivic|<tuple|Ivic|8>>
+    <associate|bib-MV|<tuple|MV|8>>
+    <associate|bib-Titchmarsh|<tuple|Titchmarsh|8>>
+    <associate|eq:Leps|<tuple|33|7>>
+    <associate|eq:RS|<tuple|13|3>>
+    <associate|eq:convid|<tuple|24|5>>
+    <associate|eq:strip-ext|<tuple|27|5>>
+    <associate|lem:Xeps|<tuple|8|5>>
+    <associate|lem:eta|<tuple|7|5>>
+    <associate|lem:ptwise|<tuple|10|7>>
+    <associate|sec:reg|<tuple|4|4>>
+    <associate|sec:type|<tuple|5|6>>
+    <associate|thm:band|<tuple|3|4>>
+    <associate|thm:cov|<tuple|2|3>>
+    <associate|thm:cv|<tuple|12|7>>
+    <associate|thm:pos|<tuple|14|8>>
+    <associate|thm:poseps|<tuple|13|7>>
+    <associate|thm:rh|<tuple|15|8>>
+    <associate|thm:stone|<tuple|5|4>>
+    <associate|thm:sumfreq|<tuple|16|8>>
+    <associate|thm:type|<tuple|9|6>>
   </collection>
 </references>
 
