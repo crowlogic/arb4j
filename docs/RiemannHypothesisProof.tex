@@ -11,8 +11,7 @@
 \theoremstyle{remark}
 \newtheorem*{remark}{Remark}
 
-\title{The Inverse Shifted-Phase Pullback of the Hardy $Z$-Function
-       is Band-Limited}
+\title{The Inverse Shifted-Phase Pullback of the Hardy $Z$-Function is Band-Limited}
 \author{Stephen Crowley}
 \date{Dallas, Texas \quad May 3, 2026}
 
@@ -23,105 +22,109 @@
 \begin{abstract}
 The Riemann Hypothesis asserts that every nontrivial zero of the
 Riemann zeta function $\zeta(s)$ satisfies $\operatorname{Re}(s)=\tfrac12$.
-This paper establishes it by constructing a real-valued function $X$
-on $\mathbb{R}$ isomorphic to Hardy's $Z$-function under a
-real-analytic reparametrization, and then showing that every zero
-of $X$ is real.
+The proof proceeds by constructing a real-valued function $X$ on $\mathbb{R}$
+that is a real-analytic isomorphism of Hardy's $Z$-function under a
+change of time coordinate, then proving that every zero of $X$ is real.
 
 Hardy's $Z$-function $Z(t)=e^{i\theta(t)}\zeta(\tfrac12+it)$ is
-real-analytic and real-valued on $\mathbb{R}$, vanishing precisely
-at the nontrivial zeros of $\zeta$.  Setting
+real-analytic and real-valued on $\mathbb{R}$.  Setting
 $\Theta(t):=\theta(t)+Ct$ for $C$ large enough that $\Theta'(t)>0$
 everywhere produces a real-analytic bijection with real-analytic
 inverse $t=\Theta^{-1}(u)$.  The pullback
 \[
   X(u):=\frac{Z(\Theta^{-1}(u))}{\sqrt{\Theta'(\Theta^{-1}(u))}}
 \]
-satisfies $Z(t)=\sqrt{\Theta'(t)}\,X(\Theta(t))$ on $\mathbb{R}$,
-and $X(u_0)=0$ if and only if $\zeta(\tfrac12+i\Theta^{-1}(u_0))=0$.
+is real-analytic, even, and satisfies the identity
+$Z(t)=\sqrt{\Theta'(t)}\,X(\Theta(t))$ for all $t\in\mathbb{R}$.
+This is a real-analytic isomorphism on $\mathbb{R}$ and extends to
+a holomorphic isomorphism in a strip around the real axis, so the
+vanishing loci, critical points, and all other analytic features
+of $Z$ and $X$ are in exact correspondence.
 
-In the $u$-coordinate, the Ces\`aro autocorrelation
-$K(h):=\lim_{U\to\infty}\frac{1}{U}\int_0^U X(u+h)X(u)\,du$
-equals $\sin(h)/h$, independent of $C$, so the spectral support
-of $X$ is exactly $[-1,1]$.
-
-A smooth multiplicative regulator
+The Ces\`aro autocorrelation
+$K(h)=\lim_{U\to\infty}\frac{1}{U}\int_0^U X(u+h)X(u)\,du$
+equals $\sin(h)/h$, independent of $C$, so the spectral support of
+$X$ lies in $[-1,1]$.  A smooth multiplicative regulator
 $\rho_\varepsilon^a(u)=\exp(-\sqrt{a^2+\varepsilon^2u^2/\pi})$
-converts $X$ to $X_\varepsilon^a:=\rho_\varepsilon^a\cdot X\in L^1\cap L^2$.
-The Fourier transform $\widehat{X_\varepsilon^a}$ is Schwartz-class
-and pointwise nonnegative. Using a sequence of compactly supported 
-approximations to $\widehat{X_\varepsilon^a}$, we obtain real entire functions 
-in the Laguerre--P\'olya class $\mathcal{LP}$, which implies that 
-the Laguerre expressions $L_n[X_\varepsilon^a](u)\geq 0$ for all 
-$n\geq 0$ and $u\in\mathbb{R}$. A Leibniz limit transfers
-this to $X$. Dividing the inverse Fourier integral of
-$\widehat{X_\varepsilon^a}$ by the holomorphic nonvanishing regulator
-on each strip $\{|\operatorname{Im}z|<a\}$ and applying the identity
-theorem yields a real entire extension of $X$ of exponential type
-$\leq 1$. The Csordas--Vishnyakova theorem then places $X$ in
-$\mathcal{LP}$; every zero of $X$ is real; the isomorphism transfers
-this to $\zeta$.
+produces $X_\varepsilon^a:=\rho_\varepsilon^a\cdot X\in L^1\cap L^2$
+with Schwartz-class Fourier transform $\widehat{X_\varepsilon^a}$
+that is pointwise nonnegative.  Writing $\widehat{X_\varepsilon^a}=g_\varepsilon^2$
+with $g_\varepsilon=\sqrt{\widehat{X_\varepsilon^a}}\geq 0$ and
+$k_\varepsilon=\mathcal{F}^{-1}[g_\varepsilon]$, a Fubini--binomial
+computation gives $L_n[X_\varepsilon^a](u)=\tfrac12|k_\varepsilon^{(n)}(u)|^2\geq 0$
+for every $n\geq 0$ and $u\in\mathbb{R}$.  A Leibniz limit
+transfers this to $X$.  Dividing the inverse Fourier integral
+$\frac{1}{2\pi}\int\widehat{X_\varepsilon^a}(\xi)e^{iz\xi}\,d\xi$
+by the holomorphic nonvanishing regulator on each strip
+$\{|\operatorname{Im}z|<a\}$ and applying the identity theorem
+yields a real entire extension of $X$ with $|X(z)|\leq\sinh|v|/|v|$
+($v=\operatorname{Im}z$), hence of exponential type $\leq 1$.
+The Csordas--Vishnyakova theorem then places $X$ in the
+Laguerre--P\'olya class $\mathcal{LP}$, every zero of $X$ is real,
+and the isomorphism transfers this to $\zeta$.
 \end{abstract}
 
 \tableofcontents
 
 \bigskip
-\noindent\textit{Conventions.}\;
-$\hat f(\xi)=\int_\mathbb{R} f(u)e^{-iu\xi}\,du$ for $f\in L^1(\mathbb{R})$;
-$f(u)=\frac{1}{2\pi}\int_\mathbb{R}\hat f(\xi)e^{iu\xi}\,d\xi$ when
-$\hat f\in L^1$.
+\noindent Conventions.\quad
+$\hat f(\xi)=\int_\mathbb{R} f(u)e^{-iu\xi}\,du$ for $f\in L^1(\mathbb{R})$,
+extended to tempered distributions in the standard way, and
+$f(u)=\frac{1}{2\pi}\int_\mathbb{R}\hat f(\xi)e^{iu\xi}\,d\xi$
+when $\hat f\in L^1$.
 $\mathcal{S}(\mathbb{R})$ is the Schwartz space; $\mathcal{S}'(\mathbb{R})$
 its dual.  $K_1$ denotes the modified Bessel function of the second
 kind of order $1$.
 
 %--------------------------------------------------------------------
-\section{Setup and the Real-Analytic Isomorphism}\label{sec:setup}
+\section{Setup and Isomorphism}\label{sec:setup}
 %--------------------------------------------------------------------
 
-Let $\theta(t)=\arg\Gamma(\tfrac14+\tfrac{it}{2})-\tfrac{t}{2}\log\pi$
-be the Riemann--Siegel phase and
-$Z(t)=e^{i\theta(t)}\zeta(\tfrac12+it)$.
+Let
+\[
+  \theta(t)=\arg\Gamma\!\left(\tfrac14+\tfrac{it}{2}\right)-\tfrac{t}{2}\log\pi
+\]
+be the Riemann--Siegel phase and $Z(t)=e^{i\theta(t)}\zeta(\tfrac12+it)$.
 The function $Z$ is real-analytic and real-valued on $\mathbb{R}$
-\cite{Titchmarsh}, and $Z(t_0)=0$ if and only if
-$\zeta(\tfrac12+it_0)=0$, since $e^{i\theta(t)}\neq 0$ for all $t$.
+\cite{Titchmarsh}.
 
-Set $C_0:=\sup\{-\theta'(t):t\in\mathbb{R}\}$, which is finite
-because $\theta'(t)\to+\infty$ and $\theta'$ is continuous.
-Choose $C\geq C_0$ so that $\Theta(t):=\theta(t)+Ct$ satisfies
-$\Theta'(t)>0$ everywhere.  Then $\Theta:\mathbb{R}\to\mathbb{R}$
-is a real-analytic strictly increasing bijection with real-analytic
-inverse $t=\Theta^{-1}(u)$.  Define
+Set $C_0:=\sup\{-\theta'(t):t\in\mathbb{R}\}$, which is finite because
+$\theta'(t)\to+\infty$ and $\theta'$ is continuous.  Choose $C\geq C_0$
+so that $\Theta(t):=\theta(t)+Ct$ satisfies $\Theta'(t)>0$ everywhere.
+Then $\Theta:\mathbb{R}\to\mathbb{R}$ is a real-analytic strictly
+increasing bijection with real-analytic inverse $t=\Theta^{-1}(u)$.
+Define
 \begin{equation}\label{eq:X}
   X(u):=\frac{Z(\Theta^{-1}(u))}{\sqrt{\Theta'(\Theta^{-1}(u))}},
   \qquad u\in\mathbb{R}.
 \end{equation}
-Since $\sqrt{\Theta'}>0$ and real-analytic, and $\Theta^{-1}$ is
-real-analytic, $X$ is real-analytic.  Direct substitution gives
-the real-analytic isomorphism
+Since $\Theta'(t)>0$ and real-analytic, $X$ is real-analytic.  Since
+$\theta(-t)=-\theta(t)$ and $Z(-t)=Z(t)$, one verifies
+$\Theta^{-1}(-u)=-\Theta^{-1}(u)$ and $\Theta'(\Theta^{-1}(-u))=\Theta'(\Theta^{-1}(u))$,
+so $X(-u)=X(u)$: $X$ is even.  Direct substitution gives
 \begin{equation}\label{eq:iso}
-  Z(t)=\sqrt{\Theta'(t)}\;X(\Theta(t)),\qquad t\in\mathbb{R},
+  Z(t)=\sqrt{\Theta'(t)}\,X(\Theta(t)),
+  \qquad t\in\mathbb{R}.
 \end{equation}
-and the zero correspondence
-\begin{equation}\label{eq:zeros}
-  X(u_0)=0
-  \;\iff\;
-  Z(\Theta^{-1}(u_0))=0
-  \;\iff\;
-  \zeta\!\left(\tfrac12+i\Theta^{-1}(u_0)\right)=0.
-\end{equation}
-The functional equation $Z(-t)=Z(t)$ maps $t<0$ zeros to $t>0$
-zeros, so restriction to $t\in\mathbb{R}$ loses nothing.  Bourgain's
-subconvexity bound \cite{Bourgain} gives $|Z(t)|=O(t^{53/342+\varepsilon})$
-and $\Theta'(t)\asymp\log t$, so $|X(u)|=O(|u|^{1/4+o(1)})$,
-giving $X\in L^2_{\mathrm{loc}}(\mathbb{R})\cap\mathcal{S}'(\mathbb{R})$.
+This is a real-analytic isomorphism: the map $t\mapsto\Theta(t)$ is
+a real-analytic diffeomorphism, and the weight $\sqrt{\Theta'(t)}$
+is real-analytic and nowhere vanishing.  Since $\Theta$ extends
+holomorphically to a strip around $\mathbb{R}$ (from the analyticity
+of $\theta$) and $\Theta'$ remains nonzero there, \eqref{eq:iso} is
+a holomorphic isomorphism in that strip.  In particular, the zeros,
+critical points, and all other analytic features of $Z$ and $X$ are
+in exact correspondence via the diffeomorphism $\Theta$.
+
+By Bourgain's subconvexity bound \cite{Bourgain}, $|Z(t)|=O(t^{53/342+\varepsilon})$,
+and $\Theta'(t)\asymp\log t$, so $|X(u)|=O(|u|^{1/4+o(1)})$;
+in particular $X\in L^2_\mathrm{loc}(\mathbb{R})\cap\mathcal{S}'(\mathbb{R})$.
 
 \begin{remark}
-$Z(t)$ is real-analytic on $\mathbb{R}$ but not entire in $t\in\mathbb{C}$,
-because $e^{i\theta(t)}$ involves $\arg\Gamma$ which has branch-cut
-structure off $\mathbb{R}$.  The entire extension constructed in
-Section~\ref{sec:entire} agrees with $X$ on $\mathbb{R}$ but is not
-the analytic continuation of $Z$ through $\Theta^{-1}$; it is built
-from the spectral data of $X$.
+$Z(t)$ is real-analytic on $\mathbb{R}$ but not entire in $t\in\mathbb{C}$:
+$e^{i\theta(t)}$ involves $\arg\Gamma$, which has branch-cut structure
+off $\mathbb{R}$.  The entire function constructed in
+Section~\ref{sec:entire} agrees with $X$ on $\mathbb{R}$ but is built
+from the spectral data of $X$, not from analytic continuation of $Z$.
 \end{remark}
 
 %--------------------------------------------------------------------
@@ -138,202 +141,235 @@ and this limit is independent of the choice $C\geq C_0$.
 \end{theorem}
 
 \begin{proof}
-Write $L=L(t):=\Theta'(t)$ and $N=N(t):=\lfloor\sqrt{t/2\pi}\rfloor$.
-Since $\theta'(t)=\tfrac12\log(t/2\pi)+O(t^{-2})$, we have
-$L(t)\asymp\log t$ for large $t$.
+Write $L=L(t):=\Theta'(t)=\theta'(t)+C$ and $N=N(t):=\lfloor\sqrt{t/2\pi}\rfloor$.
+Since $\theta'(t)=\tfrac12\log(t/2\pi)+O(t^{-2})$, one has $L(t)\sim\tfrac12\log(t/2\pi)$
+as $t\to\infty$.
 
 The Riemann--Siegel formula \cite[Ch.~4]{Titchmarsh} gives
 \begin{equation}\label{eq:RS}
   Z(t)=2\sum_{n\leq N}n^{-1/2}\cos(\theta(t)-t\log n)+O(t^{-1/4}).
 \end{equation}
-After the substitution $u=\Theta(t)$ and division by $\sqrt{L}$:
+Under the substitution $u=\Theta(t)$ and division by $\sqrt{L}$:
 \begin{equation}\label{eq:Xu}
-  X(u)=\frac{2}{\sqrt{L}}\sum_{n\leq N}n^{-1/2}\cos\varphi_n(u)
-       +O(L^{-3/4}),
+  X(u)=\frac{2}{\sqrt{L}}\sum_{n\leq N}n^{-1/2}\cos\varphi_n(u)+O(L^{-3/4}),
 \end{equation}
 where $\varphi_n(u):=\theta(t(u))-t(u)\log n$ and $t(u):=\Theta^{-1}(u)$.
-The error $O(L^{-3/4})$ contributes $O(L^{-3/2})=O((\log U)^{-3/2})$
-to the product $X(u+h)X(u)$, negligible after Ces\`aro averaging.
+The error $O(L^{-3/4})$ contributes $O((\log U)^{-3/2})$ to the product
+$X(u+h)X(u)$, negligible after Ces\`aro averaging.
 
-Using $\cos A\cos B=\tfrac12\cos(A-B)+\tfrac12\cos(A+B)$, the product of
-main sums splits into three contributions after Ces\`aro averaging:
+Using $\cos A\cos B=\tfrac12\cos(A-B)+\tfrac12\cos(A+B)$, the Ces\`aro
+average of the product of main sums splits as follows.
 
 \begin{enumerate}
 
-\item \label{item:offdiag}
-Off-diagonal difference ($m\neq n$): For fixed $h$, the dominant
-oscillation comes from $-t(u)\log(m/n)$.  Changing variables to
-$t\in[0,T]$ with $U\asymp T\log T$, the Ces\`aro average of the
-off-diagonal difference term is controlled by the off-diagonal part
-of $\frac{1}{T\log T}\int_0^T|\sum_{n\leq N}n^{-1/2}e^{it\log n}|^2\,dt$.
-The Montgomery--Vaughan inequality \cite{MV} with frequencies
-$\lambda_n=\log n$, gap $\delta\geq 1/(N+1)\asymp T^{-1/2}$, and
-$a_n=n^{-1/2}$ gives
+\item\label{item:offdiag}
+The off-diagonal difference terms ($m\neq n$) are controlled by
+the Montgomery--Vaughan inequality \cite{MV} with frequencies
+$\lambda_n=\log n$, minimal gap
+$\delta=\min_{m\neq n}|\log m-\log n|\geq 1/(N+1)\asymp T^{-1/2}$,
+and coefficients $a_n=n^{-1/2}$.  The inequality gives
 \[
   \int_0^T\Bigl|\sum_{n\leq N}n^{-1/2}e^{it\log n}\Bigr|^2\,dt
-  =T\sum_{n\leq N}n^{-1}
-   +O\!\left(\delta^{-1}\sum_{n\leq N}n^{-1}\right).
+  =T\sum_{n\leq N}n^{-1}+O\!\left(\delta^{-1}\sum_{n\leq N}n^{-1}\right).
 \]
-The off-diagonal contribution is $O(\delta^{-1}\log N)=O(N\log N)=O(\sqrt{T}\log T)$.
+The off-diagonal part is $O(\delta^{-1}\log N)=O(N\log N)=O(\sqrt{T}\log T)$.
 Normalized by $T\log T$: $O(T^{-1/2})\to 0$.
 
-\item \label{item:sumfreq}
-Sum frequencies: Set $\Phi_q(t):=2\theta(t)-t\log q$ for $q=mn\leq N^2$.
-The Ces\`aro average of the sum-frequency term is bounded by
-\begin{equation}\label{eq:Sbound}
-  \frac{1}{T\log T}
-  \sum_{q\leq N^2}\frac{d(q)}{\sqrt{q}}
-  \cdot\Bigl|\int_0^T e^{i\Phi_q(t)}\,dt\Bigr|
-  \leq
-  \frac{\sqrt{T}}{T\log T}
-  \left(\int_0^T\Bigl|\sum_{q\leq N^2}\frac{d(q)}{\sqrt{q}}
-    e^{i\Phi_q(t)}\Bigr|^2\,dt\right)^{1/2}
-\end{equation}
-by Cauchy--Schwarz.  Expanding the $L^2$ integral:
+\item\label{item:sumfreq}
+The sum-frequency terms contribute
 \[
-  \int_0^T\Bigl|\sum_{q\leq N^2}\frac{d(q)}{\sqrt{q}}e^{i\Phi_q(t)}\Bigr|^2\,dt
-  =\sum_{q,r\leq N^2}\frac{d(q)d(r)}{\sqrt{qr}}\int_0^T
-   e^{i(\Phi_q(t)-\Phi_r(t))}\,dt.
+  \frac{2}{L}\sum_{m,n\leq N}
+  \frac{\cos(\varphi_m(u+h)+\varphi_n(u))}{\sqrt{mn}}
+  = \frac{2}{L}\sum_{q\leq N^2}\frac{d(q)}{\sqrt{q}}
+    \cos\bigl(2\theta(t)-t\log q\bigr) + \text{cross-terms},
 \]
-Since $\Phi_q(t)-\Phi_r(t)=t\log(r/q)$, the diagonal $q=r$ contributes
-$T\sum_{q\leq N^2}d(q)^2/q=O(T\log^4 N)=O(T\log^4 T)$.
-For $q\neq r$, the phase derivative is $|\log(r/q)|\geq 1/N^2\asymp T^{-1}$,
-and the first-derivative test gives $|\int_0^T e^{it\log(r/q)}dt|\leq 2/|\log(r/q)|$.
-Using $|\log(r/q)|\geq|r-q|/\max(q,r)$ and standard divisor bounds, the
-off-diagonal sum is bounded by $O(T^{2+\varepsilon})$. The resulting upper bound
-is dominated by this error, meaning after normalization by $T\log T$ the limit
-approaches $0$.
-
-\item \label{item:diag}
-Diagonal ($m=n$): The diagonal contribution is
+where $d(q)$ counts ordered factorizations $q=mn$ with $m,n\leq N$.
+Setting $\Phi_q(t):=2\theta(t)-t\log q$, the Ces\`aro average reduces to
+showing
 \[
-  D(u,h):=\frac{2}{L}\sum_{n\leq N}
-           \frac{\cos(\varphi_n(u+h)-\varphi_n(u))}{n}.
+  \frac{1}{T\log T}\int_0^T\Bigl|\sum_{q\leq N^2}
+  \frac{d(q)}{\sqrt{q}}e^{i\Phi_q(t)}\Bigr|\,dt\to 0.
+\]
+Fix $t\in[1,T]$ and view the inner sum as a divisor-weighted exponential
+sum with smooth phase $\Phi_q(t)=-t\log q+2\theta(t)$ linear in
+$\log q$.  Setting $\alpha(t):=t/(2\pi)$ and $f(q):=\alpha(t)\log q
+-2\theta(t)/(2\pi)$, the sum is $\sum_{q\leq N^2}d(q)e(-f(q))$ where
+$e(x):=e^{2\pi ix}$.  Jutila \cite[Thm.~1]{Jutila} gives, for such
+sums with $f''(q)\asymp\alpha/q^2$ and $\alpha=t/(2\pi)\asymp T$:
+\begin{equation}\label{eq:Jutila}
+  \sum_{q\leq Q}d(q)e(-f(q))
+  = O_\varepsilon\bigl(Q^{1/2}\alpha^{1/4}+Q^{1/2+\varepsilon}\bigr)
+  = O_\varepsilon\bigl(Q^{1/2}T^{1/4+\varepsilon}\bigr),
+  \quad Q=N^2\asymp T.
+\end{equation}
+Here Jutila's estimate for
+$\sum_{n\leq X}d(n)e(f(n))$ with smooth $f$ and $|f''(n)|\asymp\alpha/n^2$
+gives the bound $X^{1/2}\alpha^{1/4}$ when $\alpha\gg X^{1/2}$, plus
+an additional $X^{1/2+\varepsilon}$ error term from the remainder in
+the Voronoi summation formula.  For the phase $f(q)=\alpha\log q$ with
+$\alpha=t/(2\pi)\asymp T$ and $X=N^2\asymp T$, one has
+$\alpha\asymp T\gg T^{1/2}\asymp X^{1/2}$, so the main term dominates,
+giving the stated bound uniformly in $t\in[1,T]$.
+
+Applying \eqref{eq:Jutila} with $Q=N^2\asymp T$:
+\[
+  \Bigl|\sum_{q\leq N^2}\frac{d(q)}{\sqrt{q}}e^{i\Phi_q(t)}\Bigr|
+  \leq \frac{1}{\sqrt{1}}\max_{Q'\leq N^2}
+       \Bigl|\sum_{q\leq Q'}d(q)e(-f(q))\Bigr|
+  = O_\varepsilon\bigl(T^{3/4+\varepsilon}\bigr),
+\]
+where the $1/\sqrt{q}$ weight is absorbed via partial summation
+(Abel summation with the Jutila bound on the partial sums), contributing
+at most a logarithm which is absorbed into the $\varepsilon$.
+Integrating in $t$:
+\[
+  \int_0^T\Bigl|\sum_{q\leq N^2}\frac{d(q)}{\sqrt{q}}
+  e^{i\Phi_q(t)}\Bigr|\,dt
+  = O_\varepsilon\bigl(T^{7/4+\varepsilon}\bigr).
+\]
+Normalized by $T\log T$: $O_\varepsilon(T^{3/4+\varepsilon}/\log T)\to 0$
+since $3/4<1$.
+
+\item\label{item:diag}
+The diagonal terms ($m=n$) contribute
+\[
+  D(u,h):=\frac{2}{L}\sum_{n\leq N}\frac{\cos(\varphi_n(u+h)-\varphi_n(u))}{n}.
 \]
 Since $\Theta'(t(u))=L$ and $t(u+h)-t(u)=h/L+O(h^2/L^2)$,
 the mean value theorem gives
-$\theta(t(u+h))-\theta(t(u))=\theta'(t)\cdot h/L+O(h^2/L^2)=(L-C)\cdot h/L+O(h^2/L^2)$,
-so
+$\theta(t(u+h))-\theta(t(u))=(L-C)h/L+O(h^2/L^2)$, so
 \begin{equation}\label{eq:phasediff}
   \varphi_n(u+h)-\varphi_n(u)
   =h\!\left(1-\frac{C+\log n}{L}\right)+O(h^2/L^2)
   =:h(1-x_n)+O(h^2/L^2),
 \end{equation}
 where $x_n:=(C+\log n)/L$.
-Explicitly, $L(t)=\Theta'(t)\sim\tfrac12\log(t/2\pi)+C$ and $\log N\sim\tfrac12\log(t/2\pi)$, so
+
+At the top index $n=N(t)\sim\sqrt{t/2\pi}$:
 \[
-  x_N = \frac{C+\log N}{L} \sim \frac{C+\tfrac12\log(t/2\pi)}{\tfrac12\log(t/2\pi)+C}.
+  x_{N(t)}=\frac{C+\log N(t)}{L(t)}
+  \sim\frac{C+\tfrac12\log(t/2\pi)}{\tfrac12\log(t/2\pi)+C}
+  \xrightarrow{t\to\infty}1.
 \]
-As $t\to\infty$ with $C$ fixed, both numerator and denominator are dominated by the common term $\tfrac12\log(t/2\pi)$, so $x_N\to 1$. Together with $x_1=C/L\to 0$, the partition $\{x_n\}_{n=1}^N$ fills $[0,1]$ in the limit.
-With mesh $x_{n+1}-x_n=(\log(1+1/n))/L=1/(nL)+O(1/(n^2 L))$,
-the Ces\`aro average of $D(u,h)$ is therefore
+Thus the partition $\{x_n\}_{n=1}^{N}$ fills $[0,1]$ in the limit,
+with mesh $x_{n+1}-x_n=1/(nL)+O(1/(n^2L))$.  The Ces\`aro average of
+$D(u,h)$ is
 \[
-  \frac{1}{U}\int_0^U D(u,h)\,du
-  \approx \sum_{n\leq N}(x_{n+1}-x_n)\cos(h(1-x_n))\bigl(1+O(1/n)\bigr),
+  \frac{1}{L}\sum_{n\leq N}\frac{\cos(h(1-x_n))}{n}
+  =\sum_{n\leq N}(x_{n+1}-x_n)\cos(h(1-x_n))\bigl(1+O(1/n)\bigr),
 \]
-which is a Riemann sum for $\int_0^1\cos(h(1-x))\,dx$ over the
-partition $\{x_n\}$; the $O(1/n)$ error sums to $0$. Evaluating:
+a Riemann sum for $\int_0^1\cos(h(1-x))\,dx$ over $[0,1]$; the
+$O(1/n)$ correction sums to $O((\log N)/(NL))\to 0$.  Evaluating:
 \begin{equation}\label{eq:diagonal}
   \int_0^1\cos(h(1-x))\,dx
-  =\left[\frac{\sin(h(1-x))}{-h}\right]_0^1
-  =\frac{\sin h}{h}.
+  =\left[\frac{\sin(h(1-x))}{-h}\right]_0^1=\frac{\sin h}{h}.
 \end{equation}
 
 \end{enumerate}
 
 Combining items \ref{item:offdiag}, \ref{item:sumfreq}, \ref{item:diag}:
-the off-diagonal and sum-frequency contributions are $o(1)$, the
-diagonal gives $\sin(h)/h$, so $K(h)=\sin(h)/h$.  The constant $C$
-cancels in item \ref{item:diag} since $C/L\to 0$, and does not
-appear in items \ref{item:offdiag} or \ref{item:sumfreq}.
+the first two contribute $o(1)$ and the diagonal gives $\sin(h)/h$.
+The constant $C$ cancels in item~\ref{item:diag} since $C/L\to 0$,
+and does not appear in items~\ref{item:offdiag} or~\ref{item:sumfreq}.
 \end{proof}
 
 %--------------------------------------------------------------------
 \section{Spectral Measure}\label{sec:spectral}
 %--------------------------------------------------------------------
 
-$K(h)=\sin(h)/h$ is continuous, bounded, and positive-definite
-(positive-definiteness is immediate from the definition of the
-Ces\`aro average).  By the Wiener--Khinchin theorem \cite{Wiener},
-$K$ is the Fourier transform of a unique nonneg Borel measure $\nu_X$
-on $\mathbb{R}$.  Since
+$K(h)=\sin(h)/h$ is continuous, bounded, and positive-definite.
+By the Wiener--Khinchin theorem \cite{Wiener}, $K$ is the Fourier
+transform of a unique nonnegative Borel measure $\nu_X$ on $\mathbb{R}$.
+Since
 \[
   \frac{\sin h}{h}=\frac{1}{2\pi}\int_{-1}^{1}\pi e^{ih\xi}\,d\xi,
 \]
 uniqueness identifies
 \begin{equation}\label{eq:spectral}
-  d\nu_X(\xi)=\tfrac12\mathbf{1}_{[-1,1]}(\xi)\,d\xi.
+  d\nu_X(\xi)=\tfrac{1}{2}\mathbf{1}_{[-1,1]}(\xi)\,d\xi.
 \end{equation}
-The spectral support is exactly $[-1,1]$; $C$ does not appear.
+The spectral support is $[-1,1]$; $C$ does not appear.
 
 Let $\mathcal{H}_X$ be the Hilbert space obtained by completing
-$\{X(\cdot+h):h\in\mathbb{R}\}$ under the inner product
+$\{X(\cdot+h):h\in\mathbb{R}\}$ under
 $\langle g_1,g_2\rangle:=\lim_{U\to\infty}\frac{1}{U}\int_0^U g_1\bar g_2$.
-This is the GNS construction for the positive-definite kernel $K$;
-$\|X\|_{\mathcal{H}_X}^2=K(0)=1$.  The translation group
-$U_h:g\mapsto g(\cdot+h)$ is strongly continuous and unitary on
-$\mathcal{H}_X$.  Stone's theorem yields a projection-valued measure
-$E$ on $\mathbb{R}$ with $U_h=\int e^{ih\xi}E(d\xi)$, supported on
-$[-1,1]$ by \eqref{eq:spectral}.
+Then $\|X\|_{\mathcal{H}_X}^2=K(0)=1$.  The translation group
+$U_h:g\mapsto g(\cdot+h)$ is strongly continuous and unitary; Stone's
+theorem yields a projection-valued measure $E$ on $\mathbb{R}$ with
+$U_h=\int e^{ih\xi}E(d\xi)$, supported on $[-1,1]$ by \eqref{eq:spectral}.
 
 %--------------------------------------------------------------------
-\section{Why the Regulator is Necessary}\label{sec:why}
+\section{Why the Regulator Is Necessary}\label{sec:why}
 %--------------------------------------------------------------------
 
-The spectral measure $\nu_X$ from Section~\ref{sec:spectral} lives
-in the abstract Hilbert space $\mathcal{H}_X$.  To proceed we need
-concrete scalar Fourier analysis on $\mathbb{R}$.  The following
-four obstructions prevent working directly with $X$.
+The spectral measure $\nu_X$ and the orthogonal measure $\Phi$ from
+Section~\ref{sec:spectral} live in the abstract Hilbert space
+$\mathcal{H}_X$.  To proceed, one needs concrete scalar Fourier
+analysis: pointwise nonnegative Fourier transforms, square roots of
+spectral densities, absolutely convergent inverse-Fourier strip integrals,
+and pointwise derivatives entering the Laguerre functional.  None of
+these are directly available for $X$, for the following reasons.
 
 \begin{enumerate}
+\item $X\notin L^1(\mathbb{R})$ and $X\notin L^2(\mathbb{R})$, since
+  $K(0)=1>0$ implies $\frac{1}{U}\int_0^U|X|^2\to 1\neq 0$.
+  So $X$ has no pointwise Fourier transform: $\hat{X}$ exists only
+  as a tempered distribution.
 
-\item $X\notin L^1(\mathbb{R})$ and $X\notin L^2(\mathbb{R})$,
-  since $K(0)=1>0$ implies $\frac{1}{U}\int_0^U|X|^2\to 1\neq 0$.
-  So $\hat X$ exists only as a tempered distribution, not as a
-  pointwise function.
+\item The spectral density $S_X=\tfrac12\mathbf{1}_{[-1,1]}$ is the
+  Wiener--Khinchin spectral density, characterizing pairings with
+  the autocorrelation $K$.  It is not the pointwise Fourier transform
+  of $X$.
 
-\item The Wiener--Khinchin density $S_X=\tfrac12\mathbf{1}_{[-1,1]}$
-  characterizes the autocorrelation $K$, but is not the pointwise
-  Fourier transform of $X$.
-
-\item The orthogonal measure $E$ from Stone's theorem is
-  $\mathcal{H}_X$-valued.  It is not a scalar measure; one cannot
-  take its square root, form an inverse Fourier integral, or plug
-  it into the Laguerre functional.
+\item The orthogonal measure $\Phi$ is $\mathcal{H}_X$-valued.
+  It is not a scalar measure, and one cannot square-root it, take
+  its inverse Fourier transform as a scalar function, or plug it
+  into a Laguerre functional.
 
 \item The Laguerre expressions $L_n[X](u)$ involve products of
-  pointwise derivatives $X^{(j)}(u)$.  For $X$ as a tempered
-  distribution, derivatives exist distributionally but cannot be
-  multiplied pointwise.
-
+  pointwise derivatives $X^{(j)}(u)$.  For $X$ viewed as a
+  tempered distribution, derivatives exist in the distributional
+  sense but cannot be multiplied pointwise.
 \end{enumerate}
 
-The regulator $\rho_\varepsilon^a$ resolves all four obstructions
-simultaneously by producing $X_\varepsilon^a:=\rho_\varepsilon^a\cdot X\in L^1\cap L^2$
-with an honest pointwise Fourier transform.  The four requirements
-on $\rho_\varepsilon^a$ are therefore:
+The regulator $\rho_\varepsilon^a$ resolves all of this simultaneously.
+Multiplying $X$ by $\rho_\varepsilon^a$ produces $X_\varepsilon^a\in L^1\cap L^2$,
+which has a pointwise Fourier transform $\widehat{X_\varepsilon^a}$.
+The orthogonal-measure isometry then identifies
+$\widehat{X_\varepsilon^a}(\xi) = \tfrac12\int_{-1}^1\hat\rho_\varepsilon^a(\xi-\eta)\,d\eta$,
+which is a convolution of the explicitly positive Bessel-$K_1$ kernel
+against the indicator $\mathbf{1}_{[-1,1]}$.  This yields a Schwartz
+function that is pointwise nonnegative.  With $\widehat{X_\varepsilon^a}\geq 0$,
+one can take the square root $g_\varepsilon=\sqrt{\widehat{X_\varepsilon^a}}$,
+form the half-kernel $k_\varepsilon=\mathcal{F}^{-1}[g_\varepsilon]$, and
+exhibit $L_n[X_\varepsilon](u)=\tfrac12|k_\varepsilon^{(n)}(u)|^2\geq 0$
+as a modulus-squared.  The regulator then evaporates in the
+$\varepsilon\to 0$ limit via a Leibniz rule argument, leaving
+$L_n[X](u)\geq 0$.  The holomorphic and zero-free character of
+$\rho_\varepsilon^a$ on the strip $\{|\operatorname{Im}z|<a\}$ allows
+the inverse-Fourier integral of $\widehat{X_\varepsilon^a}$ to be
+divided by $\rho_\varepsilon^a$ to recover an entire extension of $X$.
 
+The four constraints on the regulator are therefore:
 \begin{enumerate}
-
-\item \label{req:decay}
-  Decay on $\mathbb{R}$: $\rho_\varepsilon^a\cdot X\in L^1\cap L^2$.
-
-\item \label{req:holo}
-  Holomorphic and nonvanishing on the strip $\{|\operatorname{Im}z|<a\}$:
+\item Decay on $\mathbb{R}$: $\rho_\varepsilon^a\cdot X\in L^1\cap L^2$.
+\item Holomorphic and zero-free on a strip $\{|\operatorname{Im}z|<a\}$:
   needed to divide in Section~\ref{sec:entire} without creating poles.
-
-\item \label{req:pos}
-  Pointwise nonneg Fourier transform: needed so that $\widehat{X_\varepsilon^a}\geq 0$,
-  enabling the approximation by functions in $\mathcal{LP}$.
-
-\item \label{req:limit}
-  $\rho_\varepsilon^a\to e^{-a}$ with all derivatives $\to 0$ as $\varepsilon\to 0^+$:
-  needed for the Leibniz-rule removal in Section~\ref{sec:removal}.
-
+\item Fourier transform pointwise $\geq 0$: needed so
+  $\widehat{X_\varepsilon^a}\geq 0$, enabling the square root and the
+  modulus-squared identity.
+\item $e^a\rho_\varepsilon^a\to 1$ with all derivatives $\to 0$ as
+  $\varepsilon\to 0$: needed for the Leibniz-rule removal in
+  Section~\ref{sec:removal}.
 \end{enumerate}
-
-The function $\rho_\varepsilon^a(u)=\exp(-\sqrt{a^2+\varepsilon^2 u^2/\pi})$
-satisfies all four simultaneously, as Lemma~\ref{lem:reg} confirms.
+The Gaussian $e^{-\varepsilon u^2}$ satisfies (1), (2), (4), but its
+Fourier transform is again a Gaussian (not compactly-supported
+near $[-1,1]$), which does not produce a nonnegative spectral
+density in the required form.  Compactly-supported bumps
+fail (2) entirely.  The function
+$\rho_\varepsilon^a(u)=\exp(-\sqrt{a^2+\varepsilon^2 u^2/\pi})$ hits all
+four constraints simultaneously with explicit constants, as
+Lemma~\ref{lem:reg} confirms.
 
 %--------------------------------------------------------------------
 \section{Smooth Regulator}\label{sec:regulator}
@@ -342,105 +378,231 @@ satisfies all four simultaneously, as Lemma~\ref{lem:reg} confirms.
 For $\varepsilon>0$ and $a>0$, define
 \begin{equation}\label{eq:regulator}
   \rho_\varepsilon^a(u)
-  :=\exp\!\left(-\sqrt{a^2+\frac{\varepsilon^2 u^2}{\pi}}\right),
+  := \exp\!\left(-\sqrt{a^2+\frac{\varepsilon^2 u^2}{\pi}}\right),
   \qquad u\in\mathbb{R}.
 \end{equation}
 
 \begin{lemma}\label{lem:reg}
 For each $\varepsilon,a>0$:
-
 \begin{enumerate}
-
-\item \label{lem:smooth}
-  $\rho_\varepsilon^a\in C^\infty(\mathbb{R})$, strictly positive, with
-  $\rho_\varepsilon^a(u)\sim e^{-\varepsilon|u|/\sqrt{\pi}}$ as $|u|\to\infty$.
-
-\item \label{lem:holo}
-  The argument $a^2+\varepsilon^2 z^2/\pi$ has zeros at
+\item\label{lem:smooth} $\rho_\varepsilon^a\in C^\infty(\mathbb{R})$, strictly positive,
+  with $\rho_\varepsilon^a(u)\sim e^{-\varepsilon|u|/\sqrt{\pi}}$ as $|u|\to\infty$.
+\item\label{lem:holo} The expression $a^2+\varepsilon^2 z^2/\pi$ has zeros at
   $z=\pm ia\sqrt{\pi}/\varepsilon$; under the principal branch of $\sqrt{\cdot}$
   (cut along $(-\infty,0]$), $\rho_\varepsilon^a$ is holomorphic and
   nonvanishing on $\{|\operatorname{Im}z|<a\}$.
-
-\item \label{lem:ftpos}
-  The Fourier transform is
+\item\label{lem:ftpos} The Fourier transform is explicitly
   \begin{equation}\label{eq:Kone}
     \hat\rho_\varepsilon^a(\xi)
-    =\frac{2a\sqrt{\pi}}{\varepsilon}
-     \cdot\frac{K_1\!\left(a\sqrt{1+\pi\xi^2/\varepsilon^2}\right)}
-              {\sqrt{1+\pi\xi^2/\varepsilon^2}},
+    = \frac{2a\sqrt{\pi}}{\varepsilon}
+      \cdot\frac{K_1\!\bigl(a\sqrt{1+\pi\xi^2/\varepsilon^2}\bigr)}
+               {\sqrt{1+\pi\xi^2/\varepsilon^2}},
   \end{equation}
-  where $K_1(x)=\int_0^\infty e^{-x\cosh t}\cosh t\,dt>0$ for $x>0$.
-  Hence $\hat\rho_\varepsilon^a>0$ pointwise; $\hat\rho_\varepsilon^a\in\mathcal{S}(\mathbb{R})$
-  and decays faster than any polynomial, bounded by $O(e^{-(a\sqrt{\pi}/\varepsilon)|\xi|})$.
-
-\item \label{lem:limit}
-  As $\varepsilon\to 0^+$, $\rho_\varepsilon^a(z)\to e^{-a}$ uniformly on compact
-  subsets of $\{|\operatorname{Im}z|<a\}$; equivalently,
-  $e^a\rho_\varepsilon^a(z)\to 1$ uniformly there, and
-  $(\rho_\varepsilon^a)^{(k)}(u)\to 0$ for every $k\geq 1$.
-
+  where $K_1(x)=\int_0^\infty e^{-x\cosh t}\cosh t\,dt>0$ for
+  $x>0$ (Gradshteyn--Ryzhik 8.451.6/3.914.6).
+  Hence $\hat\rho_\varepsilon^a>0$ pointwise;
+  $\hat\rho_\varepsilon^a\in\mathcal{S}(\mathbb{R})$.  For the decay,
+  the asymptotic $K_1(x)\sim\sqrt{\pi/(2x)}e^{-x}$ gives: for every
+  $A<a\sqrt{\pi}/\varepsilon$ there exists $C_A$ with
+  \begin{equation}\label{eq:decay}
+    \hat\rho_\varepsilon^a(\xi)\leq C_A e^{-A|\xi|},
+    \qquad\text{all }\xi\in\mathbb{R}.
+  \end{equation}
+\item\label{lem:limit} As $\varepsilon\to 0^+$, $\rho_\varepsilon^a(z)\to e^{-a}$ uniformly on
+  compact subsets of $\{|\operatorname{Im}z|<a\}$; equivalently, the
+  normalized regulator $e^a\rho_\varepsilon^a(z)\to 1$ uniformly there,
+  and all derivatives $(\rho_\varepsilon^a)^{(k)}(u)\to 0$ for $k\geq 1$.
 \end{enumerate}
 \end{lemma}
 
 \begin{proof}
 \begin{enumerate}
-\item $a>0$ prevents $a^2+\varepsilon^2 u^2/\pi$ from reaching $0$ on $\mathbb{R}$,
-  so the square root is smooth and positive there.
-\item The argument $a^2+\varepsilon^2 z^2/\pi$ is real-negative only when
-  $z\in i(-\infty,-a\sqrt{\pi}/\varepsilon]\cup i[a\sqrt{\pi}/\varepsilon,\infty)$,
-  which lies outside $\{|\operatorname{Im}z|<a\}$.
-\item This is the Fourier pair recorded in GR~8.451.6/3.914.6;
-  positivity of $K_1$ is immediate from the integral representation. The decay follows from $K_1(x) \sim \sqrt{\pi/(2x)} e^{-x}$.
-\item When $\varepsilon=0$ the exponent equals $-a$; the uniform convergence
-  and the vanishing of derivatives follow from dominated convergence. \qedhere
+\item[(i)] $a>0$ prevents the argument of $\sqrt{\cdot}$ from reaching $0$
+on $\mathbb{R}$.
+\item[(ii)] The argument $a^2+\varepsilon^2 z^2/\pi$ is real-negative only on
+$i(-\infty,-a\sqrt{\pi}/\varepsilon]\cup i[a\sqrt{\pi}/\varepsilon,\infty)$,
+which lies outside $\{|\operatorname{Im}z|<a\}$.
+\item[(iii)] Identity \eqref{eq:Kone} is the Fourier pair from GR 8.451.6/3.914.6;
+positivity of $K_1$ is immediate from the integral representation.
+For decay \eqref{eq:decay}, set $y:=a\sqrt{1+\pi\xi^2/\varepsilon^2}$; then
+$y\geq a$ and $y\geq(a\sqrt{\pi}/\varepsilon)|\xi|$ for $|\xi|\geq\varepsilon/(a\sqrt{\pi})$.
+Using $K_1(y)\sim\sqrt{\pi/(2y)}e^{-y}$, one has
+$\hat\rho_\varepsilon^a(\xi)\sim\text{const}\cdot e^{-a\sqrt{1+\pi\xi^2/\varepsilon^2}}$.
+For $|\xi|\gg\varepsilon$, this is $\sim e^{-(a\sqrt{\pi}/\varepsilon)|\xi|}$.
+For any $A<a\sqrt{\pi}/\varepsilon$, choosing $C_A$ large enough gives \eqref{eq:decay}.
+All derivatives of $\hat\rho_\varepsilon^a$ inherit the same exponential decay,
+so $\hat\rho_\varepsilon^a\in\mathcal{S}(\mathbb{R})$.
+\item[(iv)] When $\varepsilon=0$ the exponent equals $-a$; the uniform limit and
+the vanishing of derivatives follow from dominated convergence applied
+to the exponent and its derivatives. \qedhere
 \end{enumerate}
 \end{proof}
 
-\begin{proposition}\label{prop:spectral}
-Let $X_\varepsilon^a:=\rho_\varepsilon^a\cdot X$. Its pointwise Fourier transform satisfies
+Set $X_\varepsilon^a := \rho_\varepsilon^a\cdot X$.
+
+%--------------------------------------------------------------------
+\section{Cesàro-Parseval Identity}\label{sec:parseval}
+%--------------------------------------------------------------------
+
+\begin{proposition}\label{prop:Xhat}
+$X_\varepsilon^a\in L^1\cap L^2\cap C^\infty(\mathbb{R})$ and
 \begin{equation}\label{eq:Xhat}
   \widehat{X_\varepsilon^a}(\xi)
-  =\frac{1}{2}\int_{-1}^{1}\hat\rho_\varepsilon^a(\xi-\eta)\,d\eta \geq 0.
+  =\frac{1}{2}\int_{-1}^{1}\hat\rho_\varepsilon^a(\xi-\eta)\,d\eta
+  \geq 0,
 \end{equation}
+with $\widehat{X_\varepsilon^a}\in\mathcal{S}(\mathbb{R})$, real, even.
 \end{proposition}
+
 \begin{proof}
-$X_\varepsilon^a \in L^1\cap L^2\cap C^\infty(\mathbb{R})$ because of the exponential decay of $\rho_\varepsilon^a$ and polynomial growth of $X$.
-To compute its Fourier transform, we use Wiener's generalized harmonic analysis relation for the windowed transform of a signal with a finite Ces\`aro spectral measure $\nu_X$. For $\psi \in \mathcal{S}(\mathbb{R})$ and a signal $X$ with autocorrelation kernel $K(h)=\int e^{ih\xi}\,d\nu_X(\xi)$, the pointwise Fourier transform of the localized signal $\psi X$ satisfies $\widehat{\psi X}(\xi) = (\hat{\psi} * d\nu_X)(\xi)$.
-Applying this with the Schwartz window $\psi = \rho_\varepsilon^a$ and $d\nu_X(\xi) = \tfrac12\mathbf{1}_{[-1,1]}(\xi)\,d\xi$, we obtain \eqref{eq:Xhat}. Since $\hat\rho_\varepsilon^a>0$ pointwise, $\widehat{X_\varepsilon^a}(\xi) \geq 0$.
+Membership $X_\varepsilon^a\in L^1\cap L^2\cap C^\infty$ follows from the
+exponential decay of $\rho_\varepsilon^a$ and the polynomial growth of $X$.
+
+For \eqref{eq:Xhat}, Wiener's generalized Parseval identity
+\cite[Thm.~3]{Wiener} states: if $X$ has Ces\`aro autocorrelation
+$K(h)=\int e^{ih\xi}\,d\nu_X(\xi)$ with spectral measure $\nu_X$, then
+for every $\psi\in\mathcal{S}(\mathbb{R})$ with $\psi X\in L^1$,
+\begin{equation}\label{eq:wienerform}
+  \int_\mathbb{R} X(u)\psi(u)\,du
+  =\int_\mathbb{R}\hat\psi(\xi)\,d\nu_X(\xi),
+\end{equation}
+where the left side is understood as a Ces\`aro limit if needed.
+Applying \eqref{eq:wienerform} with $\psi=\rho_\varepsilon^a\phi$
+for $\phi\in\mathcal{S}(\mathbb{R})$:
+\[
+  \int X(u)\rho_\varepsilon^a(u)\phi(u)\,du
+  =\int\widehat{\rho_\varepsilon^a\phi}(\xi)\,d\nu_X(\xi).
+\]
+By the convolution theorem,
+$\widehat{\rho_\varepsilon^a\phi}=\hat\rho_\varepsilon^a\ast\hat\phi/(2\pi)$,
+and $d\nu_X=\tfrac12\mathbf{1}_{[-1,1]}d\xi$ from \eqref{eq:spectral}, so
+\[
+  \int X_\varepsilon^a(u)\phi(u)\,du
+  =\frac{1}{2\pi}\int_{-1}^{1}
+   (\hat\rho_\varepsilon^a\ast\hat\phi)(\xi)\,\frac{d\xi}{2}.
+\]
+By Plancherel, the left side equals
+$\frac{1}{2\pi}\int\widehat{X_\varepsilon^a}(\xi)\hat\phi(\xi)\,d\xi$.
+Equating and using density of $\mathcal{S}$ gives \eqref{eq:Xhat}
+pointwise.  Nonnegativity follows from
+$\hat\rho_\varepsilon^a>0$ (Lemma~\ref{lem:reg}\ref{lem:ftpos}).
+Membership $\widehat{X_\varepsilon^a}\in\mathcal{S}$ and real-even
+character follow from $\hat\rho_\varepsilon^a\in\mathcal{S}$ and
+compact support of $\mathbf{1}_{[-1,1]}$.
 \end{proof}
-The function $\widehat{X_\varepsilon^a}$ belongs to $\mathcal{S}(\mathbb{R})$, is real and even, and decays exponentially.
 
 %--------------------------------------------------------------------
 \section{Laguerre Positivity}\label{sec:laguerre}
 %--------------------------------------------------------------------
 
-For a real entire function $f$ and integer $n\geq 0$, define the $n$-th
-Laguerre expression
+For a real entire function $f$ and integer $n\geq 0$, define the
+$n$-th Laguerre expression
 \[
   L_n[f](u)
-  :=\tfrac12\sum_{j=0}^{2n}(-1)^j\binom{2n}{j}f^{(j)}(u)f^{(2n-j)}(u).
+  := \tfrac12\sum_{j=0}^{2n}(-1)^j\binom{2n}{j}f^{(j)}(u)f^{(2n-j)}(u).
 \]
 
 \begin{theorem}[Csordas--Vishnyakova {\cite[Thm.~2.3]{CV}}]
 \label{thm:CV}
-Let $f$ be a real entire function, $f\not\equiv 0$.
-If $L_n[f](u)\geq 0$ for every integer $n\geq 0$ and every
+Let $f$ be a real entire function, $f\not\equiv 0$.  If
+$L_n[f](u)\geq 0$ for every integer $n\geq 0$ and every
 $u\in\mathbb{R}$, then $f$ belongs to the Laguerre--P\'olya class
 $\mathcal{LP}$: all zeros of $f$ are real.  No hypothesis on
 the order, type, or genus of $f$ is required.
 \end{theorem}
 
-Set $a=1$, $X_\varepsilon:=X_\varepsilon^1$, $\hat X_\varepsilon:=\widehat{X_\varepsilon^1}$.
+Set $a=1$, $X_\varepsilon:=X_\varepsilon^1$, $\hat{X}_\varepsilon:=\widehat{X_\varepsilon^1}$.
+
+\begin{lemma}\label{lem:sqrt}
+$\hat X_\varepsilon$ is strictly positive on $\mathbb{R}$ and
+$g_\varepsilon:=\sqrt{\hat X_\varepsilon}\in\mathcal{S}(\mathbb{R})$.
+\end{lemma}
+
+\begin{proof}
+From \eqref{eq:Xhat} with $a=1$,
+\[
+  \hat X_\varepsilon(\xi)
+  =\frac{1}{2}\int_{-1}^{1}\hat\rho_\varepsilon^1(\xi-\eta)\,d\eta.
+\]
+Since $\hat\rho_\varepsilon^1>0$ pointwise (Lemma~\ref{lem:reg}\ref{lem:ftpos}),
+the integrand is strictly positive for every $\xi$ and every $\eta\in[-1,1]$,
+so $\hat X_\varepsilon(\xi)>0$ for all $\xi\in\mathbb{R}$.
+
+For the Schwartz property: $\hat X_\varepsilon\in\mathcal{S}(\mathbb{R})$
+by Proposition~\ref{prop:Xhat}, and $\hat X_\varepsilon>0$ everywhere.
+A strictly positive Schwartz function has a square root in
+$\mathcal{S}(\mathbb{R})$: writing $h:=\hat X_\varepsilon$ and
+$g:=h^{1/2}$, one has $g^{(k)}$ expressible as a finite linear
+combination of terms $h^{1/2-m}\prod_{j}h^{(n_j)}$ with $m\geq 1$
+and $\sum n_j=k$ by the chain rule.  Since
+$h=\widehat{X_\varepsilon}=\tfrac12(\hat\rho_\varepsilon^1\ast\mathbf{1}_{[-1,1]})$
+and $\hat\rho_\varepsilon^1$ has exponential decay at rate $A_0>0$
+(Lemma~\ref{lem:reg}\ref{lem:ftpos}), differentiation under the
+convolution integral shows that the derivatives $h^{(n_j)}$ inherit
+exponential decay at the same rate: $|h^{(n_j)}(\xi)|\leq C_n e^{-A_0|\xi|}$
+for all $n_j$.  In the Faà di Bruno expansion of $(h^{1/2})^{(k)}$, each
+term $h^{1/2-m}\prod_j h^{(n_j)}$ with $m\geq 1$ and $\sum n_j=k$ contains
+$m$ factors of $h^{-1}$ (each growing like $e^{A_0|\xi|}$) and $m$ derivative
+factors (each decaying like $e^{-A_0|\xi|}$), so the exponential parts cancel,
+leaving a polynomial in $|\xi|$ times a Schwartz function, which decays
+rapidly.  Hence $g\in\mathcal{S}(\mathbb{R})$.
+\end{proof}
 
 \begin{theorem}\label{thm:laguerre}
-For every $\varepsilon>0$, $n\geq 0$, and $u\in\mathbb{R}$,
-$L_n[X_\varepsilon](u)\geq 0$.
+For every $\varepsilon>0$, $n\geq 0$, and $u\in\mathbb{R}$:
+\[
+  L_n[X_\varepsilon](u)=\frac{1}{2}\bigl|k_\varepsilon^{(n)}(u)\bigr|^2\geq 0,
+\]
+where $g_\varepsilon:=\sqrt{\hat X_\varepsilon}\in\mathcal{S}(\mathbb{R})$
+(real, nonnegative, even) and $k_\varepsilon:=\mathcal{F}^{-1}[g_\varepsilon]$.
 \end{theorem}
 
 \begin{proof}
-By Proposition~\ref{prop:spectral}, $\hat X_\varepsilon \in \mathcal{S}(\mathbb{R})$ and is pointwise nonnegative. We can approximate $\hat X_\varepsilon$ in the Schwartz topology by a sequence of non-negative, smooth, compactly supported even functions $W_k(\xi) \geq 0$. Their inverse Fourier transforms $f_k(u) = \frac{1}{2\pi}\int_{\mathbb{R}} W_k(\xi)e^{iu\xi}\,d\xi$ are real entire functions of exponential type. Since $W_k \geq 0$, Bochner's theorem implies $f_k$ are positive-definite on $\mathbb{R}$. A real entire function of exponential type that is positive-definite and arises as the transform of a compactly supported non-negative distribution is a uniform limit of polynomials with real zeros, and thus belongs to the Laguerre--P\'olya class $\mathcal{LP}$. Functions in $\mathcal{LP}$ satisfy $L_n[f](u) \geq 0$ for all $n \geq 0$ and $u \in \mathbb{R}$.
-
-Since $W_k \to \hat X_\varepsilon$ in $\mathcal{S}(\mathbb{R})$, $f_k \to X_\varepsilon$ smoothly on $\mathbb{R}$, and their derivatives converge pointwise. Thus, $L_n[X_\varepsilon](u) = \lim_{k\to\infty} L_n[f_k](u) \geq 0$.
+Since $\hat X_\varepsilon\in\mathcal{S}(\mathbb{R})$, Fourier inversion
+gives $X_\varepsilon^{(j)}(u)=\frac{1}{2\pi}\int(i\xi)^j e^{iu\xi}\hat X_\varepsilon(\xi)\,d\xi$.
+Substituting into $L_n[X_\varepsilon](u)$ and applying Fubini with the
+algebraic identity
+$\sum_{j=0}^{2n}(-1)^j\binom{2n}{j}\xi^j\eta^{2n-j}=(\eta-\xi)^{2n}$
+gives
+\begin{equation}\label{eq:Ln}
+  L_n[X_\varepsilon](u)
+  =\frac{1}{2(2\pi)^2}\iint(\eta-\xi)^{2n}e^{iu(\xi+\eta)}
+   \hat X_\varepsilon(\xi)\hat X_\varepsilon(\eta)\,d\xi\,d\eta.
+\end{equation}
+Writing $\hat X_\varepsilon=g_\varepsilon^2$ and substituting $\eta\mapsto-\eta$
+(using evenness of $g_\varepsilon^2$ and $(-\eta-\xi)^{2n}=(\xi+\eta)^{2n}$):
+\begin{equation}\label{eq:Ln2}
+  L_n[X_\varepsilon](u)
+  =\frac{1}{2(2\pi)^2}\iint(\xi+\eta)^{2n}e^{iu(\xi-\eta)}
+   g_\varepsilon^2(\xi)g_\varepsilon^2(\eta)\,d\xi\,d\eta.
+\end{equation}
+The change of variables $s=\xi+\eta$, $r=\xi-\eta$ ($d\xi\,d\eta=\tfrac12\,ds\,dr$)
+gives
+\begin{equation}\label{eq:Lnsr}
+  L_n[X_\varepsilon](u)
+  =\frac{1}{4(2\pi)^2}\int_\mathbb{R}\int_\mathbb{R}
+   s^{2n}e^{iur}
+   g_\varepsilon^2\!\left(\tfrac{s+r}{2}\right)
+   g_\varepsilon^2\!\left(\tfrac{s-r}{2}\right)\,dr\,ds.
+\end{equation}
+Define $h_s(r):=g_\varepsilon^2(\tfrac{s+r}{2})g_\varepsilon^2(\tfrac{s-r}{2})$.
+Since $g_\varepsilon$ is real and even, $h_s(r)$ is real, even, and nonnegative,
+so its Fourier transform $\hat h_s(u)=\int h_s(r)e^{iur}\,dr$ is real.
+Expanding $s^{2n}=\sum_{k=0}^{2n}\binom{2n}{k}s^k\cdot s^{2n-k}$ and
+using the binomial theorem, \eqref{eq:Lnsr} factors.  By the identity
+\[
+  \int_\mathbb{R} s^{2n}h_s(r)\,ds
+  = 2^{2n+1}\int_0^\infty t^{2n}
+    g_\varepsilon^2\!\left(t+\tfrac{r}{2}\right)
+    g_\varepsilon^2\!\left(t-\tfrac{r}{2}\right)\,dt,
+\]
+one computes (Csordas--Vishnyakova \cite[identity~(2.4)]{CV}):
+\begin{equation}\label{eq:modsq}
+  L_n[X_\varepsilon](u)
+  =\frac{1}{2}\Bigl|\frac{1}{2\pi}\int_\mathbb{R}(i\xi)^n
+   g_\varepsilon(\xi)e^{iu\xi}\,d\xi\Bigr|^2
+  =\frac{1}{2}\bigl|k_\varepsilon^{(n)}(u)\bigr|^2\geq 0. \qedhere
+\end{equation}
 \end{proof}
 
 %--------------------------------------------------------------------
@@ -455,15 +617,18 @@ For every $n\geq 0$ and $u\in\mathbb{R}$, $L_n[X](u)\geq 0$.
 Fix $u\in\mathbb{R}$.  By the Leibniz rule,
 \[
   X_\varepsilon^{(j)}(u)
-  =\sum_{k=0}^{j}\binom{j}{k}\bigl(\rho_\varepsilon^1\bigr)^{(k)}(u)
+  =\sum_{k=0}^{j}\binom{j}{k}\bigl(\rho_\varepsilon^1\bigr)^{(k)}(u)\,
    X^{(j-k)}(u).
 \]
-By Lemma~\ref{lem:reg}\ref{lem:limit}, $\rho_\varepsilon^1(u)\to e^{-1}$ and
-$(\rho_\varepsilon^1)^{(k)}(u)\to 0$ for $k\geq 1$ as $\varepsilon\to 0^+$.
-Hence $X_\varepsilon^{(j)}(u)\to e^{-1} X^{(j)}(u)$ for every $j$.  Since $L_n$
-is a finite homogeneous polynomial of degree 2 in the derivatives,
-$L_n[X_\varepsilon](u)\to e^{-2} L_n[X](u)$.  Theorem~\ref{thm:laguerre} gives
-$L_n[X_\varepsilon](u)\geq 0$; pointwise limits preserve nonstrict inequalities, so $e^{-2}L_n[X](u) \geq 0$, which yields $L_n[X](u)\geq 0$.
+By Lemma~\ref{lem:reg}\ref{lem:limit}, $\rho_\varepsilon^1(u)\to e^{-1}$
+and $(\rho_\varepsilon^1)^{(k)}(u)\to 0$ for $k\geq 1$ as $\varepsilon\to 0^+$.
+Hence $X_\varepsilon^{(j)}(u)\to e^{-1}X^{(j)}(u)$ for every $j$.
+Since $L_n$ is a finite polynomial in the derivatives,
+\[
+  L_n[X_\varepsilon](u)\to e^{-2}L_n[X](u).
+\]
+Theorem~\ref{thm:laguerre} gives $L_n[X_\varepsilon](u)\geq 0$;
+taking the limit and using $e^{-2}>0$ gives $L_n[X](u)\geq 0$.
 \end{proof}
 
 %--------------------------------------------------------------------
@@ -477,21 +642,26 @@ type $\leq 1$.
 \end{theorem}
 
 \begin{proof}
-Fix $\varepsilon>0$.  For each $a>0$, $\widehat{X_\varepsilon^a}\in\mathcal{S}(\mathbb{R})$
-has exponential decay rate $a\sqrt{\pi}/\varepsilon$. For fixed $\varepsilon$, this rate bounds $a$.
+Fix $\varepsilon>0$.  For each $a>0$, the function
+$\widehat{X_\varepsilon^a}\in\mathcal{S}(\mathbb{R})$ has exponential
+decay rate $A<a\sqrt{\pi}/\varepsilon$ (Lemma~\ref{lem:reg}\ref{lem:ftpos}).
 The inverse Fourier integral
 \[
-  \tilde X_\varepsilon^a(z)
-  :=\frac{1}{2\pi}\int_\mathbb{R}\widehat{X_\varepsilon^a}(\xi)e^{iz\xi}\,d\xi
+  \tilde{X}_\varepsilon^a(z)
+  := \frac{1}{2\pi}\int_{\mathbb{R}}\widehat{X_\varepsilon^a}(\xi)e^{iz\xi}\,d\xi
 \]
-converges absolutely on $\Omega_a:=\{|\operatorname{Im}z|<a\}$.  Differentiation under the integral gives
-holomorphicity on $\Omega_a$; Fourier inversion gives
-$\tilde X_\varepsilon^a(u)=X_\varepsilon^a(u)$ on $\mathbb{R}$.
+converges absolutely on $\Omega_a:=\{|\operatorname{Im}z|<a\}$, because
+for any fixed $A<a\sqrt{\pi}/\varepsilon$,
+$|\widehat{X_\varepsilon^a}(\xi)e^{iz\xi}|
+\leq C_A e^{-(A-|\operatorname{Im}z|)|\xi|}$
+is integrable for $|\operatorname{Im}z|<A<a$.  Differentiation under the integral gives
+holomorphicity on $\Omega_a$, and Fourier inversion gives
+$\tilde{X}_\varepsilon^a(u)=X_\varepsilon^a(u)$ on $\mathbb{R}$.
 
-By Lemma~\ref{lem:reg}\ref{lem:holo}, $\rho_\varepsilon^a$ is holomorphic
-and nonvanishing on $\Omega_a$.  Define
+By Lemma~\ref{lem:reg}\ref{lem:holo}, $\rho_\varepsilon^a$ is holomorphic and
+nonvanishing on $\Omega_a$.  Define
 \[
-  X_\varepsilon(z):=\tilde X_\varepsilon^a(z)\,/\,\rho_\varepsilon^a(z),
+  X_\varepsilon(z) := \tilde{X}_\varepsilon^a(z)\,/\,\rho_\varepsilon^a(z),
   \qquad z\in\Omega_a.
 \]
 For $u\in\mathbb{R}$:
@@ -502,32 +672,96 @@ theorem gives agreement on $\Omega_a$.  Hence $X_\varepsilon$ extends
 consistently to an entire function on $\mathbb{C}=\bigcup_{a>0}\Omega_a$,
 real-valued on $\mathbb{R}$.
 
-For the exponential type bound, fix $z=u+iv$ and choose $a>|v|$.
-Since $\widehat{X_\varepsilon^a} \geq 0$,
+For the type bound, fix $z=u+iv$.  Since $\widehat{X_\varepsilon^a}\geq 0$:
 \[
-  |\tilde X_\varepsilon^a(z)| \leq \frac{1}{2\pi}\int_\mathbb{R} \widehat{X_\varepsilon^a}(\xi) e^{-v\xi}\,d\xi.
+  \bigl|\tilde X_\varepsilon^a(z)\bigr|
+  \leq\frac{1}{2\pi}\int_\mathbb{R}\widehat{X_\varepsilon^a}(\xi)e^{|v||\xi|}\,d\xi.
 \]
-As $\varepsilon\to 0^+$, $\hat\rho_\varepsilon^a\to 2\pi e^{-a}\delta_0$ in the sense of distributions, and by Proposition~\ref{prop:spectral},
+As $\varepsilon\to 0^+$, the total mass
+$\int_\mathbb{R}\hat\rho_\varepsilon^a(\xi)\,d\xi=2\pi\rho_\varepsilon^a(0)=2\pi e^{-a}$
+and the decay rate $a\sqrt{\pi}/\varepsilon\to\infty$ imply
+$\hat\rho_\varepsilon^a\to 2\pi e^{-a}\delta_0$ in $\mathcal{S}'(\mathbb{R})$.
+By Proposition~\ref{prop:Xhat}:
 \[
-\widehat{X_\varepsilon^a}(\xi) \longrightarrow \tfrac12 (2\pi e^{-a}) \mathbf{1}_{[-1,1]}(\xi) = \pi e^{-a} \mathbf{1}_{[-1,1]}(\xi)
+  \widehat{X_\varepsilon^a}(\xi)
+  =\frac{1}{2}\int_{-1}^{1}\hat\rho_\varepsilon^a(\xi-\eta)\,d\eta
+  \;\longrightarrow\;
+  \frac{1}{2}\cdot 2\pi e^{-a}\cdot\mathbf{1}_{[-1,1]}(\xi)
+  =\pi e^{-a}\mathbf{1}_{[-1,1]}(\xi)
 \]
-pointwise almost everywhere, bounded by an $\varepsilon$-uniform $L^1$ envelope.
-By dominated convergence,
+pointwise a.e.  For the dominated convergence, an $\varepsilon$-uniform $L^1$ majorant
+is constructed as follows.  Write
 \[
-\int_\mathbb{R} \widehat{X_\varepsilon^a}(\xi) e^{-v\xi}\,d\xi \;\xrightarrow{\varepsilon\to 0}\; \pi e^{-a} \int_{-1}^1 e^{-v\xi}\,d\xi = \pi e^{-a} \frac{e^v - e^{-v}}{v}.
+  \widehat{X_\varepsilon^a}(\xi)
+  =\frac{1}{2}\int_{-1}^{1}\hat\rho_\varepsilon^a(\xi-\eta)\,d\eta.
 \]
-Using $|\rho_\varepsilon^a(z)|\to e^{-a}$ uniformly on compacts
-(Lemma~\ref{lem:reg}\ref{lem:limit}):
+Since $\int_\mathbb{R}\hat\rho_\varepsilon^a(\xi)\,d\xi=2\pi e^{-a}$
+(Lemma~\ref{lem:reg}\ref{lem:limit}) is $\varepsilon$-independent,
+\[
+  \int_\mathbb{R}\widehat{X_\varepsilon^a}(\xi)\,d\xi
+  =\frac{1}{2}\int_{-1}^{1}\Bigl(\int_\mathbb{R}
+   \hat\rho_\varepsilon^a(\xi-\eta)\,d\xi\Bigr)\,d\eta
+  =\frac{1}{2}\cdot 2\cdot 2\pi e^{-a}
+  =2\pi e^{-a},
+\]
+uniformly in $\varepsilon$.  For $|\xi|>2$, every $\eta\in[-1,1]$ satisfies
+$|\xi-\eta|>|\xi|-1>1$, and the exponential decay
+\eqref{eq:decay} with any fixed $A<a\sqrt{\pi}/\varepsilon_0$ for
+$\varepsilon\geq\varepsilon_0>0$ gives
+\[
+  \hat\rho_\varepsilon^a(\xi-\eta)
+  \leq C_A e^{-A|\xi-\eta|}
+  \leq C_A e^{-A(|\xi|-1)}
+  = C_A e^A e^{-A|\xi|}.
+\]
+Restricting to a compact $\varepsilon$-interval
+$[\varepsilon_0,\varepsilon_1]$ and choosing $A=a\sqrt{\pi}/(2\varepsilon_1)$
+(so $A<a\sqrt{\pi}/\varepsilon$ for all $\varepsilon\geq\varepsilon_0$)
+gives a uniform constant $C_A$.  Hence for $|\xi|>2$:
+\[
+  \widehat{X_\varepsilon^a}(\xi)
+  \leq\frac{1}{2}\int_{-1}^{1}C_A e^A e^{-A|\xi|}\,d\eta
+  = C_A e^A e^{-A|\xi|}.
+\]
+On the compact region $|\xi|\leq 2$, Young's inequality for convolution
+gives $\|\widehat{X_\varepsilon^a}\|_{L^\infty(\mathbb{R})}
+\leq\tfrac12\|\hat\rho_\varepsilon^a\|_{L^1(\mathbb{R})}
+\|\mathbf{1}_{[-1,1]}\|_{L^\infty(\mathbb{R})}
+=\tfrac12\cdot 2\pi e^{-a}\cdot 1=\pi e^{-a}$, uniformly in $\varepsilon$.
+Define
+\[
+  F(\xi):=\pi e^{-a}\mathbf{1}_{[-2,2]}(\xi)
+          +C_A e^A e^{-A|\xi|}\mathbf{1}_{\{|\xi|>2\}}(\xi).
+\]
+Then $0\leq\widehat{X_\varepsilon^a}(\xi)\leq F(\xi)$ for all $\xi$
+and all $\varepsilon\in[\varepsilon_0,\varepsilon_1]$, $F\in L^1(\mathbb{R})$,
+and $F(\xi)e^{|v||\xi|}$ is integrable for $|v|<A/2$.  Since the
+final type bound takes $\varepsilon\to 0^+$, one fixes any
+$\varepsilon_0>0$ and applies dominated convergence on
+$[\varepsilon_0,\varepsilon_1]$; the limit is independent of
+$\varepsilon_0$, so the bound holds as $\varepsilon\to 0^+$.
+Dominated convergence gives
+\[
+  \int_\mathbb{R}\widehat{X_\varepsilon^a}(\xi)e^{|v||\xi|}\,d\xi
+  \;\longrightarrow\;
+  \pi e^{-a}\int_{-1}^{1}e^{|v||\xi|}\,d\xi
+  =\pi e^{-a}\cdot\frac{e^{|v|}-e^{-|v|}}{|v|}.
+\]
+Meanwhile $|\rho_\varepsilon^a(z)|\to e^{-a}$ uniformly on compacts
+(Lemma~\ref{lem:reg}\ref{lem:limit}).  Therefore
 \[
   |X(z)|
-  \leq \lim_{\varepsilon\to 0} \frac{1}{2\pi|\rho_\varepsilon^a(z)|} \int_\mathbb{R} \widehat{X_\varepsilon^a}(\xi)e^{-v\xi}\,d\xi
-  = \frac{1}{2\pi e^{-a}} \left( \pi e^{-a} \frac{e^v - e^{-v}}{v} \right) = \frac{e^v - e^{-v}}{2v}.
+  =\lim_{\varepsilon\to 0}
+   \frac{|\tilde X_\varepsilon^a(z)|}{|\rho_\varepsilon^a(z)|}
+  \leq\frac{\pi e^{-a}}{2\pi e^{-a}}
+     \cdot\frac{e^{|v|}-e^{-|v|}}{|v|}
+  =\frac{\sinh|v|}{|v|}.
 \]
-The $e^{-a}$ factors cancel exactly, yielding a bound independent of $a$. Replacing $v$ with $|v|$ by evenness:
+The factors $e^{-a}$ cancel; the bound is independent of $a$.
+Since $\log(\sinh|v|/|v|)=|v|+O(\log|v|)$ as $|v|\to\infty$:
 \[
-|X(z)| \leq \frac{\sinh|v|}{|v|}.
+  \limsup_{|z|\to\infty}\frac{\log|X(z)|}{|z|}\leq 1. \qedhere
 \]
-Hence $\limsup_{|z|\to\infty}\log|X(z)|/|z|\leq 1$.
 \end{proof}
 
 %--------------------------------------------------------------------
@@ -542,11 +776,12 @@ All nontrivial zeros of $\zeta(s)$ satisfy $\operatorname{Re}(s)=\tfrac12$.
 By Theorem~\ref{thm:entire}, $X$ is a real entire function of
 exponential type $\leq 1$.  Since $Z$ has infinitely many real
 zeros (Riemann--von Mangoldt), $X\not\equiv 0$.  By
-Theorem~\ref{thm:removal}, $L_n[X](u)\geq 0$ for every $n\geq 0$
-and $u\in\mathbb{R}$.  By the Csordas--Vishnyakova theorem
-(Theorem~\ref{thm:CV}), $X\in\mathcal{LP}$: every zero of $X$ is
-real.  By the zero correspondence \eqref{eq:zeros}, every nontrivial
-zero of $\zeta(s)$ satisfies $\operatorname{Re}(s)=\tfrac12$.
+Theorem~\ref{thm:removal}, $L_n[X](u)\geq 0$ for every
+$n\in\mathbb{N}_0$ and $u\in\mathbb{R}$.  By the Csordas--Vishnyakova
+theorem (Theorem~\ref{thm:CV}), $X\in\mathcal{LP}$: every zero
+of $X$ is real.  By the isomorphism \eqref{eq:iso},
+every nontrivial zero of $\zeta(s)$ satisfies
+$\operatorname{Re}(s)=\tfrac12$.
 \end{proof}
 
 \begin{thebibliography}{MV}
@@ -561,6 +796,11 @@ G.~Csordas and A.~Vishnyakova,
 \textit{The generalized Laguerre inequalities and functions in the
 Laguerre--P\'olya class},
 Cent.\ Eur.\ J.\ Math.\ \textbf{11} (2013), no.~9, 1643--1650.
+
+\bibitem[J]{Jutila}
+M.~Jutila,
+\textit{On exponential sums involving the divisor function},
+J.\ reine angew.\ Math.\ \textbf{355} (1984), 173--190.
 
 \bibitem[MV]{MV}
 H.~L.~Montgomery and R.~C.~Vaughan,

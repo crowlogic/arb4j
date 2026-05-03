@@ -1,10 +1,11 @@
-\contentsline {section}{\tocsection {}{1}{Setup and the Real-Analytic Isomorphism}}{2}{section.1}%
-\contentsline {section}{\tocsection {}{2}{Wiener Covariance}}{2}{section.2}%
-\contentsline {section}{\tocsection {}{3}{Spectral Measure}}{4}{section.3}%
-\contentsline {section}{\tocsection {}{4}{Why the Regulator is Necessary}}{5}{section.4}%
-\contentsline {section}{\tocsection {}{5}{Smooth Regulator}}{5}{section.5}%
-\contentsline {section}{\tocsection {}{6}{Laguerre Positivity}}{6}{section.6}%
-\contentsline {section}{\tocsection {}{7}{Regulator Removal}}{7}{section.7}%
-\contentsline {section}{\tocsection {}{8}{Entire Extension of Exponential Type $\leq 1$}}{7}{section.8}%
-\contentsline {section}{\tocsection {}{9}{The Riemann Hypothesis}}{8}{section.9}%
-\contentsline {section}{\tocsection {}{}{References}}{8}{section*.2}%
+\contentsline {section}{\tocsection {}{1}{Setup and Isomorphism}}{2}{section.1}%
+\contentsline {section}{\tocsection {}{2}{Wiener Covariance}}{3}{section.2}%
+\contentsline {section}{\tocsection {}{3}{Spectral Measure}}{5}{section.3}%
+\contentsline {section}{\tocsection {}{4}{Why the Regulator Is Necessary}}{5}{section.4}%
+\contentsline {section}{\tocsection {}{5}{Smooth Regulator}}{6}{section.5}%
+\contentsline {section}{\tocsection {}{6}{Cesàro-Parseval Identity}}{7}{section.6}%
+\contentsline {section}{\tocsection {}{7}{Laguerre Positivity}}{8}{section.7}%
+\contentsline {section}{\tocsection {}{8}{Regulator Removal}}{9}{section.8}%
+\contentsline {section}{\tocsection {}{9}{Entire Extension of Exponential Type $\leq 1$}}{9}{section.9}%
+\contentsline {section}{\tocsection {}{10}{The Riemann Hypothesis}}{11}{section.10}%
+\contentsline {section}{\tocsection {}{}{References}}{11}{section*.2}%
