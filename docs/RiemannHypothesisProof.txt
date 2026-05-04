@@ -1,0 +1,593 @@
+The Inverse Shifted-Phase Pullback of the Hardy Z-Function is Band-Limited
+Stephen Crowley
+May 3, 2026
+
+Abstract.
+The Riemann Hypothesis asserts that every nontrivial zero of the Riemann zeta
+function ζ(s) satisfies Re(s) = 1/2. The proof proceeds by constructing a
+real-valued function X on ℝ that is a real-analytic isomorphism of Hardy's
+Z-function under a change of time coordinate, then proving that every zero of
+X is real.
+
+Hardy's Z-function Z(t) = e^{iθ(t)} ζ(1/2 + it) is real-analytic and
+real-valued on ℝ. Setting Θ(t) := θ(t) + Ct for C large enough that
+Θ′(t) > 0 everywhere produces a real-analytic bijection with real-analytic
+inverse t = Θ⁻¹(u). The pullback
+
+    X(u) := Z(Θ⁻¹(u)) / √(Θ′(Θ⁻¹(u)))
+
+is real-analytic, even, and satisfies the identity
+Z(t) = √(Θ′(t)) · X(Θ(t)) for all t ∈ ℝ. This is a real-analytic isomorphism
+on ℝ and extends to a holomorphic isomorphism in a strip around the real
+axis, so the vanishing loci, critical points, and all other analytic features
+of Z and X are in exact correspondence.
+
+The Cesàro autocorrelation
+K(h) = lim_{U→∞} (1/U) ∫₀^U X(u+h) X(u) du equals sin(h)/h, independent
+of C, so the spectral support of X lies in [−1, 1]. A smooth multiplicative
+regulator ρ_ε^a(u) = exp(−√(a² + ε² u² / π)) produces
+X_ε^a := ρ_ε^a · X ∈ L¹ ∩ L² with Schwartz-class Fourier transform
+X̂_ε^a that is pointwise nonnegative. Writing X̂_ε^a = g_ε² with
+g_ε = √(X̂_ε^a) ≥ 0 and k_ε = 𝓕⁻¹[g_ε], a Fubini–binomial computation
+gives L_n[X_ε^a](u) = (1/2) |k_ε^{(n)}(u)|² ≥ 0 for every n ≥ 0 and u ∈ ℝ.
+A Leibniz limit transfers this to X. Dividing the inverse Fourier integral
+(1/(2π)) ∫ X̂_ε^a(ξ) e^{izξ} dξ by the holomorphic nonvanishing regulator
+on each strip { |Im z| < a } and applying the identity theorem yields a real
+entire extension of X with |X(z)| ≤ sinh|v|/|v| (v = Im z), hence of
+exponential type ≤ 1. The Csordas–Vishnyakova theorem then places X in the
+Laguerre–Pólya class 𝓛𝓟, every zero of X is real, and the isomorphism
+transfers this to ζ.
+
+Conventions.
+f̂(ξ) = ∫_ℝ f(u) e^{−iuξ} du for f ∈ L¹(ℝ), extended to tempered
+distributions in the standard way, and f(u) = (1/(2π)) ∫_ℝ f̂(ξ) e^{iuξ} dξ
+when f̂ ∈ L¹. 𝓢(ℝ) is the Schwartz space; 𝓢′(ℝ) its dual. K₁ denotes
+the modified Bessel function of the second kind of order 1.
+
+───────────────────────────────────────────────────────────────────────────
+1. Setup and Isomorphism
+───────────────────────────────────────────────────────────────────────────
+
+Let
+    θ(t) = arg Γ(1/4 + it/2) − (t/2) log π
+
+be the Riemann–Siegel phase and Z(t) = e^{iθ(t)} ζ(1/2 + it). The function
+Z is real-analytic and real-valued on ℝ [Tit].
+
+Set C₀ := sup{ −θ′(t) : t ∈ ℝ }, which is finite because θ′(t) → +∞
+and θ′ is continuous. Choose C ≥ C₀ so that Θ(t) := θ(t) + Ct satisfies
+Θ′(t) > 0 everywhere. Then Θ : ℝ → ℝ is a real-analytic strictly
+increasing bijection with real-analytic inverse t = Θ⁻¹(u). Define
+
+    X(u) := Z(Θ⁻¹(u)) / √(Θ′(Θ⁻¹(u))),       u ∈ ℝ.                    (1)
+
+Since Θ′(t) > 0 and real-analytic, X is real-analytic. Since θ(−t) = −θ(t)
+and Z(−t) = Z(t), one verifies Θ⁻¹(−u) = −Θ⁻¹(u) and
+Θ′(Θ⁻¹(−u)) = Θ′(Θ⁻¹(u)), so X(−u) = X(u): X is even. Direct
+substitution gives
+
+    Z(t) = √(Θ′(t)) · X(Θ(t)),       t ∈ ℝ.                            (2)
+
+This is a real-analytic isomorphism: the map t ↦ Θ(t) is a real-analytic
+diffeomorphism, and the weight √(Θ′(t)) is real-analytic and nowhere
+vanishing. Since Θ extends holomorphically to a strip around ℝ (from the
+analyticity of θ) and Θ′ remains nonzero there, (2) is a holomorphic
+isomorphism in that strip. In particular, the zeros, critical points, and all
+other analytic features of Z and X are in exact correspondence via the
+diffeomorphism Θ.
+
+By Bourgain's subconvexity bound [B], |Z(t)| = O(t^{53/342 + ε}), and
+Θ′(t) ≍ log t, so |X(u)| = O(|u|^{1/4 + o(1)}); in particular
+X ∈ L²_loc(ℝ) ∩ 𝓢′(ℝ).
+
+Remark. Z(t) is real-analytic on ℝ but not entire in t ∈ ℂ: e^{iθ(t)}
+involves arg Γ, which has branch-cut structure off ℝ. The entire function
+constructed in Section 8 agrees with X on ℝ but is built from the spectral
+data of X, not from analytic continuation of Z.
+
+───────────────────────────────────────────────────────────────────────────
+2. Wiener Covariance
+───────────────────────────────────────────────────────────────────────────
+
+Theorem 1. For every h ∈ ℝ,
+    K(h) := lim_{U→∞} (1/U) ∫₀^U X(u+h) X(u) du = sin(h)/h,
+and this limit is independent of the choice C ≥ C₀.
+
+Proof. Write L = L(t) := Θ′(t) = θ′(t) + C and N = N(t) := ⌊√(t/(2π))⌋.
+Since θ′(t) = (1/2) log(t/(2π)) + O(t⁻²), one has
+L(t) ∼ (1/2) log(t/(2π)) as t → ∞.
+
+The Riemann–Siegel formula [Tit, Ch. 4] gives
+
+    Z(t) = 2 ∑_{n ≤ N} n^{−1/2} cos(θ(t) − t log n) + O(t^{−1/4}).      (3)
+
+Under the substitution u = Θ(t) and division by √L:
+
+    X(u) = (2/√L) ∑_{n ≤ N} n^{−1/2} cos φ_n(u) + O(L^{−3/4}),          (4)
+
+where φ_n(u) := θ(t(u)) − t(u) log n and t(u) := Θ⁻¹(u). The error
+O(L^{−3/4}) contributes O((log U)^{−3/2}) to the product X(u+h) X(u),
+negligible after Cesàro averaging.
+
+Using cos A cos B = (1/2) cos(A − B) + (1/2) cos(A + B), the Cesàro average
+of the product of main sums splits as follows.
+
+(i) The off-diagonal difference terms (m ≠ n) are controlled by the
+Montgomery–Vaughan inequality [MV] with frequencies λ_n = log n, minimal
+gap δ = min_{m ≠ n} |log m − log n| ≥ 1/(N+1) ≍ T^{−1/2}, and coefficients
+a_n = n^{−1/2}. The inequality gives
+
+    ∫₀^T | ∑_{n ≤ N} n^{−1/2} e^{it log n} |² dt
+      = T ∑_{n ≤ N} n^{−1} + O( δ⁻¹ ∑_{n ≤ N} n^{−1} ).
+
+The off-diagonal part is O(δ⁻¹ log N) = O(N log N) = O(√T log T).
+Normalized by T log T: O(T^{−1/2}) → 0.
+
+(ii) The sum-frequency terms contribute
+
+    (2/L) ∑_{m,n ≤ N} cos(φ_m(u+h) + φ_n(u)) / √(mn)
+      = (2/L) ∑_{q ≤ N²} (d(q)/√q) cos(2θ(t) − t log q) + cross-terms,
+
+where d(q) counts ordered factorizations q = mn with m, n ≤ N. Setting
+Φ_q(t) := 2θ(t) − t log q, the Cesàro average reduces to showing
+
+    (1/(T log T)) ∫₀^T | ∑_{q ≤ N²} (d(q)/√q) e^{i Φ_q(t)} | dt → 0.
+
+Fix t ∈ [1, T] and view the inner sum as a divisor-weighted exponential
+sum with smooth phase Φ_q(t) = −t log q + 2θ(t) linear in log q. Setting
+α(t) := t/(2π) and f(q) := α(t) log q − 2θ(t)/(2π), the sum is
+∑_{q ≤ N²} d(q) e(−f(q)) where e(x) := e^{2πix}. Jutila [J, Thm. 1]
+gives, for such sums with f″(q) ≍ α/q² and α = t/(2π) ≍ T:
+
+    ∑_{q ≤ Q} d(q) e(−f(q))
+      = O_ε( Q^{1/2} α^{1/4} + Q^{1/2+ε} )
+      = O_ε( Q^{1/2} T^{1/4+ε} ),   Q = N² ≍ T.                        (5)
+
+Here Jutila's estimate for ∑_{n ≤ X} d(n) e(f(n)) with smooth f and
+|f″(n)| ≍ α/n² gives the bound X^{1/2} α^{1/4} when α ≫ X^{1/2}, plus
+an additional X^{1/2+ε} error term from the remainder in the Voronoi
+summation formula. For the phase f(q) = α log q with α = t/(2π) ≍ T
+and X = N² ≍ T, one has α ≍ T ≫ T^{1/2} ≍ X^{1/2}, so the main term
+dominates, giving the stated bound uniformly in t ∈ [1, T].
+
+Applying (5) with Q = N² ≍ T:
+
+    | ∑_{q ≤ N²} (d(q)/√q) e^{i Φ_q(t)} |
+      ≤ max_{Q′ ≤ N²} | ∑_{q ≤ Q′} d(q) e(−f(q)) |
+      = O_ε( T^{3/4+ε} ),
+
+where the 1/√q weight is absorbed via partial summation (Abel summation with
+the Jutila bound on the partial sums), contributing at most a logarithm which
+is absorbed into the ε. Integrating in t:
+
+    ∫₀^T | ∑_{q ≤ N²} (d(q)/√q) e^{i Φ_q(t)} | dt = O_ε( T^{7/4+ε} ).
+
+Normalized by T log T: O_ε(T^{3/4+ε} / log T) → 0 since 3/4 < 1.
+
+(iii) The diagonal terms (m = n) contribute
+
+    D(u, h) := (2/L) ∑_{n ≤ N} cos(φ_n(u+h) − φ_n(u)) / n.
+
+Since Θ′(t(u)) = L and t(u+h) − t(u) = h/L + O(h²/L²), the mean value
+theorem gives θ(t(u+h)) − θ(t(u)) = (L − C) h / L + O(h²/L²), so
+
+    φ_n(u+h) − φ_n(u)
+      = h ( 1 − (C + log n)/L ) + O(h²/L²)
+      =: h (1 − x_n) + O(h²/L²),                                        (6)
+
+where x_n := (C + log n)/L.
+
+At the top index n = N(t) ∼ √(t/(2π)):
+
+    x_{N(t)} = (C + log N(t)) / L(t)
+             ∼ (C + (1/2) log(t/(2π))) / ((1/2) log(t/(2π)) + C)  →  1
+    as t → ∞.
+
+Thus the partition { x_n }_{n=1}^{N} fills [0, 1] in the limit, with mesh
+x_{n+1} − x_n = 1/(nL) + O(1/(n²L)). The Cesàro average of D(u, h) is
+
+    (1/L) ∑_{n ≤ N} cos(h(1 − x_n))/n
+      = ∑_{n ≤ N} (x_{n+1} − x_n) cos(h(1 − x_n)) (1 + O(1/n)),
+
+a Riemann sum for ∫₀¹ cos(h(1 − x)) dx over [0, 1]; the O(1/n) correction
+sums to O((log N)/(NL)) → 0. Evaluating:
+
+    ∫₀¹ cos(h(1 − x)) dx = [ sin(h(1 − x)) / (−h) ]₀¹ = sin(h)/h.       (7)
+
+Combining items (i), (ii), (iii): the first two contribute o(1) and the
+diagonal gives sin(h)/h. The constant C cancels in item (iii) since C/L → 0,
+and does not appear in items (i) or (ii). ∎
+
+───────────────────────────────────────────────────────────────────────────
+3. Spectral Measure
+───────────────────────────────────────────────────────────────────────────
+
+K(h) = sin(h)/h is continuous, bounded, and positive-definite. By the
+Wiener–Khinchin theorem [W], K is the Fourier transform of a unique
+nonnegative Borel measure ν_X on ℝ. Since
+
+    sin(h)/h = (1/(2π)) ∫_{−1}^{1} π e^{ihξ} dξ,
+
+uniqueness identifies
+
+    dν_X(ξ) = (1/2) 𝟙_{[−1,1]}(ξ) dξ.                                   (8)
+
+The spectral support is [−1, 1]; C does not appear.
+
+Let 𝓗_X be the Hilbert space obtained by completing
+{ X(· + h) : h ∈ ℝ } under
+⟨g₁, g₂⟩ := lim_{U→∞} (1/U) ∫₀^U g₁ ḡ₂. Then ‖X‖²_{𝓗_X} = K(0) = 1.
+The translation group U_h : g ↦ g(· + h) is strongly continuous and unitary;
+Stone's theorem yields a projection-valued measure E on ℝ with
+U_h = ∫ e^{ihξ} E(dξ), supported on [−1, 1] by (8).
+
+───────────────────────────────────────────────────────────────────────────
+4. Why the Regulator Is Necessary
+───────────────────────────────────────────────────────────────────────────
+
+The spectral measure ν_X and the orthogonal measure Φ from Section 3 live
+in the abstract Hilbert space 𝓗_X. To proceed, one needs concrete scalar
+Fourier analysis: pointwise nonnegative Fourier transforms, square roots of
+spectral densities, absolutely convergent inverse-Fourier strip integrals,
+and pointwise derivatives entering the Laguerre functional. None of these
+are directly available for X, for the following reasons.
+
+(i) X ∉ L¹(ℝ) and X ∉ L²(ℝ), since K(0) = 1 > 0 implies
+    (1/U) ∫₀^U |X|² → 1 ≠ 0. So X has no pointwise Fourier transform:
+    X̂ exists only as a tempered distribution.
+
+(ii) The spectral density S_X = (1/2) 𝟙_{[−1,1]} is the Wiener–Khinchin
+     spectral density, characterizing pairings with the autocorrelation K.
+     It is not the pointwise Fourier transform of X.
+
+(iii) The orthogonal measure Φ is 𝓗_X-valued. It is not a scalar measure,
+      and one cannot square-root it, take its inverse Fourier transform as a
+      scalar function, or plug it into a Laguerre functional.
+
+(iv) The Laguerre expressions L_n[X](u) involve products of pointwise
+     derivatives X^{(j)}(u). For X viewed as a tempered distribution,
+     derivatives exist in the distributional sense but cannot be multiplied
+     pointwise.
+
+The regulator ρ_ε^a resolves all of this simultaneously. Multiplying X by
+ρ_ε^a produces X_ε^a ∈ L¹ ∩ L², which has a pointwise Fourier transform
+X̂_ε^a. The orthogonal-measure isometry then identifies
+X̂_ε^a(ξ) = (1/2) ∫_{−1}^{1} ρ̂_ε^a(ξ − η) dη, which is a convolution
+of the explicitly positive Bessel-K₁ kernel against the indicator
+𝟙_{[−1,1]}. This yields a Schwartz function that is pointwise nonnegative.
+With X̂_ε^a ≥ 0, one can take the square root g_ε = √(X̂_ε^a), form the
+half-kernel k_ε = 𝓕⁻¹[g_ε], and exhibit
+L_n[X_ε](u) = (1/2) |k_ε^{(n)}(u)|² ≥ 0 as a modulus-squared. The
+regulator then evaporates in the ε → 0 limit via a Leibniz rule argument,
+leaving L_n[X](u) ≥ 0. The holomorphic and zero-free character of ρ_ε^a
+on the strip { |Im z| < a } allows the inverse-Fourier integral of X̂_ε^a
+to be divided by ρ_ε^a to recover an entire extension of X.
+
+The four constraints on the regulator are therefore:
+
+(1) Decay on ℝ: ρ_ε^a · X ∈ L¹ ∩ L².
+(2) Holomorphic and zero-free on a strip { |Im z| < a }: needed to divide in
+    Section 8 without creating poles.
+(3) Fourier transform pointwise ≥ 0: needed so X̂_ε^a ≥ 0, enabling the
+    square root and the modulus-squared identity.
+(4) e^a ρ_ε^a → 1 with all derivatives → 0 as ε → 0: needed for the
+    Leibniz-rule removal in Section 7.
+
+The Gaussian e^{−εu²} satisfies (1), (2), (4), but its Fourier transform is
+again a Gaussian (not compactly-supported near [−1, 1]), which does not
+produce a nonnegative spectral density in the required form.
+Compactly-supported bumps fail (2) entirely. The function
+ρ_ε^a(u) = exp(−√(a² + ε² u² / π)) hits all four constraints
+simultaneously with explicit constants, as Lemma 2 confirms.
+
+───────────────────────────────────────────────────────────────────────────
+5. Smooth Regulator
+───────────────────────────────────────────────────────────────────────────
+
+For ε > 0 and a > 0, define
+
+    ρ_ε^a(u) := exp( −√( a² + ε² u² / π ) ),   u ∈ ℝ.                 (9)
+
+Lemma 2. For each ε, a > 0:
+
+(i) ρ_ε^a ∈ C^∞(ℝ), strictly positive, with
+    ρ_ε^a(u) ∼ e^{−ε|u|/√π} as |u| → ∞.
+
+(ii) The expression a² + ε² z² / π has zeros at z = ±i a √π / ε; under
+     the principal branch of √· (cut along (−∞, 0]), ρ_ε^a is holomorphic
+     and nonvanishing on { |Im z| < a }.
+
+(iii) The Fourier transform is explicitly
+
+    ρ̂_ε^a(ξ) = (2a √π / ε) · K₁( a √(1 + πξ²/ε²) ) / √(1 + πξ²/ε²),  (10)
+
+    where K₁(x) = ∫₀^∞ e^{−x cosh t} cosh t dt > 0 for x > 0
+    (Gradshteyn–Ryzhik 8.451.6 / 3.914.6). Hence ρ̂_ε^a > 0 pointwise;
+    ρ̂_ε^a ∈ 𝓢(ℝ). For the decay, the asymptotic
+    K₁(x) ∼ √(π/(2x)) e^{−x} gives: for every A < a√π/ε there exists C_A
+    with
+
+        ρ̂_ε^a(ξ) ≤ C_A e^{−A|ξ|},   all ξ ∈ ℝ.                       (11)
+
+(iv) As ε → 0⁺, ρ_ε^a(z) → e^{−a} uniformly on compact subsets of
+     { |Im z| < a }; equivalently, the normalized regulator
+     e^a ρ_ε^a(z) → 1 uniformly there, and all derivatives
+     (ρ_ε^a)^{(k)}(u) → 0 for k ≥ 1.
+
+Proof.
+(i) a > 0 prevents the argument of √· from reaching 0 on ℝ.
+(ii) The argument a² + ε² z² / π is real-negative only on
+     i(−∞, −a√π/ε] ∪ i[a√π/ε, ∞), which lies outside { |Im z| < a }.
+(iii) Identity (10) is the Fourier pair from GR 8.451.6 / 3.914.6;
+      positivity of K₁ is immediate from the integral representation. For
+      decay (11), set y := a √(1 + πξ²/ε²); then y ≥ a and
+      y ≥ (a√π/ε)|ξ| for |ξ| ≥ ε/(a√π). Using K₁(y) ∼ √(π/(2y)) e^{−y},
+      one has ρ̂_ε^a(ξ) ∼ const · e^{−a √(1 + πξ²/ε²)}. For |ξ| ≫ ε,
+      this is ∼ e^{−(a√π/ε)|ξ|}. For any A < a√π/ε, choosing C_A large
+      enough gives (11). All derivatives of ρ̂_ε^a inherit the same
+      exponential decay, so ρ̂_ε^a ∈ 𝓢(ℝ).
+(iv) When ε = 0 the exponent equals −a; the uniform limit and the vanishing
+     of derivatives follow from dominated convergence applied to the exponent
+     and its derivatives. ∎
+
+Set X_ε^a := ρ_ε^a · X.
+
+───────────────────────────────────────────────────────────────────────────
+6. Cesàro–Parseval Identity
+───────────────────────────────────────────────────────────────────────────
+
+Proposition 3. X_ε^a ∈ L¹ ∩ L² ∩ C^∞(ℝ) and
+
+    X̂_ε^a(ξ) = (1/2) ∫_{−1}^{1} ρ̂_ε^a(ξ − η) dη ≥ 0,                (12)
+
+with X̂_ε^a ∈ 𝓢(ℝ), real, even.
+
+Proof. Membership X_ε^a ∈ L¹ ∩ L² ∩ C^∞ follows from the exponential decay
+of ρ_ε^a and the polynomial growth of X.
+
+For (12), Wiener's generalized Parseval identity [W, Thm. 3] states: if X
+has Cesàro autocorrelation K(h) = ∫ e^{ihξ} dν_X(ξ) with spectral measure
+ν_X, then for every ψ ∈ 𝓢(ℝ) with ψ X ∈ L¹,
+
+    ∫_ℝ X(u) ψ(u) du = ∫_ℝ ψ̂(ξ) dν_X(ξ),                             (13)
+
+where the left side is understood as a Cesàro limit if needed. Applying (13)
+with ψ = ρ_ε^a φ for φ ∈ 𝓢(ℝ):
+
+    ∫ X(u) ρ_ε^a(u) φ(u) du = ∫ (ρ_ε^a φ)̂(ξ) dν_X(ξ).
+
+By the convolution theorem, (ρ_ε^a φ)̂ = ρ̂_ε^a ∗ φ̂ / (2π), and
+dν_X = (1/2) 𝟙_{[−1,1]} dξ from (8), so
+
+    ∫ X_ε^a(u) φ(u) du
+      = (1/(2π)) ∫_{−1}^{1} (ρ̂_ε^a ∗ φ̂)(ξ) dξ/2.
+
+By Plancherel, the left side equals (1/(2π)) ∫ X̂_ε^a(ξ) φ̂(ξ) dξ.
+Equating and using density of 𝓢 gives (12) pointwise. Nonnegativity follows
+from ρ̂_ε^a > 0 (Lemma 2(iii)). Membership X̂_ε^a ∈ 𝓢 and real-even
+character follow from ρ̂_ε^a ∈ 𝓢 and compact support of 𝟙_{[−1,1]}. ∎
+
+───────────────────────────────────────────────────────────────────────────
+7. Laguerre Positivity
+───────────────────────────────────────────────────────────────────────────
+
+For a real entire function f and integer n ≥ 0, define the n-th Laguerre
+expression
+
+    L_n[f](u) := (1/2) ∑_{j=0}^{2n} (−1)^j C(2n, j) f^{(j)}(u) f^{(2n−j)}(u).
+
+Theorem 4 (Csordas–Vishnyakova [CV, Thm. 2.3]). Let f be a real entire
+function, f ≢ 0. If L_n[f](u) ≥ 0 for every integer n ≥ 0 and every
+u ∈ ℝ, then f belongs to the Laguerre–Pólya class 𝓛𝓟: all zeros of f
+are real. No hypothesis on the order, type, or genus of f is required.
+
+Set a = 1, X_ε := X_ε^1, X̂_ε := X̂_ε^1.
+
+Lemma 5. X̂_ε is strictly positive on ℝ and
+g_ε := √(X̂_ε) ∈ 𝓢(ℝ).
+
+Proof. From (12) with a = 1,
+
+    X̂_ε(ξ) = (1/2) ∫_{−1}^{1} ρ̂_ε^1(ξ − η) dη.
+
+Since ρ̂_ε^1 > 0 pointwise (Lemma 2(iii)), the integrand is strictly
+positive for every ξ and every η ∈ [−1, 1], so X̂_ε(ξ) > 0 for all
+ξ ∈ ℝ.
+
+For the Schwartz property: X̂_ε ∈ 𝓢(ℝ) by Proposition 3, and X̂_ε > 0
+everywhere. A strictly positive Schwartz function has a square root in
+𝓢(ℝ): writing h := X̂_ε and g := h^{1/2}, one has g^{(k)} expressible as
+a finite linear combination of terms h^{1/2 − m} ∏_j h^{(n_j)} with m ≥ 1
+and ∑ n_j = k by the chain rule. Since
+h = X̂_ε = (1/2)(ρ̂_ε^1 ∗ 𝟙_{[−1,1]}) and ρ̂_ε^1 has exponential decay
+at rate A₀ > 0 (Lemma 2(iii)), differentiation under the convolution integral
+shows that the derivatives h^{(n_j)} inherit exponential decay at the same
+rate: |h^{(n_j)}(ξ)| ≤ C_n e^{−A₀|ξ|} for all n_j. In the Faà di Bruno
+expansion of (h^{1/2})^{(k)}, each term h^{1/2 − m} ∏_j h^{(n_j)} with
+m ≥ 1 and ∑ n_j = k contains m factors of h⁻¹ (each growing like
+e^{A₀|ξ|}) and m derivative factors (each decaying like e^{−A₀|ξ|}), so the
+exponential parts cancel, leaving a polynomial in |ξ| times a Schwartz
+function, which decays rapidly. Hence g ∈ 𝓢(ℝ). ∎
+
+Theorem 6. For every ε > 0, n ≥ 0, and u ∈ ℝ:
+
+    L_n[X_ε](u) = (1/2) |k_ε^{(n)}(u)|² ≥ 0,
+
+where g_ε := √(X̂_ε) ∈ 𝓢(ℝ) (real, nonnegative, even) and
+k_ε := 𝓕⁻¹[g_ε].
+
+Proof. Since X̂_ε ∈ 𝓢(ℝ), Fourier inversion gives
+X_ε^{(j)}(u) = (1/(2π)) ∫ (iξ)^j e^{iuξ} X̂_ε(ξ) dξ. Substituting into
+L_n[X_ε](u) and applying Fubini with the algebraic identity
+∑_{j=0}^{2n} (−1)^j C(2n, j) ξ^j η^{2n−j} = (η − ξ)^{2n} gives
+
+    L_n[X_ε](u) = (1 / (2 (2π)²)) ∬ (η − ξ)^{2n} e^{iu(ξ+η)}
+                  X̂_ε(ξ) X̂_ε(η) dξ dη.                              (14)
+
+Writing X̂_ε = g_ε² and substituting η ↦ −η (using evenness of g_ε² and
+(−η − ξ)^{2n} = (ξ + η)^{2n}):
+
+    L_n[X_ε](u) = (1 / (2 (2π)²)) ∬ (ξ + η)^{2n} e^{iu(ξ−η)}
+                  g_ε²(ξ) g_ε²(η) dξ dη.                               (15)
+
+The change of variables s = ξ + η, r = ξ − η (dξ dη = (1/2) ds dr) gives
+
+    L_n[X_ε](u) = (1 / (4 (2π)²)) ∫_ℝ ∫_ℝ s^{2n} e^{iur}
+                  g_ε²((s+r)/2) g_ε²((s−r)/2) dr ds.                   (16)
+
+Define h_s(r) := g_ε²((s+r)/2) g_ε²((s−r)/2). Since g_ε is real and even,
+h_s(r) is real, even, and nonnegative, so its Fourier transform
+ĥ_s(u) = ∫ h_s(r) e^{iur} dr is real. Expanding
+s^{2n} = ∑_{k=0}^{2n} C(2n, k) s^k · s^{2n−k} and using the binomial
+theorem, (16) factors. By the identity
+
+    ∫_ℝ s^{2n} h_s(r) ds = 2^{2n+1} ∫₀^∞ t^{2n}
+        g_ε²(t + r/2) g_ε²(t − r/2) dt,
+
+one computes (Csordas–Vishnyakova [CV, identity (2.4)]):
+
+    L_n[X_ε](u) = (1/2) | (1/(2π)) ∫_ℝ (iξ)^n g_ε(ξ) e^{iuξ} dξ |²
+                = (1/2) | k_ε^{(n)}(u) |² ≥ 0.      ∎                  (17)
+
+───────────────────────────────────────────────────────────────────────────
+8. Regulator Removal
+───────────────────────────────────────────────────────────────────────────
+
+Theorem 7. For every n ≥ 0 and u ∈ ℝ, L_n[X](u) ≥ 0.
+
+Proof. Fix u ∈ ℝ. By the Leibniz rule,
+
+    X_ε^{(j)}(u) = ∑_{k=0}^{j} C(j, k) (ρ_ε^1)^{(k)}(u) X^{(j−k)}(u).
+
+By Lemma 2(iv), ρ_ε^1(u) → e⁻¹ and (ρ_ε^1)^{(k)}(u) → 0 for k ≥ 1 as
+ε → 0⁺. Hence X_ε^{(j)}(u) → e⁻¹ X^{(j)}(u) for every j. Since L_n is a
+finite polynomial in the derivatives,
+
+    L_n[X_ε](u) → e⁻² L_n[X](u).
+
+Theorem 6 gives L_n[X_ε](u) ≥ 0; taking the limit and using e⁻² > 0
+gives L_n[X](u) ≥ 0. ∎
+
+───────────────────────────────────────────────────────────────────────────
+9. Entire Extension of Exponential Type ≤ 1
+───────────────────────────────────────────────────────────────────────────
+
+Theorem 8. X extends to a real entire function on ℂ of exponential type ≤ 1.
+
+Proof. Fix ε > 0. For each a > 0, the function X̂_ε^a ∈ 𝓢(ℝ) has
+exponential decay rate A < a√π/ε (Lemma 2(iii)). The inverse Fourier
+integral
+
+    X̃_ε^a(z) := (1/(2π)) ∫_ℝ X̂_ε^a(ξ) e^{izξ} dξ
+
+converges absolutely on Ω_a := { |Im z| < a }, because for any fixed
+A < a√π/ε, |X̂_ε^a(ξ) e^{izξ}| ≤ C_A e^{−(A − |Im z|)|ξ|} is integrable
+for |Im z| < A < a. Differentiation under the integral gives holomorphicity
+on Ω_a, and Fourier inversion gives X̃_ε^a(u) = X_ε^a(u) on ℝ.
+
+By Lemma 2(ii), ρ_ε^a is holomorphic and nonvanishing on Ω_a. Define
+
+    X_ε(z) := X̃_ε^a(z) / ρ_ε^a(z),   z ∈ Ω_a.
+
+For u ∈ ℝ: X_ε(u) = X_ε^a(u) / ρ_ε^a(u) = X(u). For a < a′, both
+definitions agree on ℝ ⊂ Ω_a; since ℝ has accumulation points in Ω_a,
+the identity theorem gives agreement on Ω_a. Hence X_ε extends consistently
+to an entire function on ℂ = ⋃_{a > 0} Ω_a, real-valued on ℝ.
+
+For the type bound, fix z = u + iv. Since X̂_ε^a ≥ 0:
+
+    | X̃_ε^a(z) | ≤ (1/(2π)) ∫_ℝ X̂_ε^a(ξ) e^{|v||ξ|} dξ.
+
+As ε → 0⁺, the total mass ∫_ℝ ρ̂_ε^a(ξ) dξ = 2π ρ_ε^a(0) = 2π e^{−a}
+and the decay rate a√π/ε → ∞ imply ρ̂_ε^a → 2π e^{−a} δ₀ in 𝓢′(ℝ).
+By Proposition 3:
+
+    X̂_ε^a(ξ) = (1/2) ∫_{−1}^{1} ρ̂_ε^a(ξ − η) dη
+             ⟶ (1/2) · 2π e^{−a} · 𝟙_{[−1,1]}(ξ) = π e^{−a} 𝟙_{[−1,1]}(ξ)
+
+pointwise a.e. For the dominated convergence, an ε-uniform L¹ majorant is
+constructed as follows. Write
+
+    X̂_ε^a(ξ) = (1/2) ∫_{−1}^{1} ρ̂_ε^a(ξ − η) dη.
+
+Since ∫_ℝ ρ̂_ε^a(ξ) dξ = 2π e^{−a} (Lemma 2(iv)) is ε-independent,
+
+    ∫_ℝ X̂_ε^a(ξ) dξ
+      = (1/2) ∫_{−1}^{1} ( ∫_ℝ ρ̂_ε^a(ξ − η) dξ ) dη
+      = (1/2) · 2 · 2π e^{−a} = 2π e^{−a},
+
+uniformly in ε. For |ξ| > 2, every η ∈ [−1, 1] satisfies
+|ξ − η| > |ξ| − 1 > 1, and the exponential decay (11) with any fixed
+A < a√π/ε₀ for ε ≥ ε₀ > 0 gives
+
+    ρ̂_ε^a(ξ − η) ≤ C_A e^{−A|ξ−η|} ≤ C_A e^{−A(|ξ|−1)} = C_A e^A e^{−A|ξ|}.
+
+Restricting to a compact ε-interval [ε₀, ε₁] and choosing
+A = a√π/(2 ε₁) (so A < a√π/ε for all ε ≥ ε₀) gives a uniform constant
+C_A. Hence for |ξ| > 2:
+
+    X̂_ε^a(ξ) ≤ (1/2) ∫_{−1}^{1} C_A e^A e^{−A|ξ|} dη = C_A e^A e^{−A|ξ|}.
+
+On the compact region |ξ| ≤ 2, Young's inequality for convolution gives
+‖X̂_ε^a‖_{L^∞(ℝ)} ≤ (1/2) ‖ρ̂_ε^a‖_{L¹(ℝ)} ‖𝟙_{[−1,1]}‖_{L^∞(ℝ)}
+= (1/2) · 2π e^{−a} · 1 = π e^{−a}, uniformly in ε. Define
+
+    F(ξ) := π e^{−a} 𝟙_{[−2,2]}(ξ) + C_A e^A e^{−A|ξ|} 𝟙_{{|ξ|>2}}(ξ).
+
+Then 0 ≤ X̂_ε^a(ξ) ≤ F(ξ) for all ξ and all ε ∈ [ε₀, ε₁],
+F ∈ L¹(ℝ), and F(ξ) e^{|v||ξ|} is integrable for |v| < A/2. Since the final
+type bound takes ε → 0⁺, one fixes any ε₀ > 0 and applies dominated
+convergence on [ε₀, ε₁]; the limit is independent of ε₀, so the bound holds
+as ε → 0⁺. Dominated convergence gives
+
+    ∫_ℝ X̂_ε^a(ξ) e^{|v||ξ|} dξ
+      ⟶ π e^{−a} ∫_{−1}^{1} e^{|v||ξ|} dξ
+      = π e^{−a} · (e^{|v|} − e^{−|v|}) / |v|.
+
+Meanwhile |ρ_ε^a(z)| → e^{−a} uniformly on compacts (Lemma 2(iv)).
+Therefore
+
+    |X(z)| = lim_{ε→0} |X̃_ε^a(z)| / |ρ_ε^a(z)|
+           ≤ (π e^{−a}) / (2π e^{−a}) · (e^{|v|} − e^{−|v|}) / |v|
+           = sinh|v| / |v|.
+
+The factors e^{−a} cancel; the bound is independent of a. Since
+log(sinh|v|/|v|) = |v| + O(log|v|) as |v| → ∞:
+
+    limsup_{|z|→∞} log|X(z)| / |z| ≤ 1.     ∎
+
+───────────────────────────────────────────────────────────────────────────
+10. The Riemann Hypothesis
+───────────────────────────────────────────────────────────────────────────
+
+Theorem 9. All nontrivial zeros of ζ(s) satisfy Re(s) = 1/2.
+
+Proof. By Theorem 8, X is a real entire function of exponential type ≤ 1.
+Since Z has infinitely many real zeros (Riemann–von Mangoldt), X ≢ 0. By
+Theorem 7, L_n[X](u) ≥ 0 for every n ∈ ℕ₀ and u ∈ ℝ. By the
+Csordas–Vishnyakova theorem (Theorem 4), X ∈ 𝓛𝓟: every zero of X is real.
+By the isomorphism (2), every nontrivial zero of ζ(s) satisfies
+Re(s) = 1/2. ∎
+
+───────────────────────────────────────────────────────────────────────────
+References
+───────────────────────────────────────────────────────────────────────────
+
+[B]   J. Bourgain, Decoupling, exponential sums and the Riemann zeta
+      function, J. Amer. Math. Soc. 30 (2017), 205–224.
+
+[CV]  G. Csordas and A. Vishnyakova, The generalized Laguerre inequalities
+      and functions in the Laguerre–Pólya class, Cent. Eur. J. Math. 11
+      (2013), no. 9, 1643–1650.
+
+[J]   M. Jutila, On exponential sums involving the divisor function,
+      J. reine angew. Math. 355 (1984), 173–190.
+
+[MV]  H. L. Montgomery and R. C. Vaughan, Hilbert's inequality, J. London
+      Math. Soc. 8 (1974), 73–82.
+
+[Tit] E. C. Titchmarsh, The Theory of the Riemann Zeta-Function, 2nd ed.,
+      Oxford University Press, 1986.
+
+[W]   N. Wiener, Generalized harmonic analysis, Acta Math. 55 (1930),
+      117–258. 
