@@ -319,27 +319,9 @@ these are directly available for $X$, for the following reasons.
   the autocorrelation $K$.  It is not the pointwise Fourier transform
   of $X$.
 
-\item The orthogonal measure $\Phi$ is $\mathcal{H}_X$-valued.  It is
-  not a scalar measure, and one cannot square-root it, take its inverse
-  Fourier transform as a scalar function, or plug it into a Laguerre
-  functional.
+\item The orthogonal measure $\Phi$ is $\mathcal{H}_X$-valued.  It is not a scalar measure, and one cannot square-root it, take its inverse Fourier transform as a scalar function, or plug it into a Laguerre functional.
 
-\item Although $X$ is real-analytic on $\mathbb{R}$ and its classical
-  pointwise derivatives $X^{(j)}(u)$ exist and may be multiplied for
-  every $u \in \mathbb{R}$, the Laguerre expressions $L_n[X](u)$ are
-  therefore well-defined as real numbers.  The obstacle is not their
-  definability but rather the unavailability of the proof technique: the
-  argument that establishes $L_n[X](u) \geq 0$ proceeds by
-  representing $L_n[X_\varepsilon](u) = \tfrac{1}{2}|k_\varepsilon^{(n)}(u)|^2$
-  via a Fubini--binomial computation (Section~7).  That computation
-  requires $X_\varepsilon^a \in L^1 \cap L^2$ with a Schwartz-class,
-  pointwise nonnegative Fourier transform $\widehat{X_\varepsilon^a}
-  \geq 0$, from which one forms $g_\varepsilon =
-  \sqrt{\widehat{X_\varepsilon^a}} \in \mathcal{S}(\mathbb{R})$ and the
-  half-kernel $k_\varepsilon = \mathcal{F}^{-1}[g_\varepsilon]$.
-  Since $\widehat{X}$ exists only as a tempered distribution with no
-  pointwise values, none of this Fourier-analytic machinery applies to
-  $X$ directly.
+\item Even though $X$ is real-analytic and $L_n[X](u)$ is a perfectly well-defined real number, the Fourier modulus-squared representation is unavailable for $X$ because $\widehat{X}$ is a tempered distribution and cannot be evaluated to a finite pointwise value.
 \end{enumerate}
 
 The regulator $\rho_\varepsilon^a$ resolves all of this simultaneously.
@@ -832,4 +814,4 @@ Acta Math.\ \textbf{55} (1930), 117--258.
 
 \end{thebibliography}
 
-\end{document}
+\end{document} 
