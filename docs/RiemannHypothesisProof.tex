@@ -13,7 +13,7 @@
 
 \title{The Inverse Shifted-Phase Pullback of the Hardy $Z$-Function is Band-Limited}
 \author{Stephen Crowley}
-\date{Dallas, Texas \quad May 3, 2026}
+\date{\today}
 
 \begin{document}
 
@@ -67,7 +67,8 @@ and the isomorphism transfers this to $\zeta$.
 \tableofcontents
 
 \bigskip
-\noindent Conventions.\quad
+\bigskip
+\noindent\textbf{Conventions.}\quad
 $\hat f(\xi)=\int_\mathbb{R} f(u)e^{-iu\xi}\,du$ for $f\in L^1(\mathbb{R})$,
 extended to tempered distributions in the standard way, and
 $f(u)=\frac{1}{2\pi}\int_\mathbb{R}\hat f(\xi)e^{iu\xi}\,d\xi$
@@ -75,6 +76,12 @@ when $\hat f\in L^1$.
 $\mathcal{S}(\mathbb{R})$ is the Schwartz space; $\mathcal{S}'(\mathbb{R})$
 its dual.  $K_1$ denotes the modified Bessel function of the second
 kind of order $1$.
+For eventually nonnegative functions $f,g$, the notation $f\ll g$ means
+that there exist constants $C>0$ and $x_0$ such that $|f(x)|\leq C\,g(x)$
+for all $x\geq x_0$; equivalently, $f=O(g)$.  A subscript, as in
+$f\ll_\varepsilon g$, indicates that the implied constant may depend
+on $\varepsilon$.  The notation $f\asymp g$ means $f\ll g$ and $g\ll f$,
+and $f\sim g$ means $f(x)/g(x)\to 1$ as $x\to\infty$.
 
 %--------------------------------------------------------------------
 \section{Setup and Isomorphism}\label{sec:setup}
