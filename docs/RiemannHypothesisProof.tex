@@ -298,78 +298,91 @@ $U_h:g\mapsto g(\cdot+h)$ is strongly continuous and unitary; Stone's
 theorem yields a projection-valued measure $E$ on $\mathbb{R}$ with
 $U_h=\int e^{ih\xi}E(d\xi)$, supported on $[-1,1]$ by \eqref{eq:spectral}.
 
-%--------------------------------------------------------------------
-\section{Why the Regulator Is Necessary}\label{sec:why}
-%--------------------------------------------------------------------
+\section{Why the Regulator Is Necessary}
 
 The spectral measure $\nu_X$ and the orthogonal measure $\Phi$ from
-Section~\ref{sec:spectral} live in the abstract Hilbert space
-$\mathcal{H}_X$.  To proceed, one needs concrete scalar Fourier
-analysis: pointwise nonnegative Fourier transforms, square roots of
-spectral densities, absolutely convergent inverse-Fourier strip integrals,
-and pointwise derivatives entering the Laguerre functional.  None of
+Section~3 live in the abstract Hilbert space $\mathcal{H}_X$.  To
+proceed, one needs concrete scalar Fourier analysis: pointwise
+nonnegative Fourier transforms, square roots of spectral densities,
+absolutely convergent inverse-Fourier strip integrals, and a
+modulus-squared representation of the Laguerre functional.  None of
 these are directly available for $X$, for the following reasons.
 
 \begin{enumerate}
-\item $X\notin L^1(\mathbb{R})$ and $X\notin L^2(\mathbb{R})$, since
-  $K(0)=1>0$ implies $\frac{1}{U}\int_0^U|X|^2\to 1\neq 0$.
-  So $X$ has no pointwise Fourier transform: $\hat{X}$ exists only
+\item $X \notin L^1(\mathbb{R})$ and $X \notin L^2(\mathbb{R})$, since
+  $K(0) = 1 > 0$ implies $\frac{1}{U}\int_0^U |X|^2 \to 1 \neq 0$.
+  So $X$ has no pointwise Fourier transform: $\widehat{X}$ exists only
   as a tempered distribution.
 
-\item The spectral density $S_X=\tfrac12\mathbf{1}_{[-1,1]}$ is the
-  Wiener--Khinchin spectral density, characterizing pairings with
+\item The spectral density $S_X = \tfrac{1}{2}\mathbf{1}_{[-1,1]}$ is
+  the Wiener--Khinchin spectral density, characterizing pairings with
   the autocorrelation $K$.  It is not the pointwise Fourier transform
   of $X$.
 
-\item The orthogonal measure $\Phi$ is $\mathcal{H}_X$-valued.
-  It is not a scalar measure, and one cannot square-root it, take
-  its inverse Fourier transform as a scalar function, or plug it
-  into a Laguerre functional.
+\item The orthogonal measure $\Phi$ is $\mathcal{H}_X$-valued.  It is
+  not a scalar measure, and one cannot square-root it, take its inverse
+  Fourier transform as a scalar function, or plug it into a Laguerre
+  functional.
 
-\item The Laguerre expressions $L_n[X](u)$ involve products of
-  pointwise derivatives $X^{(j)}(u)$.  For $X$ viewed as a
-  tempered distribution, derivatives exist in the distributional
-  sense but cannot be multiplied pointwise.
+\item Although $X$ is real-analytic on $\mathbb{R}$ and its classical
+  pointwise derivatives $X^{(j)}(u)$ exist and may be multiplied for
+  every $u \in \mathbb{R}$, the Laguerre expressions $L_n[X](u)$ are
+  therefore well-defined as real numbers.  The obstacle is not their
+  definability but rather the unavailability of the proof technique: the
+  argument that establishes $L_n[X](u) \geq 0$ proceeds by
+  representing $L_n[X_\varepsilon](u) = \tfrac{1}{2}|k_\varepsilon^{(n)}(u)|^2$
+  via a Fubini--binomial computation (Section~7).  That computation
+  requires $X_\varepsilon^a \in L^1 \cap L^2$ with a Schwartz-class,
+  pointwise nonnegative Fourier transform $\widehat{X_\varepsilon^a}
+  \geq 0$, from which one forms $g_\varepsilon =
+  \sqrt{\widehat{X_\varepsilon^a}} \in \mathcal{S}(\mathbb{R})$ and the
+  half-kernel $k_\varepsilon = \mathcal{F}^{-1}[g_\varepsilon]$.
+  Since $\widehat{X}$ exists only as a tempered distribution with no
+  pointwise values, none of this Fourier-analytic machinery applies to
+  $X$ directly.
 \end{enumerate}
 
 The regulator $\rho_\varepsilon^a$ resolves all of this simultaneously.
-Multiplying $X$ by $\rho_\varepsilon^a$ produces $X_\varepsilon^a\in L^1\cap L^2$,
-which has a pointwise Fourier transform $\widehat{X_\varepsilon^a}$.
-The orthogonal-measure isometry then identifies
-$\widehat{X_\varepsilon^a}(\xi) = \tfrac12\int_{-1}^1\hat\rho_\varepsilon^a(\xi-\eta)\,d\eta$,
-which is a convolution of the explicitly positive Bessel-$K_1$ kernel
-against the indicator $\mathbf{1}_{[-1,1]}$.  This yields a Schwartz
-function that is pointwise nonnegative.  With $\widehat{X_\varepsilon^a}\geq 0$,
-one can take the square root $g_\varepsilon=\sqrt{\widehat{X_\varepsilon^a}}$,
-form the half-kernel $k_\varepsilon=\mathcal{F}^{-1}[g_\varepsilon]$, and
-exhibit $L_n[X_\varepsilon](u)=\tfrac12|k_\varepsilon^{(n)}(u)|^2\geq 0$
-as a modulus-squared.  The regulator then evaporates in the
-$\varepsilon\to 0$ limit via a Leibniz rule argument, leaving
-$L_n[X](u)\geq 0$.  The holomorphic and zero-free character of
-$\rho_\varepsilon^a$ on the strip $\{|\operatorname{Im}z|<a\}$ allows
-the inverse-Fourier integral of $\widehat{X_\varepsilon^a}$ to be
-divided by $\rho_\varepsilon^a$ to recover an entire extension of $X$.
+Multiplying $X$ by $\rho_\varepsilon^a$ produces $X_\varepsilon^a \in
+L^1 \cap L^2$, which has a pointwise Fourier transform
+$\widehat{X_\varepsilon^a}$.  The orthogonal-measure isometry then
+identifies $\widehat{X_\varepsilon^a}(\xi) = \frac{1}{2}
+\int_{-1}^{1} \hat{\rho}_\varepsilon^a(\xi - \eta)\, d\eta$, which is
+a convolution of the explicitly positive Bessel-$K_1$ kernel against
+the indicator $\mathbf{1}_{[-1,1]}$.  This yields a Schwartz function
+that is pointwise nonnegative.  With $\widehat{X_\varepsilon^a} \geq 0$,
+one can take the square root $g_\varepsilon =
+\sqrt{\widehat{X_\varepsilon^a}}$, form the half-kernel $k_\varepsilon
+= \mathcal{F}^{-1}[g_\varepsilon]$, and exhibit
+$L_n[X_\varepsilon](u) = \tfrac{1}{2}|k_\varepsilon^{(n)}(u)|^2 \geq 0$
+as a modulus-squared.  The regulator then evaporates in the $\varepsilon
+\to 0$ limit via a Leibniz rule argument, leaving $L_n[X](u) \geq 0$.
+The holomorphic and zero-free character of $\rho_\varepsilon^a$ on the
+strip $\{|\operatorname{Im} z| < a\}$ allows the inverse-Fourier
+integral of $\widehat{X_\varepsilon^a}$ to be divided by
+$\rho_\varepsilon^a$ to recover an entire extension of $X$.
 
 The four constraints on the regulator are therefore:
 \begin{enumerate}
-\item Decay on $\mathbb{R}$: $\rho_\varepsilon^a\cdot X\in L^1\cap L^2$.
-\item Holomorphic and zero-free on a strip $\{|\operatorname{Im}z|<a\}$:
-  needed to divide in Section~\ref{sec:entire} without creating poles.
+\item Decay on $\mathbb{R}$: $\rho_\varepsilon^a \cdot X \in L^1 \cap
+  L^2$.
+\item Holomorphic and zero-free on a strip $\{|\operatorname{Im} z| <
+  a\}$: needed to divide in Section~9 without creating poles.
 \item Fourier transform pointwise $\geq 0$: needed so
-  $\widehat{X_\varepsilon^a}\geq 0$, enabling the square root and the
+  $\widehat{X_\varepsilon^a} \geq 0$, enabling the square root and the
   modulus-squared identity.
-\item $e^a\rho_\varepsilon^a\to 1$ with all derivatives $\to 0$ as
-  $\varepsilon\to 0$: needed for the Leibniz-rule removal in
-  Section~\ref{sec:removal}.
+\item $e^a \rho_\varepsilon^a \to 1$ with all derivatives $\to 0$ as
+  $\varepsilon \to 0$: needed for the Leibniz-rule removal in
+  Section~8.
 \end{enumerate}
+
 The Gaussian $e^{-\varepsilon u^2}$ satisfies (1), (2), (4), but its
-Fourier transform is again a Gaussian (not compactly-supported
-near $[-1,1]$), which does not produce a nonnegative spectral
-density in the required form.  Compactly-supported bumps
-fail (2) entirely.  The function
-$\rho_\varepsilon^a(u)=\exp(-\sqrt{a^2+\varepsilon^2 u^2/\pi})$ hits all
-four constraints simultaneously with explicit constants, as
-Lemma~\ref{lem:reg} confirms.
+Fourier transform is again a Gaussian (not compactly-supported near
+$[-1,1]$), which does not produce a nonneg\-ative spectral density in
+the required form.  Compactly-supported bumps fail (2) entirely.  The
+function $\rho_\varepsilon^a(u) = \exp\!\bigl(-\sqrt{a^2 +
+\varepsilon^2 u^2/\pi}\bigr)$ hits all four constraints simultaneously
+with explicit constants, as Lemma~2 confirms.
 
 %--------------------------------------------------------------------
 \section{Smooth Regulator}\label{sec:regulator}
