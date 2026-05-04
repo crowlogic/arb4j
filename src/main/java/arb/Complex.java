@@ -398,9 +398,15 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
     return new Complex().setName(name2);
   }
 
-  public Named set(String value, int bits2)
+  public Complex set(String value, int bits2)
   {
     return ComplexNullaryFunction.express(value).evaluate(bits2, this);
+  }
+
+  @SuppressWarnings("resource")
+  public static Complex valueOf( String value, int bits )
+  {
+    return new Complex().set(value,bits);    
   }
     
   @Override
