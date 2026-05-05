@@ -1483,7 +1483,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return classVisitor;
     }
     context.populateFunctionReferenceGraph();
-    Utensils.detectStructuralCycle(context.functionReferenceGraph);
     dependencies = Utensils.sortDependencies(context.functionReferenceGraph, getReferencedFunctions());
 
     if (saveGraphs)
