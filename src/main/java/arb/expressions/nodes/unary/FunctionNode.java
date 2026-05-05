@@ -441,19 +441,20 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       // to copy onto the operand. All ancestors share the same Context, so
       // registering the same mapping on each is consistent; the resulting
       // PUTFIELDs are pure compile-time wiring (issue #1000 point #3).
-      // Only propagate to ancestors when the mapping has no expression (i.e.
-      // a hand-wired context instance like `He`). Mappings with an expression
-      // are compiled peers whose wiring is handled by Phase-2 wire-all;
-      // propagating them upstream would materialise phantom cycles (a→S→a)
-      // that the structural-cycle detector rejects.
-      if (mapping.expression == null)
+      // Propagate to every ancestor: a context function referenced only inside
+      // an inner operand expression must also become a field on every ancestor
+      // class so Phase-2 wire-all can copy this.<f> through to peer.<inner>.<f>
+      // and operandF inherits the parent's reference identity. This applies
+      // both to hand-wired Context instances (mapping.expression == null, e.g.
+      // `He`) and to compiled peers (mapping.expression != null, e.g. `a` and
+      // `S` inside the Müntz cluster). The structural-cycle detector that
+      // previously rejected the latter case has been removed (Issue #1005), so
+      // the propagation no longer triggers a phantom cycle rejection.
+      arb.expressions.Expression<?, ?, ?> ancestor = expression.upstreamExpression;
+      while (ancestor != null)
       {
-        arb.expressions.Expression<?, ?, ?> ancestor = expression.upstreamExpression;
-        while (ancestor != null)
-        {
-          ancestor.registerReferencedFunction(functionName, mapping);
-          ancestor = ancestor.upstreamExpression;
-        }
+        ancestor.registerReferencedFunction(functionName, mapping);
+        ancestor = ancestor.upstreamExpression;
       }
       generatedType = mapping.coDomain;
     }
