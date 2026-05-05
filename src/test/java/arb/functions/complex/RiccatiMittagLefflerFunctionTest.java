@@ -37,7 +37,7 @@ public class RiccatiMittagLefflerFunctionTest extends
 
     try ( RiccatiMittagLefflerFunction eq = new RiccatiMittagLefflerFunction(μ, "1", "-1/2", "3/10"))
     {
-      ComplexFunctionSequence a = eq.muntzCoefficients();
+      ComplexFunctionSequence a = eq.muntzBasis();
       assertNotNull("Müntz coefficient sequence must be compiled", a);
 
       arb.Integer one = new arb.Integer();

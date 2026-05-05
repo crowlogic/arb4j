@@ -65,11 +65,6 @@ public class RiccatiMittagLefflerFunction extends
   /** Documentation-only string of the equation in standard form. */
   public static final String   FRACTIONAL_RICCATI_EQUATION = "t➔Đ^(μ)y(t;v)=t➔p(v)+q(v)*y(t;v)+r(v)*y(t;v)²";
 
-  /** Source expressions for p(v), q(v), r(v) — kept for inspection. */
-  public final String          constantTerm;
-  public final String          linearTerm;
-  public final String          quadraticTerm;
-
   /** Compiled p(v), q(v), r(v). */
   public final ComplexFunction p;
   public final ComplexFunction q;
@@ -81,11 +76,13 @@ public class RiccatiMittagLefflerFunction extends
   /** Whether this instance owns (and must close) α. */
   private final boolean        ownsAlpha;
 
+  private ComplexFunction      discriminant;
+
   public RiccatiMittagLefflerFunction(Context context, Real α, String pSrc, String qSrc, String rSrc)
   {
-    boolean ownsAlpha;
-    Real    existingMu = context.getVariable("μ");
-    if (existingMu == null)
+    this.context = context;
+    Real μ = context.getVariable("μ");
+    if (μ == null)
     {
       Real fresh = new Real();
       fresh.set(α);
@@ -96,36 +93,22 @@ public class RiccatiMittagLefflerFunction extends
     }
     else
     {
-      existingMu.set(α);
-      α         = existingMu;
+      μ.set(α);
+      α         = μ;
       ownsAlpha = false;
     }
+    this.α       = α;
 
-    ComplexFunction p = ComplexFunction.express("p", pSrc, context);
-    ComplexFunction q = ComplexFunction.express("q", qSrc, context);
-    ComplexFunction r = ComplexFunction.express("r", rSrc, context);
+    p            = ComplexFunction.express("p", pSrc, context);
+    q            = ComplexFunction.express("q", qSrc, context);
+    r            = ComplexFunction.express("r", rSrc, context);
+    discriminant = ComplexFunction.express("q(v)² − 4·p(v)·r(v)", context);
 
-    // Mutually-recursive Müntz cluster: S(k)(v) = Σ a(j)(v)·a(k-1-j)(v); the
-    // forward declaration of a's mapping makes the S compiler resolve a by
-    // Context lookup instead of recursing into its own definition.
-    context.registerFunctionMapping("a", arb.Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
+    ComplexFunctionSequence.declare("a", context);
 
-    String sExpr = "S:k➔v➔sum(j➔a(j)(v)*a(k-1-j)(v){j=1..k-2})";
-    Sequence.parseCompileAndRegister("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, context);
+    Sequence.compile(ComplexFunction.class, "S:k➔v➔sum(j➔a(j)(v)*a(k-1-j)(v){j=1..k-2})", ComplexFunctionSequence.class, context);
 
-    String                  aExpr = "a:k➔v➔when(k=1, p(v)/Γ(μ+1)," + " else, (Γ((k-1)*μ+1)/Γ(k*μ+1))" + "       *(q(v)*a(k-1)(v)+r(v)*S(k)(v)))";
-    ComplexFunctionSequence a     = ComplexFunctionSequence.express(aExpr, context);
-
-    super(α,
-          a);
-    this.context       = context;
-    this.p             = p;
-    this.q             = q;
-    this.r             = r;
-    this.ownsAlpha     = ownsAlpha;
-    this.constantTerm  = pSrc;
-    this.linearTerm    = qSrc;
-    this.quadraticTerm = rSrc;
+    a = ComplexFunctionSequence.express("a:k➔v➔when(k=1,p(v)/Γ(μ+1),else,(Γ((k-1)*μ+1)/Γ(k*μ+1))*(q(v)*a(k-1)(v)+r(v)*S(k)(v)))", context);
   }
 
   public RiccatiMittagLefflerFunction(Real α, String p, String q, String r)
@@ -137,33 +120,14 @@ public class RiccatiMittagLefflerFunction extends
          r);
   }
 
-  // ────────────────────────────────────────────────────────────────────────
-  // Padé sub-context parent — the assembled rational R_M(z; v) =
-  // P_M(z;v)/Q_M(z;v)
-  // is parsed in a sub-Context that inherits this function's variables so an
-  // externally-owned μ continues to resolve when the rational function is
-  // evaluated.
-  // ────────────────────────────────────────────────────────────────────────
-
-  // ────────────────────────────────────────────────────────────────────────
-  // Inspection methods preserved under the names the existing tests use
-  // ────────────────────────────────────────────────────────────────────────
-
-  /**
-   * Alias for {@link #coefficients()} — the curried Müntz coefficient sequence k
-   * ↦ v ↦ a_k(v).
-   */
-  public ComplexFunctionSequence muntzCoefficients()
+  public ComplexFunctionSequence muntzBasis()
   {
     return a;
   }
 
-  /**
-   * Discriminant q(v)² − 4·p(v)·r(v) as a callable ComplexFunction of v.
-   */
   public ComplexFunction discriminant()
   {
-    return ComplexFunction.express("discriminant", "v➔q(v)²-4*p(v)*r(v)", context);
+    return discriminant;
   }
 
   // ────────────────────────────────────────────────────────────────────────
@@ -260,11 +224,11 @@ public class RiccatiMittagLefflerFunction extends
     // f(k)(v) : k=0 → ṗ(v); k≥1 → q̇(v)·a(k)(v) + ṙ(v)·Σ_{j=1..k-1}
     // a(j)(v)·a(k-j)(v)
     String fExpr = "f:k➔v➔when(k=0, p_dv(v)," + " else, q_dv(v)*a(k)(v) + r_dv(v)*sum(j➔a(j)(v)*a(k-j)(v){j=1..k-1}))";
-    Sequence.parseCompileAndRegister("f", ComplexFunction.class, fExpr, ComplexFunctionSequence.class, context);
+    Sequence.compile("f", ComplexFunction.class, fExpr, ComplexFunctionSequence.class, context);
 
     // g(k)(v) : k=0 → q(v); k≥1 → 2·r(v)·a(k)(v)
     String gExpr = "g:k➔v➔when(k=0, q(v), else, 2*r(v)*a(k)(v))";
-    Sequence.parseCompileAndRegister("g", ComplexFunction.class, gExpr, ComplexFunctionSequence.class, context);
+    Sequence.compile("g", ComplexFunction.class, gExpr, ComplexFunctionSequence.class, context);
 
     // w(k)(v) linear Volterra recurrence:
     // w(1)(v) = ṗ(v)/Γ(μ+1)

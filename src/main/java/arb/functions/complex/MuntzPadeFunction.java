@@ -66,10 +66,10 @@ public class MuntzPadeFunction implements
   private static final Logger          log  = LoggerFactory.getLogger(MuntzPadeFunction.class);
 
   /** Fractional order μ ∈ (0,1). */
-  public final Real                    α;
+  public Real                    α;
 
   /** Curried Müntz coefficient sequence k ↦ v ↦ a_k(v). */
-  public final ComplexFunctionSequence a;
+  public ComplexFunctionSequence a;
 
   /** Optional name for typeset/print purposes. */
   protected String                     name;
@@ -79,6 +79,11 @@ public class MuntzPadeFunction implements
    * single {@link #solveHankel} call. Resized in place to the current M.
    */
   private final ComplexMatrix          qMat = new ComplexMatrix().setName("q");
+
+  public MuntzPadeFunction()
+  {
+    
+  }
 
   public MuntzPadeFunction(Real α, ComplexFunctionSequence a)
   {

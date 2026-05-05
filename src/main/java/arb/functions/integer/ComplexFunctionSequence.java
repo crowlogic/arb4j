@@ -3,8 +3,7 @@ package arb.functions.integer;
 import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.Context;
-import arb.expressions.Expression;
+import arb.expressions.*;
 import arb.functions.Function;
 import arb.functions.complex.ComplexFunction;
 
@@ -43,5 +42,10 @@ public interface ComplexFunctionSequence extends
   public static ComplexFunctionSequence express(String name, String expr)
   {
     return express(name, expr, null);
+  }
+
+  public static FunctionMapping<Integer, ComplexFunction, ComplexFunctionSequence> declare(String string, Context context)
+  {
+    return context.registerFunctionMapping(string, Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
   }
 }

@@ -66,7 +66,7 @@ public class SelfRecursiveCurriedSequenceTest extends
     Context ctx = new Context();
     ctx.registerFunctionMapping("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
     String sExpr = "S:k➔v➔sum(j➔a(j)(v)*a(k-1-j)(v){j=1..k-2})";
-    Sequence.parseCompileAndRegister("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
+    Sequence.compile("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
 
     String                  aExpr = "a:k➔v➔when(k=1, v, else, a(k-1)(v)+S(k)(v))";
     ComplexFunctionSequence a     = ComplexFunctionSequence.express(aExpr, ctx);
@@ -97,7 +97,7 @@ public class SelfRecursiveCurriedSequenceTest extends
     ComplexFunction.express("p", "v➔v", ctx);
     ctx.registerFunctionMapping("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
     String sExpr = "S:k➔v➔sum(j➔a(j)(v)*a(k-1-j)(v){j=1..k-2})";
-    Sequence.parseCompileAndRegister("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
+    Sequence.compile("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
 
     String                  aExpr = "a:k➔v➔when(k=1, p(v), else, a(k-1)(v)+S(k)(v))";
     ComplexFunctionSequence a     = ComplexFunctionSequence.express(aExpr, ctx);
@@ -128,7 +128,7 @@ public class SelfRecursiveCurriedSequenceTest extends
     Context ctx = new Context();
     ctx.registerFunctionMapping("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
     String sExpr = "S:k➔v➔a(k-1)(v)·a(k-1)(v)";
-    Sequence.parseCompileAndRegister("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
+    Sequence.compile("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
 
     String                  aExpr = "a:k➔v➔when(k=1, v, else, S(k)(v))";
     ComplexFunctionSequence a     = ComplexFunctionSequence.express(aExpr, ctx);
@@ -162,7 +162,7 @@ public class SelfRecursiveCurriedSequenceTest extends
 
     ctx.registerFunctionMapping("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
     String sExpr = "S:k➔v➔a(k-1)(v)·a(k-1)(v)";
-    Sequence.parseCompileAndRegister("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
+    Sequence.compile("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
 
     String                  aExpr = "a:k➔v➔when(k=1, v, else, μ·S(k)(v))";
     ComplexFunctionSequence a     = ComplexFunctionSequence.express(aExpr, ctx);
@@ -196,7 +196,7 @@ public class SelfRecursiveCurriedSequenceTest extends
 
     ctx.registerFunctionMapping("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
     String sExpr = "S:k➔v➔a(k-1)(v)·a(k-1)(v)";
-    Sequence.parseCompileAndRegister("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
+    Sequence.compile("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
 
     String                  aExpr = "a:k➔v➔when(k=1, v, else, (k·μ)·S(k)(v))";
     ComplexFunctionSequence a     = ComplexFunctionSequence.express(aExpr, ctx);
@@ -231,7 +231,7 @@ public class SelfRecursiveCurriedSequenceTest extends
 
     ctx.registerFunctionMapping("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
     String sExpr = "S:k➔v➔a(k-1)(v)·a(k-1)(v)";
-    Sequence.parseCompileAndRegister("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
+    Sequence.compile("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
 
     String                  aExpr = "a:k➔v➔when(k=1, v, else, Γ(k·μ+1)·S(k)(v))";
     ComplexFunctionSequence a     = ComplexFunctionSequence.express(aExpr, ctx);
@@ -264,7 +264,7 @@ public class SelfRecursiveCurriedSequenceTest extends
     ComplexFunction.express("p", "v➔v", ctx);
     ctx.registerFunctionMapping("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
     String sExpr = "S:k➔v➔a(k-1)(v)·a(k-1)(v)";
-    Sequence.parseCompileAndRegister("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
+    Sequence.compile("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
 
     String                  aExpr = "a:k➔v➔when(k=1, v, else, p(v)·a(k-1)(v)+S(k)(v))";
     ComplexFunctionSequence a     = ComplexFunctionSequence.express(aExpr, ctx);
@@ -294,7 +294,7 @@ public class SelfRecursiveCurriedSequenceTest extends
     ComplexFunction.express("p", "v➔v", ctx);
     ctx.registerFunctionMapping("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
     String sExpr = "S:k➔v➔a(k-1)(v)·a(k-1)(v)";
-    Sequence.parseCompileAndRegister("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
+    Sequence.compile("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
 
     String                  aExpr = "a:k➔v➔when(k=1, v, else, p(v)·S(k)(v))";
     ComplexFunctionSequence a     = ComplexFunctionSequence.express(aExpr, ctx);
@@ -338,7 +338,7 @@ public class SelfRecursiveCurriedSequenceTest extends
 
     ctx.registerFunctionMapping("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
     String sExpr = "S:k➔v➔sum(j➔a(j)(v)*a(k-1-j)(v){j=1..k-2})";
-    Sequence.parseCompileAndRegister("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
+    Sequence.compile("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
 
     String                  aExpr = "a:k➔v➔when(k=1, p(v)/Γ(μ+1),"
                                   + " else, (Γ((k-1)·μ+1)/Γ(k·μ+1))·(q(v)·a(k-1)(v)+r(v)·S(k)(v)))";
@@ -368,7 +368,7 @@ public class SelfRecursiveCurriedSequenceTest extends
     Context ctx = new Context();
     ctx.registerFunctionMapping("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
     String sExpr = "S:k➔v➔when(k=2, a(1)(v)·a(1)(v), else, 0)";
-    Sequence.parseCompileAndRegister("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
+    Sequence.compile("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
 
     String                  aExpr = "a:k➔v➔when(k=1, v, else, S(k)(v))";
     ComplexFunctionSequence a     = ComplexFunctionSequence.express(aExpr, ctx);

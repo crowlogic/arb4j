@@ -9,7 +9,6 @@ import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.Function;
-import arb.functions.RealFunctional;
 import arb.utensils.ShellFunctions;
 
 /**
@@ -62,8 +61,6 @@ public interface Sequence<C> extends
     }
   }
 
-
-
   public static <Q,
                 S extends Sequence<? extends Q>>
          S
@@ -94,22 +91,24 @@ public interface Sequence<C> extends
   /**
    * Parses, compiles, and registers a sequence expression in the given
    * {@link Context} <i>without</i> instantiating it. The class bytecode is
-   * generated and the {@link arb.expressions.FunctionMapping} is registered,
-   * but no instance is created and no field references are injected. Use this
-   * to forward-declare one member of a mutually recursive cluster of sequences
-   * before {@link #express} is called on the other(s); the deferred
-   * instantiation avoids forcing the JVM to resolve a class that has not yet
-   * been defined.
+   * generated and the {@link arb.expressions.FunctionMapping} is registered, but
+   * no instance is created and no field references are injected. Use this to
+   * forward-declare one member of a mutually recursive cluster of sequences
+   * before {@link #express} is called on the other(s); the deferred instantiation
+   * avoids forcing the JVM to resolve a class that has not yet been defined.
    */
   public static <Q, S extends Sequence<? extends Q>>
          Expression<Integer, Q, S>
-         parseCompileAndRegister(String name,
-                                 Class<? extends Q> coDomainType,
-                                 String expression,
-                                 Class<? extends S> functionClass,
-                                 Context context)
+         compile(String name, Class<? extends Q> coDomainType, String expression, Class<? extends S> functionClass, Context context)
   {
     return Function.parseCompileAndRegister(expression, context, Integer.class, coDomainType, functionClass, name, true);
+  }
+
+  public static <Q, S extends Sequence<? extends Q>>
+         Expression<Integer, Q, S>
+         compile(Class<? extends Q> coDomainType, String expression, Class<? extends S> functionClass, Context context)
+  {
+    return compile(null, coDomainType, expression, functionClass, context);
   }
 
   public static <C, S extends Sequence<? extends C>>
