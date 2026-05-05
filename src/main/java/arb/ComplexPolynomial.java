@@ -8,13 +8,18 @@
 
 package arb;
 
-import static arb.arblib.*;
-import arb.expressions.Parser;
-import arb.functions.complex.ComplexFunction;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.exceptions.DivisionByZeroException;
-import java.util.Objects;
+	import static arb.arblib.*;
 
+	import java.io.Closeable;
+	import java.util.Objects;
+
+	import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+	import arb.documentation.TheArb4jLibrary;
+	import arb.exceptions.DivisionByZeroException;
+	import arb.expressions.Context;
+	import arb.expressions.Parser;
+	import arb.functions.complex.ComplexFunction;
+	import arb.functions.complex.ComplexPolynomialNullaryFunction;
 /**
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -44,6 +49,16 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
   }
 
 
+	public ComplexPolynomialNullaryFunction express(String str)
+	{
+	  return ComplexPolynomialNullaryFunction.express(str);
+	}
+
+	public ComplexPolynomialNullaryFunction express(String str, Context context)
+	{
+	  return ComplexPolynomialNullaryFunction.express(str, context);
+	}
+	
 	public ComplexPolynomial sub(Integer s, int prec, ComplexPolynomial res)
 	{
 	  try ( var blip = new Complex())
