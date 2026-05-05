@@ -16,6 +16,23 @@ import java.util.Objects;
 
 %typemap(javacode) acb_poly_struct %{
 
+	public ComplexPolynomial sub(Integer operand, int prec, ComplexPolynomial result)
+	{
+	  return result.set(this).sub(operand, prec,result);
+	}
+
+	public ComplexPolynomial add(Integer operand, int prec, ComplexPolynomial result)
+	{
+	  return result.set(this).add(operand, prec,result);
+	}
+
+	public ComplexPolynomial mul(Integer operand, int prec, ComplexPolynomial result)
+	{
+	  return result.set(this).mul(operand, prec,result);
+	}
+
+
+	
   public ComplexPolynomial mul(Real s, int prec)
   {
     return mul(s, prec, this);
@@ -25,7 +42,7 @@ import java.util.Objects;
   {
 	try ( var blip = new Complex())
 	{
-	  return res.set(coeffs).mul(blip.set(s), prec, res);
+	  return res.set(this).mul(blip.set(s), prec, res);
     }
   }	
    

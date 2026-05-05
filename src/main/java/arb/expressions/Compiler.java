@@ -20,10 +20,7 @@ import arb.*;
 import arb.Integer;
 import arb.exceptions.CompilerException;
 import arb.expressions.nodes.LiteralConstantNode;
-import arb.functions.Function;
-import arb.functions.NumericalComplexFunctionIntegral;
-import arb.functions.NumericalRealFunctionIntegral;
-import arb.functions.RealToComplexFunction;
+import arb.functions.*;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.integer.*;
 import arb.functions.polynomials.ComplexHypergeometricPolynomialFunction;
@@ -99,7 +96,7 @@ public class Compiler
   static
   {
     typePrefixes.put(int[].class, "iArr");
-    
+
     typePrefixes.put(AlgebraicNumber.class, "𝔸");
     typePrefixes.put(Real.class, "ℝ");
     typePrefixes.put(Complex.class, "ℂ");
@@ -178,8 +175,7 @@ public class Compiler
 
     if (from.equals(Real.class))
     {
-      return (to.equals(Complex.class) || to.equals(RealPolynomial.class) || to.equals(RationalFunction.class) || to.equals(Fraction.class))
-                    || to.equals(AlgebraicNumber.class) || to.equals(RealFunction.class);
+      return promotableFromReal.contains(to);
     }
     else if (from.equals(Complex.class))
     {
@@ -192,7 +188,7 @@ public class Compiler
     }
     else if (from.equals(Integer.class))
     {
-      return (to.equals(Real.class) || to.equals(Complex.class) || to.equals(Fraction.class));
+      return promotableFromInteger.contains(to);
     }
     else if (from.equals(AlgebraicNumber.class))
     {
@@ -201,6 +197,20 @@ public class Compiler
 
     return false;
   }
+
+  public static HashSet<Class<?>> promotableFromReal    = new HashSet<Class<?>>(Arrays.asList(Real.class,
+                                                                                              RationalFunction.class,
+                                                                                              AlgebraicNumber.class,
+                                                                                              Complex.class,
+                                                                                              Fraction.class,
+                                                                                              RealPolynomial.class,
+                                                                                              ComplexPolynomial.class));
+
+  public static HashSet<Class<?>> promotableFromInteger = new HashSet<Class<?>>(Arrays.asList(Real.class,
+                                                                                              Complex.class,
+                                                                                              Fraction.class,
+                                                                                              RealPolynomial.class,
+                                                                                              ComplexPolynomial.class));
 
   public static MethodVisitor cast(MethodVisitor methodVisitor, Class<?> type)
   {
@@ -508,13 +518,12 @@ public class Compiler
     return methodVisitor;
   }
 
-  
   public static MethodVisitor jumpToIfEqual(MethodVisitor mv, Label skipCompute)
   {
     mv.visitJumpInsn(Opcodes.IF_ICMPEQ, skipCompute);
     return mv;
   }
-  
+
   public static MethodVisitor jumpToIfNotEqual(MethodVisitor mv, Label alreadyInitialized)
   {
     mv.visitJumpInsn(Opcodes.IFNE, alreadyInitialized);
@@ -767,7 +776,5 @@ public class Compiler
     return mv;
 
   }
-
-
 
 }

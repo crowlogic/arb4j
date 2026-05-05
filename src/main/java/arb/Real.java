@@ -602,13 +602,6 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
     return mag;
   }
 
-  public RealPolynomial sub(Integer a, int bits, RealPolynomial res)
-  {
-    res.fitLength(1);
-    res.set(1);
-    sub(a,bits,res.get(0));
-    return res;
-  }  
   
   /**
    * <pre>
@@ -832,6 +825,8 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
     return result.set(this).div(divisor,bits);
   }
   
+  
+  
   public boolean isInteger()
   {
     return arblib.arb_is_int(this) != 0;
@@ -866,6 +861,48 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
     arblib.arb_div_fmpz(result, this, operand.swigCPtr, prec );
     result.bits = prec;
     return result;
+  }
+
+
+  public RealPolynomial div(Integer operand, int prec, RealPolynomial result)
+  {
+    return result.set(this).div(operand, prec, result);
+  }
+
+  public ComplexPolynomial div(Integer operand, int prec, ComplexPolynomial result)
+  {
+    return result.set(this).div(operand, prec, result);
+  }
+
+  public RealPolynomial mul(Integer operand, int prec, RealPolynomial result)
+  {
+    return result.set(this).mul(operand, prec, result);
+  }
+
+  public ComplexPolynomial mul(Integer operand, int prec, ComplexPolynomial result)
+  {
+    return result.set(this).mul(operand, prec, result);
+  }
+
+
+  public RealPolynomial add(Integer operand, int prec, RealPolynomial result)
+  {
+    return result.set(this).add(operand, prec, result);
+  }
+
+  public ComplexPolynomial add(Integer operand, int prec, ComplexPolynomial result)
+  {
+    return result.set(this).add(operand, prec, result);
+  }
+
+  public RealPolynomial sub(Integer operand, int prec, RealPolynomial result)
+  {
+    return result.set(this).sub(operand, prec, result);
+  }
+
+  public ComplexPolynomial sub(Integer operand, int prec, ComplexPolynomial result)
+  {
+    return result.set(this).sub(operand, prec, result);
   }
 
   public Real tanh(int bits)
