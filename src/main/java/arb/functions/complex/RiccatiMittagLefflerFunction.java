@@ -168,7 +168,7 @@ public class RiccatiMittagLefflerFunction extends
    * </p>
    */
   @Override
-  public Jacobian<Complex, ComplexFunction, ? extends Function<Complex, ComplexFunction>> jacobian(String[] variables)
+  public Jacobian<Complex, ComplexFunction, ComplexFunctional> jacobian(String[] variables)
   {
     if (variables == null || variables.length == 0)
     {
