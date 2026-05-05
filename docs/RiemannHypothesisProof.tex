@@ -443,7 +443,7 @@ with explicit constants, as Lemma~2 confirms.
 \section{Smooth Regulator}\label{sec:regulator}
 %--------------------------------------------------------------------
 
-For $\varepsilon>0$ and $a>0$, define
+For $0<\varepsilon\leq\sqrt{\pi}$ and $a>0$, define
 \begin{equation}\label{eq:regulator}
   \rho_\varepsilon^a(u)
   := \exp\!\left(-\sqrt{a^2+\frac{\varepsilon^2 u^2}{\pi}}\right),
@@ -451,7 +451,7 @@ For $\varepsilon>0$ and $a>0$, define
 \end{equation}
 
 \begin{lemma}\label{lem:reg}
-For each $\varepsilon,a>0$:
+For each $a>0$ and each $\varepsilon\in(0,\sqrt{\pi}]$:
 \begin{enumerate}
 \item\label{lem:smooth} $\rho_\varepsilon^a\in C^\infty(\mathbb{R})$, strictly positive,
   with $\rho_\varepsilon^a(u)\sim e^{-\varepsilon|u|/\sqrt{\pi}}$ as $|u|\to\infty$.
@@ -488,8 +488,9 @@ For each $\varepsilon,a>0$:
 \item[(i)] $a>0$ prevents the argument of $\sqrt{\cdot}$ from reaching $0$
 on $\mathbb{R}$.
 \item[(ii)] The argument $a^2+\varepsilon^2 z^2/\pi$ is real-negative only on
-$i(-\infty,-a\sqrt{\pi}/\varepsilon]\cup i[a\sqrt{\pi}/\varepsilon,\infty)$,
-which lies outside $\{|\operatorname{Im}z|<a\}$.
+$i(-\infty,-a\sqrt{\pi}/\varepsilon]\cup i[a\sqrt{\pi}/\varepsilon,\infty)$;
+since $\varepsilon\leq\sqrt{\pi}$ gives $a\sqrt{\pi}/\varepsilon\geq a$, this set
+lies outside $\{|\operatorname{Im}z|<a\}$.
 \item[(iii)] Identity \eqref{eq:Kone} is the Fourier pair from GR 8.451.6/3.914.6;
 positivity of $K_1$ is immediate from the integral representation.
 For decay \eqref{eq:decay}, set $y:=a\sqrt{1+\pi\xi^2/\varepsilon^2}$; then
@@ -500,9 +501,17 @@ For $|\xi|\gg\varepsilon$, this is $\sim e^{-(a\sqrt{\pi}/\varepsilon)|\xi|}$.
 For any $A<a\sqrt{\pi}/\varepsilon$, choosing $C_A$ large enough gives \eqref{eq:decay}.
 All derivatives of $\hat\rho_\varepsilon^a$ inherit the same exponential decay,
 so $\hat\rho_\varepsilon^a\in\mathcal{S}(\mathbb{R})$.
-\item[(iv)] When $\varepsilon=0$ the exponent equals $-a$; the uniform limit and
-the vanishing of derivatives follow from dominated convergence applied
-to the exponent and its derivatives. \qedhere
+\item[(iv)] When $\varepsilon=0$ the exponent equals $-a$.  On any compact
+subset $K\subset\{|\operatorname{Im}z|<a\}$, $\varepsilon^2 z^2/\pi\to 0$
+uniformly on $K$, so $\sqrt{a^2+\varepsilon^2 z^2/\pi}\to a$ uniformly on $K$
+(the argument stays in a compact subset of $\mathbb{C}\setminus(-\infty,0]$
+where $\sqrt{\cdot}$ is uniformly continuous), and continuity of $\exp$
+yields $\rho_\varepsilon^a\to e^{-a}$ uniformly on $K$.  For $k\geq 1$,
+each derivative $(\rho_\varepsilon^a)^{(k)}(u)$ is a polynomial in
+$\varepsilon$ times $\rho_\varepsilon^a$ times rational functions of
+$\sqrt{a^2+\varepsilon^2 u^2/\pi}$, every term of which carries at least
+one factor of $\varepsilon$, giving $(\rho_\varepsilon^a)^{(k)}(u)\to 0$
+pointwise (and uniformly on compacts) as $\varepsilon\to 0^+$. \qedhere
 \end{enumerate}
 \end{proof}
 
