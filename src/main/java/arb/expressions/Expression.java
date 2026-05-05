@@ -2102,23 +2102,30 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   /**
    * Issue #1005: value-backing cache peek. At entry to {@code evaluate(v, ...)}
-   * compare {@code this.lastV} to the {@code v} argument by reference identity.
-   * If they match and {@code cachedResult} is non-null, copy {@code cachedResult}
-   * into the caller's {@code result} buffer and return immediately. Otherwise
-   * record {@code this.lastV = v} and fall through to the body.
+   * compare {@code this.lastV} to the {@code v} argument by
+   * {@link Object#equals(Object) value equality} — reference identity is
+   * insufficient because callers (e.g. via {@code borrowVariable()}) routinely
+   * recycle the same wrapper object across distinct logical inputs. If
+   * {@code this.lastV != null && this.lastV.equals(v) && this.cachedResult != null}
+   * copy {@code cachedResult} into the caller's {@code result} buffer and
+   * return immediately. Otherwise lazily allocate {@code this.lastV} (first
+   * call only), value-copy {@code v} into it, and fall through to the body.
    */
   protected void generateValueBackingPeek(MethodVisitor mv)
   {
-    Label missEmpty = new Label();    // landed via IF_ACMPNE — stack empty
-    Label missDup   = new Label();    // landed via IFNULL — stack has one ref
-    Label recordV   = new Label();
-    // if (this.lastV != v) goto missEmpty
+    Label missEmpty = new Label();    // skip cached-result return, stack empty
+    Label missDup   = new Label();    // landed via IFNULL on cachedResult, stack has dup
+    Label record    = new Label();    // store v into this.lastV (value copy)
+    // if (this.lastV == null) goto missEmpty
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(Opcodes.GETFIELD, className, "lastV", Type.getDescriptor(domainType));
+    mv.visitJumpInsn(Opcodes.IFNULL, missEmpty);
+    // if (!this.lastV.equals(v)) goto missEmpty
     loadThisOntoStack(mv);
     mv.visitFieldInsn(Opcodes.GETFIELD, className, "lastV", Type.getDescriptor(domainType));
     mv.visitVarInsn(Opcodes.ALOAD, 1);
-    // cast erased Object to domainType so IF_ACMPNE has matching ref types
-    mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(domainType));
-    mv.visitJumpInsn(Opcodes.IF_ACMPNE, missEmpty);
+    Compiler.generateVirtualMethodInvocation(mv, Object.class, "equals", boolean.class, Object.class);
+    mv.visitJumpInsn(Opcodes.IFEQ, missEmpty);
     // cached = this.cachedResult; if (cached==null) goto missDup (stack has cached)
     loadThisOntoStack(mv);
     mv.visitFieldInsn(Opcodes.GETFIELD, className, "cachedResult", Type.getDescriptor(coDomainType));
@@ -2134,12 +2141,23 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     Compiler.designateLabel(mv, missDup);
     Compiler.pop(mv);
     Compiler.designateLabel(mv, missEmpty);
-    // record this.lastV = v (cast erased Object input to domainType)
+    // Lazily allocate this.lastV on first miss so we can copy v's value into it.
     loadThisOntoStack(mv);
+    mv.visitFieldInsn(Opcodes.GETFIELD, className, "lastV", Type.getDescriptor(domainType));
+    mv.visitJumpInsn(Opcodes.IFNONNULL, record);
+    loadThisOntoStack(mv);
+    mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(domainType));
+    Compiler.duplicateTopOfTheStack(mv);
+    mv.visitMethodInsn(Opcodes.INVOKESPECIAL, Type.getInternalName(domainType), "<init>", "()V", false);
+    mv.visitFieldInsn(Opcodes.PUTFIELD, className, "lastV", Type.getDescriptor(domainType));
+    Compiler.designateLabel(mv, record);
+    // this.lastV.set(v) — value copy, not reference store
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(Opcodes.GETFIELD, className, "lastV", Type.getDescriptor(domainType));
     mv.visitVarInsn(Opcodes.ALOAD, 1);
     mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(domainType));
-    mv.visitFieldInsn(Opcodes.PUTFIELD, className, "lastV", Type.getDescriptor(domainType));
-    Compiler.designateLabel(mv, recordV);
+    Compiler.generateVirtualMethodInvocation(mv, domainType, "set", domainType, domainType);
+    Compiler.pop(mv);
   }
 
   /**
