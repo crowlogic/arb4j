@@ -4872,19 +4872,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     functionalExpression.rootNode            = rootNode.spliceInto(functionalExpression);
     functionalExpression.rootNode.isRootNode = rootNode.isRootNode;
-    // Carry hand-wired context-function references (mappings with no
-    // expression — e.g. `He` registered as a ProbabilistHermitePolynomials
-    // instance) over to the functional. The functional is the user-facing
-    // generated class that actually executes the body; without these
-    // entries it would not declare a field for the context function and
-    // propagateContextFunctionReferences would emit no PUTFIELD when the
-    // outer class constructs it. Compiled-peer mappings (expression != null)
-    // are deliberately excluded to avoid materialising phantom mutual
-    // cycles in the structural-cycle detector.
+    // Carry every referenced-function mapping (hand-wired context instance OR
+    // compiled peer) over to the functional. The functional is the user-facing
+    // generated class that actually executes the body; without these entries
+    // it would not declare a field for the referenced function and Phase-2
+    // wire-all in its initialize() would have nothing to copy through to inner
+    // sum operands. The structural-cycle detector that previously rejected
+    // compiled-peer carry-over has been removed (Issue #1005).
     for (var refEntry : referencedFunctions.entrySet())
     {
       var refMapping = refEntry.getValue();
-      if (refMapping != null && refMapping.expression == null)
+      if (refMapping != null)
       {
         functionalExpression.registerReferencedFunction(refEntry.getKey(), refMapping);
       }
