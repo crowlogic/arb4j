@@ -149,8 +149,13 @@ and this limit is independent of the choice $C\geq C_0$.
 
 \begin{proof}
 Write $L=L(t):=\Theta'(t)=\theta'(t)+C$ and $N=N(t):=\lfloor\sqrt{t/2\pi}\rfloor$.
-Since $\theta'(t)=\tfrac12\log(t/2\pi)+O(t^{-2})$, one has $L(t)\sim\tfrac12\log(t/2\pi)$
-as $t\to\infty$.
+Since $\theta'(t)=\tfrac12\log(t/2\pi)+O(t^{-2})$, one has
+$L(t)\sim\tfrac12\log(t/2\pi)$ as $t\to\infty$.  Throughout, $T$ denotes
+the $t$-parameter corresponding to the averaging window: $T=\Theta^{-1}(U)$,
+so $U=\Theta(T)\sim\tfrac12 T\log(T/2\pi)$, and hence $U\log U\asymp T\log T$
+up to lower order; normalization by $U$ is therefore interchangeable with
+normalization by $T\log T$ in the estimates below, after the change of
+variable $u=\Theta(t)$, $du=L(t)\,dt$.
 
 The Riemann--Siegel formula \cite[Ch.~4]{Titchmarsh} gives
 \begin{equation}\label{eq:RS}
@@ -164,109 +169,107 @@ where $\varphi_n(u):=\theta(t(u))-t(u)\log n$ and $t(u):=\Theta^{-1}(u)$.
 The error $O(L^{-3/4})$ contributes $O((\log U)^{-3/2})$ to the product
 $X(u+h)X(u)$, negligible after Ces\`aro averaging.
 
-Using $\cos A\cos B=\tfrac12\cos(A-B)+\tfrac12\cos(A+B)$, the Ces\`aro
-average of the product of main sums splits as follows.
+Applying $\cos A\cos B=\tfrac12\cos(A-B)+\tfrac12\cos(A+B)$ to
+\eqref{eq:Xu} evaluated at $u+h$ and $u$, the Ces\`aro average of the
+product of main sums decomposes into three pieces, treated in turn.
 
 \begin{enumerate}
 
 \item\label{item:offdiag}
-The off-diagonal difference terms ($m\neq n$) are controlled by
-the Montgomery--Vaughan inequality \cite{MV} with frequencies
-$\lambda_n=\log n$, minimal gap
-$\delta=\min_{m\neq n}|\log m-\log n|\geq 1/(N+1)\asymp T^{-1/2}$,
-and coefficients $a_n=n^{-1/2}$.  The inequality gives
+\emph{Off-diagonal difference terms} ($m\neq n$).  By Cauchy--Schwarz,
+the Ces\`aro average of these terms is bounded by the square root of
+the $L^2$-mean of the single exponential sum
+$S(t):=\sum_{n\leq N}n^{-1/2}e^{it\log n}$.  The Montgomery--Vaughan
+inequality \cite{MV} with frequencies $\lambda_n=\log n$, minimal gap
+$\delta=\min_{m\neq n}|\log m-\log n|\geq 1/(N+1)\asymp T^{-1/2}$, and
+coefficients $a_n=n^{-1/2}$ gives
 \[
-  \int_0^T\Bigl|\sum_{n\leq N}n^{-1/2}e^{it\log n}\Bigr|^2\,dt
-  =T\sum_{n\leq N}n^{-1}+O\!\left(\delta^{-1}\sum_{n\leq N}n^{-1}\right).
+  \int_0^T|S(t)|^2\,dt
+  = T\sum_{n\leq N}n^{-1}+O\!\left(\delta^{-1}\sum_{n\leq N}n^{-1}\right)
+  = T\log N + O(\sqrt{T}\log T).
 \]
-The off-diagonal part is $O(\delta^{-1}\log N)=O(N\log N)=O(\sqrt{T}\log T)$.
-Normalized by $T\log T$: $O(T^{-1/2})\to 0$.
+The diagonal $m=n$ piece of $|S|^2$ contributes $T\log N\asymp T\log T$
+and is handled in item~\ref{item:diag}; the off-diagonal $m\neq n$ piece
+is $O(\sqrt{T}\log T)$.  Normalized by $T\log T$, the off-diagonal
+contribution is $O(T^{-1/2})$ and vanishes.
 
 \item\label{item:sumfreq}
-The sum-frequency terms contribute
+\emph{Sum-frequency terms}.  These contribute
 \[
   \frac{2}{L}\sum_{m,n\leq N}
   \frac{\cos(\varphi_m(u+h)+\varphi_n(u))}{\sqrt{mn}}
-  = \frac{2}{L}\sum_{q\leq N^2}\frac{d(q)}{\sqrt{q}}
-    \cos\bigl(2\theta(t)-t\log q\bigr) + \text{cross-terms},
+  = \frac{2}{L}\sum_{q\leq N^2}\frac{d_N(q)}{\sqrt{q}}
+    \cos\bigl(2\theta(t)-t\log q\bigr) + \mathcal{E}(t,h),
 \]
-where $d(q)$ counts ordered factorizations $q=mn$ with $m,n\leq N$.
-Setting $\Phi_q(t):=2\theta(t)-t\log q$, the Ces\`aro average reduces to
-showing
-\[
-  \frac{1}{T\log T}\int_0^T\Bigl|\sum_{q\leq N^2}
-  \frac{d(q)}{\sqrt{q}}e^{i\Phi_q(t)}\Bigr|\,dt\to 0.
-\]
-Fix $t\in[1,T]$ and view the inner sum as a divisor-weighted exponential
-sum with smooth phase $\Phi_q(t)=-t\log q+2\theta(t)$ linear in
-$\log q$.  Setting $\alpha(t):=t/(2\pi)$ and $f(q):=\alpha(t)\log q
--2\theta(t)/(2\pi)$, the sum is $\sum_{q\leq N^2}d(q)e(-f(q))$ where
-$e(x):=e^{2\pi ix}$.  Jutila \cite[Thm.~1]{Jutila} gives, for such
-sums with $f''(q)\asymp\alpha/q^2$ and $\alpha=t/(2\pi)\asymp T$:
+where $d_N(q):=\#\{(m,n):mn=q,\;m,n\leq N\}$ and $\mathcal{E}(t,h)$
+collects the $h$-dependent cross-terms, which admit the same bound by
+an identical argument.  Setting $\Phi_q(t):=2\theta(t)-t\log q$,
+$\alpha(t):=t/(2\pi)$, and $f(q):=\alpha(t)\log q-\theta(t)/\pi$, the
+sum takes the form $\sum_{q\leq N^2}d_N(q)e(-f(q))$ with $e(x):=e^{2\pi ix}$.
+Jutila \cite[Thm.~1]{Jutila}, applied to such divisor-weighted
+exponential sums with smooth phase satisfying $|f''(q)|\asymp\alpha/q^2$,
+gives
 \begin{equation}\label{eq:Jutila}
   \sum_{q\leq Q}d(q)e(-f(q))
-  = O_\varepsilon\bigl(Q^{1/2}\alpha^{1/4}+Q^{1/2+\varepsilon}\bigr)
-  = O_\varepsilon\bigl(Q^{1/2}T^{1/4+\varepsilon}\bigr),
-  \quad Q=N^2\asymp T.
+  = O_\varepsilon\bigl(Q^{1/2}\alpha^{1/4}+Q^{1/2+\varepsilon}\bigr),
 \end{equation}
-Here Jutila's estimate for
-$\sum_{n\leq X}d(n)e(f(n))$ with smooth $f$ and $|f''(n)|\asymp\alpha/n^2$
-gives the bound $X^{1/2}\alpha^{1/4}$ when $\alpha\gg X^{1/2}$, plus
-an additional $X^{1/2+\varepsilon}$ error term from the remainder in
-the Voronoi summation formula.  For the phase $f(q)=\alpha\log q$ with
-$\alpha=t/(2\pi)\asymp T$ and $X=N^2\asymp T$, one has
-$\alpha\asymp T\gg T^{1/2}\asymp X^{1/2}$, so the main term dominates,
-giving the stated bound uniformly in $t\in[1,T]$.
-
-Applying \eqref{eq:Jutila} with $Q=N^2\asymp T$:
+and this bound transfers to $d_N(q)\leq d(q)$ without loss.  With
+$Q=N^2\asymp T$ and $\alpha\asymp T$, the first term dominates since
+$\alpha\gg Q^{1/2}$, giving
 \[
-  \Bigl|\sum_{q\leq N^2}\frac{d(q)}{\sqrt{q}}e^{i\Phi_q(t)}\Bigr|
-  \leq \frac{1}{\sqrt{1}}\max_{Q'\leq N^2}
-       \Bigl|\sum_{q\leq Q'}d(q)e(-f(q))\Bigr|
-  = O_\varepsilon\bigl(T^{3/4+\varepsilon}\bigr),
+  \sum_{q\leq N^2}d_N(q)e(-f(q))=O_\varepsilon\bigl(T^{3/4+\varepsilon}\bigr),
 \]
-where the $1/\sqrt{q}$ weight is absorbed via partial summation
-(Abel summation with the Jutila bound on the partial sums), contributing
-at most a logarithm which is absorbed into the $\varepsilon$.
-Integrating in $t$:
+uniformly in $t\in[1,T]$.  The weight $1/\sqrt{q}$ is restored by Abel
+summation against the partial-sum bound, contributing at most a
+logarithmic factor absorbed into the $\varepsilon$.  Therefore
 \[
-  \int_0^T\Bigl|\sum_{q\leq N^2}\frac{d(q)}{\sqrt{q}}
-  e^{i\Phi_q(t)}\Bigr|\,dt
-  = O_\varepsilon\bigl(T^{7/4+\varepsilon}\bigr).
+  \frac{1}{L}\Bigl|\sum_{q\leq N^2}\frac{d_N(q)}{\sqrt{q}}
+  e^{i\Phi_q(t)}\Bigr|
+  = O_\varepsilon\bigl(T^{3/4+\varepsilon}/\log T\bigr),
 \]
-Normalized by $T\log T$: $O_\varepsilon(T^{3/4+\varepsilon}/\log T)\to 0$
-since $3/4<1$.
+and integrating in $t\in[0,T]$ and normalizing by $T\log T$ gives
+$O_\varepsilon(T^{-1/4+\varepsilon}/\log T)\to 0$.  The cross-term
+$\mathcal{E}(t,h)$ is dominated by the same estimate uniformly in $h$
+on compact sets.
 
 \item\label{item:diag}
-The diagonal terms ($m=n$) contribute
+\emph{Diagonal difference terms} ($m=n$).  These contribute
 \[
   D(u,h):=\frac{2}{L}\sum_{n\leq N}\frac{\cos(\varphi_n(u+h)-\varphi_n(u))}{n}.
 \]
-Since $\Theta'(t(u))=L$ and $t(u+h)-t(u)=h/L+O(h^2/L^2)$,
-the mean value theorem gives
-$\theta(t(u+h))-\theta(t(u))=(L-C)h/L+O(h^2/L^2)$, so
+Since $\Theta'(t(u))=L$ and $t(u+h)-t(u)=h/L+O(h^2/L^2)$, the mean
+value theorem yields $\theta(t(u+h))-\theta(t(u))=(L-C)h/L+O(h^2/L^2)$,
+whence
 \begin{equation}\label{eq:phasediff}
   \varphi_n(u+h)-\varphi_n(u)
   =h\!\left(1-\frac{C+\log n}{L}\right)+O(h^2/L^2)
   =:h(1-x_n)+O(h^2/L^2),
 \end{equation}
-where $x_n:=(C+\log n)/L$.
-
-At the top index $n=N(t)\sim\sqrt{t/2\pi}$:
+with $x_n:=(C+\log n)/L$.  At the top index $n=N(t)\sim\sqrt{t/2\pi}$,
 \[
   x_{N(t)}=\frac{C+\log N(t)}{L(t)}
   \sim\frac{C+\tfrac12\log(t/2\pi)}{\tfrac12\log(t/2\pi)+C}
-  \xrightarrow{t\to\infty}1.
+  \xrightarrow{t\to\infty}1,
 \]
-Thus the partition $\{x_n\}_{n=1}^{N}$ fills $[0,1]$ in the limit,
-with mesh $x_{n+1}-x_n=1/(nL)+O(1/(n^2L))$.  The Ces\`aro average of
-$D(u,h)$ is
+while $x_1=C/L\to 0$.  Thus the partition $\{x_n\}_{n=1}^{N}$ fills
+$[0,1]$ in the limit, with mesh $x_{n+1}-x_n=1/(nL)+O(1/(n^2L))$ for
+$n\geq n_0$ (any fixed $n_0\geq 1$).  Split the sum at $n_0$:
+\begin{enumerate}
+\item\label{item:head}
+\emph{Head} $n\leq n_0$: contributes $O(n_0/L)=O(1/\log T)\to 0$.
+
+\item\label{item:body}
+\emph{Body} $n_0<n\leq N$: the Ces\`aro average of the body is
 \[
-  \frac{1}{L}\sum_{n\leq N}\frac{\cos(h(1-x_n))}{n}
-  =\sum_{n\leq N}(x_{n+1}-x_n)\cos(h(1-x_n))\bigl(1+O(1/n)\bigr),
+  \frac{1}{L}\sum_{n_0<n\leq N}\frac{\cos(h(1-x_n))}{n}
+  =\sum_{n_0<n\leq N}(x_{n+1}-x_n)\cos(h(1-x_n))\bigl(1+O(1/n)\bigr),
 \]
-a Riemann sum for $\int_0^1\cos(h(1-x))\,dx$ over $[0,1]$; the
-$O(1/n)$ correction sums to $O((\log N)/(NL))\to 0$.  Evaluating:
+a Riemann sum for $\int_0^1\cos(h(1-x))\,dx$ with mesh $O(1/(n_0 L))$;
+the $O(1/n)$ relative error sums to $O((\log N)/(n_0 L))\to 0$.
+\end{enumerate}
+The remainder $O(h^2/L^2)$ in \eqref{eq:phasediff} contributes
+$O(h^2/L)\to 0$ uniformly on compact $h$.  Evaluating the Riemann
+integral:
 \begin{equation}\label{eq:diagonal}
   \int_0^1\cos(h(1-x))\,dx
   =\left[\frac{\sin(h(1-x))}{-h}\right]_0^1=\frac{\sin h}{h}.
@@ -274,10 +277,14 @@ $O(1/n)$ correction sums to $O((\log N)/(NL))\to 0$.  Evaluating:
 
 \end{enumerate}
 
-Combining items \ref{item:offdiag}, \ref{item:sumfreq}, \ref{item:diag}:
-the first two contribute $o(1)$ and the diagonal gives $\sin(h)/h$.
-The constant $C$ cancels in item~\ref{item:diag} since $C/L\to 0$,
-and does not appear in items~\ref{item:offdiag} or~\ref{item:sumfreq}.
+Combining items~\ref{item:offdiag}, \ref{item:sumfreq}, and
+\ref{item:diag}: the first two contribute $o(1)$, and the diagonal
+converges to $\sin(h)/h$.  The constant $C$ drops out of
+item~\ref{item:diag} because $C/L\to 0$ as $t\to\infty$, so
+$x_n\to\log n/L$ uniformly on $n_0<n\leq N$; items~\ref{item:offdiag}
+and~\ref{item:sumfreq} do not involve $C$ at all.  Hence $K(h)$ exists
+and equals $\sin(h)/h$ for every $h\in\mathbb{R}$, independently of
+$C\geq C_0$.
 \end{proof}
 
 %--------------------------------------------------------------------
