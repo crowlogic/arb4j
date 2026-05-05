@@ -34,10 +34,18 @@ import arb.utensils.Utensils;
 	private static final ThreadLocal<Real[]> autocorrelationScratch =
 	  ThreadLocal.withInitial(() -> new Real[] { new Real(), new Real() });
 
+
+
 	public RealPolynomial add( Real z, int bits, RealPolynomial result )
 	{
 	  return result.set(this).add(z,bits,result);
-	}  
+	} 
+
+	public ComplexPolynomial mul(ComplexPolynomial a, int bits, ComplexPolynomial res)
+	{
+	  return a.mul(this, bits, res);
+	}
+
 		
 	public Complex rgamma(int bits, Complex result)
 	{

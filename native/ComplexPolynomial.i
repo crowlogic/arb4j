@@ -16,10 +16,14 @@ import java.util.Objects;
 
 %typemap(javacode) acb_poly_struct %{
 
-	public ComplexPolynomial sub(Integer operand, int prec, ComplexPolynomial result)
+	public ComplexPolynomial sub(Integer s, int prec, ComplexPolynomial res)
 	{
-	  return result.set(this).sub(operand, prec,result);
+	  try ( var blip = new Complex())
+	  {
+	    return res.set(this).sub(blip.set(s), prec, res);
+	  }
 	}
+
 
 	public ComplexPolynomial add(Integer operand, int prec, ComplexPolynomial result)
 	{
