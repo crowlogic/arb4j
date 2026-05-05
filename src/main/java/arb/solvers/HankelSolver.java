@@ -1,8 +1,6 @@
 package arb.solvers;
 
-import arb.Complex;
-import arb.ComplexMatrix;
-import arb.arblib;
+import arb.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 
@@ -15,30 +13,30 @@ import arb.documentation.TheArb4jLibrary;
  * </pre>
  *
  * <p>
- * The matrix H is constructed once at instantiation and held as the only
- * native allocation owned by this object. Repeated calls to
+ * The matrix H is constructed once at instantiation and held as the only native
+ * allocation owned by this object. Repeated calls to
  * {@link #solve(ComplexMatrix, int, ComplexMatrix)} reuse the same H against
  * different right-hand sides.
  *
  * <p>
  * The class is reusable wherever a Hankel system arises:
  * <ul>
- *   <li>diagonal Padé denominators from a Taylor-coefficient sequence,</li>
- *   <li>Müntz–Padé denominators from a Müntz coefficient sequence,</li>
- *   <li>moment problems (Stieltjes, Hamburger),</li>
- *   <li>signal-subspace identification from sample autocorrelations.</li>
+ * <li>diagonal Padé denominators from a Taylor-coefficient sequence,</li>
+ * <li>Müntz–Padé denominators from a Müntz coefficient sequence,</li>
+ * <li>moment problems (Stieltjes, Hamburger),</li>
+ * <li>signal-subspace identification from sample autocorrelations.</li>
  * </ul>
  *
  * <p>
- * Singularity is reported as a post-solve sentinel via
- * {@link #wasSingular()} rather than thrown, so callers (e.g. an order-
- * fallback loop) can react without exception flow.
+ * Singularity is reported as a post-solve sentinel via {@link #wasSingular()}
+ * rather than thrown, so callers (e.g. an order- fallback loop) can react
+ * without exception flow.
  *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public final class HankelSystem implements
-                              AutoCloseable
+public final class HankelSolver implements
+                                AutoCloseable
 {
   /** Dimension of the square system. */
   public final int            M;
@@ -55,7 +53,7 @@ public final class HankelSystem implements
    * @param M     dimension of the system
    * @throws IllegalArgumentException when {@code coeff.dim < 2M} or {@code M < 1}
    */
-  public HankelSystem(Complex coeff, int M)
+  public HankelSolver(Complex coeff, int M)
   {
     if (M < 1)
     {
@@ -81,9 +79,9 @@ public final class HankelSystem implements
    * {@link #wasSingular()} is updated. When singular the contents of x are
    * unspecified and the caller is expected to consult the flag.
    *
-   * @param negB  right-hand side (M × 1)
-   * @param bits  working precision
-   * @param x     M × 1 result, returned for fluency
+   * @param negB right-hand side (M × 1)
+   * @param bits working precision
+   * @param x    M × 1 result, returned for fluency
    * @return x (the last parameter)
    */
   public ComplexMatrix solve(ComplexMatrix negB, int bits, ComplexMatrix x)
@@ -94,8 +92,8 @@ public final class HankelSystem implements
   }
 
   /**
-   * @return true iff the most recent {@link #solve} call could not invert H
-   *         at the requested precision.
+   * @return true iff the most recent {@link #solve} call could not invert H at
+   *         the requested precision.
    */
   public boolean wasSingular()
   {

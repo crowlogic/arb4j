@@ -5,7 +5,7 @@ import arb.ComplexMatrix;
 import junit.framework.TestCase;
 
 /**
- * Tests for {@link HankelSystem}.
+ * Tests for {@link HankelSolver}.
  *
  * <p>
  * The 2×2 Hankel system built from c = (c0, c1, c2, c3) with the standard
@@ -47,7 +47,7 @@ public class HankelSystemTest extends
       coeff.get(1).set(2);
       coeff.get(2).set(3);
       coeff.get(3).set(4);
-      try ( HankelSystem  H   = new HankelSystem(coeff, 2);
+      try ( HankelSolver  H   = new HankelSolver(coeff, 2);
             ComplexMatrix rhs = ComplexMatrix.newMatrix(2, 1);
             ComplexMatrix x   = ComplexMatrix.newMatrix(2, 1))
       {
@@ -74,7 +74,7 @@ public class HankelSystemTest extends
       coeff.get(1).set(1);
       coeff.get(2).set(1);
       coeff.get(3).set(1);
-      try ( HankelSystem  H   = new HankelSystem(coeff, 2);
+      try ( HankelSolver  H   = new HankelSolver(coeff, 2);
             ComplexMatrix rhs = ComplexMatrix.newMatrix(2, 1);
             ComplexMatrix x   = ComplexMatrix.newMatrix(2, 1))
       {
@@ -98,7 +98,7 @@ public class HankelSystemTest extends
       coeff.get(1).set(2);
       coeff.get(2).set(3);
       coeff.get(3).set(4);
-      try ( HankelSystem  H    = new HankelSystem(coeff, 2);
+      try ( HankelSolver  H    = new HankelSolver(coeff, 2);
             ComplexMatrix rhs1 = ComplexMatrix.newMatrix(2, 1);
             ComplexMatrix rhs2 = ComplexMatrix.newMatrix(2, 1);
             ComplexMatrix x1   = ComplexMatrix.newMatrix(2, 1);

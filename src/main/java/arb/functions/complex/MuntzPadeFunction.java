@@ -12,7 +12,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.ComplexFunctional;
 import arb.functions.integer.ComplexFunctionSequence;
-import arb.solvers.HankelSystem;
+import arb.solvers.HankelSolver;
 
 /**
  * Müntz–Padé re-summation of a Puiseux power series in {t^{kμ}}_{k≥1} into a
@@ -352,7 +352,7 @@ public class MuntzPadeFunction implements
 
     qMat.resize(M, 1);
 
-    try ( HankelSystem hankel = new HankelSystem(coeff,
+    try ( HankelSolver hankel = new HankelSolver(coeff,
                                                  M);
           ComplexMatrix neg_b = ComplexMatrix.newMatrix(M, 1))
     {
