@@ -146,12 +146,36 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return domainType.equals(Integer.class) && upstreamExpression == null;
   }
 
+  /**
+   * True when this expression is the inner curry body of an integer-domain
+   * sequence whose codomain is itself a function (Issue #1005). Such
+   * expressions get a per-instance value-backing cache: a single (lastInput,
+   * cachedResult) pair, populated on first evaluate and short-circuited on
+   * repeat calls with the same input by reference identity.
+   */
+  public boolean shouldCacheValueBacking()
+  {
+    return upstreamExpression != null
+           && upstreamExpression.shouldCache()
+           && upstreamExpression.isGeneratedFunctional()
+           && Field.class.isAssignableFrom(coDomainType);
+  }
+
   protected void declareCacheField(ClassVisitor cw)
   {
     if (shouldCache())
     {
       String signature = "L" + Type.getInternalName(TreeMap.class) + "<" + Type.getDescriptor(arb.Integer.class) + Type.getDescriptor(coDomainType) + ">;";
       cw.visitField(Opcodes.ACC_PRIVATE | Opcodes.ACC_FINAL, "cache", Type.getDescriptor(TreeMap.class), signature, null);
+    }
+    if (shouldCacheValueBacking())
+    {
+      // Issue #1005: per-instance value-backing cache for inner curry bodies.
+      // lastV holds the most recent input by reference; cachedResult holds the
+      // last computed Field result. On reentry with the same v identity, the
+      // body is short-circuited to a result.set(cachedResult) copy.
+      cw.visitField(Opcodes.ACC_PRIVATE, "lastV", Type.getDescriptor(domainType), null, null);
+      cw.visitField(Opcodes.ACC_PRIVATE, "cachedResult", Type.getDescriptor(coDomainType), null, null);
     }
   }
 
@@ -1988,7 +2012,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       generateCoDomainTypeMethod(classVisitor);
       generateEvaluationMethod(classVisitor);
       generateStaticEvaluationMethod(classVisitor);
-      generateInvalidateStaticCacheMethod(classVisitor);
+      generateInvalidateMethod(classVisitor);
       generateDiffererentiationAndIntegrationMethods(classVisitor);
       declareFields(classVisitor);
       generateInitializationMethod(classVisitor);
@@ -2074,6 +2098,79 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     Compiler.generateReturnFromVoidMethod(methodVisitor);
 
     return classVisitor;
+  }
+
+  /**
+   * Issue #1005: value-backing cache peek. At entry to {@code evaluate(v, ...)}
+   * compare {@code this.lastV} to the {@code v} argument by reference identity.
+   * If they match and {@code cachedResult} is non-null, copy {@code cachedResult}
+   * into the caller's {@code result} buffer and return immediately. Otherwise
+   * record {@code this.lastV = v} and fall through to the body.
+   */
+  protected void generateValueBackingPeek(MethodVisitor mv)
+  {
+    Label missEmpty = new Label();    // landed via IF_ACMPNE — stack empty
+    Label missDup   = new Label();    // landed via IFNULL — stack has one ref
+    Label recordV   = new Label();
+    // if (this.lastV != v) goto missEmpty
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(Opcodes.GETFIELD, className, "lastV", Type.getDescriptor(domainType));
+    mv.visitVarInsn(Opcodes.ALOAD, 1);
+    // cast erased Object to domainType so IF_ACMPNE has matching ref types
+    mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(domainType));
+    mv.visitJumpInsn(Opcodes.IF_ACMPNE, missEmpty);
+    // cached = this.cachedResult; if (cached==null) goto missDup (stack has cached)
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(Opcodes.GETFIELD, className, "cachedResult", Type.getDescriptor(coDomainType));
+    Compiler.duplicateTopOfTheStack(mv);
+    mv.visitJumpInsn(Opcodes.IFNULL, missDup);
+    // result.set(cached); return result
+    mv.visitVarInsn(Opcodes.ALOAD, 4);
+    mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
+    mv.visitInsn(Opcodes.SWAP); // stack: result, cached
+    Compiler.generateVirtualMethodInvocation(mv, coDomainType, "set", coDomainType, coDomainType);
+    mv.visitInsn(Opcodes.ARETURN);
+    // miss with dup'd null: pop it and join missEmpty
+    Compiler.designateLabel(mv, missDup);
+    Compiler.pop(mv);
+    Compiler.designateLabel(mv, missEmpty);
+    // record this.lastV = v (cast erased Object input to domainType)
+    loadThisOntoStack(mv);
+    mv.visitVarInsn(Opcodes.ALOAD, 1);
+    mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(domainType));
+    mv.visitFieldInsn(Opcodes.PUTFIELD, className, "lastV", Type.getDescriptor(domainType));
+    Compiler.designateLabel(mv, recordV);
+  }
+
+  /**
+   * Issue #1005: value-backing cache poke. After the body has written its
+   * result into local 4, copy that result into {@code this.cachedResult} so
+   * the next call with the same v identity sees the stored value.
+   */
+  protected void generateValueBackingPoke(MethodVisitor mv)
+  {
+    // stack on entry from rootNode: <result>; pop it (already in local 4)
+    mv.visitInsn(Opcodes.POP);
+    // Lazily allocate this.cachedResult if null
+    Label haveSlot = new Label();
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(Opcodes.GETFIELD, className, "cachedResult", Type.getDescriptor(coDomainType));
+    mv.visitJumpInsn(Opcodes.IFNONNULL, haveSlot);
+    loadThisOntoStack(mv);
+    mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(coDomainType));
+    mv.visitInsn(Opcodes.DUP);
+    mv.visitMethodInsn(Opcodes.INVOKESPECIAL, Type.getInternalName(coDomainType), "<init>", "()V", false);
+    mv.visitFieldInsn(Opcodes.PUTFIELD, className, "cachedResult", Type.getDescriptor(coDomainType));
+    Compiler.designateLabel(mv, haveSlot);
+    // this.cachedResult.set(result)
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(Opcodes.GETFIELD, className, "cachedResult", Type.getDescriptor(coDomainType));
+    mv.visitVarInsn(Opcodes.ALOAD, 4);
+    mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
+    Compiler.generateVirtualMethodInvocation(mv, coDomainType, "set", coDomainType, coDomainType);
+    mv.visitInsn(Opcodes.POP);
+    // Push result back so the trailing ARETURN in evaluate's tail succeeds
+    mv.visitVarInsn(Opcodes.ALOAD, 4);
   }
 
   protected void generateCachePeek(MethodVisitor mv)
@@ -2445,12 +2542,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       generateEvalStampIncrement(mv);
     }
 
-    boolean cache = shouldCache();
+    boolean cache             = shouldCache();
+    boolean cacheValueBacking = shouldCacheValueBacking();
 
     if (cache)
     {
       generateCachePeek(mv);
       generateCachePokePrologue(mv);
+    }
+    if (cacheValueBacking)
+    {
+      generateValueBackingPeek(mv);
     }
 
     rootNode.isRootNode = true;
@@ -2466,6 +2568,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (cache)
     {
       generateCachePokeEpilogue(mv);
+    }
+    if (cacheValueBacking)
+    {
+      generateValueBackingPoke(mv);
     }
 
     designateLabel(mv, endLabel);
@@ -2861,9 +2967,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * {@link #referencedFunctions} is non-empty — otherwise the {@link Function}
    * interface's no-op default is inherited.
    */
-  protected ClassVisitor generateInvalidateStaticCacheMethod(ClassVisitor classVisitor)
+  protected ClassVisitor generateInvalidateMethod(ClassVisitor classVisitor)
   {
-    if (!hasStaticNodes && referencedFunctions.isEmpty() && !shouldCache())
+    if (!hasStaticNodes && referencedFunctions.isEmpty() && !shouldCache() && !shouldCacheValueBacking())
     {
       return classVisitor;
     }
@@ -2900,6 +3006,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       loadThisOntoStack(mv);
       mv.visitFieldInsn(Opcodes.GETFIELD, className, "cache", Type.getDescriptor(TreeMap.class));
       mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, Type.getInternalName(TreeMap.class), "clear", "()V", false);
+    }
+    if (shouldCacheValueBacking())
+    {
+      // Issue #1005: drop the per-instance value-backing cache. Setting lastV
+      // to null guarantees the next evaluate() call goes to the body, since
+      // every non-null user-supplied input v will fail the IF_ACMPNE check.
+      loadThisOntoStack(mv);
+      mv.visitInsn(Opcodes.ACONST_NULL);
+      mv.visitFieldInsn(Opcodes.PUTFIELD, className, "lastV", Type.getDescriptor(domainType));
     }
     // for each inlined nested Function field f: if (this.f != null)
     // this.f.invalidateCache(alreadyInvalidated);

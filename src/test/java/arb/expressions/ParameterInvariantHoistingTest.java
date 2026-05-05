@@ -107,8 +107,11 @@ public class ParameterInvariantHoistingTest extends
       // (3² + 1)*2 + (3 - 1) = 10*2 + 2 = 22
       t.set(2);
       assertEquals(22.0, f3.evaluate(t, 1, 128, result).doubleValue());
-      // Same instance, different t — exercises the cached static field path
+      // Same instance, different t — exercises the cached static field path.
+      // The Issue #1005 value-backing cache uses reference identity on the
+      // input v; mutating the same Real in place requires invalidateCache().
       t.set(5);
+      f3.invalidateCache();
       assertEquals(52.0, f3.evaluate(t, 1, 128, result).doubleValue());
 
       // Fresh instance with a different bound n — staticPrecision is reset
