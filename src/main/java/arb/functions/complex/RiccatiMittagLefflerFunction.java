@@ -210,7 +210,7 @@ public class RiccatiMittagLefflerFunction extends
 
     var             pMap = context.registerFunctionMapping("p_dv", Complex.class, Complex.class, ComplexFunction.class);
     pMap.instance   = p_dv;
-    pMap.expression = (Expression) p_dv.getExpression();
+    pMap.expression = p_dv.getExpression();
     var qMap = context.registerFunctionMapping("q_dv", Complex.class, Complex.class, ComplexFunction.class);
     qMap.instance   = q_dv;
     qMap.expression = (Expression) q_dv.getExpression();
