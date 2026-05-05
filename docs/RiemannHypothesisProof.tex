@@ -148,8 +148,10 @@ and this limit is independent of the choice $C\geq C_0$.
 \end{theorem}
 
 \begin{proof}
-Write $L=L(t):=\Theta'(t)=\theta'(t)+C$ and $N=N(t):=\lfloor\sqrt{t/2\pi}\rfloor$.
-Since $\theta'(t)=\tfrac12\log(t/2\pi)+O(t^{-2})$, one has
+Write $L=L(t):=\Theta'(t)=\theta'(t)+C$ and $N=N(t):=\lfloor\sqrt{t/2\pi}\rfloor$;
+write $N_*:=N(T)=\lfloor\sqrt{T/2\pi}\rfloor$ for the top index associated
+with the upper endpoint of the averaging window.  Since
+$\theta'(t)=\tfrac12\log(t/2\pi)+O(t^{-2})$, one has
 $L(t)\sim\tfrac12\log(t/2\pi)$ as $t\to\infty$.  Throughout, $T$ denotes
 the $t$-parameter corresponding to the averaging window: $T=\Theta^{-1}(U)$,
 so $U=\Theta(T)\sim\tfrac12 T\log(T/2\pi)$, and hence $U\log U\asymp T\log T$
@@ -179,58 +181,74 @@ product of main sums decomposes into three pieces, treated in turn.
 \emph{Off-diagonal difference terms} ($m\neq n$).  By Cauchy--Schwarz,
 the Ces\`aro average of these terms is bounded by the square root of
 the $L^2$-mean of the single exponential sum
-$S(t):=\sum_{n\leq N}n^{-1/2}e^{it\log n}$.  The Montgomery--Vaughan
+$S(t):=\sum_{n\leq N_*}n^{-1/2}e^{it\log n}$.  The Montgomery--Vaughan
 inequality \cite{MV} with frequencies $\lambda_n=\log n$, minimal gap
-$\delta=\min_{m\neq n}|\log m-\log n|\geq 1/(N+1)\asymp T^{-1/2}$, and
+$\delta=\min_{m\neq n}|\log m-\log n|\geq 1/(N_*+1)\asymp T^{-1/2}$, and
 coefficients $a_n=n^{-1/2}$ gives
 \[
   \int_0^T|S(t)|^2\,dt
-  = T\sum_{n\leq N}n^{-1}+O\!\left(\delta^{-1}\sum_{n\leq N}n^{-1}\right)
-  = T\log N + O(\sqrt{T}\log T).
+  = T\sum_{n\leq N_*}n^{-1}+O\!\left(\delta^{-1}\sum_{n\leq N_*}n^{-1}\right)
+  = T\log N_* + O(\sqrt{T}\log T).
 \]
-The diagonal $m=n$ piece of $|S|^2$ contributes $T\log N\asymp T\log T$
+The diagonal $m=n$ piece of $|S|^2$ contributes $T\log N_*\asymp T\log T$
 and is handled in item~\ref{item:diag}; the off-diagonal $m\neq n$ piece
 is $O(\sqrt{T}\log T)$.  Normalized by $T\log T$, the off-diagonal
 contribution is $O(T^{-1/2})$ and vanishes.
 
 \item\label{item:sumfreq}
-\emph{Sum-frequency terms}.  These contribute
+\emph{Sum-frequency terms}.  Extending the range of summation from
+$n\leq N(t)$ to $n\leq N_*$ is harmless because the Riemann--Siegel
+sum has zero coefficient for $n>N(t)$; accordingly the sum-frequency
+contribution takes the form
 \[
-  \frac{2}{L}\sum_{m,n\leq N}
-  \frac{\cos(\varphi_m(u+h)+\varphi_n(u))}{\sqrt{mn}}
-  = \frac{2}{L}\sum_{q\leq N^2}\frac{d_N(q)}{\sqrt{q}}
+  \frac{2}{L}\sum_{m,n\leq N_*}
+  \frac{\cos(\varphi_m(u+h)+\varphi_n(u))}{\sqrt{mn}}\,
+  \mathbf{1}_{m,n\leq N(t)}
+  = \frac{2}{L}\sum_{q\leq N_*^2}\frac{d_{N(t)}(q)}{\sqrt{q}}
     \cos\bigl(2\theta(t)-t\log q\bigr) + \mathcal{E}(t,h),
 \]
-where $d_N(q):=\#\{(m,n):mn=q,\;m,n\leq N\}$ and $\mathcal{E}(t,h)$
-collects the $h$-dependent cross-terms, which admit the same bound by
-an identical argument.  Setting $\Phi_q(t):=2\theta(t)-t\log q$,
-$\alpha(t):=t/(2\pi)$, and $f(q):=\alpha(t)\log q-\theta(t)/\pi$, the
-sum takes the form $\sum_{q\leq N^2}d_N(q)e(-f(q))$ with $e(x):=e^{2\pi ix}$.
+where $d_M(q):=\#\{(m,n):mn=q,\;m,n\leq M\}$ and $\mathcal{E}(t,h)$
+collects the $h$-dependent cross-terms.  The cutoff $d_{N(t)}(q)$ is
+removed by partial summation in the two variables $m,n$: writing
+$d_{N(t)}(q)=\sum_{m\leq N(t)}\sum_{n\leq N(t)}\mathbf{1}_{mn=q}$ and
+Abel-summing both indicator cutoffs against $d(q)$ reduces the bound
+to $O(\log^2 N_*)$ copies of the unrestricted divisor-exponential sum
+$\sum_{q\leq Q'}d(q)e(-f(q))$ with $Q'\leq N_*^2$, uniformly in
+$t\in[1,T]$; the $\log^2$ factor is absorbed into $\varepsilon$.
+
+Setting $\Phi_q(t):=2\theta(t)-t\log q$, $\alpha(t):=t/(2\pi)$, and
+$f(q):=\alpha(t)\log q-\theta(t)/\pi$, the inner sum has the form
+$\sum_{q\leq Q'}d(q)e(-f(q))$ with $e(x):=e^{2\pi ix}$.
 Jutila \cite[Thm.~1]{Jutila}, applied to such divisor-weighted
 exponential sums with smooth phase satisfying $|f''(q)|\asymp\alpha/q^2$,
 gives
 \begin{equation}\label{eq:Jutila}
-  \sum_{q\leq Q}d(q)e(-f(q))
-  = O_\varepsilon\bigl(Q^{1/2}\alpha^{1/4}+Q^{1/2+\varepsilon}\bigr),
+  \sum_{q\leq Q'}d(q)e(-f(q))
+  = O_\varepsilon\bigl((Q')^{1/2}\alpha^{1/4}+(Q')^{1/2+\varepsilon}\bigr).
 \end{equation}
-and this bound transfers to $d_N(q)\leq d(q)$ without loss.  With
-$Q=N^2\asymp T$ and $\alpha\asymp T$, the first term dominates since
-$\alpha\gg Q^{1/2}$, giving
+With $Q'\leq N_*^2\asymp T$ and $\alpha(t)\asymp t\leq T$, the first
+term dominates since $\alpha/(Q')^{1/2}\gg T^{1/2}\to\infty$, giving
 \[
-  \sum_{q\leq N^2}d_N(q)e(-f(q))=O_\varepsilon\bigl(T^{3/4+\varepsilon}\bigr),
+  \sum_{q\leq Q'}d(q)e(-f(q))=O_\varepsilon\bigl(T^{3/4+\varepsilon}\bigr),
 \]
-uniformly in $t\in[1,T]$.  The weight $1/\sqrt{q}$ is restored by Abel
-summation against the partial-sum bound, contributing at most a
-logarithmic factor absorbed into the $\varepsilon$.  Therefore
+uniformly in $t\in[1,T]$ and in $Q'\leq N_*^2$.  The weight
+$1/\sqrt{q}$ is restored by Abel summation against the partial-sum
+bound, contributing at most a logarithmic factor absorbed into
+$\varepsilon$.  Therefore
 \[
-  \frac{1}{L}\Bigl|\sum_{q\leq N^2}\frac{d_N(q)}{\sqrt{q}}
+  \frac{1}{L}\Bigl|\sum_{q\leq N_*^2}\frac{d_{N(t)}(q)}{\sqrt{q}}
   e^{i\Phi_q(t)}\Bigr|
   = O_\varepsilon\bigl(T^{3/4+\varepsilon}/\log T\bigr),
 \]
 and integrating in $t\in[0,T]$ and normalizing by $T\log T$ gives
-$O_\varepsilon(T^{-1/4+\varepsilon}/\log T)\to 0$.  The cross-term
-$\mathcal{E}(t,h)$ is dominated by the same estimate uniformly in $h$
-on compact sets.
+$O_\varepsilon(T^{-1/4+\varepsilon}/\log T)\to 0$.
+
+The cross-term $\mathcal{E}(t,h)$ collects contributions of the form
+$\cos(2\theta(t)-t\log q+\psi_{h,q}(t))$ with
+$\psi_{h,q}(t)=O(|h|(1+\log q)/L)=O_h(1)$ uniformly on compact $h$ and
+$q\leq N_*^2$; a bounded phase perturbation does not alter the
+stationary-phase geometry underlying \eqref{eq:Jutila}, so the same
+bound applies to $\mathcal{E}(t,h)$ uniformly in $h$ on compact sets.
 
 \item\label{item:diag}
 \emph{Diagonal difference terms} ($m=n$).  These contribute
