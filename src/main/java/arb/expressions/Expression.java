@@ -148,17 +148,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   /**
    * True when this expression is the inner curry body of an integer-domain
-   * sequence whose codomain is itself a function (Issue #1005). Such
-   * expressions get a per-instance value-backing cache: a single (lastInput,
-   * cachedResult) pair, populated on first evaluate and short-circuited on
-   * repeat calls with the same input by reference identity.
+   * sequence whose codomain is itself a function (Issue #1005). Such expressions
+   * get a per-instance value-backing cache: a single (lastInput, cachedResult)
+   * pair, populated on first evaluate and short-circuited on repeat calls with
+   * the same input by reference identity.
    */
   public boolean shouldCacheValueBacking()
   {
-    return upstreamExpression != null
-           && upstreamExpression.shouldCache()
-           && upstreamExpression.isGeneratedFunctional()
-           && Field.class.isAssignableFrom(coDomainType);
+    return upstreamExpression != null && upstreamExpression.shouldCache() && upstreamExpression.isGeneratedFunctional()
+                  && Field.class.isAssignableFrom(coDomainType);
   }
 
   protected void declareCacheField(ClassVisitor cw)
@@ -2055,7 +2053,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       generateDerivativeMethod(classVisitor);
       generateIntegralMethod(classVisitor);
     }
-    else if (Polynomial.class.isAssignableFrom(coDomainType))
+    else if (Polynomial.class.isAssignableFrom(coDomainType) || RationalFunction.class.isAssignableFrom(coDomainType)
+                  || ComplexRationalFunction.class.isAssignableFrom(coDomainType))
     {
       // NON-NULLARY polynomial sequences DO NOTHING HERE.
       // The interface declares default integral()/derivative() methods that
@@ -2107,15 +2106,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * insufficient because callers (e.g. via {@code borrowVariable()}) routinely
    * recycle the same wrapper object across distinct logical inputs. If
    * {@code this.lastV != null && this.lastV.equals(v) && this.cachedResult != null}
-   * copy {@code cachedResult} into the caller's {@code result} buffer and
-   * return immediately. Otherwise lazily allocate {@code this.lastV} (first
-   * call only), value-copy {@code v} into it, and fall through to the body.
+   * copy {@code cachedResult} into the caller's {@code result} buffer and return
+   * immediately. Otherwise lazily allocate {@code this.lastV} (first call only),
+   * value-copy {@code v} into it, and fall through to the body.
    */
   protected void generateValueBackingPeek(MethodVisitor mv)
   {
-    Label missEmpty = new Label();    // skip cached-result return, stack empty
-    Label missDup   = new Label();    // landed via IFNULL on cachedResult, stack has dup
-    Label record    = new Label();    // store v into this.lastV (value copy)
+    Label missEmpty = new Label(); // skip cached-result return, stack empty
+    Label missDup   = new Label(); // landed via IFNULL on cachedResult, stack has dup
+    Label record    = new Label(); // store v into this.lastV (value copy)
     // if (this.lastV == null) goto missEmpty
     loadThisOntoStack(mv);
     mv.visitFieldInsn(Opcodes.GETFIELD, className, "lastV", Type.getDescriptor(domainType));
@@ -2161,9 +2160,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * Issue #1005: value-backing cache poke. After the body has written its
-   * result into local 4, copy that result into {@code this.cachedResult} so
-   * the next call with the same v identity sees the stored value.
+   * Issue #1005: value-backing cache poke. After the body has written its result
+   * into local 4, copy that result into {@code this.cachedResult} so the next
+   * call with the same v identity sees the stored value.
    */
   protected void generateValueBackingPoke(MethodVisitor mv)
   {
