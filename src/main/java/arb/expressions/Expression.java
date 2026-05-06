@@ -20,7 +20,6 @@ import org.slf4j.LoggerFactory;
 import arb.*;
 import arb.Integer;
 import arb.exceptions.CompilerException;
-import arb.exceptions.CyclicFunctionReferenceException;
 import arb.expressions.context.Dependency;
 import arb.expressions.nodes.*;
 import arb.expressions.nodes.Node;
@@ -1812,7 +1811,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return node;
   }
 
-  @SuppressWarnings({ "rawtypes", "unchecked" })
+  @SuppressWarnings(
+  { "rawtypes", "unchecked" })
   public Node<D, C, F> parseInputVariableAssignment(String variableName)
   {
     if (trace)
@@ -3119,7 +3119,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * This method then stores that reference into the StaticNode's own field via
    * {@code PUTFIELD}.
    */
-  @SuppressWarnings({ "rawtypes", "unchecked" })
+  @SuppressWarnings(
+  { "rawtypes", "unchecked" })
   protected void generateStaticSubexpressionComputations(MethodVisitor mv)
   {
     String internalName = className.replace('.', '/');
@@ -4255,7 +4256,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                          variable));
   }
 
-  protected void injectReferences(F f)
+  protected void injectContextFunctionAndVariableReferences(F f)
   {
     if (trace)
     {
@@ -4280,42 +4281,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     instance = newInstance();
 
     instantiateAndInjectReferencedFunctions(instance);
-    injectReferences(instance);
+    injectContextFunctionAndVariableReferences(instance);
     populateSourceExpressionBackPointer(instance);
 
     return instance;
   }
-
-//  public synchronized F instantiate()
-//  {
-//    log.debug("instantiate[{}]: ENTER thread={} functionName={} referencedFunctions={}",
-//              System.identityHashCode(this),
-//              Thread.currentThread().getName(),
-//              functionName,
-//              getReferencedFunctions().keySet());
-//
-//    F freshInstance = newInstance();
-//    log.debug("instantiate[{}]: newInstance -> {}@{}",
-//              System.identityHashCode(this),
-//              freshInstance.getClass().getName(),
-//              System.identityHashCode(freshInstance));
-//
-//    instantiateAndInjectReferencedFunctions(freshInstance);
-//    logReferencedFunctionFieldState(freshInstance, "after instantiateAndInjectReferencedFunctions");
-//
-//    injectReferences(freshInstance);
-//    logReferencedFunctionFieldState(freshInstance, "after injectReferences");
-//
-//    verifyFieldGraphAcyclic(freshInstance);
-//
-//    cloneNonReentrantReferencedFunctions(freshInstance);
-//    logReferencedFunctionFieldState(freshInstance, "after cloneNonReentrantReferencedFunctions");
-//
-//    populateSourceExpressionBackPointer(freshInstance);
-//
-//    instance = freshInstance;
-//    return freshInstance;
-//  }
 
   /**
    * Set the public {@code expression} field declared by
@@ -4329,19 +4299,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       java.lang.reflect.Field field = freshInstance.getClass().getField("expression");
       field.set(freshInstance, this);
     }
-    catch (NoSuchFieldException ignored)
+    catch (Exception wrapped)
     {
-      Utensils.wrapOrThrow(ignored);
-    }
-    catch (IllegalAccessException iae)
-    {
-      Utensils.wrapOrThrow(iae);
+      Utensils.wrapOrThrow(wrapped);
     }
   }
 
   /**
-   * Fix-up pass run by {@link #instantiate()} after the top-level instance has
-   * been constructed. For every entry in {@link #getReferencedFunctions()} whose
+   * For every entry in {@link #getReferencedFunctions()} whose
    * {@link FunctionMapping#instance} is still {@code null} but whose
    * {@link FunctionMapping#expression} is available — the typical
    * forward-declared case produced by
@@ -4375,7 +4340,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * The bytecode-level skip in the {@code else} branch of
    * {@code generateFunctionInitializer} (Expression.java:2388) remains a
    * deliberately supported configuration — callers who do <em>not</em> want
-   * automatic Context-variable propagation into their referenced functions can
+   * automatic {@link Context}-variable propagation into their referenced functions can
    * still construct an {@link Expression} and drive {@link #newInstance()}
    * directly without going through {@link #instantiate()}.
    */
