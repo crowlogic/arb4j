@@ -1812,6 +1812,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return node;
   }
 
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   public Node<D, C, F> parseInputVariableAssignment(String variableName)
   {
     if (trace)
@@ -3118,7 +3119,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * This method then stores that reference into the StaticNode's own field via
    * {@code PUTFIELD}.
    */
-  @SuppressWarnings("rawtypes")
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   protected void generateStaticSubexpressionComputations(MethodVisitor mv)
   {
     String internalName = className.replace('.', '/');

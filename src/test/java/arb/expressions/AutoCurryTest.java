@@ -11,12 +11,12 @@ import junit.framework.TestCase;
  * {@code (p₁,…,pₙ) = body} (and its named variant {@code f(p₁,…,pₙ) = body}):
  *
  * <ul>
- * <li>declaration shape {@code (p₁,…,pₙ) = body} produces the same AST as
- *     the chain {@code p₁➔p₂➔…➔pₙ➔body};</li>
- * <li>partitions of an argument list across grouped {@code (…)} pairs at a
- *     call site yield the same nested
- *     {@link arb.expressions.nodes.unary.FunctionalEvaluationNode}
- *     tree, so {@code f(a,b) = f(a)(b)}.</li>
+ * <li>declaration shape {@code (p₁,…,pₙ) = body} produces the same AST as the
+ * chain {@code p₁➔p₂➔…➔pₙ➔body};</li>
+ * <li>partitions of an argument list across grouped {@code (…)} pairs at a call
+ * site yield the same nested
+ * {@link arb.expressions.nodes.unary.FunctionalEvaluationNode} tree, so
+ * {@code f(a,b) = f(a)(b)}.</li>
  * </ul>
  *
  * The body of every lambda used here is built from arithmetic on the bound
@@ -38,7 +38,7 @@ public class AutoCurryTest extends
     return new Expression<>(name,
                             Integer.class,
                             RealFunction.class,
-                            (Class) Sequence.class,
+                            Sequence.class,
                             body,
                             null,
                             name,
@@ -69,10 +69,10 @@ public class AutoCurryTest extends
   }
 
   /**
-   * The named declaration {@code BesselNamed(n,t)=n+t} parses identically to
-   * its anonymous counterpart {@code (n,t)=n+t} when the leading function name
-   * agrees with the name passed to the parser. The leading identifier is
-   * consumed; the AST records only the body chain.
+   * The named declaration {@code BesselNamed(n,t)=n+t} parses identically to its
+   * anonymous counterpart {@code (n,t)=n+t} when the leading function name agrees
+   * with the name passed to the parser. The leading identifier is consumed; the
+   * AST records only the body chain.
    */
   public void testNamedDeclarationMatchesAnonymous()
   {

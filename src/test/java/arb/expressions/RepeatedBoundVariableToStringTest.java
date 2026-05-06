@@ -40,7 +40,7 @@ public class RepeatedBoundVariableToStringTest extends
                  new Expression<>("RepeatedBoundSequence",
                                   Integer.class,
                                   RealFunction.class,
-                                  (Class) Sequence.class,
+                                  Sequence.class,
                                   "n➔t➔n*t+n*t+n",
                                   null,
                                   "rep",

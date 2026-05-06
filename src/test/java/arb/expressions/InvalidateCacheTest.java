@@ -35,7 +35,7 @@ public class InvalidateCacheTest extends
                                                                    new Expression<>("BesselLikeSequenceInvalidate" + nValue,
                                                                                     Integer.class,
                                                                                     RealFunction.class,
-                                                                                    (Class) Sequence.class,
+                                                                                    Sequence.class,
                                                                                     "n➔t➔(n²+1)*t",
                                                                                     null,
                                                                                     "f",

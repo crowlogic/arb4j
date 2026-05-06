@@ -24,7 +24,7 @@ public class BoundVariableToStringTest extends
     Expression<Integer, RealFunction, Sequence<RealFunction>> expr = new Expression<>("BesselSequence",
                                                                                       Integer.class,
                                                                                       RealFunction.class,
-                                                                                      (Class) Sequence.class,
+                                                                                      Sequence.class,
                                                                                       "n➔t➔J(n,t)",
                                                                                       null,
                                                                                       "jBessel",

@@ -7,7 +7,6 @@ import arb.Complex;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.expressions.Context;
-import arb.expressions.Expression;
 import arb.functions.*;
 import arb.functions.integer.ComplexFunctionSequence;
 import arb.functions.integer.Sequence;
@@ -213,10 +212,10 @@ public class RiccatiMittagLefflerFunction extends
     pMap.expression = p_dv.getExpression();
     var qMap = context.registerFunctionMapping("q_dv", Complex.class, Complex.class, ComplexFunction.class);
     qMap.instance   = q_dv;
-    qMap.expression = (Expression) q_dv.getExpression();
+    qMap.expression = q_dv.getExpression();
     var rMap = context.registerFunctionMapping("r_dv", Complex.class, Complex.class, ComplexFunction.class);
     rMap.instance   = r_dv;
-    rMap.expression = (Expression) r_dv.getExpression();
+    rMap.expression = r_dv.getExpression();
 
     // Forward-declare w so its self-reference resolves; a is already in context.
     context.registerFunctionMapping("w", arb.Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);

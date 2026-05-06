@@ -118,9 +118,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
     case "sin":
       // I^(μ) sin(t) = t^(μ+1) · E(2, μ+2, −t²)
-      var muPlusOne_sin   = μ.add(one());
-      var muPlusTwo_sin   = μ.add(two());
-      var negTSq_sin      = t.pow(2).neg();
+      var muPlusOne_sin = μ.add(one());
+      var muPlusTwo_sin = μ.add(two());
+      var negTSq_sin = t.pow(2).neg();
       return t.pow(muPlusOne_sin)
               .mul(new MittagLefflerFunctionNode<>(expression,
                                                    two(),
@@ -130,7 +130,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     case "cos":
       // I^(μ) cos(t) = t^μ · E(2, μ+1, −t²)
       var muPlusOne_cos = μ.add(one());
-      var negTSq_cos    = t.pow(2).neg();
+      var negTSq_cos = t.pow(2).neg();
       return t.pow(μ)
               .mul(new MittagLefflerFunctionNode<>(expression,
                                                    two(),
@@ -399,7 +399,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       lookupFunctionInContext();
     }
-    if (generatedType == null )
+    if (generatedType == null)
     {
       generatedType = resultTypeFor(this.functionName);
     }
@@ -407,11 +407,11 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       expression.recursive = true;
       logger.debug("FunctionNode<init> self-test: functionName={} expression=#{} expression.context=#{} mappingAfterLookup=#{} contextual={}",
-                functionName,
-                System.identityHashCode(expression),
-                System.identityHashCode(expression.getContext()),
-                System.identityHashCode(mapping),
-                contextual);
+                   functionName,
+                   System.identityHashCode(expression),
+                   System.identityHashCode(expression.getContext()),
+                   System.identityHashCode(mapping),
+                   contextual);
       designateAsRecursiveFunction(type());
     }
 
@@ -422,11 +422,11 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     mapping    = expression.getContext().getFunctionMapping(functionName);
     contextual = mapping != null;
     logger.debug("lookupFunctionInContext: functionName={} expression=#{} expression.context=#{} contextEntries={} mappingFound=#{}",
-              functionName,
-              System.identityHashCode(expression),
-              System.identityHashCode(expression.getContext()),
-              expression.getContext().functions.keySet(),
-              System.identityHashCode(mapping));
+                 functionName,
+                 System.identityHashCode(expression),
+                 System.identityHashCode(expression.getContext()),
+                 expression.getContext().functions.keySet(),
+                 System.identityHashCode(mapping));
     if (contextual)
     {
       expression.registerReferencedFunction(functionName, mapping);
@@ -528,9 +528,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       generatedType = resultType;
     }
-    if ( mapping == null )
+    if (mapping == null)
     {
-    mapping = registerSelfReferrentialFunctionMapping();
+      mapping = registerSelfReferrentialFunctionMapping();
     }
   }
 
@@ -613,10 +613,15 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                      1);
     case "ζ":
     {
-      boolean isComplex = Complex.class.equals(scalarType(expression.coDomainType));
-      JetState state    = new JetState("ζ", arg.toString(), isComplex);
+      boolean  isComplex = Complex.class.equals(scalarType(expression.coDomainType));
+      JetState state     = new JetState("ζ",
+                                        arg.toString(),
+                                        isComplex);
       state.updateMax(1);
-      return new ZetaJetNode<>(expression, arg, 1, state);
+      return new ZetaJetNode<>(expression,
+                               arg,
+                               1,
+                               state);
     }
     default:
       if (expression.getContext() != null)
@@ -626,7 +631,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
         {
           contextual = true;
           mapping    = ctxMapping;
-          return differentiateBodyOf(ctxMapping);
+          return differentiateFunctionMapping(ctxMapping);
         }
       }
       throw new UnsupportedOperationException("Derivative not implemented for builtin function: "
@@ -644,18 +649,18 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   /**
-   * Splices a function mapping's expression body into the current expression and
+   * Splices a function mapping's expression into the current expression and
    * differentiates it symbolically. If the function was defined with a different
    * independent variable name (e.g. P:v->... used inside an expression with
    * independent variable t), substitutes the function's variable with our own
    * before differentiating to avoid UndefinedReferenceException.
    */
   @SuppressWarnings("unchecked")
-  private Node<D, R, F> differentiateBodyOf(FunctionMapping<?, ?, ?> functionMapping)
+  private Node<D, R, F> differentiateFunctionMapping(FunctionMapping<?, ?, ?> functionMapping)
   {
-    Node<D, R, F>            body       = (Node<D, R, F>) functionMapping.expression.rootNode.spliceInto(expression);
-    VariableNode<D, R, F>    ourIndep   = expression.getIndependentVariable();
-    VariableNode<?, ?, ?>    fnIndep    = functionMapping.expression.getIndependentVariable();
+    Node<D, R, F>         body     = functionMapping.expression.rootNode.spliceInto(expression);
+    VariableNode<D, R, F> ourIndep = expression.getIndependentVariable();
+    VariableNode<?, ?, ?> fnIndep  = functionMapping.expression.getIndependentVariable();
     if (fnIndep != null && ourIndep != null && !fnIndep.getName().equals(ourIndep.getName()))
     {
       body = body.substitute(fnIndep.getName(), ourIndep);
@@ -678,7 +683,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       if (functionMapping.expression != null)
       {
-        return differentiateBodyOf(functionMapping);
+        return differentiateFunctionMapping(functionMapping);
       }
       return new DerivativeNode<>(expression,
                                   this);
@@ -702,7 +707,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       // Fall back to symbolic differentiation of the expression body.
       if (functionMapping.expression != null)
       {
-        return differentiateBodyOf(functionMapping);
+        return differentiateFunctionMapping(functionMapping);
       }
       return new DerivativeNode<>(expression,
                                   this);
@@ -746,7 +751,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   protected static final Logger logger = LoggerFactory.getLogger(FunctionNode.class);
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings(
+  { "unchecked", "rawtypes" })
   private Node<D, R, F> integrateContextualFunction(VariableNode<D, R, F> variable)
   {
     if (Expression.traceNodes)
@@ -1056,25 +1062,6 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return true;
   }
 
-  /**
-   * Defers to {@link Node#isEquivalentTo} (which compares {@code getClass()}
-   * and {@code toString()}). Subclasses such as {@link LommelPolynomialNode}
-   * and {@link SphericalBesselFunctionNodeOfTheFirstKind} override
-   * {@code toString()} to render every structural child (index, order, arg),
-   * so the rendered form already distinguishes e.g. {@code R(n,½;x)} from
-   * {@code R(n-1,3/2;x)} and the CSE pass will not collapse them.
-   * <p>
-   * An earlier revision walked {@link #getBranches()} here, but
-   * {@code getBranches()} is a tree-view affordance (populated for
-   * {@link arb.expressions.nodes.Node.NodeTreeItem} / {@link TextTree} /
-   * {@link ExpressionTree} rendering), not a programmatic traversal API:
-   * several implementations flatten or reorder children and some
-   * (e.g. {@link CachedNode}, {@link DerivativeNode}) delegate to another
-   * node whose back-pointers form a cycle once sub-expressions are stitched
-   * together, which made structural equality recurse indefinitely.
-   */
-
-
   @Override
   public int depth()
   {
@@ -1107,18 +1094,19 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   public FunctionMapping<D, R, F> registerSelfReferrentialFunctionMapping()
   {
     logger.debug("registerSelfReferrentialFunctionMapping: functionName={} expression=#{} expression.context=#{} contextEntries={}",
-              functionName,
-              System.identityHashCode(expression),
-              System.identityHashCode(expression.getContext()),
-              expression.getContext() == null ? "null" : expression.getContext().functions.keySet());
-    var mapping = expression.getContext().registerFunctionMapping(functionName,
-                                                             null,
-                                                             expression.domainType,
-                                                             expression.coDomainType,
-                                                             expression.functionClass,
-                                                             false,
-                                                             expression,
-                                                             expression.getExpression());
+                 functionName,
+                 System.identityHashCode(expression),
+                 System.identityHashCode(expression.getContext()),
+                 expression.getContext() == null ? "null" : expression.getContext().functions.keySet());
+    var mapping = expression.getContext()
+                            .registerFunctionMapping(functionName,
+                                                     null,
+                                                     expression.domainType,
+                                                     expression.coDomainType,
+                                                     expression.functionClass,
+                                                     false,
+                                                     expression,
+                                                     expression.getExpression());
     expression.registerReferencedFunction(functionName, mapping);
     return mapping;
   }
@@ -1199,18 +1187,17 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if (variable.equals(functionName))
     {
-      Node<D, R, F>         body               = (Node<D, R, F>) replacement;
+      Node<D, R, F>         rootNode            = replacement.spliceInto(expression);
+      Expression<?, ?, ?>   definingExpression  = mapping != null ? mapping.expression : null;
+      VariableNode<?, ?, ?> independentVariable = definingExpression != null ? definingExpression.getIndependentVariable() : null;
 
-      Expression<?, ?, ?>   definingExpression = mapping != null ? mapping.expression : null;
-      VariableNode<?, ?, ?> formalParam        = definingExpression != null ? definingExpression.getIndependentVariable() : null;
-
-      if (formalParam != null && arg != null)
+      if (independentVariable != null && arg != null)
       {
-        body = body.substitute(formalParam.reference.name, arg);
+        rootNode = rootNode.substitute(independentVariable.reference.name, arg);
       }
 
-      body.isRootNode = this.isRootNode;
-      return body;
+      rootNode.isRootNode = this.isRootNode;
+      return rootNode;
     }
 
     return this;
@@ -1292,9 +1279,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     String argTypeset     = arg == null ? "" : arg.typeset();
 
-    String derivativeMark = derivativeOrder == 0 ? ""
-                          : derivativeOrder <= 3 ? "'".repeat(derivativeOrder)
-                          : "^{(" + derivativeOrder + ")}";
+    String derivativeMark = derivativeOrder == 0 ? "" : derivativeOrder <= 3 ? "'".repeat(derivativeOrder) : "^{(" + derivativeOrder + ")}";
 
     if (name.equals("sqrt"))
     {

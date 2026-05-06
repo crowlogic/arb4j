@@ -188,7 +188,7 @@ public interface Function<D, CO> extends
    * @param variables ordered list of parameter names whose partials to return
    * @return a {@link Jacobian} whose i-th partial is ∂this/∂variables[i]
    */
-  public default <F extends Function<D,CO>> Jacobian<D, CO, F> jacobian(String[] variables)
+  public default Jacobian<D, CO, ? extends Function<D, CO>> jacobian(String[] variables)
   {
     throw new UnsupportedOperationException("TODO: " + getClass() + " should implement jacobian(String[])");
   }
@@ -200,7 +200,7 @@ public interface Function<D, CO> extends
    * classes that have direct access to the references (and so can avoid the
    * name-lookup round trip) are free to override.
    */
-  public default <F extends Function<D,CO>> Jacobian<D, CO, F> jacobian(VariableReference<?, ?, ?>[] variables)
+  public default Jacobian<D, CO, ? extends Function<D, CO>> jacobian(VariableReference<?, ?, ?>[] variables)
   {
     String[] names = new String[variables.length];
     for (int i = 0; i < variables.length; i++)
@@ -216,7 +216,7 @@ public interface Function<D, CO> extends
    * node's name and dispatches to {@link #jacobian(String[])}; implementing
    * classes that have direct access to the nodes are free to override.
    */
-  public default <F extends Function<D,CO>>  Jacobian<D, CO, F> jacobian(VariableNode<?, ?, ?>[] variables)
+  public default Jacobian<D, CO, ? extends Function<D, CO>> jacobian(VariableNode<?, ?, ?>[] variables)
   {
     String[] names = new String[variables.length];
     for (int i = 0; i < variables.length; i++)
