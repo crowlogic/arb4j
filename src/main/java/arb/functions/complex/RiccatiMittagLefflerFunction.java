@@ -46,7 +46,7 @@ import arb.solvers.HankelSolver;
  *
  *   compiled once as a {@link ComplexFunctionSequence} and handed to the parent
  *   {@link MuntzPadeFunction}. Everything else — the {@link HankelSolver}, the
- *   order-selection loop from precision, the {@link PadeDiagonal} evaluation,
+ *   order-selection loop from precision, the {@link DiagonalPadePair} evaluation,
  *   the a-posteriori error bound — exists in the parent because none of
  *   it is specific to Riccati: it belongs to the (μ, k ↦ v ↦ aₖ(v))
  *   Müntz–Padé re-summation.

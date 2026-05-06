@@ -31,7 +31,7 @@ import arb.expressions.Context;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public final class DiagonalPade implements
+public final class DiagonalPadePair implements
                                 ComplexFunction,
                                 AutoCloseable
 {
@@ -51,7 +51,7 @@ public final class DiagonalPade implements
    * polynomials start zero-length; the producer (typically a Hankel solve) fills
    * them via {@link #set}.
    */
-  public DiagonalPade(int M)
+  public DiagonalPadePair(int M)
   {
     if (M < 0)
     {
@@ -70,7 +70,7 @@ public final class DiagonalPade implements
    * Mark this pair as the singular-Hankel sentinel: both polynomials become
    * length-1 with constant term +∞.
    */
-  public DiagonalPade markSingular()
+  public DiagonalPadePair markSingular()
   {
     P.fitLength(1);
     P.setLength(1);

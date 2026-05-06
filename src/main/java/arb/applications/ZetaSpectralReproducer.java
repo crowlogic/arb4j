@@ -87,7 +87,7 @@ public class ZetaSpectralReproducer extends
 {
   /** First Riemann\u2013Siegel-theta zero \u2014 same as the Python script. */
   static final double T0_DEFAULT     = 6.289835988;
-  static final double TMAX_DEFAULT   = 1000.0;
+  static final double TMAX_DEFAULT   = 2000.0;
   static final double OMEGA_MIN      = -2.0;
   static final double OMEGA_MAX      = 0;
   static final int    NT_DEFAULT     = 4000;       // smoke run; use 80000 for parity
