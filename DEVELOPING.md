@@ -1,15 +1,4 @@
-# Developer Instructions for arb4j
-
-## **NEVER READ SUREFIRE REPORTS. EVER.**
-
-**Files under `target/surefire-reports/` and `build/surefire-reports/` are FORBIDDEN as a source of truth.** They persist across sessions, configurations, and code edits. Reading them and reporting their contents as the current behavior of a test is a banned operation.
-
-The ONLY permitted sources for what a test is currently doing are:
-
-1. The console output captured from a Maven invocation **executed in the current session**.
-2. The debug log file produced by `logback-debug.xml` from a run **executed in the current session**.
-
-If those sources do not exist for the question being asked, the test must be re-run. No exceptions. This applies to `*.txt`, `*.xml`, and any other artifact under any `surefire-reports/` directory in arb4j, bonanzai, or any other repository.
+# Development notes for arb4j
 
 ## CRITICAL: SWIG-Generated Files
 
