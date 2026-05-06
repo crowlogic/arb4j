@@ -569,6 +569,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                        arg,
                                                        derivativeOrder + 1);
 
+    case "abs":
+      return arg.sign();
     case "θ": // Heaviside step function
       return arg.δ();
     case "sqrt":
@@ -1019,6 +1021,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return this;
     case "tan":
       return arg.cos().log().neg();
+    case "tanh":
+      return arg.cosh().log();
     case "sec":
       return arg.sec().add(arg.tan()).log();
     case "arcsin":

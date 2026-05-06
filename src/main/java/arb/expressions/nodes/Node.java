@@ -70,24 +70,24 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    * {@link #toString()} automatically propagates bound-variable formatting
    * without needing per-node overrides.
    */
-  public static final ThreadLocal<Boolean>              emittingBoundFormat   = ThreadLocal.withInitial(() -> false);
+  public static final ThreadLocal<Boolean>                        emittingBoundFormat  = ThreadLocal.withInitial(() -> false);
 
   /**
    * One-based indices of upstream-input variables within the format arguments
    * array, keyed by variable name. Every occurrence of variable {@code x} with
-   * index {@code i} emits {@code "%i$s"}, reusing the same positional argument
-   * so that repeated occurrences do not consume extra arguments.
+   * index {@code i} emits {@code "%i$s"}, reusing the same positional argument so
+   * that repeated occurrences do not consume extra arguments.
    */
-  public static final ThreadLocal<Map<String, java.lang.Integer>> boundVariableIndices  = ThreadLocal.withInitial(Collections::emptyMap);
+  public static final ThreadLocal<Map<String, java.lang.Integer>> boundVariableIndices = ThreadLocal.withInitial(Collections::emptyMap);
 
   /**
-   * Returns this node's string representation with every upstream-bound
-   * variable name replaced by an indexed format specifier {@code "%N$s"}
-   * (where {@code N} is the 1-based position of the variable in
-   * {@code variableIndices}). Indexed specifiers let repeated occurrences of
-   * the same variable reuse a single positional argument, so the resulting
-   * format string can be safely passed to {@link String#format} with an
-   * argument array containing one entry per unique variable name.
+   * Returns this node's string representation with every upstream-bound variable
+   * name replaced by an indexed format specifier {@code "%N$s"} (where {@code N}
+   * is the 1-based position of the variable in {@code variableIndices}). Indexed
+   * specifiers let repeated occurrences of the same variable reuse a single
+   * positional argument, so the resulting format string can be safely passed to
+   * {@link String#format} with an argument array containing one entry per unique
+   * variable name.
    *
    * @param variableIndices map from upstream-input variable name to 1-based
    *                        argument position; if null or empty, every upstream
@@ -110,10 +110,10 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   }
 
   /**
-   * Legacy entry point retained for callers that do not need indexed
-   * specifiers. Every upstream-input variable occurrence emits the bare
-   * {@code "%s"}; use {@link #toStringBound(Map)} when the resulting format
-   * string will be fed to {@link String#format} with repeated variables.
+   * Legacy entry point retained for callers that do not need indexed specifiers.
+   * Every upstream-input variable occurrence emits the bare {@code "%s"}; use
+   * {@link #toStringBound(Map)} when the resulting format string will be fed to
+   * {@link String#format} with repeated variables.
    */
   public String toStringBound()
   {
@@ -150,9 +150,9 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   public Expression<D, R, F> asExpression(VariableNode<D, R, F> independentVar)
   {
     Expression<D, R, F> expr = expression.cloneExpression();
-    expr.functionName        = null;
+    expr.functionName = null;
     expr.clearIndependentVariable();
-    expr.rootNode            = null;
+    expr.rootNode = null;
     expr.assignInputVariable(expr.newVariableNode(independentVar.getName()));
     expr.rootNode = spliceInto(expr);
     expr.updateStringRepresentation();
@@ -233,9 +233,9 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   public Node<D, R, F> fractionalIntegral(VariableNode<D, R, F> variable, Node<D, R, F> order)
   {
     return new RiemannLiouvilleFractionalIntegralNode<D, R, F>(expression,
-                                                                this,
-                                                                variable,
-                                                                order);
+                                                               this,
+                                                               variable,
+                                                               order);
   }
 
   /**
@@ -305,9 +305,9 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   }
 
   /**
-   * Returns true if this node is provably non-negative. Subclasses override
-   * this for patterns that are guaranteed non-negative (even exponents,
-   * absolute values, exponentials, products of non-negative factors, etc.).
+   * Returns true if this node is provably non-negative. Subclasses override this
+   * for patterns that are guaranteed non-negative (even exponents, absolute
+   * values, exponentials, products of non-negative factors, etc.).
    *
    * @see <a href="https://github.com/crowlogic/arb4j/issues/549">#549</a>
    */
@@ -328,15 +328,14 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    */
   public void replaceChild(Node<D, R, F> oldChild, Node<D, R, F> newChild)
   {
-    throw new UnsupportedOperationException(getClass().getSimpleName()
-                                            + " has no replaceable children");
+    throw new UnsupportedOperationException(getClass().getSimpleName() + " has no replaceable children");
   }
 
   /**
    * Returns true if this node is a linear operator with respect to the given
    * variables — meaning it preserves integration/summation exchange. Subclasses
-   * that represent linear operations (addition, subtraction, negation,
-   * scalar multiplication, scalar division) override this.
+   * that represent linear operations (addition, subtraction, negation, scalar
+   * multiplication, scalar division) override this.
    *
    * @param outerVar the outer operator's integration/summation variable
    * @param innerVar the inner operator's integration/summation variable
@@ -351,9 +350,8 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   /**
    * Walks from {@code inner} up to {@code outer} via {@link #parent} pointers,
-   * checking that every intermediate node is a
-   * {@linkplain #isLinearOperator linear operator} with respect to both
-   * operator variables.
+   * checking that every intermediate node is a {@linkplain #isLinearOperator
+   * linear operator} with respect to both operator variables.
    *
    * @param outer    the ancestor operator node
    * @param inner    the descendant operator node
@@ -365,10 +363,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    */
   public static <D, R, F extends Function<? extends D, ? extends R>>
          boolean
-         isLinearPath(Node<D, R, F> outer,
-                      Node<D, R, F> inner,
-                      VariableNode<D, R, F> outerVar,
-                      VariableNode<D, R, F> innerVar)
+         isLinearPath(Node<D, R, F> outer, Node<D, R, F> inner, VariableNode<D, R, F> outerVar, VariableNode<D, R, F> innerVar)
   {
     for (Node<D, R, F> n = inner.parent; n != null && n != outer; n = n.parent)
     {
@@ -381,14 +376,17 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   }
 
   /**
-   * Exchange two nested operator nodes in the expression tree by reassigning
-   * six pointers. The outer operator becomes the inner and vice versa.
+   * Exchange two nested operator nodes in the expression tree by reassigning six
+   * pointers. The outer operator becomes the inner and vice versa.
    * <p>
    * Before:
+   * 
    * <pre>
    *   parent → outer { body: ... inner { body: integrand } ... }
    * </pre>
+   * 
    * After:
+   * 
    * <pre>
    *   parent → inner { body: outer { body: integrand } }
    * </pre>
@@ -399,12 +397,10 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    *
    * @see <a href="https://github.com/crowlogic/arb4j/issues/885">#885</a>
    */
-  public static <D, R, F extends Function<? extends D, ? extends R>>
-         void
-         exchange(Node<D, R, F> outer, Node<D, R, F> inner)
+  public static <D, R, F extends Function<? extends D, ? extends R>> void exchange(Node<D, R, F> outer, Node<D, R, F> inner)
   {
-    Node<D, R, F> outerParent   = outer.parent;
-    Node<D, R, F> innerBody     = getBody(inner);
+    Node<D, R, F> outerParent = outer.parent;
+    Node<D, R, F> innerBody   = getBody(inner);
 
     // Rewire: parent now points to inner instead of outer
     if (outerParent != null)
@@ -426,9 +422,9 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   }
 
   /**
-   * α-converts (renames) all occurrences of the variable named {@code oldName}
-   * to {@code newName} within this node's subtree. Used to avoid variable
-   * capture when exchanging nested operators.
+   * α-converts (renames) all occurrences of the variable named {@code oldName} to
+   * {@code newName} within this node's subtree. Used to avoid variable capture
+   * when exchanging nested operators.
    *
    * @param oldName the current variable name to rename
    * @param newName the fresh variable name to use
@@ -465,24 +461,18 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    */
   public void setBody(Node<D, R, F> body)
   {
-    throw new UnsupportedOperationException(getClass().getSimpleName()
-                                            + " does not have a settable body");
+    throw new UnsupportedOperationException(getClass().getSimpleName() + " does not have a settable body");
   }
 
-  private static <D, R, F extends Function<? extends D, ? extends R>>
-          Node<D, R, F>
-          getBody(Node<D, R, F> node)
+  private static <D, R, F extends Function<? extends D, ? extends R>> Node<D, R, F> getBody(Node<D, R, F> node)
   {
     return node.getBody();
   }
 
-  private static <D, R, F extends Function<? extends D, ? extends R>>
-          void
-          setBody(Node<D, R, F> node, Node<D, R, F> body)
+  private static <D, R, F extends Function<? extends D, ? extends R>> void setBody(Node<D, R, F> node, Node<D, R, F> body)
   {
     node.setBody(body);
   }
-
 
   public String toStringWithoutIndependentVariableSpecified()
   {
@@ -494,11 +484,11 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   private Boolean constantFlag;
 
   /**
-   * Clears the memoized value of {@link #isConstant()} at this node.
-   * Must be called whenever a child is rewritten (e.g. during
-   * {@link #replaceConstantNodes()}) so a subsequent query reflects the
-   * new structure. Overrides that cache additional state must override
-   * this to clear it too.
+   * Clears the memoized value of {@link #isConstant()} at this node. Must be
+   * called whenever a child is rewritten (e.g. during
+   * {@link #replaceConstantNodes()}) so a subsequent query reflects the new
+   * structure. Overrides that cache additional state must override this to clear
+   * it too.
    */
   public void invalidateConstantFlag()
   {
@@ -511,14 +501,14 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    *         the enclosing function instance — i.e., literal constants and
    *         {@link VariableNode}s whose values are bound at instance
    *         initialization time ({@link VariableNode#isFixedInstanceData()}
-   *         bound-parameter / upstream-input variables emitted as private
-   *         fields of the generated class). Such subtrees may be safely
-   *         hoisted into {@code evaluateStaticSubexpressions()} where they are
-   *         computed once per precision and cached in a field.
+   *         bound-parameter / upstream-input variables emitted as private fields
+   *         of the generated class). Such subtrees may be safely hoisted into
+   *         {@code evaluateStaticSubexpressions()} where they are computed once
+   *         per precision and cached in a field.
    *         <p>
    *         Variables whose values can change independently of the input —
-   *         mutable context variables, indeterminate placeholders — cause this
-   *         to return {@code false}, as does the evaluation variable itself.
+   *         mutable context variables, indeterminate placeholders — cause this to
+   *         return {@code false}, as does the evaluation variable itself.
    *         <p>
    *         Computed once and cached.
    */
@@ -576,8 +566,8 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   }
 
   /**
-   * Returns the depth of this node in the AST. Leaf nodes have depth 0.
-   * Container nodes return 1 + max child depth.
+   * Returns the depth of this node in the AST. Leaf nodes have depth 0. Container
+   * nodes return 1 + max child depth.
    */
   public int depth()
   {
@@ -679,13 +669,13 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    * Reference-identity equality. A node's {@link #expression} field is a
    * back-pointer to the owning {@link Expression}, whose own {@code equals}
    * recurses through its {@code rootNode}; including {@code expression} in
-   * {@code Node.equals} therefore creates an equality cycle that overflows
-   * the stack the first time two distinct sub-expressions share structural
-   * shape. Subclasses that need deep structural equality (arithmetic
-   * operations, function calls) override {@link #equals(Object)} to walk
-   * their own typed children; this base implementation intentionally does
-   * not attempt a generic structural compare because {@link #getBranches()}
-   * is a tree-view affordance and may flatten, reorder, or omit children.
+   * {@code Node.equals} therefore creates an equality cycle that overflows the
+   * stack the first time two distinct sub-expressions share structural shape.
+   * Subclasses that need deep structural equality (arithmetic operations,
+   * function calls) override {@link #equals(Object)} to walk their own typed
+   * children; this base implementation intentionally does not attempt a generic
+   * structural compare because {@link #getBranches()} is a tree-view affordance
+   * and may flatten, reorder, or omit children.
    */
   @Override
   public boolean equals(Object obj)
@@ -836,9 +826,9 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   }
 
   /**
-   * Identity hash, matching the reference-identity {@link #equals(Object)}
-   * on this base class. Subclasses that override {@code equals} for
-   * structural comparison must also override {@code hashCode}.
+   * Identity hash, matching the reference-identity {@link #equals(Object)} on
+   * this base class. Subclasses that override {@code equals} for structural
+   * comparison must also override {@code hashCode}.
    */
   @Override
   public int hashCode()
@@ -1024,15 +1014,15 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   }
 
   /**
-   * Recursively replaces constant non-atomic subtrees with
-   * {@link StaticNode} wrappers so that they are evaluated once in
-   * {@code evaluateStaticSubexpressions()} and loaded from a field
-   * thereafter.
+   * Recursively replaces constant non-atomic subtrees with {@link StaticNode}
+   * wrappers so that they are evaluated once in
+   * {@code evaluateStaticSubexpressions()} and loaded from a field thereafter.
    *
-   * <p>Container nodes must override this to recurse into each child field,
-   * reassign it with the return value, then delegate to
-   * {@code super.replaceConstantNodes()} — identical to the
-   * {@link #simplify()} pattern.
+   * <p>
+   * Container nodes must override this to recurse into each child field, reassign
+   * it with the return value, then delegate to
+   * {@code super.replaceConstantNodes()} — identical to the {@link #simplify()}
+   * pattern.
    *
    * @return {@code this}, or a {@link StaticNode} wrapping {@code this}
    */
@@ -1253,17 +1243,21 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    * {@link Expression#deferVariableResolution} was true at that time and the
    * function had not yet been registered). Called by
    * {@link arb.expressions.nodes.nary.NAryOperationNode#parseOperatorLimitSpecifications()}
-   * after all family-index functions (e.g. {@code m∶ℓ}) have been registered
-   * into the context, so that forward references like {@code m(ℓ)} in the
-   * operand body are resolved correctly.
+   * after all family-index functions (e.g. {@code m∶ℓ}) have been registered into
+   * the context, so that forward references like {@code m(ℓ)} in the operand body
+   * are resolved correctly.
    */
   public void resolveFunctions()
   {
-    nodeStream()
-      .filter(Node::isFunction)
-      .map(Node::asFunction)
-      .filter(fn -> fn.mapping == null && fn.expression.getContext() != null)
-      .forEach(fn -> fn.lookupFunctionInContext());
+    nodeStream().filter(Node::isFunction)
+                .map(Node::asFunction)
+                .filter(fn -> fn.mapping == null && fn.expression.getContext() != null)
+                .forEach(fn -> fn.lookupFunctionInContext());
+  }
+
+  public Node<D, R, F> sign()
+  {
+    return apply("sign");
   }
 
 }
