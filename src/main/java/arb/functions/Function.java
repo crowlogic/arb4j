@@ -268,20 +268,18 @@ public interface Function<D, CO> extends
 
   public static <D, H, Q extends Function<? extends D, ? extends H>>
          Expression<D, H, Q>
-         parseAndCompile(Class<? extends D> domainClass, Class<? extends H> coDomainClass, Class<? extends Q> functionClass, String expression, Context context)
+         parseAndCompile(Class<? extends D> domainClass, Class<? extends H> coDomainClass, Class<Q> functionClass, String expression, Context context)
   {
-    Expression<D, H, Q> parsedExpression = Function.parse(Parser.transformToAcceptableJavaIdentifier(expression),
-                                                          expression,
-                                                          context,
-                                                          domainClass,
-                                                          coDomainClass,
-                                                          functionClass,
-                                                          null,
-                                                          null,
-                                                          true);
-    parsedExpression.compile();
-
-    return parsedExpression;
+    return Function.parse(Parser.transformToAcceptableJavaIdentifier(expression),
+                          expression,
+                          context,
+                          domainClass,
+                          coDomainClass,
+                          functionClass,
+                          null,
+                          null,
+                          true)
+                   .compile();
   }
 
   public static <D, H, Q extends Function<? extends D, ? extends H>>
@@ -378,13 +376,7 @@ public interface Function<D, CO> extends
                                                                         String functionName,
                                                                         boolean replace)
   {
-    Expression<D, H, Q> compiledParsedAndRegisteredExpression = parseCompileAndRegister(expression,
-                                                                                        context,
-                                                                                        domainClass,
-                                                                                        coDomainClass,
-                                                                                        functionClass,
-                                                                                        functionName,
-                                                                                        replace);
+    Expression<D, H, Q> compiledParsedAndRegisteredExpression = compile(expression, context, domainClass, coDomainClass, functionClass, functionName, replace);
     if (compiledParsedAndRegisteredExpression.functionMapping != null && compiledParsedAndRegisteredExpression.functionMapping.instance != null)
     {
       return compiledParsedAndRegisteredExpression.functionMapping.instance;
@@ -397,13 +389,13 @@ public interface Function<D, CO> extends
     return instance;
   }
 
-  static <D, H, Q extends Function<? extends D, ? extends H>> Expression<D, H, Q> parseCompileAndRegister(String expression,
-                                                                                                          Context context,
-                                                                                                          Class<? extends D> domainClass,
-                                                                                                          Class<? extends H> coDomainClass,
-                                                                                                          Class<? extends Q> functionClass,
-                                                                                                          String functionName,
-                                                                                                          boolean replace)
+  static <D, H, Q extends Function<? extends D, ? extends H>> Expression<D, H, Q> compile(String expression,
+                                                                                          Context context,
+                                                                                          Class<? extends D> domainClass,
+                                                                                          Class<? extends H> coDomainClass,
+                                                                                          Class<? extends Q> functionClass,
+                                                                                          String functionName,
+                                                                                          boolean replace)
   {
     int colonIndex = expression.indexOf(':');
     if (colonIndex != -1)

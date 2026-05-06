@@ -101,7 +101,7 @@ public interface Sequence<C> extends
          Expression<Integer, Q, S>
          compile(String name, Class<? extends Q> coDomainType, String expression, Class<? extends S> functionClass, Context context)
   {
-    return Function.parseCompileAndRegister(expression, context, Integer.class, coDomainType, functionClass, name, true);
+    return Function.compile(expression, context, Integer.class, coDomainType, functionClass, name, true);
   }
 
   public static <Q, S extends Sequence<? extends Q>>
