@@ -14,6 +14,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.ZetaSpectralRandomMeasure;
 import arb.stochastic.Charts;
+import arb.viz.WindowManager;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.dataset.spi.DoubleDataSet;
@@ -24,9 +25,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
- * Java reproducer of the spectral-measure half of
- * {@code zeta_spectral_gemini.py}, computed end-to-end via the {@code nint}
- * expression-compiler operator.
+ * Java reproducer of the spectral-measure half of ζ , computed end-to-end via
+ * the {@code nint} expression-compiler operator.
  *
  * <p>
  * The pipeline computes Φ(ω) over the spectral grid: for each ω, evaluate
@@ -88,10 +88,10 @@ public class ZetaSpectralReproducer extends
   /** First Riemann\u2013Siegel-theta zero \u2014 same as the Python script. */
   static final double T0_DEFAULT     = 6.289835988;
   static final double TMAX_DEFAULT   = 1000.0;
-  static final double OMEGA_MIN      = -3.0;
-  static final double OMEGA_MAX      = 3.0;
+  static final double OMEGA_MIN      = -2.0;
+  static final double OMEGA_MAX      = 0;
   static final int    NT_DEFAULT     = 4000;       // smoke run; use 80000 for parity
-  static final int    NOMEGA_DEFAULT = 256;        // smoke run; use 2560 for parity
+  static final int    NOMEGA_DEFAULT = 512;        // smoke run; use 2560 for parity
   static final int    BITS_DEFAULT   = 64;
 
   static int          NT;
@@ -153,6 +153,8 @@ public class ZetaSpectralReproducer extends
                             1400,
                             900);
     primaryStage.setScene(scene);
+    WindowManager.setMoreConduciveStyle(scene);
+
     primaryStage.show();
   }
 
@@ -330,8 +332,8 @@ public class ZetaSpectralReproducer extends
                                            yAxis);
     chart.setTitle("Cumulative Spectral Measure  Φ(ω) = ∫ dΦ");
     xAxis.setAutoRanging(false);
-    xAxis.setMin(-3.25);
-    xAxis.setMax(3.25);
+    xAxis.setMin(OMEGA_MIN);
+    xAxis.setMax(OMEGA_MAX);
     xAxis.setAutoRangeRounding(false);
     xAxis.setTickUnit(0.25);
     yAxis.setAutoRanging(true);
@@ -371,8 +373,8 @@ public class ZetaSpectralReproducer extends
                                            yAxis);
     chart.setTitle("Spectral Distribution Function");
     xAxis.setAutoRanging(false);
-    xAxis.setMin(-3.25);
-    xAxis.setMax(3.25);
+    xAxis.setMin(OMEGA_MIN);
+    xAxis.setMax(OMEGA_MAX);
     xAxis.setAutoRangeRounding(false);
     xAxis.setTickUnit(0.25);
     yAxis.setAutoRanging(true);

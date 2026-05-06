@@ -41,7 +41,7 @@ public interface Function<D, CO> extends
    * @param n     signed integer index — may be negative
    * @return the cached value if present, otherwise {@code null}
    */
-  static <C> C peek(TreeMap<arb.Integer, C> cache, arb.Integer n)
+  static <C> C peek(TreeMap<Integer, C> cache, arb.Integer n)
   {
     return cache.get(n);
   }
@@ -52,7 +52,7 @@ public interface Function<D, CO> extends
    *
    * @return the inserted value (for chaining)
    */
-  static <C> C poke(TreeMap<arb.Integer, C> cache, arb.Integer n, C value)
+  static <C> C poke(TreeMap<Integer, C> cache, arb.Integer n, C value)
   {
     cache.put(new arb.Integer(n), value);
     return value;
