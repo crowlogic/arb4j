@@ -8,8 +8,7 @@ import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.expressions.Context;
 import arb.functions.*;
-import arb.functions.integer.ComplexFunctionSequence;
-import arb.functions.integer.Sequence;
+import arb.functions.integer.*;
 import arb.solvers.HankelSolver;
 
 /**
@@ -186,6 +185,15 @@ public class RiccatiMittagLefflerFunction extends
     return new Jacobian<Complex, ComplexFunction, ComplexFunctional>(this,
                                                                      variables,
                                                                      partials);
+  }
+
+  public ComplexSequenceSequence buildScalarCoefficientRecursion()
+  {
+    ComplexSequence.express("a1m:m➔when(m=0,0,m=1,P1/Γ(μ+1),else,P2/Γ(μ+1))", context);
+
+    ComplexSequenceSequence.compile("S:k➔m➔sum(j➔sum(ℓ➔akm(j)(ℓ)*akm(k-1-j)(m-ℓ){ℓ=1..m-1}){j=1..k-2})", context);
+
+    return ComplexSequenceSequence.express("akm:k➔m➔when(k=1,a1m(m),else,(Γ((k-1)*μ+1)/Γ(k*μ+1))*(Q0*akm(k-1)(m)+Q1*akm(k-1)(m-1)+R*S(k)(m)))", context);
   }
 
   /**

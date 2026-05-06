@@ -1,8 +1,10 @@
 package arb.functions.integer;
 
+import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
+import arb.expressions.Expression;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -30,6 +32,16 @@ public interface ComplexSequenceSequence extends
   static ComplexSequenceSequence express(String expression, Context context)
   {
     return Sequence.express(null, ComplexSequence.class, expression, ComplexSequenceSequence.class, context);
+  }
+
+  public static Expression<Integer, ComplexSequence, ComplexSequenceSequence> compile(String string, String string2, Context context)
+  {
+    return Sequence.compile(ComplexSequence.class, string, ComplexSequenceSequence.class, context);
+  }
+
+  public static Expression<Integer, ComplexSequence, ComplexSequenceSequence> compile(String string, Context context)
+  {
+    return compile(null, string, context);
   }
 
 }
