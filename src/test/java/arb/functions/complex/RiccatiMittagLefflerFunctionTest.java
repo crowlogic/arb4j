@@ -9,7 +9,7 @@ import arb.functions.real.RealNullaryFunction;
 import junit.framework.TestCase;
 
 /**
- * Tests for {@link RiccatiMittagLefflerFunction}.
+ * Tests for {@link RiccatiMuntzPadeFunctional}.
  *
  * <p>
  * Reference: Crowley, qrh.tex (March 2026), §§2–3.
@@ -35,7 +35,7 @@ public class RiccatiMittagLefflerFunctionTest extends
     μ.set("0.6", bits);
     μ.setBounds(0, false, 1, true);
 
-    try ( RiccatiMittagLefflerFunction eq = new RiccatiMittagLefflerFunction(μ, "1", "-1/2", "3/10"))
+    try ( RiccatiMuntzPadeFunctional eq = new RiccatiMuntzPadeFunctional(μ, "1", "-1/2", "3/10"))
     {
       ComplexFunctionSequence a = eq.muntzBasis();
       assertNotNull("Müntz coefficient sequence must be compiled", a);
@@ -62,7 +62,7 @@ public class RiccatiMittagLefflerFunctionTest extends
 
   /**
    * Order-from-bits selection. The function
-   * {@link RiccatiMittagLefflerFunction#chooseOrderForPrecision(Complex, int)}
+   * {@link RiccatiMuntzPadeFunctional#chooseOrderForPrecision(Complex, int)}
    * returns the smallest Padé order M for which the successive-difference
    * bound at the test point z falls below 2^(−bits).
    *
@@ -92,7 +92,7 @@ public class RiccatiMittagLefflerFunctionTest extends
     μ.set("0.6", baseBits);
     μ.setBounds(0, false, 1, true);
 
-    try ( RiccatiMittagLefflerFunction eq = new RiccatiMittagLefflerFunction(μ, "2", "-3", "0");
+    try ( RiccatiMuntzPadeFunctional eq = new RiccatiMuntzPadeFunctional(μ, "2", "-3", "0");
           Complex                      v  = new Complex();
           Complex                      z  = new Complex())
     {

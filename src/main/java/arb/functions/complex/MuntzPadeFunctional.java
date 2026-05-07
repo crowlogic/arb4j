@@ -66,7 +66,7 @@ public class MuntzPadeFunctional implements
   /** Fractional order μ ∈ (0,1). */
   public Real                    α;
 
-  /** Curried Müntz coefficient sequence k ↦ v ↦ a_k(v). */
+  /** Curried Müntz coefficient sequence k ↦ v ↦ aₖ(v). */
   public ComplexFunctionSequence a;
 
   /** Optional name for typeset/print purposes. */
@@ -99,7 +99,7 @@ public class MuntzPadeFunctional implements
   /**
    * <p>
    * ────────────────────────────────────────────────────────────────────────
-   * ComplexFunctional.evaluate — v ↦ (t ↦ R_M(t; v))
+   * ComplexFunctional.evaluate — y:v↦t↦R_M(t; v)
    * ────────────────────────────────────────────────────────────────────────
    * </p>
    * The functional output at v is a callable {@link ComplexFunction}

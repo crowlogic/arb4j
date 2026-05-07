@@ -31,9 +31,9 @@ import javafx.stage.Stage;
  * <p>
  * The pipeline computes Φ(ω) over the spectral grid: for each ω, evaluate
  * {@link ZetaSpectralRandomMeasure}, which is the compiled expression
- * 
+ * h
  * <pre>
- * ν ➔ nint(t ➔ ζ(½+ⅈ*t)·√(diff(ϑ(t),t))·exp(-ⅈ*ν*ϑ(t)),
+ * ν ➔ nint(t ➔ ζ(½+ⅈ*t)·√(ϑ̇(t))·exp(-ⅈ*ν*ϑ(t)),
  *              t = T0 … Tmax,
  *              dt = (Tmax-T0)/Nt) / (2π)
  * </pre>
@@ -86,37 +86,41 @@ public class ZetaSpectralReproducer extends
                                     Application
 {
   /** First Riemann\u2013Siegel-theta zero \u2014 same as the Python script. */
-  static final double T0_DEFAULT     = 6.289835988;
-  static final double TMAX_DEFAULT   = 2000.0;
+  static final Real   T0_DEFAULT     = Real.valueOf("6.289835988", 128);
+  //static final Real   T0_DEFAULT     = Real.valueOf("1000", 128);
+  
+  //static final Real   TMAX_DEFAULT   = Real.valueOf("1000.0", 128);
+  static final Real   TMAX_DEFAULT   = Real.valueOf("4000.0", 128);
+  
   static final double OMEGA_MIN      = -2.0;
   static final double OMEGA_MAX      = 0;
-  static final int    NT_DEFAULT     = 4000;       // smoke run; use 80000 for parity
-  static final int    NOMEGA_DEFAULT = 512;        // smoke run; use 2560 for parity
+  static final int    NT_DEFAULT     = 40000;                            // smoke run; use 80000 for parity
+  static final int    NOMEGA_DEFAULT = 4096;                            // smoke run; use 2560 for parity
   static final int    BITS_DEFAULT   = 64;
 
   static int          NT;
   static int          NOMEGA;
-  static double       TMAX;
+  static Real         TMAX;
   static int          BITS;
 
   // Outputs of the headless computation phase, populated by computeAll()
   // and consumed by start() to build the JavaFX scene graph and the CSV.
-  Real                omegas;                      // length NOMEGA
-  Complex             phi;                         // length NOMEGA, Φ(ω_k)
-  Real                cumPowerEmpirical;           // length NOMEGA, cumulative |dΦ_k|²
-  Real                cumPowerTheory;              // length NOMEGA, flat-density ramp
-  Real                dOmega;                      // (OMEGA_MAX - OMEGA_MIN) / NOMEGA, exact at BITS
+  Real                omegas;                                           // length NOMEGA
+  Complex             phi;                                              // length NOMEGA, Φ(ω_k)
+  Real                cumPowerEmpirical;                                // length NOMEGA, cumulative |dΦ_k|²
+  Real                cumPowerTheory;                                   // length NOMEGA, flat-density ramp
+  Real                dOmega;                                           // (OMEGA_MAX - OMEGA_MIN) / NOMEGA, exact at BITS
 
   public static void main(String[] args) throws Exception
   {
     NT     = args.length > 0 ? Integer.parseInt(args[0]) : NT_DEFAULT;
     NOMEGA = args.length > 1 ? Integer.parseInt(args[1]) : NOMEGA_DEFAULT;
-    TMAX   = args.length > 2 ? Double.parseDouble(args[2]) : TMAX_DEFAULT;
+    TMAX   = args.length > 2 ? Real.valueOf(args[2], 128) : TMAX_DEFAULT;
     BITS   = args.length > 3 ? Integer.parseInt(args[3]) : BITS_DEFAULT;
 
     int workers = Runtime.getRuntime().availableProcessors();
 
-    System.out.printf(Locale.ROOT, "[main] T=[%.6f, %.1f] N_t=%d N_omega=%d bits=%d workers=%d%n", T0_DEFAULT, TMAX, NT, NOMEGA, BITS, workers);
+    System.out.printf(Locale.ROOT, "[main] T=[%s, %s] N_t=%d N_omega=%d bits=%d workers=%d%n", T0_DEFAULT, TMAX, NT, NOMEGA, BITS, workers);
 
     Application.launch(ZetaSpectralReproducer.class, args);
   }
@@ -162,7 +166,7 @@ public class ZetaSpectralReproducer extends
   // Top-level orchestrator. Allocates every arbitrary-precision vector
   // and runs the pipeline.
   // ─────────────────────────────────────────────────────────────────────
-  void computeAll(int Nt, int Nomega, double Tmax, int bits, int workers) throws Exception
+  void computeAll(int Nt, int Nomega, Real Tmax, int bits, int workers) throws Exception
   {
     // ── ω-grid (linspace endpoint=False) and dω, in arb.Real
     omegas = Real.newVector(Nomega);
@@ -228,7 +232,7 @@ public class ZetaSpectralReproducer extends
   // and the per-evaluate rebind in init() is not thread-safe across a
   // single instance.
   // ─────────────────────────────────────────────────────────────────────
-  static void runSpectralDensity(Real omegas, Complex phi, double Tmax, int Nt, int bits, int workers) throws Exception
+  static void runSpectralDensity(Real omegas, Complex phi, Real Tmax, int Nt, int bits, int workers) throws Exception
   {
     int             N           = omegas.size();
     AtomicInteger   progress    = new AtomicInteger(0);
@@ -239,10 +243,8 @@ public class ZetaSpectralReproducer extends
     {
       ThreadLocal<ZetaSpectralRandomMeasure> tlPhi   = ThreadLocal.withInitial(() ->
                                                      {
-                                                       Real T0   = new Real(Double.toString(T0_DEFAULT),
-                                                                            bits);
-                                                       Real Tend = new Real(Double.toString(Tmax),
-                                                                            bits);
+                                                       Real T0   = T0_DEFAULT;
+                                                       Real Tend = Tmax;
                                                        return new ZetaSpectralRandomMeasure(T0,
                                                                                             Tend,
                                                                                             Nt,

@@ -13,7 +13,7 @@ import arb.solvers.HankelSolver;
 
 /**
  * <pre>
- * The Riccati–Mittag-Leffler function
+ * The Riccati–Muntz-Pade function
  *
  *   𝒴ₐ(p, q, r; t, v) ≔ unique analytic solution on a neighborhood of t = 0 of the 
  *   fractional Riccati equation
@@ -53,12 +53,12 @@ import arb.solvers.HankelSolver;
  *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the TheArb4jLibrary
  */
-public class RiccatiMittagLefflerFunction extends
-                                          MuntzPadeFunctional
+public class RiccatiMuntzPadeFunctional extends
+                                        MuntzPadeFunctional
 {
 
   @SuppressWarnings("unused")
-  private static final Logger  log                         = LoggerFactory.getLogger(RiccatiMittagLefflerFunction.class);
+  private static final Logger  log                         = LoggerFactory.getLogger(RiccatiMuntzPadeFunctional.class);
 
   /** Documentation-only string of the equation in standard form. */
   public static final String   FRACTIONAL_RICCATI_EQUATION = "t➔Đ^(μ)y(t;v)=t➔p(v)+q(v)*y(t;v)+r(v)*y(t;v)²";
@@ -76,7 +76,7 @@ public class RiccatiMittagLefflerFunction extends
 
   private ComplexFunction      discriminant;
 
-  public RiccatiMittagLefflerFunction(Context context, Real α, String pSrc, String qSrc, String rSrc)
+  public RiccatiMuntzPadeFunctional(Context context, Real α, String pSrc, String qSrc, String rSrc)
   {
     this.context = context;
     Real μ = context.getVariable("μ");
@@ -109,7 +109,7 @@ public class RiccatiMittagLefflerFunction extends
     a = ComplexFunctionSequence.express("a:k➔v➔when(k=1,p(v)/Γ(μ+1),else,(Γ((k-1)*μ+1)/Γ(k*μ+1))*(q(v)*a(k-1)(v)+r(v)*S(k)(v)))", context);
   }
 
-  public RiccatiMittagLefflerFunction(Real α, String p, String q, String r)
+  public RiccatiMuntzPadeFunctional(Real α, String p, String q, String r)
   {
     this(new Context(),
          α,
@@ -197,8 +197,8 @@ public class RiccatiMittagLefflerFunction extends
   }
 
   /**
-   * Build w(t;v) = ∂y/∂v as a {@link MuntzPadeFunctional} with the linear-Volterra
-   * curried Müntz coefficients k ↦ v ↦ w_k(v).
+   * Build w(t;v) = ∂y/∂v as a {@link MuntzPadeFunctional} with the
+   * linear-Volterra curried Müntz coefficients k ↦ v ↦ w_k(v).
    *
    * <p>
    * p, q, r already live in {@link #context} as compiled
@@ -247,8 +247,8 @@ public class RiccatiMittagLefflerFunction extends
     ComplexFunctionSequence w     = ComplexFunctionSequence.express(wExpr, context);
 
     return new MuntzPadeFunctional("∂y/∂v",
-                                 α,
-                                 w);
+                                   α,
+                                   w);
   }
 
   // ────────────────────────────────────────────────────────────────────────

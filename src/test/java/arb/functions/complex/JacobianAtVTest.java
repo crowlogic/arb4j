@@ -10,7 +10,7 @@ import arb.functions.real.RealNullaryFunction;
 import junit.framework.TestCase;
 
 /**
- * Tests for the v-partial of {@link RiccatiMittagLefflerFunction}.
+ * Tests for the v-partial of {@link RiccatiMuntzPadeFunctional}.
  *
  * <p>
  * The Jacobian {@code eq.jacobian(new String[]{"v"})} carries a single partial
@@ -67,7 +67,7 @@ public class JacobianAtVTest extends
     μ.set("0.6", bits);
     μ.setBounds(0, false, 1, true);
 
-    try ( RiccatiMittagLefflerFunction eq = new RiccatiMittagLefflerFunction(μ, pSrc, qSrc, rSrc))
+    try ( RiccatiMuntzPadeFunctional eq = new RiccatiMuntzPadeFunctional(μ, pSrc, qSrc, rSrc))
     {
       Complex v = new Complex();
       v.set(1, 0);
