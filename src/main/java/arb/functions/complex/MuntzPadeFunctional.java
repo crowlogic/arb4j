@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import arb.*;
-import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
@@ -57,12 +56,12 @@ import arb.solvers.HankelSolver;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class MuntzPadeFunction implements
-                               ComplexFunctional,
-                               AutoCloseable
+public class MuntzPadeFunctional implements
+                                 ComplexFunctional,
+                                 AutoCloseable
 {
 
-  private static final Logger    log  = LoggerFactory.getLogger(MuntzPadeFunction.class);
+  private static final Logger    log  = LoggerFactory.getLogger(MuntzPadeFunctional.class);
 
   /** Fractional order μ ∈ (0,1). */
   public Real                    α;
@@ -79,18 +78,18 @@ public class MuntzPadeFunction implements
    */
   private final ComplexMatrix    qMat = new ComplexMatrix().setName("q");
 
-  public MuntzPadeFunction()
+  public MuntzPadeFunctional()
   {
 
   }
 
-  public MuntzPadeFunction(Real α, ComplexFunctionSequence a)
+  public MuntzPadeFunctional(Real α, ComplexFunctionSequence a)
   {
     this.α = α;
     this.a = a;
   }
 
-  public MuntzPadeFunction(String name, Real α, ComplexFunctionSequence a)
+  public MuntzPadeFunctional(String name, Real α, ComplexFunctionSequence a)
   {
     this(α,
          a);
@@ -207,11 +206,10 @@ public class MuntzPadeFunction implements
         }
         if (bound.compareTo(prevBound) >= 0)
         {
-
           log.warn("chooseOrderForPrecision: stalled at M={}, returning M-1={}", M, M - 1);
-
+          return M - 1;
         }
-        return M - 1;
+
       }
 
     }

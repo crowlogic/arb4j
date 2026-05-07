@@ -44,7 +44,7 @@ import arb.solvers.HankelSolver;
  *                    + r(v)·∑ⱼ₌₁ᵏ⁻² aⱼ(v)·aₖ₋₁₋ⱼ(v) ),   k ≥ 2
  *
  *   compiled once as a {@link ComplexFunctionSequence} and handed to the parent
- *   {@link MuntzPadeFunction}. Everything else — the {@link HankelSolver}, the
+ *   {@link MuntzPadeFunctional}. Everything else — the {@link HankelSolver}, the
  *   order-selection loop from precision, the {@link DiagonalPadePair} evaluation,
  *   the a-posteriori error bound — exists in the parent because none of
  *   it is specific to Riccati: it belongs to the (μ, k ↦ v ↦ aₖ(v))
@@ -54,7 +54,7 @@ import arb.solvers.HankelSolver;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the TheArb4jLibrary
  */
 public class RiccatiMittagLefflerFunction extends
-                                          MuntzPadeFunction
+                                          MuntzPadeFunctional
 {
 
   @SuppressWarnings("unused")
@@ -161,7 +161,7 @@ public class RiccatiMittagLefflerFunction extends
    * </pre>
    *
    * The solution w(t;v) = Σ w_k(v)·t^{kμ} is itself a Müntz–Padé function, so the
-   * partial is returned as a fresh {@link MuntzPadeFunction} sharing the same α
+   * partial is returned as a fresh {@link MuntzPadeFunctional} sharing the same α
    * and the new curried w-sequence.
    * </p>
    */
@@ -197,7 +197,7 @@ public class RiccatiMittagLefflerFunction extends
   }
 
   /**
-   * Build w(t;v) = ∂y/∂v as a {@link MuntzPadeFunction} with the linear-Volterra
+   * Build w(t;v) = ∂y/∂v as a {@link MuntzPadeFunctional} with the linear-Volterra
    * curried Müntz coefficients k ↦ v ↦ w_k(v).
    *
    * <p>
@@ -246,7 +246,7 @@ public class RiccatiMittagLefflerFunction extends
                                     + "       *(f(k-1)(v) + sum(j➔g(k-2-j)(v)*w(j+1)(v){j=0..k-2})))";
     ComplexFunctionSequence w     = ComplexFunctionSequence.express(wExpr, context);
 
-    return new MuntzPadeFunction("∂y/∂v",
+    return new MuntzPadeFunctional("∂y/∂v",
                                  α,
                                  w);
   }

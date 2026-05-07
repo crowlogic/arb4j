@@ -13,12 +13,12 @@ import arb.documentation.TheArb4jLibrary;
  * </pre>
  *
  * where μ ∈ (0, 1) is the fractional order shared with the parent
- * {@link MuntzPadeFunction} and {@code (P_M, Q_M)} is the diagonal Padé pair
+ * {@link MuntzPadeFunctional} and {@code (P_M, Q_M)} is the diagonal Padé pair
  * built from the Müntz coefficients {@code k ↦ a_k(v)} at this v.
  *
  * <p>
  * Returned by
- * {@link MuntzPadeFunction#evaluate(Complex, int, int, ComplexFunction)} — one
+ * {@link MuntzPadeFunctional#evaluate(Complex, int, int, ComplexFunction)} — one
  * instance per v. The pair owns its native polynomials; callers close it when
  * done.
  *

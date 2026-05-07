@@ -5,7 +5,7 @@ import arb.Real;
 import arb.functions.Function;
 import arb.functions.Jacobian;
 import arb.functions.complex.ComplexFunction;
-import arb.functions.complex.MuntzPadeFunction;
+import arb.functions.complex.MuntzPadeFunctional;
 import arb.functions.real.RealNullaryFunction;
 import junit.framework.TestCase;
 
@@ -14,7 +14,7 @@ import junit.framework.TestCase;
  *
  * <p>
  * The Jacobian {@code eq.jacobian(new String[]{"v"})} carries a single partial
- * — itself a {@link MuntzPadeFunction} whose Müntz coefficients w_k are the
+ * — itself a {@link MuntzPadeFunctional} whose Müntz coefficients w_k are the
  * solution of the linear fractional Volterra equation obtained by
  * differentiating the Riccati equation in v. The defining identity at the
  * coefficient level is unconditional:
@@ -77,9 +77,9 @@ public class JacobianAtVTest extends
       assertEquals("variable count", 1,    J.variables.length);
       assertEquals("variable name",  "v",  J.variables[0]);
       assertEquals("partial count",  1,    J.partials.length);
-      assertTrue  ("partial type",    J.partials[0] instanceof MuntzPadeFunction);
+      assertTrue  ("partial type",    J.partials[0] instanceof MuntzPadeFunctional);
 
-      MuntzPadeFunction w = (MuntzPadeFunction) J.partials[0];
+      MuntzPadeFunctional w = (MuntzPadeFunctional) J.partials[0];
 
       // w_1, w_2, w_3 closed-form against the partial's first three Müntz coefficients at v=1.
       try ( Complex coeffs   = Complex.newVector(3);
