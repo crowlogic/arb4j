@@ -4,8 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import arb.Complex;
+import arb.ComplexPolynomial;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.functions.*;
 import arb.functions.integer.*;
@@ -13,45 +15,52 @@ import arb.solvers.HankelSolver;
 
 /**
  * <pre>
- * The Riccati–Muntz-Pade function
+ * The Riccati–Muntz-Pade function with polynomial coefficients.
  *
- *   𝒴ₐ(p, q, r; t, v) ≔ unique analytic solution on a neighborhood of t = 0 of the 
+ *   𝒴ₐ(P, Q, R; t, v) ≔ unique analytic solution on a neighborhood of t = 0 of the 
  *   fractional Riccati equation
  *       
  *       Đᵅ y(t; v) = p(v) + q(v)·y(t; v) + r(v)·y(t; v)²
  *       
  *   where y(0; v) = 0 and α = μ ∈ (0,1)
  *
- *   ──────────────────────────────────────────────────────────────────────
+ *   ═══ Naming convention ════════════════════════════════════════════════
  *
- *   A three-parameter family of transcendental functions of t parametrized
- *   by a fractional order α ∈ (0,1) and three analytic functions p(v),
- *   q(v), r(v) of an external Fourier parameter v. As a ComplexFunctional,
- *   this is the curry  v ↦ (t ↦ 𝒴ₐ(t; v))  — every call to
- *   evaluate(Complex, int, int, ComplexFunction) at a v produces a fresh
- *   MuntzPadeApproximantAtV bound to the Padé pair built at that specific
- *   v. There is no mutable v field, no v-context, no cache that depends
- *   on v.
+ *   Capital P, Q, R  = {@link ComplexPolynomialNullaryFunction} instances
+ *                      (nullary functions provided by the caller).
+ *                      Calling P.evaluate() returns a ComplexPolynomial.
  *
- *   ═══ Construction ═════════════════════════════════════════════════════
+ *   Lowercase p, q, r  = {@link ComplexPolynomial} variables registered in
+ *                      {@link #context}. These are what the recurrence
+ *                      expressions reference as p(v), q(v), r(v).
+ *
+ *   Coefficient access: because ComplexPolynomial has get(int) returning Complex,
+ *   the expression compiler already supports p[0], p[1], etc., for coefficient
+ *   extraction. This is used by downstream Edgeworth expansion code to compute
+ *   cumulants directly from polynomial coefficients.
+ *
+ *   Independent variable name: the polynomials produced by the nullary functions
+ *   have their {@link ComplexPolynomial#independentVariableName} set to "v"
+ *   so that toString() and related operations display the polynomial in terms
+ *   of v rather than the default "x".
+ *
+ *   When parameters change, the caller invalidates P, Q, R.
+ *   Calling invalidateCache() on this functional re-evaluates P, Q, R
+ *   to refresh p, q, r, then recalculates the Müntz coefficients.
  *
  *   The curried Müntz coefficient sequence  k ↦ v ↦ aₖ(v)  is built from
  *   the algebraic recurrence
  *
- *       a₁(v) = p(v) ∕ Γ(μ+1)
- *       γₖ    = Γ((k−1)μ+1) ∕ Γ(kμ+1)
+ *       a₁(v) = p(v) / Γ(μ+1)
+ *       γₖ    = Γ((k−1)μ+1) / Γ(kμ+1)
  *       aₖ(v) = γₖ · ( q(v)·aₖ₋₁(v)
  *                    + r(v)·∑ⱼ₌₁ᵏ⁻² aⱼ(v)·aₖ₋₁₋ⱼ(v) ),   k ≥ 2
  *
  *   compiled once as a {@link ComplexFunctionSequence} and handed to the parent
- *   {@link MuntzPadeFunctional}. Everything else — the {@link HankelSolver}, the
- *   order-selection loop from precision, the {@link DiagonalPadePair} evaluation,
- *   the a-posteriori error bound — exists in the parent because none of
- *   it is specific to Riccati: it belongs to the (μ, k ↦ v ↦ aₖ(v))
- *   Müntz–Padé re-summation.
+ *   {@link MuntzPadeFunctional}.
  * </pre>
  *
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the TheArb4jLibrary
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the {@link TheArb4jLibrary}
  */
 public class RiccatiMuntzPadeFunctional extends
                                         MuntzPadeFunctional
@@ -63,10 +72,23 @@ public class RiccatiMuntzPadeFunctional extends
   /** Documentation-only string of the equation in standard form. */
   public static final String   FRACTIONAL_RICCATI_EQUATION = "t➔Đ^(μ)y(t;v)=t➔p(v)+q(v)*y(t;v)+r(v)*y(t;v)²";
 
-  /** Compiled p(v), q(v), r(v). */
-  public final ComplexFunction p;
-  public final ComplexFunction q;
-  public final ComplexFunction r;
+  /** 
+   * Nullary polynomial factory functions (caller-provided).
+   * evaluate() with no argument returns the current ComplexPolynomial.
+   * The caller invalidates these when parameters change.
+   */
+  public final ComplexPolynomialNullaryFunction P;
+  public final ComplexPolynomialNullaryFunction Q;
+  public final ComplexPolynomialNullaryFunction R;
+
+  /** 
+   * Polynomial coefficient variables registered in context.
+   * Populated by evaluating P, Q, R. Expressions reference them as p(v), q(v), r(v).
+   * Coefficient access via p[0], p[1], etc., is supported by ComplexPolynomial.get(int).
+   */
+  public final ComplexPolynomial p;
+  public final ComplexPolynomial q;
+  public final ComplexPolynomial r;
 
   /** The Context holding the symbolic parameters (μ, p, q, r, S, a). */
   public final Context         context;
@@ -76,9 +98,27 @@ public class RiccatiMuntzPadeFunctional extends
 
   private ComplexFunction      discriminant;
 
-  public RiccatiMuntzPadeFunctional(Context context, Real α, String pSrc, String qSrc, String rSrc)
+  /**
+   * Construct with nullary polynomial factory functions.
+   *
+   * @param context  the expression context
+   * @param α        fractional order μ ∈ (0,1)
+   * @param P        nullary function returning p(v) polynomial
+   * @param Q        nullary function returning q(v) polynomial
+   * @param R        nullary function returning r(v) polynomial
+   */
+  public RiccatiMuntzPadeFunctional(Context context, 
+                                      Real α, 
+                                      ComplexPolynomialNullaryFunction P, 
+                                      ComplexPolynomialNullaryFunction Q, 
+                                      ComplexPolynomialNullaryFunction R)
   {
     this.context = context;
+    this.P = P;
+    this.Q = Q;
+    this.R = R;
+
+    // Register fractional order μ
     Real μ = context.getVariable("μ");
     if (μ == null)
     {
@@ -95,27 +135,90 @@ public class RiccatiMuntzPadeFunctional extends
       α         = μ;
       ownsAlpha = false;
     }
-    this.α       = α;
+    this.α = α;
 
-    p            = ComplexFunction.express("p", pSrc, context);
-    q            = ComplexFunction.express("q", qSrc, context);
-    r            = ComplexFunction.express("r", rSrc, context);
+    // Evaluate nullaries and register polynomials as context variables
+    p = P.evaluate();
+    p.setName("p");
+    setIndependentVariableName(p, "v");
+    context.registerVariable(p);
+
+    q = Q.evaluate();
+    q.setName("q");
+    setIndependentVariableName(q, "v");
+    context.registerVariable(q);
+
+    r = R.evaluate();
+    r.setName("r");
+    setIndependentVariableName(r, "v");
+    context.registerVariable(r);
+
+    // Discriminant: q(v)² − 4·p(v)·r(v)
     discriminant = ComplexFunction.express("q(v)² − 4·p(v)·r(v)", context);
 
+    // Declare the Müntz coefficient sequence
     ComplexFunctionSequence.declare("a", context);
 
-    Sequence.compile(ComplexFunction.class, "S:k➔v➔sum(j➔a(j)(v)*a(k-1-j)(v){j=1..k-2})", ComplexFunctionSequence.class, context);
+    // Compile the convolution sum S(k)(v) = Σ_{j=1}^{k-2} a(j)(v)·a(k-1-j)(v)
+    Sequence.compile(ComplexFunction.class, 
+                     "S:k➔v➔sum(j➔a(j)(v)*a(k-1-j)(v){j=1..k-2})", 
+                     ComplexFunctionSequence.class, 
+                     context);
 
-    a = ComplexFunctionSequence.express("a:k➔v➔when(k=1,p(v)/Γ(μ+1),else,(Γ((k-1)*μ+1)/Γ(k*μ+1))*(q(v)*a(k-1)(v)+r(v)*S(k)(v)))", context);
+    // Compile the full recurrence
+    a = ComplexFunctionSequence.express(
+          "a:k➔v➔when(k=1,p(v)/Γ(μ+1),else,(Γ((k-1)*μ+1)/Γ(k*μ+1))*(q(v)*a(k-1)(v)+r(v)*S(k)(v)))", 
+          context);
   }
 
-  public RiccatiMuntzPadeFunctional(Real α, String p, String q, String r)
+  /**
+   * Set the independent variable name on a ComplexPolynomial.
+   * TODO: Replace with a proper public setter once ComplexPolynomial is updated.
+   */
+  private static void setIndependentVariableName(ComplexPolynomial poly, String name)
   {
-    this(new Context(),
-         α,
-         p,
-         q,
-         r);
+    try
+    {
+      java.lang.reflect.Field field = ComplexPolynomial.class.getDeclaredField("independentVariableName");
+      field.setAccessible(true);
+      field.set(poly, name);
+    }
+    catch (NoSuchFieldException | IllegalAccessException e)
+    {
+      throw new RuntimeException("Failed to set independentVariableName on ComplexPolynomial", e);
+    }
+  }
+
+  /**
+   * Convenience constructor with fresh context.
+   */
+  public RiccatiMuntzPadeFunctional(Real α, 
+                                     ComplexPolynomialNullaryFunction P, 
+                                     ComplexPolynomialNullaryFunction Q, 
+                                     ComplexPolynomialNullaryFunction R)
+  {
+    this(new Context(), α, P, Q, R);
+  }
+
+  /**
+   * Refresh polynomial variables from nullary functions.
+   * Call this (or invalidateCache()) when underlying parameters have changed.
+   */
+  public void refreshPolynomials()
+  {
+    p.set(P.evaluate());
+    setIndependentVariableName(p, "v");
+    q.set(Q.evaluate());
+    setIndependentVariableName(q, "v");
+    r.set(R.evaluate());
+    setIndependentVariableName(r, "v");
+  }
+
+  @Override
+  public void invalidateCache()
+  {
+    refreshPolynomials();
+    super.invalidateCache();
   }
 
   public ComplexFunctionSequence muntzBasis()
@@ -145,24 +248,11 @@ public class RiccatiMuntzPadeFunctional extends
    *   g(t; v)    = q(v) + 2·r(v)·y(t;v)
    * </pre>
    *
-   * Substituting y(t;v) = Σ a_k(v)·t^{kμ} and matching powers gives Müntz
-   * coefficients
+   * where ṗ, q̇, ṙ are the formal derivatives of the polynomial coefficient
+   * variables p, q, r. These are obtained via {@link ComplexPolynomial#derivative()}
+   * — pure algebraic coefficient shifting, no numerical approximation.
    *
-   * <pre>
-   *   f_0(v) = ṗ(v),                      f_k(v) = q̇(v)·a_k(v) + ṙ(v)·Σ_{j=1..k-1} a_j(v)·a_{k-j}(v)
-   *   g_0(v) = q(v),                      g_k(v) = 2·r(v)·a_k(v)                     for k≥1
-   * </pre>
-   *
-   * Then w_n(v) is determined by a linear recurrence
-   *
-   * <pre>
-   *   w_1(v)     = ṗ(v) / Γ(μ+1)
-   *   w_{n+1}(v) = ( Γ(nμ+1) / Γ((n+1)μ+1) ) · ( f_n(v) + Σ_{j=0..n-1} g_{n-1-j}(v)·w_{j+1}(v) ),  n≥1
-   * </pre>
-   *
-   * The solution w(t;v) = Σ w_k(v)·t^{kμ} is itself a Müntz–Padé function, so the
-   * partial is returned as a fresh {@link MuntzPadeFunctional} sharing the same α
-   * and the new curried w-sequence.
+   * The solution w(t;v) = Σ w_k(v)·t^{kμ} is itself a Müntz–Padé function.
    * </p>
    */
   @Override
@@ -187,60 +277,43 @@ public class RiccatiMuntzPadeFunctional extends
                                                                      partials);
   }
 
-  public ComplexSequenceSequence buildScalarCoefficientRecursion()
-  {
-    ComplexSequence.express("a1m:m➔when(m=0,0,m=1,P1/Γ(μ+1),else,P2/Γ(μ+1))", context);
-
-    ComplexSequenceSequence.compile("S:k➔m➔sum(j➔sum(ℓ➔akm(j)(ℓ)*akm(k-1-j)(m-ℓ){ℓ=1..m-1}){j=1..k-2})", context);
-
-    return ComplexSequenceSequence.express("akm:k➔m➔when(k=1,a1m(m),else,(Γ((k-1)*μ+1)/Γ(k*μ+1))*(Q0*akm(k-1)(m)+Q1*akm(k-1)(m-1)+R*S(k)(m)))", context);
-  }
-
   /**
-   * Build w(t;v) = ∂y/∂v as a {@link MuntzPadeFunctional} with the
-   * linear-Volterra curried Müntz coefficients k ↦ v ↦ w_k(v).
+   * Build w(t;v) = ∂y/∂v as a {@link MuntzPadeFunctional}.
    *
    * <p>
-   * p, q, r already live in {@link #context} as compiled
-   * {@link ComplexFunction}s. Their v-partials are obtained via the universal
-   * lazy on-demand {@link Function#derivative(String)} entry point — pure-Java
-   * AST surgery on the source Expressions, no sub-context, no symbol renaming.
-   * The differentiated functions are then plugged into the same {@link #context}
-   * under the names ṗ, q̇, ṙ so the f, g, w expressions can resolve them by name
-   * like any other Context-scoped function.
+   * p, q, r are polynomial variables in {@link #context}. Their formal v-derivatives
+   * are obtained via {@link ComplexPolynomial#derivative()}, then registered as
+   * variables p_dv, q_dv, r_dv for use in the f, g, w recurrence expressions.
+   * </p>
    */
   private ComplexFunctional partialDerivativeWithRespectToV()
   {
-    ComplexFunction p_dv = (ComplexFunction) p.derivative("v");
-    ComplexFunction q_dv = (ComplexFunction) q.derivative("v");
-    ComplexFunction r_dv = (ComplexFunction) r.derivative("v");
+    // Formal derivatives of polynomial coefficient variables
+    ComplexPolynomial p_dv = p.derivative();
+    ComplexPolynomial q_dv = q.derivative();
+    ComplexPolynomial r_dv = r.derivative();
 
-    var             pMap = context.registerFunctionMapping("p_dv", Complex.class, Complex.class, ComplexFunction.class);
-    pMap.instance   = p_dv;
-    pMap.expression = p_dv.getExpression();
-    var qMap = context.registerFunctionMapping("q_dv", Complex.class, Complex.class, ComplexFunction.class);
-    qMap.instance   = q_dv;
-    qMap.expression = q_dv.getExpression();
-    var rMap = context.registerFunctionMapping("r_dv", Complex.class, Complex.class, ComplexFunction.class);
-    rMap.instance   = r_dv;
-    rMap.expression = r_dv.getExpression();
+    // Register derivatives as variables in context
+    p_dv.setName("p_dv");
+    context.registerVariable(p_dv);
+    q_dv.setName("q_dv");
+    context.registerVariable(q_dv);
+    r_dv.setName("r_dv");
+    context.registerVariable(r_dv);
 
-    // Forward-declare w so its self-reference resolves; a is already in context.
+    // Forward-declare w so its self-reference resolves
     context.registerFunctionMapping("w", arb.Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
 
-    // f(k)(v) : k=0 → ṗ(v); k≥1 → q̇(v)·a(k)(v) + ṙ(v)·Σ_{j=1..k-1}
-    // a(j)(v)·a(k-j)(v)
-    String fExpr = "f:k➔v➔when(k=0, p_dv(v)," + " else, q_dv(v)*a(k)(v) + r_dv(v)*sum(j➔a(j)(v)*a(k-j)(v){j=1..k-1}))";
+    // f(k)(v) : k=0 → ṗ(v); k≥1 → q̇(v)·a(k)(v) + ṙ(v)·Σ_{j=1..k-1} a(j)(v)·a(k-j)(v)
+    String fExpr = "f:k➔v➔when(k=0, p_dv(v)," + 
+                   " else, q_dv(v)*a(k)(v) + r_dv(v)*sum(j➔a(j)(v)*a(k-j)(v){j=1..k-1}))";
     Sequence.compile("f", ComplexFunction.class, fExpr, ComplexFunctionSequence.class, context);
 
     // g(k)(v) : k=0 → q(v); k≥1 → 2·r(v)·a(k)(v)
     String gExpr = "g:k➔v➔when(k=0, q(v), else, 2*r(v)*a(k)(v))";
     Sequence.compile("g", ComplexFunction.class, gExpr, ComplexFunctionSequence.class, context);
 
-    // w(k)(v) linear Volterra recurrence:
-    // w(1)(v) = ṗ(v)/Γ(μ+1)
-    // w(k)(v) = Γ((k-1)μ+1)/Γ(kμ+1) · (f(k-1)(v) + Σ_{j=0..k-2}
-    // g(k-2-j)(v)·w(j+1)(v)) [k≥2]
+    // w(k)(v) linear Volterra recurrence
     String                  wExpr = "w:k➔v➔when(k=1, p_dv(v)/Γ(μ+1),"
                                     + " else, (Γ((k-1)*μ+1)/Γ(k*μ+1))"
                                     + "       *(f(k-1)(v) + sum(j➔g(k-2-j)(v)*w(j+1)(v){j=0..k-2})))";
@@ -263,5 +336,7 @@ public class RiccatiMuntzPadeFunctional extends
     {
       α.close();
     }
+    // Nullary functions P, Q, R are managed by caller
+    // Polynomial variables p, q, r are closed via context or caller
   }
 }
