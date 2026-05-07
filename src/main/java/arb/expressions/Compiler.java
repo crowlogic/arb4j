@@ -769,6 +769,13 @@ public class Compiler
     String functionDescriptor = bitless ? getMethodDescriptor(coDomainType, coDomainType) : getMethodDescriptor(coDomainType, int.class, coDomainType);
     return functionDescriptor;
   }
+  
+  public static MethodVisitor jumpToIfNull(MethodVisitor mv, Label fieldNotNull)
+  {
+    mv.visitJumpInsn(IFNULL, fieldNotNull);
+    return mv;
+
+  }
 
   public static MethodVisitor jumpToIfNotNull(MethodVisitor mv, Label fieldNotNull)
   {

@@ -140,22 +140,907 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                        Consumer<Consumer<Expression<?, ?, ?>>>
 {
 
-  public boolean shouldCache()
+  public record CursorState(int position, char character, char previousCharacter)
   {
-    return domainType.equals(Integer.class) && upstreamExpression == null;
   }
 
   /**
-   * True when this expression is the inner curry body of an integer-domain
-   * sequence whose codomain is itself a function (Issue #1005). Such expressions
-   * get a per-instance value-backing cache: a single (lastInput, cachedResult)
-   * pair, populated on first evaluate and short-circuited on repeat calls with
-   * the same input by reference identity.
+   * Ordered pair of a factor node and its role in a mul/div chain (+1 =
+   * numerator, -1 = denominator). Used by {@link #collectMulDivOperands}.
    */
-  public boolean shouldCacheValueBacking()
+  private static final class FactorRole
   {
-    return upstreamExpression != null && upstreamExpression.shouldCache() && upstreamExpression.isGeneratedFunctional()
-                  && Field.class.isAssignableFrom(coDomainType);
+    final Node<?, ?, ?> node;
+    final int           sign;
+
+    FactorRole(Node<?, ?, ?> node, int sign)
+    {
+      this.node = node;
+      this.sign = sign;
+    }
+  }
+
+  static final String             arrayListDescriptor               = Type.getDescriptor(ArrayList.class);
+
+  static final String             arrayListInternal                 = Type.getInternalName(ArrayList.class);
+
+  private static String           ASSERTION_ERROR_METHOD_DESCRIPTOR = Compiler.getMethodDescriptor(Void.class, Object.class);
+  public static final Set<String> BUILTIN_FUNCTION_NAMES            = Set.of("int",
+                                                                             "nint",
+                                                                             "sum",
+                                                                             "ℰ",
+                                                                             "MittagLeffler",
+                                                                             "mittagleffler",
+                                                                             "Z",
+                                                                             "ϑ",
+                                                                             "vartheta",
+                                                                             "ζ",
+                                                                             "zeta",
+                                                                             "when",
+                                                                             "fracdiff",
+                                                                             "diff",
+                                                                             "lim",
+                                                                             "limit",
+                                                                             "J",
+                                                                             "W",
+                                                                             "j",
+                                                                             "R",
+                                                                             "ℭ",
+                                                                             "binom",
+                                                                             "binomial",
+                                                                             "pFq",
+                                                                             "pfq",
+                                                                             "Beta",
+                                                                             "beta",
+                                                                             "Γ",
+                                                                             "Gamma",
+                                                                             "lnGamma",
+                                                                             "lnΓ",
+                                                                             "logGamma",
+                                                                             "logΓ",
+                                                                             "si");
+  private static final char       COMBINING_DOT_ABOVE               = '̇';
+  private static final char       COMBINING_TWO_DOTS_ABOVE          = '̈';
+
+  private static boolean          decompileClasses                  = Boolean.valueOf(System.getProperty("arb4j.decompileClasses", "false"));
+
+  /**
+   * The name of the generated method that evaluates constant subexpressions.
+   */
+  public static final String      EVALUATE_STATIC_SUBEXPRESSIONS    = "evaluateStaticSubexpressions";
+
+  static final String             fieldInternal                     = Type.getInternalName(Field.class);
+
+  static final String             functionInternal                  = Type.getInternalName(Function.class);
+
+  public static Class<?>[]        implementedInterfaces             = new Class[]
+  { Typesettable.class, AutoCloseable.class, Initializable.class, Named.class };
+
+  public static String            IS_INITIALIZED                    = "isInitialized";
+
+  private static String           JAVA_LANG_ASSERTION_ERROR         = "java/lang/AssertionError";
+
+  public static String            nameOfInitializerFunction         = "initialize";
+
+  private static boolean          saveClasses                       = Boolean.valueOf(System.getProperty("arb4j.saveClasses", "false"));
+
+  public static boolean           saveGraphs                        = Boolean.valueOf(System.getProperty("arb4j.saveGraphs", "false"));
+
+  public static boolean           trace                             = Boolean.valueOf(System.getProperty("arb4j.trace", "false"));
+
+  public static boolean           traceNodes                        = Boolean.valueOf(System.getProperty("arb4j.traceNodes", "false"));
+
+  public static String            VOID_METHOD_DESCRIPTOR            = Compiler.getMethodDescriptor(Void.class);
+
+  static
+  {
+    assert arb.functions.integer.Sequence.class.equals(Sequence.class) : "you forgot to import arb.functions.sequences.Sequence or imported a class named sequence in another package";
+  }
+
+  /**
+   * @return {@code true} if {@code node} is a {@link MultiplicationNode} or a
+   *         {@link DivisionNode}. Factored out to avoid a series of
+   *         {@code instanceof} tests at call sites.
+   */
+  private static boolean isMulOrDiv(Node<?, ?, ?> node)
+  {
+    return node instanceof MultiplicationNode<?, ?, ?> || node instanceof DivisionNode<?, ?, ?>;
+  }
+
+  static Class<?> resolveChildCoDomain(Class<?> parentCoDomainType)
+  {
+    if (RealFunction.class.equals(parentCoDomainType) || RealSequence.class.equals(parentCoDomainType))
+    {
+      return Real.class;
+    }
+    if (RealFunctional.class.equals(parentCoDomainType))
+    {
+      return RealFunction.class;
+    }
+    if (ComplexFunction.class.equals(parentCoDomainType) || ComplexSequence.class.equals(parentCoDomainType))
+    {
+      return Complex.class;
+    }
+    if (ComplexFunctional.class.equals(parentCoDomainType))
+    {
+      return ComplexFunction.class;
+    }
+    if (RealToComplexFunction.class.equals(parentCoDomainType))
+    {
+      return Complex.class;
+    }
+    throw new UnsupportedOperationException("cannot resolve child codomain for " + parentCoDomainType);
+  }
+
+  static Class<?> resolveChildDomain(Class<?> parentCoDomainType)
+  {
+    if (RealFunction.class.equals(parentCoDomainType) || RealFunctional.class.equals(parentCoDomainType)
+                  || RealToComplexFunction.class.equals(parentCoDomainType))
+    {
+      return Real.class;
+    }
+    if (ComplexFunction.class.equals(parentCoDomainType) || ComplexFunctional.class.equals(parentCoDomainType))
+    {
+      return Complex.class;
+    }
+    if (RealSequence.class.equals(parentCoDomainType) || ComplexSequence.class.equals(parentCoDomainType))
+    {
+      return Integer.class;
+    }
+    throw new UnsupportedOperationException("cannot resolve child domain for " + parentCoDomainType);
+  }
+
+  private int                                             cacheArrayListSlot            = -1;
+
+  private int                                             cacheIndexSlot                = -1;
+
+  public char                                             character                     = 0;
+
+  public String                                           className;
+
+  public Class<? extends C>                               coDomainType;
+
+  public Class<F>                                         compiledClass;
+
+  public File                                             compiledClassDir              = new File("compiled");
+
+  HashMap<Class<?>, AtomicInteger>                        constantCounts                = new HashMap<>();
+
+  private Context                                         context;
+
+  int                                                     currentLevel                  = 0;
+
+  HashSet<String>                                         declaredIntermediateVariables = new HashSet<>();
+
+  public HashSet<String>                                  declaredVariables             = new HashSet<>();
+
+  public boolean                                          deferVariableResolution       = false;
+
+  public List<Dependency>                                 dependencies;
+
+  public Class<? extends D>                               domainType;
+
+  public String                                           expression;
+
+  public Expression<?, ?, ?>                              functionalChild;
+
+  public boolean                                          functionalDependsOnIndependentVariable;
+
+  private VariableNode<Object, Object, Function<?, ?>>    functionalIndependentVariable;
+
+  public Class<? extends F>                               functionClass;
+
+  public String                                           functionClassDescriptor;
+
+  public FunctionMapping<D, C, F>                         functionMapping;
+
+  public String                                           functionName;
+
+  public GenerationContext                                generationContext             = GenerationContext.Evaluation;
+
+  public String                                           genericFunctionClassInternalName;
+
+  /**
+   * Whether this expression has any {@link StaticNode} wrappers after
+   * {@link #replaceConstantNodes()} has run.
+   */
+  protected boolean                                       hasStaticNodes                = false;
+
+  public boolean                                          inAbsoluteValue               = false;
+
+  private VariableNode<D, C, F>                           independentVariable;
+
+  public LinkedList<Consumer<MethodVisitor>>              initializers                  = new LinkedList<>();
+
+  protected F                                             instance;
+
+  public byte[]                                           instructions;
+
+  public final HashMap<String, AtomicInteger>             intermediateVariableCounters  = new HashMap<>();
+
+  public HashMap<String, IntermediateVariable<D, C, F>>   intermediateVariables         = new HashMap<>();
+
+  private ArrayList<LiteralConstantNode<D, C, F>>         literalConstantNodes;
+
+  public HashMap<String, LiteralConstantNode<D, C, F>>    literalConstants              = new HashMap<>();
+
+  private final Logger                                    log                           = LoggerFactory.getLogger(Expression.class);
+
+  /**
+   * The next available local variable slot in the generated evaluate() method.
+   * Slots 0-4 are: this, input, order, bits, result. Code that needs local
+   * storage during evaluate() calls {@link #allocateLocalVariableSlot()} to
+   * obtain a non-conflicting slot.
+   */
+  public int                                              nextLocalVariableSlot         = 5;
+
+  /**
+   * Set by {@link #optimize()} once all AST-rewriting passes (jet deduplication,
+   * static-subexpression hoisting, common-subexpression elimination) have run.
+   * Used as an idempotency guard so that repeated optimize/compile/generate calls
+   * never re-mutate the tree.
+   */
+  protected boolean                                       optimized                     = false;
+
+  /**
+   * Per-variable partial-derivative cache, keyed by
+   * {@code VariableReference.name}. Populated lazily by
+   * {@link #derivative(VariableReference)}; entries are fully compiled,
+   * ready-to-evaluate Functions.
+   */
+  private final java.util.Map<String, F>                  partialDerivativeCache        = new java.util.HashMap<>();
+
+  /**
+   * Parsed interval bounds from the most recent
+   * {@link #parseExplicitInputVariableIfPresent} call, or {@code null} if no
+   * {@code ∈} operator was present.
+   *
+   * @see <a href="https://github.com/crowlogic/arb4j/issues/878">#878</a>
+   */
+  VariableReference.Bounds                                pendingInputVariableBounds;
+
+  /**
+   * Parameter list captured by {@link #parseExplicitInputVariableIfPresent} when
+   * the declaration shape is {@code name(p₁,…,pₙ)=body} or
+   * {@code (p₁,…,pₙ)=body}. Holds the params after the first; the first is
+   * returned directly. Consumed and cleared by
+   * {@link #parseInputVariableAssignment}.
+   *
+   * @see <a href="https://github.com/crowlogic/arb4j/issues/975">#975</a>
+   */
+  List<String>                                            pendingParameterList;
+
+  /**
+   * The single placeholder variable of this expression's codomain type. Assigned
+   * during {@link VariableNode#resolveReference()} when the expression is
+   * non-nullary and {@link #isInterfaceFunctional()} is true and a free variable
+   * is encountered that is neither the independent variable, a context variable,
+   * nor an upstream variable. Only one placeholder is permitted per expression; a
+   * second unresolved free variable throws {@link CompilerException}.
+   */
+  private VariableNode<D, C, F>                           placeholderVariable;
+
+  public int                                              position                      = -1;
+
+  public Expression<?, ?, ?>                              upstreamExpression;
+
+  Predicate<? super Entry<String, VariableNode<D, C, F>>> predicate                     = entry ->
+                                                                                        {
+                                                                                          String                varName = entry.getKey();
+                                                                                          VariableNode<D, C, F> varNode = entry.getValue();
+
+                                                                                          if (varNode.isIndependent)
+                                                                                          {
+                                                                                            return false;
+                                                                                          }
+
+                                                                                          if (upstreamExpression != null)
+                                                                                          {
+                                                                                            VariableNode<?, ?, ?> upstreamIndependentVariable =
+                                                                                                                                              upstreamExpression.getIndependentVariable();
+                                                                                            if (upstreamIndependentVariable != null
+                                                                                                          && varName.equals(upstreamIndependentVariable.getName()))
+                                                                                            {
+                                                                                              return false;
+                                                                                            }
+                                                                                          }
+
+                                                                                          if (context != null && context.getVariable(varName) != null)
+                                                                                          {
+                                                                                            return false;
+                                                                                          }
+                                                                                          return true;
+                                                                                        };
+
+  public char                                             previousCharacter;
+
+  public boolean                                          recursive                     = false;
+
+  private final HashMap<String, FunctionMapping<?, ?, ?>> referencedFunctions           = new HashMap<>();
+
+  private HashMap<String, VariableNode<D, C, F>>          referencedVariables           = new HashMap<>();
+
+  public Node<D, C, F>                                    rootNode;
+
+  public final List<Expression<?, ?, ?>>                  subExpressions                = new ArrayList<>();
+
+  public boolean                                          variablesDeclared             = false;
+
+  public Expression(Class<? extends D> domain, Class<? extends C> coDomain, Class<? extends F> function)
+  {
+    this.upstreamExpression               = null;
+    this.domainType                       = domain;
+    this.coDomainType                     = coDomain;
+    this.functionClass                    = function;
+    this.genericFunctionClassInternalName = Type.getInternalName(function);
+    this.functionClassDescriptor          = function.descriptorString();
+
+    if (context != null && context.saveClasses)
+    {
+      saveClasses = true;
+    }
+    if (Expression.trace)
+    {
+      log.debug("#{}: new Expression(domain={}, coDomain={}, function={})", System.identityHashCode(this), domain, coDomain, function);
+    }
+  }
+
+  public Expression(String className,
+                    Class<? extends D> domainClass,
+                    Class<? extends C> coDomainClass,
+                    Class<? extends F> functionClass,
+                    String expressionString,
+                    Context context)
+  {
+    this(className,
+         domainClass,
+         coDomainClass,
+         functionClass,
+         expressionString,
+         context,
+         null,
+         null);
+  }
+
+  public Expression(String className,
+                    Class<? extends D> domain,
+                    Class<? extends C> codomain,
+                    Class<? extends F> function,
+                    String expression,
+                    Context context,
+                    String functionName,
+                    Expression<?, ?, ?> ascenentExpression)
+  {
+    assert className != null : "className needs to be specified";
+    this.upstreamExpression               = ascenentExpression;
+    this.className                        = className;
+    this.domainType                       = domain;
+    this.coDomainType                     = codomain;
+    this.functionClass                    = function;
+
+    this.genericFunctionClassInternalName = Type.getInternalName(function);
+    this.functionClassDescriptor          = function.descriptorString();
+    this.setExpression(Parser.normalize(expression));
+    this.context      = context;
+    this.functionName = functionName;
+
+    if (context != null && context.saveClasses)
+    {
+      saveClasses = true;
+    }
+    if (Expression.trace)
+    {
+      log.debug("#{}: new Expression(className={}, domain={}, coDomain={}, function={}, expression={}, context={}, functionName={}, superExpression={}#{})",
+                System.identityHashCode(this),
+                className,
+                domain,
+                codomain,
+                function,
+                expression,
+                context,
+                functionName,
+                ascenentExpression,
+                System.identityHashCode(ascenentExpression));
+    }
+
+  }
+
+  @Override
+  public void accept(Consumer<Expression<?, ?, ?>> t)
+  {
+    assert upstreamExpression != this;
+    t.accept(this);
+
+    if (upstreamExpression != null)
+    {
+      upstreamExpression.accept(t);
+    }
+
+  }
+
+  public boolean acceptUntil(Predicate<Expression<?, ?, ?>> visitor)
+  {
+    Expression<?, ?, ?> e = this;
+    while (e != null)
+    {
+      if (visitor.test(e))
+      {
+        return true;
+      }
+      e = e.upstreamExpression;
+    }
+    return false;
+  }
+
+  protected Node<D, C, F> addAndSubtract(Node<D, C, F> node)
+  {
+    while (true)
+    {
+      if (nextCharacterRepresentsAddition())
+      {
+        node = node.add(exponentiateMultiplyAndDivide());
+      }
+      else if (nextCharacterRepresentsSubtraction())
+      {
+        var rhs = exponentiateMultiplyAndDivide();
+        assert rhs != null : "rhs is null for node=" + node + " in " + this;
+        node = node == null ? rhs.neg() : node.sub(rhs);
+      }
+      else
+      {
+        return node;
+      }
+    }
+  }
+
+  protected void addCheckForNullField(MethodVisitor mv, String varName, boolean variable)
+  {
+    Class<?> fieldClass;
+    if (variable)
+    {
+      Object field = context.getVariable(varName);
+      fieldClass = field != null ? field.getClass() : null;
+    }
+    else
+    {
+      fieldClass = context.functions.get(varName).type();
+    }
+
+    if (fieldClass != null)
+    {
+      addNullCheckForField(mv, className, varName, fieldClass.descriptorString());
+    }
+  }
+
+  protected void addChecksForNullVariableReferences(MethodVisitor mv)
+  {
+    if (context != null)
+    {
+      context.variableClassStream()
+             .filter(event -> referencedVariables.containsKey(event.getLeft()))
+             .forEach(entry -> addCheckForNullField(loadThisOntoStack(mv), entry.getLeft(), true));
+    }
+  }
+
+  /**
+   * Skips forward by the char-count of the current code point. Used after
+   * identifying a supplementary character to advance past both surrogates.
+   */
+  protected void advancePastCurrentCodePoint()
+  {
+    int cp        = currentCodePoint();
+    int charCount = Character.charCount(cp);
+    // Advance (charCount - 1) extra positions since nextCharacter() already
+    // moved forward by 1.
+    for (int i = 1; i < charCount; i++)
+    {
+      ++position;
+    }
+    if (position < getExpression().length())
+    {
+      character = getExpression().charAt(position);
+    }
+    else
+    {
+      character = Character.MIN_VALUE;
+    }
+  }
+
+  public String allocateIntermediateVariable(MethodVisitor methodVisitor, Class<?> type)
+  {
+    Class<?> actualType               = (type.isInterface() && !Function.class.isAssignableFrom(type)) ? scalarType(type) : type;
+    String   intermediateVariableName = newIntermediateVariable(actualType);
+    assert intermediateVariableName != null : "intermediateVariableName is null for type " + type;
+    loadThisAndFieldOntoStack(methodVisitor, intermediateVariableName, actualType);
+    return intermediateVariableName;
+  }
+
+  public String allocateIntermediateVariable(MethodVisitor methodVisitor, String prefix, Class<?> type)
+  {
+    Class<?> actualType               = (type.isInterface() && !Function.class.isAssignableFrom(type)) ? scalarType(type) : type;
+    String   intermediateVariableName = newIntermediateVariable(prefix, actualType);
+    loadFieldOntoStack(loadThisOntoStack(methodVisitor), intermediateVariableName, actualType.descriptorString());
+    return intermediateVariableName;
+  }
+
+  /**
+   * Allocates and returns the next available local variable slot for use in the
+   * generated evaluate() method bytecode. Each call returns a unique slot.
+   */
+  public int allocateLocalVariableSlot()
+  {
+    return nextLocalVariableSlot++;
+  }
+
+  public boolean anySuperIndependentVariableIsNamed(String name)
+  {
+    if (upstreamExpression != null)
+    {
+      if (upstreamExpression.thisOrAnySuperIndependentVariableIsNamed(name))
+      {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * FIXME: this should merge with
+   * this{@link #setIndependentVariable(VariableNode)}
+   * 
+   * @param variable
+   * @return
+   */
+  public VariableNode<D, C, F> assignInputVariable(VariableNode<D, C, F> variable)
+  {
+    assert variable != null : "variable shan't be null";
+
+    if (canHaveIndependentVariable())
+    {
+      if (getIndependentVariable() != null)
+      {
+        if (!getIndependentVariable().equals(variable))
+        {
+          throw new CompilerException(String.format("undefined variable reference '%s' at position=%s in expression '%s' "
+                                                    + "since the independent variable has already been declared to be '%s' in %s",
+                                                    variable,
+                                                    position,
+                                                    toStringExtended(),
+                                                    getIndependentVariable(),
+                                                    toStringExtended()));
+        }
+        else
+        {
+          return variable;
+        }
+      }
+      setIndependentVariable(variable);
+      getIndependentVariable().isIndependent  = true;
+      getIndependentVariable().reference.type = domainType;
+      return variable;
+    }
+    else
+    {
+      if (!canHavePlaceholder())
+      {
+        throw new IllegalArgumentException(this.toStringExtended()
+                                           + " cannot have a placeholder or an independent variable so it cant be set to "
+                                           + variable
+                                           + " for "
+                                           + expression
+                                           + " that has type "
+                                           + getTypeString());
+      }
+      var placeholder = setPlaceholderVariable(variable);
+      placeholder.reference.type = coDomainType;
+      return placeholder;
+    }
+
+  }
+
+  protected void assureInputNameHasNotAlreadyBeenAssociatedWithAContextVariable(String inputVariableName)
+  {
+    if (context != null)
+    {
+      if (context.getVariable(inputVariableName) != null)
+      {
+        throw new CompilerException(inputVariableName + " cannot be declared as the input since it is already registered as a context variable in " + context);
+      }
+    }
+  }
+
+  /**
+   * Checks that no numeric digits appear in the input variable name. Uses
+   * code-point iteration for supplementary character safety.
+   */
+  protected boolean assureNoNumbersInTheInputVariable(String inputVariableName, boolean isInputVariableSpecified)
+  {
+    for (int i = 0; i < inputVariableName.length();)
+    {
+      int cp = inputVariableName.codePointAt(i);
+      if (!Parser.isIdentifyingCharacter(cp, false))
+      {
+        isInputVariableSpecified = false;
+      }
+      i += Character.charCount(cp);
+    }
+    return isInputVariableSpecified;
+  }
+
+  /**
+   * Reassembles an ordered list of signed factors into a single
+   * multiplication/division tree. Numerator factors are multiplied together
+   * left-to-right and denominator factors are composed into a single denominator
+   * that is divided in once at the end. Returns {@code null} when the list is
+   * empty.
+   */
+  @SuppressWarnings(
+  { "rawtypes", "unchecked" })
+  private Node buildFactorTree(List<FactorRole> factors)
+  {
+    Node num = null;
+    Node den = null;
+    for (FactorRole f : factors)
+    {
+      if (f.sign > 0)
+      {
+        num = (num == null) ? f.node : num.mul(f.node);
+      }
+      else
+      {
+        den = (den == null) ? f.node : den.mul(f.node);
+      }
+    }
+    if (num == null && den == null)
+    {
+      return null;
+    }
+    if (num == null)
+    {
+      // All factors are in the denominator: represent as 1 / den.
+      num = one();
+    }
+    return (den == null) ? num : num.div(den);
+  }
+
+  public boolean canHaveIndependentVariable()
+  {
+    return !isNullaryFunction();
+  }
+
+  public boolean canHavePlaceholder()
+  {
+    return isFunctional();
+  }
+
+  public boolean characterAfterNextIs(char ch)
+  {
+    return position + 1 < getExpression().length() && getExpression().charAt(position + 1) == ch;
+  }
+
+  private void checkInputVariableConflicts(String paramName)
+  {
+    if (getIndependentVariable() != null && Objects.equals(getIndependentVariable().getName(), paramName))
+    {
+      throw new CompilerException("input variable '" + paramName + "' conflicts with the independent variable of the containing expression");
+    }
+  }
+
+  public Expression<D, C, F> clearIndependentVariable()
+  {
+    independentVariable = null;
+    return this;
+
+  }
+
+  @Override
+  protected Object clone()
+  {
+    var expr = new Expression<D, C, F>(className,
+                                       domainType,
+                                       coDomainType,
+                                       functionClass,
+                                       getExpression(),
+                                       context,
+                                       functionName,
+                                       upstreamExpression);
+    expr.context = context;
+    expr.setIndependentVariable(independentVariable);
+
+    expr.position            = position;
+    expr.character           = character;
+    expr.previousCharacter   = previousCharacter;
+    expr.placeholderVariable = placeholderVariable;
+    return expr;
+  }
+
+  @SuppressWarnings("unchecked")
+  public Expression<D, C, F> cloneExpression()
+  {
+    return (Expression<D, C, F>) clone();
+  }
+
+  /**
+   * Collect all unique {@link JetState} instances from the expression tree by
+   * walking every {@link JetNode}.
+   */
+  @SuppressWarnings("rawtypes")
+  protected Set<JetState> collectJetStates()
+  {
+    Set<JetState> states = new LinkedHashSet<>();
+    if (rootNode == null)
+    {
+      return states;
+    }
+    rootNode.accept(node ->
+    {
+      if (node instanceof JetNode jetNode)
+      {
+        states.add(jetNode.getSharedState());
+      }
+    });
+    return states;
+  }
+
+  /**
+   * Recursively walks a {@link MultiplicationNode}/{@link DivisionNode} chain
+   * collecting every non-Mul/Div operand along with its accumulated
+   * numerator/denominator sign. The right operand of a {@link DivisionNode} flips
+   * the sign; all other descents preserve it. Stops descending at a
+   * {@link StaticNode} so its cached subtree is treated as an atomic factor.
+   */
+  @SuppressWarnings(
+  { "rawtypes", "unchecked" })
+  private void collectMulDivOperands(Node node, int sign, List<FactorRole> out)
+  {
+    if (node instanceof MultiplicationNode mul)
+    {
+      collectMulDivOperands(mul.left, sign, out);
+      collectMulDivOperands(mul.right, sign, out);
+    }
+    else if (node instanceof DivisionNode div)
+    {
+      collectMulDivOperands(div.left, sign, out);
+      collectMulDivOperands(div.right, -sign, out);
+    }
+    else
+    {
+      out.add(new FactorRole(node,
+                             sign));
+    }
+  }
+
+  public Expression<D, C, F> compile()
+  {
+    assert !className.isEmpty() : "className is empty";
+    if (compiledClass != null)
+    {
+      return this;
+    }
+    if (context == null)
+    {
+      context = new Context();
+    }
+
+    if (trace)
+    {
+      log.debug(String.format("#%s: compile(expression=%s, className=%s, context=%s)\n", System.identityHashCode(this), getExpression(), className, context));
+    }
+    if (instructions == null)
+    {
+      optimizeAndGenerate();
+    }
+    assert context != null : "context is null for "
+                             + this
+                             + " and superExpression="
+                             + upstreamExpression
+                             + " superExpression.context="
+                             + upstreamExpression.context;
+    assert !className.isEmpty() : "className is empty";
+    compiledClass = loadFunctionClass(className, instructions, context);
+    return this;
+  }
+
+  protected void constructReferencedFunctionInstanceIfItIsNull(MethodVisitor mv, FunctionMapping<?, ?, ?> mapping)
+  {
+    assert mapping != null : "mapping shan't be null";
+    if ((mapping.functionName == null || functionName == null || !functionName.equals(mapping.functionName)) && mapping.expression != null)
+    {
+      // Bytecode-only path: use the mapping's already-known generated-class
+      // internal name. ASM's new/invokespecial accept name strings; resolving
+      // the Class<?> here would force eager compilation of the dependency
+      // and break mutual recursion across mappings (a ↔ S in the fractional
+      // Riccati Müntz recurrence, issue #982). The class is resolved lazily
+      // by the JVM when the opcode first executes — by which point the outer
+      // compile chain has defined every class in the recursive cluster.
+      String typeInternalName   = mapping.functionName;
+      String fieldDescriptor    = mapping.functionFieldDescriptor();
+      var    alreadyInitialized = new Label();
+      loadThisOntoStack(mv).visitFieldInsn(GETFIELD, className, mapping.functionName, fieldDescriptor);
+      mv.visitJumpInsn(Opcodes.IFNONNULL, alreadyInitialized);
+      loadThisOntoStack(mv);
+      generateNewObjectInstruction(mv, typeInternalName);
+      duplicateTopOfTheStack(mv);
+      invokeDefaultConstructor(mv, typeInternalName);
+      putField(mv, className, mapping.functionName, fieldDescriptor);
+      // Propagate the parent's context field into the new instance's context
+      // field so the new instance's own initialize() sees the live, populated
+      // Context. Without this, the new instance keeps its field-initializer
+      // default (an empty `new Context()`), which has no functions or
+      // variables registered, and every nested function reference (e.g. He)
+      // remains null at runtime.
+      String contextTypeDesc = Type.getDescriptor(Context.class);
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(GETFIELD, className, mapping.functionName, fieldDescriptor);
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(GETFIELD, className, "context", contextTypeDesc);
+      mv.visitFieldInsn(PUTFIELD, typeInternalName, "context", contextTypeDesc);
+
+      mv.visitLabel(alreadyInitialized);
+    }
+  }
+
+  /**
+   * Sets this{@link #expression} and calls {@link #setCursorFrom(Expression)} so
+   * that the effective parsing state of this expression becomes that of another
+   * expression
+   * 
+   * @param anotherExpression
+   * @return
+   */
+  public Expression<D, C, F> continueParsingFrom(Expression<?, ?, ?> anotherExpression)
+  {
+    expression = anotherExpression.expression;
+    return setCursorFrom(anotherExpression);
+  }
+
+  protected void copyIndependentVariableToFunctionalByValue(MethodVisitor mv,
+                                                            Expression<?, ?, Function<?, ?>> function,
+                                                            VariableNode<?, ?, Function<?, ?>> independentVariableMappedToFunctional)
+  {
+    if (trace)
+    {
+      log.debug(String.format("Expression(#%s).copyIndependentVariableToFunctionalByValue(function=%s, independentVariableMappedToFunctional=%s)\n",
+                              System.identityHashCode(this),
+                              function,
+                              independentVariableMappedToFunctional));
+    }
+    var    fieldName       = independentVariableMappedToFunctional.getName();
+    String fieldDescriptor = domainType.descriptorString();
+
+    Label  fieldNotNull    = new Label();
+
+    duplicateTopOfTheStack(mv);
+    getField(mv, function.className, fieldName, fieldDescriptor);
+    jumpToIfNotNull(mv, fieldNotNull);
+
+    duplicateTopOfTheStack(mv);
+    generateNewObjectInstruction(mv, domainType);
+    duplicateTopOfTheStack(mv);
+    invokeDefaultConstructor(mv, domainType);
+    putField(mv, function.className, fieldName, domainType);
+
+    designateLabel(mv, fieldNotNull);
+
+    duplicateTopOfTheStack(mv);
+    getField(mv, function.className, fieldName, fieldDescriptor);
+    getIndependentVariable().generate(mv, domainType);
+    generateVirtualMethodInvocation(mv, domainType, "set", domainType, domainType);
+    pop(mv);
+  }
+
+  /**
+   * Returns the current code point at the parser's position. For BMP characters
+   * this is identical to {@code character}; for supplementary characters it reads
+   * the full surrogate pair.
+   */
+  public int currentCodePoint()
+  {
+    if (position < 0 || position >= getExpression().length())
+    {
+      return Character.MIN_VALUE;
+    }
+    return getExpression().codePointAt(position);
   }
 
   protected void declareCacheField(ClassVisitor cw)
@@ -176,6 +1061,648 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
+  private ClassVisitor declareContext(ClassVisitor cw)
+  {
+    Class<?> type           = Context.class;
+    String   typeDescriptor = type.descriptorString();
+    cw.visitField(ACC_PROTECTED, "context", typeDescriptor, null, null);
+    return cw;
+  }
+
+  protected void declareDerivativeCacheField(ClassVisitor cw)
+  {
+    String signature = "L" + arrayListInternal + "<L" + functionInternal + "<" + Type.getDescriptor(domainType) + Type.getDescriptor(coDomainType) + ">;>;";
+    cw.visitField(Opcodes.ACC_PUBLIC, "derivativeCache", arrayListDescriptor, signature, null);
+  }
+
+  protected MethodVisitor declareEvaluateMethodArguments(MethodVisitor methodVisitor, Label startLabel, Label endLabel)
+  {
+    methodVisitor.visitLocalVariable("this", String.format("L%s;", className), null, startLabel, endLabel, 0);
+    methodVisitor.visitLocalVariable(getIndependentVariable() != null ? getIndependentVariable().getName()
+                                                                      : "in",
+                                     domainType.descriptorString(),
+                                     null,
+                                     startLabel,
+                                     endLabel,
+                                     1);
+    methodVisitor.visitLocalVariable("order", "I", null, startLabel, endLabel, 2);
+    methodVisitor.visitLocalVariable("bits", "I", null, startLabel, endLabel, 3);
+    methodVisitor.visitLocalVariable("result", coDomainType.descriptorString(), null, startLabel, endLabel, 4);
+    return methodVisitor;
+  }
+
+  protected void declareFields(ClassVisitor cw)
+  {
+    cw.visitField(Opcodes.ACC_PUBLIC, IS_INITIALIZED, "Z", null, null);
+    if (hasStaticNodes)
+    {
+      cw.visitField(Opcodes.ACC_PUBLIC, "staticPrecision", "I", null, null);
+    }
+    declareContext(cw);
+    declareSourceExpressionField(cw);
+    declareCacheField(cw);
+    if (!coDomainType.isInterface())
+    {
+      declareLiteralConstants(cw);
+    }
+    declareFunctionReferences(cw);
+    declareVariables(cw);
+    declareJetStampFields(cw);
+    declareDerivativeCacheField(cw);
+  }
+
+  protected void declareFieldsForUpstreamInputPropagation(ClassVisitor classVisitor)
+  {
+    upstreamInputVariableEntryStream().forEach(entry ->
+    {
+      String                varName = entry.getKey();
+      VariableNode<D, C, F> varNode = entry.getValue();
+      Class<?>              varType = varNode.type();
+      assert varType != null && !varType.equals(Object.class) : "type of " + varNode + " should not be Object or null";
+      if (declaredVariables.contains(varName))
+      {
+        return;
+      }
+      if (trace)
+      {
+        log.debug("declareVariables for {}: declaring upstreamInput variable {} of type {}", className, varName, varType);
+      }
+      Compiler.declareField(classVisitor, varName, varType);
+      declaredVariables.add(varName);
+    });
+  }
+
+  protected ClassVisitor declareFunctionReferences(ClassVisitor classVisitor)
+  {
+    if (context == null)
+    {
+      return classVisitor;
+    }
+    context.populateFunctionReferenceGraph();
+    dependencies = Utensils.sortDependencies(context.functionReferenceGraph, getReferencedFunctions());
+
+    if (saveGraphs)
+    {
+      context.saveDependencyGraph(dependencies);
+    }
+    // Declare functions in dependency order
+    for (Dependency dependency : dependencies)
+    {
+      String dependencyVariableName = dependency.variableName;
+      var    functionMapping        = getReferencedFunctions().get(dependencyVariableName);
+
+      if (functionMapping != null)
+      {
+        functionMapping.declare(classVisitor, dependencyVariableName);
+      }
+    }
+
+    return classVisitor;
+  }
+
+  protected void declareIntermediateVariables(ClassVisitor classVisitor)
+  {
+    sortedIntermediateVariableStream().filter(variable -> !declaredIntermediateVariables.contains(variable.name)).forEach(variable ->
+    {
+      variable.declareField(classVisitor);
+      declaredIntermediateVariables.add(variable.name);
+    });
+  }
+
+  /**
+   * Walk the parsed AST, collect every unique {@link JetState} referenced by
+   * {@link JetNode}s, and declare the corresponding int stamp fields:
+   * <ul>
+   * <li>{@code evalStamp} — one per generated class, incremented each
+   * {@code evaluate()} call</li>
+   * <li>{@code jetStamp_X} — one per unique jet, compared against
+   * {@code evalStamp} to memoize the series computation</li>
+   * </ul>
+   */
+  protected void declareJetStampFields(ClassVisitor cw)
+  {
+    Set<JetState> jetStates = collectJetStates();
+    if (jetStates.isEmpty())
+    {
+      return;
+    }
+    cw.visitField(Opcodes.ACC_PUBLIC, "evalStamp", "I", null, null);
+    for (JetState state : jetStates)
+    {
+      cw.visitField(Opcodes.ACC_PUBLIC, state.stampFieldName, "I", null, null);
+    }
+  }
+
+  protected ClassVisitor declareLiteralConstants(ClassVisitor classVisitor)
+  {
+    for (var constant : getSortedLiteralConstantNodes())
+    {
+      constant.declareField(classVisitor);
+    }
+    return classVisitor;
+  }
+
+  /**
+   * Generated classes get a public {@code expression} field holding the
+   * {@link Expression} that produced them. The field is populated by
+   * {@link #instantiate()} immediately after construction, and lets every
+   * compiled Function answer {@link arb.functions.Function#getExpression()} and
+   * {@link arb.functions.Function#derivative(VariableReference)} without any
+   * extra registry. Consumers that don't want the back-pointer may null it out at
+   * any time.
+   */
+  private ClassVisitor declareSourceExpressionField(ClassVisitor cw)
+  {
+    cw.visitField(ACC_PUBLIC, "expression", Type.getDescriptor(Expression.class), null, null);
+    return cw;
+  }
+
+  protected void declareVariableEntry(ClassVisitor classVisitor, Entry<String, Named> variable)
+  {
+    if (trace)
+    {
+      log.trace("Declaring variable of " + className + ": " + variable);
+    }
+    if (variable.getValue() != null)
+    {
+      String varName = variable.getKey();
+      if (!declaredVariables.contains(varName))
+      {
+        classVisitor.visitField(ACC_PUBLIC, varName, variable.getValue().getClass().descriptorString(), null, null);
+        declaredVariables.add(varName);
+      }
+    }
+    else
+    {
+      if (trace)
+      {
+        log.trace("Skipping null variable of " + className + ": " + variable);
+      }
+    }
+  }
+
+  /**
+   * Declares variables as fields in the generated class. This includes: 1. The
+   * upstream (parent) expression's independent variable (if any) - so this
+   * expression can receive it 2. Variables referenced from ancestor expressions
+   * (upstreamInput variables) 3. Context variables
+   * 
+   * NEVER declares this expression's own independent variable as a field in its
+   * own class.
+   */
+  protected void declareVariables(ClassVisitor classVisitor)
+  {
+    // Declare the parent's independent variable as a field so we can receive it
+    if (upstreamExpression != null)
+    {
+      var upstreamIndependentVariableNode = upstreamExpression.getIndependentVariable();
+      if (upstreamIndependentVariableNode != null && !upstreamIndependentVariableNode.type().equals(Object.class))
+      {
+        String upstreamIndVarName = upstreamIndependentVariableNode.reference.name;
+        classVisitor.visitField(ACC_PUBLIC, upstreamIndVarName, upstreamIndependentVariableNode.type().descriptorString(), null, null);
+        declaredVariables.add(upstreamIndVarName);
+      }
+    }
+
+    // Declare fields for all referenced variables from ancestor expressions
+    // These are variables where upstreamInput=true that were added to
+    // referencedVariables
+    declareFieldsForUpstreamInputPropagation(classVisitor);
+
+    // Declare context variables
+    if (context != null)
+    {
+      var varList = context.variableEntryStream().sorted((a, b) -> a.getKey().compareTo(b.getKey())).toList();
+      if (trace)
+      {
+        String vars = varList.stream().map(f -> f.getKey()).collect(Collectors.joining(","));
+        log.debug("declareVariables for {}: context variables {}", className, vars);
+      }
+      for (var variable : varList)
+      {
+        declareVariableEntry(classVisitor, variable);
+      }
+    }
+
+    variablesDeclared = true;
+  }
+
+  /**
+   * Walk the AST and merge {@link JetNode}s that share the same
+   * {@link JetState#structuralKey structuralKey} (same function, same argument)
+   * to reference a single canonical {@link JetState}. This ensures that
+   * differentiation-produced siblings of the same jet share one polynomial buffer
+   * and one stamp field, and that {@link JetState#getMaxCoefficientNeeded()}
+   * reflects the maximum across all siblings.
+   */
+  @SuppressWarnings("rawtypes")
+  protected void deduplicateJets()
+  {
+    if (rootNode == null)
+    {
+      return;
+    }
+    Map<String, JetState> registry = new HashMap<>();
+    rootNode.accept(node ->
+    {
+      if (node instanceof JetNode jetNode)
+      {
+        String   key       = jetNode.structuralKey();
+        JetState canonical = registry.computeIfAbsent(key, k -> jetNode.getSharedState());
+        if (canonical != jetNode.getSharedState())
+        {
+          canonical.updateMax(jetNode.getCoefficientIndex());
+          jetNode.setSharedState(canonical);
+        }
+        else
+        {
+          canonical.updateMax(jetNode.getCoefficientIndex());
+        }
+      }
+    });
+  }
+
+  /**
+   * Deep clone: produces a fresh {@link Expression} sharing this Expression's
+   * {@link Context} and structural metadata, with its own {@link #rootNode}
+   * spliced from {@code this.rootNode} so that AST surgery on the copy does not
+   * mutate the original. Resets compilation state ({@code compiledClass},
+   * {@code instructions}, {@code optimized}, {@code instance}) so the clone
+   * recompiles on first use.
+   *
+   * <p>
+   * If {@code rootNode} is null on the source, {@link #parse(boolean)} is driven
+   * first so the deep clone always returns an Expression carrying a concrete AST.
+   */
+  public Expression<D, C, F> deepCloneExpression()
+  {
+    if (rootNode == null)
+    {
+      parse(true);
+    }
+    Expression<D, C, F> copy = cloneExpression();
+    copy.rootNode      = rootNode.spliceInto(copy);
+    copy.compiledClass = null;
+    copy.instructions  = null;
+    copy.optimized     = false;
+    copy.instance      = null;
+    return copy;
+  }
+
+  public boolean defaultToIntegerConstantsWhenPossible()
+  {
+    return coDomainType.equals(Integer.class);
+  }
+
+  /**
+   * Lazy on-demand symbolic partial derivative w.r.t. {@code variable}, returned
+   * as a fresh compiled {@link Function}. The work is pure-Java AST surgery on
+   * the already-parsed {@link #rootNode} — no source re-parsing — followed by a
+   * single bytecode-generation pass for the differentiated tree.
+   *
+   * <p>
+   * The variable is matched by name only ({@link VariableNode#equals} keys on
+   * {@link VariableReference#name}), so a free-floating reference handle is
+   * sufficient and no splice into the host AST is required. If {@code rootNode}
+   * does not depend on {@code variable}, {@link Node#simplify} collapses the
+   * differentiated tree to the literal-zero node and the returned Function
+   * evaluates to 0 in the codomain.
+   *
+   * <p>
+   * Results are memoized per variable name.
+   */
+  @SuppressWarnings("unchecked")
+  public synchronized F derivative(VariableReference<?, ?, ?> variable)
+  {
+    F cached = partialDerivativeCache.get(variable.name);
+    if (cached != null)
+    {
+      return cached;
+    }
+
+    if (rootNode == null)
+    {
+      parse(true);
+    }
+
+    Expression<D, C, F> partial = deepCloneExpression();
+    partial.className = className + "_d" + variable.name;
+
+    VariableNode<D, C, F> probe = new VariableNode<>(partial,
+                                                     new VariableReference<>(variable.name),
+                                                     false);
+    partial.rootNode = partial.rootNode.differentiate(probe).simplify();
+
+    F instance = partial.instantiate();
+    partialDerivativeCache.put(variable.name, instance);
+    return instance;
+  }
+
+  /**
+   * Groups all AST nodes into {@link CongruenceClass}es via
+   * {@link Node#isEquivalentTo(Node)}, identifies redundant (multi-member)
+   * classes of non-leaf, input-dependent subexpressions, and wraps them in
+   * {@link SharedNode}s — canonical (first occurrence) computes and stores,
+   * references (subsequent occurrences) just load.
+   */
+  @SuppressWarnings("unchecked")
+  private void eliminateCommonSubexpressions()
+  {
+    // Phase 1: Collect all nodes into CongruenceClasses
+    List<CongruenceClass<D, C, F>> classes = new ArrayList<>();
+    rootNode.accept(node ->
+    {
+      for (CongruenceClass<D, C, F> c : classes)
+      {
+        if (c.canonical().isEquivalentTo(node))
+        {
+          c.add(node);
+          return;
+        }
+      }
+      CongruenceClass<D, C, F> fresh = new CongruenceClass<>(node.toString());
+      fresh.add(node);
+      classes.add(fresh);
+    });
+
+    // Phase 2: Filter to redundant, non-leaf, input-dependent classes
+    Node<D, C, F>                  independentVariable = isNullaryFunction() ? null : getIndependentVariable();
+    List<CongruenceClass<D, C, F>> redundant           = classes.stream()
+                                                                .filter(CongruenceClass::isRedundant)
+                                                                .filter(c -> !c.canonical().isLeaf())
+                                                                .filter(c -> independentVariable != null
+                                                                              && c.canonical().dependsOn((VariableNode<D, C, F>) independentVariable))
+                                                                .sorted(Comparator.comparingInt(c -> c.canonical().depth()))
+                                                                .toList();
+
+    if (redundant.isEmpty())
+    {
+      return;
+    }
+
+    // Phase 3: Build identity map from node instance -> SharedNode replacement
+    IdentityHashMap<Node<D, C, F>, SharedNode<D, C, F>> replacements = new IdentityHashMap<>();
+    for (CongruenceClass<D, C, F> cc : redundant)
+    {
+      String fieldName = newIntermediateVariable("cse", cc.type());
+      // First member is canonical: compute + store
+      replacements.put(cc.canonical(),
+                       new SharedNode<>(cc.canonical(),
+                                        fieldName,
+                                        true));
+      // Remaining members are references: just load
+      for (int i = 1; i < cc.size(); i++)
+      {
+        replacements.put(cc.get(i),
+                         new SharedNode<>(cc.get(i),
+                                          fieldName,
+                                          false));
+      }
+    }
+
+    // Phase 4: Walk the tree and replace children by identity
+    rootNode = replaceByIdentity(rootNode, replacements);
+  }
+
+  /**
+   * Emit {@code this.<peer>.<self> = this} when this expression is named and the
+   * peer's generated class declares a field {@code <self>} whose type is
+   * assignable from this class. This is the explicit codegen of the back-edge for
+   * mutual-recursion cycles where the operand expression's own
+   * referenced-function map may not record the enclosing class. Uses reflection
+   * only on the already-loaded peer Class<?>; no registry lookup.
+   */
+  protected void emitBackEdgeSelfLift(MethodVisitor mv, String peerName, String peerInternalName)
+  {
+
+    if (functionName == null || className == null)
+    {
+      return;
+    }
+    // The self-edge wires the parent's `this` onto peer.<self>. Wiring
+    // self onto self is meaningless (peer == self means there is no peer
+    // instance distinct from `this`).
+    if (functionName.equals(peerName))
+    {
+      return;
+    }
+    // Best-effort: only emit when the peer expression is in fact this
+    // expression's referenced-functions map (true for operand expressions
+    // since registerOperand registered the operand mapping on this). The
+    // emitted bytecode references the field by name; the JVM resolves it on
+    // first execution. If the peer class lacks a field named functionName
+    // the verifier or class loader would fail at link time; we therefore
+    // gate emission on the runtime class shape when known and otherwise
+    // suppress.
+    var peerMapping = getReferencedFunctions().get(peerName);
+    if (peerMapping == null || peerMapping.expression == null)
+    {
+      return;
+    }
+    var     peerExpr              = peerMapping.expression;
+    boolean peerDeclaresSelfField = false;
+    if (peerExpr.declaredVariables != null && peerExpr.declaredVariables.contains(functionName))
+    {
+      peerDeclaresSelfField = true;
+    }
+    if (!peerDeclaresSelfField && peerExpr.getReferencedFunctions() != null && peerExpr.getReferencedFunctions().containsKey(functionName))
+    {
+      peerDeclaresSelfField = true;
+    }
+    if (!peerDeclaresSelfField)
+    {
+      return;
+    }
+    String peerFieldDescriptor = peerMapping.functionFieldDescriptor();
+    String selfFieldDescriptor;
+    var    selfMapping         = (context != null) ? context.getFunctionMapping(functionName) : null;
+    if (selfMapping != null)
+    {
+      selfFieldDescriptor = selfMapping.functionFieldDescriptor();
+    }
+    else
+    {
+      selfFieldDescriptor = "L" + className + ";";
+    }
+
+    getFieldFromThis(mv, className, peerName, peerFieldDescriptor);
+    putField(loadThisOntoStack(mv), peerInternalName, functionName, selfFieldDescriptor);
+  }
+
+  /**
+   * Reference-identity equality. Expression instances are identified by their
+   * object identity: every parsed/compiled Expression gets its own AST and its
+   * own generated class, so two non-identical Expressions are never considered
+   * equal for the purposes of collection lookup. The previous implementation
+   * recursed through {@code rootNode.equals}, which combined with
+   * {@link arb.expressions.nodes.Node#equals}'s former inclusion of
+   * {@code expression} in its structural compare formed an equality cycle that
+   * overflowed the stack as soon as a sub-expression and its parent were
+   * compared. Callers that want structural equivalence between two Expressions
+   * can compare their rendered {@code toString} forms or their root nodes with
+   * {@code Node#isEquivalentTo}.
+   */
+  @Override
+  public boolean equals(Object obj)
+  {
+    return this == obj;
+  }
+
+  /**
+   * Evaluates a bound node to a double value. The node must be a literal constant
+   * or a negated literal constant.
+   */
+  private double evaluateBoundToDouble(Node<D, C, F> node)
+  {
+    if (node.isLiteralConstant())
+    {
+      return Double.parseDouble(node.asLiteralConstant().stringValue);
+    }
+    throw new CompilerException("interval bound must be a literal constant, got: " + node);
+  }
+
+  protected Expression<D, C, F> evaluateOptionalIndependentVariableSpecification()
+  {
+    if (trace)
+    {
+      log.debug("#{}: evaluateOptionalIndependentVariableSpecification: remaining {} ", System.identityHashCode(this), remaining());
+    }
+    setExpression(normalize(getExpression()));
+
+    nextCharacter(); // prime cursor to position 0
+
+    String inputVariableName = parseExplicitInputVariableIfPresent();
+    if (inputVariableName != null)
+    {
+      assureInputNameHasNotAlreadyBeenAssociatedWithAContextVariable(inputVariableName);
+      if (pendingParameterList != null && !pendingParameterList.isEmpty() && coDomainType.isInterface())
+      {
+        rootNode = parseInputVariableAssignment(inputVariableName);
+      }
+      else
+      {
+        VariableNode<D, C, F> newRef = newVariableNode(inputVariableName);
+        if (pendingInputVariableBounds != null)
+        {
+          newRef.reference.bounds    = pendingInputVariableBounds;
+          pendingInputVariableBounds = null;
+        }
+        assignInputVariable(newRef);
+      }
+    }
+
+    return this;
+  }
+
+  protected Node<D, C, F> exponentiate() throws CompilerException
+  {
+    return exponentiate(resolveOperand());
+  }
+
+  protected Node<D, C, F> exponentiate(Node<D, C, F> node) throws CompilerException
+  {
+    if (nextCharacterIs('^'))
+    {
+      boolean parenthetical = nextCharacterIs('(', '⁽');
+      node = node.pow(parenthetical ? resolve() : resolveOperand());
+      if (parenthetical)
+      {
+        require(')', '⁾');
+      }
+      return node;
+    }
+    else
+    {
+      return parseSuperscripts(node);
+    }
+  }
+
+  /**
+   * @return the result of passing this{@link #exponentiate()} to
+   *         this{@link #multiplyAndDivide(Node)}
+   */
+  protected Node<D, C, F> exponentiateMultiplyAndDivide()
+  {
+    return multiplyAndDivide(exponentiate());
+  }
+
+  /**
+   * Returns the existing {@link LiteralConstantNode} in this expression whose
+   * {@link LiteralConstantNode#stringValue} equals {@code stringValue}, or
+   * {@code null} if none. This lets the public {@code newLiteralConstant} /
+   * {@code newFractionLiteralConstant} factories short-circuit when a
+   * simplification step would otherwise mint a fresh node object for a value that
+   * already has a cached field — the caller gets back the original node instead
+   * of a duplicate that would later collide on {@code fieldName} inside
+   * {@link LiteralConstantNode}'s constructor.
+   */
+  @SuppressWarnings("unchecked")
+  private LiteralConstantNode<D, C, F> findExistingLiteralConstant(String stringValue)
+  {
+    for (var existing : literalConstants.values())
+    {
+      if (existing.stringValue.equals(stringValue))
+      {
+        return (LiteralConstantNode<D, C, F>) existing;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Generate the implementation of the function after this{@link #parse(boolean)}
+   * has been invoked
+   * 
+   * @return this
+   * @throws CompilerException
+   */
+  public Expression<D, C, F> generate() throws CompilerException
+  {
+    assert instructions == null;
+    if (trace)
+    {
+      log.debug("#{}: generate(className={}, functionName={}, expression='{}')\n", System.identityHashCode(this), className, functionName, getExpression());
+    }
+
+    ClassVisitor classVisitor = Compiler.constructClassVisitor();
+
+    try
+    {
+
+      optimize();
+
+      generateFunctionInterface(this, className, classVisitor);
+      generateDomainTypeMethod(classVisitor);
+      generateCoDomainTypeMethod(classVisitor);
+      generateEvaluationMethod(classVisitor);
+      generateStaticEvaluationMethod(classVisitor);
+      generateInvalidateMethod(classVisitor);
+      generateDiffererentiationAndIntegrationMethods(classVisitor);
+      declareFields(classVisitor);
+      generateInitializationMethod(classVisitor);
+      generateConstructor(classVisitor);
+      declareIntermediateVariables(classVisitor);
+      if (needsCloseMethod())
+      {
+        generateCloseMethod(classVisitor);
+      }
+      generateGetNameMethod(classVisitor);
+      generateGetContextMethod(classVisitor);
+      generateGetExpressionMethod(classVisitor);
+
+      generateToStringMethod(classVisitor);
+      generateTypesetMethod(classVisitor);
+    }
+    finally
+    {
+      classVisitor.visitEnd();
+    }
+
+    logVariables();
+
+    return storeInstructions(classVisitor);
+  }
+
   protected void generateCacheFieldInitializer(MethodVisitor mv)
   {
     if (shouldCache())
@@ -183,21 +1710,336 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       String internalName = Type.getInternalName(TreeMap.class);
       loadThisOntoStack(mv);
       mv.visitTypeInsn(Opcodes.NEW, internalName);
-      mv.visitInsn(Opcodes.DUP);
+      duplicateTopOfTheStack(mv);
+
       mv.visitMethodInsn(Opcodes.INVOKESPECIAL, internalName, "<init>", "()V", false);
       mv.visitFieldInsn(Opcodes.PUTFIELD, className, "cache", Type.getDescriptor(TreeMap.class));
     }
   }
 
-  static final String arrayListDescriptor = Type.getDescriptor(ArrayList.class);
-  static final String arrayListInternal   = Type.getInternalName(ArrayList.class);
-  static final String functionInternal    = Type.getInternalName(Function.class);
-  static final String fieldInternal       = Type.getInternalName(Field.class);
-
-  protected void declareDerivativeCacheField(ClassVisitor cw)
+  protected void generateCachePeek(MethodVisitor mv)
   {
-    String signature = "L" + arrayListInternal + "<L" + functionInternal + "<" + Type.getDescriptor(domainType) + Type.getDescriptor(coDomainType) + ">;>;";
-    cw.visitField(Opcodes.ACC_PUBLIC, "derivativeCache", arrayListDescriptor, signature, null);
+    Label cacheMiss = new Label();
+    loadThisAndFieldOntoStack(mv, "cache", TreeMap.class);
+    loadInputParameterChecked(mv);
+    invokeStaticMethod(mv, Function.class, "peek", Object.class, TreeMap.class, arb.Integer.class);
+    cast(mv, coDomainType);
+    duplicateTopOfTheStack(mv);
+    jumpToIfNull(mv, cacheMiss);
+    if (isGeneratedFunctional())
+    {
+      // Functional cache hit: return the cached function reference directly.
+      // Function references are immutable handles — sharing them across callers
+      // is correct, no buffer-aliasing hazard, no per-call deep copy needed.
+      // stack: cached(coDomainType)
+      mv.visitInsn(Opcodes.ARETURN);
+    }
+    else
+    {
+      // Value-type cache hit: result.set(cached); return result
+      // stack: cached(coDomainType)
+      loadResultParameter(mv);
+      cast(mv, coDomainType);
+      swap(mv);
+      generateVirtualMethodInvocation(mv, coDomainType, "set", coDomainType, coDomainType);
+      pop(mv);
+      loadResultParameter(mv);
+      cast(mv, coDomainType);
+      mv.visitInsn(Opcodes.ARETURN);
+    }
+    designateLabel(mv, cacheMiss);
+    pop(mv);
+  }
+
+  /**
+   * After rootNode.generate() / generateFunctionalElement has left the computed
+   * result on the stack: poke into the cache and return.
+   *
+   * Value-type codomain: allocate a fresh copy via {@code new coDomainType()},
+   * copy result into it via {@code set()}, poke the copy. The deep copy keeps
+   * cache slots from sharing internal MPFR/FLINT buffers with the caller's result
+   * instance.
+   *
+   * Generated functional codomain: function references are immutable handles, so
+   * the on-stack reference produced by {@link #generateFunctionalElement} is
+   * poked directly. No {@code <init>()} (interfaces are not instantiable), no
+   * {@code set(F)} (function references have no in-place set semantics).
+   */
+  protected void generateCachePokeEpilogue(MethodVisitor mv)
+  {
+    if (isGeneratedFunctional())
+    {
+      // stack on entry: <functionInstance> (left by generateFunctionalElement)
+      // dup so we can poke a copy of the reference and return one
+      mv.visitInsn(Opcodes.DUP);
+
+      // poke(cache, index, functionInstance) — keys-map is local cacheArrayListSlot,
+      // key is local cacheIndexSlot, value is the dup'd reference on stack
+      mv.visitVarInsn(Opcodes.ALOAD, cacheArrayListSlot);
+      mv.visitInsn(Opcodes.SWAP); // stack: cache, functionInstance
+      mv.visitVarInsn(Opcodes.ALOAD, cacheIndexSlot);
+      mv.visitInsn(Opcodes.SWAP); // stack: cache, index, functionInstance
+      Compiler.invokeStaticMethod(mv, Function.class, "poke", Object.class, TreeMap.class, arb.Integer.class, Object.class);
+      mv.visitInsn(Opcodes.POP); // discard poke return value
+
+      // return the original functionInstance still on the stack (under the dup)
+      mv.visitInsn(Opcodes.ARETURN);
+      return;
+    }
+
+    int freshCopySlot = allocateLocalVariableSlot();
+
+    // stack on entry: <result> (left by rootNode.generate)
+    // pop the result — it has already been written into local4 (the result
+    // parameter)
+    mv.visitInsn(Opcodes.POP);
+
+    // allocate fresh copy of coDomainType
+    mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(coDomainType));
+    mv.visitInsn(Opcodes.DUP);
+    mv.visitMethodInsn(Opcodes.INVOKESPECIAL, Type.getInternalName(coDomainType), "<init>", "()V", false);
+    mv.visitVarInsn(Opcodes.ASTORE, freshCopySlot);
+
+    // copy result (local4) into fresh copy
+    mv.visitVarInsn(Opcodes.ALOAD, freshCopySlot);
+    mv.visitVarInsn(Opcodes.ALOAD, 4);
+    mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
+    Compiler.generateVirtualMethodInvocation(mv, coDomainType, "set", coDomainType, coDomainType);
+    mv.visitInsn(Opcodes.POP); // discard set() return value
+
+    // poke(cache, index, freshCopy)
+    mv.visitVarInsn(Opcodes.ALOAD, cacheArrayListSlot);
+    mv.visitVarInsn(Opcodes.ALOAD, cacheIndexSlot);
+    mv.visitVarInsn(Opcodes.ALOAD, freshCopySlot);
+    Compiler.invokeStaticMethod(mv, Function.class, "poke", Object.class, TreeMap.class, arb.Integer.class, Object.class);
+    mv.visitInsn(Opcodes.POP); // discard poke return value
+
+    // return result
+    mv.visitVarInsn(Opcodes.ALOAD, 4);
+    mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
+    mv.visitInsn(Opcodes.ARETURN);
+  }
+
+  /**
+   * Stores the cache ArrayList and the int index in dynamically allocated local
+   * variable slots. Nothing is left on the operand stack, so rootNode.generate()
+   * runs with a clean stack regardless of branching (when/switch nodes).
+   */
+  protected void generateCachePokePrologue(MethodVisitor mv)
+  {
+    cacheArrayListSlot = allocateLocalVariableSlot();
+    cacheIndexSlot     = allocateLocalVariableSlot();
+    loadThisAndFieldOntoStack(mv, "cache", TreeMap.class);
+    mv.visitVarInsn(Opcodes.ASTORE, cacheArrayListSlot);
+    loadInputParameterChecked(mv);
+    mv.visitVarInsn(Opcodes.ASTORE, cacheIndexSlot);
+  }
+
+  protected MethodVisitor generateCloseFieldCall(MethodVisitor methodVisitor, String fieldName, Class<?> fieldType)
+  {
+    getFieldFromThis(methodVisitor, className, fieldName, fieldType);
+    return invokeCloseMethod(methodVisitor, fieldType);
+  }
+
+  protected ClassVisitor generateCloseMethod(ClassVisitor classVisitor)
+  {
+    var methodVisitor = defineMethod(classVisitor, "close", VOID_METHOD_DESCRIPTOR);
+
+    methodVisitor.visitCode();
+
+    if (!coDomainType.isInterface())
+    {
+      getSortedLiteralConstantNodes().forEach(constant -> generateCloseFieldCall(loadThisOntoStack(methodVisitor), constant.fieldName, constant.type()));
+
+      sortedIntermediateVariables().forEach(intermediateVariable -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
+                                                                                           intermediateVariable.name,
+                                                                                           intermediateVariable.type));
+
+      getReferencedFunctions().forEach((name, mapping) -> generateCloseFieldCall(loadThisOntoStack(methodVisitor), name, mapping.type()));
+    }
+
+    Compiler.generateReturnFromVoidMethod(methodVisitor);
+
+    return classVisitor;
+  }
+
+  protected void generateCodeToSetIsInitializedToTrue(MethodVisitor methodVisitor)
+  {
+    loadThisOntoStack(methodVisitor).visitInsn(Opcodes.ICONST_1);
+    methodVisitor.visitFieldInsn(PUTFIELD, className, IS_INITIALIZED, "Z");
+  }
+
+  protected void generateCodeToThrowErrorIfAlreadyInitialized(MethodVisitor mv)
+  {
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(GETFIELD, className, IS_INITIALIZED, "Z");
+    var alreadyInitializedLabel = new Label();
+    mv.visitJumpInsn(IFEQ, alreadyInitializedLabel);
+    mv.visitTypeInsn(NEW, JAVA_LANG_ASSERTION_ERROR);
+    duplicateTopOfTheStack(mv).visitLdcInsn("Already initialized");
+    mv.visitMethodInsn(INVOKESPECIAL, JAVA_LANG_ASSERTION_ERROR, "<init>", ASSERTION_ERROR_METHOD_DESCRIPTOR, false);
+    mv.visitInsn(ATHROW);
+    mv.visitLabel(alreadyInitializedLabel);
+  }
+
+  protected ClassVisitor generateCoDomainTypeMethod(ClassVisitor classVisitor) throws CompilerException
+  {
+    return generateTypeMethod(classVisitor, "coDomainType", Type.getType(coDomainType), getCoDomainTypeMethodSignature());
+  }
+
+  protected MethodVisitor generateConditionalInitializater(MethodVisitor mv)
+  {
+    var alreadyInitialized = new Label();
+    getFieldFromThis(mv, className, IS_INITIALIZED, boolean.class);
+    jumpToIfNotEqual(mv, alreadyInitialized);
+    loadThisOntoStack(mv).visitMethodInsn(INVOKEVIRTUAL, className, nameOfInitializerFunction, "()V", false);
+    Compiler.designateLabel(mv, alreadyInitialized);
+    return mv;
+  }
+
+  protected ClassVisitor generateConstructor(ClassVisitor classVisitor)
+  {
+    MethodVisitor mv = classVisitor.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
+    mv.visitCode();
+
+    generateInvocationOfDefaultNoArgConstructor(mv, true);
+
+    // Initialize the final cache field exactly once, here in <init>.
+    // ACC_FINAL on the field forbids any later PUTFIELD from any other
+    // method (initialize, evaluate, helpers) — verified by the JVM.
+    generateCacheFieldInitializer(mv);
+
+    if (hasStaticNodes)
+    {
+      // Initialize staticPrecision to -1 so the first evaluate() call
+      // unconditionally triggers evaluateStaticSubexpressions()
+      loadThisOntoStack(mv);
+      mv.visitLdcInsn(-1);
+      mv.visitFieldInsn(Opcodes.PUTFIELD, className.replace('.', '/'), "staticPrecision", "I");
+    }
+
+    // Only root expressions create their own Context.
+    // Child arg classes receive the parent's context via initialize() (#842)
+    if (context != null && upstreamExpression == null)
+    {
+      generateContextInitializer(mv);
+    }
+
+    if (!coDomainType.isInterface())
+    {
+      generateLiteralConstantInitializers(mv);
+    }
+
+    generateIntermediateVariableInitializers(mv);
+
+    Compiler.generateReturnFromVoidMethod(mv);
+    return classVisitor;
+  }
+
+  public MethodVisitor generateContextInitializer(MethodVisitor methodVisitor)
+  {
+
+    loadThisOntoStack(methodVisitor);
+    String contextTypeInternalName = Type.getInternalName(Context.class);
+    methodVisitor.visitTypeInsn(NEW, contextTypeInternalName);
+    methodVisitor.visitInsn(DUP);
+    methodVisitor.visitMethodInsn(INVOKESPECIAL, contextTypeInternalName, "<init>", "()V", false);
+    methodVisitor.visitFieldInsn(PUTFIELD, className, "context", Context.class.descriptorString());
+    return methodVisitor;
+  }
+
+  protected ClassVisitor generateDelegateMethod(ClassVisitor classVisitor, String func, String op)
+  {
+    assert functionClass.isInterface() : functionClass + " is not an interface";
+    assert rootNode != null : "rootNode is null";
+
+    var mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, func, Compiler.getMethodDescriptor(functionClass), null, null);
+    mv.visitCode();
+    Compiler.annotateWithOverride(mv);
+
+    mv.visitLdcInsn(Type.getType(domainType));
+    mv.visitLdcInsn(Type.getType(coDomainType));
+    mv.visitLdcInsn(Type.getType(functionClass));
+    mv.visitLdcInsn(op + functionName);
+
+    mv.visitLdcInsn(String.format("%s(%s,%s)", op, rootNode.toString(), getIndependentVariable()));
+
+    if (context != null)
+    {
+      loadThisAndFieldOntoStack(mv, "context", Context.class);
+
+      Compiler.invokeStaticMethod(mv,
+                                  Function.class,
+                                  "express",
+                                  Function.class,
+                                  Class.class,
+                                  Class.class,
+                                  Class.class,
+                                  String.class,
+                                  String.class,
+                                  Context.class);
+    }
+    else
+    {
+      Compiler.invokeStaticMethod(mv, Function.class, "express", Function.class, Class.class, Class.class, Class.class, String.class, String.class);
+
+    }
+
+    Compiler.generateReturnFromMethod(mv);
+
+    if (!functionClass.equals(Function.class))
+    {
+      String functionDescriptor = Compiler.getMethodDescriptor(Function.class);
+      String concreteDescriptor = Compiler.getMethodDescriptor(functionClass);
+      var    bridge             =
+                    classVisitor.visitMethod(Opcodes.ACC_PUBLIC | Opcodes.ACC_BRIDGE | Opcodes.ACC_SYNTHETIC, func, functionDescriptor, null, null);
+      bridge.visitCode();
+      bridge.visitVarInsn(Opcodes.ALOAD, 0);
+      bridge.visitMethodInsn(Opcodes.INVOKEVIRTUAL, className, func, concreteDescriptor, false);
+      bridge.visitInsn(Opcodes.ARETURN);
+      bridge.visitMaxs(0, 0);
+      bridge.visitEnd();
+    }
+
+    return classVisitor;
+  }
+
+  protected void generateDependencyAssignment(MethodVisitor mv, String functionName, String functionDescriptor, String assignment)
+  {
+    var otherMapping = getReferencedFunctions().get(assignment);
+
+    if (Expression.trace)
+    {
+      log.debug("generateDependencyAssignment: functionName={} functionDescriptor={} assignment={}", functionName, functionDescriptor, assignment);
+    }
+    loadThisOntoStack(mv).visitFieldInsn(GETFIELD, className, assignment, otherMapping.functionFieldDescriptor());
+    loadThisOntoStack(mv).visitFieldInsn(GETFIELD, className, functionName, functionDescriptor);
+    mv.visitFieldInsn(PUTFIELD, assignment, functionName, functionDescriptor);
+  }
+
+  protected void generateDependencyAssignments(MethodVisitor mv, Dependency dependency)
+  {
+    var assignments        = dependency.getAssignments(className, getReferencedFunctions());
+
+    var functionName       = dependency.variableName;
+    var mapping            = getReferencedFunctions().get(functionName);
+    var functionDescriptor = functionClass.descriptorString();
+
+    if (mapping != null)
+    {
+
+      functionDescriptor = mapping.functionFieldDescriptor();
+
+      // Phase 1 (generateReferencedFunctionInstances) already guarantees non-null
+      // (#848)
+      generateFunctionInitializer(mv, mapping, assignments);
+
+      for (String assignment : assignments)
+      {
+        generateDependencyAssignment(mv, functionName, functionDescriptor, assignment);
+      }
+
+    }
   }
 
   protected void generateDerivativeCacheFieldInitializer(MethodVisitor mv)
@@ -207,6 +2049,687 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitInsn(Opcodes.DUP);
     mv.visitMethodInsn(Opcodes.INVOKESPECIAL, arrayListInternal, "<init>", "()V", false);
     mv.visitFieldInsn(Opcodes.PUTFIELD, className, "derivativeCache", arrayListDescriptor);
+  }
+
+  private ClassVisitor generateDerivativeMethod(ClassVisitor classVisitor)
+  {
+    return generateDelegateMethod(classVisitor, "derivative", "diff");
+  }
+
+  /**
+   * @see {@link RealPolynomialSequence#derivative()}
+   *      {@link RealPolynomialSequence#integral()} and
+   *      {@link ComplexPolynomialSequence#derivative()} and
+   *      {@link ComplexPolynomialSequence#integral()} for the default
+   *      implementation which is used in the non-nullary polynomial sequence case
+   * 
+   */
+  protected void generateDiffererentiationAndIntegrationMethods(ClassVisitor classVisitor)
+  {
+    if (!isNullaryFunction() && !Polynomial.class.isAssignableFrom(coDomainType))
+    {
+      // Non-polynomial, non-nullary: generate symbolic derivative/integral methods
+      generateDerivativeMethod(classVisitor);
+      generateIntegralMethod(classVisitor);
+    }
+    else if (Polynomial.class.isAssignableFrom(coDomainType) || RationalFunction.class.isAssignableFrom(coDomainType)
+                  || ComplexRationalFunction.class.isAssignableFrom(coDomainType))
+    {
+      // NON-NULLARY polynomial sequences DO NOTHING HERE.
+      // The interface declares default integral()/derivative() methods that
+      // delegate to the polynomial's own integral()/derivative() via lambda.
+      // Generating bytecode here would OVERRIDE those default methods and break
+      // differentiation by using the sequence index instead of the polynomial's
+      // independent variable.
+      if (isNullaryFunction())
+      {
+        generatePolynomialMethod(classVisitor, "integral");
+        generatePolynomialMethod(classVisitor, "derivative");
+      }
+      // FIXME: also do this for rational function codomains
+    }
+  }
+
+  protected ClassVisitor generateDomainTypeMethod(ClassVisitor classVisitor) throws CompilerException
+  {
+    return generateTypeMethod(classVisitor, "domainType", Type.getType(domainType), getDomainTypeMethodSignature());
+  }
+
+  /**
+   * Emit {@code ++this.evalStamp} at the top of the evaluate method body. This
+   * gives each {@code evaluate()} call a unique stamp value so that
+   * {@link JetNode}s can compare their per-jet {@code jetStamp_X} against it to
+   * avoid redundant series recomputation within the same call.
+   */
+  protected void generateEvalStampIncrement(MethodVisitor mv)
+  {
+    loadThisOntoStack(mv);
+    mv.visitInsn(Opcodes.DUP);
+    mv.visitFieldInsn(Opcodes.GETFIELD, className, "evalStamp", "I");
+    mv.visitInsn(Opcodes.ICONST_1);
+    mv.visitInsn(Opcodes.IADD);
+    mv.visitFieldInsn(Opcodes.PUTFIELD, className, "evalStamp", "I");
+  }
+
+  protected ClassVisitor generateEvaluationMethod(ClassVisitor classVisitor) throws CompilerException
+  {
+    if (rootNode == null)
+    {
+      parse(true);
+    }
+
+    nextLocalVariableSlot = 5;
+
+    Label startLabel  = new Label();
+    Label endLabel    = new Label();
+    Label taylorLabel = new Label();
+
+    var   mv          = visitEvaluationMethod(classVisitor);
+    mv.visitCode();
+
+    designateLabel(mv, startLabel);
+    Compiler.annotateWithOverride(mv);
+
+    if (needsInitializer())
+    {
+      generateConditionalInitializater(mv);
+    }
+
+    if (hasStaticNodes)
+    {
+      generateStaticPrecisionCheck(mv);
+    }
+
+    boolean hasJets = !collectJetStates().isEmpty();
+
+    // --- order > 1 dispatch to Taylor series path (non-jet expressions only) ---
+    if (!hasJets)
+    {
+      mv.visitVarInsn(Opcodes.ILOAD, 2); // order
+      mv.visitInsn(Opcodes.ICONST_1);
+      mv.visitJumpInsn(Opcodes.IF_ICMPGT, taylorLabel);
+    }
+
+    if (hasJets)
+    {
+      generateEvalStampIncrement(mv);
+    }
+
+    boolean cache             = shouldCache();
+    boolean cacheValueBacking = shouldCacheValueBacking();
+
+    if (cache)
+    {
+      generateCachePeek(mv);
+      generateCachePokePrologue(mv);
+    }
+    if (cacheValueBacking)
+    {
+      generateValueBackingPeek(mv);
+    }
+
+    rootNode.isRootNode = true;
+    if (isGeneratedFunctional())
+    {
+      generateFunctionalElement(mv);
+    }
+    else
+    {
+      rootNode.generate(mv, coDomainType);
+    }
+
+    if (cache)
+    {
+      generateCachePokeEpilogue(mv);
+    }
+    if (cacheValueBacking)
+    {
+      generateValueBackingPoke(mv);
+    }
+
+    designateLabel(mv, endLabel);
+    declareEvaluateMethodArguments(mv, startLabel, endLabel);
+
+    if (hasJets)
+    {
+      Compiler.generateReturnFromMethod(mv);
+    }
+    else
+    {
+      mv.visitInsn(Opcodes.ARETURN);
+
+      // --- Taylor series evaluation for order > 1 ---
+      generateTaylorSeriesPath(mv, taylorLabel);
+
+      mv.visitMaxs(0, 0);
+      mv.visitEnd();
+    }
+    return classVisitor;
+  }
+
+  protected Expression<Object, Object, Function<?, ?>> generateFunctionalElement(MethodVisitor mv)
+  {
+    var functional = newFunctionalExpression();
+    functionalDependsOnIndependentVariable = false;
+    functionalIndependentVariable          = null;
+
+    if (getIndependentVariable() != null)
+    {
+      functionalIndependentVariable = getIndependentVariable().spliceInto(functional).asVariable();
+    }
+
+    functional.generate();
+
+    if (functionalIndependentVariable != null)
+    {
+      functionalDependsOnIndependentVariable = functional.rootNode.dependsOn(functionalIndependentVariable);
+    }
+
+    constructNewObject(mv, functional.className);
+    duplicateTopOfTheStack(mv);
+    invokeDefaultConstructor(mv, functional.className);
+
+    if (functionalDependsOnIndependentVariable)
+    {
+      copyIndependentVariableToFunctionalByValue(mv, functional, functionalIndependentVariable);
+    }
+
+    // Propagate upstream input variables (e.g. 'n' from upstream Expression's
+    // scope)
+    // that the functional references but that are NOT the current expression's
+    // independent variable (already handled above).
+    propagateUpstreamInputVariablesToFunctional(mv, functional);
+
+    if (context != null)
+    {
+      propagateContext(mv, functional);
+    }
+
+    invokeInitializationMethod(mv, functional);
+
+    return functional.compile();
+  }
+
+  protected MethodVisitor generateFunctionInitializer(MethodVisitor mv, FunctionMapping<?, ?, ?> nestedFunction, List<String> assignments)
+  {
+    assert nestedFunction != null : "nestedFunction shan't be null";
+    if (trace)
+    {
+      log.debug(String.format("generateFunctionInitializer for className=%s functionName=%s: nestedFunction=%s, assignments=%s )",
+                              className,
+                              functionName,
+                              nestedFunction.functionName,
+                              assignments));
+    }
+
+    boolean haveLiveInstance         = nestedFunction.instance != null && nestedFunction.isGenerated();
+
+    // Pre-registered branch: a mapping created via
+    // Function.parseCompileAndRegister has no `instance` yet (deferred to
+    // break the chicken-and-egg cycle in mutually-recursive sequences
+    // such as a ↔ S in the fractional Riccati Müntz recurrence,
+    // issue #982). The Expression itself, however, is parsed and its
+    // generated-class name is fixed at registration time, so we can still
+    // emit the v/μ-propagation bytecode using the Expression's className
+    // as a symbolic reference — ASM's GETFIELD/PUTFIELD accept name
+    // strings and the JVM resolves the class lazily when the parent's
+    // initialize() executes (by which point the recursive compile chain
+    // has defined every class in the cluster). Without this branch the
+    // generated initialize() body silently omits the
+    // `if (this.S.v == null) this.S.v = this.v; else this.S.v.set(this.v)`
+    // block for every pre-registered referenced function and crashes
+    // with NPE on the first evaluate() that touches it.
+    // Skip self-references at this codegen layer — the generated
+    // initialize() body emits `this.<self> = new <self>(); inject v/μ`
+    // later via generateSelfReference (Expression.java:2488). Emitting an
+    // injection block here would dereference `this.<self>` before that
+    // allocation runs and crash with NPE on the very first invocation.
+    boolean isSelfReference          = nestedFunction.functionName != null && nestedFunction.functionName.equals(functionName);
+
+    boolean haveRegisteredExpression =
+                                     !haveLiveInstance && !isSelfReference && nestedFunction.expression != null && nestedFunction.expression.className != null;
+
+    if (haveLiveInstance || haveRegisteredExpression)
+    {
+      var    nestedExpression        = nestedFunction.expression;
+      // Force the nested expression to declare its fields if it hasn't yet.
+      // For mappings registered via parseCompileAndRegister, declareVariables
+      // has not run, so declaredVariables is still empty — querying it
+      // would yield an empty filter and no v/μ-injection block would be
+      // emitted. Compiling here populates declaredVariables (line 1305) and
+      // generates the bytecode for the nested class, breaking the
+      // chicken-and-egg with the parent's own compile by going through the
+      // shared ExpressionClassLoader.
+      // For two expressions sharing the same Context, the set of context
+      // variables declared as fields is identical (both iterate
+      // context.variableEntryStream() in declareVariables). When the nested
+      // expression has not yet reached declareVariables — which happens
+      // every time it sits on a mutual-recursion cycle with the parent
+      // (a ↔ S in the fractional Riccati Müntz recurrence, issue #982) —
+      // substitute the parent's own filter, predicting that the sibling
+      // will declare the same context fields. ASM GETFIELD/PUTFIELD
+      // resolve field references by string at first execution, by which
+      // point the entire cycle has finished compile() and declared its
+      // fields.
+      var    variableStream          = context.variableClassStream();
+      var    declaredVariableStream  =
+                                    nestedExpression.variablesDeclared ? variableStream.filter(variable -> nestedExpression.hasDeclaredVariable(variable.getLeft()))
+                                                                       : variableStream.filter(variable -> hasDeclaredVariable(variable.getLeft()));
+      String nestedClassInternalName = haveLiveInstance ? Type.getInternalName(nestedFunction.type()) : nestedFunction.expression.className;
+      initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv),
+                                                     className,
+                                                     nestedClassInternalName,
+                                                     nestedFunction.functionName,
+                                                     declaredVariableStream);
+    }
+    else
+    {
+      registerReferencedFunction(nestedFunction.functionName, nestedFunction);
+    }
+
+    return mv;
+  }
+
+  protected ClassVisitor generateGetContextMethod(ClassVisitor classVisitor)
+  {
+    var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, "getContext", Compiler.getMethodDescriptor(Context.class), null, null);
+
+    methodVisitor.visitCode();
+    Compiler.annotateWithOverride(methodVisitor);
+
+    Compiler.getFieldFromThis(methodVisitor, className, "context", Context.class);
+
+    Compiler.generateReturnFromMethod(methodVisitor);
+    return classVisitor;
+  }
+
+  protected ClassVisitor generateGetExpressionMethod(ClassVisitor classVisitor)
+  {
+    var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, "getExpression", Compiler.getMethodDescriptor(Expression.class), null, null);
+
+    methodVisitor.visitCode();
+    Compiler.annotateWithOverride(methodVisitor);
+
+    Compiler.getFieldFromThis(methodVisitor, className, "expression", Expression.class);
+
+    Compiler.generateReturnFromMethod(methodVisitor);
+    return classVisitor;
+  }
+
+  protected ClassVisitor generateGetNameMethod(ClassVisitor classVisitor)
+  {
+    var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, "getName", Compiler.getMethodDescriptor(String.class), null, null);
+
+    methodVisitor.visitCode();
+    Compiler.annotateWithOverride(methodVisitor);
+
+    if (functionName != null)
+    {
+      methodVisitor.visitLdcInsn(functionName);
+    }
+    else
+    {
+      methodVisitor.visitInsn(Opcodes.ACONST_NULL);
+    }
+    Compiler.generateReturnFromMethod(methodVisitor);
+    return classVisitor;
+  }
+
+  protected MethodVisitor generateInitializationCode(MethodVisitor mv)
+  {
+    generateCodeToThrowErrorIfAlreadyInitialized(mv);
+    generateDerivativeCacheFieldInitializer(mv);
+    if (trace)
+    {
+      log.debug("generateInitializationCode for className={} functionName={}: referencedFunctions={}",
+                className,
+                functionName,
+                getReferencedFunctions().keySet());
+    }
+    addChecksForNullVariableReferences(mv);
+    generateReferencedFunctionInstances(mv);
+    propagateUpstreamInputVariablesToNestedFunctions(mv);
+    if (dependencies != null)
+    {
+      dependencies.forEach(dependency -> generateDependencyAssignments(mv, dependency));
+    }
+    try
+    {
+      generationContext = GenerationContext.Initialization;
+      initializers.forEach(initializer -> initializer.accept(mv));
+    }
+    finally
+    {
+      generationContext = GenerationContext.Evaluation;
+    }
+    if (recursive)
+    {
+      generateSelfReference(mv);
+    }
+    generateCodeToSetIsInitializedToTrue(mv);
+    return mv;
+  }
+
+  protected ClassVisitor generateInitializationMethod(ClassVisitor classVisitor)
+  {
+    var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, nameOfInitializerFunction, "()V", null, null);
+    Compiler.annotateWithOverride(methodVisitor);
+
+    try
+    {
+      methodVisitor.visitCode();
+      generateInitializationCode(methodVisitor);
+
+    }
+    finally
+    {
+      Compiler.generateReturnFromVoidMethod(methodVisitor);
+    }
+
+    return classVisitor;
+  }
+
+  private ClassVisitor generateIntegralMethod(ClassVisitor classVisitor)
+  {
+    return generateDelegateMethod(classVisitor, "integral", "int");
+  }
+
+  protected MethodVisitor generateIntermediateVariableInitializers(MethodVisitor methodVisitor)
+  {
+    for (var intermediateVariable : sortedIntermediateVariables())
+    {
+      intermediateVariable.generateInitializer(methodVisitor);
+    }
+    return methodVisitor;
+  }
+
+  /**
+   * Emit the cycle-safe {@code public void invalidateCache(Set)} override (and a
+   * no-arg shim that calls it with a fresh identity set) that:
+   * <ol>
+   * <li>returns immediately if {@code alreadyInvalidated.add(this)} is
+   * {@code false} (already visited — prevents unbounded recursion in the
+   * mutually-recursive Müntz {@code a ↔ S} cluster and any other cycle in the
+   * function graph);</li>
+   * <li>resets {@code this.staticPrecision = -1} when this expression has hoisted
+   * static subexpressions, forcing the next {@code evaluate()} call to re-run
+   * {@code evaluateStaticSubexpressions};</li>
+   * <li>recursively calls {@code invalidateCache(set)} on every inlined nested
+   * {@link Function} field (the {@link #referencedFunctions} entries) so their
+   * hoisted v-dependent subtrees are also flushed.</li>
+   * </ol>
+   * Emitted whenever {@link #hasStaticNodes} is true OR
+   * {@link #referencedFunctions} is non-empty — otherwise the {@link Function}
+   * interface's no-op default is inherited.
+   */
+  protected ClassVisitor generateInvalidateMethod(ClassVisitor classVisitor)
+  {
+    if (!hasStaticNodes && referencedFunctions.isEmpty() && !shouldCache() && !shouldCacheValueBacking())
+    {
+      return classVisitor;
+    }
+    String setInternal = Type.getInternalName(Set.class);
+
+    // public void invalidateCache(Set alreadyInvalidated)
+    var    mv          = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
+                                                  "invalidateCache",
+                                                  "(L" + setInternal + ";)V",
+                                                  "(L" + setInternal + "<L" + functionInternal + "<**>;>;)V",
+                                                  null);
+    mv.visitCode();
+    // if (!alreadyInvalidated.add(this)) return;
+    var notVisited = new Label();
+    mv.visitVarInsn(Opcodes.ALOAD, 1);
+    loadThisOntoStack(mv);
+    mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, setInternal, "add", "(Ljava/lang/Object;)Z", true);
+    mv.visitJumpInsn(Opcodes.IFNE, notVisited);
+    mv.visitInsn(Opcodes.RETURN);
+    mv.visitLabel(notVisited);
+    if (hasStaticNodes)
+    {
+      // this.staticPrecision = -1
+      loadThisOntoStack(mv);
+      mv.visitInsn(Opcodes.ICONST_M1);
+      mv.visitFieldInsn(Opcodes.PUTFIELD, className.replace('.', '/'), "staticPrecision", "I");
+    }
+    if (shouldCache())
+    {
+      // this.cache.clear() — the per-index memoisation table is keyed only on
+      // the domain index k, so any change to other Context variables (e.g. v in
+      // the Müntz a/S recurrence) must drop every entry, otherwise a(k) returns
+      // the previous v's value at the same k.
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(Opcodes.GETFIELD, className, "cache", Type.getDescriptor(TreeMap.class));
+      mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, Type.getInternalName(TreeMap.class), "clear", "()V", false);
+    }
+    if (shouldCacheValueBacking())
+    {
+      // Issue #1005: drop the per-instance value-backing cache. Setting lastV
+      // to null guarantees the next evaluate() call goes to the body, since
+      // every non-null user-supplied input v will fail the IF_ACMPNE check.
+      loadThisOntoStack(mv);
+      mv.visitInsn(Opcodes.ACONST_NULL);
+      mv.visitFieldInsn(Opcodes.PUTFIELD, className, "lastV", Type.getDescriptor(domainType));
+    }
+    // for each inlined nested Function field f: if (this.f != null)
+    // this.f.invalidateCache(alreadyInvalidated);
+    for (var mapping : referencedFunctions.values())
+    {
+      var skip = new Label();
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(Opcodes.GETFIELD, className, mapping.functionName, mapping.functionFieldDescriptor());
+      mv.visitJumpInsn(Opcodes.IFNULL, skip);
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(Opcodes.GETFIELD, className, mapping.functionName, mapping.functionFieldDescriptor());
+      mv.visitVarInsn(Opcodes.ALOAD, 1);
+      mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, functionInternal, "invalidateCache", "(L" + setInternal + ";)V", true);
+      mv.visitLabel(skip);
+    }
+    mv.visitInsn(Opcodes.RETURN);
+    mv.visitMaxs(0, 0);
+    mv.visitEnd();
+
+    // public void invalidateCache() { invalidateCache(Collections.newSetFromMap(new
+    // IdentityHashMap())); }
+    var shim = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, "invalidateCache", "()V", null, null);
+    shim.visitCode();
+    loadThisOntoStack(shim);
+    String idMapInternal       = Type.getInternalName(IdentityHashMap.class);
+    String collectionsInternal = Type.getInternalName(Collections.class);
+    shim.visitTypeInsn(Opcodes.NEW, idMapInternal);
+    shim.visitInsn(Opcodes.DUP);
+    shim.visitMethodInsn(Opcodes.INVOKESPECIAL, idMapInternal, "<init>", "()V", false);
+    shim.visitMethodInsn(Opcodes.INVOKESTATIC, collectionsInternal, "newSetFromMap", "(Ljava/util/Map;)Ljava/util/Set;", false);
+    shim.visitMethodInsn(Opcodes.INVOKEVIRTUAL, className, "invalidateCache", "(L" + setInternal + ";)V", false);
+    shim.visitInsn(Opcodes.RETURN);
+    shim.visitMaxs(0, 0);
+    shim.visitEnd();
+    return classVisitor;
+  }
+
+  protected void generateInvocationOfDefaultNoArgConstructor(MethodVisitor methodVisitor, boolean object)
+  {
+    loadThisOntoStack(methodVisitor);
+    methodVisitor.visitMethodInsn(INVOKESPECIAL, object ? Type.getInternalName(Object.class) : className.replace(".", "/"), "<init>", "()V", false);
+  }
+
+  protected MethodVisitor generateLiteralConstantInitializers(MethodVisitor methodVisitor)
+  {
+    for (var literal : getSortedLiteralConstantNodes())
+    {
+      literal.generateLiteralConstantInitializer(methodVisitor);
+    }
+    return methodVisitor;
+  }
+
+  protected ClassVisitor generatePolynomialMethod(ClassVisitor classVisitor, String operation)
+  {
+
+    assert functionClass.isInterface() : functionClass + " is not an interface";
+
+    assert rootNode != null : "rootNode is null";
+
+    var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, operation, Compiler.getMethodDescriptor(Function.class), null, null);
+    methodVisitor.visitCode();
+    Compiler.annotateWithOverride(methodVisitor);
+
+    methodVisitor.visitVarInsn(ALOAD, 0);
+    methodVisitor.visitMethodInsn(INVOKEVIRTUAL, className, "evaluate", Compiler.getMethodDescriptor(Object.class), false);
+    methodVisitor.visitTypeInsn(CHECKCAST, Type.getInternalName(coDomainType));
+
+    methodVisitor.visitMethodInsn(INVOKEVIRTUAL, Type.getInternalName(coDomainType), operation, Compiler.getMethodDescriptor(coDomainType), false);
+    Compiler.generateReturnFromMethod(methodVisitor);
+    return classVisitor;
+  }
+
+  public void generateReferencedFunctionInstances(MethodVisitor mv)
+  {
+    // Phase 1: allocate-all. For every referenced function f registered on
+    // this expression, emit `if (this.<f> == null) this.<f> = new <f>()` and
+    // propagate this.context onto the freshly allocated instance. After this
+    // loop every direct peer field is non-null and shares this.context with
+    // the parent.
+    getReferencedFunctions().values().forEach(mapping -> constructReferencedFunctionInstanceIfItIsNull(mv, mapping));
+    // Phase 2: wire-all. For every peer g of this expression, copy this.<h>
+    // into this.<g>.<h> for every peer h that g's expression references —
+    // including the back-edge h == functionName (this class's own name),
+    // which is wired by Context.injectFunctionReferences on this instance
+    // before evaluate() ever runs. This is the static, fully compile-time
+    // resolution of the cycle: every operand allocation along every recursive
+    // path inherits the parent's reference identity for every peer it shares
+    // with the parent. No registry lookup, no reflection, no per-evaluate
+    // copies — pure GETFIELD/PUTFIELD.
+    wirePeerReferencesIntoReferencedFunctionInstances(mv);
+  }
+
+  protected MethodVisitor generateSelfReference(MethodVisitor mv)
+  {
+    // Self-reference codegen for recursive functions.
+    //
+    // Emit the same null-guarded pattern used for non-self refs: if the field
+    // already holds a non-null reference (because injection wired it), keep
+    // that reference; otherwise allocate a fresh instance as the fallback.
+    FunctionMapping<?, ?, ?> mapping = getReferencedFunctions().get(functionName);
+    if (mapping == null && context != null)
+    {
+      mapping = context.getFunctionMapping(functionName);
+    }
+    assert mapping != null : "no function mapping for " + functionName + " in " + context.toStringExtended();
+    String fieldDescriptor = mapping.functionFieldDescriptor();
+    var    alreadyAssigned = new Label();
+    loadThisOntoStack(mv).visitFieldInsn(GETFIELD, className, functionName, fieldDescriptor);
+    mv.visitJumpInsn(IFNONNULL, alreadyAssigned);
+    constructNewObject(loadThisOntoStack(mv), functionName);
+    invokeDefaultConstructor(duplicateTopOfTheStack(mv), functionName);
+    putField(mv, className, functionName, fieldDescriptor);
+    Compiler.jumpTo(mv, alreadyAssigned);
+    mv.visitLabel(alreadyAssigned);
+    initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv), className, functionName, functionName, context.variableClassStream());
+    return mv;
+  }
+
+  public MethodVisitor generateSetResultInvocation(MethodVisitor mv, Class<?> inputType)
+  {
+    loadResultParameter(mv);
+    cast(mv, coDomainType);
+    swap(mv);
+    return invokeSetMethod(mv, inputType, coDomainType);
+  }
+
+  /**
+   * Generates the {@code evaluateStaticSubexpressions} method on the generated
+   * class. This method has the same parameter layout as {@code evaluate()}
+   * ({@code Object, int, int, Object}) so that {@code ILOAD 3} resolves to
+   * {@code bits}. It computes every {@link StaticNode} delegate, storing the
+   * result into the corresponding field, and then writes {@code bits} into the
+   * {@code staticPrecision} field.
+   * <p>
+   * Called from {@code evaluate()} whenever {@code bits > staticPrecision}.
+   */
+  protected ClassVisitor generateStaticEvaluationMethod(ClassVisitor classVisitor)
+  {
+    if (!hasStaticNodes)
+    {
+      return classVisitor;
+    }
+    var mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, EVALUATE_STATIC_SUBEXPRESSIONS, Compiler.evaluationMethodDescriptor, null, null);
+    mv.visitCode();
+    try
+    {
+      generationContext = GenerationContext.StaticEvaluation;
+      generateStaticSubexpressionComputations(mv);
+
+      // this.staticPrecision = bits
+      loadThisOntoStack(mv);
+      Compiler.loadBitsParameterOntoStack(mv);
+      mv.visitFieldInsn(Opcodes.PUTFIELD, className.replace('.', '/'), "staticPrecision", "I");
+    }
+    finally
+    {
+      generationContext = GenerationContext.Evaluation;
+    }
+    mv.visitInsn(Opcodes.ACONST_NULL);
+    mv.visitInsn(Opcodes.ARETURN);
+    mv.visitMaxs(0, 0);
+    mv.visitEnd();
+    return classVisitor;
+  }
+
+  /**
+   * Emits a check at the top of {@code evaluate()} that calls
+   * {@code evaluateStaticSubexpressions(input, order, bits, result)} when
+   * {@code bits > this.staticPrecision}.
+   */
+  protected void generateStaticPrecisionCheck(MethodVisitor mv)
+  {
+    String internalName = className.replace('.', '/');
+    Label  skipLabel    = new Label();
+
+    // if (this.staticPrecision >= bits) goto skipLabel
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(Opcodes.GETFIELD, internalName, "staticPrecision", "I");
+    Compiler.loadBitsParameterOntoStack(mv); // ILOAD 3
+    mv.visitJumpInsn(Opcodes.IF_ICMPGE, skipLabel);
+
+    // this.evaluateStaticSubexpressions(input, order, bits, result)
+    loadThisOntoStack(mv);
+    mv.visitVarInsn(Opcodes.ALOAD, 1); // input
+    mv.visitVarInsn(Opcodes.ILOAD, 2); // order
+    mv.visitVarInsn(Opcodes.ILOAD, 3); // bits
+    mv.visitVarInsn(Opcodes.ALOAD, 4); // result
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, internalName, EVALUATE_STATIC_SUBEXPRESSIONS, Compiler.evaluationMethodDescriptor, false);
+    mv.visitInsn(Opcodes.POP); // discard return value
+
+    designateLabel(mv, skipLabel);
+  }
+
+  /**
+   * Emits bytecode that computes each {@link StaticNode} and stores the result
+   * into its field. Called inside
+   * {@link #generateStaticEvaluationMethod(ClassVisitor)} where
+   * {@link #generationContext} is {@link GenerationContext#StaticEvaluation}.
+   * <p>
+   * Each delegate's {@code generate()} leaves the computed result on the stack.
+   * This method then stores that reference into the StaticNode's own field via
+   * {@code PUTFIELD}.
+   */
+  @SuppressWarnings(
+  { "rawtypes", "unchecked" })
+  protected void generateStaticSubexpressionComputations(MethodVisitor mv)
+  {
+    String internalName = className.replace('.', '/');
+    rootNode.nodeStream().filter(node -> node instanceof StaticNode).map(node -> (StaticNode) node).forEach(staticNode ->
+    {
+      boolean wasRootNode = staticNode.delegate.isRootNode;
+      staticNode.delegate.isRootNode = false;
+      staticNode.generate(mv, staticNode.type());
+      staticNode.delegate.isRootNode = wasRootNode;
+      // stack: [result]
+      // store into this.fieldName: need this under result
+      loadThisOntoStack(mv);
+      mv.visitInsn(Opcodes.SWAP);
+      mv.visitFieldInsn(Opcodes.PUTFIELD, internalName, staticNode.fieldName, staticNode.type().descriptorString());
+    });
   }
 
   /**
@@ -373,3536 +2896,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * The next available local variable slot in the generated evaluate() method.
-   * Slots 0-4 are: this, input, order, bits, result. Code that needs local
-   * storage during evaluate() calls {@link #allocateLocalVariableSlot()} to
-   * obtain a non-conflicting slot.
-   */
-  public int nextLocalVariableSlot = 5;
-
-  /**
-   * Allocates and returns the next available local variable slot for use in the
-   * generated evaluate() method bytecode. Each call returns a unique slot.
-   */
-  public int allocateLocalVariableSlot()
-  {
-    return nextLocalVariableSlot++;
-  }
-
-  public Expression<?, ?, ?> functionalChild;
-
-  public String typeString()
-  {
-    String var      = getIndependentVariable() != null ? getIndependentVariable().getName() : "?";
-    String func     = functionClass.getSimpleName();
-    String domain   = domainType.getSimpleName();
-    String codomain = functionalChild != null ? "(" + functionalChild.typeString() + ")" : coDomainType.getSimpleName();
-    return format("%s:%s=%s➔%s", func, var, domain, codomain);
-  }
-
-  /**
-   * Returns the nested type string of this expression using the notation
-   * {@code f:var=A➔B} at each level, where when B is itself a generated
-   * functional interface it is expanded inline as {@code (B=g:var=A➔B)}, giving
-   * the full nested form:
-   *
-   * <pre>
-   *   f:n=Integer➔(RealFunctional=g:q=Real➔(RealFunction=h:t=Real➔Real))
-   * </pre>
-   *
-   * For each adjacent pair of expressions in the upstream chain, asserts that the
-   * codomain of the upstream expression is assignable from the domain of the
-   * downstream expression, i.e. that the types compose correctly.
-   *
-   * @return the full nested type string
-   */
-  public String nestedTypeString()
-  {
-    LinkedList<Expression<?, ?, ?>> chain  = new LinkedList<>();
-    Expression<?, ?, ?>             cursor = this;
-    while (cursor != null)
-    {
-      chain.addFirst(cursor);
-      cursor = cursor.upstreamExpression;
-    }
-
-    for (int i = 0; i < chain.size() - 1; i++)
-    {
-      var upstream   = chain.get(i);
-      var downstream = chain.get(i + 1);
-      assert upstream.coDomainType
-                    == downstream.domainType : format("type mismatch at nesting level %d: upstream codomain %s is not assignable from downstream domain %s",
-                                                      i,
-                                                      upstream.coDomainType.getSimpleName(),
-                                                      downstream.domainType.getSimpleName());
-    }
-
-    StringBuilder sb         = new StringBuilder();
-    int           openParens = 0;
-
-    for (var expr : chain)
-    {
-      String domain = expr.domainType.getSimpleName();
-      String var    = expr.getIndependentVariable() != null ? expr.getIndependentVariable().getName() : "?";
-      String f      = expr.functionClass.getSimpleName();
-
-      sb.append(format("%s:%s=%s➔", f, var, domain));
-
-      if (expr.isGeneratedFunctional())
-      {
-        sb.append('(').append(expr.coDomainType.getSimpleName()).append('=');
-        openParens++;
-      }
-      else
-      {
-        sb.append(expr.coDomainType.getSimpleName());
-      }
-    }
-
-    for (int i = 0; i < openParens; i++)
-    {
-      sb.append(')');
-    }
-
-    return sb.toString();
-  }
-
-  /**
-   * The single placeholder variable of this expression's codomain type. Assigned
-   * during {@link VariableNode#resolveReference()} when the expression is
-   * non-nullary and {@link #isInterfaceFunctional()} is true and a free variable
-   * is encountered that is neither the independent variable, a context variable,
-   * nor an upstream variable. Only one placeholder is permitted per expression; a
-   * second unresolved free variable throws {@link CompilerException}.
-   */
-  private VariableNode<D, C, F> placeholderVariable;
-
-  public boolean                deferVariableResolution = false;
-
-  public Stream<VariableNode<D, C, F>> variableNodeStream()
-  {
-    return rootNode.variableNodeStream();
-  }
-
-  protected VariableNode<D, C, F> newVariable(int startPos, VariableReference<D, C, F> reference)
-  {
-    return new VariableNode<D, C, F>(this,
-                                     reference,
-                                     !deferVariableResolution);
-  }
-
-  /**
-   * Inlines all references to the named contextual function, replacing each
-   * {@link FunctionNode} bearing that name with the defining expression's AST
-   * (arguments bound to formal parameters via {@link Node#substitute}).
-   * 
-   * @param functionName the name of the function to inline
-   * @return this expression, with all occurrences of the named function inlined
-   * @throws IllegalArgumentException if no inlineable function with that name
-   *                                  exists in the context
-   */
-  @SuppressWarnings("unchecked")
-  public Expression<D, C, F> inlineFunction(String functionName)
-  {
-    if (context == null)
-    {
-      throw new IllegalArgumentException("expression has no context");
-    }
-
-    Expression<D, C, F> definingExpression = context.getFunctionExpression(functionName);
-
-    Node<D, C, F>       body               = definingExpression.rootNode.spliceInto(this);
-
-    rootNode = rootNode.substitute(functionName, body);
-    updateStringRepresentation();
-    return this;
-  }
-
-  private static String     ASSERTION_ERROR_METHOD_DESCRIPTOR = Compiler.getMethodDescriptor(Void.class, Object.class);
-
-  private static final char COMBINING_DOT_ABOVE               = '̇';
-
-  private static final char COMBINING_TWO_DOTS_ABOVE          = '̈';
-
-  public static Class<?>[]  implementedInterfaces             = new Class[]
-  { Typesettable.class, AutoCloseable.class, Initializable.class, Named.class };
-
-  public static String      IS_INITIALIZED                    = "isInitialized";
-
-  private static String     JAVA_LANG_ASSERTION_ERROR         = "java/lang/AssertionError";
-
-  public static String      nameOfInitializerFunction         = "initialize";
-
-  private static boolean    saveClasses                       = Boolean.valueOf(System.getProperty("arb4j.saveClasses", "false"));
-
-  private static boolean    decompileClasses                  = Boolean.valueOf(System.getProperty("arb4j.decompileClasses", "false"));
-
-  public static boolean     saveGraphs                        = Boolean.valueOf(System.getProperty("arb4j.saveGraphs", "false"));
-
-  public static boolean     trace                             = Boolean.valueOf(System.getProperty("arb4j.trace", "false"));
-
-  public static boolean     traceNodes                        = Boolean.valueOf(System.getProperty("arb4j.traceNodes", "false"));
-
-  public static String      VOID_METHOD_DESCRIPTOR            = Compiler.getMethodDescriptor(Void.class);
-
-  static
-  {
-    assert arb.functions.integer.Sequence.class.equals(Sequence.class) : "you forgot to import arb.functions.sequences.Sequence or imported a class named sequence in another package";
-  }
-
-  public File                            compiledClassDir = new File("compiled");
-
-  public Expression<?, ?, ?>             upstreamExpression;
-
-  public final List<Expression<?, ?, ?>> subExpressions   = new ArrayList<>();
-
-  public Expression<?, ?, ?> getSuperExpression()
-  {
-    return upstreamExpression;
-  }
-
-  public char                                           character                     = 0;
-
-  public String                                         className;
-
-  public Class<? extends C>                             coDomainType;
-
-  public Class<F>                                       compiledClass;
-
-  HashMap<Class<?>, AtomicInteger>                      constantCounts                = new HashMap<>();
-
-  private Context                                       context;
-
-  HashSet<String>                                       declaredIntermediateVariables = new HashSet<>();
-
-  public List<Dependency>                               dependencies;
-
-  public Class<? extends D>                             domainType;
-
-  public String                                         expression;
-
-  public boolean                                        functionalDependsOnIndependentVariable;
-
-  private VariableNode<Object, Object, Function<?, ?>>  functionalIndependentVariable;
-
-  public Class<? extends F>                             functionClass;
-
-  public String                                         functionClassDescriptor;
-
-  public String                                         functionName;
-
-  public String                                         genericFunctionClassInternalName;
-
-  public boolean                                        inAbsoluteValue               = false;
-
-  private VariableNode<D, C, F>                         independentVariable;
-
-  int                                                   currentLevel                  = 0;
-
-  public LinkedList<Consumer<MethodVisitor>>            initializers                  = new LinkedList<>();
-
-  public GenerationContext                              generationContext             = GenerationContext.Evaluation;
-
-  protected F                                           instance;
-
-  public byte[]                                         instructions;
-
-  public HashMap<String, IntermediateVariable<D, C, F>> intermediateVariables         = new HashMap<>();
-
-  private ArrayList<LiteralConstantNode<D, C, F>>       literalConstantNodes;
-
-  public HashMap<String, LiteralConstantNode<D, C, F>>  literalConstants              = new HashMap<>();
-
-  private final Logger                                  log                           = LoggerFactory.getLogger(Expression.class);
-
-  public FunctionMapping<D, C, F>                       functionMapping;
-
-  public int                                            position                      = -1;
-
-  public char                                           previousCharacter;
-
-  public record CursorState(int position, char character, char previousCharacter)
-  {
-  }
-
-  public CursorState saveCursor()
-  {
-    return new CursorState(position,
-                           character,
-                           previousCharacter);
-  }
-
-  public void restoreCursor(CursorState state)
-  {
-    position          = state.position();
-    character         = state.character();
-    previousCharacter = state.previousCharacter();
-  }
-
-  /**
-   * Attempts to consume an explicit input variable declaration of the form
-   * {@code name➔} or {@code name∈(a,b)➔} from the current cursor position. If the
-   * next tokens are a valid identifier, optionally followed by {@code ∈} and an
-   * interval specification, followed by the arrow character {@code ➔}, the name
-   * is consumed and returned. Otherwise the cursor is restored to its original
-   * position and {@code null} is returned.
-   *
-   * <p>
-   * If the {@code ∈} operator is present, the interval bounds are parsed and
-   * stored in {@link #pendingInputVariableBounds} for the caller to apply via
-   * {@link VariableReference#setBounds}.
-   *
-   * @return the declared variable name, or {@code null} if no arrow declaration
-   *         is present
-   *
-   * @see <a href="https://github.com/crowlogic/arb4j/issues/878">#878</a>
-   */
-  public String parseExplicitInputVariableIfPresent()
-  {
-    CursorState saved = saveCursor();
-    pendingInputVariableBounds = null;
-    pendingParameterList       = null;
-    try
-    {
-      if (character == '(')
-      {
-        List<String> params = parseParenParameterList();
-        skipSpaces();
-        if (params != null && !params.isEmpty() && character == '=')
-        {
-          nextCharacter();
-          String       first = params.get(0);
-          List<String> rest  = params.subList(1, params.size());
-          pendingParameterList = rest.isEmpty() ? null : new ArrayList<>(rest);
-          return first;
-        }
-        restoreCursor(saved);
-        return null;
-      }
-
-      String name = parseName();
-      if (name == null || name.isEmpty())
-      {
-        restoreCursor(saved);
-        return null;
-      }
-      skipSpaces();
-      if (character == '∈')
-      {
-        nextCharacter();
-        pendingInputVariableBounds = parseIntervalBounds();
-        skipSpaces();
-      }
-      if (character == '➔')
-      {
-        nextCharacter();
-        return name;
-      }
-      if (character == '(')
-      {
-        List<String> params = parseParenParameterList();
-        skipSpaces();
-        if (params != null && !params.isEmpty() && character == '=')
-        {
-          nextCharacter();
-          if (functionName != null && !functionName.equals(name))
-          {
-            throw new CompilerException("function name '"
-                                        + name
-                                        + "' specified in declaration head conflicts with already-declared functionName='"
-                                        + functionName
-                                        + "'");
-          }
-          if (functionName == null)
-          {
-            functionName = name;
-          }
-          String       first = params.get(0);
-          List<String> rest  = params.subList(1, params.size());
-          pendingParameterList = rest.isEmpty() ? null : new ArrayList<>(rest);
-          return first;
-        }
-      }
-      pendingInputVariableBounds = null;
-      pendingParameterList       = null;
-      restoreCursor(saved);
-      return null;
-    }
-    catch (RuntimeException e)
-    {
-      pendingInputVariableBounds = null;
-      pendingParameterList       = null;
-      restoreCursor(saved);
-      return null;
-    }
-  }
-
-  /**
-   * Parsed interval bounds from the most recent
-   * {@link #parseExplicitInputVariableIfPresent} call, or {@code null} if no
-   * {@code ∈} operator was present.
-   *
-   * @see <a href="https://github.com/crowlogic/arb4j/issues/878">#878</a>
-   */
-  VariableReference.Bounds pendingInputVariableBounds;
-
-  /**
-   * Parameter list captured by {@link #parseExplicitInputVariableIfPresent} when
-   * the declaration shape is {@code name(p₁,…,pₙ)=body} or
-   * {@code (p₁,…,pₙ)=body}. Holds the params after the first; the first is
-   * returned directly. Consumed and cleared by
-   * {@link #parseInputVariableAssignment}.
-   *
-   * @see <a href="https://github.com/crowlogic/arb4j/issues/975">#975</a>
-   */
-  List<String>             pendingParameterList;
-
-  /**
-   * Reads a parenthesised parameter list of the form
-   * {@code '(' name (',' name)* ')'} starting at the current cursor (which must
-   * be on the opening {@code '('}). The opening paren is consumed; on success the
-   * closing {@code ')'} is also consumed and the list of parameter names is
-   * returned. Returns {@code null} when malformed; the caller is responsible for
-   * restoring its own cursor snapshot.
-   *
-   * @see <a href="https://github.com/crowlogic/arb4j/issues/975">#975</a>
-   */
-  protected List<String> parseParenParameterList()
-  {
-    if (!nextCharacterIs('('))
-    {
-      return null;
-    }
-    List<String> params = new ArrayList<>();
-    skipSpaces();
-    if (nextCharacterIs(')'))
-    {
-      return params;
-    }
-    while (true)
-    {
-      skipSpaces();
-      if (!isIdentifierCharacter())
-      {
-        return null;
-      }
-      String name = parseName();
-      if (name == null || name.isEmpty())
-      {
-        return null;
-      }
-      params.add(name);
-      skipSpaces();
-      if (nextCharacterIs(','))
-      {
-        continue;
-      }
-      if (nextCharacterIs(')'))
-      {
-        return params;
-      }
-      return null;
-    }
-  }
-
-  /**
-   * Parses an interval specification of the form {@code (a,b)}, {@code [a,b]},
-   * {@code [a,b)}, or {@code (a,b]}. The bracket type determines inclusivity:
-   * {@code [} = inclusive, {@code (} = exclusive.
-   *
-   * @return the parsed bounds
-   * @throws CompilerException if the interval syntax is malformed
-   *
-   * @see <a href="https://github.com/crowlogic/arb4j/issues/878">#878</a>
-   */
-  VariableReference.Bounds parseIntervalBounds()
-  {
-    boolean lowerInclusive;
-    if (character == '[')
-    {
-      lowerInclusive = true;
-      nextCharacter();
-    }
-    else if (character == '(' || character == '{')
-    {
-      lowerInclusive = false;
-      nextCharacter();
-    }
-    else
-    {
-      throw new CompilerException("expected '(' or '[' after ∈ at position " + position);
-    }
-
-    Node<D, C, F> lowerNode = resolve();
-    require(',', '…');
-    Node<D, C, F> upperNode = resolve();
-
-    boolean       upperInclusive;
-    if (character == ']')
-    {
-      upperInclusive = true;
-      nextCharacter();
-    }
-    else if (character == ')' || character == '}')
-    {
-      upperInclusive = false;
-      nextCharacter();
-    }
-    else
-    {
-      throw new CompilerException("expected ')' or ']' to close interval at position " + position);
-    }
-
-    double lower = evaluateBoundToDouble(lowerNode);
-    double upper = evaluateBoundToDouble(upperNode);
-
-    return new VariableReference.Bounds(lower,
-                                        lowerInclusive,
-                                        upper,
-                                        upperInclusive);
-  }
-
-  /**
-   * Evaluates a bound node to a double value. The node must be a literal constant
-   * or a negated literal constant.
-   */
-  private double evaluateBoundToDouble(Node<D, C, F> node)
-  {
-    if (node.isLiteralConstant())
-    {
-      return Double.parseDouble(node.asLiteralConstant().stringValue);
-    }
-    throw new CompilerException("interval bound must be a literal constant, got: " + node);
-  }
-
-  public boolean                                          recursive           = false;
-
-  private final HashMap<String, FunctionMapping<?, ?, ?>> referencedFunctions = new HashMap<>();
-
-  private HashMap<String, VariableNode<D, C, F>>          referencedVariables = new HashMap<>();
-
-  public Node<D, C, F>                                    rootNode;
-
-  public boolean                                          variablesDeclared   = false;
-
-  public boolean acceptUntil(Predicate<Expression<?, ?, ?>> visitor)
-  {
-    Expression<?, ?, ?> e = this;
-    while (e != null)
-    {
-      if (visitor.test(e))
-      {
-        return true;
-      }
-      e = e.upstreamExpression;
-    }
-    return false;
-  }
-
-  public Expression(Class<? extends D> domain, Class<? extends C> coDomain, Class<? extends F> function)
-  {
-    this.upstreamExpression               = null;
-    this.domainType                       = domain;
-    this.coDomainType                     = coDomain;
-    this.functionClass                    = function;
-    this.genericFunctionClassInternalName = Type.getInternalName(function);
-    this.functionClassDescriptor          = function.descriptorString();
-
-    if (context != null && context.saveClasses)
-    {
-      saveClasses = true;
-    }
-    if (Expression.trace)
-    {
-      log.debug("#{}: new Expression(domain={}, coDomain={}, function={})", System.identityHashCode(this), domain, coDomain, function);
-    }
-  }
-
-  public Expression(String className,
-                    Class<? extends D> domainClass,
-                    Class<? extends C> coDomainClass,
-                    Class<? extends F> functionClass,
-                    String expressionString,
-                    Context context)
-  {
-    this(className,
-         domainClass,
-         coDomainClass,
-         functionClass,
-         expressionString,
-         context,
-         null,
-         null);
-  }
-
-  public Expression(String className,
-                    Class<? extends D> domain,
-                    Class<? extends C> codomain,
-                    Class<? extends F> function,
-                    String expression,
-                    Context context,
-                    String functionName,
-                    Expression<?, ?, ?> ascenentExpression)
-  {
-    assert className != null : "className needs to be specified";
-    this.upstreamExpression               = ascenentExpression;
-    this.className                        = className;
-    this.domainType                       = domain;
-    this.coDomainType                     = codomain;
-    this.functionClass                    = function;
-
-    this.genericFunctionClassInternalName = Type.getInternalName(function);
-    this.functionClassDescriptor          = function.descriptorString();
-    this.setExpression(Parser.normalize(expression));
-    this.context      = context;
-    this.functionName = functionName;
-
-    if (context != null && context.saveClasses)
-    {
-      saveClasses = true;
-    }
-    if (Expression.trace)
-    {
-      log.debug("#{}: new Expression(className={}, domain={}, coDomain={}, function={}, expression={}, context={}, functionName={}, superExpression={}#{})",
-                System.identityHashCode(this),
-                className,
-                domain,
-                codomain,
-                function,
-                expression,
-                context,
-                functionName,
-                ascenentExpression,
-                System.identityHashCode(ascenentExpression));
-    }
-
-  }
-
-  protected Node<D, C, F> addAndSubtract(Node<D, C, F> node)
-  {
-    while (true)
-    {
-      if (nextCharacterRepresentsAddition())
-      {
-        node = node.add(exponentiateMultiplyAndDivide());
-      }
-      else if (nextCharacterRepresentsSubtraction())
-      {
-        var rhs = exponentiateMultiplyAndDivide();
-        assert rhs != null : "rhs is null for node=" + node + " in " + this;
-        node = node == null ? rhs.neg() : node.sub(rhs);
-      }
-      else
-      {
-        return node;
-      }
-    }
-  }
-
-  protected void addCheckForNullField(MethodVisitor mv, String varName, boolean variable)
-  {
-    Class<?> fieldClass;
-    if (variable)
-    {
-      Object field = context.getVariable(varName);
-      fieldClass = field != null ? field.getClass() : null;
-    }
-    else
-    {
-      fieldClass = context.functions.get(varName).type();
-    }
-
-    if (fieldClass != null)
-    {
-      addNullCheckForField(mv, className, varName, fieldClass.descriptorString());
-    }
-  }
-
-  protected void addChecksForNullVariableReferences(MethodVisitor mv)
-  {
-    if (context != null)
-    {
-      context.variableClassStream()
-             .filter(event -> referencedVariables.containsKey(event.getLeft()))
-             .forEach(entry -> addCheckForNullField(loadThisOntoStack(mv), entry.getLeft(), true));
-    }
-  }
-
-  public String allocateIntermediateVariable(MethodVisitor methodVisitor, Class<?> type)
-  {
-    Class<?> actualType               = (type.isInterface() && !Function.class.isAssignableFrom(type)) ? scalarType(type) : type;
-    String   intermediateVariableName = newIntermediateVariable(actualType);
-    assert intermediateVariableName != null : "intermediateVariableName is null for type " + type;
-    loadThisAndFieldOntoStack(methodVisitor, intermediateVariableName, actualType);
-    return intermediateVariableName;
-  }
-
-  public String allocateIntermediateVariable(MethodVisitor methodVisitor, String prefix, Class<?> type)
-  {
-    Class<?> actualType               = (type.isInterface() && !Function.class.isAssignableFrom(type)) ? scalarType(type) : type;
-    String   intermediateVariableName = newIntermediateVariable(prefix, actualType);
-    loadFieldOntoStack(loadThisOntoStack(methodVisitor), intermediateVariableName, actualType.descriptorString());
-    return intermediateVariableName;
-  }
-
-  public VariableNode<?, ?, ?> getIndependentVariableNamed(String name)
-  {
-    if (getIndependentVariable() != null && getIndependentVariable().getName().equals(name))
-    {
-      return getIndependentVariable();
-    }
-    if (upstreamExpression != null)
-    {
-      var immediatelyUpstreamIndependentVariable = upstreamExpression.getIndependentVariable();
-      if (immediatelyUpstreamIndependentVariable != null)
-      {
-        return immediatelyUpstreamIndependentVariable;
-      }
-    }
-    return null;
-  }
-
-  public boolean thisOrAnySuperIndependentVariableIsNamed(String name)
-  {
-    if (getIndependentVariable() != null && getIndependentVariable().getName().equals(name))
-    {
-      return true;
-    }
-    return anySuperIndependentVariableIsNamed(name);
-  }
-
-  public boolean anySuperIndependentVariableIsNamed(String name)
-  {
-    if (upstreamExpression != null)
-    {
-      if (upstreamExpression.thisOrAnySuperIndependentVariableIsNamed(name))
-      {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  /**
-   * FIXME: this should merge with
-   * this{@link #setIndependentVariable(VariableNode)}
-   * 
-   * @param variable
-   * @return
-   */
-  public VariableNode<D, C, F> assignInputVariable(VariableNode<D, C, F> variable)
-  {
-    assert variable != null : "variable shan't be null";
-
-    if (canHaveIndependentVariable())
-    {
-      if (getIndependentVariable() != null)
-      {
-        if (!getIndependentVariable().equals(variable))
-        {
-          throw new CompilerException(String.format("undefined variable reference '%s' at position=%s in expression '%s' "
-                                                    + "since the independent variable has already been declared to be '%s' in %s",
-                                                    variable,
-                                                    position,
-                                                    toStringExtended(),
-                                                    getIndependentVariable(),
-                                                    toStringExtended()));
-        }
-        else
-        {
-          return variable;
-        }
-      }
-      setIndependentVariable(variable);
-      getIndependentVariable().isIndependent  = true;
-      getIndependentVariable().reference.type = domainType;
-      return variable;
-    }
-    else
-    {
-      if (!canHavePlaceholder())
-      {
-        throw new IllegalArgumentException(this.toStringExtended()
-                                           + " cannot have a placeholder or an independent variable so it cant be set to "
-                                           + variable
-                                           + " for "
-                                           + expression
-                                           + " that has type "
-                                           + getTypeString());
-      }
-      var placeholder = setPlaceholderVariable(variable);
-      placeholder.reference.type = coDomainType;
-      return placeholder;
-    }
-
-  }
-
-  protected void assureInputNameHasNotAlreadyBeenAssociatedWithAContextVariable(String inputVariableName)
-  {
-    if (context != null)
-    {
-      if (context.getVariable(inputVariableName) != null)
-      {
-        throw new CompilerException(inputVariableName + " cannot be declared as the input since it is already registered as a context variable in " + context);
-      }
-    }
-  }
-
-  public boolean characterAfterNextIs(char ch)
-  {
-    return position + 1 < getExpression().length() && getExpression().charAt(position + 1) == ch;
-  }
-
-  @Override
-  protected Object clone()
-  {
-    var expr = new Expression<D, C, F>(className,
-                                       domainType,
-                                       coDomainType,
-                                       functionClass,
-                                       getExpression(),
-                                       context,
-                                       functionName,
-                                       upstreamExpression);
-    expr.context = context;
-    expr.setIndependentVariable(independentVariable);
-
-    expr.position            = position;
-    expr.character           = character;
-    expr.previousCharacter   = previousCharacter;
-    expr.placeholderVariable = placeholderVariable;
-    return expr;
-  }
-
-  @SuppressWarnings("unchecked")
-  public Expression<D, C, F> cloneExpression()
-  {
-    return (Expression<D, C, F>) clone();
-  }
-
-  /**
-   * Deep clone: produces a fresh {@link Expression} sharing this Expression's
-   * {@link Context} and structural metadata, with its own {@link #rootNode}
-   * spliced from {@code this.rootNode} so that AST surgery on the copy does not
-   * mutate the original. Resets compilation state ({@code compiledClass},
-   * {@code instructions}, {@code optimized}, {@code instance}) so the clone
-   * recompiles on first use.
-   *
-   * <p>
-   * If {@code rootNode} is null on the source, {@link #parse(boolean)} is driven
-   * first so the deep clone always returns an Expression carrying a concrete AST.
-   */
-  public Expression<D, C, F> deepCloneExpression()
-  {
-    if (rootNode == null)
-    {
-      parse(true);
-    }
-    Expression<D, C, F> copy = cloneExpression();
-    copy.rootNode      = rootNode.spliceInto(copy);
-    copy.compiledClass = null;
-    copy.instructions  = null;
-    copy.optimized     = false;
-    copy.instance      = null;
-    return copy;
-  }
-
-  /**
-   * Per-variable partial-derivative cache, keyed by
-   * {@code VariableReference.name}. Populated lazily by
-   * {@link #derivative(VariableReference)}; entries are fully compiled,
-   * ready-to-evaluate Functions.
-   */
-  private final java.util.Map<String, F> partialDerivativeCache = new java.util.HashMap<>();
-
-  /**
-   * Lazy on-demand symbolic partial derivative w.r.t. {@code variable}, returned
-   * as a fresh compiled {@link Function}. The work is pure-Java AST surgery on
-   * the already-parsed {@link #rootNode} — no source re-parsing — followed by a
-   * single bytecode-generation pass for the differentiated tree.
-   *
-   * <p>
-   * The variable is matched by name only ({@link VariableNode#equals} keys on
-   * {@link VariableReference#name}), so a free-floating reference handle is
-   * sufficient and no splice into the host AST is required. If {@code rootNode}
-   * does not depend on {@code variable}, {@link Node#simplify} collapses the
-   * differentiated tree to the literal-zero node and the returned Function
-   * evaluates to 0 in the codomain.
-   *
-   * <p>
-   * Results are memoized per variable name.
-   */
-  @SuppressWarnings("unchecked")
-  public synchronized F derivative(VariableReference<?, ?, ?> variable)
-  {
-    F cached = partialDerivativeCache.get(variable.name);
-    if (cached != null)
-    {
-      return cached;
-    }
-
-    if (rootNode == null)
-    {
-      parse(true);
-    }
-
-    Expression<D, C, F> partial = deepCloneExpression();
-    partial.className = className + "_d" + variable.name;
-
-    VariableNode<D, C, F> probe = new VariableNode<>(partial,
-                                                     new VariableReference<>(variable.name),
-                                                     false);
-    partial.rootNode = partial.rootNode.differentiate(probe).simplify();
-
-    F instance = partial.instantiate();
-    partialDerivativeCache.put(variable.name, instance);
-    return instance;
-  }
-
-  public Expression<D, C, F> compile()
-  {
-    assert !className.isEmpty() : "className is empty";
-    if (compiledClass != null)
-    {
-      return this;
-    }
-    if (context == null)
-    {
-      context = new Context();
-    }
-
-    if (trace)
-    {
-      log.debug(String.format("#%s: compile(expression=%s, className=%s, context=%s)\n", System.identityHashCode(this), getExpression(), className, context));
-    }
-    if (instructions == null)
-    {
-      optimizeAndGenerate();
-    }
-    assert context != null : "context is null for "
-                             + this
-                             + " and superExpression="
-                             + upstreamExpression
-                             + " superExpression.context="
-                             + upstreamExpression.context;
-    assert !className.isEmpty() : "className is empty";
-    compiledClass = loadFunctionClass(className, instructions, context);
-    return this;
-  }
-
-  private void optimizeAndGenerate()
-  {
-    optimize();
-    generate();
-    assert context != null : "context is null for "
-                             + this
-                             + " and superExpression="
-                             + upstreamExpression
-                             + " superExpression.context="
-                             + upstreamExpression.context;
-    assert !className.isEmpty() : "className is empty";
-    compiledClass = loadFunctionClass(className, instructions, context);
-  }
-
-  protected void constructReferencedFunctionInstanceIfItIsNull(MethodVisitor mv, FunctionMapping<?, ?, ?> mapping)
-  {
-    assert mapping != null : "mapping shan't be null";
-    if ((mapping.functionName == null || functionName == null || !functionName.equals(mapping.functionName)) && mapping.expression != null)
-    {
-      // Bytecode-only path: use the mapping's already-known generated-class
-      // internal name. ASM's new/invokespecial accept name strings; resolving
-      // the Class<?> here would force eager compilation of the dependency
-      // and break mutual recursion across mappings (a ↔ S in the fractional
-      // Riccati Müntz recurrence, issue #982). The class is resolved lazily
-      // by the JVM when the opcode first executes — by which point the outer
-      // compile chain has defined every class in the recursive cluster.
-      String typeInternalName   = mapping.functionName;
-      String fieldDescriptor    = mapping.functionFieldDescriptor();
-      var    alreadyInitialized = new Label();
-      loadThisOntoStack(mv).visitFieldInsn(GETFIELD, className, mapping.functionName, fieldDescriptor);
-      mv.visitJumpInsn(Opcodes.IFNONNULL, alreadyInitialized);
-      loadThisOntoStack(mv);
-      generateNewObjectInstruction(mv, typeInternalName);
-      duplicateTopOfTheStack(mv);
-      invokeDefaultConstructor(mv, typeInternalName);
-      putField(mv, className, mapping.functionName, fieldDescriptor);
-      // Propagate the parent's context field into the new instance's context
-      // field so the new instance's own initialize() sees the live, populated
-      // Context. Without this, the new instance keeps its field-initializer
-      // default (an empty `new Context()`), which has no functions or
-      // variables registered, and every nested function reference (e.g. He)
-      // remains null at runtime.
-      String contextTypeDesc = Type.getDescriptor(Context.class);
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, className, mapping.functionName, fieldDescriptor);
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, className, "context", contextTypeDesc);
-      mv.visitFieldInsn(PUTFIELD, typeInternalName, "context", contextTypeDesc);
-
-      mv.visitLabel(alreadyInitialized);
-    }
-  }
-
-  public VariableNode<D, C, F> newVariableNode(String inputVariableName)
-  {
-    return new VariableNode<>(this,
-                              newVariableReference(inputVariableName),
-                              !deferVariableResolution);
-  }
-
-  public VariableReference<D, C, F> newVariableReference(String inputVariableName)
-  {
-    return new VariableReference<>(inputVariableName,
-                                   null,
-                                   coDomainType);
-  }
-
-  private ClassVisitor declareContext(ClassVisitor cw)
-  {
-    Class<?> type           = Context.class;
-    String   typeDescriptor = type.descriptorString();
-    cw.visitField(ACC_PROTECTED, "context", typeDescriptor, null, null);
-    return cw;
-  }
-
-  /**
-   * Generated classes get a public {@code expression} field holding the
-   * {@link Expression} that produced them. The field is populated by
-   * {@link #instantiate()} immediately after construction, and lets every
-   * compiled Function answer {@link arb.functions.Function#getExpression()} and
-   * {@link arb.functions.Function#derivative(VariableReference)} without any
-   * extra registry. Consumers that don't want the back-pointer may null it out at
-   * any time.
-   */
-  private ClassVisitor declareSourceExpressionField(ClassVisitor cw)
-  {
-    cw.visitField(ACC_PUBLIC, "expression", Type.getDescriptor(Expression.class), null, null);
-    return cw;
-  }
-
-  protected MethodVisitor declareEvaluateMethodArguments(MethodVisitor methodVisitor, Label startLabel, Label endLabel)
-  {
-    methodVisitor.visitLocalVariable("this", String.format("L%s;", className), null, startLabel, endLabel, 0);
-    methodVisitor.visitLocalVariable(getIndependentVariable() != null ? getIndependentVariable().getName()
-                                                                      : "in",
-                                     domainType.descriptorString(),
-                                     null,
-                                     startLabel,
-                                     endLabel,
-                                     1);
-    methodVisitor.visitLocalVariable("order", "I", null, startLabel, endLabel, 2);
-    methodVisitor.visitLocalVariable("bits", "I", null, startLabel, endLabel, 3);
-    methodVisitor.visitLocalVariable("result", coDomainType.descriptorString(), null, startLabel, endLabel, 4);
-    return methodVisitor;
-  }
-
-  protected void declareFields(ClassVisitor cw)
-  {
-    cw.visitField(Opcodes.ACC_PUBLIC, IS_INITIALIZED, "Z", null, null);
-    if (hasStaticNodes)
-    {
-      cw.visitField(Opcodes.ACC_PUBLIC, "staticPrecision", "I", null, null);
-    }
-    declareContext(cw);
-    declareSourceExpressionField(cw);
-    declareCacheField(cw);
-    if (!coDomainType.isInterface())
-    {
-      declareLiteralConstants(cw);
-    }
-    declareFunctionReferences(cw);
-    declareVariables(cw);
-    declareJetStampFields(cw);
-    declareDerivativeCacheField(cw);
-  }
-
-  /**
-   * Walk the parsed AST, collect every unique {@link JetState} referenced by
-   * {@link JetNode}s, and declare the corresponding int stamp fields:
-   * <ul>
-   * <li>{@code evalStamp} — one per generated class, incremented each
-   * {@code evaluate()} call</li>
-   * <li>{@code jetStamp_X} — one per unique jet, compared against
-   * {@code evalStamp} to memoize the series computation</li>
-   * </ul>
-   */
-  protected void declareJetStampFields(ClassVisitor cw)
-  {
-    Set<JetState> jetStates = collectJetStates();
-    if (jetStates.isEmpty())
-    {
-      return;
-    }
-    cw.visitField(Opcodes.ACC_PUBLIC, "evalStamp", "I", null, null);
-    for (JetState state : jetStates)
-    {
-      cw.visitField(Opcodes.ACC_PUBLIC, state.stampFieldName, "I", null, null);
-    }
-  }
-
-  /**
-   * Collect all unique {@link JetState} instances from the expression tree by
-   * walking every {@link JetNode}.
-   */
-  @SuppressWarnings("rawtypes")
-  protected Set<JetState> collectJetStates()
-  {
-    Set<JetState> states = new LinkedHashSet<>();
-    if (rootNode == null)
-    {
-      return states;
-    }
-    rootNode.accept(node ->
-    {
-      if (node instanceof JetNode jetNode)
-      {
-        states.add(jetNode.getSharedState());
-      }
-    });
-    return states;
-  }
-
-  /**
-   * Walk the AST and merge {@link JetNode}s that share the same
-   * {@link JetState#structuralKey structuralKey} (same function, same argument)
-   * to reference a single canonical {@link JetState}. This ensures that
-   * differentiation-produced siblings of the same jet share one polynomial buffer
-   * and one stamp field, and that {@link JetState#getMaxCoefficientNeeded()}
-   * reflects the maximum across all siblings.
-   */
-  @SuppressWarnings("rawtypes")
-  protected void deduplicateJets()
-  {
-    if (rootNode == null)
-    {
-      return;
-    }
-    Map<String, JetState> registry = new HashMap<>();
-    rootNode.accept(node ->
-    {
-      if (node instanceof JetNode jetNode)
-      {
-        String   key       = jetNode.structuralKey();
-        JetState canonical = registry.computeIfAbsent(key, k -> jetNode.getSharedState());
-        if (canonical != jetNode.getSharedState())
-        {
-          canonical.updateMax(jetNode.getCoefficientIndex());
-          jetNode.setSharedState(canonical);
-        }
-        else
-        {
-          canonical.updateMax(jetNode.getCoefficientIndex());
-        }
-      }
-    });
-  }
-
-  protected ClassVisitor declareFunctionReferences(ClassVisitor classVisitor)
-  {
-    if (context == null)
-    {
-      return classVisitor;
-    }
-    context.populateFunctionReferenceGraph();
-    dependencies = Utensils.sortDependencies(context.functionReferenceGraph, getReferencedFunctions());
-
-    if (saveGraphs)
-    {
-      context.saveDependencyGraph(dependencies);
-    }
-    // Declare functions in dependency order
-    for (Dependency dependency : dependencies)
-    {
-      String dependencyVariableName = dependency.variableName;
-      var    functionMapping        = getReferencedFunctions().get(dependencyVariableName);
-
-      if (functionMapping != null)
-      {
-        functionMapping.declare(classVisitor, dependencyVariableName);
-      }
-    }
-
-    return classVisitor;
-  }
-
-  protected void declareIntermediateVariables(ClassVisitor classVisitor)
-  {
-    sortedIntermediateVariableStream().filter(variable -> !declaredIntermediateVariables.contains(variable.name)).forEach(variable ->
-    {
-      variable.declareField(classVisitor);
-      declaredIntermediateVariables.add(variable.name);
-    });
-  }
-
-  protected ClassVisitor declareLiteralConstants(ClassVisitor classVisitor)
-  {
-    for (var constant : getSortedLiteralConstantNodes())
-    {
-      constant.declareField(classVisitor);
-    }
-    return classVisitor;
-  }
-
-  protected void declareVariableEntry(ClassVisitor classVisitor, Entry<String, Named> variable)
-  {
-    if (trace)
-    {
-      log.trace("Declaring variable of " + className + ": " + variable);
-    }
-    if (variable.getValue() != null)
-    {
-      String varName = variable.getKey();
-      if (!declaredVariables.contains(varName))
-      {
-        classVisitor.visitField(ACC_PUBLIC, varName, variable.getValue().getClass().descriptorString(), null, null);
-        declaredVariables.add(varName);
-      }
-    }
-    else
-    {
-      if (trace)
-      {
-        log.trace("Skipping null variable of " + className + ": " + variable);
-      }
-    }
-  }
-
-  /**
-   * Declares variables as fields in the generated class. This includes: 1. The
-   * upstream (parent) expression's independent variable (if any) - so this
-   * expression can receive it 2. Variables referenced from ancestor expressions
-   * (upstreamInput variables) 3. Context variables
-   * 
-   * NEVER declares this expression's own independent variable as a field in its
-   * own class.
-   */
-  protected void declareVariables(ClassVisitor classVisitor)
-  {
-    // Declare the parent's independent variable as a field so we can receive it
-    if (upstreamExpression != null)
-    {
-      var upstreamIndependentVariableNode = upstreamExpression.getIndependentVariable();
-      if (upstreamIndependentVariableNode != null && !upstreamIndependentVariableNode.type().equals(Object.class))
-      {
-        String upstreamIndVarName = upstreamIndependentVariableNode.reference.name;
-        classVisitor.visitField(ACC_PUBLIC, upstreamIndVarName, upstreamIndependentVariableNode.type().descriptorString(), null, null);
-        declaredVariables.add(upstreamIndVarName);
-      }
-    }
-
-    // Declare fields for all referenced variables from ancestor expressions
-    // These are variables where upstreamInput=true that were added to
-    // referencedVariables
-    declareFieldsForUpstreamInputPropagation(classVisitor);
-
-    // Declare context variables
-    if (context != null)
-    {
-      var varList = context.variableEntryStream().sorted((a, b) -> a.getKey().compareTo(b.getKey())).toList();
-      if (trace)
-      {
-        String vars = varList.stream().map(f -> f.getKey()).collect(Collectors.joining(","));
-        log.debug("declareVariables for {}: context variables {}", className, vars);
-      }
-      for (var variable : varList)
-      {
-        declareVariableEntry(classVisitor, variable);
-      }
-    }
-
-    variablesDeclared = true;
-  }
-
-  protected void declareFieldsForUpstreamInputPropagation(ClassVisitor classVisitor)
-  {
-    upstreamInputVariableEntryStream().forEach(entry ->
-    {
-      String                varName = entry.getKey();
-      VariableNode<D, C, F> varNode = entry.getValue();
-      Class<?>              varType = varNode.type();
-      assert varType != null && !varType.equals(Object.class) : "type of " + varNode + " should not be Object or null";
-      if (declaredVariables.contains(varName))
-      {
-        return;
-      }
-      if (trace)
-      {
-        log.debug("declareVariables for {}: declaring upstreamInput variable {} of type {}", className, varName, varType);
-      }
-      Compiler.declareField(classVisitor, varName, varType);
-      declaredVariables.add(varName);
-    });
-  }
-
-  Predicate<? super Entry<String, VariableNode<D, C, F>>> predicate = entry ->
-  {
-    String                varName = entry.getKey();
-    VariableNode<D, C, F> varNode = entry.getValue();
-
-    if (varNode.isIndependent)
-    {
-      return false;
-    }
-
-    if (upstreamExpression != null)
-    {
-      VariableNode<?, ?, ?> upstreamIndependentVariable = upstreamExpression.getIndependentVariable();
-      if (upstreamIndependentVariable != null && varName.equals(upstreamIndependentVariable.getName()))
-      {
-        return false;
-      }
-    }
-
-    if (context != null && context.getVariable(varName) != null)
-    {
-      return false;
-    }
-    return true;
-  };
-
-  protected Stream<Entry<String, VariableNode<D, C, F>>> upstreamInputVariableEntryStream()
-  {
-    return referencedVariableEntryStream().filter(predicate);
-  }
-
-  protected Stream<Entry<String, VariableNode<D, C, F>>> referencedVariableEntryStream()
-  {
-    return referencedVariables.entrySet().stream();
-  }
-
-  public boolean defaultToIntegerConstantsWhenPossible()
-  {
-    return coDomainType.equals(Integer.class);
-  }
-
-  /**
-   * Reference-identity equality. Expression instances are identified by their
-   * object identity: every parsed/compiled Expression gets its own AST and its
-   * own generated class, so two non-identical Expressions are never considered
-   * equal for the purposes of collection lookup. The previous implementation
-   * recursed through {@code rootNode.equals}, which combined with
-   * {@link arb.expressions.nodes.Node#equals}'s former inclusion of
-   * {@code expression} in its structural compare formed an equality cycle that
-   * overflowed the stack as soon as a sub-expression and its parent were
-   * compared. Callers that want structural equivalence between two Expressions
-   * can compare their rendered {@code toString} forms or their root nodes with
-   * {@code Node#isEquivalentTo}.
-   */
-  @Override
-  public boolean equals(Object obj)
-  {
-    return this == obj;
-  }
-
-  @Override
-  public int hashCode()
-  {
-    return System.identityHashCode(this);
-  }
-
-  /**
-   * 
-   * @return the results of this{@link #resolveSquareBracketedIndex()} and
-   *         this{@link #resolveSubscriptedIndex()} being applied in succession
-   */
-  protected Node<D, C, F> resolveIndex()
-  {
-    var index = resolveSquareBracketedIndex();
-    return index == null ? index = resolveSubscriptedIndex() : index;
-  }
-
-  protected Node<D, C, F> resolveNumericLiteralConstant()
-  {
-    int startingPosition = position;
-    while (isNumeric(character))
-    {
-      nextCharacter();
-    }
-    assert position > startingPosition : "didn't read any digits";
-
-    return newLiteralConstant(getExpression().substring(startingPosition, position));
-  }
-
-  public Node<D, C, F> resolveOperand() throws CompilerException
-  {
-    Node<D, C, F> node = null;
-
-    if (nextCharacterIs('['))
-    {
-      node = new VectorNode<>(this);
-    }
-    else if (nextCharacterIs('(', '⁽'))
-    {
-      node = resolve();
-      require(')', '⁾');
-    }
-    else if (nextCharacterIs('∂'))
-    {
-      node = new DerivativeNode<>(this);
-    }
-    else if (nextCharacterIs('Đ'))
-    {
-      node = resolveCaputoFractionalDerivative();
-    }
-    else if (nextCharacterIs('∫'))
-    {
-      node = new IntegralNode<>(this);
-    }
-    else if (nextCharacterIs('Π', '∏'))
-    {
-      node = new ProductNode<>(this);
-    }
-    else if (nextCharacterIs('∑', 'Σ'))
-    {
-      node = new SumNode<>(this);
-    }
-    else if (isNumeric(character))
-    {
-      node = resolveNumericLiteralConstant();
-    }
-    else if (isIdentifierCharacter())
-    {
-      String arrowVar = parseExplicitInputVariableIfPresent();
-      if (arrowVar != null && coDomainType.isInterface())
-      {
-        node = parseInputVariableAssignment(arrowVar);
-      }
-      else if (arrowVar == null)
-      {
-        node = resolveIdentifier();
-      }
-      else
-      {
-        throw new CompilerException("arrow variable declaration '"
-                                    + arrowVar
-                                    + "➔' found but coDomain "
-                                    + coDomainType.getSimpleName()
-                                    + " is not a functional interface");
-      }
-    }
-    else if (nextCharacterIs('ꟲ'))
-    {
-      int  savedPos  = position;
-      char savedChar = character;
-      if (nextCharacterIs('D'))
-      {
-        node = resolveCaputoFractionalDerivative();
-      }
-      else
-      {
-        position  = savedPos;
-        character = savedChar;
-      }
-    }
-
-    return resolvePostfixOperators(node);
-  }
-
-  /**
-   * FIXME: add support for specifying the variable of differentiation
-   * 
-   * @return
-   */
-  protected Node<D, C, F> resolveCaputoFractionalDerivative()
-  {
-    var α    = require('^').require('(').resolve();
-    var f    = require(')').resolveOperand();
-    var node = f.fractionalDerivative(null, α);
-    return node;
-  }
-
-  @SuppressWarnings(
-  { "rawtypes", "unchecked" })
-  public Node<D, C, F> parseInputVariableAssignment(String variableName)
-  {
-    if (trace)
-    {
-      log.debug("→ parseInputVariableAssignment(#{}) expr={}, paramName={} at position={} where remaining={}",
-                System.identityHashCode(this),
-                getExpression(),
-                variableName,
-                position,
-                remaining());
-    }
-    checkInputVariableConflicts(variableName);
-
-    boolean prevDef = deferVariableResolution;
-    deferVariableResolution = true;
-    var                 variableNode = newVariableNode(variableName);
-
-    Expression<D, C, F> subExpr      = cloneExpression();
-    subExpr.clearIndependentVariable();
-    subExpr.upstreamExpression = this;
-    if (isGeneratedFunctional())
-    {
-      subExpr.functionClass = (Class) coDomainType;
-      subExpr.domainType    = (Class) resolveChildDomain(coDomainType);
-      subExpr.coDomainType  = (Class) resolveChildCoDomain(coDomainType);
-      this.functionalChild  = subExpr;
-    }
-    placeholderVariable = subExpr.setIndependentVariable(variableNode.spliceInto(subExpr));
-
-    List<String> remainingParams = pendingParameterList;
-    pendingParameterList = null;
-    if (remainingParams != null && !remainingParams.isEmpty())
-    {
-      String       headParam  = remainingParams.get(0);
-      List<String> tailParams = remainingParams.subList(1, remainingParams.size());
-      subExpr.pendingParameterList = tailParams.isEmpty() ? null : new ArrayList<>(tailParams);
-      subExpr.rootNode             = subExpr.parseInputVariableAssignment(headParam);
-    }
-    else
-    {
-      subExpr.rootNode = subExpr.resolve();
-    }
-
-    setCursorFrom(subExpr);
-
-    return subExpr.rootNode;
-  }
-
-  private void checkInputVariableConflicts(String paramName)
-  {
-    if (getIndependentVariable() != null && Objects.equals(getIndependentVariable().getName(), paramName))
-    {
-      throw new CompilerException("input variable '" + paramName + "' conflicts with the independent variable of the containing expression");
-    }
-  }
-
-  public File saveToFile()
-  {
-    var file = new File(className + ".yaml");
-    if (trace)
-    {
-      log.debug("#{}: saveToFile(): file={}", System.identityHashCode(this), file);
-    }
-    Utensils.saveToYamlFormat(file, this);
-    return file;
-  }
-
-  protected Expression<D, C, F> evaluateOptionalIndependentVariableSpecification()
-  {
-    if (trace)
-    {
-      log.debug("#{}: evaluateOptionalIndependentVariableSpecification: remaining {} ", System.identityHashCode(this), remaining());
-    }
-    setExpression(normalize(getExpression()));
-
-    nextCharacter(); // prime cursor to position 0
-
-    String inputVariableName = parseExplicitInputVariableIfPresent();
-    if (inputVariableName != null)
-    {
-      assureInputNameHasNotAlreadyBeenAssociatedWithAContextVariable(inputVariableName);
-      if (pendingParameterList != null && !pendingParameterList.isEmpty() && coDomainType.isInterface())
-      {
-        rootNode = parseInputVariableAssignment(inputVariableName);
-      }
-      else
-      {
-        VariableNode<D, C, F> newRef = newVariableNode(inputVariableName);
-        if (pendingInputVariableBounds != null)
-        {
-          newRef.reference.bounds    = pendingInputVariableBounds;
-          pendingInputVariableBounds = null;
-        }
-        assignInputVariable(newRef);
-      }
-    }
-
-    return this;
-  }
-
-  protected Node<D, C, F> resolveSquareBracketedIndex()
-  {
-    Node<D, C, F> index = null;
-    if (nextCharacterIs('['))
-    {
-      index = resolve();
-      require(']');
-    }
-    return index;
-  }
-
-  protected Node<D, C, F> resolveSubscriptedIndex()
-  {
-    int startPos = position;
-
-    if (nextCharacterIs(Parser.SUBSCRIPT_DIGITS_ARRAY))
-    {
-      while (nextCharacterIs(Parser.SUBSCRIPT_DIGITS_ARRAY));
-      return newLiteralConstant(getExpression().substring(startPos, position));
-    }
-    else if (isIdentifierCharacter())
-    {
-      return resolveIdentifier();
-    }
-    return null;
-  }
-
-  protected VariableReference<D, C, F> resolveVariableReference()
-  {
-    String identifier = parseName();
-    var    index      = resolveIndex();
-    return new VariableReference<D, C, F>(identifier,
-                                          index);
-  }
-
-  protected Node<D, C, F> exponentiate() throws CompilerException
-  {
-    return exponentiate(resolveOperand());
-  }
-
-  protected Node<D, C, F> exponentiate(Node<D, C, F> node) throws CompilerException
-  {
-    if (nextCharacterIs('^'))
-    {
-      boolean parenthetical = nextCharacterIs('(', '⁽');
-      node = node.pow(parenthetical ? resolve() : resolveOperand());
-      if (parenthetical)
-      {
-        require(')', '⁾');
-      }
-      return node;
-    }
-    else
-    {
-      return parseSuperscripts(node);
-    }
-  }
-
-  /**
-   * @return the result of passing this{@link #exponentiate()} to
-   *         this{@link #multiplyAndDivide(Node)}
-   */
-  protected Node<D, C, F> exponentiateMultiplyAndDivide()
-  {
-    return multiplyAndDivide(exponentiate());
-  }
-
-  /**
-   * Generate the implementation of the function after this{@link #parse(boolean)}
-   * has been invoked
-   * 
-   * @return this
-   * @throws CompilerException
-   */
-  public Expression<D, C, F> generate() throws CompilerException
-  {
-    assert instructions == null;
-    if (trace)
-    {
-      log.debug("#{}: generate(className={}, functionName={}, expression='{}')\n", System.identityHashCode(this), className, functionName, getExpression());
-    }
-
-    ClassVisitor classVisitor = Compiler.constructClassVisitor();
-
-    try
-    {
-      // The AST must be frozen before any bytecode is emitted. All
-      // tree-rewriting passes live in optimize(); generate() only reads
-      // the finalised tree. Call optimize() here defensively for callers
-      // that invoke generate() directly without first going through
-      // compile().
-      optimize();
-
-      generateFunctionInterface(this, className, classVisitor);
-      generateDomainTypeMethod(classVisitor);
-      generateCoDomainTypeMethod(classVisitor);
-      generateEvaluationMethod(classVisitor);
-      generateStaticEvaluationMethod(classVisitor);
-      generateInvalidateMethod(classVisitor);
-      generateDiffererentiationAndIntegrationMethods(classVisitor);
-      declareFields(classVisitor);
-      generateInitializationMethod(classVisitor);
-      generateConstructor(classVisitor);
-      declareIntermediateVariables(classVisitor);
-      if (needsCloseMethod())
-      {
-        generateCloseMethod(classVisitor);
-      }
-      generateGetNameMethod(classVisitor);
-      generateGetContextMethod(classVisitor);
-      generateGetExpressionMethod(classVisitor);
-
-      generateToStringMethod(classVisitor);
-      generateTypesetMethod(classVisitor);
-    }
-    finally
-    {
-      classVisitor.visitEnd();
-    }
-
-    logVariables();
-
-    return storeInstructions(classVisitor);
-  }
-
-  /**
-   * @see {@link RealPolynomialSequence#derivative()}
-   *      {@link RealPolynomialSequence#integral()} and
-   *      {@link ComplexPolynomialSequence#derivative()} and
-   *      {@link ComplexPolynomialSequence#integral()} for the default
-   *      implementation which is used in the non-nullary polynomial sequence case
-   * 
-   */
-  protected void generateDiffererentiationAndIntegrationMethods(ClassVisitor classVisitor)
-  {
-    if (!isNullaryFunction() && !Polynomial.class.isAssignableFrom(coDomainType))
-    {
-      // Non-polynomial, non-nullary: generate symbolic derivative/integral methods
-      generateDerivativeMethod(classVisitor);
-      generateIntegralMethod(classVisitor);
-    }
-    else if (Polynomial.class.isAssignableFrom(coDomainType) || RationalFunction.class.isAssignableFrom(coDomainType)
-                  || ComplexRationalFunction.class.isAssignableFrom(coDomainType))
-    {
-      // NON-NULLARY polynomial sequences DO NOTHING HERE.
-      // The interface declares default integral()/derivative() methods that
-      // delegate to the polynomial's own integral()/derivative() via lambda.
-      // Generating bytecode here would OVERRIDE those default methods and break
-      // differentiation by using the sequence index instead of the polynomial's
-      // independent variable.
-      if (isNullaryFunction())
-      {
-        generatePolynomialMethod(classVisitor, "integral");
-        generatePolynomialMethod(classVisitor, "derivative");
-      }
-      // FIXME: also do this for rational function codomains
-    }
-  }
-
-  protected MethodVisitor generateCloseFieldCall(MethodVisitor methodVisitor, String fieldName, Class<?> fieldType)
-  {
-    getFieldFromThis(methodVisitor, className, fieldName, fieldType);
-    return invokeCloseMethod(methodVisitor, fieldType);
-  }
-
-  protected ClassVisitor generateCloseMethod(ClassVisitor classVisitor)
-  {
-    var methodVisitor = defineMethod(classVisitor, "close", VOID_METHOD_DESCRIPTOR);
-
-    methodVisitor.visitCode();
-
-    if (!coDomainType.isInterface())
-    {
-      getSortedLiteralConstantNodes().forEach(constant -> generateCloseFieldCall(loadThisOntoStack(methodVisitor), constant.fieldName, constant.type()));
-
-      sortedIntermediateVariables().forEach(intermediateVariable -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
-                                                                                           intermediateVariable.name,
-                                                                                           intermediateVariable.type));
-
-      getReferencedFunctions().forEach((name, mapping) -> generateCloseFieldCall(loadThisOntoStack(methodVisitor), name, mapping.type()));
-    }
-
-    Compiler.generateReturnFromVoidMethod(methodVisitor);
-
-    return classVisitor;
-  }
-
-  /**
-   * Issue #1005: value-backing cache peek. At entry to {@code evaluate(v, ...)}
-   * compare {@code this.lastV} to the {@code v} argument by
-   * {@link Object#equals(Object) value equality} — reference identity is
-   * insufficient because callers (e.g. via {@code borrowVariable()}) routinely
-   * recycle the same wrapper object across distinct logical inputs. If
-   * {@code this.lastV != null && this.lastV.equals(v) && this.cachedResult != null}
-   * copy {@code cachedResult} into the caller's {@code result} buffer and return
-   * immediately. Otherwise lazily allocate {@code this.lastV} (first call only),
-   * value-copy {@code v} into it, and fall through to the body.
-   */
-  protected void generateValueBackingPeek(MethodVisitor mv)
-  {
-    Label missEmpty = new Label(); // skip cached-result return, stack empty
-    Label missDup   = new Label(); // landed via IFNULL on cachedResult, stack has dup
-    Label record    = new Label(); // store v into this.lastV (value copy)
-    // if (this.lastV == null) goto missEmpty
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(Opcodes.GETFIELD, className, "lastV", Type.getDescriptor(domainType));
-    mv.visitJumpInsn(Opcodes.IFNULL, missEmpty);
-    // if (!this.lastV.equals(v)) goto missEmpty
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(Opcodes.GETFIELD, className, "lastV", Type.getDescriptor(domainType));
-    mv.visitVarInsn(Opcodes.ALOAD, 1);
-    Compiler.generateVirtualMethodInvocation(mv, Object.class, "equals", boolean.class, Object.class);
-    mv.visitJumpInsn(Opcodes.IFEQ, missEmpty);
-    // cached = this.cachedResult; if (cached==null) goto missDup (stack has cached)
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(Opcodes.GETFIELD, className, "cachedResult", Type.getDescriptor(coDomainType));
-    Compiler.duplicateTopOfTheStack(mv);
-    mv.visitJumpInsn(Opcodes.IFNULL, missDup);
-    // result.set(cached); return result
-    mv.visitVarInsn(Opcodes.ALOAD, 4);
-    mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
-    mv.visitInsn(Opcodes.SWAP); // stack: result, cached
-    Compiler.generateVirtualMethodInvocation(mv, coDomainType, "set", coDomainType, coDomainType);
-    mv.visitInsn(Opcodes.ARETURN);
-    // miss with dup'd null: pop it and join missEmpty
-    Compiler.designateLabel(mv, missDup);
-    Compiler.pop(mv);
-    Compiler.designateLabel(mv, missEmpty);
-    // Lazily allocate this.lastV on first miss so we can copy v's value into it.
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(Opcodes.GETFIELD, className, "lastV", Type.getDescriptor(domainType));
-    mv.visitJumpInsn(Opcodes.IFNONNULL, record);
-    loadThisOntoStack(mv);
-    mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(domainType));
-    Compiler.duplicateTopOfTheStack(mv);
-    mv.visitMethodInsn(Opcodes.INVOKESPECIAL, Type.getInternalName(domainType), "<init>", "()V", false);
-    mv.visitFieldInsn(Opcodes.PUTFIELD, className, "lastV", Type.getDescriptor(domainType));
-    Compiler.designateLabel(mv, record);
-    // this.lastV.set(v) — value copy, not reference store
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(Opcodes.GETFIELD, className, "lastV", Type.getDescriptor(domainType));
-    mv.visitVarInsn(Opcodes.ALOAD, 1);
-    mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(domainType));
-    Compiler.generateVirtualMethodInvocation(mv, domainType, "set", domainType, domainType);
-    Compiler.pop(mv);
-  }
-
-  /**
-   * Issue #1005: value-backing cache poke. After the body has written its result
-   * into local 4, copy that result into {@code this.cachedResult} so the next
-   * call with the same v identity sees the stored value.
-   */
-  protected void generateValueBackingPoke(MethodVisitor mv)
-  {
-    // stack on entry from rootNode: <result>; pop it (already in local 4)
-    mv.visitInsn(Opcodes.POP);
-    // Lazily allocate this.cachedResult if null
-    Label haveSlot = new Label();
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(Opcodes.GETFIELD, className, "cachedResult", Type.getDescriptor(coDomainType));
-    mv.visitJumpInsn(Opcodes.IFNONNULL, haveSlot);
-    loadThisOntoStack(mv);
-    mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(coDomainType));
-    mv.visitInsn(Opcodes.DUP);
-    mv.visitMethodInsn(Opcodes.INVOKESPECIAL, Type.getInternalName(coDomainType), "<init>", "()V", false);
-    mv.visitFieldInsn(Opcodes.PUTFIELD, className, "cachedResult", Type.getDescriptor(coDomainType));
-    Compiler.designateLabel(mv, haveSlot);
-    // this.cachedResult.set(result)
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(Opcodes.GETFIELD, className, "cachedResult", Type.getDescriptor(coDomainType));
-    mv.visitVarInsn(Opcodes.ALOAD, 4);
-    mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
-    Compiler.generateVirtualMethodInvocation(mv, coDomainType, "set", coDomainType, coDomainType);
-    mv.visitInsn(Opcodes.POP);
-    // Push result back so the trailing ARETURN in evaluate's tail succeeds
-    mv.visitVarInsn(Opcodes.ALOAD, 4);
-  }
-
-  protected void generateCachePeek(MethodVisitor mv)
-  {
-    Label cacheMiss = new Label();
-    loadThisAndFieldOntoStack(mv, "cache", TreeMap.class);
-    loadInputParameterChecked(mv);
-    Compiler.invokeStaticMethod(mv, Function.class, "peek", Object.class, TreeMap.class, arb.Integer.class);
-    Compiler.cast(mv, coDomainType);
-    Compiler.duplicateTopOfTheStack(mv);
-    mv.visitJumpInsn(Opcodes.IFNULL, cacheMiss);
-    if (isGeneratedFunctional())
-    {
-      // Functional cache hit: return the cached function reference directly.
-      // Function references are immutable handles — sharing them across callers
-      // is correct, no buffer-aliasing hazard, no per-call deep copy needed.
-      // stack: cached(coDomainType)
-      mv.visitInsn(Opcodes.ARETURN);
-    }
-    else
-    {
-      // Value-type cache hit: result.set(cached); return result
-      // stack: cached(coDomainType)
-      mv.visitVarInsn(Opcodes.ALOAD, 4);
-      mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
-      mv.visitInsn(Opcodes.SWAP); // stack: result(cast), cached
-      Compiler.generateVirtualMethodInvocation(mv, coDomainType, "set", coDomainType, coDomainType);
-      mv.visitInsn(Opcodes.POP);
-      mv.visitVarInsn(Opcodes.ALOAD, 4);
-      mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
-      mv.visitInsn(Opcodes.ARETURN);
-    }
-    Compiler.designateLabel(mv, cacheMiss);
-    Compiler.pop(mv);
-  }
-
-  private int cacheArrayListSlot = -1;
-  private int cacheIndexSlot     = -1;
-
-  /**
-   * Stores the cache ArrayList and the int index in dynamically allocated local
-   * variable slots. Nothing is left on the operand stack, so rootNode.generate()
-   * runs with a clean stack regardless of branching (when/switch nodes).
-   */
-  protected void generateCachePokePrologue(MethodVisitor mv)
-  {
-    cacheArrayListSlot = allocateLocalVariableSlot();
-    cacheIndexSlot     = allocateLocalVariableSlot();
-    loadThisAndFieldOntoStack(mv, "cache", TreeMap.class);
-    mv.visitVarInsn(Opcodes.ASTORE, cacheArrayListSlot);
-    loadInputParameterChecked(mv);
-    mv.visitVarInsn(Opcodes.ASTORE, cacheIndexSlot);
-  }
-
-  /**
-   * After rootNode.generate() / generateFunctionalElement has left the computed
-   * result on the stack: poke into the cache and return.
-   *
-   * Value-type codomain: allocate a fresh copy via {@code new coDomainType()},
-   * copy result into it via {@code set()}, poke the copy. The deep copy keeps
-   * cache slots from sharing internal MPFR/FLINT buffers with the caller's result
-   * instance.
-   *
-   * Generated functional codomain: function references are immutable handles, so
-   * the on-stack reference produced by {@link #generateFunctionalElement} is
-   * poked directly. No {@code <init>()} (interfaces are not instantiable), no
-   * {@code set(F)} (function references have no in-place set semantics).
-   */
-  protected void generateCachePokeEpilogue(MethodVisitor mv)
-  {
-    if (isGeneratedFunctional())
-    {
-      // stack on entry: <functionInstance> (left by generateFunctionalElement)
-      // dup so we can poke a copy of the reference and return one
-      mv.visitInsn(Opcodes.DUP);
-
-      // poke(cache, index, functionInstance) — keys-map is local cacheArrayListSlot,
-      // key is local cacheIndexSlot, value is the dup'd reference on stack
-      mv.visitVarInsn(Opcodes.ALOAD, cacheArrayListSlot);
-      mv.visitInsn(Opcodes.SWAP); // stack: cache, functionInstance
-      mv.visitVarInsn(Opcodes.ALOAD, cacheIndexSlot);
-      mv.visitInsn(Opcodes.SWAP); // stack: cache, index, functionInstance
-      Compiler.invokeStaticMethod(mv, Function.class, "poke", Object.class, TreeMap.class, arb.Integer.class, Object.class);
-      mv.visitInsn(Opcodes.POP); // discard poke return value
-
-      // return the original functionInstance still on the stack (under the dup)
-      mv.visitInsn(Opcodes.ARETURN);
-      return;
-    }
-
-    int freshCopySlot = allocateLocalVariableSlot();
-
-    // stack on entry: <result> (left by rootNode.generate)
-    // pop the result — it has already been written into local4 (the result
-    // parameter)
-    mv.visitInsn(Opcodes.POP);
-
-    // allocate fresh copy of coDomainType
-    mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(coDomainType));
-    mv.visitInsn(Opcodes.DUP);
-    mv.visitMethodInsn(Opcodes.INVOKESPECIAL, Type.getInternalName(coDomainType), "<init>", "()V", false);
-    mv.visitVarInsn(Opcodes.ASTORE, freshCopySlot);
-
-    // copy result (local4) into fresh copy
-    mv.visitVarInsn(Opcodes.ALOAD, freshCopySlot);
-    mv.visitVarInsn(Opcodes.ALOAD, 4);
-    mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
-    Compiler.generateVirtualMethodInvocation(mv, coDomainType, "set", coDomainType, coDomainType);
-    mv.visitInsn(Opcodes.POP); // discard set() return value
-
-    // poke(cache, index, freshCopy)
-    mv.visitVarInsn(Opcodes.ALOAD, cacheArrayListSlot);
-    mv.visitVarInsn(Opcodes.ALOAD, cacheIndexSlot);
-    mv.visitVarInsn(Opcodes.ALOAD, freshCopySlot);
-    Compiler.invokeStaticMethod(mv, Function.class, "poke", Object.class, TreeMap.class, arb.Integer.class, Object.class);
-    mv.visitInsn(Opcodes.POP); // discard poke return value
-
-    // return result
-    mv.visitVarInsn(Opcodes.ALOAD, 4);
-    mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
-    mv.visitInsn(Opcodes.ARETURN);
-  }
-
-  protected void loadInputParameterChecked(MethodVisitor mv)
-  {
-    loadInputParameter(mv);
-    mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(domainType));
-  }
-
-  protected void generateCodeToSetIsInitializedToTrue(MethodVisitor methodVisitor)
-  {
-    loadThisOntoStack(methodVisitor).visitInsn(Opcodes.ICONST_1);
-    methodVisitor.visitFieldInsn(PUTFIELD, className, IS_INITIALIZED, "Z");
-  }
-
-  protected void generateCodeToThrowErrorIfAlreadyInitialized(MethodVisitor mv)
-  {
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(GETFIELD, className, IS_INITIALIZED, "Z");
-    var alreadyInitializedLabel = new Label();
-    mv.visitJumpInsn(IFEQ, alreadyInitializedLabel);
-    mv.visitTypeInsn(NEW, JAVA_LANG_ASSERTION_ERROR);
-    duplicateTopOfTheStack(mv).visitLdcInsn("Already initialized");
-    mv.visitMethodInsn(INVOKESPECIAL, JAVA_LANG_ASSERTION_ERROR, "<init>", ASSERTION_ERROR_METHOD_DESCRIPTOR, false);
-    mv.visitInsn(ATHROW);
-    mv.visitLabel(alreadyInitializedLabel);
-  }
-
-  protected ClassVisitor generateCoDomainTypeMethod(ClassVisitor classVisitor) throws CompilerException
-  {
-    return generateTypeMethod(classVisitor, "coDomainType", Type.getType(coDomainType), getCoDomainTypeMethodSignature());
-  }
-
-  protected MethodVisitor generateConditionalInitializater(MethodVisitor mv)
-  {
-    var alreadyInitialized = new Label();
-    getFieldFromThis(mv, className, IS_INITIALIZED, boolean.class);
-    jumpToIfNotEqual(mv, alreadyInitialized);
-    loadThisOntoStack(mv).visitMethodInsn(INVOKEVIRTUAL, className, nameOfInitializerFunction, "()V", false);
-    Compiler.designateLabel(mv, alreadyInitialized);
-    return mv;
-  }
-
-  protected ClassVisitor generateConstructor(ClassVisitor classVisitor)
-  {
-    MethodVisitor mv = classVisitor.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
-    mv.visitCode();
-
-    generateInvocationOfDefaultNoArgConstructor(mv, true);
-
-    // Initialize the final cache field exactly once, here in <init>.
-    // ACC_FINAL on the field forbids any later PUTFIELD from any other
-    // method (initialize, evaluate, helpers) — verified by the JVM.
-    generateCacheFieldInitializer(mv);
-
-    if (hasStaticNodes)
-    {
-      // Initialize staticPrecision to -1 so the first evaluate() call
-      // unconditionally triggers evaluateStaticSubexpressions()
-      loadThisOntoStack(mv);
-      mv.visitLdcInsn(-1);
-      mv.visitFieldInsn(Opcodes.PUTFIELD, className.replace('.', '/'), "staticPrecision", "I");
-    }
-
-    // Only root expressions create their own Context.
-    // Child arg classes receive the parent's context via initialize() (#842)
-    if (context != null && upstreamExpression == null)
-    {
-      generateContextInitializer(mv);
-    }
-
-    if (!coDomainType.isInterface())
-    {
-      generateLiteralConstantInitializers(mv);
-    }
-
-    generateIntermediateVariableInitializers(mv);
-
-    Compiler.generateReturnFromVoidMethod(mv);
-    return classVisitor;
-  }
-
-  public MethodVisitor generateContextInitializer(MethodVisitor methodVisitor)
-  {
-
-    loadThisOntoStack(methodVisitor);
-    String contextTypeInternalName = Type.getInternalName(Context.class);
-    methodVisitor.visitTypeInsn(NEW, contextTypeInternalName);
-    methodVisitor.visitInsn(DUP);
-    methodVisitor.visitMethodInsn(INVOKESPECIAL, contextTypeInternalName, "<init>", "()V", false);
-    methodVisitor.visitFieldInsn(PUTFIELD, className, "context", Context.class.descriptorString());
-    return methodVisitor;
-  }
-
-  protected void generateDependencyAssignment(MethodVisitor mv, String functionName, String functionDescriptor, String assignment)
-  {
-    var otherMapping = getReferencedFunctions().get(assignment);
-
-    if (Expression.trace)
-    {
-      log.debug("generateDependencyAssignment: functionName={} functionDescriptor={} assignment={}", functionName, functionDescriptor, assignment);
-    }
-    loadThisOntoStack(mv).visitFieldInsn(GETFIELD, className, assignment, otherMapping.functionFieldDescriptor());
-    loadThisOntoStack(mv).visitFieldInsn(GETFIELD, className, functionName, functionDescriptor);
-    mv.visitFieldInsn(PUTFIELD, assignment, functionName, functionDescriptor);
-  }
-
-  protected void generateDependencyAssignments(MethodVisitor mv, Dependency dependency)
-  {
-    var assignments        = dependency.getAssignments(className, getReferencedFunctions());
-
-    var functionName       = dependency.variableName;
-    var mapping            = getReferencedFunctions().get(functionName);
-    var functionDescriptor = functionClass.descriptorString();
-
-    if (mapping != null)
-    {
-
-      functionDescriptor = mapping.functionFieldDescriptor();
-
-      // Phase 1 (generateReferencedFunctionInstances) already guarantees non-null
-      // (#848)
-      generateFunctionInitializer(mv, mapping, assignments);
-
-      for (String assignment : assignments)
-      {
-        generateDependencyAssignment(mv, functionName, functionDescriptor, assignment);
-      }
-
-    }
-  }
-
-  private ClassVisitor generateDerivativeMethod(ClassVisitor classVisitor)
-  {
-    return generateDelegateMethod(classVisitor, "derivative", "diff");
-  }
-
-  protected ClassVisitor generateDelegateMethod(ClassVisitor classVisitor, String func, String op)
-  {
-    assert functionClass.isInterface() : functionClass + " is not an interface";
-    assert rootNode != null : "rootNode is null";
-
-    var mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, func, Compiler.getMethodDescriptor(functionClass), null, null);
-    mv.visitCode();
-    Compiler.annotateWithOverride(mv);
-
-    mv.visitLdcInsn(Type.getType(domainType));
-    mv.visitLdcInsn(Type.getType(coDomainType));
-    mv.visitLdcInsn(Type.getType(functionClass));
-    mv.visitLdcInsn(op + functionName);
-
-    mv.visitLdcInsn(String.format("%s(%s,%s)", op, rootNode.toString(), getIndependentVariable()));
-
-    if (context != null)
-    {
-      loadThisAndFieldOntoStack(mv, "context", Context.class);
-
-      Compiler.invokeStaticMethod(mv,
-                                  Function.class,
-                                  "express",
-                                  Function.class,
-                                  Class.class,
-                                  Class.class,
-                                  Class.class,
-                                  String.class,
-                                  String.class,
-                                  Context.class);
-    }
-    else
-    {
-      Compiler.invokeStaticMethod(mv, Function.class, "express", Function.class, Class.class, Class.class, Class.class, String.class, String.class);
-
-    }
-
-    Compiler.generateReturnFromMethod(mv);
-
-    if (!functionClass.equals(Function.class))
-    {
-      String functionDescriptor = Compiler.getMethodDescriptor(Function.class);
-      String concreteDescriptor = Compiler.getMethodDescriptor(functionClass);
-      var    bridge             =
-                    classVisitor.visitMethod(Opcodes.ACC_PUBLIC | Opcodes.ACC_BRIDGE | Opcodes.ACC_SYNTHETIC, func, functionDescriptor, null, null);
-      bridge.visitCode();
-      bridge.visitVarInsn(Opcodes.ALOAD, 0);
-      bridge.visitMethodInsn(Opcodes.INVOKEVIRTUAL, className, func, concreteDescriptor, false);
-      bridge.visitInsn(Opcodes.ARETURN);
-      bridge.visitMaxs(0, 0);
-      bridge.visitEnd();
-    }
-
-    return classVisitor;
-  }
-
-  protected ClassVisitor generateDomainTypeMethod(ClassVisitor classVisitor) throws CompilerException
-  {
-    return generateTypeMethod(classVisitor, "domainType", Type.getType(domainType), getDomainTypeMethodSignature());
-  }
-
-  public void logVariables()
-  {
-    accept(containingExpression -> log.debug("#{}: logVariables: independentVariable={} superExpression={}",
-                                             System.identityHashCode(containingExpression),
-                                             containingExpression.getIndependentVariable(),
-                                             containingExpression.upstreamExpression));
-
-  }
-
-  protected ClassVisitor generateEvaluationMethod(ClassVisitor classVisitor) throws CompilerException
-  {
-    if (rootNode == null)
-    {
-      parse(true);
-    }
-
-    nextLocalVariableSlot = 5;
-
-    Label startLabel  = new Label();
-    Label endLabel    = new Label();
-    Label taylorLabel = new Label();
-
-    var   mv          = visitEvaluationMethod(classVisitor);
-    mv.visitCode();
-
-    designateLabel(mv, startLabel);
-    Compiler.annotateWithOverride(mv);
-
-    if (needsInitializer())
-    {
-      generateConditionalInitializater(mv);
-    }
-
-    if (hasStaticNodes)
-    {
-      generateStaticPrecisionCheck(mv);
-    }
-
-    boolean hasJets = !collectJetStates().isEmpty();
-
-    // --- order > 1 dispatch to Taylor series path (non-jet expressions only) ---
-    if (!hasJets)
-    {
-      mv.visitVarInsn(Opcodes.ILOAD, 2); // order
-      mv.visitInsn(Opcodes.ICONST_1);
-      mv.visitJumpInsn(Opcodes.IF_ICMPGT, taylorLabel);
-    }
-
-    if (hasJets)
-    {
-      generateEvalStampIncrement(mv);
-    }
-
-    boolean cache             = shouldCache();
-    boolean cacheValueBacking = shouldCacheValueBacking();
-
-    if (cache)
-    {
-      generateCachePeek(mv);
-      generateCachePokePrologue(mv);
-    }
-    if (cacheValueBacking)
-    {
-      generateValueBackingPeek(mv);
-    }
-
-    rootNode.isRootNode = true;
-    if (isGeneratedFunctional())
-    {
-      generateFunctionalElement(mv);
-    }
-    else
-    {
-      rootNode.generate(mv, coDomainType);
-    }
-
-    if (cache)
-    {
-      generateCachePokeEpilogue(mv);
-    }
-    if (cacheValueBacking)
-    {
-      generateValueBackingPoke(mv);
-    }
-
-    designateLabel(mv, endLabel);
-    declareEvaluateMethodArguments(mv, startLabel, endLabel);
-
-    if (hasJets)
-    {
-      Compiler.generateReturnFromMethod(mv);
-    }
-    else
-    {
-      mv.visitInsn(Opcodes.ARETURN);
-
-      // --- Taylor series evaluation for order > 1 ---
-      generateTaylorSeriesPath(mv, taylorLabel);
-
-      mv.visitMaxs(0, 0);
-      mv.visitEnd();
-    }
-    return classVisitor;
-  }
-
-  /**
-   * Emits a check at the top of {@code evaluate()} that calls
-   * {@code evaluateStaticSubexpressions(input, order, bits, result)} when
-   * {@code bits > this.staticPrecision}.
-   */
-  protected void generateStaticPrecisionCheck(MethodVisitor mv)
-  {
-    String internalName = className.replace('.', '/');
-    Label  skipLabel    = new Label();
-
-    // if (this.staticPrecision >= bits) goto skipLabel
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(Opcodes.GETFIELD, internalName, "staticPrecision", "I");
-    Compiler.loadBitsParameterOntoStack(mv); // ILOAD 3
-    mv.visitJumpInsn(Opcodes.IF_ICMPGE, skipLabel);
-
-    // this.evaluateStaticSubexpressions(input, order, bits, result)
-    loadThisOntoStack(mv);
-    mv.visitVarInsn(Opcodes.ALOAD, 1); // input
-    mv.visitVarInsn(Opcodes.ILOAD, 2); // order
-    mv.visitVarInsn(Opcodes.ILOAD, 3); // bits
-    mv.visitVarInsn(Opcodes.ALOAD, 4); // result
-    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, internalName, EVALUATE_STATIC_SUBEXPRESSIONS, Compiler.evaluationMethodDescriptor, false);
-    mv.visitInsn(Opcodes.POP); // discard return value
-
-    designateLabel(mv, skipLabel);
-  }
-
-  /**
-   * Emit {@code ++this.evalStamp} at the top of the evaluate method body. This
-   * gives each {@code evaluate()} call a unique stamp value so that
-   * {@link JetNode}s can compare their per-jet {@code jetStamp_X} against it to
-   * avoid redundant series recomputation within the same call.
-   */
-  protected void generateEvalStampIncrement(MethodVisitor mv)
-  {
-    loadThisOntoStack(mv);
-    mv.visitInsn(Opcodes.DUP);
-    mv.visitFieldInsn(Opcodes.GETFIELD, className, "evalStamp", "I");
-    mv.visitInsn(Opcodes.ICONST_1);
-    mv.visitInsn(Opcodes.IADD);
-    mv.visitFieldInsn(Opcodes.PUTFIELD, className, "evalStamp", "I");
-  }
-
-  protected Expression<Object, Object, Function<?, ?>> generateFunctionalElement(MethodVisitor mv)
-  {
-    var functional = newFunctionalExpression();
-    functionalDependsOnIndependentVariable = false;
-    functionalIndependentVariable          = null;
-
-    if (getIndependentVariable() != null)
-    {
-      functionalIndependentVariable = getIndependentVariable().spliceInto(functional).asVariable();
-    }
-
-    functional.generate();
-
-    if (functionalIndependentVariable != null)
-    {
-      functionalDependsOnIndependentVariable = functional.rootNode.dependsOn(functionalIndependentVariable);
-    }
-
-    constructNewObject(mv, functional.className);
-    duplicateTopOfTheStack(mv);
-    invokeDefaultConstructor(mv, functional.className);
-
-    if (functionalDependsOnIndependentVariable)
-    {
-      copyIndependentVariableToFunctionalByValue(mv, functional, functionalIndependentVariable);
-    }
-
-    // Propagate upstream input variables (e.g. 'n' from upstream Expression's
-    // scope)
-    // that the functional references but that are NOT the current expression's
-    // independent variable (already handled above).
-    propagateUpstreamInputVariablesToFunctional(mv, functional);
-
-    if (context != null)
-    {
-      propagateContext(mv, functional);
-    }
-
-    invokeInitializationMethod(mv, functional);
-
-    return functional.compile();
-  }
-
-  /**
-   * Propagates upstream input variables from this expression's fields to a newly
-   * constructed functional instance via copy-by-value (.set()), with null-check
-   * and allocation if the destination field is null.
-   *
-   * This generates code that executes inside the evaluate() method where the
-   * functional instance is on top of the operand stack. For each variable that
-   * the functional references from an ancestor scope (and that is a field on this
-   * class), generate:
-   *
-   * if (funcInst.varName == null) funcInst.varName = new VarType();
-   * funcInst.varName.set(this.varName);
-   *
-   * @param mv         the MethodVisitor for the evaluate method being generated
-   * @param functional the functional expression whose instance needs the
-   *                   variables
-   */
-  protected void propagateUpstreamInputVariablesToFunctional(MethodVisitor mv, Expression<?, ?, ?> functional)
-  {
-    for (var entry : functional.referencedVariables.entrySet())
-    {
-      String                varName = entry.getKey();
-      VariableNode<?, ?, ?> varNode = entry.getValue();
-
-      // Only propagate upstream input variables
-      if (varNode.isIndependent)
-      {
-        continue;
-      }
-
-      // Skip the current expression's independent variable — it lives in the
-      // evaluate parameter slot, not as a field on this class. Already handled
-      // by propagateIndependentVariableToFunctional.
-      if (getIndependentVariable() != null && varName.equals(getIndependentVariable().getName()))
-      {
-        continue;
-      }
-
-      // Skip context variables — propagated separately by propagateContext
-      if (context != null && context.getVariable(varName) != null)
-      {
-        continue;
-      }
-
-      Class<?> varType = varNode.type();
-      if (varType == null || varType.equals(Object.class))
-      {
-        continue;
-      }
-
-      if (trace)
-      {
-        log.debug("propagateUpstreamInputVariablesToFunctional: {} of type {} to {}", varName, varType, functional.className);
-      }
-
-      String fieldDescriptor = varType.descriptorString();
-
-      // ── Stack: ..., funcInst ──
-
-      // Null-check: if funcInst.varName == null, allocate a new instance
-      Label  fieldNotNull    = new Label();
-      duplicateTopOfTheStack(mv); // funcInst, funcInst
-      getField(mv, functional.className, varName, fieldDescriptor); // funcInst, field|null
-      mv.visitJumpInsn(IFNONNULL, fieldNotNull); // funcInst
-
-      // Null branch: funcInst.varName = new VarType()
-      duplicateTopOfTheStack(mv); // funcInst, funcInst
-      generateNewObjectInstruction(mv, varType); // funcInst, funcInst, new
-      duplicateTopOfTheStack(mv); // funcInst, funcInst, new, new
-      invokeDefaultConstructor(mv, varType); // funcInst, funcInst, new
-      putField(mv, functional.className, varName, varType); // funcInst
-
-      designateLabel(mv, fieldNotNull); // funcInst
-
-      // Copy by value: funcInst.varName.set(this.varName)
-      duplicateTopOfTheStack(mv); // funcInst, funcInst
-      getField(mv, functional.className, varName, fieldDescriptor); // funcInst, field (non-null)
-      loadThisAndFieldOntoStack(mv, varName, varType); // funcInst, field, this.var
-      generateVirtualMethodInvocation(mv, varType, "set", varType, varType); // funcInst, retVal
-      pop(mv); // funcInst
-    }
-  }
-
-  protected MethodVisitor generateFunctionInitializer(MethodVisitor mv, FunctionMapping<?, ?, ?> nestedFunction, List<String> assignments)
-  {
-    assert nestedFunction != null : "nestedFunction shan't be null";
-    if (trace)
-    {
-      log.debug(String.format("generateFunctionInitializer for className=%s functionName=%s: nestedFunction=%s, assignments=%s )",
-                              className,
-                              functionName,
-                              nestedFunction.functionName,
-                              assignments));
-    }
-
-    boolean haveLiveInstance         = nestedFunction.instance != null && nestedFunction.isGenerated();
-
-    // Pre-registered branch: a mapping created via
-    // Function.parseCompileAndRegister has no `instance` yet (deferred to
-    // break the chicken-and-egg cycle in mutually-recursive sequences
-    // such as a ↔ S in the fractional Riccati Müntz recurrence,
-    // issue #982). The Expression itself, however, is parsed and its
-    // generated-class name is fixed at registration time, so we can still
-    // emit the v/μ-propagation bytecode using the Expression's className
-    // as a symbolic reference — ASM's GETFIELD/PUTFIELD accept name
-    // strings and the JVM resolves the class lazily when the parent's
-    // initialize() executes (by which point the recursive compile chain
-    // has defined every class in the cluster). Without this branch the
-    // generated initialize() body silently omits the
-    // `if (this.S.v == null) this.S.v = this.v; else this.S.v.set(this.v)`
-    // block for every pre-registered referenced function and crashes
-    // with NPE on the first evaluate() that touches it.
-    // Skip self-references at this codegen layer — the generated
-    // initialize() body emits `this.<self> = new <self>(); inject v/μ`
-    // later via generateSelfReference (Expression.java:2488). Emitting an
-    // injection block here would dereference `this.<self>` before that
-    // allocation runs and crash with NPE on the very first invocation.
-    boolean isSelfReference          = nestedFunction.functionName != null && nestedFunction.functionName.equals(functionName);
-
-    boolean haveRegisteredExpression =
-                                     !haveLiveInstance && !isSelfReference && nestedFunction.expression != null && nestedFunction.expression.className != null;
-
-    if (haveLiveInstance || haveRegisteredExpression)
-    {
-      var    nestedExpression        = nestedFunction.expression;
-      // Force the nested expression to declare its fields if it hasn't yet.
-      // For mappings registered via parseCompileAndRegister, declareVariables
-      // has not run, so declaredVariables is still empty — querying it
-      // would yield an empty filter and no v/μ-injection block would be
-      // emitted. Compiling here populates declaredVariables (line 1305) and
-      // generates the bytecode for the nested class, breaking the
-      // chicken-and-egg with the parent's own compile by going through the
-      // shared ExpressionClassLoader.
-      // For two expressions sharing the same Context, the set of context
-      // variables declared as fields is identical (both iterate
-      // context.variableEntryStream() in declareVariables). When the nested
-      // expression has not yet reached declareVariables — which happens
-      // every time it sits on a mutual-recursion cycle with the parent
-      // (a ↔ S in the fractional Riccati Müntz recurrence, issue #982) —
-      // substitute the parent's own filter, predicting that the sibling
-      // will declare the same context fields. ASM GETFIELD/PUTFIELD
-      // resolve field references by string at first execution, by which
-      // point the entire cycle has finished compile() and declared its
-      // fields.
-      var    variableStream          = context.variableClassStream();
-      var    declaredVariableStream  =
-                                    nestedExpression.variablesDeclared ? variableStream.filter(variable -> nestedExpression.hasDeclaredVariable(variable.getLeft()))
-                                                                       : variableStream.filter(variable -> hasDeclaredVariable(variable.getLeft()));
-      String nestedClassInternalName = haveLiveInstance ? Type.getInternalName(nestedFunction.type()) : nestedFunction.expression.className;
-      initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv),
-                                                     className,
-                                                     nestedClassInternalName,
-                                                     nestedFunction.functionName,
-                                                     declaredVariableStream);
-    }
-    else
-    {
-      registerReferencedFunction(nestedFunction.functionName, nestedFunction);
-    }
-
-    return mv;
-  }
-
-  public boolean hasDeclaredVariable(String name)
-  {
-    return declaredVariables.contains(name);
-  }
-
-  protected ClassVisitor generateGetContextMethod(ClassVisitor classVisitor)
-  {
-    var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, "getContext", Compiler.getMethodDescriptor(Context.class), null, null);
-
-    methodVisitor.visitCode();
-    Compiler.annotateWithOverride(methodVisitor);
-
-    Compiler.getFieldFromThis(methodVisitor, className, "context", Context.class);
-
-    Compiler.generateReturnFromMethod(methodVisitor);
-    return classVisitor;
-  }
-
-  protected ClassVisitor generateGetExpressionMethod(ClassVisitor classVisitor)
-  {
-    var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, "getExpression", Compiler.getMethodDescriptor(Expression.class), null, null);
-
-    methodVisitor.visitCode();
-    Compiler.annotateWithOverride(methodVisitor);
-
-    Compiler.getFieldFromThis(methodVisitor, className, "expression", Expression.class);
-
-    Compiler.generateReturnFromMethod(methodVisitor);
-    return classVisitor;
-  }
-
-  protected ClassVisitor generateGetNameMethod(ClassVisitor classVisitor)
-  {
-    var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, "getName", Compiler.getMethodDescriptor(String.class), null, null);
-
-    methodVisitor.visitCode();
-    Compiler.annotateWithOverride(methodVisitor);
-
-    if (functionName != null)
-    {
-      methodVisitor.visitLdcInsn(functionName);
-    }
-    else
-    {
-      methodVisitor.visitInsn(Opcodes.ACONST_NULL);
-    }
-    Compiler.generateReturnFromMethod(methodVisitor);
-    return classVisitor;
-  }
-
-  protected MethodVisitor generateInitializationCode(MethodVisitor mv)
-  {
-    generateCodeToThrowErrorIfAlreadyInitialized(mv);
-    generateDerivativeCacheFieldInitializer(mv);
-    if (trace)
-    {
-      log.debug("generateInitializationCode for className={} functionName={}: referencedFunctions={}",
-                className,
-                functionName,
-                getReferencedFunctions().keySet());
-    }
-    addChecksForNullVariableReferences(mv);
-    generateReferencedFunctionInstances(mv);
-    propagateUpstreamInputVariablesToNestedFunctions(mv);
-    if (dependencies != null)
-    {
-      dependencies.forEach(dependency -> generateDependencyAssignments(mv, dependency));
-    }
-    try
-    {
-      generationContext = GenerationContext.Initialization;
-      initializers.forEach(initializer -> initializer.accept(mv));
-    }
-    finally
-    {
-      generationContext = GenerationContext.Evaluation;
-    }
-    if (recursive)
-    {
-      generateSelfReference(mv);
-    }
-    generateCodeToSetIsInitializedToTrue(mv);
-    return mv;
-  }
-
-  /**
-   * The name of the generated method that evaluates constant subexpressions.
-   */
-  public static final String EVALUATE_STATIC_SUBEXPRESSIONS = "evaluateStaticSubexpressions";
-
-  /**
-   * Whether this expression has any {@link StaticNode} wrappers after
-   * {@link #replaceConstantNodes()} has run.
-   */
-  protected boolean          hasStaticNodes                 = false;
-
-  /**
-   * Set by {@link #optimize()} once all AST-rewriting passes (jet deduplication,
-   * static-subexpression hoisting, common-subexpression elimination) have run.
-   * Used as an idempotency guard so that repeated optimize/compile/generate calls
-   * never re-mutate the tree.
-   */
-  protected boolean          optimized                      = false;
-
-  /**
-   * Emit the cycle-safe {@code public void invalidateCache(Set)} override (and a
-   * no-arg shim that calls it with a fresh identity set) that:
-   * <ol>
-   * <li>returns immediately if {@code alreadyInvalidated.add(this)} is
-   * {@code false} (already visited — prevents unbounded recursion in the
-   * mutually-recursive Müntz {@code a ↔ S} cluster and any other cycle in the
-   * function graph);</li>
-   * <li>resets {@code this.staticPrecision = -1} when this expression has hoisted
-   * static subexpressions, forcing the next {@code evaluate()} call to re-run
-   * {@code evaluateStaticSubexpressions};</li>
-   * <li>recursively calls {@code invalidateCache(set)} on every inlined nested
-   * {@link Function} field (the {@link #referencedFunctions} entries) so their
-   * hoisted v-dependent subtrees are also flushed.</li>
-   * </ol>
-   * Emitted whenever {@link #hasStaticNodes} is true OR
-   * {@link #referencedFunctions} is non-empty — otherwise the {@link Function}
-   * interface's no-op default is inherited.
-   */
-  protected ClassVisitor generateInvalidateMethod(ClassVisitor classVisitor)
-  {
-    if (!hasStaticNodes && referencedFunctions.isEmpty() && !shouldCache() && !shouldCacheValueBacking())
-    {
-      return classVisitor;
-    }
-    String setInternal = Type.getInternalName(Set.class);
-
-    // public void invalidateCache(Set alreadyInvalidated)
-    var    mv          = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
-                                                  "invalidateCache",
-                                                  "(L" + setInternal + ";)V",
-                                                  "(L" + setInternal + "<L" + functionInternal + "<**>;>;)V",
-                                                  null);
-    mv.visitCode();
-    // if (!alreadyInvalidated.add(this)) return;
-    var notVisited = new Label();
-    mv.visitVarInsn(Opcodes.ALOAD, 1);
-    loadThisOntoStack(mv);
-    mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, setInternal, "add", "(Ljava/lang/Object;)Z", true);
-    mv.visitJumpInsn(Opcodes.IFNE, notVisited);
-    mv.visitInsn(Opcodes.RETURN);
-    mv.visitLabel(notVisited);
-    if (hasStaticNodes)
-    {
-      // this.staticPrecision = -1
-      loadThisOntoStack(mv);
-      mv.visitInsn(Opcodes.ICONST_M1);
-      mv.visitFieldInsn(Opcodes.PUTFIELD, className.replace('.', '/'), "staticPrecision", "I");
-    }
-    if (shouldCache())
-    {
-      // this.cache.clear() — the per-index memoisation table is keyed only on
-      // the domain index k, so any change to other Context variables (e.g. v in
-      // the Müntz a/S recurrence) must drop every entry, otherwise a(k) returns
-      // the previous v's value at the same k.
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(Opcodes.GETFIELD, className, "cache", Type.getDescriptor(TreeMap.class));
-      mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, Type.getInternalName(TreeMap.class), "clear", "()V", false);
-    }
-    if (shouldCacheValueBacking())
-    {
-      // Issue #1005: drop the per-instance value-backing cache. Setting lastV
-      // to null guarantees the next evaluate() call goes to the body, since
-      // every non-null user-supplied input v will fail the IF_ACMPNE check.
-      loadThisOntoStack(mv);
-      mv.visitInsn(Opcodes.ACONST_NULL);
-      mv.visitFieldInsn(Opcodes.PUTFIELD, className, "lastV", Type.getDescriptor(domainType));
-    }
-    // for each inlined nested Function field f: if (this.f != null)
-    // this.f.invalidateCache(alreadyInvalidated);
-    for (var mapping : referencedFunctions.values())
-    {
-      var skip = new Label();
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(Opcodes.GETFIELD, className, mapping.functionName, mapping.functionFieldDescriptor());
-      mv.visitJumpInsn(Opcodes.IFNULL, skip);
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(Opcodes.GETFIELD, className, mapping.functionName, mapping.functionFieldDescriptor());
-      mv.visitVarInsn(Opcodes.ALOAD, 1);
-      mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, functionInternal, "invalidateCache", "(L" + setInternal + ";)V", true);
-      mv.visitLabel(skip);
-    }
-    mv.visitInsn(Opcodes.RETURN);
-    mv.visitMaxs(0, 0);
-    mv.visitEnd();
-
-    // public void invalidateCache() { invalidateCache(Collections.newSetFromMap(new
-    // IdentityHashMap())); }
-    var shim = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, "invalidateCache", "()V", null, null);
-    shim.visitCode();
-    loadThisOntoStack(shim);
-    String idMapInternal       = Type.getInternalName(IdentityHashMap.class);
-    String collectionsInternal = Type.getInternalName(Collections.class);
-    shim.visitTypeInsn(Opcodes.NEW, idMapInternal);
-    shim.visitInsn(Opcodes.DUP);
-    shim.visitMethodInsn(Opcodes.INVOKESPECIAL, idMapInternal, "<init>", "()V", false);
-    shim.visitMethodInsn(Opcodes.INVOKESTATIC, collectionsInternal, "newSetFromMap", "(Ljava/util/Map;)Ljava/util/Set;", false);
-    shim.visitMethodInsn(Opcodes.INVOKEVIRTUAL, className, "invalidateCache", "(L" + setInternal + ";)V", false);
-    shim.visitInsn(Opcodes.RETURN);
-    shim.visitMaxs(0, 0);
-    shim.visitEnd();
-    return classVisitor;
-  }
-
-  /**
-   * Generates the {@code evaluateStaticSubexpressions} method on the generated
-   * class. This method has the same parameter layout as {@code evaluate()}
-   * ({@code Object, int, int, Object}) so that {@code ILOAD 3} resolves to
-   * {@code bits}. It computes every {@link StaticNode} delegate, storing the
-   * result into the corresponding field, and then writes {@code bits} into the
-   * {@code staticPrecision} field.
-   * <p>
-   * Called from {@code evaluate()} whenever {@code bits > staticPrecision}.
-   */
-  protected ClassVisitor generateStaticEvaluationMethod(ClassVisitor classVisitor)
-  {
-    if (!hasStaticNodes)
-    {
-      return classVisitor;
-    }
-    var mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, EVALUATE_STATIC_SUBEXPRESSIONS, Compiler.evaluationMethodDescriptor, null, null);
-    mv.visitCode();
-    try
-    {
-      generationContext = GenerationContext.StaticEvaluation;
-      generateStaticSubexpressionComputations(mv);
-
-      // this.staticPrecision = bits
-      loadThisOntoStack(mv);
-      Compiler.loadBitsParameterOntoStack(mv);
-      mv.visitFieldInsn(Opcodes.PUTFIELD, className.replace('.', '/'), "staticPrecision", "I");
-    }
-    finally
-    {
-      generationContext = GenerationContext.Evaluation;
-    }
-    mv.visitInsn(Opcodes.ACONST_NULL);
-    mv.visitInsn(Opcodes.ARETURN);
-    mv.visitMaxs(0, 0);
-    mv.visitEnd();
-    return classVisitor;
-  }
-
-  /**
-   * Emits bytecode that computes each {@link StaticNode} and stores the result
-   * into its field. Called inside
-   * {@link #generateStaticEvaluationMethod(ClassVisitor)} where
-   * {@link #generationContext} is {@link GenerationContext#StaticEvaluation}.
-   * <p>
-   * Each delegate's {@code generate()} leaves the computed result on the stack.
-   * This method then stores that reference into the StaticNode's own field via
-   * {@code PUTFIELD}.
-   */
-  @SuppressWarnings(
-  { "rawtypes", "unchecked" })
-  protected void generateStaticSubexpressionComputations(MethodVisitor mv)
-  {
-    String internalName = className.replace('.', '/');
-    rootNode.nodeStream().filter(node -> node instanceof StaticNode).map(node -> (StaticNode) node).forEach(staticNode ->
-    {
-      boolean wasRootNode = staticNode.delegate.isRootNode;
-      staticNode.delegate.isRootNode = false;
-      staticNode.generate(mv, staticNode.type());
-      staticNode.delegate.isRootNode = wasRootNode;
-      // stack: [result]
-      // store into this.fieldName: need this under result
-      loadThisOntoStack(mv);
-      mv.visitInsn(Opcodes.SWAP);
-      mv.visitFieldInsn(Opcodes.PUTFIELD, internalName, staticNode.fieldName, staticNode.type().descriptorString());
-    });
-  }
-
-  /**
-   * Walks the expression tree and replaces constant non-leaf, non-root subtree
-   * roots with {@link StaticNode} wrappers, then iterates a static-factor
-   * segregation pass over multiplication/division chains until a fixed point is
-   * reached. The segregation step merges the already-hoisted static factors of
-   * each mul/div chain into one composite {@link StaticNode} so the generated
-   * {@code evaluate()} body no longer recomputes dynamic products of purely
-   * cached values.
-   *
-   * <p>
-   * Iteration sketch (see issue #955):
-   * <ol>
-   * <li>Run {@link Node#replaceConstantNodes()} to wrap every maximal
-   * input-independent subtree in a {@link StaticNode}.</li>
-   * <li>For each mul/div chain in the tree, collect operands while tracking
-   * numerator/denominator role under {@link DivisionNode} alternation, partition
-   * into static and dynamic, and rebuild the chain as
-   * {@code dynamicChain * compositeStatic} (or
-   * {@code dynamicChain / compositeStatic} if the chain has no dynamic factors at
-   * all). The composite static is assembled from the <em>delegates</em> of the
-   * input static nodes; the old StaticNode wrappers' intermediate-variable
-   * registrations are removed so {@link #declareIntermediateVariables} and
-   * {@link #generateCloseMethod} see only the surviving fields.</li>
-   * <li>Re-run {@link Node#replaceConstantNodes()}; the rebuilt composite subtree
-   * is constant and becomes a new {@link StaticNode}.</li>
-   * <li>Repeat until no further collapses are produced (fixed point).</li>
-   * </ol>
-   * {@link StaticNode#replaceConstantNodes()} is idempotent, so the repeated
-   * first step does not double-wrap anything.
-   */
-  protected void replaceConstantNodes()
-  {
-    if (rootNode == null || isGeneratedFunctional() || isNullaryFunction())
-    {
-      return;
-    }
-    // The isConstant() memoization is populated opportunistically during
-    // parsing and simplification; by the time we get here, variables may
-    // have had their upstreamInput / fixedInstanceData flags finalised
-    // after the first memoization. Invalidate so the hoist traversal
-    // sees the post-resolution truth.
-    rootNode.nodeStream().forEach(n -> n.invalidateConstantFlag());
-    rootNode = rootNode.replaceConstantNodes();
-
-    int maxIterations = 8;
-    int iteration     = 0;
-    while (iteration++ < maxIterations)
-    {
-      boolean changed = segregateStaticFactorsInTree(rootNode);
-      if (!changed)
-      {
-        break;
-      }
-      // After segregation the freshly built composite subtrees contain
-      // raw delegates whose constant flags must be recomputed, and the
-      // composite expression itself is constant and should be wrapped.
-      rootNode.nodeStream().forEach(n -> n.invalidateConstantFlag());
-      rootNode = rootNode.replaceConstantNodes();
-    }
-    assert iteration <= maxIterations : "static-hoisting fixed point not reached in " + maxIterations + " iterations";
-
-    hasStaticNodes = rootNode.nodeStream().anyMatch(n -> n instanceof StaticNode);
-    if (trace)
-    {
-      log.debug("replaceConstantNodes: hasStaticNodes={} iterations={} className={} root={}",
-                hasStaticNodes,
-                iteration,
-                className,
-                rootNode.getClass().getSimpleName());
-    }
-  }
-
-  /**
-   * Finds every maximal {@link MultiplicationNode}/{@link DivisionNode} chain in
-   * the current {@link #rootNode} tree and applies
-   * {@link #segregateStaticFactorsAt(Node)} to each. Returns {@code true} if any
-   * rewrite was performed.
-   *
-   * <p>
-   * Traversal uses {@link Node#nodeStream()} (which goes through each node's own
-   * {@link Node#accept} method, not through the risky {@code spliceInto}-based
-   * {@link Node#getBranches}) so that n-ary nodes, jet nodes, integral nodes,
-   * etc. are walked correctly. A {@link CachedNode} is opaque to {@code accept},
-   * so its delegate subtree is never revisited — exactly what we want, because
-   * cached subtrees are already owned by a generated field and must not be
-   * restructured.
-   *
-   * <p>
-   * A chain "top" is a mul/div node whose parent is not itself a mul/div.
-   * Interior mul/div nodes will be absorbed by their ancestor's
-   * {@link #collectMulDivOperands} descent, so processing them independently
-   * would duplicate work.
-   */
-  @SuppressWarnings(
-  { "rawtypes", "unchecked" })
-  private boolean segregateStaticFactorsInTree(Node<?, ?, ?> tree)
-  {
-    if (tree == null)
-    {
-      return false;
-    }
-
-    // Snapshot the chain tops before any rewriting, because
-    // segregateStaticFactorsAt mutates parent/child links.
-    List<Node<?, ?, ?>> chainTops = tree.nodeStream()
-                                        .filter(Expression::isMulOrDiv)
-                                        .filter(n -> !isMulOrDiv(n.parent))
-                                        .collect(Collectors.toCollection(ArrayList::new));
-
-    boolean             changed   = false;
-    for (Node<?, ?, ?> chainTop : chainTops)
-    {
-      // If this chain top was already replaced by an ancestor's rewrite
-      // its parent pointer will have been cleared; skip such stale nodes.
-      // (rootNode has parent==null legitimately — that's the only case we
-      // allow a null parent on a node we still want to process.)
-      if (chainTop != rootNode && chainTop.parent == null)
-      {
-        continue;
-      }
-      changed |= segregateStaticFactorsAt(chainTop);
-    }
-    return changed;
-  }
-
-  /**
-   * @return {@code true} if {@code node} is a {@link MultiplicationNode} or a
-   *         {@link DivisionNode}. Factored out to avoid a series of
-   *         {@code instanceof} tests at call sites.
-   */
-  private static boolean isMulOrDiv(Node<?, ?, ?> node)
-  {
-    return node instanceof MultiplicationNode<?, ?, ?> || node instanceof DivisionNode<?, ?, ?>;
-  }
-
-  /**
-   * Segregates the static and dynamic factors of a single maximal
-   * {@link MultiplicationNode}/{@link DivisionNode} chain rooted at
-   * {@code chainRoot}. See {@link #replaceConstantNodes()} for the role of this
-   * pass in the fixed-point loop.
-   *
-   * <p>
-   * The chain is scanned left-to-right, and the sign of each operand is tracked:
-   * entering the right-hand side of a {@link DivisionNode} flips the sign. After
-   * partitioning operands into static (those wrapped in a {@link StaticNode}) and
-   * dynamic, the chain is rebuilt as
-   * 
-   * <pre>
-   * dynamicNumProduct / dynamicDenProduct * S(staticNumProduct / staticDenProduct)
-   * </pre>
-   * 
-   * where every factor in the composite static is taken as the raw delegate of
-   * the contributing {@link StaticNode}. The stale {@link IntermediateVariable}
-   * registrations of the unwrapped StaticNodes are dropped so their fields are
-   * not declared, initialised, or closed.
-   *
-   * @return {@code true} if the tree was rewritten, {@code false} otherwise
-   */
-  @SuppressWarnings(
-  { "rawtypes", "unchecked" })
-  private boolean segregateStaticFactorsAt(Node chainRoot)
-  {
-    List<FactorRole> factors = new ArrayList<>();
-    collectMulDivOperands(chainRoot, +1, factors);
-
-    List<FactorRole> staticFactors  = new ArrayList<>();
-    List<FactorRole> dynamicFactors = new ArrayList<>();
-    for (FactorRole f : factors)
-    {
-      if (f.node instanceof StaticNode)
-      {
-        staticFactors.add(f);
-      }
-      else
-      {
-        dynamicFactors.add(f);
-      }
-    }
-
-    // Nothing to collapse unless at least two static factors will merge
-    // into a single composite. One static factor in a chain is already
-    // cached in exactly one field — rebuilding it would change nothing.
-    if (staticFactors.size() < 2)
-    {
-      return false;
-    }
-
-    // Special case: chain is entirely static AND rooted at the expression
-    // root. A root node cannot be wrapped as a {@link StaticNode} (the
-    // root generate() contract writes into the caller's result slot, see
-    // {@link Node#replaceConstantNodes}). Rewriting would unwrap the
-    // existing per-factor StaticNodes into a raw tree; the subsequent
-    // replaceConstantNodes() pass would re-wrap each constant subtree
-    // individually (because the root itself stays unwrapped), and this
-    // segregation pass would fire again — an infinite oscillation.
-    // Leaving the root as Mul(S(a), S(b), ...) is already optimal: each
-    // static factor is loaded from its own field with no recomputation.
-    if (dynamicFactors.isEmpty() && chainRoot.isRootNode)
-    {
-      return false;
-    }
-
-    // Build the composite-static subtree from the raw delegates. The
-    // delegates have already been retargeted as children of new operator
-    // nodes, so their old parent pointers will be overwritten by the
-    // Mul/Div constructors called below.
-    Node compositeStaticRaw = buildFactorTree(unwrapStaticDelegates(staticFactors));
-    if (compositeStaticRaw == null)
-    {
-      return false;
-    }
-
-    // Drop the now-orphaned intermediate-variable fields of the
-    // unwrapped StaticNodes. Their computation has been subsumed into
-    // compositeStaticRaw; on the next hoist pass a single fresh field
-    // will be allocated for the whole composite.
-    for (FactorRole s : staticFactors)
-    {
-      StaticNode sn = (StaticNode) s.node;
-      if (sn.fieldName != null)
-      {
-        intermediateVariables.remove(sn.fieldName);
-        declaredIntermediateVariables.remove(sn.fieldName);
-      }
-    }
-
-    Node replacement;
-    if (dynamicFactors.isEmpty())
-    {
-      // Chain is entirely static. This case is normally subsumed by
-      // plain replaceConstantNodes() in the next iteration, but
-      // returning the raw composite lets the caller wrap it afresh.
-      replacement = compositeStaticRaw;
-    }
-    else
-    {
-      Node dynamicTree = buildFactorTree(dynamicFactors);
-      // Multiply by the composite. Wrapping compositeStaticRaw in a
-      // StaticNode here is redundant with the next iteration's
-      // replaceConstantNodes() pass and would also mis-register its
-      // intermediate variable before the full tree's generation starts,
-      // so we leave the composite raw for the fixed-point loop to wrap.
-      replacement = dynamicTree.mul(compositeStaticRaw);
-    }
-
-    // Preserve the rootness flag of the node we are replacing so that
-    // generate() continues to write into the caller's result slot.
-    boolean wasRoot = chainRoot.isRootNode;
-    replacement.isRootNode = wasRoot;
-
-    Node parent = chainRoot.parent;
-    if (parent == null)
-    {
-      // chainRoot was the expression root.
-      rootNode           = replacement;
-      replacement.parent = null;
-    }
-    else
-    {
-      parent.replaceChild(chainRoot, replacement);
-    }
-    return true;
-  }
-
-  /**
-   * Recursively walks a {@link MultiplicationNode}/{@link DivisionNode} chain
-   * collecting every non-Mul/Div operand along with its accumulated
-   * numerator/denominator sign. The right operand of a {@link DivisionNode} flips
-   * the sign; all other descents preserve it. Stops descending at a
-   * {@link StaticNode} so its cached subtree is treated as an atomic factor.
-   */
-  @SuppressWarnings(
-  { "rawtypes", "unchecked" })
-  private void collectMulDivOperands(Node node, int sign, List<FactorRole> out)
-  {
-    if (node instanceof MultiplicationNode mul)
-    {
-      collectMulDivOperands(mul.left, sign, out);
-      collectMulDivOperands(mul.right, sign, out);
-    }
-    else if (node instanceof DivisionNode div)
-    {
-      collectMulDivOperands(div.left, sign, out);
-      collectMulDivOperands(div.right, -sign, out);
-    }
-    else
-    {
-      out.add(new FactorRole(node,
-                             sign));
-    }
-  }
-
-  /**
-   * Returns {@code factors} with every {@link StaticNode} replaced by its
-   * {@link CachedNode#delegate}. The delegate's {@code parent} will be
-   * overwritten when it is wired into the rebuilt chain; we null it here to make
-   * the detachment from its former StaticNode parent explicit.
-   */
-  @SuppressWarnings(
-  { "rawtypes", "unchecked" })
-  private List<FactorRole> unwrapStaticDelegates(List<FactorRole> factors)
-  {
-    List<FactorRole> out = new ArrayList<>(factors.size());
-    for (FactorRole f : factors)
-    {
-      if (f.node instanceof StaticNode sn)
-      {
-        Node delegate = sn.delegate;
-        delegate.parent = null;
-        out.add(new FactorRole(delegate,
-                               f.sign));
-      }
-      else
-      {
-        out.add(f);
-      }
-    }
-    return out;
-  }
-
-  /**
-   * Reassembles an ordered list of signed factors into a single
-   * multiplication/division tree. Numerator factors are multiplied together
-   * left-to-right and denominator factors are composed into a single denominator
-   * that is divided in once at the end. Returns {@code null} when the list is
-   * empty.
-   */
-  @SuppressWarnings(
-  { "rawtypes", "unchecked" })
-  private Node buildFactorTree(List<FactorRole> factors)
-  {
-    Node num = null;
-    Node den = null;
-    for (FactorRole f : factors)
-    {
-      if (f.sign > 0)
-      {
-        num = (num == null) ? f.node : num.mul(f.node);
-      }
-      else
-      {
-        den = (den == null) ? f.node : den.mul(f.node);
-      }
-    }
-    if (num == null && den == null)
-    {
-      return null;
-    }
-    if (num == null)
-    {
-      // All factors are in the denominator: represent as 1 / den.
-      num = one();
-    }
-    return (den == null) ? num : num.div(den);
-  }
-
-  /**
-   * Ordered pair of a factor node and its role in a mul/div chain (+1 =
-   * numerator, -1 = denominator). Used by {@link #collectMulDivOperands}.
-   */
-  private static final class FactorRole
-  {
-    final Node<?, ?, ?> node;
-    final int           sign;
-
-    FactorRole(Node<?, ?, ?> node, int sign)
-    {
-      this.node = node;
-      this.sign = sign;
-    }
-  }
-
-  /**
-   * Propagates the parent's context and upstream input variables (variables from
-   * ancestor expressions) to nested operand functions that reference them.
-   *
-   * For child arg classes whose constructors no longer create their own Context
-   * (see #842), this method assigns this.context to each arg's context field
-   * before any variable propagation occurs.
-   *
-   * IMPORTANT: This method runs inside the initialize() method, which has NO
-   * input parameter (only 'this' in slot 0). Therefore, it must NOT attempt to
-   * propagate the current expression's independent variable, because that
-   * variable is NOT a field on the generated class — it exists only as the
-   * evaluate() method's input parameter (slot 1). The independent variable is
-   * propagated at evaluate-time by NAryOperationNode.propagateInputToOperand and
-   * similar mechanisms.
-   */
-  protected void propagateUpstreamInputVariablesToNestedFunctions(MethodVisitor mv)
-  {
-    // For each referenced function (nested operand functions)
-    for (var funcEntry : getReferencedFunctions().entrySet())
-    {
-      String                   funcFieldName = funcEntry.getKey();
-      FunctionMapping<?, ?, ?> funcMapping   = funcEntry.getValue();
-
-      // Skip if this is a self-reference or not a generated expression
-      if (funcFieldName.equals(functionName) || funcMapping.expression == null)
-      {
-        continue;
-      }
-
-      Expression<?, ?, ?> nestedExpr = funcMapping.expression;
-      if (nestedExpr == null)
-      {
-        continue;
-      }
-
-      String funcTypeDesc    = funcMapping.functionFieldDescriptor();
-      String nestedClassName = funcMapping.expression != null ? funcMapping.expression.className : funcMapping.functionName;
-
-      // Share parent's context with child arg class (#842)
-      if (nestedExpr.upstreamExpression != null)
-      {
-        String contextTypeDesc = Context.class.descriptorString();
-        // Generate: this.<funcFieldName>.context = this.context
-        loadThisOntoStack(mv);
-        mv.visitFieldInsn(GETFIELD, className, funcFieldName, funcTypeDesc);
-        loadThisOntoStack(mv);
-        mv.visitFieldInsn(GETFIELD, className, "context", contextTypeDesc);
-        mv.visitFieldInsn(PUTFIELD, nestedClassName, "context", contextTypeDesc);
-      }
-
-      // Check each variable referenced by the nested expression
-      for (var varEntry : nestedExpr.referencedVariables.entrySet())
-      {
-        String                varName = varEntry.getKey();
-        VariableNode<?, ?, ?> varNode = varEntry.getValue();
-
-        // Skip independent variables of the nested expression
-        if (varNode.isIndependent)
-        {
-          continue;
-        }
-
-        // Skip if already declared as upstream independent variable
-        if (upstreamExpression != null && upstreamExpression.getIndependentVariable() != null
-                      && varName.equals(upstreamExpression.getIndependentVariable().getName()))
-        {
-          continue;
-        }
-
-        // Skip context variables (they are propagated separately)
-        if (context != null && context.getVariable(varName) != null)
-        {
-          continue;
-        }
-
-        // CRITICAL: Skip the current expression's independent variable.
-        // It is NOT a field on this generated class — it only exists as the
-        // evaluate() input parameter. Attempting to GETFIELD it here (inside
-        // initialize(), which has no input parameter) causes VerifyError.
-        // The independent variable is propagated at evaluate-time instead.
-        if (getIndependentVariable() != null && varName.equals(getIndependentVariable().getName()))
-        {
-          continue;
-        }
-
-        // This is an upstream input variable - propagate it
-        Class<?> varType = varNode.type();
-        if (varType != null && !varType.equals(Object.class))
-        {
-          if (trace)
-          {
-            log.debug("propagateUpstreamInputVariables: propagating {} to {} in {}", varName, funcFieldName, className);
-          }
-
-          String varTypeDesc = varType.descriptorString();
-
-          // Generate: this.<funcFieldName>.<varName> = this.<varName>
-          loadThisOntoStack(mv);
-          mv.visitFieldInsn(GETFIELD, className, funcFieldName, funcTypeDesc);
-          loadThisOntoStack(mv);
-          mv.visitFieldInsn(GETFIELD, className, varName, varTypeDesc);
-          mv.visitFieldInsn(PUTFIELD, nestedClassName, varName, varTypeDesc);
-        }
-      }
-    }
-  }
-
-  protected ClassVisitor generateInitializationMethod(ClassVisitor classVisitor)
-  {
-    var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, nameOfInitializerFunction, "()V", null, null);
-    Compiler.annotateWithOverride(methodVisitor);
-
-    try
-    {
-      methodVisitor.visitCode();
-      generateInitializationCode(methodVisitor);
-
-    }
-    finally
-    {
-      Compiler.generateReturnFromVoidMethod(methodVisitor);
-    }
-
-    return classVisitor;
-  }
-
-  private ClassVisitor generateIntegralMethod(ClassVisitor classVisitor)
-  {
-    return generateDelegateMethod(classVisitor, "integral", "int");
-  }
-
-  protected MethodVisitor generateIntermediateVariableInitializers(MethodVisitor methodVisitor)
-  {
-    for (var intermediateVariable : sortedIntermediateVariables())
-    {
-      intermediateVariable.generateInitializer(methodVisitor);
-    }
-    return methodVisitor;
-  }
-
-  protected void generateInvocationOfDefaultNoArgConstructor(MethodVisitor methodVisitor, boolean object)
-  {
-    loadThisOntoStack(methodVisitor);
-    methodVisitor.visitMethodInsn(INVOKESPECIAL, object ? Type.getInternalName(Object.class) : className.replace(".", "/"), "<init>", "()V", false);
-  }
-
-  protected MethodVisitor generateLiteralConstantInitializers(MethodVisitor methodVisitor)
-  {
-    for (var literal : getSortedLiteralConstantNodes())
-    {
-      literal.generateLiteralConstantInitializer(methodVisitor);
-    }
-    return methodVisitor;
-  }
-
-  protected ClassVisitor generatePolynomialMethod(ClassVisitor classVisitor, String operation)
-  {
-
-    assert functionClass.isInterface() : functionClass + " is not an interface";
-
-    assert rootNode != null : "rootNode is null";
-
-    var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, operation, Compiler.getMethodDescriptor(Function.class), null, null);
-    methodVisitor.visitCode();
-    Compiler.annotateWithOverride(methodVisitor);
-
-    methodVisitor.visitVarInsn(ALOAD, 0);
-    methodVisitor.visitMethodInsn(INVOKEVIRTUAL, className, "evaluate", Compiler.getMethodDescriptor(Object.class), false);
-    methodVisitor.visitTypeInsn(CHECKCAST, Type.getInternalName(coDomainType));
-
-    methodVisitor.visitMethodInsn(INVOKEVIRTUAL, Type.getInternalName(coDomainType), operation, Compiler.getMethodDescriptor(coDomainType), false);
-    Compiler.generateReturnFromMethod(methodVisitor);
-    return classVisitor;
-  }
-
-  public void generateReferencedFunctionInstances(MethodVisitor mv)
-  {
-    // Phase 1: allocate-all. For every referenced function f registered on
-    // this expression, emit `if (this.<f> == null) this.<f> = new <f>()` and
-    // propagate this.context onto the freshly allocated instance. After this
-    // loop every direct peer field is non-null and shares this.context with
-    // the parent.
-    getReferencedFunctions().values().forEach(mapping -> constructReferencedFunctionInstanceIfItIsNull(mv, mapping));
-    // Phase 2: wire-all. For every peer g of this expression, copy this.<h>
-    // into this.<g>.<h> for every peer h that g's expression references —
-    // including the back-edge h == functionName (this class's own name),
-    // which is wired by Context.injectFunctionReferences on this instance
-    // before evaluate() ever runs. This is the static, fully compile-time
-    // resolution of the cycle: every operand allocation along every recursive
-    // path inherits the parent's reference identity for every peer it shares
-    // with the parent. No registry lookup, no reflection, no per-evaluate
-    // copies — pure GETFIELD/PUTFIELD.
-    wirePeerReferencesIntoReferencedFunctionInstances(mv);
-  }
-
-  /**
-   * Phase 2 of the allocate-all-then-wire-all initialization pattern (issue #1000
-   * point #3). For every referenced function {@code g} registered on this
-   * expression, walk {@code g.expression.getReferencedFunctions()}; for every
-   * peer {@code h} that {@code g} also references and that this expression has as
-   * a field — including the back-edge case where
-   * {@code h.equals(this.functionName)} — emit
-   *
-   * <pre>
-   *   getfield this.&lt;h&gt;
-   *   putfield this.&lt;g&gt;.&lt;h&gt;
-   * </pre>
-   *
-   * This statically resolves every cyclic peer reference at the codegen layer.
-   * Because the parent's own peer fields (and its self-field) have been populated
-   * by {@link Context#injectFunctionReferences} before {@code initialize()} ever
-   * runs, the values copied into the operand are the registry-canonical
-   * instances. The operand's own {@code initialize()}, when later invoked, finds
-   * every peer non-null and skips the {@code new <peer>()} allocation branch in
-   * {@link #constructReferencedFunctionInstanceIfItIsNull} thanks to the existing
-   * {@code IFNONNULL} guard. Cycle closed by aliasing, not by allocation.
-   */
-  protected void wirePeerReferencesIntoReferencedFunctionInstances(MethodVisitor mv)
-  {
-    var thisRefs = getReferencedFunctions();
-    if (thisRefs == null || thisRefs.isEmpty())
-    {
-      return;
-    }
-    for (var peerEntry : thisRefs.entrySet())
-    {
-      String                   peerName    = peerEntry.getKey();
-      FunctionMapping<?, ?, ?> peerMapping = peerEntry.getValue();
-      if (peerMapping == null || peerMapping.expression == null)
-      {
-        continue;
-      }
-      // Skip self-references: Phase 1 deliberately does not allocate
-      // this.<self> (the class's own name aliases to `this` at runtime, not
-      // to a fresh peer instance), so this.<self> is null and there is
-      // nothing to wire from or onto for the self-edge here.
-      if (functionName != null && functionName.equals(peerName))
-      {
-        continue;
-      }
-      String peerFieldDescriptor = peerMapping.functionFieldDescriptor();
-      String peerInternalName    = peerFieldDescriptor.substring(1, peerFieldDescriptor.length() - 1);
-      var    peerExpression      = peerMapping.expression;
-      var    peerOwnRefs         = peerExpression.getReferencedFunctions();
-      if (peerOwnRefs == null || peerOwnRefs.isEmpty())
-      {
-        // The peer's expression may reference the enclosing class by name even
-        // when its own getReferencedFunctions() is empty — happens when the
-        // back-edge is implicit in the cycle's strongly connected component
-        // and never registered on the operand expression. Best-effort: still
-        // try to lift this.<self> onto peer.<self> if peer's class declares
-        // a field of that name with a Function-assignable type.
-        emitBackEdgeSelfLift(mv, peerName, peerInternalName);
-        continue;
-      }
-      for (var hEntry : peerOwnRefs.entrySet())
-      {
-        String                   hName    = hEntry.getKey();
-        FunctionMapping<?, ?, ?> hMapping = hEntry.getValue();
-        if (hMapping == null)
-        {
-          continue;
-        }
-        // The self-edge h == functionName is handled by emitBackEdgeSelfLift
-        // below (which puts `this`, not this.<self>, into peer.<self>) since
-        // this.<self> is not a field on this class.
-        if (functionName != null && functionName.equals(hName))
-        {
-          continue;
-        }
-        // Only wire fields the parent itself owns — peer h must be a
-        // registered referenced-function on this expression. Skip peers
-        // that exist only on the operand's local scope.
-        if (!thisRefs.containsKey(hName))
-        {
-          continue;
-        }
-        String hFieldDescriptor = hMapping.functionFieldDescriptor();
-        // Stack: empty
-        loadThisOntoStack(mv);
-        mv.visitFieldInsn(GETFIELD, className, peerName, peerFieldDescriptor);
-        // Stack: this.<peer>
-        loadThisOntoStack(mv);
-        mv.visitFieldInsn(GETFIELD, className, hName, hFieldDescriptor);
-        // Stack: this.<peer>, this.<h>
-        mv.visitFieldInsn(PUTFIELD, peerInternalName, hName, hFieldDescriptor);
-        // Stack: empty
-      }
-      emitBackEdgeSelfLift(mv, peerName, peerInternalName);
-    }
-  }
-
-  /**
-   * Emit {@code this.<peer>.<self> = this} when this expression is named and the
-   * peer's generated class declares a field {@code <self>} whose type is
-   * assignable from this class. This is the explicit codegen of the back-edge for
-   * mutual-recursion cycles where the operand expression's own
-   * referenced-function map may not record the enclosing class. Uses reflection
-   * only on the already-loaded peer Class<?>; no registry lookup.
-   */
-  protected void emitBackEdgeSelfLift(MethodVisitor mv, String peerName, String peerInternalName)
-  {
-    if (functionName == null || className == null)
-    {
-      return;
-    }
-    // The self-edge wires the parent's `this` onto peer.<self>. Wiring
-    // self onto self is meaningless (peer == self means there is no peer
-    // instance distinct from `this`).
-    if (functionName.equals(peerName))
-    {
-      return;
-    }
-    // Best-effort: only emit when the peer expression is in fact this
-    // expression's referenced-functions map (true for operand expressions
-    // since registerOperand registered the operand mapping on this). The
-    // emitted bytecode references the field by name; the JVM resolves it on
-    // first execution. If the peer class lacks a field named functionName
-    // the verifier or class loader would fail at link time; we therefore
-    // gate emission on the runtime class shape when known and otherwise
-    // suppress.
-    var peerMapping = getReferencedFunctions().get(peerName);
-    if (peerMapping == null || peerMapping.expression == null)
-    {
-      return;
-    }
-    var     peerExpr              = peerMapping.expression;
-    boolean peerDeclaresSelfField = false;
-    if (peerExpr.declaredVariables != null && peerExpr.declaredVariables.contains(functionName))
-    {
-      peerDeclaresSelfField = true;
-    }
-    if (!peerDeclaresSelfField && peerExpr.getReferencedFunctions() != null && peerExpr.getReferencedFunctions().containsKey(functionName))
-    {
-      peerDeclaresSelfField = true;
-    }
-    if (!peerDeclaresSelfField)
-    {
-      return;
-    }
-    String peerFieldDescriptor = peerMapping.functionFieldDescriptor();
-    String selfFieldDescriptor;
-    var    selfMapping         = (context != null) ? context.getFunctionMapping(functionName) : null;
-    if (selfMapping != null)
-    {
-      selfFieldDescriptor = selfMapping.functionFieldDescriptor();
-    }
-    else
-    {
-      selfFieldDescriptor = "L" + className + ";";
-    }
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(GETFIELD, className, peerName, peerFieldDescriptor);
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(PUTFIELD, peerInternalName, functionName, selfFieldDescriptor);
-  }
-
-  protected MethodVisitor generateSelfReference(MethodVisitor mv)
-  {
-    // Self-reference codegen for recursive functions.
-    //
-    // Emit the same null-guarded pattern used for non-self refs: if the field
-    // already holds a non-null reference (because injection wired it), keep
-    // that reference; otherwise allocate a fresh instance as the fallback.
-    FunctionMapping<?, ?, ?> mapping = getReferencedFunctions().get(functionName);
-    if (mapping == null && context != null)
-    {
-      mapping = context.getFunctionMapping(functionName);
-    }
-    assert mapping != null : "no function mapping for " + functionName + " in " + context.toStringExtended();
-    String fieldDescriptor = mapping.functionFieldDescriptor();
-    var    alreadyAssigned = new Label();
-    loadThisOntoStack(mv).visitFieldInsn(GETFIELD, className, functionName, fieldDescriptor);
-    mv.visitJumpInsn(IFNONNULL, alreadyAssigned);
-    constructNewObject(loadThisOntoStack(mv), functionName);
-    invokeDefaultConstructor(duplicateTopOfTheStack(mv), functionName);
-    putField(mv, className, functionName, fieldDescriptor);
-    Compiler.jumpTo(mv, alreadyAssigned);
-    mv.visitLabel(alreadyAssigned);
-    initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv), className, functionName, functionName, context.variableClassStream());
-    return mv;
-  }
-
-  public MethodVisitor generateSetResultInvocation(MethodVisitor mv, Class<?> inputType)
-  {
-    loadResultParameter(mv);
-    cast(mv, coDomainType);
-    swap(mv);
-    return invokeSetMethod(mv, inputType, coDomainType);
-  }
-
-  /**
    * TODO: need to generate instructions so that the toString() uses String.format
    * to include the value (only if it was part of the independent variable because
    * thats the only its valued is fixed for the duration of the instance of the
@@ -4010,25 +3003,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return classVisitor;
   }
 
-  protected String getStringRepresentation()
-  {
-    String name = (functionName != null) ? (functionName + ":") : "";
-    updateStringRepresentation();
-    String arrow  = getExpression().contains("➔") || getIndependentVariable() == null ? "" : (getIndependentVariable().getName() + "➔");
-    String string = String.format("%s%s%s", name, arrow, getExpression());
-
-    if (Expression.trace)
-    {
-      log.debug("generateToStringMethod(): functionName='{}' independentVariable='{}' name='{}' arrow='{}' string='{}'",
-                functionName,
-                getIndependentVariable(),
-                name,
-                arrow,
-                string);
-    }
-    return string;
-  }
-
   private ClassVisitor generateTypeMethod(ClassVisitor classVisitor, String which, Type type, String methodSignature)
   {
     var mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, which, Compiler.getMethodDescriptor(Class.class), methodSignature, null);
@@ -4044,6 +3018,97 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
 
     return Compiler.generateTypesetMethod(classVisitor, typeset());
+  }
+
+  /**
+   * Issue #1005: value-backing cache peek. At entry to {@code evaluate(v, ...)}
+   * compare {@code this.lastV} to the {@code v} argument by
+   * {@link Object#equals(Object) value equality} — reference identity is
+   * insufficient because callers (e.g. via {@code borrowVariable()}) routinely
+   * recycle the same wrapper object across distinct logical inputs. If
+   * {@code this.lastV != null && this.lastV.equals(v) && this.cachedResult != null}
+   * copy {@code cachedResult} into the caller's {@code result} buffer and return
+   * immediately. Otherwise lazily allocate {@code this.lastV} (first call only),
+   * value-copy {@code v} into it, and fall through to the body.
+   */
+  protected void generateValueBackingPeek(MethodVisitor mv)
+  {
+    Label missEmpty = new Label(); // skip cached-result return, stack empty
+    Label missDup   = new Label(); // landed via IFNULL on cachedResult, stack has dup
+    Label record    = new Label(); // store v into this.lastV (value copy)
+    // if (this.lastV == null) goto missEmpty
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(Opcodes.GETFIELD, className, "lastV", Type.getDescriptor(domainType));
+    mv.visitJumpInsn(Opcodes.IFNULL, missEmpty);
+    // if (!this.lastV.equals(v)) goto missEmpty
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(Opcodes.GETFIELD, className, "lastV", Type.getDescriptor(domainType));
+    mv.visitVarInsn(Opcodes.ALOAD, 1);
+    Compiler.generateVirtualMethodInvocation(mv, Object.class, "equals", boolean.class, Object.class);
+    mv.visitJumpInsn(Opcodes.IFEQ, missEmpty);
+    // cached = this.cachedResult; if (cached==null) goto missDup (stack has cached)
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(Opcodes.GETFIELD, className, "cachedResult", Type.getDescriptor(coDomainType));
+    Compiler.duplicateTopOfTheStack(mv);
+    mv.visitJumpInsn(Opcodes.IFNULL, missDup);
+    // result.set(cached); return result
+    mv.visitVarInsn(Opcodes.ALOAD, 4);
+    mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
+    mv.visitInsn(Opcodes.SWAP); // stack: result, cached
+    Compiler.generateVirtualMethodInvocation(mv, coDomainType, "set", coDomainType, coDomainType);
+    mv.visitInsn(Opcodes.ARETURN);
+    // miss with dup'd null: pop it and join missEmpty
+    Compiler.designateLabel(mv, missDup);
+    Compiler.pop(mv);
+    Compiler.designateLabel(mv, missEmpty);
+    // Lazily allocate this.lastV on first miss so we can copy v's value into it.
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(Opcodes.GETFIELD, className, "lastV", Type.getDescriptor(domainType));
+    mv.visitJumpInsn(Opcodes.IFNONNULL, record);
+    loadThisOntoStack(mv);
+    mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(domainType));
+    Compiler.duplicateTopOfTheStack(mv);
+    mv.visitMethodInsn(Opcodes.INVOKESPECIAL, Type.getInternalName(domainType), "<init>", "()V", false);
+    mv.visitFieldInsn(Opcodes.PUTFIELD, className, "lastV", Type.getDescriptor(domainType));
+    Compiler.designateLabel(mv, record);
+    // this.lastV.set(v) — value copy, not reference store
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(Opcodes.GETFIELD, className, "lastV", Type.getDescriptor(domainType));
+    mv.visitVarInsn(Opcodes.ALOAD, 1);
+    mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(domainType));
+    Compiler.generateVirtualMethodInvocation(mv, domainType, "set", domainType, domainType);
+    Compiler.pop(mv);
+  }
+
+  /**
+   * Issue #1005: value-backing cache poke. After the body has written its result
+   * into local 4, copy that result into {@code this.cachedResult} so the next
+   * call with the same v identity sees the stored value.
+   */
+  protected void generateValueBackingPoke(MethodVisitor mv)
+  {
+    // stack on entry from rootNode: <result>; pop it (already in local 4)
+    mv.visitInsn(Opcodes.POP);
+    // Lazily allocate this.cachedResult if null
+    Label haveSlot = new Label();
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(Opcodes.GETFIELD, className, "cachedResult", Type.getDescriptor(coDomainType));
+    mv.visitJumpInsn(Opcodes.IFNONNULL, haveSlot);
+    loadThisOntoStack(mv);
+    mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(coDomainType));
+    mv.visitInsn(Opcodes.DUP);
+    mv.visitMethodInsn(Opcodes.INVOKESPECIAL, Type.getInternalName(coDomainType), "<init>", "()V", false);
+    mv.visitFieldInsn(Opcodes.PUTFIELD, className, "cachedResult", Type.getDescriptor(coDomainType));
+    Compiler.designateLabel(mv, haveSlot);
+    // this.cachedResult.set(result)
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(Opcodes.GETFIELD, className, "cachedResult", Type.getDescriptor(coDomainType));
+    mv.visitVarInsn(Opcodes.ALOAD, 4);
+    mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
+    Compiler.generateVirtualMethodInvocation(mv, coDomainType, "set", coDomainType, coDomainType);
+    mv.visitInsn(Opcodes.POP);
+    // Push result back so the trailing ARETURN in evaluate's tail succeeds
+    mv.visitVarInsn(Opcodes.ALOAD, 4);
   }
 
   @Override
@@ -4068,6 +3133,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return counter;
   }
 
+  public synchronized Context getContext()
+  {
+    if (context == null)
+    {
+      context = new Context();
+    }
+    return context;
+  }
+
   protected String getDomainTypeMethodSignature()
   {
     return Compiler.getTypeMethodSignature(domainType);
@@ -4078,9 +3152,36 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return Compiler.getMethodDescriptor(coDomainType, domainType, int.class, int.class, coDomainType);
   }
 
+  public String getExpression()
+  {
+    return expression;
+  }
+
   protected String getFunctionClassTypeSignature(Class<? extends Function<?, ?>> functionClass)
   {
     return Compiler.getFunctionClassTypeSignature(functionClass, domainType, coDomainType, implementedInterfaces);
+  }
+
+  public VariableNode<D, C, F> getIndependentVariable()
+  {
+    return independentVariable;
+  }
+
+  public VariableNode<?, ?, ?> getIndependentVariableNamed(String name)
+  {
+    if (getIndependentVariable() != null && getIndependentVariable().getName().equals(name))
+    {
+      return getIndependentVariable();
+    }
+    if (upstreamExpression != null)
+    {
+      var immediatelyUpstreamIndependentVariable = upstreamExpression.getIndependentVariable();
+      if (immediatelyUpstreamIndependentVariable != null)
+      {
+        return immediatelyUpstreamIndependentVariable;
+      }
+    }
+    return null;
   }
 
   protected String getInputName()
@@ -4113,9 +3214,24 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return prefix + String.format("%04d", counter.getAndIncrement());
   }
 
+  public VariableNode<D, C, F> getPlaceholderVariable()
+  {
+    return placeholderVariable;
+  }
+
   public VariableNode<D, C, F> getReference(String reference)
   {
     return referencedVariables.get(reference);
+  }
+
+  public Map<String, FunctionMapping<?, ?, ?>> getReferencedFunctions()
+  {
+    return Collections.unmodifiableMap(referencedFunctions);
+  }
+
+  public Map<String, VariableNode<D, C, F>> getReferencedVariables()
+  {
+    return Collections.unmodifiableMap(referencedVariables);
   }
 
   protected ArrayList<LiteralConstantNode<D, C, F>> getSortedLiteralConstantNodes()
@@ -4129,10 +3245,62 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return literalConstantNodes;
   }
 
+  protected String getStringRepresentation()
+  {
+    String name = (functionName != null) ? (functionName + ":") : "";
+    updateStringRepresentation();
+    String arrow  = getExpression().contains("➔") || getIndependentVariable() == null ? "" : (getIndependentVariable().getName() + "➔");
+    String string = String.format("%s%s%s", name, arrow, getExpression());
+
+    if (Expression.trace)
+    {
+      log.debug("generateToStringMethod(): functionName='{}' independentVariable='{}' name='{}' arrow='{}' string='{}'",
+                functionName,
+                getIndependentVariable(),
+                name,
+                arrow,
+                string);
+    }
+    return string;
+  }
+
+  public Expression<?, ?, ?> getSuperExpression()
+  {
+    return upstreamExpression;
+  }
+
+  public String getTypeString()
+  {
+    return String.format("%s=%s->%s", functionClass.getSimpleName(), domainType.getSimpleName(), coDomainType.getSimpleName());
+  }
+
+  public LinkedList<Expression<?, ?, ?>> getUpstreamExpressions()
+  {
+    var                 superExpressions = new LinkedList<Expression<?, ?, ?>>();
+    Expression<?, ?, ?> e                = this;
+    do
+    {
+      superExpressions.add(e);
+    }
+    while ((e = e.upstreamExpression) != null);
+    return superExpressions;
+  }
+
   @SuppressWarnings("unchecked")
   public <Q extends Named> Q getVariable(VariableReference<D, C, F> reference)
   {
     return context == null ? null : (Q) context.variables.get(reference.name);
+  }
+
+  public boolean hasDeclaredVariable(String name)
+  {
+    return declaredVariables.contains(name);
+  }
+
+  @Override
+  public int hashCode()
+  {
+    return System.identityHashCode(this);
   }
 
   public boolean hasIntermediateVariable(String string)
@@ -4193,6 +3361,33 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
+  /**
+   * Inlines all references to the named contextual function, replacing each
+   * {@link FunctionNode} bearing that name with the defining expression's AST
+   * (arguments bound to formal parameters via {@link Node#substitute}).
+   * 
+   * @param functionName the name of the function to inline
+   * @return this expression, with all occurrences of the named function inlined
+   * @throws IllegalArgumentException if no inlineable function with that name
+   *                                  exists in the context
+   */
+  @SuppressWarnings("unchecked")
+  public Expression<D, C, F> inlineFunction(String functionName)
+  {
+    if (context == null)
+    {
+      throw new IllegalArgumentException("expression has no context");
+    }
+
+    Expression<D, C, F> definingExpression = context.getFunctionExpression(functionName);
+
+    Node<D, C, F>       body               = definingExpression.rootNode.spliceInto(this);
+
+    rootNode = rootNode.substitute(functionName, body);
+    updateStringRepresentation();
+    return this;
+  }
+
   public TextTree<Node<D, C, F>> inspect(F f)
   {
     return new TextTree<>(syntaxTree(),
@@ -4209,24 +3404,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     populateSourceExpressionBackPointer(instance);
 
     return instance;
-  }
-
-  /**
-   * Set the public {@code expression} field declared by
-   * {@link #declareSourceExpressionField} on a freshly constructed instance.
-   * Reflective; tolerates absence of the field on hand-written subclasses.
-   */
-  private void populateSourceExpressionBackPointer(F freshInstance)
-  {
-    try
-    {
-      java.lang.reflect.Field field = freshInstance.getClass().getField("expression");
-      field.set(freshInstance, this);
-    }
-    catch (Exception wrapped)
-    {
-      Utensils.wrapOrThrow(wrapped);
-    }
   }
 
   /**
@@ -4374,36 +3551,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return Function.class.isAssignableFrom(coDomainType);
   }
 
-  /**
-   * 
-   * @return true if this is reified meaning that the result is not a generic
-   *         function without identity but rather a {@link RealPolynomial} or
-   *         {@link RealFunction} that carries its own internal placeholder-like
-   *         variable by virtue of its flint/swig/arb evaluation routines rather
-   *         than generated as a reified class
-   */
-  public boolean isReifiedFunctional()
-  {
-    return isFunctional() && !isGeneratedFunctional();
-  }
-
   public boolean isGeneratedFunctional()
   {
     return coDomainType.isInterface() || Modifier.isAbstract(coDomainType.getModifiers());
-  }
-
-  /**
-   * Returns the current code point at the parser's position. For BMP characters
-   * this is identical to {@code character}; for supplementary characters it reads
-   * the full surrogate pair.
-   */
-  public int currentCodePoint()
-  {
-    if (position < 0 || position >= getExpression().length())
-    {
-      return Character.MIN_VALUE;
-    }
-    return getExpression().codePointAt(position);
   }
 
   /**
@@ -4417,120 +3567,33 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return isIdentifyingCharacter(cp, false) || isSubscript(character) || isSuperscriptLetter(cp);
   }
 
-  /**
-   * Advances the parser position by one Unicode code point. For supplementary
-   * characters (surrogate pairs), advances by two {@code char} positions.
-   */
-  protected char nextCharacter()
-  {
-    ++position;
-    if (position < getExpression().length())
-    {
-      int cp = getExpression().codePointAt(position);
-      // For supplementary characters, 'character' holds the high surrogate.
-      // All comparisons in the tokenizer that matter for supplementary chars
-      // go through currentCodePoint() / isIdentifierCharacter() instead.
-      character = getExpression().charAt(position);
-    }
-    else
-    {
-      character = Character.MIN_VALUE;
-    }
-    return character;
-  }
-
-  /**
-   * Skips forward by the char-count of the current code point. Used after
-   * identifying a supplementary character to advance past both surrogates.
-   */
-  protected void advancePastCurrentCodePoint()
-  {
-    int cp        = currentCodePoint();
-    int charCount = Character.charCount(cp);
-    // Advance (charCount - 1) extra positions since nextCharacter() already
-    // moved forward by 1.
-    for (int i = 1; i < charCount; i++)
-    {
-      ++position;
-    }
-    if (position < getExpression().length())
-    {
-      character = getExpression().charAt(position);
-    }
-    else
-    {
-      character = Character.MIN_VALUE;
-    }
-  }
-
-  /**
-   * Parses an identifier name starting from {@code startPos}. Uses code-point
-   * iteration to correctly handle supplementary Unicode characters.
-   */
-  public String parseName()
-  {
-    assert position >= 0 : "position=" + position + " should not be negative for " + toStringExtended();
-    int     startPos              = position;
-    boolean entirelySubscripted   = true;
-    boolean entirelySuperscripted = true;
-    while (position < getExpression().length())
-    {
-      int     cp       = getExpression().codePointAt(position);
-      boolean isLetter = isIdentifyingCharacter(cp, true);
-
-      if (isLetter || (entirelySubscripted && !isLetter && isSubscript(character)) || (entirelySuperscripted && !isLetter && isSuperscriptLetter(cp)))
-      {
-        // Advance past the full code point (1 char for BMP, 2 for supplementary)
-        int charCount = Character.charCount(cp);
-        position += charCount;
-        if (position < getExpression().length())
-        {
-          character = getExpression().charAt(position);
-        }
-        else
-        {
-          character = Character.MIN_VALUE;
-        }
-        if (isLetter)
-        {
-          entirelySubscripted = false;
-        }
-      }
-      else
-      {
-        break;
-      }
-    }
-    var substring = getExpression().substring(startPos, position).trim();
-    return Parser.subscriptAndSuperscriptsToRegular(substring);
-  }
-
-  /**
-   * Checks that no numeric digits appear in the input variable name. Uses
-   * code-point iteration for supplementary character safety.
-   */
-  protected boolean assureNoNumbersInTheInputVariable(String inputVariableName, boolean isInputVariableSpecified)
-  {
-    for (int i = 0; i < inputVariableName.length();)
-    {
-      int cp = inputVariableName.codePointAt(i);
-      if (!Parser.isIdentifyingCharacter(cp, false))
-      {
-        isInputVariableSpecified = false;
-      }
-      i += Character.charCount(cp);
-    }
-    return isInputVariableSpecified;
-  }
-
   public boolean isNullaryFunction()
   {
     return domainType.equals(Object.class);
   }
 
-  public HashSet<String>                      declaredVariables            = new HashSet<>();
+  /**
+   * 
+   * @return true if this is reified meaning that the result is not a generic
+   *         function without identity but rather a {@link RealPolynomial} or
+   *         {@link RealFunction} that carries its own internal placeholder-like
+   *         variable by virtue of its flint/swig/arb evaluation routines rather
+   *         than generated as a reified class
+   */
+  public boolean isReifiedFunctional()
+  {
+    return isFunctional() && !isGeneratedFunctional();
+  }
 
-  public final HashMap<String, AtomicInteger> intermediateVariableCounters = new HashMap<>();
+  public boolean isVariableReferenced(String variableName)
+  {
+    return referencedVariables.containsKey(variableName);
+  }
+
+  public boolean isVariableReferenced(VariableNode<D, C, F> variableNode)
+  {
+    return referencedVariables.containsKey(variableNode.reference.name);
+  }
 
   protected void linkSharedVariableToReferencedFunction(MethodVisitor mv,
                                                         FunctionMapping<Object, Object, Function<?, ?>> functionMapping,
@@ -4597,6 +3660,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return methodVisitor;
   }
 
+  protected void loadInputParameterChecked(MethodVisitor mv)
+  {
+    loadInputParameter(mv);
+    mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(domainType));
+  }
+
   public MethodVisitor loadThisAndFieldOntoStack(MethodVisitor mv, String name, Class<?> referenceType)
   {
     return loadFieldOntoStack(loadThisOntoStack(mv), name, referenceType);
@@ -4605,6 +3674,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public MethodVisitor loadThisAndFieldOntoStack(MethodVisitor mv, String name, String referenceType)
   {
     return loadFieldOntoStack(loadThisOntoStack(mv), name, referenceType);
+  }
+
+  public void logVariables()
+  {
+    accept(containingExpression -> log.debug("#{}: logVariables: independentVariable={} superExpression={}",
+                                             System.identityHashCode(containingExpression),
+                                             containingExpression.getIndependentVariable(),
+                                             containingExpression.upstreamExpression));
+
   }
 
   protected Node<D, C, F> multiplyAndDivide(Node<D, C, F> node)
@@ -4630,26 +3708,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
-  protected boolean nextCharacterRepresentsSubtraction()
-  {
-    return nextCharacterIs('-', '₋', '−');
-  }
-
-  protected boolean nextCharacterRepresentsAddition()
-  {
-    return nextCharacterIs('+', '₊');
-  }
-
-  protected boolean nextCharacterRepresentsDivision()
-  {
-    return !characterAfterNextIs('∂') && nextCharacterIs('⁄', '/', '÷');
-  }
-
-  protected boolean nextCharacterRepresentsMultiplication()
-  {
-    return nextCharacterIs('*', '×', 'ₓ', '⋅', '·');
-  }
-
   protected boolean needsCloseMethod()
   {
     return !literalConstants.isEmpty() | !intermediateVariables.isEmpty();
@@ -4669,6 +3727,78 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return contextHasVariables || hasRegisteredInitializers || hasDependencies || recursive || hasReferencedFunctions || shouldCache();
   }
 
+  public LiteralConstantNode<D, C, F> negativeOne()
+  {
+    return newConstant(-1);
+  }
+
+  /**
+   * Returns the nested type string of this expression using the notation
+   * {@code f:var=A➔B} at each level, where when B is itself a generated
+   * functional interface it is expanded inline as {@code (B=g:var=A➔B)}, giving
+   * the full nested form:
+   *
+   * <pre>
+   *   f:n=Integer➔(RealFunctional=g:q=Real➔(RealFunction=h:t=Real➔Real))
+   * </pre>
+   *
+   * For each adjacent pair of expressions in the upstream chain, asserts that the
+   * codomain of the upstream expression is assignable from the domain of the
+   * downstream expression, i.e. that the types compose correctly.
+   *
+   * @return the full nested type string
+   */
+  public String nestedTypeString()
+  {
+    LinkedList<Expression<?, ?, ?>> chain  = new LinkedList<>();
+    Expression<?, ?, ?>             cursor = this;
+    while (cursor != null)
+    {
+      chain.addFirst(cursor);
+      cursor = cursor.upstreamExpression;
+    }
+
+    for (int i = 0; i < chain.size() - 1; i++)
+    {
+      var upstream   = chain.get(i);
+      var downstream = chain.get(i + 1);
+      assert upstream.coDomainType
+                    == downstream.domainType : format("type mismatch at nesting level %d: upstream codomain %s is not assignable from downstream domain %s",
+                                                      i,
+                                                      upstream.coDomainType.getSimpleName(),
+                                                      downstream.domainType.getSimpleName());
+    }
+
+    StringBuilder sb         = new StringBuilder();
+    int           openParens = 0;
+
+    for (var expr : chain)
+    {
+      String domain = expr.domainType.getSimpleName();
+      String var    = expr.getIndependentVariable() != null ? expr.getIndependentVariable().getName() : "?";
+      String f      = expr.functionClass.getSimpleName();
+
+      sb.append(format("%s:%s=%s➔", f, var, domain));
+
+      if (expr.isGeneratedFunctional())
+      {
+        sb.append('(').append(expr.coDomainType.getSimpleName()).append('=');
+        openParens++;
+      }
+      else
+      {
+        sb.append(expr.coDomainType.getSimpleName());
+      }
+    }
+
+    for (int i = 0; i < openParens; i++)
+    {
+      sb.append(')');
+    }
+
+    return sb.toString();
+  }
+
   @SuppressWarnings("unchecked")
   public <N extends NamedField<N>> N newCoDomainInstance()
   {
@@ -4683,6 +3813,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
+  public LiteralConstantNode<D, C, F> newConstant(int i)
+  {
+    return new LiteralConstantNode<>(this,
+                                     java.lang.Integer.toString(i));
+  }
+
   @SuppressWarnings("unchecked")
   public <N extends Named> N newDomainInstance()
   {
@@ -4695,6 +3831,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       Utensils.wrapOrThrow(e);
       return null;
     }
+  }
+
+  public Node<D, C, F> newFractionLiteralConstant(Fraction value)
+  {
+    LiteralConstantNode<D, C, F> existing = findExistingLiteralConstant(value.toString());
+    if (existing != null)
+    {
+      return existing;
+    }
+    return new LiteralConstantNode<D, C, F>(this,
+                                            value);
   }
 
   protected Expression<Object, Object, Function<?, ?>> newFunctionalExpression()
@@ -4798,49 +3945,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return functionalExpression;
   }
 
-  static Class<?> resolveChildDomain(Class<?> parentCoDomainType)
-  {
-    if (RealFunction.class.equals(parentCoDomainType) || RealFunctional.class.equals(parentCoDomainType)
-                  || RealToComplexFunction.class.equals(parentCoDomainType))
-    {
-      return Real.class;
-    }
-    if (ComplexFunction.class.equals(parentCoDomainType) || ComplexFunctional.class.equals(parentCoDomainType))
-    {
-      return Complex.class;
-    }
-    if (RealSequence.class.equals(parentCoDomainType) || ComplexSequence.class.equals(parentCoDomainType))
-    {
-      return Integer.class;
-    }
-    throw new UnsupportedOperationException("cannot resolve child domain for " + parentCoDomainType);
-  }
-
-  static Class<?> resolveChildCoDomain(Class<?> parentCoDomainType)
-  {
-    if (RealFunction.class.equals(parentCoDomainType) || RealSequence.class.equals(parentCoDomainType))
-    {
-      return Real.class;
-    }
-    if (RealFunctional.class.equals(parentCoDomainType))
-    {
-      return RealFunction.class;
-    }
-    if (ComplexFunction.class.equals(parentCoDomainType) || ComplexSequence.class.equals(parentCoDomainType))
-    {
-      return Complex.class;
-    }
-    if (ComplexFunctional.class.equals(parentCoDomainType))
-    {
-      return ComplexFunction.class;
-    }
-    if (RealToComplexFunction.class.equals(parentCoDomainType))
-    {
-      return Complex.class;
-    }
-    throw new UnsupportedOperationException("cannot resolve child codomain for " + parentCoDomainType);
-  }
-
   private F newInstance()
   {
     if (compiledClass == null)
@@ -4885,10 +3989,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return variable;
   }
 
-  public LiteralConstantNode<D, C, F> newConstant(int i)
+  public Node<D, C, F> newLiteralConstant(Integer numerator)
   {
-    return new LiteralConstantNode<>(this,
-                                     java.lang.Integer.toString(i));
+    LiteralConstantNode<D, C, F> existing = findExistingLiteralConstant(numerator.toString());
+    if (existing != null)
+    {
+      return existing;
+    }
+    return new LiteralConstantNode<D, C, F>(this,
+                                            numerator);
   }
 
   public LiteralConstantNode<D, C, F> newLiteralConstant(String i)
@@ -4897,11 +4006,54 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                      i);
   }
 
+  protected VariableNode<D, C, F> newVariable(int startPos, VariableReference<D, C, F> reference)
+  {
+    return new VariableNode<D, C, F>(this,
+                                     reference,
+                                     !deferVariableResolution);
+  }
+
+  public VariableNode<D, C, F> newVariableNode(String inputVariableName)
+  {
+    return new VariableNode<>(this,
+                              newVariableReference(inputVariableName),
+                              !deferVariableResolution);
+  }
+
   public VariableNode<D, C, F> newVariableNode(VariableReference<D, C, F> reference)
   {
     return new VariableNode<D, C, F>(this,
                                      reference,
                                      !deferVariableResolution);
+  }
+
+  public VariableReference<D, C, F> newVariableReference(String inputVariableName)
+  {
+    return new VariableReference<>(inputVariableName,
+                                   null,
+                                   coDomainType);
+  }
+
+  /**
+   * Advances the parser position by one Unicode code point. For supplementary
+   * characters (surrogate pairs), advances by two {@code char} positions.
+   */
+  protected char nextCharacter()
+  {
+    ++position;
+    if (position < getExpression().length())
+    {
+      int cp = getExpression().codePointAt(position);
+      // For supplementary characters, 'character' holds the high surrogate.
+      // All comparisons in the tokenizer that matter for supplementary chars
+      // go through currentCodePoint() / isIdentifierCharacter() instead.
+      character = getExpression().charAt(position);
+    }
+    else
+    {
+      character = Character.MIN_VALUE;
+    }
+    return character;
   }
 
   public boolean nextCharacterIs(Character... expectedCharacters)
@@ -4918,6 +4070,31 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
 
     return false;
+  }
+
+  protected boolean nextCharacterRepresentsAddition()
+  {
+    return nextCharacterIs('+', '₊');
+  }
+
+  protected boolean nextCharacterRepresentsDivision()
+  {
+    return !characterAfterNextIs('∂') && nextCharacterIs('⁄', '/', '÷');
+  }
+
+  protected boolean nextCharacterRepresentsMultiplication()
+  {
+    return nextCharacterIs('*', '×', 'ₓ', '⋅', '·');
+  }
+
+  protected boolean nextCharacterRepresentsSubtraction()
+  {
+    return nextCharacterIs('-', '₋', '−');
+  }
+
+  public LiteralConstantNode<D, C, F> one()
+  {
+    return newConstant(1);
   }
 
   /**
@@ -4950,108 +4127,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return this;
   }
 
-  /**
-   * Groups all AST nodes into {@link CongruenceClass}es via
-   * {@link Node#isEquivalentTo(Node)}, identifies redundant (multi-member)
-   * classes of non-leaf, input-dependent subexpressions, and wraps them in
-   * {@link SharedNode}s — canonical (first occurrence) computes and stores,
-   * references (subsequent occurrences) just load.
-   */
-  @SuppressWarnings("unchecked")
-  private void eliminateCommonSubexpressions()
+  private void optimizeAndGenerate()
   {
-    // Phase 1: Collect all nodes into CongruenceClasses
-    List<CongruenceClass<D, C, F>> classes = new ArrayList<>();
-    rootNode.accept(node ->
-    {
-      for (CongruenceClass<D, C, F> c : classes)
-      {
-        if (c.canonical().isEquivalentTo(node))
-        {
-          c.add(node);
-          return;
-        }
-      }
-      CongruenceClass<D, C, F> fresh = new CongruenceClass<>(node.toString());
-      fresh.add(node);
-      classes.add(fresh);
-    });
-
-    // Phase 2: Filter to redundant, non-leaf, input-dependent classes
-    Node<D, C, F>                  independentVariable = isNullaryFunction() ? null : getIndependentVariable();
-    List<CongruenceClass<D, C, F>> redundant           = classes.stream()
-                                                                .filter(CongruenceClass::isRedundant)
-                                                                .filter(c -> !c.canonical().isLeaf())
-                                                                .filter(c -> independentVariable != null
-                                                                              && c.canonical().dependsOn((VariableNode<D, C, F>) independentVariable))
-                                                                .sorted(Comparator.comparingInt(c -> c.canonical().depth()))
-                                                                .toList();
-
-    if (redundant.isEmpty())
-    {
-      return;
-    }
-
-    // Phase 3: Build identity map from node instance -> SharedNode replacement
-    IdentityHashMap<Node<D, C, F>, SharedNode<D, C, F>> replacements = new IdentityHashMap<>();
-    for (CongruenceClass<D, C, F> cc : redundant)
-    {
-      String fieldName = newIntermediateVariable("cse", cc.type());
-      // First member is canonical: compute + store
-      replacements.put(cc.canonical(),
-                       new SharedNode<>(cc.canonical(),
-                                        fieldName,
-                                        true));
-      // Remaining members are references: just load
-      for (int i = 1; i < cc.size(); i++)
-      {
-        replacements.put(cc.get(i),
-                         new SharedNode<>(cc.get(i),
-                                          fieldName,
-                                          false));
-      }
-    }
-
-    // Phase 4: Walk the tree and replace children by identity
-    rootNode = replaceByIdentity(rootNode, replacements);
-  }
-
-  /**
-   * Recursively walks the AST and replaces any node whose identity appears in the
-   * replacement map. Container nodes have their children replaced first
-   * (bottom-up), then the node itself is checked.
-   * 
-   * FIXME: remove this instanceif idiocy
-   */
-  @SuppressWarnings("unchecked")
-  private Node<D, C, F> replaceByIdentity(Node<D, C, F> node, IdentityHashMap<Node<D, C, F>, SharedNode<D, C, F>> replacements)
-  {
-    // Recurse into children first (bottom-up)
-    if (node instanceof BinaryOperationNode<D, C, F> binOp)
-    {
-      binOp.left  = replaceByIdentity(binOp.left, replacements);
-      binOp.right = replaceByIdentity(binOp.right, replacements);
-    }
-    else if (node instanceof FunctionNode<D, C, F> funcNode)
-    {
-      if (funcNode.arg != null)
-      {
-        funcNode.arg = replaceByIdentity(funcNode.arg, replacements);
-      }
-    }
-    else if (node instanceof VectorNode<D, C, F> vecNode)
-    {
-      vecNode.elements.replaceAll(e -> replaceByIdentity(e, replacements));
-    }
-    else if (node instanceof NAryOperationNode<D, C, F> naryNode)
-    {
-      naryNode.lowerLimit = replaceByIdentity(naryNode.lowerLimit, replacements);
-      naryNode.upperLimit = replaceByIdentity(naryNode.upperLimit, replacements);
-    }
-
-    // Now check if this node itself should be replaced
-    SharedNode<D, C, F> replacement = replacements.get(node);
-    return replacement != null ? replacement : node;
+    optimize();
+    generate();
+    assert context != null : "context is null for "
+                             + this
+                             + " and superExpression="
+                             + upstreamExpression
+                             + " superExpression.context="
+                             + upstreamExpression.context;
+    assert !className.isEmpty() : "className is empty";
+    compiledClass = loadFunctionClass(className, instructions, context);
   }
 
   public ElseNode<D, C, F> otherwise()
@@ -5106,6 +4193,301 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return (E) this;
   }
 
+  /**
+   * Attempts to consume an explicit input variable declaration of the form
+   * {@code name➔} or {@code name∈(a,b)➔} from the current cursor position. If the
+   * next tokens are a valid identifier, optionally followed by {@code ∈} and an
+   * interval specification, followed by the arrow character {@code ➔}, the name
+   * is consumed and returned. Otherwise the cursor is restored to its original
+   * position and {@code null} is returned.
+   *
+   * <p>
+   * If the {@code ∈} operator is present, the interval bounds are parsed and
+   * stored in {@link #pendingInputVariableBounds} for the caller to apply via
+   * {@link VariableReference#setBounds}.
+   *
+   * @return the declared variable name, or {@code null} if no arrow declaration
+   *         is present
+   *
+   * @see <a href="https://github.com/crowlogic/arb4j/issues/878">#878</a>
+   */
+  public String parseExplicitInputVariableIfPresent()
+  {
+    CursorState saved = saveCursor();
+    pendingInputVariableBounds = null;
+    pendingParameterList       = null;
+    try
+    {
+      if (character == '(')
+      {
+        List<String> params = parseParenParameterList();
+        skipSpaces();
+        if (params != null && !params.isEmpty() && character == '=')
+        {
+          nextCharacter();
+          String       first = params.get(0);
+          List<String> rest  = params.subList(1, params.size());
+          pendingParameterList = rest.isEmpty() ? null : new ArrayList<>(rest);
+          return first;
+        }
+        restoreCursor(saved);
+        return null;
+      }
+
+      String name = parseName();
+      if (name == null || name.isEmpty())
+      {
+        restoreCursor(saved);
+        return null;
+      }
+      skipSpaces();
+      if (character == '∈')
+      {
+        nextCharacter();
+        pendingInputVariableBounds = parseIntervalBounds();
+        skipSpaces();
+      }
+      if (character == '➔')
+      {
+        nextCharacter();
+        return name;
+      }
+      if (character == '(')
+      {
+        List<String> params = parseParenParameterList();
+        skipSpaces();
+        if (params != null && !params.isEmpty() && character == '=')
+        {
+          nextCharacter();
+          if (functionName != null && !functionName.equals(name))
+          {
+            throw new CompilerException("function name '"
+                                        + name
+                                        + "' specified in declaration head conflicts with already-declared functionName='"
+                                        + functionName
+                                        + "'");
+          }
+          if (functionName == null)
+          {
+            functionName = name;
+          }
+          String       first = params.get(0);
+          List<String> rest  = params.subList(1, params.size());
+          pendingParameterList = rest.isEmpty() ? null : new ArrayList<>(rest);
+          return first;
+        }
+      }
+      pendingInputVariableBounds = null;
+      pendingParameterList       = null;
+      restoreCursor(saved);
+      return null;
+    }
+    catch (RuntimeException e)
+    {
+      pendingInputVariableBounds = null;
+      pendingParameterList       = null;
+      restoreCursor(saved);
+      return null;
+    }
+  }
+
+  @SuppressWarnings(
+  { "rawtypes", "unchecked" })
+  public Node<D, C, F> parseInputVariableAssignment(String variableName)
+  {
+    if (trace)
+    {
+      log.debug("→ parseInputVariableAssignment(#{}) expr={}, paramName={} at position={} where remaining={}",
+                System.identityHashCode(this),
+                getExpression(),
+                variableName,
+                position,
+                remaining());
+    }
+    checkInputVariableConflicts(variableName);
+
+    boolean prevDef = deferVariableResolution;
+    deferVariableResolution = true;
+    var                 variableNode = newVariableNode(variableName);
+
+    Expression<D, C, F> subExpr      = cloneExpression();
+    subExpr.clearIndependentVariable();
+    subExpr.upstreamExpression = this;
+    if (isGeneratedFunctional())
+    {
+      subExpr.functionClass = (Class) coDomainType;
+      subExpr.domainType    = (Class) resolveChildDomain(coDomainType);
+      subExpr.coDomainType  = (Class) resolveChildCoDomain(coDomainType);
+      this.functionalChild  = subExpr;
+    }
+    placeholderVariable = subExpr.setIndependentVariable(variableNode.spliceInto(subExpr));
+
+    List<String> remainingParams = pendingParameterList;
+    pendingParameterList = null;
+    if (remainingParams != null && !remainingParams.isEmpty())
+    {
+      String       headParam  = remainingParams.get(0);
+      List<String> tailParams = remainingParams.subList(1, remainingParams.size());
+      subExpr.pendingParameterList = tailParams.isEmpty() ? null : new ArrayList<>(tailParams);
+      subExpr.rootNode             = subExpr.parseInputVariableAssignment(headParam);
+    }
+    else
+    {
+      subExpr.rootNode = subExpr.resolve();
+    }
+
+    setCursorFrom(subExpr);
+
+    return subExpr.rootNode;
+  }
+
+  /**
+   * Parses an interval specification of the form {@code (a,b)}, {@code [a,b]},
+   * {@code [a,b)}, or {@code (a,b]}. The bracket type determines inclusivity:
+   * {@code [} = inclusive, {@code (} = exclusive.
+   *
+   * @return the parsed bounds
+   * @throws CompilerException if the interval syntax is malformed
+   *
+   * @see <a href="https://github.com/crowlogic/arb4j/issues/878">#878</a>
+   */
+  VariableReference.Bounds parseIntervalBounds()
+  {
+    boolean lowerInclusive;
+    if (character == '[')
+    {
+      lowerInclusive = true;
+      nextCharacter();
+    }
+    else if (character == '(' || character == '{')
+    {
+      lowerInclusive = false;
+      nextCharacter();
+    }
+    else
+    {
+      throw new CompilerException("expected '(' or '[' after ∈ at position " + position);
+    }
+
+    Node<D, C, F> lowerNode = resolve();
+    require(',', '…');
+    Node<D, C, F> upperNode = resolve();
+
+    boolean       upperInclusive;
+    if (character == ']')
+    {
+      upperInclusive = true;
+      nextCharacter();
+    }
+    else if (character == ')' || character == '}')
+    {
+      upperInclusive = false;
+      nextCharacter();
+    }
+    else
+    {
+      throw new CompilerException("expected ')' or ']' to close interval at position " + position);
+    }
+
+    double lower = evaluateBoundToDouble(lowerNode);
+    double upper = evaluateBoundToDouble(upperNode);
+
+    return new VariableReference.Bounds(lower,
+                                        lowerInclusive,
+                                        upper,
+                                        upperInclusive);
+  }
+
+  /**
+   * Parses an identifier name starting from {@code startPos}. Uses code-point
+   * iteration to correctly handle supplementary Unicode characters.
+   */
+  public String parseName()
+  {
+    assert position >= 0 : "position=" + position + " should not be negative for " + toStringExtended();
+    int     startPos              = position;
+    boolean entirelySubscripted   = true;
+    boolean entirelySuperscripted = true;
+    while (position < getExpression().length())
+    {
+      int     cp       = getExpression().codePointAt(position);
+      boolean isLetter = isIdentifyingCharacter(cp, true);
+
+      if (isLetter || (entirelySubscripted && !isLetter && isSubscript(character)) || (entirelySuperscripted && !isLetter && isSuperscriptLetter(cp)))
+      {
+        // Advance past the full code point (1 char for BMP, 2 for supplementary)
+        int charCount = Character.charCount(cp);
+        position += charCount;
+        if (position < getExpression().length())
+        {
+          character = getExpression().charAt(position);
+        }
+        else
+        {
+          character = Character.MIN_VALUE;
+        }
+        if (isLetter)
+        {
+          entirelySubscripted = false;
+        }
+      }
+      else
+      {
+        break;
+      }
+    }
+    var substring = getExpression().substring(startPos, position).trim();
+    return Parser.subscriptAndSuperscriptsToRegular(substring);
+  }
+
+  /**
+   * Reads a parenthesised parameter list of the form
+   * {@code '(' name (',' name)* ')'} starting at the current cursor (which must
+   * be on the opening {@code '('}). The opening paren is consumed; on success the
+   * closing {@code ')'} is also consumed and the list of parameter names is
+   * returned. Returns {@code null} when malformed; the caller is responsible for
+   * restoring its own cursor snapshot.
+   *
+   * @see <a href="https://github.com/crowlogic/arb4j/issues/975">#975</a>
+   */
+  protected List<String> parseParenParameterList()
+  {
+    if (!nextCharacterIs('('))
+    {
+      return null;
+    }
+    List<String> params = new ArrayList<>();
+    skipSpaces();
+    if (nextCharacterIs(')'))
+    {
+      return params;
+    }
+    while (true)
+    {
+      skipSpaces();
+      if (!isIdentifierCharacter())
+      {
+        return null;
+      }
+      String name = parseName();
+      if (name == null || name.isEmpty())
+      {
+        return null;
+      }
+      params.add(name);
+      skipSpaces();
+      if (nextCharacterIs(','))
+      {
+        continue;
+      }
+      if (nextCharacterIs(')'))
+      {
+        return params;
+      }
+      return null;
+    }
+  }
+
   protected Node<D, C, F> parseSuperscript(Node<D, C, F> node, char superscript, String digit)
   {
     if (nextCharacterIs(superscript))
@@ -5144,6 +4526,24 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public VariableReference<D, C, F> parseVariableReference()
   {
     return new VariableReference<>(parseName());
+  }
+
+  /**
+   * Set the public {@code expression} field declared by
+   * {@link #declareSourceExpressionField} on a freshly constructed instance.
+   * Reflective; tolerates absence of the field on hand-written subclasses.
+   */
+  private void populateSourceExpressionBackPointer(F freshInstance)
+  {
+    try
+    {
+      java.lang.reflect.Field field = freshInstance.getClass().getField("expression");
+      field.set(freshInstance, this);
+    }
+    catch (Exception wrapped)
+    {
+      Utensils.wrapOrThrow(wrapped);
+    }
   }
 
   protected void propagateContext(MethodVisitor mv, Expression<?, ?, Function<?, ?>> function)
@@ -5212,57 +4612,200 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
-  protected void copyIndependentVariableToFunctionalByValue(MethodVisitor mv,
-                                                            Expression<?, ?, Function<?, ?>> function,
-                                                            VariableNode<?, ?, Function<?, ?>> independentVariableMappedToFunctional)
+  /**
+   * Propagates upstream input variables from this expression's fields to a newly
+   * constructed functional instance via copy-by-value (.set()), with null-check
+   * and allocation if the destination field is null.
+   *
+   * This generates code that executes inside the evaluate() method where the
+   * functional instance is on top of the operand stack. For each variable that
+   * the functional references from an ancestor scope (and that is a field on this
+   * class), generate:
+   *
+   * if (funcInst.varName == null) funcInst.varName = new VarType();
+   * funcInst.varName.set(this.varName);
+   *
+   * @param mv         the MethodVisitor for the evaluate method being generated
+   * @param functional the functional expression whose instance needs the
+   *                   variables
+   */
+  protected void propagateUpstreamInputVariablesToFunctional(MethodVisitor mv, Expression<?, ?, ?> functional)
   {
-    if (trace)
+    for (var entry : functional.referencedVariables.entrySet())
     {
-      log.debug(String.format("Expression(#%s).copyIndependentVariableToFunctionalByValue(function=%s, independentVariableMappedToFunctional=%s)\n",
-                              System.identityHashCode(this),
-                              function,
-                              independentVariableMappedToFunctional));
+      String                varName = entry.getKey();
+      VariableNode<?, ?, ?> varNode = entry.getValue();
+
+      // Only propagate upstream input variables
+      if (varNode.isIndependent)
+      {
+        continue;
+      }
+
+      // Skip the current expression's independent variable — it lives in the
+      // evaluate parameter slot, not as a field on this class. Already handled
+      // by propagateIndependentVariableToFunctional.
+      if (getIndependentVariable() != null && varName.equals(getIndependentVariable().getName()))
+      {
+        continue;
+      }
+
+      // Skip context variables — propagated separately by propagateContext
+      if (context != null && context.getVariable(varName) != null)
+      {
+        continue;
+      }
+
+      Class<?> varType = varNode.type();
+      if (varType == null || varType.equals(Object.class))
+      {
+        continue;
+      }
+
+      if (trace)
+      {
+        log.debug("propagateUpstreamInputVariablesToFunctional: {} of type {} to {}", varName, varType, functional.className);
+      }
+
+      String fieldDescriptor = varType.descriptorString();
+
+      // ── Stack: ..., funcInst ──
+
+      // Null-check: if funcInst.varName == null, allocate a new instance
+      Label  fieldNotNull    = new Label();
+      duplicateTopOfTheStack(mv); // funcInst, funcInst
+      getField(mv, functional.className, varName, fieldDescriptor); // funcInst, field|null
+      mv.visitJumpInsn(IFNONNULL, fieldNotNull); // funcInst
+
+      // Null branch: funcInst.varName = new VarType()
+      duplicateTopOfTheStack(mv); // funcInst, funcInst
+      generateNewObjectInstruction(mv, varType); // funcInst, funcInst, new
+      duplicateTopOfTheStack(mv); // funcInst, funcInst, new, new
+      invokeDefaultConstructor(mv, varType); // funcInst, funcInst, new
+      putField(mv, functional.className, varName, varType); // funcInst
+
+      designateLabel(mv, fieldNotNull); // funcInst
+
+      // Copy by value: funcInst.varName.set(this.varName)
+      duplicateTopOfTheStack(mv); // funcInst, funcInst
+      getField(mv, functional.className, varName, fieldDescriptor); // funcInst, field (non-null)
+      loadThisAndFieldOntoStack(mv, varName, varType); // funcInst, field, this.var
+      generateVirtualMethodInvocation(mv, varType, "set", varType, varType); // funcInst, retVal
+      pop(mv); // funcInst
     }
-    var    fieldName       = independentVariableMappedToFunctional.getName();
-    String fieldDescriptor = domainType.descriptorString();
+  }
 
-// Check if the destination field (function.fieldName) is null;
-// if so, create a new instance before copying by value
-    Label  fieldNotNull    = new Label();
+  /**
+   * Propagates the parent's context and upstream input variables (variables from
+   * ancestor expressions) to nested operand functions that reference them.
+   *
+   * For child arg classes whose constructors no longer create their own Context
+   * (see #842), this method assigns this.context to each arg's context field
+   * before any variable propagation occurs.
+   *
+   * IMPORTANT: This method runs inside the initialize() method, which has NO
+   * input parameter (only 'this' in slot 0). Therefore, it must NOT attempt to
+   * propagate the current expression's independent variable, because that
+   * variable is NOT a field on the generated class — it exists only as the
+   * evaluate() method's input parameter (slot 1). The independent variable is
+   * propagated at evaluate-time by NAryOperationNode.propagateInputToOperand and
+   * similar mechanisms.
+   */
+  protected void propagateUpstreamInputVariablesToNestedFunctions(MethodVisitor mv)
+  {
+    // For each referenced function (nested operand functions)
+    for (var funcEntry : getReferencedFunctions().entrySet())
+    {
+      String                   funcFieldName = funcEntry.getKey();
+      FunctionMapping<?, ?, ?> funcMapping   = funcEntry.getValue();
 
-    duplicateTopOfTheStack(mv);
-// Stack: [funcInst, funcInst]
-    mv.visitFieldInsn(GETFIELD, function.className, fieldName, fieldDescriptor);
-// Stack: [funcInst, funcInst.field]
-    mv.visitJumpInsn(IFNONNULL, fieldNotNull);
-// Stack: [funcInst]
+      // Skip if this is a self-reference or not a generated expression
+      if (funcFieldName.equals(functionName) || funcMapping.expression == null)
+      {
+        continue;
+      }
 
-// Field is null: create a new instance and assign it to the field
-    duplicateTopOfTheStack(mv);
-// Stack: [funcInst, funcInst]
-    generateNewObjectInstruction(mv, domainType);
-// Stack: [funcInst, funcInst, newInstance]
-    duplicateTopOfTheStack(mv);
-// Stack: [funcInst, funcInst, newInstance, newInstance]
-    invokeDefaultConstructor(mv, domainType);
-// Stack: [funcInst, funcInst, newInstance]
-    putField(mv, function.className, fieldName, domainType);
-// Stack: [funcInst]
+      Expression<?, ?, ?> nestedExpr = funcMapping.expression;
+      if (nestedExpr == null)
+      {
+        continue;
+      }
 
-    mv.visitLabel(fieldNotNull);
-// Stack: [funcInst] (both paths converge here)
+      String funcTypeDesc    = funcMapping.functionFieldDescriptor();
+      String nestedClassName = funcMapping.expression != null ? funcMapping.expression.className : funcMapping.functionName;
 
-// Copy by value: funcInst.fieldName.set(independentVariableValue)
-    duplicateTopOfTheStack(mv);
-// Stack: [funcInst, funcInst]
-    mv.visitFieldInsn(GETFIELD, function.className, fieldName, fieldDescriptor);
-// Stack: [funcInst, funcInst.field] (guaranteed non-null)
-    getIndependentVariable().generate(mv, domainType);
-// Stack: [funcInst, funcInst.field, indepVarValue]
-    generateVirtualMethodInvocation(mv, domainType, "set", domainType, domainType);
-// Stack: [funcInst, returnValue]
-    mv.visitInsn(Opcodes.POP);
-// Stack: [funcInst]
+      // Share parent's context with child arg class (#842)
+      if (nestedExpr.upstreamExpression != null)
+      {
+        String contextTypeDesc = Context.class.descriptorString();
+        // Generate: this.<funcFieldName>.context = this.context
+        loadThisOntoStack(mv);
+        mv.visitFieldInsn(GETFIELD, className, funcFieldName, funcTypeDesc);
+        loadThisOntoStack(mv);
+        mv.visitFieldInsn(GETFIELD, className, "context", contextTypeDesc);
+        mv.visitFieldInsn(PUTFIELD, nestedClassName, "context", contextTypeDesc);
+      }
+
+      // Check each variable referenced by the nested expression
+      for (var varEntry : nestedExpr.referencedVariables.entrySet())
+      {
+        String                varName = varEntry.getKey();
+        VariableNode<?, ?, ?> varNode = varEntry.getValue();
+
+        // Skip independent variables of the nested expression
+        if (varNode.isIndependent)
+        {
+          continue;
+        }
+
+        // Skip if already declared as upstream independent variable
+        if (upstreamExpression != null && upstreamExpression.getIndependentVariable() != null
+                      && varName.equals(upstreamExpression.getIndependentVariable().getName()))
+        {
+          continue;
+        }
+
+        // Skip context variables (they are propagated separately)
+        if (context != null && context.getVariable(varName) != null)
+        {
+          continue;
+        }
+
+        // CRITICAL: Skip the current expression's independent variable.
+        // It is NOT a field on this generated class — it only exists as the
+        // evaluate() input parameter. Attempting to GETFIELD it here (inside
+        // initialize(), which has no input parameter) causes VerifyError.
+        // The independent variable is propagated at evaluate-time instead.
+        if (getIndependentVariable() != null && varName.equals(getIndependentVariable().getName()))
+        {
+          continue;
+        }
+
+        // This is an upstream input variable - propagate it
+        Class<?> varType = varNode.type();
+        if (varType != null && !varType.equals(Object.class))
+        {
+          if (trace)
+          {
+            log.debug("propagateUpstreamInputVariables: propagating {} to {} in {}", varName, funcFieldName, className);
+          }
+
+          String varTypeDesc = varType.descriptorString();
+
+          // Generate: this.<funcFieldName>.<varName> = this.<varName>
+          loadThisOntoStack(mv);
+          mv.visitFieldInsn(GETFIELD, className, funcFieldName, funcTypeDesc);
+          loadThisOntoStack(mv);
+          mv.visitFieldInsn(GETFIELD, className, varName, varTypeDesc);
+          mv.visitFieldInsn(PUTFIELD, nestedClassName, varName, varTypeDesc);
+        }
+      }
+    }
+  }
+
+  protected Stream<Entry<String, VariableNode<D, C, F>>> referencedVariableEntryStream()
+  {
+    return referencedVariables.entrySet().stream();
   }
 
   /**
@@ -5311,6 +4854,29 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return null;
     }
 
+  }
+
+  public Expression<D, C, F> registerReferencedFunction(String referencedFunctionName, FunctionMapping<?, ?, ?> referenceFunctionMapping)
+  {
+    if (BUILTIN_FUNCTION_NAMES.contains(referencedFunctionName))
+    {
+      throw new CompilerException("cannot register a user-defined function named '"
+                                  + referencedFunctionName
+                                  + "': that name is reserved for the built-in "
+                                  + referencedFunctionName
+                                  + ". Rename the function.");
+    }
+    referencedFunctions.put(referencedFunctionName, referenceFunctionMapping);
+    return this;
+  }
+
+  public VariableNode<D, C, F> registerReferencedVariable(VariableNode<D, C, F> variableNode)
+  {
+    assert !variableNode.equals(getIndependentVariable()) : "independent variables of this or any upstream expression are always assumed to be referenced. this is for context variables only: not adding "
+                                                            + variableNode
+                                                            + " to the referencedVariables of "
+                                                            + this.toStringExtended();
+    return referencedVariables.put(variableNode.reference.name, variableNode);
   }
 
   @SuppressWarnings("hiding")
@@ -5362,6 +4928,116 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (referencedVariables.containsKey(from))
     {
       referencedVariables.put(to, referencedVariables.remove(from));
+    }
+  }
+
+  /**
+   * Recursively walks the AST and replaces any node whose identity appears in the
+   * replacement map. Container nodes have their children replaced first
+   * (bottom-up), then the node itself is checked.
+   * 
+   * FIXME: remove this instanceif idiocy
+   */
+  @SuppressWarnings("unchecked")
+  private Node<D, C, F> replaceByIdentity(Node<D, C, F> node, IdentityHashMap<Node<D, C, F>, SharedNode<D, C, F>> replacements)
+  {
+    // Recurse into children first (bottom-up)
+    if (node instanceof BinaryOperationNode<D, C, F> binOp)
+    {
+      binOp.left  = replaceByIdentity(binOp.left, replacements);
+      binOp.right = replaceByIdentity(binOp.right, replacements);
+    }
+    else if (node instanceof FunctionNode<D, C, F> funcNode)
+    {
+      if (funcNode.arg != null)
+      {
+        funcNode.arg = replaceByIdentity(funcNode.arg, replacements);
+      }
+    }
+    else if (node instanceof VectorNode<D, C, F> vecNode)
+    {
+      vecNode.elements.replaceAll(e -> replaceByIdentity(e, replacements));
+    }
+    else if (node instanceof NAryOperationNode<D, C, F> naryNode)
+    {
+      naryNode.lowerLimit = replaceByIdentity(naryNode.lowerLimit, replacements);
+      naryNode.upperLimit = replaceByIdentity(naryNode.upperLimit, replacements);
+    }
+
+    // Now check if this node itself should be replaced
+    SharedNode<D, C, F> replacement = replacements.get(node);
+    return replacement != null ? replacement : node;
+  }
+
+  /**
+   * Walks the expression tree and replaces constant non-leaf, non-root subtree
+   * roots with {@link StaticNode} wrappers, then iterates a static-factor
+   * segregation pass over multiplication/division chains until a fixed point is
+   * reached. The segregation step merges the already-hoisted static factors of
+   * each mul/div chain into one composite {@link StaticNode} so the generated
+   * {@code evaluate()} body no longer recomputes dynamic products of purely
+   * cached values.
+   *
+   * <p>
+   * Iteration sketch (see issue #955):
+   * <ol>
+   * <li>Run {@link Node#replaceConstantNodes()} to wrap every maximal
+   * input-independent subtree in a {@link StaticNode}.</li>
+   * <li>For each mul/div chain in the tree, collect operands while tracking
+   * numerator/denominator role under {@link DivisionNode} alternation, partition
+   * into static and dynamic, and rebuild the chain as
+   * {@code dynamicChain * compositeStatic} (or
+   * {@code dynamicChain / compositeStatic} if the chain has no dynamic factors at
+   * all). The composite static is assembled from the <em>delegates</em> of the
+   * input static nodes; the old StaticNode wrappers' intermediate-variable
+   * registrations are removed so {@link #declareIntermediateVariables} and
+   * {@link #generateCloseMethod} see only the surviving fields.</li>
+   * <li>Re-run {@link Node#replaceConstantNodes()}; the rebuilt composite subtree
+   * is constant and becomes a new {@link StaticNode}.</li>
+   * <li>Repeat until no further collapses are produced (fixed point).</li>
+   * </ol>
+   * {@link StaticNode#replaceConstantNodes()} is idempotent, so the repeated
+   * first step does not double-wrap anything.
+   */
+  protected void replaceConstantNodes()
+  {
+    if (rootNode == null || isGeneratedFunctional() || isNullaryFunction())
+    {
+      return;
+    }
+    // The isConstant() memoization is populated opportunistically during
+    // parsing and simplification; by the time we get here, variables may
+    // have had their upstreamInput / fixedInstanceData flags finalised
+    // after the first memoization. Invalidate so the hoist traversal
+    // sees the post-resolution truth.
+    rootNode.nodeStream().forEach(n -> n.invalidateConstantFlag());
+    rootNode = rootNode.replaceConstantNodes();
+
+    int maxIterations = 8;
+    int iteration     = 0;
+    while (iteration++ < maxIterations)
+    {
+      boolean changed = segregateStaticFactorsInTree(rootNode);
+      if (!changed)
+      {
+        break;
+      }
+      // After segregation the freshly built composite subtrees contain
+      // raw delegates whose constant flags must be recomputed, and the
+      // composite expression itself is constant and should be wrapped.
+      rootNode.nodeStream().forEach(n -> n.invalidateConstantFlag());
+      rootNode = rootNode.replaceConstantNodes();
+    }
+    assert iteration <= maxIterations : "static-hoisting fixed point not reached in " + maxIterations + " iterations";
+
+    hasStaticNodes = rootNode.nodeStream().anyMatch(n -> n instanceof StaticNode);
+    if (trace)
+    {
+      log.debug("replaceConstantNodes: hasStaticNodes={} iterations={} className={} root={}",
+                hasStaticNodes,
+                iteration,
+                className,
+                rootNode.getClass().getSimpleName());
     }
   }
 
@@ -5417,6 +5093,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       require('|');
       inAbsoluteValue = false;
     }
+    return node;
+  }
+
+  /**
+   * FIXME: add support for specifying the variable of differentiation
+   * 
+   * @return
+   */
+  protected Node<D, C, F> resolveCaputoFractionalDerivative()
+  {
+    var α    = require('^').require('(').resolve();
+    var f    = require(')').resolveOperand();
+    var node = f.fractionalDerivative(null, α);
     return node;
   }
 
@@ -5613,6 +5302,104 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return resolveSymbolicLiteralConstantKeywordOrVariable(reference);
   }
 
+  /**
+   * 
+   * @return the results of this{@link #resolveSquareBracketedIndex()} and
+   *         this{@link #resolveSubscriptedIndex()} being applied in succession
+   */
+  protected Node<D, C, F> resolveIndex()
+  {
+    var index = resolveSquareBracketedIndex();
+    return index == null ? index = resolveSubscriptedIndex() : index;
+  }
+
+  protected Node<D, C, F> resolveNumericLiteralConstant()
+  {
+    int startingPosition = position;
+    while (isNumeric(character))
+    {
+      nextCharacter();
+    }
+    assert position > startingPosition : "didn't read any digits";
+
+    return newLiteralConstant(getExpression().substring(startingPosition, position));
+  }
+
+  public Node<D, C, F> resolveOperand() throws CompilerException
+  {
+    Node<D, C, F> node = null;
+
+    if (nextCharacterIs('['))
+    {
+      node = new VectorNode<>(this);
+    }
+    else if (nextCharacterIs('(', '⁽'))
+    {
+      node = resolve();
+      require(')', '⁾');
+    }
+    else if (nextCharacterIs('∂'))
+    {
+      node = new DerivativeNode<>(this);
+    }
+    else if (nextCharacterIs('Đ'))
+    {
+      node = resolveCaputoFractionalDerivative();
+    }
+    else if (nextCharacterIs('∫'))
+    {
+      node = new IntegralNode<>(this);
+    }
+    else if (nextCharacterIs('Π', '∏'))
+    {
+      node = new ProductNode<>(this);
+    }
+    else if (nextCharacterIs('∑', 'Σ'))
+    {
+      node = new SumNode<>(this);
+    }
+    else if (isNumeric(character))
+    {
+      node = resolveNumericLiteralConstant();
+    }
+    else if (isIdentifierCharacter())
+    {
+      String arrowVar = parseExplicitInputVariableIfPresent();
+      if (arrowVar != null && coDomainType.isInterface())
+      {
+        node = parseInputVariableAssignment(arrowVar);
+      }
+      else if (arrowVar == null)
+      {
+        node = resolveIdentifier();
+      }
+      else
+      {
+        throw new CompilerException("arrow variable declaration '"
+                                    + arrowVar
+                                    + "➔' found but coDomain "
+                                    + coDomainType.getSimpleName()
+                                    + " is not a functional interface");
+      }
+    }
+    else if (nextCharacterIs('ꟲ'))
+    {
+      int  savedPos  = position;
+      char savedChar = character;
+      if (nextCharacterIs('D'))
+      {
+        node = resolveCaputoFractionalDerivative();
+      }
+      else
+      {
+        position  = savedPos;
+        character = savedChar;
+      }
+    }
+
+    return resolvePostfixOperators(node);
+  }
+
   protected Node<D, C, F> resolvePostfixOperators(Node<D, C, F> node)
   {
     node = resolveFactorials(node);
@@ -5637,6 +5424,33 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return node;
   }
 
+  protected Node<D, C, F> resolveSquareBracketedIndex()
+  {
+    Node<D, C, F> index = null;
+    if (nextCharacterIs('['))
+    {
+      index = resolve();
+      require(']');
+    }
+    return index;
+  }
+
+  protected Node<D, C, F> resolveSubscriptedIndex()
+  {
+    int startPos = position;
+
+    if (nextCharacterIs(Parser.SUBSCRIPT_DIGITS_ARRAY))
+    {
+      while (nextCharacterIs(Parser.SUBSCRIPT_DIGITS_ARRAY));
+      return newLiteralConstant(getExpression().substring(startPos, position));
+    }
+    else if (isIdentifierCharacter())
+    {
+      return resolveIdentifier();
+    }
+    return null;
+  }
+
   protected Node<D, C, F> resolveSymbolicLiteralConstantKeywordOrVariable(VariableReference<D, C, F> reference)
   {
     if (reference.isLiteralConstant())
@@ -5649,9 +5463,322 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
+  protected VariableReference<D, C, F> resolveVariableReference()
+  {
+    String identifier = parseName();
+    var    index      = resolveIndex();
+    return new VariableReference<D, C, F>(identifier,
+                                          index);
+  }
+
+  public void restoreCursor(CursorState state)
+  {
+    position          = state.position();
+    character         = state.character();
+    previousCharacter = state.previousCharacter();
+  }
+
+  protected Expression<D, C, F> saveAndOptionallyDecompileClassFile()
+  {
+    if (saveClasses)
+    {
+
+      File file = new File(compiledClassDir,
+                           className + ".class");
+      writeBytecodes(file);
+
+      if (decompileClasses)
+      {
+        Compiler.decompileClassFile(compiledClassDir, file);
+      }
+
+    }
+
+    return this;
+  }
+
+  public CursorState saveCursor()
+  {
+    return new CursorState(position,
+                           character,
+                           previousCharacter);
+  }
+
+  public File saveToFile()
+  {
+    var file = new File(className + ".yaml");
+    if (trace)
+    {
+      log.debug("#{}: saveToFile(): file={}", System.identityHashCode(this), file);
+    }
+    Utensils.saveToYamlFormat(file, this);
+    return file;
+  }
+
+  /**
+   * Segregates the static and dynamic factors of a single maximal
+   * {@link MultiplicationNode}/{@link DivisionNode} chain rooted at
+   * {@code chainRoot}. See {@link #replaceConstantNodes()} for the role of this
+   * pass in the fixed-point loop.
+   *
+   * <p>
+   * The chain is scanned left-to-right, and the sign of each operand is tracked:
+   * entering the right-hand side of a {@link DivisionNode} flips the sign. After
+   * partitioning operands into static (those wrapped in a {@link StaticNode}) and
+   * dynamic, the chain is rebuilt as
+   * 
+   * <pre>
+   * dynamicNumProduct / dynamicDenProduct * S(staticNumProduct / staticDenProduct)
+   * </pre>
+   * 
+   * where every factor in the composite static is taken as the raw delegate of
+   * the contributing {@link StaticNode}. The stale {@link IntermediateVariable}
+   * registrations of the unwrapped StaticNodes are dropped so their fields are
+   * not declared, initialised, or closed.
+   *
+   * @return {@code true} if the tree was rewritten, {@code false} otherwise
+   */
+  @SuppressWarnings(
+  { "rawtypes", "unchecked" })
+  private boolean segregateStaticFactorsAt(Node chainRoot)
+  {
+    List<FactorRole> factors = new ArrayList<>();
+    collectMulDivOperands(chainRoot, +1, factors);
+
+    List<FactorRole> staticFactors  = new ArrayList<>();
+    List<FactorRole> dynamicFactors = new ArrayList<>();
+    for (FactorRole f : factors)
+    {
+      if (f.node instanceof StaticNode)
+      {
+        staticFactors.add(f);
+      }
+      else
+      {
+        dynamicFactors.add(f);
+      }
+    }
+
+    // Nothing to collapse unless at least two static factors will merge
+    // into a single composite. One static factor in a chain is already
+    // cached in exactly one field — rebuilding it would change nothing.
+    if (staticFactors.size() < 2)
+    {
+      return false;
+    }
+
+    // Special case: chain is entirely static AND rooted at the expression
+    // root. A root node cannot be wrapped as a {@link StaticNode} (the
+    // root generate() contract writes into the caller's result slot, see
+    // {@link Node#replaceConstantNodes}). Rewriting would unwrap the
+    // existing per-factor StaticNodes into a raw tree; the subsequent
+    // replaceConstantNodes() pass would re-wrap each constant subtree
+    // individually (because the root itself stays unwrapped), and this
+    // segregation pass would fire again — an infinite oscillation.
+    // Leaving the root as Mul(S(a), S(b), ...) is already optimal: each
+    // static factor is loaded from its own field with no recomputation.
+    if (dynamicFactors.isEmpty() && chainRoot.isRootNode)
+    {
+      return false;
+    }
+
+    // Build the composite-static subtree from the raw delegates. The
+    // delegates have already been retargeted as children of new operator
+    // nodes, so their old parent pointers will be overwritten by the
+    // Mul/Div constructors called below.
+    Node compositeStaticRaw = buildFactorTree(unwrapStaticDelegates(staticFactors));
+    if (compositeStaticRaw == null)
+    {
+      return false;
+    }
+
+    // Drop the now-orphaned intermediate-variable fields of the
+    // unwrapped StaticNodes. Their computation has been subsumed into
+    // compositeStaticRaw; on the next hoist pass a single fresh field
+    // will be allocated for the whole composite.
+    for (FactorRole s : staticFactors)
+    {
+      StaticNode sn = (StaticNode) s.node;
+      if (sn.fieldName != null)
+      {
+        intermediateVariables.remove(sn.fieldName);
+        declaredIntermediateVariables.remove(sn.fieldName);
+      }
+    }
+
+    Node replacement;
+    if (dynamicFactors.isEmpty())
+    {
+      // Chain is entirely static. This case is normally subsumed by
+      // plain replaceConstantNodes() in the next iteration, but
+      // returning the raw composite lets the caller wrap it afresh.
+      replacement = compositeStaticRaw;
+    }
+    else
+    {
+      Node dynamicTree = buildFactorTree(dynamicFactors);
+      // Multiply by the composite. Wrapping compositeStaticRaw in a
+      // StaticNode here is redundant with the next iteration's
+      // replaceConstantNodes() pass and would also mis-register its
+      // intermediate variable before the full tree's generation starts,
+      // so we leave the composite raw for the fixed-point loop to wrap.
+      replacement = dynamicTree.mul(compositeStaticRaw);
+    }
+
+    // Preserve the rootness flag of the node we are replacing so that
+    // generate() continues to write into the caller's result slot.
+    boolean wasRoot = chainRoot.isRootNode;
+    replacement.isRootNode = wasRoot;
+
+    Node parent = chainRoot.parent;
+    if (parent == null)
+    {
+      // chainRoot was the expression root.
+      rootNode           = replacement;
+      replacement.parent = null;
+    }
+    else
+    {
+      parent.replaceChild(chainRoot, replacement);
+    }
+    return true;
+  }
+
+  /**
+   * Finds every maximal {@link MultiplicationNode}/{@link DivisionNode} chain in
+   * the current {@link #rootNode} tree and applies
+   * {@link #segregateStaticFactorsAt(Node)} to each. Returns {@code true} if any
+   * rewrite was performed.
+   *
+   * <p>
+   * Traversal uses {@link Node#nodeStream()} (which goes through each node's own
+   * {@link Node#accept} method, not through the risky {@code spliceInto}-based
+   * {@link Node#getBranches}) so that n-ary nodes, jet nodes, integral nodes,
+   * etc. are walked correctly. A {@link CachedNode} is opaque to {@code accept},
+   * so its delegate subtree is never revisited — exactly what we want, because
+   * cached subtrees are already owned by a generated field and must not be
+   * restructured.
+   *
+   * <p>
+   * A chain "top" is a mul/div node whose parent is not itself a mul/div.
+   * Interior mul/div nodes will be absorbed by their ancestor's
+   * {@link #collectMulDivOperands} descent, so processing them independently
+   * would duplicate work.
+   */
+  @SuppressWarnings(
+  { "rawtypes", "unchecked" })
+  private boolean segregateStaticFactorsInTree(Node<?, ?, ?> tree)
+  {
+    if (tree == null)
+    {
+      return false;
+    }
+
+    // Snapshot the chain tops before any rewriting, because
+    // segregateStaticFactorsAt mutates parent/child links.
+    List<Node<?, ?, ?>> chainTops = tree.nodeStream()
+                                        .filter(Expression::isMulOrDiv)
+                                        .filter(n -> !isMulOrDiv(n.parent))
+                                        .collect(Collectors.toCollection(ArrayList::new));
+
+    boolean             changed   = false;
+    for (Node<?, ?, ?> chainTop : chainTops)
+    {
+      // If this chain top was already replaced by an ancestor's rewrite
+      // its parent pointer will have been cleared; skip such stale nodes.
+      // (rootNode has parent==null legitimately — that's the only case we
+      // allow a null parent on a node we still want to process.)
+      if (chainTop != rootNode && chainTop.parent == null)
+      {
+        continue;
+      }
+      changed |= segregateStaticFactorsAt(chainTop);
+    }
+    return changed;
+  }
+
+  public Expression<D, C, F> setContext(Context context)
+  {
+    this.context = context;
+    return this;
+  }
+
+  /**
+   * Sets this{@link #position}, this{@link #character}, and
+   * this{@link #previousCharacter} from another {@link Expression}
+   * 
+   * @param anotherExpression
+   * @return
+   */
+  public Expression<D, C, F> setCursorFrom(Expression<?, ?, ?> anotherExpression)
+  {
+    position          = anotherExpression.position;
+    character         = anotherExpression.character;
+    previousCharacter = anotherExpression.previousCharacter;
+    return this;
+
+  }
+
+  public void setExpression(String expression)
+  {
+    this.expression = expression;
+  }
+
+  public VariableNode<D, C, F> setIndependentVariable(VariableNode<D, C, F> variableNode)
+  {
+    assert variableNode == null || canHaveIndependentVariable() : this.toStringExtended() + " cannot even have an independent variable";
+    if (independentVariable != null && !independentVariable.equals(variableNode))
+    {
+      throw new IllegalArgumentException("independentVariable is already set to " + independentVariable + " in " + this + " cannot set it to " + variableNode);
+    }
+    if (placeholderVariable != null && placeholderVariable.equals(variableNode))
+    {
+      throw new IllegalArgumentException("independentVariable cannot be set to "
+                                         + variableNode
+                                         + " since it is already the placeholder variable of "
+                                         + toStringExtended());
+
+    }
+    this.independentVariable = variableNode;
+    return independentVariable;
+  }
+
+  public VariableNode<D, C, F> setPlaceholderVariable(VariableNode<D, C, F> variableNode)
+  {
+    if (placeholderVariable != null && !placeholderVariable.equals(variableNode))
+    {
+      throw new IllegalArgumentException("placeholderVariable is already set to " + placeholderVariable + " in " + this + " cannot set it to " + variableNode);
+    }
+    if (getIndependentVariable() != null && getIndependentVariable().equals(variableNode))
+    {
+      throw new IllegalArgumentException("placeholderVariable cannot be set to " + variableNode + " since it is already the independent variable of " + this);
+
+    }
+    this.placeholderVariable = variableNode;
+    return placeholderVariable;
+  }
+
   public MethodVisitor setThisField(MethodVisitor mv, String fieldName, Class<?> fieldType)
   {
     return putField(mv, className, fieldName, fieldType);
+  }
+
+  public boolean shouldCache()
+  {
+    return domainType.equals(Integer.class) && upstreamExpression == null;
+  }
+
+  /**
+   * True when this expression is the inner curry body of an integer-domain
+   * sequence whose codomain is itself a function (Issue #1005). Such expressions
+   * get a per-instance value-backing cache: a single (lastInput, cachedResult)
+   * pair, populated on first evaluate and short-circuited on repeat calls with
+   * the same input by reference identity.
+   */
+  public boolean shouldCacheValueBacking()
+  {
+    return upstreamExpression != null && upstreamExpression.shouldCache() && upstreamExpression.isGeneratedFunctional()
+                  && Field.class.isAssignableFrom(coDomainType);
   }
 
   /**
@@ -5711,25 +5838,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return saveAndOptionallyDecompileClassFile();
   }
 
-  protected Expression<D, C, F> saveAndOptionallyDecompileClassFile()
-  {
-    if (saveClasses)
-    {
-
-      File file = new File(compiledClassDir,
-                           className + ".class");
-      writeBytecodes(file);
-
-      if (decompileClasses)
-      {
-        Compiler.decompileClassFile(compiledClassDir, file);
-      }
-
-    }
-
-    return this;
-  }
-
   @SuppressWarnings("hiding")
   public <E, S, G extends Function<? extends E, ? extends S>> Expression<D, C, F> substitute(String variableToChange, Expression<E, S, G> substitution)
   {
@@ -5787,9 +5895,28 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return this;
   }
 
+  public Spliterator<Expression<?, ?, ?>> superExpressionSpliterator()
+  {
+    return getUpstreamExpressions().spliterator();
+  }
+
+  public Stream<Expression<?, ?, ?>> superExpressionStream()
+  {
+    return StreamSupport.stream(superExpressionSpliterator(), false);
+  }
+
   public ExpressionTree<D, C, F> syntaxTree()
   {
     return new ExpressionTree<>(rootNode);
+  }
+
+  public boolean thisOrAnySuperIndependentVariableIsNamed(String name)
+  {
+    if (getIndependentVariable() != null && getIndependentVariable().getName().equals(name))
+    {
+      return true;
+    }
+    return anySuperIndependentVariableIsNamed(name);
   }
 
   public boolean thisOrAnyUpstreamExpressionHasFunctionalCodomain()
@@ -5892,10 +6019,65 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return str;
   }
 
+  public String toStringExtended()
+  {
+    return String.format("{function=%s=%s->%s, canHavePlaceholder=%s, independentVariable=%s, placeholderVariable=%s, expression=%s, rootNodeType=%s}",
+                         functionClass.getSimpleName(),
+                         domainType.getSimpleName(),
+                         coDomainType.getSimpleName(),
+                         canHavePlaceholder(),
+                         getIndependentVariable(),
+                         placeholderVariable,
+                         superExpressionStream().map(Expression::toString).collect(Collectors.joining(" 🡆 ")),
+                         rootNode == null ? null : rootNode.getClass().getSimpleName());
+  }
+
+  public String toStringSnipped()
+  {
+    return position < 0 ? expression : expression.substring(position);
+  }
+
   @Override
   public String typeset()
   {
     return rootNode == null ? null : rootNode.typeset();
+  }
+
+  public String typeString()
+  {
+    String var      = getIndependentVariable() != null ? getIndependentVariable().getName() : "?";
+    String func     = functionClass.getSimpleName();
+    String domain   = domainType.getSimpleName();
+    String codomain = functionalChild != null ? "(" + functionalChild.typeString() + ")" : coDomainType.getSimpleName();
+    return format("%s:%s=%s➔%s", func, var, domain, codomain);
+  }
+
+  /**
+   * Returns {@code factors} with every {@link StaticNode} replaced by its
+   * {@link CachedNode#delegate}. The delegate's {@code parent} will be
+   * overwritten when it is wired into the rebuilt chain; we null it here to make
+   * the detachment from its former StaticNode parent explicit.
+   */
+  @SuppressWarnings(
+  { "rawtypes", "unchecked" })
+  private List<FactorRole> unwrapStaticDelegates(List<FactorRole> factors)
+  {
+    List<FactorRole> out = new ArrayList<>(factors.size());
+    for (FactorRole f : factors)
+    {
+      if (f.node instanceof StaticNode sn)
+      {
+        Node delegate = sn.delegate;
+        delegate.parent = null;
+        out.add(new FactorRole(delegate,
+                               f.sign));
+      }
+      else
+      {
+        out.add(f);
+      }
+    }
+    return out;
   }
 
   public Expression<D, C, F> updateStringRepresentation()
@@ -5917,9 +6099,116 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return this;
   }
 
+  protected Stream<Entry<String, VariableNode<D, C, F>>> upstreamInputVariableEntryStream()
+  {
+    return referencedVariableEntryStream().filter(predicate);
+  }
+
+  public Stream<VariableNode<D, C, F>> variableNodeStream()
+  {
+    return rootNode.variableNodeStream();
+  }
+
   protected MethodVisitor visitEvaluationMethod(ClassVisitor classVisitor)
   {
     return classVisitor.visitMethod(Opcodes.ACC_PUBLIC, "evaluate", Compiler.evaluationMethodDescriptor, getEvaluationMethodSignature(), null);
+  }
+
+  /**
+   * Phase 2 of the allocate-all-then-wire-all initialization pattern (issue #1000
+   * point #3). For every referenced function {@code g} registered on this
+   * expression, walk {@code g.expression.getReferencedFunctions()}; for every
+   * peer {@code h} that {@code g} also references and that this expression has as
+   * a field — including the back-edge case where
+   * {@code h.equals(this.functionName)} — emit
+   *
+   * <pre>
+   *   getfield this.&lt;h&gt;
+   *   putfield this.&lt;g&gt;.&lt;h&gt;
+   * </pre>
+   *
+   * This statically resolves every cyclic peer reference at the codegen layer.
+   * Because the parent's own peer fields (and its self-field) have been populated
+   * by {@link Context#injectFunctionReferences} before {@code initialize()} ever
+   * runs, the values copied into the operand are the registry-canonical
+   * instances. The operand's own {@code initialize()}, when later invoked, finds
+   * every peer non-null and skips the {@code new <peer>()} allocation branch in
+   * {@link #constructReferencedFunctionInstanceIfItIsNull} thanks to the existing
+   * {@code IFNONNULL} guard. Cycle closed by aliasing, not by allocation.
+   */
+  protected void wirePeerReferencesIntoReferencedFunctionInstances(MethodVisitor mv)
+  {
+    var thisRefs = getReferencedFunctions();
+    if (thisRefs == null || thisRefs.isEmpty())
+    {
+      return;
+    }
+    for (var peerEntry : thisRefs.entrySet())
+    {
+      String                   peerName    = peerEntry.getKey();
+      FunctionMapping<?, ?, ?> peerMapping = peerEntry.getValue();
+      if (peerMapping == null || peerMapping.expression == null)
+      {
+        continue;
+      }
+      // Skip self-references: Phase 1 deliberately does not allocate
+      // this.<self> (the class's own name aliases to `this` at runtime, not
+      // to a fresh peer instance), so this.<self> is null and there is
+      // nothing to wire from or onto for the self-edge here.
+      if (functionName != null && functionName.equals(peerName))
+      {
+        continue;
+      }
+      String peerFieldDescriptor = peerMapping.functionFieldDescriptor();
+      String peerInternalName    = peerFieldDescriptor.substring(1, peerFieldDescriptor.length() - 1);
+      var    peerExpression      = peerMapping.expression;
+      var    peerOwnRefs         = peerExpression.getReferencedFunctions();
+      if (peerOwnRefs == null || peerOwnRefs.isEmpty())
+      {
+        // The peer's expression may reference the enclosing class by name even
+        // when its own getReferencedFunctions() is empty — happens when the
+        // back-edge is implicit in the cycle's strongly connected component
+        // and never registered on the operand expression. Best-effort: still
+        // try to lift this.<self> onto peer.<self> if peer's class declares
+        // a field of that name with a Function-assignable type.
+        emitBackEdgeSelfLift(mv, peerName, peerInternalName);
+        continue;
+      }
+      for (var hEntry : peerOwnRefs.entrySet())
+      {
+        String                   hName    = hEntry.getKey();
+        FunctionMapping<?, ?, ?> hMapping = hEntry.getValue();
+        if (hMapping == null)
+        {
+          continue;
+        }
+        // The self-edge h == functionName is handled by emitBackEdgeSelfLift
+        // below (which puts `this`, not this.<self>, into peer.<self>) since
+        // this.<self> is not a field on this class.
+        if (functionName != null && functionName.equals(hName))
+        {
+          continue;
+        }
+        // Only wire fields the parent itself owns — peer h must be a
+        // registered referenced-function on this expression. Skip peers
+        // that exist only on the operand's local scope.
+        if (!thisRefs.containsKey(hName))
+        {
+          continue;
+        }
+        String hFieldDescriptor = hMapping.functionFieldDescriptor();
+        // Stack: empty
+        loadThisOntoStack(mv);
+        mv.visitFieldInsn(GETFIELD, className, peerName, peerFieldDescriptor);
+        // Stack: this.<peer>
+        loadThisOntoStack(mv);
+        mv.visitFieldInsn(GETFIELD, className, hName, hFieldDescriptor);
+        // Stack: this.<peer>, this.<h>
+        mv.visitFieldInsn(PUTFIELD, peerInternalName, hName, hFieldDescriptor);
+        // Stack: empty
+      }
+      emitBackEdgeSelfLift(mv, peerName, peerInternalName);
+    }
   }
 
   /**
@@ -5930,313 +6219,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     Utensils.storeBytesInFile(file, instructions);
     return this;
-  }
-
-  @Override
-  public void accept(Consumer<Expression<?, ?, ?>> t)
-  {
-    assert upstreamExpression != this;
-    t.accept(this);
-
-    if (upstreamExpression != null)
-    {
-      upstreamExpression.accept(t);
-    }
-
-  }
-
-  public Map<String, VariableNode<D, C, F>> getReferencedVariables()
-  {
-    return Collections.unmodifiableMap(referencedVariables);
-  }
-
-  public VariableNode<D, C, F> registerReferencedVariable(VariableNode<D, C, F> variableNode)
-  {
-    assert !variableNode.equals(getIndependentVariable()) : "independent variables of this or any upstream expression are always assumed to be referenced. this is for context variables only: not adding "
-                                                            + variableNode
-                                                            + " to the referencedVariables of "
-                                                            + this.toStringExtended();
-    return referencedVariables.put(variableNode.reference.name, variableNode);
-  }
-
-  public boolean isVariableReferenced(String variableName)
-  {
-    return referencedVariables.containsKey(variableName);
-  }
-
-  public boolean isVariableReferenced(VariableNode<D, C, F> variableNode)
-  {
-    return referencedVariables.containsKey(variableNode.reference.name);
-  }
-
-  public synchronized Context getContext()
-  {
-    if (context == null)
-    {
-      context = new Context();
-    }
-    return context;
-  }
-
-  public Expression<D, C, F> setContext(Context context)
-  {
-    this.context = context;
-    return this;
-  }
-
-  public String getTypeString()
-  {
-    return String.format("%s=%s->%s", functionClass.getSimpleName(), domainType.getSimpleName(), coDomainType.getSimpleName());
-  }
-
-  public static final Set<String> BUILTIN_FUNCTION_NAMES = Set.of("int",
-                                                                  "nint",
-                                                                  "sum",
-                                                                  "ℰ",
-                                                                  "MittagLeffler",
-                                                                  "mittagleffler",
-                                                                  "Z",
-                                                                  "ϑ",
-                                                                  "vartheta",
-                                                                  "ζ",
-                                                                  "zeta",
-                                                                  "when",
-                                                                  "fracdiff",
-                                                                  "diff",
-                                                                  "lim",
-                                                                  "limit",
-                                                                  "J",
-                                                                  "W",
-                                                                  "j",
-                                                                  "R",
-                                                                  "ℭ",
-                                                                  "binom",
-                                                                  "binomial",
-                                                                  "pFq",
-                                                                  "pfq",
-                                                                  "Beta",
-                                                                  "beta",
-                                                                  "Γ",
-                                                                  "Gamma",
-                                                                  "lnGamma",
-                                                                  "lnΓ",
-                                                                  "logGamma",
-                                                                  "logΓ",
-                                                                  "si");
-
-  public Expression<D, C, F> registerReferencedFunction(String referencedFunctionName, FunctionMapping<?, ?, ?> referenceFunctionMapping)
-  {
-    if (BUILTIN_FUNCTION_NAMES.contains(referencedFunctionName))
-    {
-      throw new CompilerException("cannot register a user-defined function named '"
-                                  + referencedFunctionName
-                                  + "': that name is reserved for the built-in "
-                                  + referencedFunctionName
-                                  + ". Rename the function.");
-    }
-    referencedFunctions.put(referencedFunctionName, referenceFunctionMapping);
-    return this;
-  }
-
-  public String getExpression()
-  {
-    return expression;
-  }
-
-  public void setExpression(String expression)
-  {
-    this.expression = expression;
-  }
-
-  public LinkedList<Expression<?, ?, ?>> getUpstreamExpressions()
-  {
-    var                 superExpressions = new LinkedList<Expression<?, ?, ?>>();
-    Expression<?, ?, ?> e                = this;
-    do
-    {
-      superExpressions.add(e);
-    }
-    while ((e = e.upstreamExpression) != null);
-    return superExpressions;
-  }
-
-  public Stream<Expression<?, ?, ?>> superExpressionStream()
-  {
-    return StreamSupport.stream(superExpressionSpliterator(), false);
-  }
-
-  public Spliterator<Expression<?, ?, ?>> superExpressionSpliterator()
-  {
-    return getUpstreamExpressions().spliterator();
-  }
-
-  public String toStringSnipped()
-  {
-    return position < 0 ? expression : expression.substring(position);
-  }
-
-  public String toStringExtended()
-  {
-    return String.format("{function=%s=%s->%s, canHavePlaceholder=%s, independentVariable=%s, placeholderVariable=%s, expression=%s, rootNodeType=%s}",
-                         functionClass.getSimpleName(),
-                         domainType.getSimpleName(),
-                         coDomainType.getSimpleName(),
-                         canHavePlaceholder(),
-                         getIndependentVariable(),
-                         placeholderVariable,
-                         superExpressionStream().map(Expression::toString).collect(Collectors.joining(" 🡆 ")),
-                         rootNode == null ? null : rootNode.getClass().getSimpleName());
-  }
-
-  public LiteralConstantNode<D, C, F> one()
-  {
-    return newConstant(1);
-  }
-
-  public LiteralConstantNode<D, C, F> negativeOne()
-  {
-    return newConstant(-1);
-  }
-
-  public Node<D, C, F> newLiteralConstant(Integer numerator)
-  {
-    LiteralConstantNode<D, C, F> existing = findExistingLiteralConstant(numerator.toString());
-    if (existing != null)
-    {
-      return existing;
-    }
-    return new LiteralConstantNode<D, C, F>(this,
-                                            numerator);
-  }
-
-  public Node<D, C, F> newFractionLiteralConstant(Fraction value)
-  {
-    LiteralConstantNode<D, C, F> existing = findExistingLiteralConstant(value.toString());
-    if (existing != null)
-    {
-      return existing;
-    }
-    return new LiteralConstantNode<D, C, F>(this,
-                                            value);
-  }
-
-  /**
-   * Returns the existing {@link LiteralConstantNode} in this expression whose
-   * {@link LiteralConstantNode#stringValue} equals {@code stringValue}, or
-   * {@code null} if none. This lets the public {@code newLiteralConstant} /
-   * {@code newFractionLiteralConstant} factories short-circuit when a
-   * simplification step would otherwise mint a fresh node object for a value that
-   * already has a cached field — the caller gets back the original node instead
-   * of a duplicate that would later collide on {@code fieldName} inside
-   * {@link LiteralConstantNode}'s constructor.
-   */
-  @SuppressWarnings("unchecked")
-  private LiteralConstantNode<D, C, F> findExistingLiteralConstant(String stringValue)
-  {
-    for (var existing : literalConstants.values())
-    {
-      if (existing.stringValue.equals(stringValue))
-      {
-        return (LiteralConstantNode<D, C, F>) existing;
-      }
-    }
-    return null;
-  }
-
-  /**
-   * Sets this{@link #position}, this{@link #character}, and
-   * this{@link #previousCharacter} from another {@link Expression}
-   * 
-   * @param anotherExpression
-   * @return
-   */
-  public Expression<D, C, F> setCursorFrom(Expression<?, ?, ?> anotherExpression)
-  {
-    position          = anotherExpression.position;
-    character         = anotherExpression.character;
-    previousCharacter = anotherExpression.previousCharacter;
-    return this;
-
-  }
-
-  /**
-   * Sets this{@link #expression} and calls {@link #setCursorFrom(Expression)} so
-   * that the effective parsing state of this expression becomes that of another
-   * expression
-   * 
-   * @param anotherExpression
-   * @return
-   */
-  public Expression<D, C, F> continueParsingFrom(Expression<?, ?, ?> anotherExpression)
-  {
-    expression = anotherExpression.expression;
-    return setCursorFrom(anotherExpression);
-  }
-
-  public Map<String, FunctionMapping<?, ?, ?>> getReferencedFunctions()
-  {
-    return Collections.unmodifiableMap(referencedFunctions);
-  }
-
-  public boolean canHaveIndependentVariable()
-  {
-    return !isNullaryFunction();
-  }
-
-  public boolean canHavePlaceholder()
-  {
-    return isFunctional();
-  }
-
-  public VariableNode<D, C, F> setPlaceholderVariable(VariableNode<D, C, F> variableNode)
-  {
-    if (placeholderVariable != null && !placeholderVariable.equals(variableNode))
-    {
-      throw new IllegalArgumentException("placeholderVariable is already set to " + placeholderVariable + " in " + this + " cannot set it to " + variableNode);
-    }
-    if (getIndependentVariable() != null && getIndependentVariable().equals(variableNode))
-    {
-      throw new IllegalArgumentException("placeholderVariable cannot be set to " + variableNode + " since it is already the independent variable of " + this);
-
-    }
-    this.placeholderVariable = variableNode;
-    return placeholderVariable;
-  }
-
-  public VariableNode<D, C, F> getPlaceholderVariable()
-  {
-    return placeholderVariable;
-  }
-
-  public VariableNode<D, C, F> setIndependentVariable(VariableNode<D, C, F> variableNode)
-  {
-    assert variableNode == null || canHaveIndependentVariable() : this.toStringExtended() + " cannot even have an independent variable";
-    if (independentVariable != null && !independentVariable.equals(variableNode))
-    {
-      throw new IllegalArgumentException("independentVariable is already set to " + independentVariable + " in " + this + " cannot set it to " + variableNode);
-    }
-    if (placeholderVariable != null && placeholderVariable.equals(variableNode))
-    {
-      throw new IllegalArgumentException("independentVariable cannot be set to "
-                                         + variableNode
-                                         + " since it is already the placeholder variable of "
-                                         + toStringExtended());
-
-    }
-    this.independentVariable = variableNode;
-    return independentVariable;
-  }
-
-  public VariableNode<D, C, F> getIndependentVariable()
-  {
-    return independentVariable;
-  }
-
-  public Expression<D, C, F> clearIndependentVariable()
-  {
-    independentVariable = null;
-    return this;
-
   }
 
 }
