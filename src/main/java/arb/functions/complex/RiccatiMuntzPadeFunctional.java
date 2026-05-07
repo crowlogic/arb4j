@@ -39,10 +39,9 @@ import arb.solvers.HankelSolver;
  *   extraction. This is used by downstream Edgeworth expansion code to compute
  *   cumulants directly from polynomial coefficients.
  *
- *   Independent variable name: the polynomials produced by the nullary functions
- *   have their {@link ComplexPolynomial#independentVariableName} set to "v"
- *   so that toString() and related operations display the polynomial in terms
- *   of v rather than the default "x".
+ *   Independent variable name: the nullary functions declare "v" as the 
+ *   independent variable via the v➔ arrow syntax. The expression compiler
+ *   sets this on the produced ComplexPolynomial via setIndependentVariableName().
  *
  *   When parameters change, the caller invalidates P, Q, R.
  *   Calling invalidateCache() on this functional re-evaluates P, Q, R
@@ -137,21 +136,21 @@ public class RiccatiMuntzPadeFunctional extends
     }
     this.α = α;
 
-    // Evaluate nullaries and register polynomials as context variables
-    p = P.evaluate();
+    // Allocate polynomial variables once, register in context
+    p = new ComplexPolynomial();
     p.setName("p");
-    setIndependentVariableName(p, "v");
     context.registerVariable(p);
 
-    q = Q.evaluate();
+    q = new ComplexPolynomial();
     q.setName("q");
-    setIndependentVariableName(q, "v");
     context.registerVariable(q);
 
-    r = R.evaluate();
+    r = new ComplexPolynomial();
     r.setName("r");
-    setIndependentVariableName(r, "v");
     context.registerVariable(r);
+
+    // Populate from nullary functions
+    refreshPolynomials();
 
     // Discriminant: q(v)² − 4·p(v)·r(v)
     discriminant = ComplexFunction.express("q(v)² − 4·p(v)·r(v)", context);
@@ -172,24 +171,6 @@ public class RiccatiMuntzPadeFunctional extends
   }
 
   /**
-   * Set the independent variable name on a ComplexPolynomial.
-   * TODO: Replace with a proper public setter once ComplexPolynomial is updated.
-   */
-  private static void setIndependentVariableName(ComplexPolynomial poly, String name)
-  {
-    try
-    {
-      java.lang.reflect.Field field = ComplexPolynomial.class.getDeclaredField("independentVariableName");
-      field.setAccessible(true);
-      field.set(poly, name);
-    }
-    catch (NoSuchFieldException | IllegalAccessException e)
-    {
-      throw new RuntimeException("Failed to set independentVariableName on ComplexPolynomial", e);
-    }
-  }
-
-  /**
    * Convenience constructor with fresh context.
    */
   public RiccatiMuntzPadeFunctional(Real α, 
@@ -202,16 +183,14 @@ public class RiccatiMuntzPadeFunctional extends
 
   /**
    * Refresh polynomial variables from nullary functions.
+   * Passes the existing polynomials as result arguments to avoid allocation.
    * Call this (or invalidateCache()) when underlying parameters have changed.
    */
   public void refreshPolynomials()
   {
-    p.set(P.evaluate());
-    setIndependentVariableName(p, "v");
-    q.set(Q.evaluate());
-    setIndependentVariableName(q, "v");
-    r.set(R.evaluate());
-    setIndependentVariableName(r, "v");
+    P.evaluate(null, 0, 128, p);
+    Q.evaluate(null, 0, 128, q);
+    R.evaluate(null, 0, 128, r);
   }
 
   @Override
