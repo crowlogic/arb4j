@@ -2,6 +2,7 @@ package arb.expressions.nodes.unary;
 
 import static arb.expressions.Compiler.*;
 
+import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -50,23 +51,22 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
     super(expression,
           resolveArgWithFunctionalDomain(expression, functionNode));
     expression.require(')');
-    this.functionNode        = functionNode;
+    this.functionNode   = functionNode;
     functionNode.parent = this;
   }
 
   /**
    * When the function node's type is a reified functional (e.g. RealPolynomial),
    * its argument is an evaluation-point variable (e.g. x in P(3)(x)). If the
-   * enclosing expression is nullary, promote its domainType to the scalar type
-   * of the functional so that the argument variable can be resolved as an
-   * independent variable. The promotion persists so that downstream code
-   * (e.g. IntegralNode.parseFunctionForm) finds the independent variable
-   * already assigned.
+   * enclosing expression is nullary, promote its domainType to the scalar type of
+   * the functional so that the argument variable can be resolved as an
+   * independent variable. The promotion persists so that downstream code (e.g.
+   * IntegralNode.parseFunctionForm) finds the independent variable already
+   * assigned.
    */
   @SuppressWarnings("unchecked")
-  private static <D, C, F extends Function<? extends D, ? extends C>> Node<D, C, F> resolveArgWithFunctionalDomain(
-                                                                                                                    Expression<D, C, F> expression,
-                                                                                                                    Node<D, C, F> functionNode)
+  private static <D, C, F extends Function<? extends D, ? extends C>> Node<D, C, F> resolveArgWithFunctionalDomain(Expression<D, C, F> expression,
+                                                                                                                   Node<D, C, F> functionNode)
   {
     promoteDomainToScalarOfReifiedFunctional(expression, functionNode);
     return expression.resolve();
@@ -74,10 +74,10 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
 
   /**
    * When the function node's type is a reified functional (e.g.
-   * {@code RealPolynomial}) and the enclosing expression is nullary, promote
-   * the enclosing expression's {@code domainType} to the scalar type of the
-   * functional so that the argument variable resolves as an independent
-   * variable. Idempotent.
+   * {@code RealPolynomial}) and the enclosing expression is nullary, promote the
+   * enclosing expression's {@code domainType} to the scalar type of the
+   * functional so that the argument variable resolves as an independent variable.
+   * Idempotent.
    */
   @SuppressWarnings("unchecked")
   public static <D, C, F extends Function<? extends D, ? extends C>> void promoteDomainToScalarOfReifiedFunctional(Expression<D, C, F> expression,
@@ -85,7 +85,7 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
   {
     Class<?> fnType = functionNode.type();
     if (expression.isNullaryFunction() && Function.class.isAssignableFrom(fnType) && !fnType.isInterface()
-        && !java.lang.reflect.Modifier.isAbstract(fnType.getModifiers()))
+                  && !Modifier.isAbstract(fnType.getModifiers()))
     {
       expression.domainType = (Class<? extends D>) Compiler.scalarType(fnType);
     }
@@ -95,7 +95,7 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
   {
     super(expression,
           argNode);
-    this.functionNode        = functionNode;
+    this.functionNode   = functionNode;
     functionNode.parent = this;
   }
 

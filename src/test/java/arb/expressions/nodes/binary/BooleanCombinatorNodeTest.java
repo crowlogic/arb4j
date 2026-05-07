@@ -7,7 +7,6 @@ import arb.exceptions.CompilerException;
 import arb.expressions.Expression;
 import arb.expressions.nodes.LiteralConstantNode;
 import arb.expressions.nodes.Node;
-import arb.expressions.nodes.binary.BooleanCombinatorNode.Operator;
 import arb.expressions.nodes.binary.ComparisonNode.Operator.*;
 import arb.expressions.nodes.unary.BooleanNegationNode;
 import arb.functions.Function;
@@ -92,7 +91,7 @@ public class BooleanCombinatorNodeTest extends
     var host = hostExpression();
     var lhs  = lessThan(host, 1, 2); // true
     var rhs  = lessThan(host, 3, 4); // true
-    assertEquals("(1<2) ∧ (3<4) → 1", 1, eval(new BooleanCombinatorNode<>(host, lhs, Operator.AND, rhs)));
+    assertEquals("(1<2) ∧ (3<4) → 1", 1, eval(new BooleanCombinatorNode<>(host, lhs, BooleanOperator.AND, rhs)));
   }
 
   public static void testAndTrueFalse()
@@ -100,7 +99,7 @@ public class BooleanCombinatorNodeTest extends
     var host = hostExpression();
     var lhs  = lessThan(host, 1, 2); // true
     var rhs  = lessThan(host, 4, 3); // false
-    assertEquals("(1<2) ∧ (4<3) → 0", 0, eval(new BooleanCombinatorNode<>(host, lhs, Operator.AND, rhs)));
+    assertEquals("(1<2) ∧ (4<3) → 0", 0, eval(new BooleanCombinatorNode<>(host, lhs, BooleanOperator.AND, rhs)));
   }
 
   public static void testAndFalseTrue()
@@ -108,7 +107,7 @@ public class BooleanCombinatorNodeTest extends
     var host = hostExpression();
     var lhs  = lessThan(host, 2, 1); // false
     var rhs  = lessThan(host, 3, 4); // true
-    assertEquals("(2<1) ∧ (3<4) → 0", 0, eval(new BooleanCombinatorNode<>(host, lhs, Operator.AND, rhs)));
+    assertEquals("(2<1) ∧ (3<4) → 0", 0, eval(new BooleanCombinatorNode<>(host, lhs, BooleanOperator.AND, rhs)));
   }
 
   public static void testAndFalseFalse()
@@ -116,7 +115,7 @@ public class BooleanCombinatorNodeTest extends
     var host = hostExpression();
     var lhs  = lessThan(host, 2, 1); // false
     var rhs  = lessThan(host, 4, 3); // false
-    assertEquals("(2<1) ∧ (4<3) → 0", 0, eval(new BooleanCombinatorNode<>(host, lhs, Operator.AND, rhs)));
+    assertEquals("(2<1) ∧ (4<3) → 0", 0, eval(new BooleanCombinatorNode<>(host, lhs, BooleanOperator.AND, rhs)));
   }
 
   // ---------------- OR truth table ----------------
@@ -126,7 +125,7 @@ public class BooleanCombinatorNodeTest extends
     var host = hostExpression();
     var lhs  = lessThan(host, 1, 2); // true
     var rhs  = lessThan(host, 3, 4); // true
-    assertEquals("(1<2) ∨ (3<4) → 1", 1, eval(new BooleanCombinatorNode<>(host, lhs, Operator.OR, rhs)));
+    assertEquals("(1<2) ∨ (3<4) → 1", 1, eval(new BooleanCombinatorNode<>(host, lhs, BooleanOperator.OR, rhs)));
   }
 
   public static void testOrTrueFalse()
@@ -134,7 +133,7 @@ public class BooleanCombinatorNodeTest extends
     var host = hostExpression();
     var lhs  = lessThan(host, 1, 2); // true
     var rhs  = lessThan(host, 4, 3); // false
-    assertEquals("(1<2) ∨ (4<3) → 1", 1, eval(new BooleanCombinatorNode<>(host, lhs, Operator.OR, rhs)));
+    assertEquals("(1<2) ∨ (4<3) → 1", 1, eval(new BooleanCombinatorNode<>(host, lhs, BooleanOperator.OR, rhs)));
   }
 
   public static void testOrFalseTrue()
@@ -142,7 +141,7 @@ public class BooleanCombinatorNodeTest extends
     var host = hostExpression();
     var lhs  = lessThan(host, 2, 1); // false
     var rhs  = lessThan(host, 3, 4); // true
-    assertEquals("(2<1) ∨ (3<4) → 1", 1, eval(new BooleanCombinatorNode<>(host, lhs, Operator.OR, rhs)));
+    assertEquals("(2<1) ∨ (3<4) → 1", 1, eval(new BooleanCombinatorNode<>(host, lhs, BooleanOperator.OR, rhs)));
   }
 
   public static void testOrFalseFalse()
@@ -150,7 +149,7 @@ public class BooleanCombinatorNodeTest extends
     var host = hostExpression();
     var lhs  = lessThan(host, 2, 1); // false
     var rhs  = lessThan(host, 4, 3); // false
-    assertEquals("(2<1) ∨ (4<3) → 0", 0, eval(new BooleanCombinatorNode<>(host, lhs, Operator.OR, rhs)));
+    assertEquals("(2<1) ∨ (4<3) → 0", 0, eval(new BooleanCombinatorNode<>(host, lhs, BooleanOperator.OR, rhs)));
   }
 
   // ---------------- NOT truth table ----------------
@@ -197,11 +196,11 @@ public class BooleanCombinatorNodeTest extends
     {
       var p = lessThan(host, a[0], a[1]);
       var q = lessThan(host, a[2], a[3]);
-      var lhs = new BooleanNegationNode<>(host, new BooleanCombinatorNode<>(host, p, Operator.AND, q));
+      var lhs = new BooleanNegationNode<>(host, new BooleanCombinatorNode<>(host, p, BooleanOperator.AND, q));
 
       var pNeg = new BooleanNegationNode<>(host, lessThan(host, a[0], a[1]));
       var qNeg = new BooleanNegationNode<>(host, lessThan(host, a[2], a[3]));
-      var rhs  = new BooleanCombinatorNode<>(host, pNeg, Operator.OR, qNeg);
+      var rhs  = new BooleanCombinatorNode<>(host, pNeg, BooleanOperator.OR, qNeg);
 
       assertEquals("De Morgan disagreement for assignment " + java.util.Arrays.toString(a),
                    eval(rhs),
@@ -219,8 +218,8 @@ public class BooleanCombinatorNodeTest extends
     var a = lessThan(host, 1, 2);
     var b = lessThan(host, 3, 4);
     var c = lessThan(host, 5, 6);
-    var bAndC = new BooleanCombinatorNode<>(host, b, Operator.AND, c);
-    var all   = new BooleanCombinatorNode<>(host, a, Operator.AND, bAndC);
+    var bAndC = new BooleanCombinatorNode<>(host, b, BooleanOperator.AND, c);
+    var all   = new BooleanCombinatorNode<>(host, a, BooleanOperator.AND, bAndC);
     assertEquals("triple AND of all-true → 1", 1, eval(all));
   }
 
@@ -235,8 +234,8 @@ public class BooleanCombinatorNodeTest extends
     var a = lessThan(host, 1, 2); // true
     var b = lessThan(host, 4, 3); // false
     var c = lessThan(host, 5, 6); // true
-    var bAndC = new BooleanCombinatorNode<>(host, b, Operator.AND, c);
-    var all   = new BooleanCombinatorNode<>(host, a, Operator.AND, bAndC);
+    var bAndC = new BooleanCombinatorNode<>(host, b, BooleanOperator.AND, c);
+    var all   = new BooleanCombinatorNode<>(host, a, BooleanOperator.AND, bAndC);
     assertEquals("triple AND with middle-false → 0", 0, eval(all));
   }
 
@@ -251,7 +250,7 @@ public class BooleanCombinatorNodeTest extends
     // Asking: is 1 ∈ {0, 1}?  i.e. (1=0) ∨ (1=1)
     var p = equalTo(host, 1, 0); // false
     var q = equalTo(host, 1, 1); // true
-    assertEquals("(1=0) ∨ (1=1) → 1", 1, eval(new BooleanCombinatorNode<>(host, p, Operator.OR, q)));
+    assertEquals("(1=0) ∨ (1=1) → 1", 1, eval(new BooleanCombinatorNode<>(host, p, BooleanOperator.OR, q)));
   }
 
   // ---------------- type() invariants ----------------
@@ -261,8 +260,8 @@ public class BooleanCombinatorNodeTest extends
     var host = hostExpression();
     var p    = lessThan(host, 1, 2);
     var q    = lessThan(host, 3, 4);
-    assertEquals("AND.type() = int.class", int.class, new BooleanCombinatorNode<>(host, p, Operator.AND, q).type());
-    assertEquals("OR.type() = int.class",  int.class, new BooleanCombinatorNode<>(host, p, Operator.OR,  q).type());
+    assertEquals("AND.type() = int.class", int.class, new BooleanCombinatorNode<>(host, p, BooleanOperator.AND, q).type());
+    assertEquals("OR.type() = int.class",  int.class, new BooleanCombinatorNode<>(host, p, BooleanOperator.OR,  q).type());
   }
 
   public static void testNegationTypeIsInt()
@@ -286,7 +285,7 @@ public class BooleanCombinatorNodeTest extends
     var p       = lessThan(host, 1, 2);
     try
     {
-      new BooleanCombinatorNode<>(host, p, Operator.AND, literal);
+      new BooleanCombinatorNode<>(host, p, BooleanOperator.AND, literal);
       fail("expected CompilerException for non-predicate right operand");
     }
     catch (CompilerException expected)

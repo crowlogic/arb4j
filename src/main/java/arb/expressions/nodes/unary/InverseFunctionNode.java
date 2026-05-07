@@ -52,7 +52,7 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
                                 UnaryOperationNode<D, R, F>
 {
 
-  private static final Logger logger              = LoggerFactory.getLogger(InverseFunctionNode.class);
+  private static final Logger logger               = LoggerFactory.getLogger(InverseFunctionNode.class);
 
   /**
    * The Unicode superscript inverse marker: ⁻¹ (U+207B U+00B9). The parser
@@ -60,12 +60,12 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
    * opening parenthesis to distinguish compositional inverse from multiplicative
    * inverse.
    */
-  public static final String  INVERSE_MARKER      = "⁻¹";
+  public static final String  INVERSE_MARKER       = "⁻¹";
 
   /**
    * Default number of terms in the Lagrange series reversion
    * 
-   * FIXME: THIS SHOULD BE dynamic based on whatever bits of precision 
+   * FIXME: THIS SHOULD BE dynamic based on whatever bits of precision
    */
   public static final int     DEFAULT_SERIES_ORDER = 20;
 
@@ -87,16 +87,14 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
    * Whether the forward function is a contextual (user-defined) function rather
    * than a builtin.
    */
-  public boolean              contextual          = false;
+  public boolean              contextual           = false;
 
   /**
    * Field name in the generated class for the cached inverted function (type is
-   * the function interface, e.g. RealFunction or ComplexFunction). Initially null;
-   * populated on first evaluate() call.
+   * the function interface, e.g. RealFunction or ComplexFunction). Initially
+   * null; populated on first evaluate() call.
    */
   private String              invertedFunctionFieldName;
-
-
 
   /**
    * Constructs an InverseFunctionNode for the compositional inverse of the named
@@ -123,7 +121,7 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
         expression.registerReferencedFunction(forwardFunctionName, forwardMapping);
       }
     }
-    generatedType = expression.coDomainType;
+    generatedType                  = expression.coDomainType;
 
     // Allocate a field on the generated class for caching the inverted function.
     // The function interface type (e.g. RealFunction) is an interface, so
@@ -196,18 +194,18 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
   {
     // f⁻¹(arg) applied: this node itself gives f⁻¹(arg)
     // f′ evaluated at f⁻¹(arg)
-    FunctionNode<D, R, F> fPrimeAtInverse   = new FunctionNode<>(expression,
-                                                                 forwardFunctionName,
-                                                                 this.spliceInto(expression),
-                                                                 1);
+    var           fPrimeAtInverse   = new FunctionNode<>(expression,
+                                                         forwardFunctionName,
+                                                         this.spliceInto(expression),
+                                                         1);
 
     // 1 / f′(f⁻¹(arg))
-    Node<D, R, F>         inverseDerivative = one().div(fPrimeAtInverse);
+    var inverseDerivative = one().div(fPrimeAtInverse);
 
     // Chain rule: multiply by arg′ if arg depends on the variable
     if (arg.dependsOn(variable))
     {
-      Node<D, R, F> argDerivative = arg.differentiate(variable);
+      var argDerivative = arg.differentiate(variable);
       return argDerivative.mul(inverseDerivative).simplify();
     }
 
@@ -257,17 +255,18 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
    * Generates bytecode that computes f⁻¹(y) via Lagrange series reversion:
    *
    * <pre>
-   *   if (!invInit) {
-   *       inv = forwardFunc.invert(y, seriesOrder, bits);
-   *       invInit = true;
-   *   }
-   *   result = inv.evaluate(y, order, bits, result);
+   * if (!invInit)
+   * {
+   *   inv = forwardFunc.invert(y, seriesOrder, bits);
+   *   invInit = true;
+   * }
+   * result = inv.evaluate(y, order, bits, result);
    * </pre>
    *
    * The forward function's Taylor series is expanded at the first evaluation
    * point, the constant term is zeroed, and the series is reverted via
-   * {@code arb_poly_revert_series}. The resulting inverted function is cached
-   * in a field of the generated class so the expensive reversion runs once.
+   * {@code arb_poly_revert_series}. The resulting inverted function is cached in
+   * a field of the generated class so the expensive reversion runs once.
    */
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
@@ -284,7 +283,7 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
 
     // ---- Lazy initialization check ----
     // if (this.inv1 != null) goto alreadyInverted
-    Label alreadyInverted = new Label();
+    Label    alreadyInverted       = new Label();
     expression.loadFieldOntoStack(loadThisOntoStack(mv), invertedFunctionFieldName, functionDescriptor);
     mv.visitJumpInsn(Opcodes.IFNONNULL, alreadyInverted);
 
@@ -293,16 +292,13 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
     // Load forward function reference: this.<forwardFunctionName>
     if (contextual && forwardMapping != null)
     {
-      expression.loadFieldOntoStack(loadThisOntoStack(mv),
-                                    forwardFunctionName,
-                                    forwardMapping.functionFieldDescriptor());
+      expression.loadFieldOntoStack(loadThisOntoStack(mv), forwardFunctionName, forwardMapping.functionFieldDescriptor());
     }
     else
     {
-      throw new UnsupportedOperationException(
-          String.format("Inverse of non-contextual function '%s' is not supported; "
-                        + "the function must be registered in the expression context",
-                        forwardFunctionName));
+      throw new UnsupportedOperationException(String.format("Inverse of non-contextual function '%s' is not supported; "
+                                                            + "the function must be registered in the expression context",
+                                                            forwardFunctionName));
     }
 
     // Load center point (the argument value y, used as expansion center)
@@ -318,7 +314,8 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
     loadBitsParameterOntoStack(mv);
     // Stack: [forwardFunc, centerPoint, 20, bits]
 
-    // INVOKEINTERFACE functionInterfaceType.invert(domainType, int, int) → functionInterfaceType
+    // INVOKEINTERFACE functionInterfaceType.invert(domainType, int, int) →
+    // functionInterfaceType
     mv.visitMethodInsn(Opcodes.INVOKEINTERFACE,
                        Type.getInternalName(functionInterfaceType),
                        "invert",
@@ -355,11 +352,7 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
     // Stack: [invertedFunction, y, order, bits, result]
 
     // INVOKEINTERFACE functionInterfaceType.evaluate(D, int, int, R) → R
-    mv.visitMethodInsn(Opcodes.INVOKEINTERFACE,
-                       Type.getInternalName(functionInterfaceType),
-                       "evaluate",
-                       Compiler.evaluationMethodDescriptor,
-                       true);
+    mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, Type.getInternalName(functionInterfaceType), "evaluate", Compiler.evaluationMethodDescriptor, true);
     // Stack: [result]
 
     Compiler.cast(mv, resultType);

@@ -1,4 +1,10 @@
 package arb.functions.polynomials;
+import arb.*;
+import arb.Integer;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
+import arb.functions.Function;
+import arb.functions.HypergeometricFunction;
 
 /**
  * Represents a hypergeometric {@link Real}-valued {@link Polynomial}, that is,
@@ -37,10 +43,6 @@ package arb.functions.polynomials;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-import arb.*;
-import arb.functions.Function;
-import arb.functions.HypergeometricFunction;
-
 public class RealHypergeometricPolynomialFunction extends
                                                   HypergeometricFunction<Real, RealPolynomial, RealPolynomialNullaryFunction>
 {

@@ -161,7 +161,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
   {
     operandFunctionMapping = context.registerFunctionMapping("f", expression.domainType, expression.coDomainType, expression.functionClass);
 
-    VariableNode<D, R, F> diffVar = variable != null ? variable : expression.getIndependentVariable();
+    var diffVar = variable != null ? variable : expression.getIndependentVariable();
 
     operandFunctionMapping.expression = operand.asExpression(diffVar);
 
@@ -231,8 +231,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
     expression.require(")");
 
 
-    this.operand = tryInlineOperandBody(this.operand);
-    operand      = this.operand;
+    operand = tryInlineOperandBody(this.operand);
 
     if (operand.hasClosedFormFractionalDerivative(variable))
     {

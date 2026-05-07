@@ -3888,86 +3888,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     constructNewObject(loadThisOntoStack(mv), functionName);
     invokeDefaultConstructor(duplicateTopOfTheStack(mv), functionName);
     putField(mv, className, functionName, fieldDescriptor);
+    Compiler.jumpTo(mv, alreadyAssigned);
     mv.visitLabel(alreadyAssigned);
     initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv), className, functionName, functionName, context.variableClassStream());
-    generatePeerOperandSelfInjections(mv, mapping, fieldDescriptor);
     return mv;
-  }
-
-  /**
-   * For each peer FunctionMapping (other than self) whose Expression has an
-   * intermediate variable typed as the self class, emit:
-   *
-   * if (!this.<peer>.isInitialized) { this.<peer>.initialize(); }
-   * this.<peer>.<intermediateVarName>.<selfFieldName> = this;
-   *
-   * This reproduces, in the bytecode emitted from generateSelfReference, the
-   * inner-operand self-injection that the working a.java performs after the
-   * existing peer null-guard blocks.
-   */
-  protected void generatePeerOperandSelfInjections(MethodVisitor mv, FunctionMapping<?, ?, ?> selfMapping, String selfFieldDescriptor)
-  {
-    if (selfMapping == null)
-    {
-      return;
-    }
-    String selfDescriptor = selfMapping.functionFieldDescriptor();
-    for (var peerEntry : getReferencedFunctions().entrySet())
-    {
-      String peerName = peerEntry.getKey();
-      if (peerName.equals(functionName))
-      {
-        continue;
-      }
-      FunctionMapping<?, ?, ?> peerMapping = peerEntry.getValue();
-      if (peerMapping == null || peerMapping.expression == null || peerMapping.expression.rootNode == null)
-      {
-        continue;
-      }
-      String                                     peerFieldDescriptor = peerMapping.functionFieldDescriptor();
-      String                                     peerInternalName    = peerFieldDescriptor.substring(1, peerFieldDescriptor.length() - 1);
-      java.util.List<NAryOperationNode<?, ?, ?>> naryNodes           = new java.util.ArrayList<>();
-      peerMapping.expression.rootNode.accept(node ->
-      {
-        if (node instanceof NAryOperationNode<?, ?, ?> nary)
-        {
-          naryNodes.add(nary);
-        }
-      });
-      for (NAryOperationNode<?, ?, ?> nary : naryNodes)
-      {
-        if (nary.operandFunctionFieldName == null || nary.operandExpression == null)
-        {
-          continue;
-        }
-        FunctionMapping<?, ?, ?> opMapping = nary.operandMapping;
-        if (opMapping == null)
-        {
-          continue;
-        }
-        FunctionMapping<?, ?, ?> innerSelf = nary.operandExpression.getReferencedFunctions().get(functionName);
-        if (innerSelf == null)
-        {
-          continue;
-        }
-        String operandFieldDescriptor = opMapping.functionFieldDescriptor();
-        String operandInternalName    = operandFieldDescriptor.substring(1, operandFieldDescriptor.length() - 1);
-        Label  peerAlreadyInitialized = new Label();
-        loadThisOntoStack(mv);
-        mv.visitFieldInsn(GETFIELD, className, peerName, peerFieldDescriptor);
-        mv.visitFieldInsn(GETFIELD, peerInternalName, "isInitialized", "Z");
-        mv.visitJumpInsn(IFNE, peerAlreadyInitialized);
-        loadThisOntoStack(mv);
-        mv.visitFieldInsn(GETFIELD, className, peerName, peerFieldDescriptor);
-        mv.visitMethodInsn(INVOKEVIRTUAL, peerInternalName, "initialize", "()V", false);
-        mv.visitLabel(peerAlreadyInitialized);
-        loadThisOntoStack(mv);
-        mv.visitFieldInsn(GETFIELD, className, peerName, peerFieldDescriptor);
-        mv.visitFieldInsn(GETFIELD, peerInternalName, nary.operandFunctionFieldName, operandFieldDescriptor);
-        loadThisOntoStack(mv);
-        mv.visitFieldInsn(PUTFIELD, operandInternalName, functionName, selfDescriptor);
-      }
-    }
   }
 
   public MethodVisitor generateSetResultInvocation(MethodVisitor mv, Class<?> inputType)
@@ -4340,9 +4264,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * The bytecode-level skip in the {@code else} branch of
    * {@code generateFunctionInitializer} (Expression.java:2388) remains a
    * deliberately supported configuration — callers who do <em>not</em> want
-   * automatic {@link Context}-variable propagation into their referenced functions can
-   * still construct an {@link Expression} and drive {@link #newInstance()}
-   * directly without going through {@link #instantiate()}.
+   * automatic {@link Context}-variable propagation into their referenced
+   * functions can still construct an {@link Expression} and drive
+   * {@link #newInstance()} directly without going through {@link #instantiate()}.
    */
   protected void instantiateAndInjectReferencedFunctions(F parentInstance)
   {

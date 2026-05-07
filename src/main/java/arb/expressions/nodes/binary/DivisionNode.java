@@ -113,7 +113,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   /**
    * Extract ax² + bx + c. Handles terms like x², -x², 5x², x, 3, etc.
    */
-  private QuadraticCoefficients<D, R, F> extractQuadraticCoefficients(Node<D, R, F> node, VariableNode<D, R, F> variable)
+  private Quadratic<D, R, F> extractQuadraticCoefficients(Node<D, R, F> node, VariableNode<D, R, F> variable)
   {
     Node<D, R, F>                 coeffA = null;
     Node<D, R, F>                 coeffB = null;
@@ -161,7 +161,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return null;
     }
 
-    return new QuadraticCoefficients<>(coeffA,
+    return new Quadratic<>(coeffA,
                                        coeffB,
                                        coeffC,
                                        variable);

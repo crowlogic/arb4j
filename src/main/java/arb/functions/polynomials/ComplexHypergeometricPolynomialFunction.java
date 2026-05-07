@@ -2,10 +2,16 @@ package arb.functions.polynomials;
 
 import arb.Complex;
 import arb.ComplexPolynomial;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.functions.Function;
 import arb.functions.HypergeometricFunction;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
 
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public class ComplexHypergeometricPolynomialFunction extends
                                                      HypergeometricFunction<Complex, ComplexPolynomial, ComplexPolynomialNullaryFunction>
 {

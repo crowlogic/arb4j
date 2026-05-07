@@ -38,9 +38,15 @@ package arb.functions.rational;
  *      {@link TheArb4jLibrary}
  */
 import arb.*;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.functions.Function;
 import arb.functions.HypergeometricFunction;
 
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public class ComplexRationalHypergeometricFunction extends
                                                    HypergeometricFunction<Complex, ComplexRationalFunction, ComplexRationalNullaryFunction>
 {

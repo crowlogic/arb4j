@@ -10,6 +10,8 @@ import org.objectweb.asm.MethodVisitor;
 
 import arb.*;
 import arb.Integer;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.expressions.*;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
@@ -18,6 +20,10 @@ import arb.functions.complex.ComplexPolynomialNullaryFunction;
 import arb.functions.polynomials.*;
 import arb.functions.rational.*;
 
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                        FunctionNode<D, R, F> implements
                                        Initializable

@@ -8,11 +8,17 @@ import org.slf4j.LoggerFactory;
 
 import arb.*;
 import arb.Integer;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.ArbException;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.utensils.Utensils;
 
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 @SuppressWarnings("hiding")
 public abstract class HypergeometricFunction<P extends NamedRing<P>, C extends NamedRing<? extends C>, N extends NullaryFunction<C>> implements
                                             NullaryFunction<C>,
