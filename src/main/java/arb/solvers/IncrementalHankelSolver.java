@@ -1,207 +1,194 @@
-package arb.solvers;
+package arb;
 
-import arb.Complex;
-import arb.ComplexMatrix;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
+public class InverseHankelSolver {
 
-/**
- * Incremental Hankel QR solver.
- *
- * <p>
- * Maintains a QR factorization of the growing Hankel system:
- *
- *   H_M x = b
- *
- * without reconstructing H_M for each M.
- *
- * <p>
- * The Hankel structure ensures each extension M → M+1 is rank-structured,
- * enabling O(M²) QR updates instead of O(M³) refactorization.
- *
- * <p>
- * No arrays, no doubles, no reallocation of coefficient vectors.
- */
-public final class IncrementalHankelSolver implements AutoCloseable
-{
-  private int M = 0;
+  private final int prec;
 
-  // Stored coefficient stream reference (not copied)
-  private final Complex coeff;
+  private ComplexMatrix inv;     // A_n^{-1}
+  private ComplexMatrix u;       // column vector
+  private ComplexMatrix v;       // row vector
+  private ComplexMatrix b;       // new column
+  private ComplexMatrix c;       // new row
 
-  // QR decomposition stored explicitly
-  private ComplexMatrix Q;
-  private ComplexMatrix R;
+  public InverseHankelSolver(int initialSize, int prec) {
+    this.prec = prec;
 
-  private boolean initialized = false;
-  private boolean singular = false;
-
-  public IncrementalHankelSolver(Complex coeff)
-  {
-    this.coeff = coeff;
+    inv = ComplexMatrix.newMatrix(initialSize, initialSize);
+    u   = ComplexMatrix.newMatrix(initialSize, 1);
+    v   = ComplexMatrix.newMatrix(1, initialSize);
+    b   = ComplexMatrix.newMatrix(initialSize, 1);
+    c   = ComplexMatrix.newMatrix(initialSize, 1);
   }
 
-  // ───────────────────────────────────────────────────────────────
-  // Public API
-  // ───────────────────────────────────────────────────────────────
-
-  public int size()
-  {
-    return M;
+  // ----------------------------
+  // bootstrap ONLY place where solve is allowed
+  // ----------------------------
+  public void initialize(ComplexMatrix A0, ComplexMatrix A0inv) {
+    inv.set(A0inv);
   }
 
-  public boolean wasSingular()
-  {
-    return singular;
-  }
-
-  /**
-   * Solve at order M, growing factorization if needed.
-   */
-  public ComplexMatrix solve(int targetM, ComplexMatrix rhs, int bits, ComplexMatrix x)
-  {
-    if (targetM < 1)
-    {
-      throw new IllegalArgumentException("M must be ≥ 1");
-    }
-
-    ensureUpTo(targetM, bits);
-
-    // Solve R x = Q* rhs (back-substitution)
-    ComplexMatrix y = rhs.clone();
-    Q.adjointMultiply(rhs, bits, y); // y = Q* b
-
-    R.backSubstitute(y, bits, x);
-
-    return x;
-  }
-
-  // ───────────────────────────────────────────────────────────────
-  // Incremental construction
-  // ───────────────────────────────────────────────────────────────
-
-  private void ensureUpTo(int targetM, int bits)
-  {
-    if (!initialized)
-    {
-      initialize(bits);
-    }
-
-    while (M < targetM)
-    {
-      extend(bits);
+  // ----------------------------
+  // Hankel vector builder
+  // ----------------------------
+  private void buildVector(ComplexMatrix out, HankelSequence seq, int offset) {
+    for (int i = 0; i < out.getNumRows(); i++) {
+      out.set(i, 0, seq.get(i + offset));
     }
   }
 
-  private void initialize(int bits)
-  {
-    M = 1;
+  // ----------------------------
+  // main incremental step
+  // ----------------------------
+  public void extend(HankelSequence seq, int n) {
 
-    Q = ComplexMatrix.identity(1);
-    R = ComplexMatrix.newMatrix(1, 1);
+    // resize buffers if needed
+    if (b.getNumRows() != n) {
+      b.resize(n, 1);
+      c.resize(n, 1);
+      u.resize(n, 1);
+      v.resize(1, n);
+    }
 
-    // R(0,0) = c_{M-1}
-    R.set(0, 0, coeff.get(0));
+    buildVector(b, seq, n);
+    buildVector(c, seq, n);
 
-    initialized = true;
+    // --------------------------------------------------
+    // u = A^{-1} b   (matrix-vector multiply, NOT solve)
+    // --------------------------------------------------
+    matVec(inv, b, u);
+
+    // --------------------------------------------------
+    // v = A^{-T} c   (transpose matvec, NOT solve)
+    // --------------------------------------------------
+    ComplexMatrix invT = ComplexMatrix.newMatrix(n, n);
+    inv.transpose(invT);
+    matVec(invT, c, v);
+    invT.close();
+
+    // --------------------------------------------------
+    // Schur complement s = d - c^T u
+    // --------------------------------------------------
+    Complex d = seq.get(2 * n);
+    Complex s = Complex.newScalar();
+    s.set(d);
+
+    Complex cu = dot(c, u);
+    s.sub(cu, prec, s);
+
+    Complex invS = Complex.newScalar();
+    invS.set(1);
+    invS.div(s, prec, invS);
+
+    // --------------------------------------------------
+    // rank-1 update: inv += (u v^T)/s
+    // --------------------------------------------------
+    rank1Update(inv, u, v, invS, n);
+
+    // --------------------------------------------------
+    // border updates
+    // --------------------------------------------------
+    updateBorder(inv, u, v, invS, n);
   }
 
-  /**
-   * Extend QR factorization from M → M+1.
-   */
-  private void extend(int bits)
-  {
-    int newM = M + 1;
+  // ----------------------------
+  // matrix-vector multiply
+  // ----------------------------
+  private void matVec(ComplexMatrix A, ComplexMatrix x, ComplexMatrix y) {
+    int n = A.getNumRows();
 
-    ComplexMatrix Rnew = ComplexMatrix.newMatrix(newM, newM);
+    for (int i = 0; i < n; i++) {
+      Complex sum = Complex.newScalar();
+      sum.set(0);
 
-    // ── copy old R ─────────────────────────────────────────────
-    for (int i = 0; i < M; i++)
-    {
-      for (int j = 0; j < M; j++)
-      {
-        Rnew.set(i, j, R.get(i, j));
-      }
-    }
+      for (int j = 0; j < n; j++) {
+        Complex aij = A.get(i, j);
+        Complex xj  = x.get(j, 0);
 
-    // ── compute new Hankel row/column contributions ───────────
-    // Hankel entry: H[i,j] = c[M + i - j - 1]
+        Complex tmp = Complex.newScalar();
+        tmp.set(aij);
+        tmp.mul(xj, prec, tmp);
 
-    // last column of H_{M+1}
-    for (int i = 0; i < newM; i++)
-    {
-      Complex hij = coeff.get(M + i - newM);
-      Rnew.set(i, M, hij);
-    }
-
-    // bottom row (only last element new diagonal)
-    Complex diag = coeff.get(2 * M);
-    Rnew.set(M, M, diag);
-
-    // ── QR update step (conceptual Givens sweep) ──────────────
-    // We orthogonalize the last column against existing Q
-
-    Q.expandTo(newM);
-    R = Rnew;
-
-    applyGivensRotations(newM, bits);
-
-    M = newM;
-
-    if (R.get(M - 1, M - 1).isZero())
-    {
-      singular = true;
-    }
-  }
-
-  /**
-   * Apply structured QR stabilization (Givens rotations).
-   *
-   * NOTE: This is the only numerically heavy step and replaces full solve().
-   */
-  private void applyGivensRotations(int n, int bits)
-  {
-    for (int i = n - 1; i > 0; i--)
-    {
-      Complex a = R.get(i - 1, n - 1);
-      Complex b = R.get(i,     n - 1);
-
-      if (b.isZero())
-      {
-        continue;
+        sum.add(tmp, prec, sum);
       }
 
-      Complex c = new Complex();
-      Complex s = new Complex();
+      y.set(i, 0, sum);
+    }
+  }
 
-      ComplexMatrix.computeGivens(a, b, c, s, bits);
+  // ----------------------------
+  // dot product
+  // ----------------------------
+  private Complex dot(ComplexMatrix a, ComplexMatrix b) {
+    Complex s = Complex.newScalar();
+    s.set(0);
 
-      // Apply rotation to R rows
-      for (int j = 0; j < n; j++)
-      {
-        Complex rij  = R.get(i - 1, j);
-        Complex rij1 = R.get(i, j);
+    for (int i = 0; i < a.getNumRows(); i++) {
+      Complex tmp = Complex.newScalar();
+      tmp.set(a.get(i, 0));
+      tmp.mul(b.get(i, 0), prec, tmp);
+      s.add(tmp, prec, s);
+    }
 
-        R.set(i - 1, j, c.mul(rij, bits).add(s.mul(rij1, bits), bits));
-        R.set(i, j,     c.mul(rij1, bits).sub(s.mul(rij, bits), bits));
-      }
+    return s;
+  }
 
-      // Apply rotation to Q columns
-      for (int j = 0; j < n; j++)
-      {
-        Complex qij  = Q.get(j, i - 1);
-        Complex qij1 = Q.get(j, i);
+  // ----------------------------
+  // rank-1 update: A += u v^T * alpha
+  // ----------------------------
+  private void rank1Update(ComplexMatrix A,
+                            ComplexMatrix u,
+                            ComplexMatrix v,
+                            Complex alpha,
+                            int n) {
 
-        Q.set(j, i - 1, c.mul(qij, bits).add(s.mul(qij1, bits), bits));
-        Q.set(j, i,     c.mul(qij1, bits).sub(s.mul(qij, bits), bits));
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < n; j++) {
+
+        Complex uv = Complex.newScalar();
+        uv.set(u.get(i, 0));
+        uv.mul(v.get(0, j), prec, uv);
+        uv.mul(alpha, prec, uv);
+
+        Complex aij = A.get(i, j);
+        aij.add(uv, prec, aij);
+
+        A.set(i, j, aij);
       }
     }
   }
 
-  @Override
-  public void close()
-  {
-    if (Q != null) Q.close();
-    if (R != null) R.close();
+  // ----------------------------
+  // last row/column extension
+  // ----------------------------
+  private void updateBorder(ComplexMatrix A,
+                            ComplexMatrix u,
+                            ComplexMatrix v,
+                            Complex invS,
+                            int n) {
+
+    // last column
+    for (int i = 0; i < n; i++) {
+      Complex val = u.get(i, 0);
+      val.mul(invS, prec, val);
+      val.neg(val);
+      A.set(i, n, val);
+    }
+
+    // last row
+    for (int j = 0; j < n; j++) {
+      Complex val = v.get(0, j);
+      val.mul(invS, prec, val);
+      val.neg(val);
+      A.set(n, j, val);
+    }
+
+    // bottom-right
+    Complex br = Complex.newScalar();
+    br.set(invS);
+    A.set(n, n, br);
+  }
+
+  public ComplexMatrix getInverse() {
+    return inv;
   }
 }
