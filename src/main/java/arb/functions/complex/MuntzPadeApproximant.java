@@ -43,19 +43,20 @@ import arb.solvers.IncrementalHankelSolver;
  * <p>
  * All constructed approximants are retained and reused.
  */
-public final class MuntzPadeApproximant
-    implements ComplexFunction,
-               AutoCloseable {
+public final class MuntzPadeApproximant implements
+                                        ComplexFunction,
+                                        AutoCloseable
+{
 
   /**
    * Fractional exponent μ.
    */
-  public final Real α;
+  public final Real                         α;
 
   /**
    * Fixed external parameter.
    */
-  public final Complex v;
+  public final Complex                      v;
 
   /**
    * Frozen coefficient sequence:
@@ -64,12 +65,12 @@ public final class MuntzPadeApproximant
    *     k ↦ a_k(v)
    * </pre>
    */
-  private final ComplexSequence coeffs;
+  private final ComplexSequence             coeffs;
 
   /**
    * Working precision used for Padé construction.
    */
-  private final int workingBits;
+  private final int                         workingBits;
 
   /**
    * Incremental nested Hankel inverse updater.
@@ -80,7 +81,7 @@ public final class MuntzPadeApproximant
    *     H(i,j)=a_{i+j+1}
    * </pre>
    */
-  private final IncrementalHankelSolver hankel;
+  private final IncrementalHankelSolver     hankel;
 
   /**
    * Cached Padé hierarchy.
@@ -88,49 +89,41 @@ public final class MuntzPadeApproximant
    * Index convention:
    *
    * <pre>
-   *     approximants.get(M-1) == R_M
+   * approximants.get(M - 1) == R_M
    * </pre>
    */
-  private final ArrayList<DiagonalPadePair> approximants =
-      new ArrayList<>();
+  private final ArrayList<DiagonalPadePair> approximants = new ArrayList<>();
 
   /**
    * Scratch evaluation point:
    *
    * <pre>
-   *     z=t^μ
+   * z = t ^ μ
    * </pre>
    */
-  private final Complex z = new Complex();
+  private final Complex                     z            = new Complex();
 
-  public MuntzPadeApproximant(
-      Real α,
-      ComplexFunctionSequence a,
-      Complex v,
-      int bits
-  ) {
+  public MuntzPadeApproximant(Real α, ComplexFunctionSequence a, Complex v, int bits)
+  {
 
-    this.α = α;
+    this.α           = α;
 
-    this.v = v.newCopy();
+    this.v           = new Complex(v);
 
     this.workingBits = bits;
 
     /**
      * Freeze coefficients at this v.
      */
-    this.coeffs = k -> {
+    this.coeffs      = (k, order, abits, result) ->
+                     {
 
-      Complex c = new Complex();
+                       Complex c = new Complex();
 
-      a.apply(k)
-       .evaluate(this.v,
-                 1,
-                 bits,
-                 c);
+                       a.evaluate(k, 0, abits).evaluate(this.v, 1, bits, c);
 
-      return c;
-    };
+                       return c;
+                     };
 
     /**
      * Nested Hankel family:
@@ -139,83 +132,56 @@ public final class MuntzPadeApproximant
      *     H(i,j)=a_{i+j+1}
      * </pre>
      */
-    this.hankel =
-        new IncrementalHankelSolver(
-            coeffs,
-            1,
-            bits
-        );
+    this.hankel      = new IncrementalHankelSolver(coeffs,
+                                                   1,
+                                                   bits);
   }
 
   @Override
-  public Complex evaluate(
-      Complex t,
-      int order,
-      int bits,
-      Complex result
-  ) {
+  public Complex evaluate(Complex t, int order, int bits, Complex result)
+  {
 
     /**
      * z = t^μ
      */
-    t.pow(α,
-          bits,
-          z);
+    t.pow(α, bits, z);
 
     /**
      * Threshold = 2^{-bits}
      */
-    try (
-        Real threshold = new Real();
-        Real bound = new Real()
-    ) {
+    try ( Real threshold = new Real(); Real bound = new Real())
+    {
 
-      threshold.one()
-               .mul2e(-bits,
-                       threshold);
+      threshold.one().mul2e(-bits, threshold);
 
       int M = 1;
 
-      while (true) {
+      while (true)
+      {
 
         ensureApproximantExists(M);
 
-        if (M < 2) {
+        if (M < 2)
+        {
           M++;
           continue;
         }
 
-        DiagonalPadePair rM =
-            approximants.get(M - 1);
+        DiagonalPadePair rM   = approximants.get(M - 1);
 
-        DiagonalPadePair rMm1 =
-            approximants.get(M - 2);
+        DiagonalPadePair rMm1 = approximants.get(M - 2);
 
-        DiagonalPadePair rMm2 =
-            (M >= 3)
-                ? approximants.get(M - 3)
-                : null;
+        DiagonalPadePair rMm2 = (M >= 3) ? approximants.get(M - 3) : null;
 
-        boundSuccessiveDifferences(
-            rMm2,
-            rMm1,
-            rM,
-            z,
-            bits,
-            bound
-        );
+        boundSuccessiveDifferences(rMm2, rMm1, rM, z, bits, bound);
 
         /**
          * Converged.
          */
-        if (bound.compareTo(threshold) <= 0) {
+        if (bound.compareTo(threshold) <= 0)
+        {
 
-          return rM.evaluate(
-              z,
-              order,
-              bits,
-              result
-          );
+          return rM.evaluate(z, order, bits, result);
         }
 
         M++;
@@ -226,57 +192,45 @@ public final class MuntzPadeApproximant
   /**
    * Ensure R_M exists in the hierarchy.
    */
-  private void ensureApproximantExists(
-      int M
-  ) {
+  private void ensureApproximantExists(int M)
+  {
 
-    while (approximants.size() < M) {
+    while (approximants.size() < M)
+    {
 
-      int nextM =
-          approximants.size() + 1;
+      int nextM = approximants.size() + 1;
 
-      approximants.add(
-          buildPadePair(nextM)
-      );
+      approximants.add(buildPadePair(nextM));
     }
   }
 
   /**
    * Build the diagonal Padé approximant R_M incrementally.
    */
-  private DiagonalPadePair buildPadePair(
-      int M
-  ) {
+  private DiagonalPadePair buildPadePair(int M)
+  {
 
-    DiagonalPadePair pade =
-        new DiagonalPadePair(M);
+    DiagonalPadePair  pade = new DiagonalPadePair(M);
 
-    ComplexPolynomial P = pade.P;
-    ComplexPolynomial Q = pade.Q;
+    ComplexPolynomial P    = pade.P;
+    ComplexPolynomial Q    = pade.Q;
 
-    try (
-        ComplexMatrix rhs =
-            ComplexMatrix.newMatrix(M, 1)
-    ) {
+    try ( ComplexMatrix rhs = ComplexMatrix.newMatrix(M, 1))
+    {
 
       /**
        * rhs_i = -a_{M+i+1}
        */
-      for (int i = 0; i < M; i++) {
+      for (int i = 0; i < M; i++)
+      {
 
-        rhs.get(i, 0)
-           .set(coeffs.get(M + i + 1))
-           .neg(rhs.get(i, 0));
+        rhs.get(i, 0).set(coeffs.get(M + i + 1)).neg(rhs.get(i, 0));
       }
 
-      ComplexMatrix q =
-          hankel.solve(
-              rhs,
-              M,
-              workingBits
-          );
+      ComplexMatrix q = hankel.solve(rhs, M, workingBits);
 
-      try {
+      try
+      {
 
         /**
          * Denominator:
@@ -290,10 +244,10 @@ public final class MuntzPadeApproximant
 
         Q.get(0).one();
 
-        for (int j = 1; j <= M; j++) {
+        for (int j = 1; j <= M; j++)
+        {
 
-          Q.set(j,
-                q.get(j - 1, 0));
+          Q.set(j, q.get(j - 1, 0));
         }
 
         /**
@@ -303,29 +257,24 @@ public final class MuntzPadeApproximant
          *     A(z)=Σ a_k z^{k-1}
          * </pre>
          */
-        try (
-            ComplexPolynomial A =
-                new ComplexPolynomial();
+        try ( ComplexPolynomial A = new ComplexPolynomial();
 
-            ComplexPolynomial AQ =
-                new ComplexPolynomial()
-        ) {
+              ComplexPolynomial AQ = new ComplexPolynomial())
+        {
 
           A.fitLength(2 * M);
           A.setLength(2 * M);
 
-          for (int k = 0; k < 2 * M; k++) {
+          for (int k = 0; k < 2 * M; k++)
+          {
 
-            A.get(k)
-             .set(coeffs.get(k + 1));
+            A.get(k).set(coeffs.get(k + 1));
           }
 
           /**
            * AQ = A*Q
            */
-          A.mul(Q,
-                workingBits,
-                AQ);
+          A.mul(Q, workingBits, AQ);
 
           /**
            * Numerator:
@@ -339,16 +288,17 @@ public final class MuntzPadeApproximant
 
           P.get(0).zero();
 
-          for (int n = 1; n <= M; n++) {
+          for (int n = 1; n <= M; n++)
+          {
 
-            P.get(n)
-             .set(AQ.get(n - 1));
+            P.get(n).set(AQ.get(n - 1));
           }
         }
 
         return pade;
       }
-      finally {
+      finally
+      {
         q.close();
       }
     }
@@ -357,75 +307,41 @@ public final class MuntzPadeApproximant
   /**
    * Successive-difference convergence bound.
    */
-  private Real boundSuccessiveDifferences(
-      DiagonalPadePair rMm2,
-      DiagonalPadePair rMm1,
-      DiagonalPadePair rM,
-      Complex z,
-      int bits,
-      Real result
-  ) {
+  private Real boundSuccessiveDifferences(DiagonalPadePair rMm2, DiagonalPadePair rMm1, DiagonalPadePair rM, Complex z, int bits, Real result)
+  {
 
-    try (
-        Complex valM = new Complex();
-        Complex valMm1 = new Complex();
-        Complex valMm2 = new Complex();
+    try ( Complex valM = new Complex(); Complex valMm1 = new Complex(); Complex valMm2 = new Complex();
 
-        Complex deltaM = new Complex();
-        Complex deltaMm1 = new Complex();
+          Complex deltaM = new Complex(); Complex deltaMm1 = new Complex();
 
-        Real absM = result.borrowVariable();
-        Real absMm1 = result.borrowVariable();
+          Real absM = result.borrowVariable(); Real absMm1 = result.borrowVariable();
 
-        Real num = result.borrowVariable();
-        Real denom = result.borrowVariable()
-    ) {
+          Real num = result.borrowVariable(); Real denom = result.borrowVariable())
+    {
 
-      rM.evaluate(z,
-                  1,
-                  bits,
-                  valM);
+      rM.evaluate(z, 1, bits, valM);
 
-      rMm1.evaluate(z,
-                    1,
-                    bits,
-                    valMm1);
+      rMm1.evaluate(z, 1, bits, valMm1);
 
-      if (rMm2 == null) {
+      if (rMm2 == null)
+      {
         valMm2.zero();
       }
-      else {
-        rMm2.evaluate(z,
-                      1,
-                      bits,
-                      valMm2);
+      else
+      {
+        rMm2.evaluate(z, 1, bits, valMm2);
       }
 
-      return valM.sub(valMm1,
-                      bits,
-                      deltaM)
-                 .abs(bits,
-                      absM)
-                 .mul(absM,
-                      bits,
-                      num)
-                 .div(
-                     valMm1.sub(valMm2,
-                                bits,
-                                deltaMm1)
-                           .abs(bits,
-                                absMm1)
-                           .sub(absM,
-                                bits,
-                                denom),
-                     bits,
-                     result
-                 );
+      return valM.sub(valMm1, bits, deltaM)
+                 .abs(bits, absM)
+                 .mul(absM, bits, num)
+                 .div(valMm1.sub(valMm2, bits, deltaMm1).abs(bits, absMm1).sub(absM, bits, denom), bits, result);
     }
   }
 
   @Override
-  public void close() {
+  public void close()
+  {
 
     z.close();
 
@@ -433,7 +349,8 @@ public final class MuntzPadeApproximant
 
     hankel.close();
 
-    for (DiagonalPadePair pade : approximants) {
+    for (DiagonalPadePair pade : approximants)
+    {
       pade.close();
     }
 

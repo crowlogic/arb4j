@@ -21,7 +21,7 @@ import arb.functions.integer.ComplexFunctionSequence;
  * because convergence depends on the actual evaluation point:
  *
  * <pre>
- *     z = t^μ
+ * z = t ^ μ
  * </pre>
  *
  * relative to the singularity structure of the meromorphic continuation.
@@ -50,17 +50,17 @@ import arb.functions.integer.ComplexFunctionSequence;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class MuntzPadeFunctional
-    implements ComplexFunctional,
-               AutoCloseable {
+public class MuntzPadeFunctional implements
+                                 ComplexFunctional,
+                                 AutoCloseable
+{
 
-  private static final Logger log =
-      LoggerFactory.getLogger(MuntzPadeFunctional.class);
+  private static final Logger    log = LoggerFactory.getLogger(MuntzPadeFunctional.class);
 
   /**
    * Fractional exponent μ ∈ (0,1).
    */
-  public Real α;
+  public Real                    α;
 
   /**
    * Müntz coefficients:
@@ -71,34 +71,28 @@ public class MuntzPadeFunctional
    */
   public ComplexFunctionSequence a;
 
-  protected String name;
+  protected String               name;
 
-  public MuntzPadeFunctional() {}
+  public MuntzPadeFunctional()
+  {
+  }
 
-  public MuntzPadeFunctional(
-      Real α,
-      ComplexFunctionSequence a
-  ) {
+  public MuntzPadeFunctional(Real α, ComplexFunctionSequence a)
+  {
     this.α = α;
     this.a = a;
   }
 
-  public MuntzPadeFunctional(
-      String name,
-      Real α,
-      ComplexFunctionSequence a
-  ) {
-    this(α, a);
+  public MuntzPadeFunctional(String name, Real α, ComplexFunctionSequence a)
+  {
+    this(α,
+         a);
     this.name = name;
   }
 
   @Override
-  public ComplexFunction evaluate(
-      Complex v,
-      int order,
-      int bits,
-      ComplexFunction result
-  ) {
+  public ComplexFunction evaluate(Complex v, int order, int bits, ComplexFunction result)
+  {
 
     /**
      * No global Padé-order selection occurs here anymore.
@@ -106,21 +100,21 @@ public class MuntzPadeFunctional
      * The returned approximant adaptively determines the required order during
      * evaluation at the actual requested point t.
      */
-    return new MuntzPadeApproximant(
-        α,
-        a,
-        v,
-        bits
-    );
+    return new MuntzPadeApproximant(α,
+                                    a,
+                                    v,
+                                    bits);
   }
 
   @Override
-  public String getName() {
+  public String getName()
+  {
     return name;
   }
 
   @Override
-  public void close() {
+  public void close()
+  {
     // no owned native resources
   }
 }
