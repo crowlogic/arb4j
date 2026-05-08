@@ -54,16 +54,7 @@
     computable a-posteriori error bound <math|<around|\||y<around|(|t|)>-y<rsub|M><around|(|t|)>|\|>\<le\><around|\||\<Delta\><rsub|M><around|(|t<rsup|\<mu\>>|)>|\|><rsup|2>/<around|(|<around|\||\<Delta\><rsub|M-1><around|(|t<rsup|\<mu\>>|)>|\|>-<around|\||\<Delta\><rsub|M><around|(|t<rsup|\<mu\>>|)>|\|>|)>>
     in terms of successive Padé differences
     <math|\<Delta\><rsub|k>=R<rsub|k>-R<rsub|k-1>> is derived from a uniform
-    geometric tail estimate. A concluding section identifies the deeper
-    structure: the substitution <math|z=t<rsup|\<mu\>>> promotes the solution
-    to a <em|resurgent transseries> in <math|z>, the Padé step is the
-    computational instantiation of <em|Borel--Padé resummation>, and the
-    global analytic continuation is governed by a scalar <em|Riemann--Hilbert
-    problem> whose jump contours are the Stokes lines of the transseries.
-    This perspective points to natural generalizations to higher-degree
-    polynomial nonlinearities, fractional ODE systems via Hermite--Padé
-    simultaneous approximation, and non-constant coefficients via
-    isomonodromic Riemann--Hilbert problems of Painlevé type.
+    geometric tail estimate.
   </abstract>>
 
   <\table-of-contents|toc>
@@ -88,7 +79,7 @@
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-5>>
 
-    <with|par-left|1tab|2.2<space|2spc>The Müntz\UTau Puiseux series solution
+    <with|par-left|1tab|The Müntz\UTau Puiseux series solution
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-6>>
 
@@ -820,86 +811,86 @@
 
 <\references>
   <\collection>
-    <associate|ass:diff_bound|<tuple|18|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-1|<tuple|1|2|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-10|<tuple|3.3|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-11|<tuple|3.4|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|ass:diff_bound|<tuple|18|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-1|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-10|<tuple|3.3|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-11|<tuple|3.4|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|auto-12|<tuple|5|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-2|<tuple|1.1|2|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-3|<tuple|1.2|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-2|<tuple|1.1|1|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-3|<tuple|1.2|2|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|auto-4|<tuple|2|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|auto-5|<tuple|2.1|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-6|<tuple|9|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-7|<tuple|3|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-8|<tuple|3.1|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-9|<tuple|3.2|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-6|<tuple|9|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-7|<tuple|3|5|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-8|<tuple|3.1|5|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-9|<tuple|3.2|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|bib-baker1996|<tuple|baker1996|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|bib-callegaro2021|<tuple|callegaro2021|10|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|bib-costin2008|<tuple|costin2008|10|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|bib-deift1999|<tuple|deift1999|10|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|bib-ecalle1981|<tuple|ecalle1981|10|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-callegaro2021|<tuple|callegaro2021|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-costin2008|<tuple|costin2008|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-deift1999|<tuple|deift1999|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-ecalle1981|<tuple|ecalle1981|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|bib-eleuch2019|<tuple|eleuch2019|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|bib-esmaeili2015|<tuple|esmaeili2015|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|bib-gatheral2019|<tuple|gatheral2019|10|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|bib-montessus1902|<tuple|montessus1902|10|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|bib-nuttall1970|<tuple|nuttall1970|10|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|bib-pommerenke1973|<tuple|pommerenke1973|10|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|bib-stahl1997|<tuple|stahl1997|10|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-gatheral2019|<tuple|gatheral2019|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-montessus1902|<tuple|montessus1902|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-nuttall1970|<tuple|nuttall1970|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-pommerenke1973|<tuple|pommerenke1973|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-stahl1997|<tuple|stahl1997|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|def:Caputo|<tuple|2|2|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|def:D_M|<tuple|17|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|def:RL|<tuple|1|2|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|def:muntz|<tuple|6|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Delta_def|<tuple|35|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|def:D_M|<tuple|17|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|def:RL|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|def:muntz|<tuple|6|2|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:Delta_def|<tuple|35|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|eq:Dmu_Muntz|<tuple|6|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|eq:Dmu_power|<tuple|5|2|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|eq:Ir_Muntz|<tuple|7|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|eq:Ir_power|<tuple|4|2|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Pade1|<tuple|29|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Pade2|<tuple|30|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:Pade1|<tuple|29|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:Pade2|<tuple|30|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|eq:Pade_match|<tuple|28|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:RL_int|<tuple|1|2|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:R_M_def|<tuple|32|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:T0_choice|<tuple|16|5|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:a1_const|<tuple|12|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:ak_const|<tuple|13|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:RL_int|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:R_M_def|<tuple|32|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:T0_choice|<tuple|16|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:a1_const|<tuple|12|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:ak_const|<tuple|13|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|eq:caputo|<tuple|2|2|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|eq:caputo_RL|<tuple|3|2|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:cauchy_bound|<tuple|18|5|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:eps_g|<tuple|33|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:cauchy_bound|<tuple|18|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:eps_g|<tuple|33|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|eq:eps_structure|<tuple|34|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:error_bound|<tuple|37|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:error_bound_uniform|<tuple|36|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:error_bound|<tuple|37|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:error_bound_uniform|<tuple|36|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|eq:frac_riccati|<tuple|9|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:frac_riccati_V|<tuple|10|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:g_series|<tuple|26|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:hankel_system|<tuple|31|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:frac_riccati_V|<tuple|10|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:g_series|<tuple|26|5|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:hankel_system|<tuple|31|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|eq:prod_Muntz|<tuple|8|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:y_global_pade|<tuple|40|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:y_series|<tuple|11|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:y_global_pade|<tuple|40|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:y_series|<tuple|11|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|footnote-1|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|footnr-1|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|lem:Pade_system|<tuple|16|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|lem:hankel|<tuple|14|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|lem:Pade_system|<tuple|16|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|lem:hankel|<tuple|14|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|prop:closure_M|<tuple|8|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|prop:powers|<tuple|4|2|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|rem:Dmu_const|<tuple|5|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|rem:HM_invertible|<tuple|15|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|rem:conv_k1|<tuple|11|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|rem:Dmu_const|<tuple|5|2|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|rem:HM_invertible|<tuple|15|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|rem:conv_k1|<tuple|11|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|rem:correction|<tuple|3|2|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|rem:meromorphy|<tuple|24|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|rem:muntz_complete|<tuple|7|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|rem:radius_local|<tuple|13|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|rem:regularity|<tuple|9|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|rem:which_thm|<tuple|22|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|sec:pade|<tuple|3|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|sec:prelim|<tuple|1|2|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|rem:meromorphy|<tuple|24|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|rem:muntz_complete|<tuple|7|2|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|rem:radius_local|<tuple|13|5|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|rem:regularity|<tuple|9|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|rem:which_thm|<tuple|22|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|sec:pade|<tuple|3|5|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|sec:prelim|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|sec:riccati|<tuple|2|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|thm:NP|<tuple|21|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|thm:dMdB|<tuple|20|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|thm:error|<tuple|19|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|thm:pade_riccati|<tuple|23|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|thm:radius|<tuple|12|5|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|thm:riccati_series|<tuple|10|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|thm:dMdB|<tuple|20|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|thm:error|<tuple|19|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|thm:pade_riccati|<tuple|23|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|thm:radius|<tuple|12|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|thm:riccati_series|<tuple|10|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
   </collection>
 </references>
 

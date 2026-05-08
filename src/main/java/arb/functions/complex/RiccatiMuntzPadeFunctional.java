@@ -3,15 +3,14 @@ package arb.functions.complex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import arb.Complex;
-import arb.ComplexPolynomial;
-import arb.Real;
+import arb.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
-import arb.functions.*;
-import arb.functions.integer.*;
-import arb.solvers.HankelSolver;
+import arb.functions.ComplexFunctional;
+import arb.functions.Jacobian;
+import arb.functions.integer.ComplexFunctionSequence;
+import arb.functions.integer.Sequence;
 
 /**
  * <pre>
@@ -67,10 +66,10 @@ public class RiccatiMuntzPadeFunctional extends
 {
 
   @SuppressWarnings("unused")
-  private static final Logger                   log                         = LoggerFactory.getLogger(RiccatiMuntzPadeFunctional.class);
+  private static final Logger             log                         = LoggerFactory.getLogger(RiccatiMuntzPadeFunctional.class);
 
   /** Documentation-only string of the equation in standard form. */
-  public static final String                    FRACTIONAL_RICCATI_EQUATION = "t➔Đ^(μ)y(t;v)=t➔p(v)+q(v)*y(t;v)+r(v)*y(t;v)²";
+  public static final String              FRACTIONAL_RICCATI_EQUATION = "t➔Đ^(μ)y(t;v)=t➔p(v)+q(v)*y(t;v)+r(v)*y(t;v)²";
 
   /**
    * Nullary polynomial factory functions (caller-provided). evaluate() with no
@@ -97,7 +96,7 @@ public class RiccatiMuntzPadeFunctional extends
   /** Whether this instance owns (and must close) α. */
   private boolean                         ownsAlpha;
 
-  private ComplexFunction                       discriminant;
+  private ComplexFunction                 discriminant;
 
   /**
    * Construct with nullary polynomial factory functions.
@@ -179,12 +178,24 @@ public class RiccatiMuntzPadeFunctional extends
          R);
   }
 
+  public RiccatiMuntzPadeFunctional(Context context, Real μ, String pExpr, String qExpr, String rExpr)
+  {
+    this(context,
+         μ,
+         ComplexPolynomialNullaryFunction.express("P", pExpr, context),
+         ComplexPolynomialNullaryFunction.express("Q", qExpr, context),
+         ComplexPolynomialNullaryFunction.express("R", rExpr, context));
+    refreshPolynomials();
+
+  }
+
   public RiccatiMuntzPadeFunctional(Real μ, String string, String string2, String string3)
   {
-    this.R = null;
-    this.r = new ComplexPolynomial();
-    assert false : "TODO: implement this constructor";
-    
+    this(new Context(),
+         μ,
+         string,
+         string2,
+         string3);
   }
 
   /**
