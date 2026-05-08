@@ -77,9 +77,9 @@ public class RiccatiMuntzPadeFunctional extends
    * argument returns the current ComplexPolynomial. The caller invalidates these
    * when parameters change.
    */
-  public final ComplexPolynomialNullaryFunction P;
-  public final ComplexPolynomialNullaryFunction Q;
-  public final ComplexPolynomialNullaryFunction R;
+  public ComplexPolynomialNullaryFunction P;
+  public ComplexPolynomialNullaryFunction Q;
+  public ComplexPolynomialNullaryFunction R;
 
   /**
    * Polynomial coefficient variables registered in context. Populated by
@@ -87,15 +87,15 @@ public class RiccatiMuntzPadeFunctional extends
    * Coefficient access via p[0], p[1], etc., is supported by
    * ComplexPolynomial.get(int).
    */
-  public final ComplexPolynomial                p;
-  public final ComplexPolynomial                q;
-  public final ComplexPolynomial                r;
+  public ComplexPolynomial                p;
+  public ComplexPolynomial                q;
+  public ComplexPolynomial                r;
 
   /** The Context holding the symbolic parameters (μ, p, q, r, S, a). */
-  public final Context                          context;
+  public Context                          context;
 
   /** Whether this instance owns (and must close) α. */
-  private final boolean                         ownsAlpha;
+  private boolean                         ownsAlpha;
 
   private ComplexFunction                       discriminant;
 
@@ -177,6 +177,14 @@ public class RiccatiMuntzPadeFunctional extends
          P,
          Q,
          R);
+  }
+
+  public RiccatiMuntzPadeFunctional(Real μ, String string, String string2, String string3)
+  {
+    this.R = null;
+    this.r = new ComplexPolynomial();
+    assert false : "TODO: implement this constructor";
+    
   }
 
   /**

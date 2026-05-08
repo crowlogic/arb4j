@@ -42,6 +42,8 @@ import arb.solvers.IncrementalHankelSolver;
  *
  * <p>
  * All constructed approximants are retained and reused.
+ * 
+ * FIXME: THIS NEEDS TO MOVE THE B(RHS) FROM THE SOLVE TO THE CONSTRUCTR
  */
 public final class MuntzPadeApproximant implements
                                         ComplexFunction,
@@ -224,7 +226,7 @@ public final class MuntzPadeApproximant implements
       for (int i = 0; i < M; i++)
       {
 
-        rhs.get(i, 0).set(coeffs.get(M + i + 1)).neg(rhs.get(i, 0));
+        rhs.get(i, 0).set(coeffs.apply(M + i + 1)).neg(rhs.get(i, 0));
       }
 
       ComplexMatrix q = hankel.solve(rhs, M, workingBits);
@@ -268,7 +270,7 @@ public final class MuntzPadeApproximant implements
           for (int k = 0; k < 2 * M; k++)
           {
 
-            A.get(k).set(coeffs.get(k + 1));
+            A.get(k).set(coeffs.apply(k + 1));
           }
 
           /**
