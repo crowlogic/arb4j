@@ -5,6 +5,7 @@ import arb.ComplexPolynomial;
 import arb.Real;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.integer.ComplexFunctionSequence;
+import arb.functions.integer.ComplexPolynomialSequence;
 import arb.functions.real.RealNullaryFunction;
 import junit.framework.TestCase;
 
@@ -37,7 +38,7 @@ public class RiccatiMittagLefflerFunctionTest extends
 
     try ( RiccatiMuntzPadeFunctional eq = new RiccatiMuntzPadeFunctional(μ, "1", "-1/2", "3/10"))
     {
-      ComplexFunctionSequence a = eq.muntzBasis();
+      ComplexPolynomialSequence a = eq.muntzBasis();
       assertNotNull("Müntz coefficient sequence must be compiled", a);
 
       arb.Integer one = new arb.Integer();

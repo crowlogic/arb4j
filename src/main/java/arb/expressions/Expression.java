@@ -184,7 +184,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                              "J",
                                                                              "W",
                                                                              "j",
-                                                                             "R",
                                                                              "ℭ",
                                                                              "binom",
                                                                              "binomial",
@@ -5159,8 +5158,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return node;
   }
 
+  public boolean enableLommelPolynomials = true;
+
   protected Node<D, C, F> resolveFunction(VariableReference<D, C, F> reference)
   {
+    if (reference.is("R") && (context == null || (context != null && !context.disableLommelPolynomials)))
+    {
+      return new LommelPolynomialNode<>(this);
+    }
+
     switch (reference.name)
     {
     case "int":
@@ -5183,6 +5189,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     case "ζ":
     case "zeta":
       return new ZetaJetNode<>(this);
+
     case "when":
       return new WhenNode<>(this);
     case "fracdiff":
@@ -5201,8 +5208,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return new LambertWFunctionNode<>(this);
     case "j":
       return new SphericalBesselFunctionNodeOfTheFirstKind<>(this);
-    case "R":
-      return new LommelPolynomialNode<>(this);
     case "ℭ":
     case "binom":
     case "binomial":
@@ -5375,6 +5380,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
       else
       {
+        if (isReifiedFunctional())
+        {
+          assert false : "TODO: call setIndependentVariableName " + arrowVar + " on the polynomial or rational function for " + expression + " with remaining " + remaining() + " where node=" + node;
+        }
         throw new CompilerException("arrow variable declaration '"
                                     + arrowVar
                                     + "➔' found but coDomain "

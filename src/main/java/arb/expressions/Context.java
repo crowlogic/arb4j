@@ -58,6 +58,14 @@ import javafx.collections.ObservableMap;
 public class Context implements
                      AutoCloseable
 {
+  public Context let(String name, Class<?> type)
+  {
+    assert false : "enable     case \"R\":\n"
+                   + "      return new LommelPolynomialNode<>(this);\n"
+                   + " with some new let functionality so the namespace doesnt get too cluttered up.. the aforemented case should be handled in Expression#resolveFunction for instance";
+    return this;
+  }
+
   @SuppressWarnings("unchecked")
   protected <D, C, F extends Function<? extends D, ? extends C>> Expression<D, C, F> getFunctionExpression(String functionName)
   {
@@ -149,6 +157,8 @@ public class Context implements
 
   public final ObservableMap<String, Named>   variables;
 
+  public boolean disableLommelPolynomials;
+
   public ExpressionClassLoader getClassLoader()
   {
     if (classLoader == null)
@@ -204,11 +214,11 @@ public class Context implements
   }
 
   /**
-   * Phase-two wiring helper invoked from generated {@code initialize()}
-   * bytecode: returns the canonical {@link FunctionMapping#instance} for
-   * {@code functionName}, or {@code null} when the registry has no entry or
-   * the entry has not yet been instantiated. The generated code uses a
-   * {@code null} return as a fallback signal to allocate a fresh operand.
+   * Phase-two wiring helper invoked from generated {@code initialize()} bytecode:
+   * returns the canonical {@link FunctionMapping#instance} for
+   * {@code functionName}, or {@code null} when the registry has no entry or the
+   * entry has not yet been instantiated. The generated code uses a {@code null}
+   * return as a fallback signal to allocate a fresh operand.
    */
   public Function<?, ?> lookupFunctionInstance(String functionName)
   {
@@ -269,17 +279,18 @@ public class Context implements
   }
 
   /**
-   * Find the public field of {@code clazz} whose name is {@code name} and
-   * whose declared type accepts {@code valueClass}. Returns {@code null} if
-   * none exists.
+   * Find the public field of {@code clazz} whose name is {@code name} and whose
+   * declared type accepts {@code valueClass}. Returns {@code null} if none
+   * exists.
    *
-   * <p>Used by all three reference injectors. The compiler may emit two
-   * public fields with the same name when an identifier is bound on both
-   * the {@code variables} and {@code functions} sides of a Context: Java
-   * field identity at the bytecode level is name+descriptor, so two fields
-   * named {@code r} of types {@code Real} and {@code RealFunction} coexist.
-   * {@link Class#getField(String)} returns an arbitrary one; this helper
-   * filters by type so the right side gets injected.
+   * <p>
+   * Used by all three reference injectors. The compiler may emit two public
+   * fields with the same name when an identifier is bound on both the
+   * {@code variables} and {@code functions} sides of a Context: Java field
+   * identity at the bytecode level is name+descriptor, so two fields named
+   * {@code r} of types {@code Real} and {@code RealFunction} coexist.
+   * {@link Class#getField(String)} returns an arbitrary one; this helper filters
+   * by type so the right side gets injected.
    */
   protected static java.lang.reflect.Field findAssignableField(Class<?> clazz, String name, Class<?> valueClass)
   {
@@ -354,9 +365,9 @@ public class Context implements
    *
    * <p>
    * Identical bindings — same name bound to the very same instance — are
-   * coalesced silently (idempotent merge). Different bindings — same name
-   * bound to a different instance — throw a {@link CompilerException} with
-   * the names, types, and identities of both sides so callers can disambiguate.
+   * coalesced silently (idempotent merge). Different bindings — same name bound
+   * to a different instance — throw a {@link CompilerException} with the names,
+   * types, and identities of both sides so callers can disambiguate.
    * </p>
    *
    * <p>
@@ -396,9 +407,9 @@ public class Context implements
 
     for (var entry : context.functions.entrySet())
     {
-      String                       name     = entry.getKey();
-      FunctionMapping<?, ?, ?>     incoming = entry.getValue();
-      FunctionMapping<?, ?, ?>     existing = functions.get(name);
+      String                   name     = entry.getKey();
+      FunctionMapping<?, ?, ?> incoming = entry.getValue();
+      FunctionMapping<?, ?, ?> existing = functions.get(name);
       if (existing != null && existing != incoming)
       {
         throw new CompilerException(format("Cannot merge: function '%s' is already bound in this Context to a different mapping.\n"
@@ -726,6 +737,12 @@ public class Context implements
   {
     return toString()
                   + functionEntryStream().map(entry -> "\n" + entry.getKey() + "=" + entry.getValue().getExpressionString()).collect(Collectors.joining(","));
+  }
+
+  public Context disableLommelPolynomials()
+  {
+    disableLommelPolynomials = true;
+    return this;
   }
 
 }

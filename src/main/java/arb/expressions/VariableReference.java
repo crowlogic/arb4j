@@ -176,4 +176,9 @@ public class VariableReference<D, R, F extends Function<? extends D, ? extends R
     return LiteralConstantNode.constantSymbols.contains(name);
   }
 
+  public boolean is(String string)
+  {
+    return string.equals(name);
+  }
+
 }

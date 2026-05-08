@@ -11,6 +11,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.ComplexFunctional;
 import arb.functions.integer.ComplexFunctionSequence;
+import arb.functions.integer.ComplexPolynomialSequence;
 
 /**
  * Adaptive Müntz–Padé functional.
@@ -69,7 +70,7 @@ public class MuntzPadeFunctional implements
    *     k ↦ v ↦ a_k(v)
    * </pre>
    */
-  public ComplexFunctionSequence a;
+  public ComplexPolynomialSequence a;
 
   protected String               name;
 
@@ -77,13 +78,13 @@ public class MuntzPadeFunctional implements
   {
   }
 
-  public MuntzPadeFunctional(Real α, ComplexFunctionSequence a)
+  public MuntzPadeFunctional(Real α, ComplexPolynomialSequence a)
   {
     this.α = α;
     this.a = a;
   }
 
-  public MuntzPadeFunctional(String name, Real α, ComplexFunctionSequence a)
+  public MuntzPadeFunctional(String name, Real α, ComplexPolynomialSequence a)
   {
     this(α,
          a);

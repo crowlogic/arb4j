@@ -2,12 +2,8 @@ package arb.functions.complex;
 
 import java.util.ArrayList;
 
-import arb.Complex;
-import arb.ComplexMatrix;
-import arb.ComplexPolynomial;
-import arb.Real;
-import arb.functions.integer.ComplexFunctionSequence;
-import arb.functions.integer.ComplexSequence;
+import arb.*;
+import arb.functions.integer.*;
 import arb.solvers.IncrementalHankelSolver;
 
 /**
@@ -105,7 +101,7 @@ public final class MuntzPadeApproximant implements
    */
   private final Complex                     z            = new Complex();
 
-  public MuntzPadeApproximant(Real α, ComplexFunctionSequence a, Complex v, int bits)
+  public MuntzPadeApproximant(Real α, ComplexPolynomialSequence a, Complex v, int bits)
   {
 
     this.α           = α;
@@ -119,12 +115,7 @@ public final class MuntzPadeApproximant implements
      */
     this.coeffs      = (k, order, abits, result) ->
                      {
-
-                       Complex c = new Complex();
-
-                       a.evaluate(k, 0, abits).evaluate(this.v, 1, bits, c);
-
-                       return c;
+                       return a.evaluate(k, 0, abits).evaluate(this.v, 1, bits, result);
                      };
 
     /**
@@ -135,7 +126,6 @@ public final class MuntzPadeApproximant implements
      * </pre>
      */
     this.hankel      = new IncrementalHankelSolver(coeffs,
-                                                   coeffs,
                                                    bits);
   }
 
@@ -217,93 +207,76 @@ public final class MuntzPadeApproximant implements
     ComplexPolynomial P    = pade.P;
     ComplexPolynomial Q    = pade.Q;
 
-    try ( Complex rhs = Complex.newVector(M))
+    ComplexMatrix     q    = hankel.solve(M);
+
+    try ( ComplexPolynomial A = new ComplexPolynomial(); ComplexPolynomial AQ = new ComplexPolynomial())
     {
 
       /**
-       * rhs_i = -a_{M+i+1}
+       * Denominator:
+       *
+       * <pre>
+       *     Q(z)=1+Σ q_j z^j
+       * </pre>
        */
-      for (int i = 0; i < M; i++)
+      Q.fitLength(M + 1);
+      Q.setLength(M + 1);
+
+      Q.get(0).one();
+
+      for (int j = 1; j <= M; j++)
       {
 
-        rhs.get(i).set(coeffs.apply(M + i + 1)).neg(rhs.get(i));
+        Q.set(j, q.get(j - 1, 0));
       }
 
-      ComplexMatrix q = hankel.solve(rhs, M, workingBits);
+      /**
+       * Build truncated coefficient polynomial:
+       *
+       * <pre>
+       *     A(z)=Σ a_k z^{k-1}
+       * </pre>
+       */
 
-      try
+      A.fitLength(2 * M);
+      A.setLength(2 * M);
+
+      for (int k = 0; k < 2 * M; k++)
       {
 
-        /**
-         * Denominator:
-         *
-         * <pre>
-         *     Q(z)=1+Σ q_j z^j
-         * </pre>
-         */
-        Q.fitLength(M + 1);
-        Q.setLength(M + 1);
-
-        Q.get(0).one();
-
-        for (int j = 1; j <= M; j++)
-        {
-
-          Q.set(j, q.get(j - 1, 0));
-        }
-
-        /**
-         * Build truncated coefficient polynomial:
-         *
-         * <pre>
-         *     A(z)=Σ a_k z^{k-1}
-         * </pre>
-         */
-        try ( ComplexPolynomial A = new ComplexPolynomial();
-
-              ComplexPolynomial AQ = new ComplexPolynomial())
-        {
-
-          A.fitLength(2 * M);
-          A.setLength(2 * M);
-
-          for (int k = 0; k < 2 * M; k++)
-          {
-
-            A.get(k).set(coeffs.apply(k + 1));
-          }
-
-          /**
-           * AQ = A*Q
-           */
-          A.mul(Q, workingBits, AQ);
-
-          /**
-           * Numerator:
-           *
-           * <pre>
-           *     P=[AQ]_{<M+1}
-           * </pre>
-           */
-          P.fitLength(M + 1);
-          P.setLength(M + 1);
-
-          P.get(0).zero();
-
-          for (int n = 1; n <= M; n++)
-          {
-
-            P.get(n).set(AQ.get(n - 1));
-          }
-        }
-
-        return pade;
+        A.get(k).set(coeffs.apply(k + 1));
       }
-      finally
+
+      /**
+       * AQ = A*Q
+       */
+      A.mul(Q, workingBits, AQ);
+
+      /**
+       * Numerator:
+       *
+       * <pre>
+       *     P=[AQ]_{<M+1}
+       * </pre>
+       */
+      P.fitLength(M + 1);
+      P.setLength(M + 1);
+
+      P.get(0).zero();
+
+      for (int n = 1; n <= M; n++)
       {
-        q.close();
+
+        P.get(n).set(AQ.get(n - 1));
       }
+
+      return pade;
     }
+    finally
+    {
+      q.close();
+    }
+
   }
 
   /**
