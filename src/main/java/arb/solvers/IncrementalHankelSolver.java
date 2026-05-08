@@ -1,35 +1,28 @@
 package arb.solvers;
 
 import arb.*;
+import arb.functions.integer.ComplexSequence;
 
 /**
  * Incremental Hankel solver using Sherman–Morrison updates.
  *
- * A and B are fixed from construction.
- * A is updated via rank-1 updates.
- * A⁻¹ is maintained explicitly.
- * M controls truncation of output only.
+ * A and B are fixed from construction. A is updated via rank-1 updates. A⁻¹ is
+ * maintained explicitly. M controls truncation of output only.
  */
-public class IncrementalHankelSolver implements AutoCloseable
+public class IncrementalHankelSolver implements
+                                     AutoCloseable
 {
-  private final ComplexMatrix A;
-  private final ComplexMatrix B;
-  private final ComplexMatrix Ainv;
+  private final ComplexSequence A;
+  private final ComplexSequence B;
 
-  private final int bits;
+  private final int             bits;
 
-  public IncrementalHankelSolver(ComplexMatrix A,
-                                 ComplexMatrix B,
-                                 int bits)
+  public IncrementalHankelSolver(ComplexSequence A, ComplexSequence B, int bits)
   {
-    this.A = A;
-    this.B = B;
+    this.A    = A;
+    this.B    = B;
     this.bits = bits;
 
-    int n = A.getNumRows();
-    this.Ainv = ComplexMatrix.newMatrix(n, n);
-
-    A.inverse(bits, Ainv);
   }
 
   /**
@@ -37,15 +30,15 @@ public class IncrementalHankelSolver implements AutoCloseable
    *
    * M is truncation order (not matrix size).
    */
-  public ComplexMatrix solve(int M, ComplexMatrix x)
+  public ComplexMatrix solve(int M, Complex x)
   {
-    ComplexMatrix full = ComplexMatrix.newMatrix(B.getNumRows(), 1);
+    ComplexMatrix full = ComplexMatrix.newMatrix(M, 1);
 
-    Ainv.mul(B, bits, full);
+  //  Ainv.mul(B, bits, full);
 
     for (int i = 0; i < M; i++)
     {
-      x.set(i, 0, full.get(i, 0));
+      x.set(i, full.get(i, 0));
     }
 
     full.close();
@@ -53,16 +46,13 @@ public class IncrementalHankelSolver implements AutoCloseable
   }
 
   /**
-   * Rank-1 update:
-   * A ← A + u vᵀ
+   * Rank-1 update: A ← A + u vᵀ
    *
-   * Sherman–Morrison:
-   * A⁻¹ ← A⁻¹ − (A⁻¹ u vᵀ A⁻¹) / (1 + vᵀ A⁻¹ u)
+   * Sherman–Morrison: A⁻¹ ← A⁻¹ − (A⁻¹ u vᵀ A⁻¹) / (1 + vᵀ A⁻¹ u)
    */
-  public void rank1Update(ComplexMatrix u,
-                          ComplexMatrix v)
+  public void rank1Update(ComplexMatrix u, ComplexMatrix v)
   {
-    int n = A.getNumRows();
+    int           n = A.getNumRows();
 
     ComplexMatrix p = ComplexMatrix.newMatrix(n, 1);
     Ainv.mul(u, bits, p);
@@ -73,19 +63,16 @@ public class IncrementalHankelSolver implements AutoCloseable
     ComplexMatrix qT = ComplexMatrix.newMatrix(1, n);
     vt.mul(Ainv, bits, qT);
 
-    Complex denom = new Complex(1, 0);
+    Complex denom = new Complex(1,
+                                0);
 
     for (int i = 0; i < n; i++)
     {
-      denom.add(
-        v.get(0, i)
-         .mul(p.get(i, 0), bits, new Complex()),
-        bits
-      );
+      denom.add(v.get(0, i).mul(p.get(i, 0), bits, new Complex()), bits);
     }
 
     Complex scale = new Complex();
-    ComplexConstants.one.div(denom,bits,scale);
+    ComplexConstants.one.div(denom, bits, scale);
 
     ComplexMatrix correction = ComplexMatrix.newMatrix(n, n);
 
@@ -93,10 +80,7 @@ public class IncrementalHankelSolver implements AutoCloseable
     {
       for (int j = 0; j < n; j++)
       {
-        Complex term =
-            p.get(i, 0)
-             .mul(qT.get(0, j), bits, new Complex())
-             .mul(scale, bits, new Complex());
+        Complex term = p.get(i, 0).mul(qT.get(0, j), bits, new Complex()).mul(scale, bits, new Complex());
 
         correction.set(i, j, term);
       }

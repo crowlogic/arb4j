@@ -135,7 +135,7 @@ public final class MuntzPadeApproximant implements
      * </pre>
      */
     this.hankel      = new IncrementalHankelSolver(coeffs,
-                                                   1,
+                                                   coeffs,
                                                    bits);
   }
 
@@ -217,7 +217,7 @@ public final class MuntzPadeApproximant implements
     ComplexPolynomial P    = pade.P;
     ComplexPolynomial Q    = pade.Q;
 
-    try ( ComplexMatrix rhs = ComplexMatrix.newMatrix(M, 1))
+    try ( Complex rhs = Complex.newVector(M))
     {
 
       /**
@@ -226,7 +226,7 @@ public final class MuntzPadeApproximant implements
       for (int i = 0; i < M; i++)
       {
 
-        rhs.get(i, 0).set(coeffs.apply(M + i + 1)).neg(rhs.get(i, 0));
+        rhs.get(i).set(coeffs.apply(M + i + 1)).neg(rhs.get(i));
       }
 
       ComplexMatrix q = hankel.solve(rhs, M, workingBits);
