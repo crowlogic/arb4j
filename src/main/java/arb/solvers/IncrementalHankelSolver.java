@@ -1,194 +1,196 @@
-package arb;
+package arb.solvers;
 
-public class InverseHankelSolver {
+import arb.Complex;
+import arb.ComplexMatrix;
+import arb.ComplexSequence;
 
-  private final int prec;
+public class IncrementalHankelSolver implements AutoCloseable {
 
-  private ComplexMatrix inv;     // A_n^{-1}
-  private ComplexMatrix u;       // column vector
-  private ComplexMatrix v;       // row vector
-  private ComplexMatrix b;       // new column
-  private ComplexMatrix c;       // new row
+  private final int           prec;
+  private final ComplexSequence a;        // k ↦ a_k(v): Hankel entries
+  private final ComplexSequence b;        // k ↦ b_k(v): RHS (neg‑coeff / q‑vec)
 
-  public InverseHankelSolver(int initialSize, int prec) {
+  private int         currentM = 0;       // 0 = no state
+  private ComplexMatrix inv;              // A_n^{-1}
+  private ComplexMatrix u;                // u = A^{-1} hankelB
+  private ComplexMatrix v;                // v = A^{-T} hankelC
+  private ComplexMatrix hankelB;          // new column of H
+  private ComplexMatrix hankelC;          // new row    of H
+
+  public IncrementalHankelSolver(ComplexSequence a, ComplexSequence b, int prec) {
+    this.a   = a;
+    this.b   = b;            // b is stored once at construction
     this.prec = prec;
-
-    inv = ComplexMatrix.newMatrix(initialSize, initialSize);
-    u   = ComplexMatrix.newMatrix(initialSize, 1);
-    v   = ComplexMatrix.newMatrix(1, initialSize);
-    b   = ComplexMatrix.newMatrix(initialSize, 1);
-    c   = ComplexMatrix.newMatrix(initialSize, 1);
   }
 
-  // ----------------------------
-  // bootstrap ONLY place where solve is allowed
-  // ----------------------------
-  public void initialize(ComplexMatrix A0, ComplexMatrix A0inv) {
-    inv.set(A0inv);
-  }
-
-  // ----------------------------
-  // Hankel vector builder
-  // ----------------------------
-  private void buildVector(ComplexMatrix out, HankelSequence seq, int offset) {
-    for (int i = 0; i < out.getNumRows(); i++) {
-      out.set(i, 0, seq.get(i + offset));
-    }
-  }
-
-  // ----------------------------
-  // main incremental step
-  // ----------------------------
-  public void extend(HankelSequence seq, int n) {
-
-    // resize buffers if needed
-    if (b.getNumRows() != n) {
-      b.resize(n, 1);
-      c.resize(n, 1);
-      u.resize(n, 1);
-      v.resize(1, n);
+  // Bootstrap Hankel at order M0 from the sequence a.
+  private void bootstrapFromSequence(int M0) {
+    if (M0 < 1) {
+      throw new IllegalArgumentException("M0 must be ≥ 1");
     }
 
-    buildVector(b, seq, n);
-    buildVector(c, seq, n);
+    currentM = M0;
 
-    // --------------------------------------------------
-    // u = A^{-1} b   (matrix-vector multiply, NOT solve)
-    // --------------------------------------------------
-    matVec(inv, b, u);
+    if (inv == null || inv.getNumRows() != M0) {
+      if (inv != null)  inv.close();
+      if (u   != null)  u.close();
+      if (v   != null)  v.close();
+      if (hankelB != null) hankelB.close();
+      if (hankelC != null) hankelC.close();
 
-    // --------------------------------------------------
-    // v = A^{-T} c   (transpose matvec, NOT solve)
-    // --------------------------------------------------
-    ComplexMatrix invT = ComplexMatrix.newMatrix(n, n);
-    inv.transpose(invT);
-    matVec(invT, c, v);
-    invT.close();
-
-    // --------------------------------------------------
-    // Schur complement s = d - c^T u
-    // --------------------------------------------------
-    Complex d = seq.get(2 * n);
-    Complex s = Complex.newScalar();
-    s.set(d);
-
-    Complex cu = dot(c, u);
-    s.sub(cu, prec, s);
-
-    Complex invS = Complex.newScalar();
-    invS.set(1);
-    invS.div(s, prec, invS);
-
-    // --------------------------------------------------
-    // rank-1 update: inv += (u v^T)/s
-    // --------------------------------------------------
-    rank1Update(inv, u, v, invS, n);
-
-    // --------------------------------------------------
-    // border updates
-    // --------------------------------------------------
-    updateBorder(inv, u, v, invS, n);
-  }
-
-  // ----------------------------
-  // matrix-vector multiply
-  // ----------------------------
-  private void matVec(ComplexMatrix A, ComplexMatrix x, ComplexMatrix y) {
-    int n = A.getNumRows();
-
-    for (int i = 0; i < n; i++) {
-      Complex sum = Complex.newScalar();
-      sum.set(0);
-
-      for (int j = 0; j < n; j++) {
-        Complex aij = A.get(i, j);
-        Complex xj  = x.get(j, 0);
-
-        Complex tmp = Complex.newScalar();
-        tmp.set(aij);
-        tmp.mul(xj, prec, tmp);
-
-        sum.add(tmp, prec, sum);
-      }
-
-      y.set(i, 0, sum);
-    }
-  }
-
-  // ----------------------------
-  // dot product
-  // ----------------------------
-  private Complex dot(ComplexMatrix a, ComplexMatrix b) {
-    Complex s = Complex.newScalar();
-    s.set(0);
-
-    for (int i = 0; i < a.getNumRows(); i++) {
-      Complex tmp = Complex.newScalar();
-      tmp.set(a.get(i, 0));
-      tmp.mul(b.get(i, 0), prec, tmp);
-      s.add(tmp, prec, s);
+      inv = ComplexMatrix.newMatrix(M0, M0);
+      u   = ComplexMatrix.newMatrix(M0, 1);
+      v   = ComplexMatrix.newMatrix(1, M0);
+      hankelB = ComplexMatrix.newMatrix(M0, 1);
+      hankelC = ComplexMatrix.newMatrix(1, M0);
     }
 
-    return s;
-  }
-
-  // ----------------------------
-  // rank-1 update: A += u v^T * alpha
-  // ----------------------------
-  private void rank1Update(ComplexMatrix A,
-                            ComplexMatrix u,
-                            ComplexMatrix v,
-                            Complex alpha,
-                            int n) {
-
-    for (int i = 0; i < n; i++) {
-      for (int j = 0; j < n; j++) {
-
-        Complex uv = Complex.newScalar();
-        uv.set(u.get(i, 0));
-        uv.mul(v.get(0, j), prec, uv);
-        uv.mul(alpha, prec, uv);
-
-        Complex aij = A.get(i, j);
-        aij.add(uv, prec, aij);
-
-        A.set(i, j, aij);
+    ComplexMatrix H = ComplexMatrix.newMatrix(M0, M0);
+    for (int i = 0; i < M0; i++) {
+      for (int j = 0; j < M0; j++) {
+        H.set(i, j, a.get(M0 + i - j - 1));
       }
     }
-  }
 
-  // ----------------------------
-  // last row/column extension
-  // ----------------------------
-  private void updateBorder(ComplexMatrix A,
-                            ComplexMatrix u,
-                            ComplexMatrix v,
-                            Complex invS,
-                            int n) {
-
-    // last column
-    for (int i = 0; i < n; i++) {
-      Complex val = u.get(i, 0);
-      val.mul(invS, prec, val);
-      val.neg(val);
-      A.set(i, n, val);
+    int ok = arblib.acb_mat_solve(inv, H, ComplexMatrix.identity(M0), prec);
+    if (ok == 0) {
+      throw new ArithmeticException("Hankel matrix is singular at order " + M0);
     }
 
-    // last row
+    H.close();
+  }
+
+  public void growToOrder(int desiredM) {
+    if (desiredM < 1) {
+      throw new IllegalArgumentException("desiredM must be ≥ 1");
+    }
+
+    if (currentM == 0) {
+      bootstrapFromSequence(1);
+    }
+
+    while (currentM < desiredM) {
+      int n = currentM + 1;
+
+      if (hankelB.getNumRows() != n || hankelB.getNumCols() != 1) hankelB.resize(n, 1);
+      if (hankelC.getNumRows() != 1 || hankelC.getNumCols() != n) hankelC.resize(1, n);
+      if (u.getNumRows() != n || u.getNumCols() != 1) u.resize(n, 1);
+      if (v.getNumRows() != 1 || v.getNumCols() != n) v.resize(1, n);
+
+      if (inv.getNumRows() != n) {
+        ComplexMatrix newInv = ComplexMatrix.newMatrix(n, n);
+        for (int i = 0; i < currentM; i++) {
+          for (int j = 0; j < currentM; j++) {
+            newInv.set(i, j, inv.get(i, j));
+          }
+        }
+        inv.close();
+        inv = newInv;
+      }
+
+      for (int i = 0; i < n; i++) {
+        hankelB.set(i, 0, a.get(n + i));
+        hankelC.set(0, i, a.get(n + i));
+      }
+
+      inv.mulVec(hankelB, u, prec);
+
+      ComplexMatrix invT = ComplexMatrix.newMatrix(n, n);
+      inv.transpose(invT);
+      invT.mulTVec(hankelC, v, prec);
+      invT.close();
+
+      Complex d = a.get(2 * n);
+      Complex s = Complex.newScalar();
+      s.set(d);
+
+      Complex cu = Complex.newScalar();
+      hankelC.mulVec(u, cu, prec);
+      s.sub(cu, prec, s);
+
+      if (s.isZero()) {
+        throw new ArithmeticException("Rank‑1 update denominator s = 0 at order n = " + n);
+      }
+
+      Complex alpha = Complex.newScalar();
+      alpha.set(1);
+      alpha.div(s, prec, alpha);
+
+      ComplexMatrix uv = ComplexMatrix.newMatrix(n, n);
+      u.outer(v, uv, 1, 1);
+      uv.mul(alpha, prec, uv);
+      inv.add(uv, 1, 1, prec, inv);
+      uv.close();
+
+      updateBorder(inv, n, alpha);
+
+      currentM = n;
+    }
+  }
+
+  private void updateBorder(ComplexMatrix A, int n, Complex alpha) {
+    for (int i = 0; i < n; i++) {
+      A.get(i, n).set(u.get(i, 0));
+      A.get(i, n).mul(alpha, prec, A.get(i, n)).neg(A.get(i, n));
+    }
     for (int j = 0; j < n; j++) {
-      Complex val = v.get(0, j);
-      val.mul(invS, prec, val);
-      val.neg(val);
-      A.set(n, j, val);
+      A.get(n, j).set(v.get(0, j));
+      A.get(n, j).mul(alpha, prec, A.get(n, j)).neg(A.get(n, j));
     }
-
-    // bottom-right
-    Complex br = Complex.newScalar();
-    br.set(invS);
-    A.set(n, n, br);
+    A.get(n, n).set(alpha);
   }
 
-  public ComplexMatrix getInverse() {
-    return inv;
+  // ==========================================================
+  // One and only solve: q = H⁻¹ b at order M
+  // ==========================================================
+
+  /**
+   * Solve q = H⁻¹ b at order M, growing the Hankel if needed,
+   * then returning the M×1 denominator coefficient vector q_1..q_M.
+   *
+   * b is fixed in the constructor; no RHS is passed here.
+   */
+  public ComplexMatrix solve(int M) {
+    if (M < 1) {
+      throw new IllegalArgumentException("M must be ≥ 1");
+    }
+
+    if (currentM < M) {
+      growToOrder(M);
+    }
+
+    ComplexMatrix rhs = ComplexMatrix.newMatrix(M, 1);
+    for (int i = 0; i < M; i++) {
+      rhs.set(i, 0, b.get(i));
+    }
+
+    // invM is the leading M×M block of inv
+    ComplexMatrix invM = ComplexMatrix.newMatrix(M, M);
+    for (int i = 0; i < M; i++) {
+      for (int j = 0; j < M; j++) {
+        invM.set(i, j, inv.get(i, j));
+      }
+    }
+
+    ComplexMatrix q = ComplexMatrix.newMatrix(M, 1);
+    invM.mulVec(rhs, q, prec);
+
+    invM.close();
+    rhs.close();
+
+    return q;
+  }
+
+  // ==========================================================
+  // Close resources
+  // ==========================================================
+
+  @Override
+  public void close() {
+    if (inv     != null)  inv.close();
+    if (u       != null)  u.close();
+    if (v       != null)  v.close();
+    if (hankelB != null) hankelB.close();
+    if (hankelC != null) hankelC.close();
   }
 }
