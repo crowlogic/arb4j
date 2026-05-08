@@ -1,6 +1,6 @@
 \documentclass{article}
 \usepackage[english]{babel}
-\usepackage{geometry,amsmath,amssymb,hyperref,latexsym,theorem}
+\usepackage{geometry,amsmath,amssymb,enumerate,hyperref,latexsym,theorem}
 \geometry{letterpaper}
 
 %%%%%%%%%% Start TeXmacs macros
@@ -8,9 +8,8 @@
 \newcommand{\tmem}[1]{{\em #1\/}}
 \newcommand{\tmmathbf}[1]{\ensuremath{\boldsymbol{#1}}}
 \newcommand{\tmscript}[1]{\text{\scriptsize{$#1$}}}
-\newcommand{\tmtextit}[1]{\text{{\itshape{#1}}}}
+\newenvironment{enumeratenumeric}{\begin{enumerate}[1.] }{\end{enumerate}}
 \newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
-\newenvironment{quoteenv}{\begin{quote} }{\end{quote}}
 \newtheorem{definition}{Definition}
 \newtheorem{lemma}{Lemma}
 \newtheorem{proposition}{Proposition}
@@ -89,7 +88,7 @@ Riccati Equations}
   L^1_{\mathrm{loc}} [0, T]$. Define
   \begin{equation}
     \label{eq:RL_int} I^r f (t) \assign \frac{1}{\Gamma (r)}  \int_0^t (t -
-    s)^{r - 1} f (s) \hspace{0.17em} \dd s, \qquad t \in [0, T] .
+    s)^{r - 1} f (s) \hspace{0.17em} \dd s, \qquad t \in [0, T]
   \end{equation}
 \end{definition}
 
@@ -99,12 +98,12 @@ Riccati Equations}
   \begin{equation}
     \label{eq:caputo} D^{\mu} f (t) \assign \frac{\dd}{\dd t} 
     \hspace{-0.17em} (I^{1 - \mu} f (t)) - \frac{f (0)}{\Gamma (1 - \mu)} t^{-
-    \mu}, \qquad t \in (0, T] .
+    \mu}, \qquad t \in (0, T]
   \end{equation}
   The fundamental relations are
   \begin{equation}
     \label{eq:caputo_RL} I^{\mu} D^{\mu} f (t) = f (t) - f (0), \qquad D^{\mu}
-    I^{\mu} f (t) = f (t) .
+    I^{\mu} f (t) = f (t)
   \end{equation}
 \end{definition}
 
@@ -124,12 +123,12 @@ Riccati Equations}
   [Action on powers]\label{prop:powers} Let $s > - 1$ and $r > 0$. Then
   \begin{equation}
     \label{eq:Ir_power} I^r t^s = \frac{\Gamma (s + 1)}{\Gamma (s + r + 1)} 
-    \hspace{0.17em} t^{s + r} .
+    \hspace{0.17em} t^{s + r}
   \end{equation}
   Let $\mu \in (0, 1)$ and $s > 0$. Then
   \begin{equation}
     \label{eq:Dmu_power} D^{\mu} t^s = \frac{\Gamma (s + 1)}{\Gamma (s + 1 -
-    \mu)}  \hspace{0.17em} t^{s - \mu} .
+    \mu)}  \hspace{0.17em} t^{s - \mu}
   \end{equation}
 \end{proposition}
 
@@ -183,10 +182,10 @@ Fix $\mu \in (0, 1)$ and $T > 0$.
   
   \begin{align}
     D^{\mu} t^{k \mu} & = \frac{\Gamma (k \mu + 1)}{\Gamma ((k - 1) \mu + 1)} 
-    \hspace{0.17em} t^{(k - 1) \mu},  \label{eq:Dmu_Muntz}\\
+    \hspace{0.17em} t^{(k - 1) \mu}  \label{eq:Dmu_Muntz}\\
     I^r t^{k \mu} & = \frac{\Gamma (k \mu + 1)}{\Gamma (k \mu + r + 1)} 
-    \hspace{0.17em} t^{k \mu + r},  \label{eq:Ir_Muntz}\\
-    t^{j \mu}  \hspace{0.17em} t^{k \mu} & = t^{(j + k) \mu} . 
+    \hspace{0.17em} t^{k \mu + r}  \label{eq:Ir_Muntz}\\
+    t^{j \mu}  \hspace{0.17em} t^{k \mu} & = t^{(j + k) \mu} 
     \label{eq:prod_Muntz}
   \end{align}
   
@@ -232,7 +231,7 @@ Remark~\ref{rem:correction}) gives the equivalent Volterra integral equation
   problem and the reason ordinary Taylor series in $t$ fail.
 \end{remark}
 
-\subsection{The M{\"u}ntz--Tau Puiseux series solution}
+\subsection*{The M{\"u}ntz--Tau Puiseux series solution}
 
 \begin{theorem}
   [Series solution in $\{t^{k \mu} \}$]\label{thm:riccati_series} There exists
@@ -268,32 +267,34 @@ Existence of a positive radius $R > 0$ and analyticity of $y$ in $z = t^{\mu}$
 on $|z| < R$ is established in  Theorem~\ref{thm:radius} below by a Banach
 fixed-point argument on \eqref{eq:frac_riccati_V}. Granting that, write $y (t)
 = \sum_{k \ge 1} a_k  \hspace{0.17em} t^{k \mu}$; by \eqref{eq:prod_Muntz},
-\[ y (t)^2 = \sum_{m = 2}^{\infty} \hspace{-0.17em} \left(
-   \sum_{\tmscript{\begin{array}{c}
-     j + \ell = m\\
-     1 \le j, \ell \le m - 1
-   \end{array}}} \hspace{-0.17em} a_j  \hspace{0.17em} a_{\ell} \right) t^{m
-   \mu}, \]
+\begin{equation}
+  y (t)^2 = \sum_{m = 2}^{\infty} \hspace{-0.17em} \left(
+  \sum_{\tmscript{\begin{array}{c}
+    j + \ell = m\\
+    1 \le j, \ell \le m - 1
+  \end{array}}} \hspace{-0.17em} a_j  \hspace{0.17em} a_{\ell} \right) t^{m
+  \mu}
+\end{equation}
 abbreviated $b_m \assign \sum_{\tmscript{\begin{array}{c}
   j + \ell = m\\
   1 \le j, \ell \le m - 1
 \end{array}}} a_j  \hspace{0.17em} a_{\ell}$ (with $b_1 = 0$). Substituting
 into \eqref{eq:frac_riccati_V} and splitting the integral,
-
-\begin{align*}
-  y (t) & = \frac{c_0}{\Gamma (\mu)}  \hspace{-0.17em} \int_0^t
-  \hspace{-0.17em} (t - s)^{\mu - 1} \dd s + \frac{c_1}{\Gamma (\mu)}  \sum_{k
-  \ge 1} a_k  \hspace{-0.17em} \int_0^t \hspace{-0.17em} (t - s)^{\mu - 1}
-  s^{k \mu} \dd s\\
-  & \quad + \frac{c_2}{\Gamma (\mu)}  \sum_{m \ge 2} b_m  \hspace{-0.17em}
-  \int_0^t \hspace{-0.17em} (t - s)^{\mu - 1} s^{m \mu} \dd s.
-\end{align*}
-
+\begin{equation}
+  \begin{array}{ll}
+    y (t) & = \frac{c_0}{\Gamma (\mu)}  \hspace{-0.17em} \int_0^t
+    \hspace{-0.17em} (t - s)^{\mu - 1} \dd s + \frac{c_1}{\Gamma (\mu)} 
+    \sum_{k \ge 1} a_k  \hspace{-0.17em} \int_0^t \hspace{-0.17em} (t -
+    s)^{\mu - 1} s^{k \mu} \dd s\\
+    & \quad + \frac{c_2}{\Gamma (\mu)}  \sum_{m \ge 2} b_m  \hspace{-0.17em}
+    \int_0^t \hspace{-0.17em} (t - s)^{\mu - 1} s^{m \mu} \dd s
+  \end{array}
+\end{equation}
 The first integral equals $t^{\mu} / \Gamma (\mu + 1)$. For the others,
 \eqref{eq:Ir_power} with $s = k \mu$ and $r = \mu$ gives
 \[ \int_0^t (t - s)^{\mu - 1} s^{k \mu} \dd s = \Gamma (\mu) \hspace{0.17em}
    \frac{\Gamma (k \mu + 1)}{\Gamma ((k + 1) \mu + 1)}  \hspace{0.17em} t^{(k
-   + 1) \mu} . \]
+   + 1) \mu} \]
 Reindexing with $n = k + 1$ and $n = m + 1$ and matching the coefficient of
 $t^{n \mu}$ for each $n \ge 1$ yields \eqref{eq:a1_const} for $n = 1$ and
 \[ a_n = c_1  \hspace{0.17em} a_{n - 1}  \hspace{0.17em} \frac{\Gamma ((n - 1)
@@ -318,13 +319,15 @@ which is \eqref{eq:ak_const} after renaming $n \mapsto k + 1$.
     \eqref{eq:frac_riccati_V} with $\|y\|_{\infty} \le 1$; this solution is
     analytic in $z = t^{\mu}$ on the disc $\{|z| < T_0^{\mu} \}$, so the
     Puiseux series \eqref{eq:y_series} has radius of convergence
-    \[ R \hspace{0.27em} \ge \hspace{0.27em} T_0^{\mu} \hspace{0.27em} >
-       \hspace{0.27em} 0. \]
+    \begin{equation}
+      R \hspace{0.27em} \ge \hspace{0.27em} T_0^{\mu} \hspace{0.27em} >
+      \hspace{0.27em} 0
+    \end{equation}
     \item {\tmem{Coefficient bound.}} For every $0 < r < R$, with $M (r)
     \assign \sup_{|z| = r} |g (z) |$ where $g (z) \assign y (z^{1 / \mu})$,
     \begin{equation}
       \label{eq:cauchy_bound} |a_k | \hspace{0.27em} \le \hspace{0.27em}
-      \frac{M (r)}{r^k}, \qquad k \ge 1.
+      \frac{M (r)}{r^k} \qquad \forall k \ge 1
     \end{equation}
     \item {\tmem{Generic finiteness, $R < \infty$.}} For generic parameters
     with $c_2 \ne 0$, $R < \infty$: the complexified Riccati flow develops
@@ -334,57 +337,73 @@ which is \eqref{eq:ak_const} after renaming $n \mapsto k + 1$.
 \end{theorem}
 
 \begin{proof}
-  \tmtextit{Item~(i).} Let $B_1 \assign \{y \in C [0, T_0] : \|y\|_{\infty}
-  \le 1\}$ with the supremum norm, and define
-  \[ \Phi (y) (t) \hspace{0.27em} \assign \hspace{0.27em} \frac{1}{\Gamma
-     (\mu)}  \int_0^t (t - s)^{\mu - 1}  \left( c_0 + c_1  \hspace{0.17em} y
-     (s) + c_2  \hspace{0.17em} y (s)^2 \right) \dd s \hspace{0.27em} =
-     \hspace{0.27em} I^{\mu}  (c_0 + c_1 y + c_2 y^2) (t) . \]
-  For $y \in B_1$ and $t \in [0, T_0]$, $|c_0 + c_1 y (t) + c_2 y (t)^2 | \le
-  |c_0 | + |c_1 | + |c_2 |$, so by \eqref{eq:Ir_power},
-  \[ | \Phi (y) (t) | \hspace{0.27em} \le \hspace{0.27em} (|c_0 | + |c_1 | +
-     |c_2 |)  \frac{t^{\mu}}{\Gamma (\mu + 1)} \hspace{0.27em} \le
-     \hspace{0.27em} (|c_0 | + |c_1 | + |c_2 |)  \frac{T_0^{\mu}}{\Gamma (\mu
-     + 1)} . \]
-  By the first term in \eqref{eq:T0_choice}, $T_0^{\mu}  (|c_0 | + |c_1 | +
-  |c_2 |) / \Gamma (\mu + 1) \le (|c_0 | + |c_1 | + |c_2 |) / (|c_0 | + |c_1 |
-  + |c_2 | + 1) < 1$; hence $\Phi (B_1) \subset B_1$. For $y_1, y_2 \in B_1$,
-  \[ | c_1 (y_1 - y_2) + c_2 (y_1^2 - y_2^2) | \hspace{0.27em} =
-     \hspace{0.27em} | c_1 + c_2 (y_1 + y_2) |  \hspace{0.17em} |y_1 - y_2 |
-     \hspace{0.27em} \le \hspace{0.27em} (|c_1 | + 2| c_2 |)  \hspace{0.17em}
-     \|y_1 - y_2 \|_{\infty}, \]
-  so
-  \[ \| \Phi (y_1) - \Phi (y_2)\|_{\infty} \hspace{0.27em} \le \hspace{0.27em}
-     \frac{T_0^{\mu}}{\Gamma (\mu + 1)} (|c_1 | + 2| c_2 |)  \hspace{0.17em}
-     \|y_1 - y_2 \|_{\infty} . \]
-  By the second term in \eqref{eq:T0_choice}, $T_0^{\mu} (|c_1 | + 2| c_2 |) /
-  \Gamma (\mu + 1) \le (|c_1 | + 2| c_2 |) / [2 (|c_1 | + 2| c_2 | + 1)] <
-  \tfrac{1}{2}$; hence $\Phi$ is a strict contraction on $B_1$. The Banach
-  fixed-point theorem provides a unique $y^{\ast} \in B_1$ with $\Phi
-  (y^{\ast}) = y^{\ast}$, which solves \eqref{eq:frac_riccati_V}. The formal
-  Puiseux series defined by \eqref{eq:a1_const}--\eqref{eq:ak_const} solves
-  the same Volterra equation order-by-order; by uniqueness, the series equals
-  $y^{\ast}$ on $[0, T_0]$, and hence converges for $|t^{\mu} | < T_0^{\mu}$,
-  proving $R \ge T_0^{\mu} > 0$.
-  
-  \tmtextit{Item~(ii).} By item~(i), $g (z) = y (z^{1 / \mu}) = \sum_{k \ge 1}
-  a_k z^k$ is analytic on $\{|z| < R\}$. For any $0 < r < R$, Cauchy's
-  integral formula gives
-  \[ a_k \hspace{0.27em} = \hspace{0.27em} \frac{1}{2 \pi \ii}  \oint_{|z| =
-     r} \frac{g (z)}{z^{k + 1}} \hspace{0.17em} \dd z, \qquad |a_k |
-     \hspace{0.27em} \le \hspace{0.27em} \sup_{|z| = r} |g (z) | \cdot r^{- k}
-     \hspace{0.27em} = \hspace{0.27em} M (r)  \hspace{0.17em} r^{- k} . \]
-  \tmtextit{Item~(iii).} For the classical case $\mu = 1$ with $c_2 \ne 0$,
-  the linear substitution $y = - w' / (c_2 w)$ reduces $y' = c_0 + c_1 y + c_2
-  y^2$ to a second-order linear ODE with constant coefficients for $w$; the
-  zeros of $w$ generically lie at finite $t$, and at each such zero $y$ has a
-  simple pole. The same algebraic structure of the
-  recurrence~\eqref{eq:ak_const} persists for $\mu \in (0, 1)$, and the
-  resulting $g (z)$ generically inherits movable singularities at finite
-  distance from the origin in the $z$-plane (the exact location of the nearest
-  singularity is encoded by the limit of the diagonal Pad{\'e} poles, see 
-  Section~\ref{sec:pade}). Hence $R < \infty$ for generic parameters with $c_2
-  \ne 0$.
+  \begin{enumeratenumeric}
+    \item Let $B_1 \assign \{y \in C [0, T_0] : \|y\|_{\infty} \le 1\}$ with
+    the supremum norm, and define
+    \begin{equation}
+      \Phi (y) (t) \hspace{0.27em} \assign \hspace{0.27em} \frac{1}{\Gamma
+      (\mu)}  \int_0^t (t - s)^{\mu - 1}  \left( c_0 + c_1  \hspace{0.17em} y
+      (s) + c_2  \hspace{0.17em} y (s)^2 \right) \dd s \hspace{0.27em} =
+      \hspace{0.27em} I^{\mu}  (c_0 + c_1 y + c_2 y^2) (t)
+    \end{equation}
+    For $y \in B_1$ and $t \in [0, T_0]$, $|c_0 + c_1 y (t) + c_2 y (t)^2 |
+    \le |c_0 | + |c_1 | + |c_2 |$, so by \eqref{eq:Ir_power},
+    \begin{equation}
+      | \Phi (y) (t) | \hspace{0.27em} \le \hspace{0.27em} (|c_0 | + |c_1 | +
+      |c_2 |)  \frac{t^{\mu}}{\Gamma (\mu + 1)} \hspace{0.27em} \le
+      \hspace{0.27em} (|c_0 | + |c_1 | + |c_2 |)  \frac{T_0^{\mu}}{\Gamma (\mu
+      + 1)}
+    \end{equation}
+    By the first term in \eqref{eq:T0_choice},
+    \begin{equation}
+      \frac{T_0^{\mu}  (|c_0 | + |c_1 | + |c_2 |)}{\Gamma (\mu + 1)} \le
+      \frac{|c_0 | + |c_1 | + |c_2 |}{|c_0 | + |c_1 | + |c_2 | + 1} < 1
+    \end{equation}
+    ; hence $\Phi (B_1) \subset B_1$. For $y_1, y_2 \in B_1$,
+    \begin{equation}
+      | c_1 (y_1 - y_2) + c_2 (y_1^2 - y_2^2) | \hspace{0.27em} =
+      \hspace{0.27em} | c_1 + c_2 (y_1 + y_2) |  \hspace{0.17em} |y_1 - y_2 |
+      \hspace{0.27em} \le \hspace{0.27em} (|c_1 | + 2| c_2 |)  \hspace{0.17em}
+      \|y_1 - y_2 \|_{\infty}
+    \end{equation}
+    so
+    \begin{equation}
+      \| \Phi (y_1) - \Phi (y_2)\|_{\infty} \hspace{0.27em} \le
+      \hspace{0.27em} \frac{T_0^{\mu}}{\Gamma (\mu + 1)} (|c_1 | + 2| c_2 |) 
+      \hspace{0.17em} \|y_1 - y_2 \|_{\infty}
+    \end{equation}
+    By the second term in \eqref{eq:T0_choice}, $T_0^{\mu} (|c_1 | + 2| c_2 |)
+    / \Gamma (\mu + 1) \le (|c_1 | + 2| c_2 |) / [2 (|c_1 | + 2| c_2 | + 1)] <
+    \tfrac{1}{2}$; hence $\Phi$ is a strict contraction on $B_1$. The Banach
+    fixed-point theorem provides a unique $y^{\ast} \in B_1$ with $\Phi
+    (y^{\ast}) = y^{\ast}$, which solves \eqref{eq:frac_riccati_V}. The formal
+    Puiseux series defined by \eqref{eq:a1_const}--\eqref{eq:ak_const} solves
+    the same Volterra equation order-by-order; by uniqueness, the series
+    equals $y^{\ast}$ on $[0, T_0]$, and hence converges for $|t^{\mu} | <
+    T_0^{\mu}$, proving $R \ge T_0^{\mu} > 0$.
+    
+    \item By item~(i), $g (z) = y (z^{1 / \mu}) = \sum_{k \ge 1} a_k z^k$ is
+    analytic on $\{|z| < R\}$. For any $0 < r < R$, Cauchy's integral formula
+    gives
+    \begin{equation}
+      a_k \hspace{0.27em} = \hspace{0.27em} \frac{1}{2 \pi \ii}  \oint_{|z| =
+      r} \frac{g (z)}{z^{k + 1}} \hspace{0.17em} \dd z
+    \end{equation}
+    \begin{equation}
+      |a_k | \hspace{0.27em} \le \hspace{0.27em} \sup_{|z| = r} |g (z) | \cdot
+      r^{- k} \hspace{0.27em} = \hspace{0.27em} M (r)  \hspace{0.17em} r^{- k}
+    \end{equation}
+    \item For the classical case $\mu = 1$ with $c_2 \ne 0$, the linear
+    substitution $y = - w' / (c_2 w)$ reduces $y' = c_0 + c_1 y + c_2 y^2$ to
+    a second-order linear ODE with constant coefficients for $w$; the zeros of
+    $w$ generically lie at finite $t$, and at each such zero $y$ has a simple
+    pole. The same algebraic structure of the recurrence~\eqref{eq:ak_const}
+    persists for $\mu \in (0, 1)$, and the resulting $g (z)$ generically
+    inherits movable singularities at finite distance from the origin in the
+    $z$-plane (the exact location of the nearest singularity is encoded by the
+    limit of the diagonal Pad{\'e} poles, see  Section~\ref{sec:pade}). Hence
+    $R < \infty$ for generic parameters with $c_2 \ne 0$
+  \end{enumeratenumeric}
 \end{proof}
 
 \begin{remark}
@@ -411,8 +430,10 @@ Let $z \assign t^{\mu}$ and define $g (z) \assign y (z^{1 / \mu})$. Then
   \qquad |z| < R.
 \end{equation}
 Fix $M \in \N$ and seek polynomials
-\[ P_M (z) \assign \sum_{k = 0}^M p_k  \hspace{0.17em} z^k, \qquad Q_M (z)
-   \assign 1 + \sum_{k = 1}^M q_k  \hspace{0.17em} z^k, \]
+\begin{equation}
+  P_M (z) \assign \sum_{k = 0}^M p_k  \hspace{0.17em} z^k, \qquad Q_M (z)
+  \assign 1 + \sum_{k = 1}^M q_k  \hspace{0.17em} z^k
+\end{equation}
 satisfying the Pad{\'e} matching condition
 \begin{equation}
   \label{eq:Pade_match} Q_M (z)  \hspace{0.17em} g (z) - P_M (z) =\mathcal{O}
@@ -425,9 +446,9 @@ satisfying the Pad{\'e} matching condition
   
   \begin{align}
     p_n & = a_n + \sum_{j = 1}^{\min (n, M)} q_j  \hspace{0.17em} a_{n - j},
-    \qquad 1 \le n \le M,  \label{eq:Pade1}\\
+    \qquad 1 \le n \le M  \label{eq:Pade1}\\
     0 & = a_n + \sum_{j = 1}^M q_j  \hspace{0.17em} a_{n - j}, \qquad M + 1
-    \le n \le 2 M.  \label{eq:Pade2}
+    \le n \le 2 M  \label{eq:Pade2}
   \end{align}
   
   The denominator system \eqref{eq:Pade2} is the Hankel linear system
@@ -486,7 +507,7 @@ The diagonal Pad{\'e} approximant is then
 
 Define the remainder
 \begin{equation}
-  \label{eq:eps_g} \varepsilon_M (z) \assign g (z) - R_M (z) .
+  \label{eq:eps_g} \varepsilon_M (z) \assign g (z) - R_M (z)
 \end{equation}
 By construction $\varepsilon_M (z) =\mathcal{O} (z^{2 M + 1})$, and standard
 Pad{\'e} theory {\cite{baker1996}} gives the structural representation
@@ -539,14 +560,17 @@ For the a-posteriori bound, define
   and the step from $| \Delta_{M + j + 1} | \le \rho | \Delta_{M + j} |$).
   Since $\sum_{j = 0}^{\infty} \rho^j | \Delta_M (z) | < \infty$, the
   telescoping series
-  \[ g (z) - R_M (z) \hspace{0.27em} = \hspace{0.27em} \sum_{k = M +
-     1}^{\infty} \Delta_k (z) \]
+  \begin{equation}
+    g (z) - R_M (z) \hspace{0.27em} = \hspace{0.27em} \sum_{k = M +
+    1}^{\infty} \Delta_k (z)
+  \end{equation}
   converges absolutely. Estimating term-by-term,
-  \[ |g (z) - R_M (z) | \hspace{0.27em} \le \hspace{0.27em} \sum_{j =
-     1}^{\infty} | \Delta_{M + j} (z) | \hspace{0.27em} \le \hspace{0.27em} |
-     \Delta_M (z) |  \sum_{j = 1}^{\infty} \rho^j \hspace{0.27em} =
-     \hspace{0.27em} \frac{\rho \hspace{0.17em} | \Delta_M (z) |}{1 - \rho},
-  \]
+  \begin{equation}
+    |g (z) - R_M (z) | \hspace{0.27em} \le \hspace{0.27em} \sum_{j =
+    1}^{\infty} | \Delta_{M + j} (z) | \hspace{0.27em} \le \hspace{0.27em} |
+    \Delta_M (z) |  \sum_{j = 1}^{\infty} \rho^j \hspace{0.27em} =
+    \hspace{0.27em} \frac{\rho \hspace{0.17em} | \Delta_M (z) |}{1 - \rho}
+  \end{equation}
   which is~\eqref{eq:error_bound_uniform}. Substituting $\rho = \rho_{\ast} =
   | \Delta_M (z) | / | \Delta_{M - 1} (z) |$ yields $\rho_{\ast} | \Delta_M |
   / (1 - \rho_{\ast}) = | \Delta_M |^2 / (| \Delta_{M - 1} | - | \Delta_M |)$,
@@ -648,165 +672,7 @@ Steps 1--4 are independent of $t$; the entire family $\{y_M (t) : t \ge 0\}$
 is encoded in a single rational function in $z = t^{\mu}$. There is no grid,
 no time stepping, no Newton iteration, no fixed-point loop.
 
-\section{Resurgence, Borel--Pad{\'e} Resummation, and
-Riemann--Hilbert}\label{sec:resurgence}
-
-The Pad{\'e}--M{\"u}ntz construction of the previous sections solves the
-constant-coefficient fractional Riccati equation in closed algebraic form by
-exploiting two independent structural facts: the M{\"u}ntz lattice closes the
-differential algebra of $D^{\mu}, \hspace{0.17em} I^r, \hspace{0.17em} \cdot$;
-and the diagonal Pad{\'e} in $z = t^{\mu}$ re-sums the resulting Puiseux
-series past its finite radius of analyticity. These two facts are not
-coincidences. Both are special cases of a deeper and far more general
-principle drawn from the theory of {\tmem{resurgent functions}} and the
-{\tmem{Riemann--Hilbert correspondence}}.
-
-\subsection{The substitution $z = t^{\mu}$ is a power-series algebraization}
-
-A constant-coefficient fractional ODE in $t$ is {\tmem{not}} algebraic in $t$
---- the operator $D^{\mu}$ is non-local, and the solution is generically only
-H{\"o}lder continuous of exponent $\mu$ at the origin
-(Remark~\ref{rem:regularity}). After the substitution $z = t^{\mu}$, the
-solution $y (t)$ is represented by the convergent power series $g (z) =
-\sum_{k \ge 1} a_k  \hspace{0.17em} z^k$ (Theorem~\ref{thm:riccati_series}),
-whose coefficients satisfy the closed Gamma-ratio recurrence
-\eqref{eq:a1_const}--\eqref{eq:ak_const}. In this sense, $z = t^{\mu}$ is the
-canonical {\tmem{analytic}} variable for the problem: it converts the
-H{\"o}lder-continuous solution $t \mapsto y (t)$ into a power-series-analytic
-function $z \mapsto g (z)$, lifting the problem from the H{\"o}lder category
-into the analytic category and making the full machinery of complex analysis
---- in particular Pad{\'e} approximation and analytic continuation ---
-available.
-
-A point of precision deserves emphasis: the substitution $z = t^{\mu}$ does
-{\tmem{not}} reduce the Volterra equation \eqref{eq:frac_riccati_V} to a local
-ordinary differential equation in $z$. A direct change of variables converts
-\eqref{eq:frac_riccati_V} into the functional integral equation
-\begin{equation}
-  \label{eq:g_functional} g (z) \hspace{0.27em} = \hspace{0.27em} \frac{z}{\mu
-  \hspace{0.17em} \Gamma (\mu)}  \hspace{-0.17em} \int_0^1 (1 - u^{1 /
-  \mu})^{\mu - 1}  \hspace{0.17em} u^{1 / \mu - 1}  \hspace{0.17em} \left( c_0
-  + c_1  \hspace{0.17em} g (zu) + c_2  \hspace{0.17em} g (zu)^2 \right) \dd u
-\end{equation}
-which involves the values $g (zu)$ for $u \in [0, 1]$ and is therefore
-non-local in $z$. The ``algebraization'' performed by $z = t^{\mu}$ is not the
-algebraization of the equation itself, but of the {\tmem{representation}} of
-the solution: the move from a non-power-series object (the H{\"o}lder function
-$y (t)$) to a convergent power series $g (z)$, whose coefficients are
-extracted by a closed Gamma-ratio recurrence and whose analytic continuation
-is then accessible through Pad{\'e} theory.
-
-\subsection{Solutions are conjecturally resurgent transseries}
-
-When $g (z)$ is meromorphic on $\C$ (the hypothesis of 
-Theorem~\ref{thm:pade_riccati}) and the underlying flow possesses the
-Painlev{\'e} property, the formal expansion at any singular point can be
-promoted to a {\tmem{resurgent transseries}} in the sense of {\'E}calle
-{\cite{ecalle1981,costin2008}}:
-\begin{equation}
-  \label{eq:transseries} \tilde{y} (z) \hspace{0.27em} = \hspace{0.27em}
-  \sum_{n \ge 0} e^{- n \hspace{0.17em} A / z}  \hspace{0.17em} z^{n \beta_n} 
-  \sum_{k \ge 0} a_{n, k}  \hspace{0.17em} z^k,
-\end{equation}
-where the leading sector $n = 0$ is the Puiseux series of 
-Theorem~\ref{thm:riccati_series} and the higher sectors $n \ge 1$ encode
-{\tmem{non-perturbative}} contributions controlled by the action $A$ (the
-Riccati pole structure). The {\tmem{alien derivatives}} $\Delta_A  \tilde{y}$
-of {\'E}calle measure the obstruction to analytic continuation across each
-singularity, and the {\tmem{Stokes constants}} $S_A$ record the
-discontinuities of the lateral Borel sums when crossing Stokes lines. For the
-constant-coefficient fractional Riccati, the leading-sector coefficients are
-exactly the M{\"u}ntz $a_k$; the higher sectors capture the multivaluedness of
-$y$ around the movable poles. The resurgent picture is established rigorously
-for integer-order ODEs with the Painlev{\'e} property and is conjectural in
-the fractional regime; it is treated here as a structural perspective unifying
-the M{\"u}ntz Tau, Pad{\'e}, and Riemann--Hilbert ingredients.
-
-\subsection{Pad{\'e} is computational Borel--Pad{\'e} resummation}
-
-The diagonal Pad{\'e} approximant in $z$ is the canonical computational
-instantiation of {\tmem{Borel--Pad{\'e} resummation}}. Recall that the Borel
-transform sends a divergent or finite-radius series $\sum a_k z^k$ to its
-Borel transform $\hat{g} (\zeta) = \sum a_k \zeta^{k - 1} / \Gamma (k)$, then
-resums by Laplace-transforming $\hat{g}$ along a ray. The Pad{\'e} approximant
-$R_M$ computes essentially the same object: the rational function $P_M / Q_M$
-is the unique meromorphic continuation that interpolates the formal series and
-respects the underlying singularity structure. Concretely, 
-Theorems~\ref{thm:dMdB} and~\ref{thm:NP} say that, under the meromorphy
-hypothesis of  Theorem~\ref{thm:pade_riccati}, $R_M$ recovers exactly the
-lateral Borel--Laplace sum on the real $z$-axis whenever no Stokes ray crosses
-$(0, \infty)$ {\cite{costin2008,pommerenke1973}}; this is precisely the
-boundedness hypothesis in  Theorem~\ref{thm:pade_riccati}.
-
-\subsection{The Riemann--Hilbert structure}
-
-The deeper geometric content is this. The poles of $R_M$ for finite $M$ are
-not arbitrary --- as $M \to \infty$, they cluster along {\tmem{Stokes lines}}
-in the $z$-plane, which are the branch cuts of the analytic continuation of
-$y$. Nuttall--Pommerenke (Theorem~\ref{thm:NP}) is a weak version of this
-fact: convergence in capacity means the spurious poles distribute themselves
-along the natural boundary of analyticity. The strong version, due to Stahl,
-Gonchar, and others {\cite{stahl1997}}, identifies the {\tmem{equilibrium
-measure}} on those Stokes lines as the limiting pole distribution of the
-diagonal Pad{\'e} sequence. This equilibrium problem is precisely a
-{\tmem{scalar Riemann--Hilbert problem}} for the resolvent of a logarithmic
-potential, and the diagonal Pad{\'e} asymptotics are obtained by the
-Deift--Zhou steepest descent / Fokas--Its--Kitaev machinery applied to the
-associated jump matrix {\cite{deift1999}}.
-
-The unifying perspective of this paper, in maximum generality, is therefore:
-
-\begin{quoteenv}
-  {\tmem{For a constant-coefficient fractional ODE $\hspace{0.17em} D^{\mu} y
-  = F (y) \hspace{0.17em}$ with polynomial $F$ whose substituted solution $g
-  (z) \assign y (z^{1 / \mu})$ is meromorphic on $\C$, the substitution $z =
-  t^{\mu}$ promotes the solution to a resurgent transseries in $z$. The
-  diagonal Pad{\'e} in $z$ is a Borel--Pad{\'e} resummation of that
-  transseries, and its global analytic continuation along the positive real
-  axis is governed by a Riemann--Hilbert problem whose jump contours are the
-  Stokes lines of the transseries.}}
-\end{quoteenv}
-
-\subsection{Generalizations}
-
-The framework of this paper extends in three natural directions, each obtained
-by relaxing one structural hypothesis.
-
-\paragraph{Higher-degree polynomial nonlinearities (Bernoulli, Abel, and
-beyond).} For $D^{\mu} y = F (y)$ with $F$ any polynomial of degree $d$, the
-M{\"u}ntz lattice remains closed under the nonlinearity by
-\eqref{eq:prod_Muntz}, so the Tau substitution yields a closed Gamma-ratio
-recurrence of the same form as \eqref{eq:ak_const} but with a $d$-fold
-convolution sum. The Pad{\'e} step is unchanged, the Hankel system
-\eqref{eq:hankel_system} is unchanged, and the de~Montessus /
-Nuttall--Pommerenke theorems apply identically (under the same meromorphy
-hypothesis). Cubic Riccati (Abel of the second kind), quartic, and arbitrary
-polynomial $F$ are all immediate.
-
-\paragraph{Fractional ODE systems via Hermite--Pad{\'e}.} For a system
-$D^{\mu} \tmmathbf{y}=\tmmathbf{F} (\tmmathbf{y})$ with polynomial
-$\tmmathbf{F}$, each component admits a M{\"u}ntz Puiseux expansion, and the
-scalar Hankel system is replaced by a {\tmem{matrix Pad{\'e}}} (or
-simultaneous {\tmem{Hermite--Pad{\'e}}}) system involving multiple
-denominators. The convergence theory generalizes: the scalar Riemann--Hilbert
-problem becomes {\tmem{matrix-valued}}, with jump contours determined by the
-eigenvalue structure of the linearization at the movable singularities
-{\cite{deift1999}}. Multi-factor rough Heston, multi-asset rough volatility,
-and multi-component fractional reaction--diffusion all fall in this class.
-
-\paragraph{Non-constant coefficients: isomonodromy and Painlev{\'e}.} When
-$D^{\mu} y = c_0 (t) + c_1 (t) y + c_2 (t) y^2$ with non-constant $c_i$ (the
-natural setting for the rough Heston model when leverage and feedback are
-time-varying {\cite{eleuch2019}}), the M{\"u}ntz lattice is generally no
-longer preserved (the coefficients can introduce new exponents), the explicit
-Gamma-ratio recurrence breaks down, and the Puiseux structure may need to be
-enlarged to include logarithmic and Fuchsian terms. The associated
-Riemann--Hilbert problem is then {\tmem{isomonodromic}} rather than
-equilibrium-type, and the nonlinear special functions that arise --- notably
-the Painlev{\'e} transcendents and their $q$- and fractional analogs ---
-replace the elementary rational Pad{\'e} approximants. This is also where the
-rough volatility literature stalls, and where new mathematics is genuinely
-required.
+\
 
 \begin{thebibliography}{9}
   {\bibitem{eleuch2019}}O.~El~Euch and M.~Rosenbaum, {\tmem{The characteristic

@@ -113,47 +113,9 @@
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-11>>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|4<space|2spc>Resurgence,
-    Borel\UPadé Resummation, and Riemann\UHilbert>
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-12><vspace|0.5fn>
-
-    <with|par-left|1tab|4.1<space|2spc>The substitution
-    <with|mode|math|z=t<rsup|\<mu\>>> is a power-series algebraization
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-13>>
-
-    <with|par-left|1tab|4.2<space|2spc>Solutions are conjecturally resurgent
-    transseries <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-14>>
-
-    <with|par-left|1tab|4.3<space|2spc>Padé is computational Borel\UPadé
-    resummation <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-15>>
-
-    <with|par-left|1tab|4.4<space|2spc>The Riemann\UHilbert structure
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-16>>
-
-    <with|par-left|1tab|4.5<space|2spc>Generalizations
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-17>>
-
-    <with|par-left|3tab|Higher-degree polynomial nonlinearities (Bernoulli,
-    Abel, and beyond). <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-18>>
-
-    <with|par-left|3tab|Fractional ODE systems via Hermite\UPadé.
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-19>>
-
-    <with|par-left|3tab|Non-constant coefficients: isomonodromy and Painlevé.
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-20>>
-
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-21><vspace|0.5fn>
+    <no-break><pageref|auto-12><vspace|0.5fn>
   </table-of-contents>
 
   <section|Fractional Calculus and the Müntz Basis><label|sec:prelim>
@@ -165,7 +127,7 @@
     <math|f\<in\>L<rsup|1><rsub|<math-up|loc>><around|[|0,T|]>>. Define
 
     <\equation>
-      <label|eq:RL_int>I<rsup|r>*f<around|(|t|)>\<assign\><frac|1|\<Gamma\><around|(|r|)>>*<big|int><rsub|0><rsup|t><around|(|t-s|)><rsup|r-1>*f<around|(|s|)><space|0.17em><dd>s,<space|2em>t\<in\><around|[|0,T|]>.
+      <label|eq:RL_int>I<rsup|r>*f<around|(|t|)>\<assign\><frac|1|\<Gamma\><around|(|r|)>>*<big|int><rsub|0><rsup|t><around|(|t-s|)><rsup|r-1>*f<around|(|s|)><space|0.17em><dd>s,<space|2em>t\<in\><around|[|0,T|]>
     </equation>
   </definition>
 
@@ -175,13 +137,13 @@
     <math|I<rsup|1-\<mu\>>*f\<in\>C<rsup|1><around|[|0,T|]>>. Define
 
     <\equation>
-      <label|eq:caputo>D<rsup|\<mu\>>*f<around|(|t|)>\<assign\><frac|<dd>|<dd>t>*<space|-0.17em><around*|(|I<rsup|1-\<mu\>>*f<around|(|t|)>|)>-<frac|f<around|(|0|)>|\<Gamma\>*<around|(|1-\<mu\>|)>>*t<rsup|-\<mu\>>,<space|2em>t\<in\><around|(|0,T|]>.
+      <label|eq:caputo>D<rsup|\<mu\>>*f<around|(|t|)>\<assign\><frac|<dd>|<dd>t>*<space|-0.17em><around*|(|I<rsup|1-\<mu\>>*f<around|(|t|)>|)>-<frac|f<around|(|0|)>|\<Gamma\>*<around|(|1-\<mu\>|)>>*t<rsup|-\<mu\>>,<space|2em>t\<in\><around|(|0,T|]>
     </equation>
 
     The fundamental relations are
 
     <\equation>
-      <label|eq:caputo_RL>I<rsup|\<mu\>>*D<rsup|\<mu\>>*f<around|(|t|)>=f<around|(|t|)>-f<around|(|0|)>,<space|2em>D<rsup|\<mu\>>*I<rsup|\<mu\>>*f<around|(|t|)>=f<around|(|t|)>.
+      <label|eq:caputo_RL>I<rsup|\<mu\>>*D<rsup|\<mu\>>*f<around|(|t|)>=f<around|(|t|)>-f<around|(|0|)>,<space|2em>D<rsup|\<mu\>>*I<rsup|\<mu\>>*f<around|(|t|)>=f<around|(|t|)>
     </equation>
   </definition>
 
@@ -204,13 +166,13 @@
     <math|r\<gtr\>0>. Then
 
     <\equation>
-      <label|eq:Ir_power>I<rsup|r>*t<rsup|s>=<frac|\<Gamma\>*<around|(|s+1|)>|\<Gamma\>*<around|(|s+r+1|)>>*<space|0.17em>t<rsup|s+r>.
+      <label|eq:Ir_power>I<rsup|r>*t<rsup|s>=<frac|\<Gamma\>*<around|(|s+1|)>|\<Gamma\>*<around|(|s+r+1|)>>*<space|0.17em>t<rsup|s+r>
     </equation>
 
     Let <math|\<mu\>\<in\><around|(|0,1|)>> and <math|s\<gtr\>0>. Then
 
     <\equation>
-      <label|eq:Dmu_power>D<rsup|\<mu\>>*t<rsup|s>=<frac|\<Gamma\>*<around|(|s+1|)>|\<Gamma\>*<around|(|s+1-\<mu\>|)>>*<space|0.17em>t<rsup|s-\<mu\>>.
+      <label|eq:Dmu_power>D<rsup|\<mu\>>*t<rsup|s>=<frac|\<Gamma\>*<around|(|s+1|)>|\<Gamma\>*<around|(|s+1-\<mu\>|)>>*<space|0.17em>t<rsup|s-\<mu\>>
     </equation>
   </proposition>
 
@@ -275,7 +237,7 @@
     and <math|r\<gtr\>0>,
 
     <\align>
-      <tformat|<table|<row|<cell|D<rsup|\<mu\>>*t<rsup|k*\<mu\>>>|<cell|=<frac|\<Gamma\>*<around|(|k*\<mu\>+1|)>|\<Gamma\>*<around|(|<around|(|k-1|)>*\<mu\>+1|)>>*<space|0.17em>t<rsup|<around|(|k-1|)>*\<mu\>>,<eq-number><label|eq:Dmu_Muntz>>>|<row|<cell|I<rsup|r>*t<rsup|k*\<mu\>>>|<cell|=<frac|\<Gamma\>*<around|(|k*\<mu\>+1|)>|\<Gamma\>*<around|(|k*\<mu\>+r+1|)>>*<space|0.17em>t<rsup|k*\<mu\>+r>,<eq-number><label|eq:Ir_Muntz>>>|<row|<cell|t<rsup|j*\<mu\>>*<space|0.17em>t<rsup|k*\<mu\>>>|<cell|=t<rsup|<around|(|j+k|)>*\<mu\>>.<eq-number><label|eq:prod_Muntz>>>>>
+      <tformat|<table|<row|<cell|D<rsup|\<mu\>>*t<rsup|k*\<mu\>>>|<cell|=<frac|\<Gamma\>*<around|(|k*\<mu\>+1|)>|\<Gamma\>*<around|(|<around|(|k-1|)>*\<mu\>+1|)>>*<space|0.17em>t<rsup|<around|(|k-1|)>*\<mu\>><eq-number><label|eq:Dmu_Muntz>>>|<row|<cell|I<rsup|r>*t<rsup|k*\<mu\>>>|<cell|=<frac|\<Gamma\>*<around|(|k*\<mu\>+1|)>|\<Gamma\>*<around|(|k*\<mu\>+r+1|)>>*<space|0.17em>t<rsup|k*\<mu\>+r><eq-number><label|eq:Ir_Muntz>>>|<row|<cell|t<rsup|j*\<mu\>>*<space|0.17em>t<rsup|k*\<mu\>>>|<cell|=t<rsup|<around|(|j+k|)>*\<mu\>><eq-number><label|eq:prod_Muntz>>>>>
     </align>
 
     Consequently <math|D<rsup|\<mu\>>*\<cal-M\>\<subset\>\<cal-M\>>,
@@ -327,7 +289,7 @@
     series in <math|t> fail.
   </remark>
 
-  <subsection|The Müntz\UTau Puiseux series solution>
+  <subsection*|The Müntz\UTau Puiseux series solution>
 
   <\theorem>
     [Series solution in <math|<around|{|t<rsup|k*\<mu\>>|}>>]<label|thm:riccati_series>
@@ -361,24 +323,24 @@
   write <math|y<around|(|t|)>=<big|sum><rsub|k\<ge\>1>a<rsub|k>*<space|0.17em>t<rsup|k*\<mu\>>>;
   by <eqref|eq:prod_Muntz>,
 
-  <\equation*>
-    y<around|(|t|)><rsup|2>=<big|sum><rsub|m=2><rsup|\<infty\>><space|-0.17em><around*|(|<big|sum><rsub|<stack|<tformat|<table|<row|<cell|j+\<ell\>=m>>|<row|<cell|1\<le\>j,\<ell\>\<le\>m-1>>>>>><space|-0.17em>a<rsub|j>*<space|0.17em>a<rsub|\<ell\>>|)>*t<rsup|m*\<mu\>>,
-  </equation*>
+  <\equation>
+    y<around|(|t|)><rsup|2>=<big|sum><rsub|m=2><rsup|\<infty\>><space|-0.17em><around*|(|<big|sum><rsub|<stack|<tformat|<table|<row|<cell|j+\<ell\>=m>>|<row|<cell|1\<le\>j,\<ell\>\<le\>m-1>>>>>><space|-0.17em>a<rsub|j>*<space|0.17em>a<rsub|\<ell\>>|)>*t<rsup|m*\<mu\>>
+  </equation>
 
   abbreviated <math|b<rsub|m>\<assign\><big|sum><rsub|<stack|<tformat|<table|<row|<cell|j+\<ell\>=m>>|<row|<cell|1\<le\>j,\<ell\>\<le\>m-1>>>>>>a<rsub|j>*<space|0.17em>a<rsub|\<ell\>>>
   (with <math|b<rsub|1>=0>). Substituting into <eqref|eq:frac_riccati_V> and
   splitting the integral,
 
-  <\align*>
-    <tformat|<table|<row|<cell|y<around|(|t|)>>|<cell|=<frac|c<rsub|0>|\<Gamma\><around|(|\<mu\>|)>>*<space|-0.17em><big|int><rsub|0><rsup|t><space|-0.17em><around|(|t-s|)><rsup|\<mu\>-1><dd>s+<frac|c<rsub|1>|\<Gamma\><around|(|\<mu\>|)>>*<big|sum><rsub|k\<ge\>1>a<rsub|k>*<space|-0.17em><big|int><rsub|0><rsup|t><space|-0.17em><around|(|t-s|)><rsup|\<mu\>-1>*s<rsup|k*\<mu\>><dd>s>>|<row|<cell|>|<cell|<space|1em>+<frac|c<rsub|2>|\<Gamma\><around|(|\<mu\>|)>>*<big|sum><rsub|m\<ge\>2>b<rsub|m>*<space|-0.17em><big|int><rsub|0><rsup|t><space|-0.17em><around|(|t-s|)><rsup|\<mu\>-1>*s<rsup|m*\<mu\>><dd>s.>>>>
-  </align*>
+  <\equation>
+    <tabular|<tformat|<table|<row|<cell|y<around|(|t|)>>|<cell|=<frac|c<rsub|0>|\<Gamma\><around|(|\<mu\>|)>>*<space|-0.17em><big|int><rsub|0><rsup|t><space|-0.17em><around|(|t-s|)><rsup|\<mu\>-1><dd>s+<frac|c<rsub|1>|\<Gamma\><around|(|\<mu\>|)>>*<big|sum><rsub|k\<ge\>1>a<rsub|k>*<space|-0.17em><big|int><rsub|0><rsup|t><space|-0.17em><around|(|t-s|)><rsup|\<mu\>-1>*s<rsup|k*\<mu\>><dd>s>>|<row|<cell|>|<cell|<space|1em>+<frac|c<rsub|2>|\<Gamma\><around|(|\<mu\>|)>>*<big|sum><rsub|m\<ge\>2>b<rsub|m>*<space|-0.17em><big|int><rsub|0><rsup|t><space|-0.17em><around|(|t-s|)><rsup|\<mu\>-1>*s<rsup|m*\<mu\>><dd>s>>>>>
+  </equation>
 
   The first integral equals <math|t<rsup|\<mu\>>/\<Gamma\>*<around|(|\<mu\>+1|)>>.
   For the others, <eqref|eq:Ir_power> with <math|s=k*\<mu\>> and
   <math|r=\<mu\>> gives
 
   <\equation*>
-    <big|int><rsub|0><rsup|t><around|(|t-s|)><rsup|\<mu\>-1>*s<rsup|k*\<mu\>><dd>s=\<Gamma\><around|(|\<mu\>|)><space|0.17em><frac|\<Gamma\>*<around|(|k*\<mu\>+1|)>|\<Gamma\>*<around|(|<around|(|k+1|)>*\<mu\>+1|)>>*<space|0.17em>t<rsup|<around|(|k+1|)>*\<mu\>>.
+    <big|int><rsub|0><rsup|t><around|(|t-s|)><rsup|\<mu\>-1>*s<rsup|k*\<mu\>><dd>s=\<Gamma\><around|(|\<mu\>|)><space|0.17em><frac|\<Gamma\>*<around|(|k*\<mu\>+1|)>|\<Gamma\>*<around|(|<around|(|k+1|)>*\<mu\>+1|)>>*<space|0.17em>t<rsup|<around|(|k+1|)>*\<mu\>>
   </equation*>
 
   Reindexing with <math|n=k+1> and <math|n=m+1> and matching the coefficient
@@ -410,16 +372,16 @@
       <math|<around|{|<around|\||z|\|>\<less\>T<rsub|0><rsup|\<mu\>>|}>>, so
       the Puiseux series <eqref|eq:y_series> has radius of convergence
 
-      <\equation*>
-        R<space|0.27em>\<ge\><space|0.27em>T<rsub|0><rsup|\<mu\>><space|0.27em>\<gtr\><space|0.27em>0.
-      </equation*>
+      <\equation>
+        R<space|0.27em>\<ge\><space|0.27em>T<rsub|0><rsup|\<mu\>><space|0.27em>\<gtr\><space|0.27em>0
+      </equation>
 
       <item><em|Coefficient bound.> For every <math|0\<less\>r\<less\>R>,
       with <math|M<around|(|r|)>\<assign\>sup<rsub|<around|\||z|\|>=r><around|\||g<around|(|z|)>|\|>>
       where <math|g<around|(|z|)>\<assign\>y<around|(|z<rsup|1/\<mu\>>|)>>,
 
       <\equation>
-        <label|eq:cauchy_bound><around|\||a<rsub|k>|\|><space|0.27em>\<le\><space|0.27em><frac|M<around|(|r|)>|r<rsup|k>>,<space|2em>k\<ge\>1.
+        <label|eq:cauchy_bound><around|\||a<rsub|k>|\|><space|0.27em>\<le\><space|0.27em><frac|M<around|(|r|)>|r<rsup|k>><space|2em>\<forall\>k\<ge\>1
       </equation>
 
       <item><em|Generic finiteness, <math|R\<less\>\<infty\>>.> For generic
@@ -430,74 +392,82 @@
   </theorem>
 
   <\proof>
-    <with|font-shape|italic|Item<nbsp>(i).> Let
-    <math|B<rsub|1>\<assign\><around|{|y\<in\>C<around|[|0,T<rsub|0>|]>:<around|\<\|\|\>|y|\<\|\|\>><rsub|\<infty\>>\<le\>1|}>>
-    with the supremum norm, and define
+    <\enumerate-numeric>
+      <item>Let <math|B<rsub|1>\<assign\><around|{|y\<in\>C<around|[|0,T<rsub|0>|]>:<around|\<\|\|\>|y|\<\|\|\>><rsub|\<infty\>>\<le\>1|}>>
+      with the supremum norm, and define
 
-    <\equation*>
-      \<Phi\><around|(|y|)><around|(|t|)><space|0.27em>\<assign\><space|0.27em><frac|1|\<Gamma\><around|(|\<mu\>|)>>*<big|int><rsub|0><rsup|t><around|(|t-s|)><rsup|\<mu\>-1>*<around*|(|c<rsub|0>+c<rsub|1>*<space|0.17em>y<around|(|s|)>+c<rsub|2>*<space|0.17em>y<around|(|s|)><rsup|2>|)><dd>s<space|0.27em>=<space|0.27em>I<rsup|\<mu\>>*<around|(|c<rsub|0>+c<rsub|1>*y+c<rsub|2>*y<rsup|2>|)><around|(|t|)>.
-    </equation*>
+      <\equation>
+        \<Phi\><around|(|y|)><around|(|t|)><space|0.27em>\<assign\><space|0.27em><frac|1|\<Gamma\><around|(|\<mu\>|)>>*<big|int><rsub|0><rsup|t><around|(|t-s|)><rsup|\<mu\>-1>*<around*|(|c<rsub|0>+c<rsub|1>*<space|0.17em>y<around|(|s|)>+c<rsub|2>*<space|0.17em>y<around|(|s|)><rsup|2>|)><dd>s<space|0.27em>=<space|0.27em>I<rsup|\<mu\>>*<around|(|c<rsub|0>+c<rsub|1>*y+c<rsub|2>*y<rsup|2>|)><around|(|t|)>
+      </equation>
 
-    For <math|y\<in\>B<rsub|1>> and <math|t\<in\><around|[|0,T<rsub|0>|]>>,
-    <math|<around|\||c<rsub|0>+c<rsub|1>*y<around|(|t|)>+c<rsub|2>*y<around|(|t|)><rsup|2>|\|>\<le\><around|\||c<rsub|0>|\|>+<around|\||c<rsub|1>|\|>+<around|\||c<rsub|2>|\|>>,
-    so by <eqref|eq:Ir_power>,
+      For <math|y\<in\>B<rsub|1>> and <math|t\<in\><around|[|0,T<rsub|0>|]>>,
+      <math|<around|\||c<rsub|0>+c<rsub|1>*y<around|(|t|)>+c<rsub|2>*y<around|(|t|)><rsup|2>|\|>\<le\><around|\||c<rsub|0>|\|>+<around|\||c<rsub|1>|\|>+<around|\||c<rsub|2>|\|>>,
+      so by <eqref|eq:Ir_power>,
 
-    <\equation*>
-      <around|\||\<Phi\><around|(|y|)><around|(|t|)>|\|><space|0.27em>\<le\><space|0.27em><around|(|<around|\||c<rsub|0>|\|>+<around|\||c<rsub|1>|\|>+<around|\||c<rsub|2>|\|>|)>*<frac|t<rsup|\<mu\>>|\<Gamma\>*<around|(|\<mu\>+1|)>><space|0.27em>\<le\><space|0.27em><around|(|<around|\||c<rsub|0>|\|>+<around|\||c<rsub|1>|\|>+<around|\||c<rsub|2>|\|>|)>*<frac|T<rsub|0><rsup|\<mu\>>|\<Gamma\>*<around|(|\<mu\>+1|)>>.
-    </equation*>
+      <\equation>
+        <around|\||\<Phi\><around|(|y|)><around|(|t|)>|\|><space|0.27em>\<le\><space|0.27em><around|(|<around|\||c<rsub|0>|\|>+<around|\||c<rsub|1>|\|>+<around|\||c<rsub|2>|\|>|)>*<frac|t<rsup|\<mu\>>|\<Gamma\>*<around|(|\<mu\>+1|)>><space|0.27em>\<le\><space|0.27em><around|(|<around|\||c<rsub|0>|\|>+<around|\||c<rsub|1>|\|>+<around|\||c<rsub|2>|\|>|)>*<frac|T<rsub|0><rsup|\<mu\>>|\<Gamma\>*<around|(|\<mu\>+1|)>>
+      </equation>
 
-    By the first term in <eqref|eq:T0_choice>,
-    <math|T<rsub|0><rsup|\<mu\>>*<around|(|<around|\||c<rsub|0>|\|>+<around|\||c<rsub|1>|\|>+<around|\||c<rsub|2>|\|>|)>/\<Gamma\>*<around|(|\<mu\>+1|)>\<le\><around|(|<around|\||c<rsub|0>|\|>+<around|\||c<rsub|1>|\|>+<around|\||c<rsub|2>|\|>|)>/<around|(|<around|\||c<rsub|0>|\|>+<around|\||c<rsub|1>|\|>+<around|\||c<rsub|2>|\|>+1|)>\<less\>1>;
-    hence <math|\<Phi\><around|(|B<rsub|1>|)>\<subset\>B<rsub|1>>. For
-    <math|y<rsub|1>,y<rsub|2>\<in\>B<rsub|1>>,
+      By the first term in <eqref|eq:T0_choice>,\ 
 
-    <\equation*>
-      <around*|\||c<rsub|1>*<around|(|y<rsub|1>-y<rsub|2>|)>+c<rsub|2>*<around|(|y<rsub|1><rsup|2>-y<rsub|2><rsup|2>|)>|\|><space|0.27em>=<space|0.27em><around*|\||c<rsub|1>+c<rsub|2>*<around|(|y<rsub|1>+y<rsub|2>|)>|\|>*<space|0.17em><around|\||y<rsub|1>-y<rsub|2>|\|><space|0.27em>\<le\><space|0.27em><around|(|<around|\||c<rsub|1>*<around|\||+2|\|>*c<rsub|2>|\|>|)>*<space|0.17em><around|\<\|\|\>|y<rsub|1>-y<rsub|2>|\<\|\|\>><rsub|\<infty\>>,
-    </equation*>
+      <\equation>
+        <frac|T<rsub|0><rsup|\<mu\>>*<around|(|<around|\||c<rsub|0>|\|>+<around|\||c<rsub|1>|\|>+<around|\||c<rsub|2>|\|>|)>|\<Gamma\>*<around|(|\<mu\>+1|)>>\<le\><frac|<around|\||c<rsub|0>|\|>+<around|\||c<rsub|1>|\|>+<around|\||c<rsub|2>|\|>|<around|\||c<rsub|0>|\|>+<around|\||c<rsub|1>|\|>+<around|\||c<rsub|2>|\|>+1>\<less\>1
+      </equation>
 
-    so
+      ; hence <math|\<Phi\><around|(|B<rsub|1>|)>\<subset\>B<rsub|1>>. For
+      <math|y<rsub|1>,y<rsub|2>\<in\>B<rsub|1>>,
 
-    <\equation*>
-      <around|\<\|\|\>|\<Phi\><around|(|y<rsub|1>|)>-\<Phi\><around|(|y<rsub|2>|)>|\<\|\|\>><rsub|\<infty\>><space|0.27em>\<le\><space|0.27em><frac|T<rsub|0><rsup|\<mu\>>|\<Gamma\>*<around|(|\<mu\>+1|)>><around|(|<around|\||c<rsub|1>*<around|\||+2|\|>*c<rsub|2>|\|>|)>*<space|0.17em><around|\<\|\|\>|y<rsub|1>-y<rsub|2>|\<\|\|\>><rsub|\<infty\>>.
-    </equation*>
+      <\equation>
+        <around*|\||c<rsub|1>*<around|(|y<rsub|1>-y<rsub|2>|)>+c<rsub|2>*<around|(|y<rsub|1><rsup|2>-y<rsub|2><rsup|2>|)>|\|><space|0.27em>=<space|0.27em><around*|\||c<rsub|1>+c<rsub|2>*<around|(|y<rsub|1>+y<rsub|2>|)>|\|>*<space|0.17em><around|\||y<rsub|1>-y<rsub|2>|\|><space|0.27em>\<le\><space|0.27em><around|(|<around|\||c<rsub|1>*<around|\||+2|\|>*c<rsub|2>|\|>|)>*<space|0.17em><around|\<\|\|\>|y<rsub|1>-y<rsub|2>|\<\|\|\>><rsub|\<infty\>>
+      </equation>
 
-    By the second term in <eqref|eq:T0_choice>,
-    <math|T<rsub|0><rsup|\<mu\>><around|(|<around|\||c<rsub|1>*<around|\||+2|\|>*c<rsub|2>|\|>|)>/\<Gamma\>*<around|(|\<mu\>+1|)>\<le\><around|(|<around|\||c<rsub|1>*<around|\||+2|\|>*c<rsub|2>|\|>|)>/<around|[|2*<around|(|<around|\||c<rsub|1>*<around|\||+2|\|>*c<rsub|2>|\|>+1|)>|]>\<less\><tfrac|1|2>>;
-    hence <math|\<Phi\>> is a strict contraction on <math|B<rsub|1>>. The
-    Banach fixed-point theorem provides a unique
-    <math|y<rsup|\<ast\>>\<in\>B<rsub|1>> with
-    <math|\<Phi\><around|(|y<rsup|\<ast\>>|)>=y<rsup|\<ast\>>>, which solves
-    <eqref|eq:frac_riccati_V>. The formal Puiseux series defined by
-    <eqref|eq:a1_const>\U<eqref|eq:ak_const> solves the same Volterra
-    equation order-by-order; by uniqueness, the series equals
-    <math|y<rsup|\<ast\>>> on <math|<around|[|0,T<rsub|0>|]>>, and hence
-    converges for <math|<around|\||t<rsup|\<mu\>>|\|>\<less\>T<rsub|0><rsup|\<mu\>>>,
-    proving <math|R\<ge\>T<rsub|0><rsup|\<mu\>>\<gtr\>0>.
+      so
 
-    <with|font-shape|italic|Item<nbsp>(ii).> By item<nbsp>(i),
-    <math|g<around|(|z|)>=y<around|(|z<rsup|1/\<mu\>>|)>=<big|sum><rsub|k\<ge\>1>a<rsub|k>*z<rsup|k>>
-    is analytic on <math|<around|{|<around|\||z|\|>\<less\>R|}>>. For any
-    <math|0\<less\>r\<less\>R>, Cauchy's integral formula gives
+      <\equation>
+        <around|\<\|\|\>|\<Phi\><around|(|y<rsub|1>|)>-\<Phi\><around|(|y<rsub|2>|)>|\<\|\|\>><rsub|\<infty\>><space|0.27em>\<le\><space|0.27em><frac|T<rsub|0><rsup|\<mu\>>|\<Gamma\>*<around|(|\<mu\>+1|)>><around|(|<around|\||c<rsub|1>*<around|\||+2|\|>*c<rsub|2>|\|>|)>*<space|0.17em><around|\<\|\|\>|y<rsub|1>-y<rsub|2>|\<\|\|\>><rsub|\<infty\>>
+      </equation>
 
-    <\equation*>
-      a<rsub|k><space|0.27em>=<space|0.27em><frac|1|2*\<pi\><ii>>*<big|oint><rsub|<around|\||z|\|>=r><frac|g<around|(|z|)>|z<rsup|k+1>><space|0.17em><dd>z,<space|2em><around|\||a<rsub|k>|\|><space|0.27em>\<le\><space|0.27em>sup<rsub|<around|\||z|\|>=r><around|\||g<around|(|z|)>|\|>\<cdot\>r<rsup|-k><space|0.27em>=<space|0.27em>M<around|(|r|)>*<space|0.17em>r<rsup|-k>.
-    </equation*>
+      By the second term in <eqref|eq:T0_choice>,
+      <math|T<rsub|0><rsup|\<mu\>><around|(|<around|\||c<rsub|1>*<around|\||+2|\|>*c<rsub|2>|\|>|)>/\<Gamma\>*<around|(|\<mu\>+1|)>\<le\><around|(|<around|\||c<rsub|1>*<around|\||+2|\|>*c<rsub|2>|\|>|)>/<around|[|2*<around|(|<around|\||c<rsub|1>*<around|\||+2|\|>*c<rsub|2>|\|>+1|)>|]>\<less\><tfrac|1|2>>;
+      hence <math|\<Phi\>> is a strict contraction on <math|B<rsub|1>>. The
+      Banach fixed-point theorem provides a unique
+      <math|y<rsup|\<ast\>>\<in\>B<rsub|1>> with
+      <math|\<Phi\><around|(|y<rsup|\<ast\>>|)>=y<rsup|\<ast\>>>, which
+      solves <eqref|eq:frac_riccati_V>. The formal Puiseux series defined by
+      <eqref|eq:a1_const>\U<eqref|eq:ak_const> solves the same Volterra
+      equation order-by-order; by uniqueness, the series equals
+      <math|y<rsup|\<ast\>>> on <math|<around|[|0,T<rsub|0>|]>>, and hence
+      converges for <math|<around|\||t<rsup|\<mu\>>|\|>\<less\>T<rsub|0><rsup|\<mu\>>>,
+      proving <math|R\<ge\>T<rsub|0><rsup|\<mu\>>\<gtr\>0>.
 
-    <with|font-shape|italic|Item<nbsp>(iii).> For the classical case
-    <math|\<mu\>=1> with <math|c<rsub|2>\<ne\>0>, the linear substitution
-    <math|y=-w<rprime|'>/<around|(|c<rsub|2>*w|)>> reduces
-    <math|y<rprime|'>=c<rsub|0>+c<rsub|1>*y+c<rsub|2>*y<rsup|2>> to a
-    second-order linear ODE with constant coefficients for <math|w>; the
-    zeros of <math|w> generically lie at finite <math|t>, and at each such
-    zero <math|y> has a simple pole. The same algebraic structure of the
-    recurrence<nbsp><eqref|eq:ak_const> persists for
-    <math|\<mu\>\<in\><around|(|0,1|)>>, and the resulting
-    <math|g<around|(|z|)>> generically inherits movable singularities at
-    finite distance from the origin in the <math|z>-plane (the exact location
-    of the nearest singularity is encoded by the limit of the diagonal Padé
-    poles, see <localize|Section><nbsp><reference|sec:pade>). Hence
-    <math|R\<less\>\<infty\>> for generic parameters with
-    <math|c<rsub|2>\<ne\>0>.
+      <item>By item<nbsp>(i), <math|g<around|(|z|)>=y<around|(|z<rsup|1/\<mu\>>|)>=<big|sum><rsub|k\<ge\>1>a<rsub|k>*z<rsup|k>>
+      is analytic on <math|<around|{|<around|\||z|\|>\<less\>R|}>>. For any
+      <math|0\<less\>r\<less\>R>, Cauchy's integral formula gives
+
+      <\equation>
+        a<rsub|k><space|0.27em>=<space|0.27em><frac|1|2*\<pi\><ii>>*<big|oint><rsub|<around|\||z|\|>=r><frac|g<around|(|z|)>|z<rsup|k+1>><space|0.17em><dd>z
+      </equation>
+
+      <\equation>
+        <around|\||a<rsub|k>|\|><space|0.27em>\<le\><space|0.27em>sup<rsub|<around|\||z|\|>=r><around|\||g<around|(|z|)>|\|>\<cdot\>r<rsup|-k><space|0.27em>=<space|0.27em>M<around|(|r|)>*<space|0.17em>r<rsup|-k>
+      </equation>
+
+      <item>For the classical case <math|\<mu\>=1> with
+      <math|c<rsub|2>\<ne\>0>, the linear substitution
+      <math|y=-w<rprime|'>/<around|(|c<rsub|2>*w|)>> reduces
+      <math|y<rprime|'>=c<rsub|0>+c<rsub|1>*y+c<rsub|2>*y<rsup|2>> to a
+      second-order linear ODE with constant coefficients for <math|w>; the
+      zeros of <math|w> generically lie at finite <math|t>, and at each such
+      zero <math|y> has a simple pole. The same algebraic structure of the
+      recurrence<nbsp><eqref|eq:ak_const> persists for
+      <math|\<mu\>\<in\><around|(|0,1|)>>, and the resulting
+      <math|g<around|(|z|)>> generically inherits movable singularities at
+      finite distance from the origin in the <math|z>-plane (the exact
+      location of the nearest singularity is encoded by the limit of the
+      diagonal Padé poles, see <localize|Section><nbsp><reference|sec:pade>).
+      Hence <math|R\<less\>\<infty\>> for generic parameters with
+      <math|c<rsub|2>\<ne\>0>
+    </enumerate-numeric>
   </proof>
 
   <\remark>
@@ -528,9 +498,9 @@
 
   Fix <math|M\<in\><N>> and seek polynomials
 
-  <\equation*>
-    P<rsub|M><around|(|z|)>\<assign\><big|sum><rsub|k=0><rsup|M>p<rsub|k>*<space|0.17em>z<rsup|k>,<space|2em>Q<rsub|M><around|(|z|)>\<assign\>1+<big|sum><rsub|k=1><rsup|M>q<rsub|k>*<space|0.17em>z<rsup|k>,
-  </equation*>
+  <\equation>
+    P<rsub|M><around|(|z|)>\<assign\><big|sum><rsub|k=0><rsup|M>p<rsub|k>*<space|0.17em>z<rsup|k>,<space|2em>Q<rsub|M><around|(|z|)>\<assign\>1+<big|sum><rsub|k=1><rsup|M>q<rsub|k>*<space|0.17em>z<rsup|k>
+  </equation>
 
   satisfying the Padé matching condition
 
@@ -546,7 +516,7 @@
 
     <\align>
       <tformat|<table|<row|<cell|p<rsub|n>>|<cell|=a<rsub|n>+<big|sum><rsub|j=1><rsup|min
-      <around|(|n,M|)>>q<rsub|j>*<space|0.17em>a<rsub|n-j>,<space|2em>1\<le\>n\<le\>M,<eq-number><label|eq:Pade1>>>|<row|<cell|0>|<cell|=a<rsub|n>+<big|sum><rsub|j=1><rsup|M>q<rsub|j>*<space|0.17em>a<rsub|n-j>,<space|2em>M+1\<le\>n\<le\>2*M.<eq-number><label|eq:Pade2>>>>>
+      <around|(|n,M|)>>q<rsub|j>*<space|0.17em>a<rsub|n-j>,<space|2em>1\<le\>n\<le\>M<eq-number><label|eq:Pade1>>>|<row|<cell|0>|<cell|=a<rsub|n>+<big|sum><rsub|j=1><rsup|M>q<rsub|j>*<space|0.17em>a<rsub|n-j>,<space|2em>M+1\<le\>n\<le\>2*M<eq-number><label|eq:Pade2>>>>>
     </align>
 
     The denominator system <eqref|eq:Pade2> is the Hankel linear system
@@ -596,7 +566,7 @@
   Define the remainder
 
   <\equation>
-    <label|eq:eps_g>\<varepsilon\><rsub|M><around|(|z|)>\<assign\>g<around|(|z|)>-R<rsub|M><around|(|z|)>.
+    <label|eq:eps_g>\<varepsilon\><rsub|M><around|(|z|)>\<assign\>g<around|(|z|)>-R<rsub|M><around|(|z|)>
   </equation>
 
   By construction <math|\<varepsilon\><rsub|M><around|(|z|)>=\<cal-O\><around|(|z<rsup|2*M+1>|)>>,
@@ -659,15 +629,15 @@
     Since <math|<big|sum><rsub|j=0><rsup|\<infty\>>\<rho\><rsup|j><around|\||\<Delta\><rsub|M><around|(|z|)>|\|>\<less\>\<infty\>>,
     the telescoping series
 
-    <\equation*>
+    <\equation>
       g<around|(|z|)>-R<rsub|M><around|(|z|)><space|0.27em>=<space|0.27em><big|sum><rsub|k=M+1><rsup|\<infty\>>\<Delta\><rsub|k><around|(|z|)>
-    </equation*>
+    </equation>
 
     converges absolutely. Estimating term-by-term,
 
-    <\equation*>
-      <around|\||g<around|(|z|)>-R<rsub|M><around|(|z|)>|\|><space|0.27em>\<le\><space|0.27em><big|sum><rsub|j=1><rsup|\<infty\>><around|\||\<Delta\><rsub|M+j><around|(|z|)>|\|><space|0.27em>\<le\><space|0.27em><around|\||\<Delta\><rsub|M><around|(|z|)>|\|>*<big|sum><rsub|j=1><rsup|\<infty\>>\<rho\><rsup|j><space|0.27em>=<space|0.27em><frac|\<rho\><space|0.17em><around|\||\<Delta\><rsub|M><around|(|z|)>|\|>|1-\<rho\>>,
-    </equation*>
+    <\equation>
+      <around|\||g<around|(|z|)>-R<rsub|M><around|(|z|)>|\|><space|0.27em>\<le\><space|0.27em><big|sum><rsub|j=1><rsup|\<infty\>><around|\||\<Delta\><rsub|M+j><around|(|z|)>|\|><space|0.27em>\<le\><space|0.27em><around|\||\<Delta\><rsub|M><around|(|z|)>|\|>*<big|sum><rsub|j=1><rsup|\<infty\>>\<rho\><rsup|j><space|0.27em>=<space|0.27em><frac|\<rho\><space|0.17em><around|\||\<Delta\><rsub|M><around|(|z|)>|\|>|1-\<rho\>>
+    </equation>
 
     which is<nbsp><eqref|eq:error_bound_uniform>. Substituting
     <math|\<rho\>=\<rho\><rsub|\<ast\>>=<around|\||\<Delta\><rsub|M><around|(|z|)>|\|>/<around|\||\<Delta\><rsub|M-1><around|(|z|)>|\|>>
@@ -788,180 +758,7 @@
   rational function in <math|z=t<rsup|\<mu\>>>. There is no grid, no time
   stepping, no Newton iteration, no fixed-point loop.
 
-  <section|Resurgence, Borel\UPadé Resummation, and
-  Riemann\UHilbert><label|sec:resurgence>
-
-  The Padé\UMüntz construction of the previous sections solves the
-  constant-coefficient fractional Riccati equation in closed algebraic form
-  by exploiting two independent structural facts: the Müntz lattice closes
-  the differential algebra of <math|D<rsup|\<mu\>>,<space|0.17em>I<rsup|r>,<space|0.17em>\<cdot\>>;
-  and the diagonal Padé in <math|z=t<rsup|\<mu\>>> re-sums the resulting
-  Puiseux series past its finite radius of analyticity. These two facts are
-  not coincidences. Both are special cases of a deeper and far more general
-  principle drawn from the theory of <em|resurgent functions> and the
-  <em|Riemann\UHilbert correspondence>.
-
-  <subsection|The substitution <math|z=t<rsup|\<mu\>>> is a power-series
-  algebraization>
-
-  A constant-coefficient fractional ODE in <math|t> is <em|not> algebraic in
-  <math|t> \V the operator <math|D<rsup|\<mu\>>> is non-local, and the
-  solution is generically only Hölder continuous of exponent <math|\<mu\>> at
-  the origin (<localize|Remark><nbsp><reference|rem:regularity>). After the
-  substitution <math|z=t<rsup|\<mu\>>>, the solution <math|y<around|(|t|)>>
-  is represented by the convergent power series
-  <math|g<around|(|z|)>=<big|sum><rsub|k\<ge\>1>a<rsub|k>*<space|0.17em>z<rsup|k>>
-  (<localize|Theorem><nbsp><reference|thm:riccati_series>), whose
-  coefficients satisfy the closed Gamma-ratio recurrence
-  <eqref|eq:a1_const>\U<eqref|eq:ak_const>. In this sense,
-  <math|z=t<rsup|\<mu\>>> is the canonical <em|analytic> variable for the
-  problem: it converts the Hölder-continuous solution
-  <math|t\<mapsto\>y<around|(|t|)>> into a power-series-analytic function
-  <math|z\<mapsto\>g<around|(|z|)>>, lifting the problem from the Hölder
-  category into the analytic category and making the full machinery of
-  complex analysis \V in particular Padé approximation and analytic
-  continuation \V available.
-
-  A point of precision deserves emphasis: the substitution
-  <math|z=t<rsup|\<mu\>>> does <em|not> reduce the Volterra equation
-  <eqref|eq:frac_riccati_V> to a local ordinary differential equation in
-  <math|z>. A direct change of variables converts <eqref|eq:frac_riccati_V>
-  into the functional integral equation
-
-  <\equation>
-    <label|eq:g_functional>g<around|(|z|)><space|0.27em>=<space|0.27em><frac|z|\<mu\>*<space|0.17em>\<Gamma\><around|(|\<mu\>|)>>*<space|-0.17em><big|int><rsub|0><rsup|1><around|(|1-u<rsup|1/\<mu\>>|)><rsup|\<mu\>-1>*<space|0.17em>u<rsup|1/\<mu\>-1>*<space|0.17em><around*|(|c<rsub|0>+c<rsub|1>*<space|0.17em>g*<around|(|z*u|)>+c<rsub|2>*<space|0.17em>g*<around|(|z*u|)><rsup|2>|)><dd>u
-  </equation>
-
-  which involves the values <math|g*<around|(|z*u|)>> for
-  <math|u\<in\><around|[|0,1|]>> and is therefore non-local in <math|z>. The
-  \Palgebraization\Q performed by <math|z=t<rsup|\<mu\>>> is not the
-  algebraization of the equation itself, but of the <em|representation> of
-  the solution: the move from a non-power-series object (the Hölder function
-  <math|y<around|(|t|)>>) to a convergent power series
-  <math|g<around|(|z|)>>, whose coefficients are extracted by a closed
-  Gamma-ratio recurrence and whose analytic continuation is then accessible
-  through Padé theory.
-
-  <subsection|Solutions are conjecturally resurgent transseries>
-
-  When <math|g<around|(|z|)>> is meromorphic on <math|<C>> (the hypothesis of
-  <localize|Theorem><nbsp><reference|thm:pade_riccati>) and the underlying
-  flow possesses the Painlevé property, the formal expansion at any singular
-  point can be promoted to a <em|resurgent transseries> in the sense of
-  Écalle <cite|ecalle1981|costin2008>:
-
-  <\equation>
-    <label|eq:transseries><wide|y|~><around|(|z|)><space|0.27em>=<space|0.27em><big|sum><rsub|n\<ge\>0>e<rsup|-n*<space|0.17em>A/z>*<space|0.17em>z<rsup|n*\<beta\><rsub|n>>*<big|sum><rsub|k\<ge\>0>a<rsub|n,k>*<space|0.17em>z<rsup|k>,
-  </equation>
-
-  where the leading sector <math|n=0> is the Puiseux series of
-  <localize|Theorem><nbsp><reference|thm:riccati_series> and the higher
-  sectors <math|n\<ge\>1> encode <em|non-perturbative> contributions
-  controlled by the action <math|A> (the Riccati pole structure). The
-  <em|alien derivatives> <math|\<Delta\><rsub|A>*<wide|y|~>> of Écalle
-  measure the obstruction to analytic continuation across each singularity,
-  and the <em|Stokes constants> <math|S<rsub|A>> record the discontinuities
-  of the lateral Borel sums when crossing Stokes lines. For the
-  constant-coefficient fractional Riccati, the leading-sector coefficients
-  are exactly the Müntz <math|a<rsub|k>>; the higher sectors capture the
-  multivaluedness of <math|y> around the movable poles. The resurgent picture
-  is established rigorously for integer-order ODEs with the Painlevé property
-  and is conjectural in the fractional regime; it is treated here as a
-  structural perspective unifying the Müntz Tau, Padé, and Riemann\UHilbert
-  ingredients.
-
-  <subsection|Padé is computational Borel\UPadé resummation>
-
-  The diagonal Padé approximant in <math|z> is the canonical computational
-  instantiation of <em|Borel\UPadé resummation>. Recall that the Borel
-  transform sends a divergent or finite-radius series
-  <math|<big|sum>a<rsub|k>*z<rsup|k>> to its Borel transform
-  <math|<wide|g|^><around|(|\<zeta\>|)>=<big|sum>a<rsub|k>*\<zeta\><rsup|k-1>/\<Gamma\><around|(|k|)>>,
-  then resums by Laplace-transforming <math|<wide|g|^>> along a ray. The Padé
-  approximant <math|R<rsub|M>> computes essentially the same object: the
-  rational function <math|P<rsub|M>/Q<rsub|M>> is the unique meromorphic
-  continuation that interpolates the formal series and respects the
-  underlying singularity structure. Concretely,
-  <localize|Theorems><nbsp><reference|thm:dMdB> and<nbsp><reference|thm:NP>
-  say that, under the meromorphy hypothesis of
-  <localize|Theorem><nbsp><reference|thm:pade_riccati>, <math|R<rsub|M>>
-  recovers exactly the lateral Borel\ULaplace sum on the real <math|z>-axis
-  whenever no Stokes ray crosses <math|<around|(|0,\<infty\>|)>>
-  <cite|costin2008|pommerenke1973>; this is precisely the boundedness
-  hypothesis in <localize|Theorem><nbsp><reference|thm:pade_riccati>.
-
-  <subsection|The Riemann\UHilbert structure>
-
-  The deeper geometric content is this. The poles of <math|R<rsub|M>> for
-  finite <math|M> are not arbitrary \V as <math|M\<to\>\<infty\>>, they
-  cluster along <em|Stokes lines> in the <math|z>-plane, which are the branch
-  cuts of the analytic continuation of <math|y>. Nuttall\UPommerenke
-  (<localize|Theorem><nbsp><reference|thm:NP>) is a weak version of this
-  fact: convergence in capacity means the spurious poles distribute
-  themselves along the natural boundary of analyticity. The strong version,
-  due to Stahl, Gonchar, and others <cite|stahl1997>, identifies the
-  <em|equilibrium measure> on those Stokes lines as the limiting pole
-  distribution of the diagonal Padé sequence. This equilibrium problem is
-  precisely a <em|scalar Riemann\UHilbert problem> for the resolvent of a
-  logarithmic potential, and the diagonal Padé asymptotics are obtained by
-  the Deift\UZhou steepest descent / Fokas\UIts\UKitaev machinery applied to
-  the associated jump matrix <cite|deift1999>.
-
-  The unifying perspective of this paper, in maximum generality, is
-  therefore:
-
-  <quote-env|<em|For a constant-coefficient fractional ODE
-  <math|<space|0.17em>D<rsup|\<mu\>>*y=F<around|(|y|)><space|0.17em>> with
-  polynomial <math|F> whose substituted solution
-  <math|g<around|(|z|)>\<assign\>y<around|(|z<rsup|1/\<mu\>>|)>> is
-  meromorphic on <math|<C>>, the substitution <math|z=t<rsup|\<mu\>>>
-  promotes the solution to a resurgent transseries in <math|z>. The diagonal
-  Padé in <math|z> is a Borel--Padé resummation of that transseries, and its
-  global analytic continuation along the positive real axis is governed by a
-  Riemann--Hilbert problem whose jump contours are the Stokes lines of the
-  transseries.>>
-
-  <subsection|Generalizations>
-
-  The framework of this paper extends in three natural directions, each
-  obtained by relaxing one structural hypothesis.
-
-  <paragraph|Higher-degree polynomial nonlinearities (Bernoulli, Abel, and
-  beyond).> For <math|D<rsup|\<mu\>>*y=F<around|(|y|)>> with <math|F> any
-  polynomial of degree <math|d>, the Müntz lattice remains closed under the
-  nonlinearity by <eqref|eq:prod_Muntz>, so the Tau substitution yields a
-  closed Gamma-ratio recurrence of the same form as <eqref|eq:ak_const> but
-  with a <math|d>-fold convolution sum. The Padé step is unchanged, the
-  Hankel system <eqref|eq:hankel_system> is unchanged, and the
-  de<nbsp>Montessus / Nuttall\UPommerenke theorems apply identically (under
-  the same meromorphy hypothesis). Cubic Riccati (Abel of the second kind),
-  quartic, and arbitrary polynomial <math|F> are all immediate.
-
-  <paragraph|Fractional ODE systems via Hermite\UPadé.> For a system
-  <math|D<rsup|\<mu\>>*\<b-y\>=\<b-F\><around|(|\<b-y\>|)>> with polynomial
-  <math|\<b-F\>>, each component admits a Müntz Puiseux expansion, and the
-  scalar Hankel system is replaced by a <em|matrix Padé> (or simultaneous
-  <em|Hermite\UPadé>) system involving multiple denominators. The convergence
-  theory generalizes: the scalar Riemann\UHilbert problem becomes
-  <em|matrix-valued>, with jump contours determined by the eigenvalue
-  structure of the linearization at the movable singularities
-  <cite|deift1999>. Multi-factor rough Heston, multi-asset rough volatility,
-  and multi-component fractional reaction\Udiffusion all fall in this class.
-
-  <paragraph|Non-constant coefficients: isomonodromy and Painlevé.> When
-  <math|D<rsup|\<mu\>>*y=c<rsub|0><around|(|t|)>+c<rsub|1><around|(|t|)>*y+c<rsub|2><around|(|t|)>*y<rsup|2>>
-  with non-constant <math|c<rsub|i>> (the natural setting for the rough
-  Heston model when leverage and feedback are time-varying
-  <cite|eleuch2019>), the Müntz lattice is generally no longer preserved (the
-  coefficients can introduce new exponents), the explicit Gamma-ratio
-  recurrence breaks down, and the Puiseux structure may need to be enlarged
-  to include logarithmic and Fuchsian terms. The associated Riemann\UHilbert
-  problem is then <em|isomonodromic> rather than equilibrium-type, and the
-  nonlinear special functions that arise \V notably the Painlevé
-  transcendents and their <math|q>- and fractional analogs \V replace the
-  elementary rational Padé approximants. This is also where the rough
-  volatility literature stalls, and where new mathematics is genuinely
-  required.
+  \;
 
   <\thebibliography|9>
     <bibitem|eleuch2019>O.<nbsp>El<nbsp>Euch and M.<nbsp>Rosenbaum, <em|The
@@ -1023,96 +820,84 @@
 
 <\references>
   <\collection>
-    <associate|ass:diff_bound|<tuple|18|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|ass:diff_bound|<tuple|18|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|auto-1|<tuple|1|2|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|auto-10|<tuple|3.3|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-11|<tuple|3.4|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-12|<tuple|4|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-13|<tuple|4.1|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-14|<tuple|4.2|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-15|<tuple|4.3|10|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-16|<tuple|4.4|10|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-17|<tuple|4.5|10|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-18|<tuple|1|10|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-19|<tuple|2|10|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-11|<tuple|3.4|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-12|<tuple|5|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|auto-2|<tuple|1.1|2|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-20|<tuple|3|11|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-21|<tuple|3|11|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|auto-3|<tuple|1.2|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|auto-4|<tuple|2|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|auto-5|<tuple|2.1|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-6|<tuple|2.2|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-6|<tuple|9|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|auto-7|<tuple|3|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|auto-8|<tuple|3.1|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|auto-9|<tuple|3.2|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|bib-baker1996|<tuple|baker1996|11|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|bib-callegaro2021|<tuple|callegaro2021|11|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|bib-costin2008|<tuple|costin2008|11|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|bib-deift1999|<tuple|deift1999|11|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|bib-ecalle1981|<tuple|ecalle1981|11|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|bib-eleuch2019|<tuple|eleuch2019|11|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|bib-esmaeili2015|<tuple|esmaeili2015|11|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|bib-gatheral2019|<tuple|gatheral2019|11|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|bib-montessus1902|<tuple|montessus1902|11|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|bib-nuttall1970|<tuple|nuttall1970|11|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|bib-pommerenke1973|<tuple|pommerenke1973|11|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|bib-stahl1997|<tuple|stahl1997|11|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-baker1996|<tuple|baker1996|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-callegaro2021|<tuple|callegaro2021|10|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-costin2008|<tuple|costin2008|10|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-deift1999|<tuple|deift1999|10|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-ecalle1981|<tuple|ecalle1981|10|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-eleuch2019|<tuple|eleuch2019|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-esmaeili2015|<tuple|esmaeili2015|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-gatheral2019|<tuple|gatheral2019|10|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-montessus1902|<tuple|montessus1902|10|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-nuttall1970|<tuple|nuttall1970|10|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-pommerenke1973|<tuple|pommerenke1973|10|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|bib-stahl1997|<tuple|stahl1997|10|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|def:Caputo|<tuple|2|2|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|def:D_M|<tuple|17|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|def:RL|<tuple|1|2|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|def:muntz|<tuple|6|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Delta_def|<tuple|24|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:Delta_def|<tuple|35|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|eq:Dmu_Muntz|<tuple|6|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|eq:Dmu_power|<tuple|5|2|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|eq:Ir_Muntz|<tuple|7|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|eq:Ir_power|<tuple|4|2|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Pade1|<tuple|18|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Pade2|<tuple|19|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Pade_match|<tuple|17|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:Pade1|<tuple|29|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:Pade2|<tuple|30|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:Pade_match|<tuple|28|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|eq:RL_int|<tuple|1|2|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:R_M_def|<tuple|21|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:T0_choice|<tuple|14|5|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:R_M_def|<tuple|32|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:T0_choice|<tuple|16|5|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|eq:a1_const|<tuple|12|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|eq:ak_const|<tuple|13|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|eq:caputo|<tuple|2|2|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|eq:caputo_RL|<tuple|3|2|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:cauchy_bound|<tuple|15|5|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:eps_g|<tuple|22|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:eps_structure|<tuple|23|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:error_bound|<tuple|26|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:error_bound_uniform|<tuple|25|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:cauchy_bound|<tuple|18|5|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:eps_g|<tuple|33|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:eps_structure|<tuple|34|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:error_bound|<tuple|37|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:error_bound_uniform|<tuple|36|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|eq:frac_riccati|<tuple|9|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:frac_riccati_V|<tuple|10|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:g_functional|<tuple|28|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:g_series|<tuple|16|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:hankel_system|<tuple|20|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:frac_riccati_V|<tuple|10|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:g_series|<tuple|26|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:hankel_system|<tuple|31|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|eq:prod_Muntz|<tuple|8|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:transseries|<tuple|29|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:y_global_pade|<tuple|27|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:y_global_pade|<tuple|40|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|eq:y_series|<tuple|11|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|footnote-1|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|footnr-1|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|lem:Pade_system|<tuple|16|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|lem:hankel|<tuple|14|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|lem:hankel|<tuple|14|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|prop:closure_M|<tuple|8|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|prop:powers|<tuple|4|2|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|rem:Dmu_const|<tuple|5|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|rem:HM_invertible|<tuple|15|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|rem:HM_invertible|<tuple|15|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|rem:conv_k1|<tuple|11|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|rem:correction|<tuple|3|2|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|rem:meromorphy|<tuple|24|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|rem:meromorphy|<tuple|24|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|rem:muntz_complete|<tuple|7|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|rem:radius_local|<tuple|13|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|rem:regularity|<tuple|9|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|rem:which_thm|<tuple|22|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|rem:which_thm|<tuple|22|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|sec:pade|<tuple|3|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|sec:prelim|<tuple|1|2|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|sec:resurgence|<tuple|4|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|sec:riccati|<tuple|2|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|thm:NP|<tuple|21|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|thm:dMdB|<tuple|20|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|thm:error|<tuple|19|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|thm:pade_riccati|<tuple|23|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|thm:error|<tuple|19|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|thm:pade_riccati|<tuple|23|9|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|thm:radius|<tuple|12|5|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|thm:riccati_series|<tuple|10|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
   </collection>
@@ -1132,22 +917,6 @@
       baker1996
 
       nuttall1970
-
-      ecalle1981
-
-      costin2008
-
-      costin2008
-
-      pommerenke1973
-
-      stahl1997
-
-      deift1999
-
-      deift1999
-
-      eleuch2019
     </associate>
     <\associate|toc>
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>Fractional
@@ -1171,8 +940,8 @@
       representation <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-5>>
 
-      <with|par-left|<quote|1tab>|2.2<space|2spc>The Müntz\UTau Puiseux
-      series solution <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|1tab>|The Müntz\UTau Puiseux series solution
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-6>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>Padé
@@ -1197,47 +966,9 @@
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-11>>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>Resurgence,
-      Borel\UPadé Resummation, and Riemann\UHilbert>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-12><vspace|0.5fn>
-
-      <with|par-left|<quote|1tab>|4.1<space|2spc>The substitution
-      <with|mode|<quote|math>|z=t<rsup|\<mu\>>> is a power-series
-      algebraization <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-13>>
-
-      <with|par-left|<quote|1tab>|4.2<space|2spc>Solutions are conjecturally
-      resurgent transseries <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-14>>
-
-      <with|par-left|<quote|1tab>|4.3<space|2spc>Padé is computational
-      Borel\UPadé resummation <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-15>>
-
-      <with|par-left|<quote|1tab>|4.4<space|2spc>The Riemann\UHilbert
-      structure <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-16>>
-
-      <with|par-left|<quote|1tab>|4.5<space|2spc>Generalizations
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-17>>
-
-      <with|par-left|<quote|3tab>|Higher-degree polynomial nonlinearities
-      (Bernoulli, Abel, and beyond). <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-18>>
-
-      <with|par-left|<quote|3tab>|Fractional ODE systems via Hermite\UPadé.
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-19>>
-
-      <with|par-left|<quote|3tab>|Non-constant coefficients: isomonodromy and
-      Painlevé. <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-20>>
-
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-21><vspace|0.5fn>
+      <no-break><pageref|auto-12><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
