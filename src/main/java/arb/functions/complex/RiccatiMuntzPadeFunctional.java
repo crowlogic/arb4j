@@ -1,198 +1,321 @@
-package arb.solvers;
+package arb.functions.complex;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import arb.Complex;
-import arb.ComplexMatrix;
-import arb.ComplexSequence;
+import arb.ComplexPolynomial;
+import arb.Real;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
+import arb.expressions.Context;
+import arb.functions.*;
+import arb.functions.integer.*;
+import arb.solvers.HankelSolver;
 
-public class IncrementalHankelSolver implements AutoCloseable {
+/**
+ * <pre>
+ * The Riccati–Muntz-Pade function with polynomial coefficients.
+ *
+ *   𝒴ₐ(P, Q, R; t, v) ≔ unique analytic solution on a neighborhood of t = 0 of the 
+ *   fractional Riccati equation
+ *       
+ *       Đᵅ y(t; v) = p(v) + q(v)·y(t; v) + r(v)·y(t; v)²
+ *       
+ *   where y(0; v) = 0 and α = μ ∈ (0,1)
+ *
+ *   ═══ Naming convention ════════════════════════════════════════════════
+ *
+ *   Capital P, Q, R  = {@link ComplexPolynomialNullaryFunction} instances
+ *                      (nullary functions provided by the caller).
+ *                      Calling P.evaluate() returns a ComplexPolynomial.
+ *
+ *   Lowercase p, q, r  = {@link ComplexPolynomial} variables registered in
+ *                      {@link #context}. These are what the recurrence
+ *                      expressions reference as p(v), q(v), r(v).
+ *
+ *   Coefficient access: because ComplexPolynomial has get(int) returning Complex,
+ *   the expression compiler already supports p[0], p[1], etc., for coefficient
+ *   extraction. This is used by downstream Edgeworth expansion code to compute
+ *   cumulants directly from polynomial coefficients.
+ *
+ *   Independent variable name: the nullary functions declare "v" as the 
+ *   independent variable via the v➔ arrow syntax. The expression compiler
+ *   sets this on the produced ComplexPolynomial via setIndependentVariableName().
+ *
+ *   When parameters change, the caller invalidates P, Q, R.
+ *   Calling invalidateCache() on this functional re-evaluates P, Q, R
+ *   to refresh p, q, r, then recalculates the Müntz coefficients.
+ *
+ *   The curried Müntz coefficient sequence  k ↦ v ↦ aₖ(v)  is built from
+ *   the algebraic recurrence
+ *
+ *       a₁(v) = p(v) / Γ(μ+1)
+ *       γₖ    = Γ((k−1)μ+1) / Γ(kμ+1)
+ *       aₖ(v) = γₖ · ( q(v)·aₖ₋₁(v)
+ *                    + r(v)·∑ⱼ₌₁ᵏ⁻² aⱼ(v)·aₖ₋₁₋ⱼ(v) ),   k ≥ 2
+ *
+ *   compiled once as a {@link ComplexFunctionSequence} and handed to the parent
+ *   {@link MuntzPadeFunctional}.
+ * </pre>
+ *
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the {@link TheArb4jLibrary}
+ */
+public class RiccatiMuntzPadeFunctional extends
+                                        MuntzPadeFunctional
+{
 
-  private final int           prec;
-  private final ComplexSequence a;        // k ↦ a_k(v): Müntz coefficients
+  @SuppressWarnings("unused")
+  private static final Logger  log                         = LoggerFactory.getLogger(RiccatiMuntzPadeFunctional.class);
 
-  private int         currentM = 0;       // 0 = no state
-  private ComplexMatrix inv;              // A_n^{-1}
-  private ComplexMatrix u;                // u = A^{-1} hankelB
-  private ComplexMatrix v;                // v = A^{-T} hankelC
-  private ComplexMatrix hankelB;          // new column of H
-  private ComplexMatrix hankelC;          // new row    of H
+  /** Documentation-only string of the equation in standard form. */
+  public static final String   FRACTIONAL_RICCATI_EQUATION = "t➔Đ^(μ)y(t;v)=t➔p(v)+q(v)*y(t;v)+r(v)*y(t;v)²";
 
-  public IncrementalHankelSolver(ComplexSequence a, int prec) {
-    this.a   = a;
-    this.prec = prec;
-  }
+  /** 
+   * Nullary polynomial factory functions (caller-provided).
+   * evaluate() with no argument returns the current ComplexPolynomial.
+   * The caller invalidates these when parameters change.
+   */
+  public final ComplexPolynomialNullaryFunction P;
+  public final ComplexPolynomialNullaryFunction Q;
+  public final ComplexPolynomialNullaryFunction R;
 
-  // Bootstrap Hankel at order M0 from a.
-  private void bootstrapFromSequence(int M0) {
-    if (M0 < 1) {
-      throw new IllegalArgumentException("M0 must be ≥ 1");
+  /** 
+   * Polynomial coefficient variables registered in context.
+   * Populated by evaluating P, Q, R. Expressions reference them as p(v), q(v), r(v).
+   * Coefficient access via p[0], p[1], etc., is supported by ComplexPolynomial.get(int).
+   */
+  public final ComplexPolynomial p;
+  public final ComplexPolynomial q;
+  public final ComplexPolynomial r;
+
+  /** The Context holding the symbolic parameters (μ, p, q, r, S, a). */
+  public final Context         context;
+
+  /** Whether this instance owns (and must close) α. */
+  private final boolean        ownsAlpha;
+
+  private ComplexFunction      discriminant;
+
+  /**
+   * Construct with nullary polynomial factory functions.
+   *
+   * @param context  the expression context
+   * @param α        fractional order μ ∈ (0,1)
+   * @param P        nullary function returning p(v) polynomial
+   * @param Q        nullary function returning q(v) polynomial
+   * @param R        nullary function returning r(v) polynomial
+   */
+  public RiccatiMuntzPadeFunctional(Context context, 
+                                      Real α, 
+                                      ComplexPolynomialNullaryFunction P, 
+                                      ComplexPolynomialNullaryFunction Q, 
+                                      ComplexPolynomialNullaryFunction R)
+  {
+    this.context = context;
+    this.P = P;
+    this.Q = Q;
+    this.R = R;
+
+    // Register fractional order μ
+    Real μ = context.getVariable("μ");
+    if (μ == null)
+    {
+      Real fresh = new Real();
+      fresh.set(α);
+      fresh.setName("μ");
+      context.registerVariable(fresh);
+      α         = fresh;
+      ownsAlpha = true;
     }
-
-    currentM = M0;
-
-    if (inv == null || inv.getNumRows() != M0) {
-      if (inv != null)  inv.close();
-      if (u   != null)  u.close();
-      if (v   != null)  v.close();
-      if (hankelB != null) hankelB.close();
-      if (hankelC != null) hankelC.close();
-
-      inv = ComplexMatrix.newMatrix(M0, M0);
-      u   = ComplexMatrix.newMatrix(M0, 1);
-      v   = ComplexMatrix.newMatrix(1, M0);
-      hankelB = ComplexMatrix.newMatrix(M0, 1);
-      hankelC = ComplexMatrix.newMatrix(1, M0);
+    else
+    {
+      μ.set(α);
+      α         = μ;
+      ownsAlpha = false;
     }
+    this.α = α;
 
-    ComplexMatrix H = ComplexMatrix.newMatrix(M0, M0);
-    for (int i = 0; i < M0; i++) {
-      for (int j = 0; j < M0; j++) {
-        H.set(i, j, a.get(M0 + i - j - 1));
-      }
-    }
+    // Allocate polynomial variables once, register in context
+    p = new ComplexPolynomial();
+    p.setName("p");
+    context.registerVariable(p);
 
-    int ok = arblib.acb_mat_solve(inv, H, ComplexMatrix.identity(M0), prec);
-    if (ok == 0) {
-      throw new ArithmeticException("Hankel matrix is singular at order " + M0);
-    }
+    q = new ComplexPolynomial();
+    q.setName("q");
+    context.registerVariable(q);
 
-    H.close();
+    r = new ComplexPolynomial();
+    r.setName("r");
+    context.registerVariable(r);
+
+    // Populate from nullary functions
+    refreshPolynomials();
+
+    // Discriminant: q(v)² − 4·p(v)·r(v)
+    discriminant = ComplexFunction.express("q(v)² − 4·p(v)·r(v)", context);
+
+    // Declare the Müntz coefficient sequence
+    ComplexFunctionSequence.declare("a", context);
+
+    // Compile the convolution sum S(k)(v) = Σ_{j=1}^{k-2} a(j)(v)·a(k-1-j)(v)
+    Sequence.compile(ComplexFunction.class, 
+                     "S:k➔v➔sum(j➔a(j)(v)*a(k-1-j)(v){j=1..k-2})", 
+                     ComplexFunctionSequence.class, 
+                     context);
+
+    // Compile the full recurrence
+    a = ComplexFunctionSequence.express(
+          "a:k➔v➔when(k=1,p(v)/Γ(μ+1),else,(Γ((k-1)*μ+1)/Γ(k*μ+1))*(q(v)*a(k-1)(v)+r(v)*S(k)(v)))", 
+          context);
   }
 
   /**
-   * Grow Hankel inverse monotonically from currentM up to desiredM.
+   * Convenience constructor with fresh context.
    */
-  public void growToOrder(int desiredM) {
-    if (desiredM < 1) {
-      throw new IllegalArgumentException("desiredM must be ≥ 1");
-    }
-
-    if (currentM == 0) {
-      bootstrapFromSequence(1);
-    }
-
-    while (currentM < desiredM) {
-      int n = currentM + 1;
-
-      if (hankelB.getNumRows() != n || hankelB.getNumCols() != 1) hankelB.resize(n, 1);
-      if (hankelC.getNumRows() != 1 || hankelC.getNumCols() != n) hankelC.resize(1, n);
-      if (u.getNumRows() != n || u.getNumCols() != 1) u.resize(n, 1);
-      if (v.getNumRows() != 1 || v.getNumCols() != n) v.resize(1, n);
-
-      if (inv.getNumRows() != n) {
-        ComplexMatrix newInv = ComplexMatrix.newMatrix(n, n);
-        for (int i = 0; i < currentM; i++) {
-          for (int j = 0; j < currentM; j++) {
-            newInv.set(i, j, inv.get(i, j));
-          }
-        }
-        inv.close();
-        inv = newInv;
-      }
-
-      for (int i = 0; i < n; i++) {
-        hankelB.set(i, 0, a.get(n + i));
-        hankelC.set(0, i, a.get(n + i));
-      }
-
-      inv.mulVec(hankelB, u, prec);
-
-      ComplexMatrix invT = ComplexMatrix.newMatrix(n, n);
-      inv.transpose(invT);
-      invT.mulTVec(hankelC, v, prec);
-      invT.close();
-
-      Complex d = a.get(2 * n);
-      Complex s = Complex.newScalar();
-      s.set(d);
-
-      Complex cu = Complex.newScalar();
-      hankelC.mulVec(u, cu, prec);
-      s.sub(cu, prec, s);
-
-      if (s.isZero()) {
-        throw new ArithmeticException("Rank‑1 update denominator s = 0 at order n = " + n);
-      }
-
-      Complex alpha = Complex.newScalar();
-      alpha.set(1);
-      alpha.div(s, prec, alpha);
-
-      ComplexMatrix uv = ComplexMatrix.newMatrix(n, n);
-      u.outer(v, uv, 1, 1);
-      uv.mul(alpha, prec, uv);
-      inv.add(uv, 1, 1, prec, inv);
-      uv.close();
-
-      updateBorder(inv, n, alpha);
-
-      currentM = n;
-    }
+  public RiccatiMuntzPadeFunctional(Real α, 
+                                     ComplexPolynomialNullaryFunction P, 
+                                     ComplexPolynomialNullaryFunction Q, 
+                                     ComplexPolynomialNullaryFunction R)
+  {
+    this(new Context(), α, P, Q, R);
   }
-
-  private void updateBorder(ComplexMatrix A, int n, Complex alpha) {
-    for (int i = 0; i < n; i++) {
-      A.get(i, n).set(u.get(i, 0));
-      A.get(i, n).mul(alpha, prec, A.get(i, n)).neg(A.get(i, n));
-    }
-    for (int j = 0; j < n; j++) {
-      A.get(n, j).set(v.get(0, j));
-      A.get(n, j).mul(alpha, prec, A.get(n, j)).neg(A.get(n, j));
-    }
-    A.get(n, n).set(alpha);
-  }
-
-  // ==========================================================
-  // One and only solve: q = H⁻¹ b at order M
-  // b is -a_{M}, -a_{M+1}, ..., -a_{2M-1} (shifted tail of a)
-  // ==========================================================
 
   /**
-   * Solve q = H⁻¹ b at order M, growing the Hankel if needed,
-   * where b_i = -a_{M+i}(v).
+   * Refresh polynomial variables from nullary functions.
+   * Passes the existing polynomials as result arguments to avoid allocation.
+   * Call this (or invalidateCache()) when underlying parameters have changed.
    */
-  public ComplexMatrix solve(int M) {
-    if (M < 1) {
-      throw new IllegalArgumentException("M must be ≥ 1");
-    }
-
-    if (currentM < M) {
-      growToOrder(M);
-    }
-
-    ComplexMatrix rhs = ComplexMatrix.newMatrix(M, 1);
-    // rhs_i = -a_{M+i}(v)
-    for (int i = 0; i < M; i++) {
-      rhs.get(i, 0).set(a.get(M + i));
-      rhs.get(i, 0).neg(rhs.get(i, 0));
-    }
-
-    // invM = leading M×M block of inv
-    ComplexMatrix invM = ComplexMatrix.newMatrix(M, M);
-    for (int i = 0; i < M; i++) {
-      for (int j = 0; j < M; j++) {
-        invM.set(i, j, inv.get(i, j));
-      }
-    }
-
-    ComplexMatrix q = ComplexMatrix.newMatrix(M, 1);
-    invM.mulVec(rhs, q, prec);
-
-    invM.close();
-    rhs.close();
-
-    return q;
+  public void refreshPolynomials()
+  {
+    P.evaluate(null, 0, 128, p);
+    Q.evaluate(null, 0, 128, q);
+    R.evaluate(null, 0, 128, r);
   }
-
-  // ==========================================================
-  // Close resources
-  // ==========================================================
 
   @Override
-  public void close() {
-    if (inv     != null)  inv.close();
-    if (u       != null)  u.close();
-    if (v       != null)  v.close();
-    if (hankelB != null) hankelB.close();
-    if (hankelC != null) hankelC.close();
+  public void invalidateCache()
+  {
+    refreshPolynomials();
+    super.invalidateCache();
+  }
+
+  public ComplexFunctionSequence muntzBasis()
+  {
+    return a;
+  }
+
+  public ComplexFunction discriminant()
+  {
+    return discriminant;
+  }
+
+  // ────────────────────────────────────────────────────────────────────────
+  // Jacobian: ∂y/∂v as a MuntzPadeFunction in its own right
+  // ────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Jacobian of y with respect to v.
+   *
+   * <p>
+   * Differentiating the Riccati ODE in v gives the linear fractional Volterra
+   * equation
+   *
+   * <pre>
+   *   Đᵅ w(t; v) = f(t; v) + g(t; v)·w(t; v),    w(t;v) := ∂y(t;v)/∂v
+   *   f(t; v)    = ṗ(v) + q̇(v)·y(t;v) + ṙ(v)·y(t;v)²
+   *   g(t; v)    = q(v) + 2·r(v)·y(t;v)
+   * </pre>
+   *
+   * where ṗ, q̇, ṙ are the formal derivatives of the polynomial coefficient
+   * variables p, q, r. These are obtained via {@link ComplexPolynomial#derivative()}
+   * — pure algebraic coefficient shifting, no numerical approximation.
+   *
+   * The solution w(t;v) = Σ w_k(v)·t^{kμ} is itself a Müntz–Padé function.
+   * </p>
+   */
+  @Override
+  public Jacobian<Complex, ComplexFunction, ComplexFunctional> jacobian(String[] variables)
+  {
+    if (variables == null || variables.length == 0)
+    {
+      throw new IllegalArgumentException("variables must be a non-empty array");
+    }
+    ComplexFunctional[] partials = new ComplexFunctional[variables.length];
+    for (int i = 0; i < variables.length; i++)
+    {
+      String name = variables[i];
+      if (!"v".equals(name))
+      {
+        throw new IllegalArgumentException("only ∂/∂v is currently supported, got ∂/∂" + name);
+      }
+      partials[i] = partialDerivativeWithRespectToV();
+    }
+    return new Jacobian<Complex, ComplexFunction, ComplexFunctional>(this,
+                                                                     variables,
+                                                                     partials);
+  }
+
+  /**
+   * Build w(t;v) = ∂y/∂v as a {@link MuntzPadeFunctional}.
+   *
+   * <p>
+   * p, q, r are polynomial variables in {@link #context}. Their formal v-derivatives
+   * are obtained via {@link ComplexPolynomial#derivative()}, then registered as
+   * variables p_dv, q_dv, r_dv for use in the f, g, w recurrence expressions.
+   * </p>
+   */
+  private ComplexFunctional partialDerivativeWithRespectToV()
+  {
+    // Formal derivatives of polynomial coefficient variables
+    ComplexPolynomial p_dv = p.derivative();
+    ComplexPolynomial q_dv = q.derivative();
+    ComplexPolynomial r_dv = r.derivative();
+
+    // Register derivatives as variables in context
+    p_dv.setName("p_dv");
+    context.registerVariable(p_dv);
+    q_dv.setName("q_dv");
+    context.registerVariable(q_dv);
+    r_dv.setName("r_dv");
+    context.registerVariable(r_dv);
+
+    // Forward-declare w so its self-reference resolves
+    context.registerFunctionMapping("w", arb.Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
+
+    // f(k)(v) : k=0 → ṗ(v); k≥1 → q̇(v)·a(k)(v) + ṙ(v)·Σ_{j=1..k-1} a(j)(v)·a(k-j)(v)
+    String fExpr = "f:k➔v➔when(k=0, p_dv(v)," + 
+                   " else, q_dv(v)*a(k)(v) + r_dv(v)*sum(j➔a(j)(v)*a(k-j)(v){j=1..k-1}))";
+    Sequence.compile("f", ComplexFunction.class, fExpr, ComplexFunctionSequence.class, context);
+
+    // g(k)(v) : k=0 → q(v); k≥1 → 2·r(v)·a(k)(v)
+    String gExpr = "g:k➔v➔when(k=0, q(v), else, 2*r(v)*a(k)(v))";
+    Sequence.compile("g", ComplexFunction.class, gExpr, ComplexFunctionSequence.class, context);
+
+    // w(k)(v) linear Volterra recurrence
+    String                  wExpr = "w:k➔v➔when(k=1, p_dv(v)/Γ(μ+1),"
+                                    + " else, (Γ((k-1)*μ+1)/Γ(k*μ+1))"
+                                    + "       *(f(k-1)(v) + sum(j➔g(k-2-j)(v)*w(j+1)(v){j=0..k-2})))";
+    ComplexFunctionSequence w     = ComplexFunctionSequence.express(wExpr, context);
+
+    return new MuntzPadeFunctional("∂y/∂v",
+                                   α,
+                                   w);
+  }
+
+  // ────────────────────────────────────────────────────────────────────────
+  // Resource lifecycle
+  // ────────────────────────────────────────────────────────────────────────
+
+  @Override
+  public void close()
+  {
+    super.close();
+    if (ownsAlpha && α != null)
+    {
+      α.close();
+    }
+    // Nullary functions P, Q, R are managed by caller
+    // Polynomial variables p, q, r are closed via context or caller
   }
 }
