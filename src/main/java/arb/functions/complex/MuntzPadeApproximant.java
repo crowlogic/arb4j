@@ -1,60 +1,442 @@
 package arb.functions.complex;
 
+import java.util.ArrayList;
+
 import arb.Complex;
+import arb.ComplexMatrix;
+import arb.ComplexPolynomial;
 import arb.Real;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
+import arb.functions.integer.ComplexFunctionSequence;
+import arb.functions.integer.ComplexSequence;
+import arb.solvers.IncrementalHankelSolver;
 
 /**
- * The Müntz–Padé approximant at a fixed external parameter v:
- *
- * <pre>
- *   t ↦ R_M(t^μ; v) = P_M(t^μ; v) / Q_M(t^μ; v)
- * </pre>
- *
- * where μ ∈ (0, 1) is the fractional order shared with the parent
- * {@link MuntzPadeFunctional} and {@code (P_M, Q_M)} is the diagonal Padé pair
- * built from the Müntz coefficients {@code k ↦ a_k(v)} at this v.
+ * Adaptive Müntz–Padé evaluator at fixed external parameter v.
  *
  * <p>
- * Returned by
- * {@link MuntzPadeFunctional#evaluate(Complex, int, int, ComplexFunction)} — one
- * instance per v. The pair owns its native polynomials; callers close it when
- * done.
+ * This object incrementally constructs and caches the diagonal Padé hierarchy:
  *
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * <pre>
+ *     R₁, R₂, R₃, ...
+ * </pre>
+ *
+ * and adaptively selects the smallest order M satisfying the requested bit
+ * precision at the actual evaluation point:
+ *
+ * <pre>
+ *     z = t^μ.
+ * </pre>
+ *
+ * <p>
+ * The convergence criterion is based on successive Padé differences:
+ *
+ * <pre>
+ *     |Δ_M|² / (|Δ_{M-1}| - |Δ_M|)
+ * </pre>
+ *
+ * where:
+ *
+ * <pre>
+ *     Δ_M = R_M - R_{M-1}.
+ * </pre>
+ *
+ * <p>
+ * All constructed approximants are retained and reused.
  */
-public final class MuntzPadeApproximant implements
-                                        ComplexFunction,
-                                        AutoCloseable
-{
+public final class MuntzPadeApproximant
+    implements ComplexFunction,
+               AutoCloseable {
 
-  /** Fractional order μ ∈ (0, 1). Shared (borrowed) from the parent. */
-  public final Real      α;
+  /**
+   * Fractional exponent μ.
+   */
+  public final Real α;
 
-  /** The diagonal (M, M) Padé pair at this v. Owned. */
-  public final DiagonalPadePair pade;
+  /**
+   * Fixed external parameter.
+   */
+  public final Complex v;
 
-  public MuntzPadeApproximant(Real α, DiagonalPadePair pade)
-  {
-    this.α    = α;
-    this.pade = pade;
+  /**
+   * Frozen coefficient sequence:
+   *
+   * <pre>
+   *     k ↦ a_k(v)
+   * </pre>
+   */
+  private final ComplexSequence coeffs;
+
+  /**
+   * Working precision used for Padé construction.
+   */
+  private final int workingBits;
+
+  /**
+   * Incremental nested Hankel inverse updater.
+   *
+   * Hankel structure:
+   *
+   * <pre>
+   *     H(i,j)=a_{i+j+1}
+   * </pre>
+   */
+  private final IncrementalHankelSolver hankel;
+
+  /**
+   * Cached Padé hierarchy.
+   *
+   * Index convention:
+   *
+   * <pre>
+   *     approximants.get(M-1) == R_M
+   * </pre>
+   */
+  private final ArrayList<DiagonalPadePair> approximants =
+      new ArrayList<>();
+
+  /**
+   * Scratch evaluation point:
+   *
+   * <pre>
+   *     z=t^μ
+   * </pre>
+   */
+  private final Complex z = new Complex();
+
+  public MuntzPadeApproximant(
+      Real α,
+      ComplexFunctionSequence a,
+      Complex v,
+      int bits
+  ) {
+
+    this.α = α;
+
+    this.v = v.newCopy();
+
+    this.workingBits = bits;
+
+    /**
+     * Freeze coefficients at this v.
+     */
+    this.coeffs = k -> {
+
+      Complex c = new Complex();
+
+      a.apply(k)
+       .evaluate(this.v,
+                 1,
+                 bits,
+                 c);
+
+      return c;
+    };
+
+    /**
+     * Nested Hankel family:
+     *
+     * <pre>
+     *     H(i,j)=a_{i+j+1}
+     * </pre>
+     */
+    this.hankel =
+        new IncrementalHankelSolver(
+            coeffs,
+            1,
+            bits
+        );
   }
 
-  Complex z = new Complex();
-
   @Override
-  public Complex evaluate(Complex t, int order, int bits, Complex result)
-  {
-    t.pow(α, bits, z);
-    return pade.evaluate(z, order, bits, result);
+  public Complex evaluate(
+      Complex t,
+      int order,
+      int bits,
+      Complex result
+  ) {
+
+    /**
+     * z = t^μ
+     */
+    t.pow(α,
+          bits,
+          z);
+
+    /**
+     * Threshold = 2^{-bits}
+     */
+    try (
+        Real threshold = new Real();
+        Real bound = new Real()
+    ) {
+
+      threshold.one()
+               .mul2e(-bits,
+                       threshold);
+
+      int M = 1;
+
+      while (true) {
+
+        ensureApproximantExists(M);
+
+        if (M < 2) {
+          M++;
+          continue;
+        }
+
+        DiagonalPadePair rM =
+            approximants.get(M - 1);
+
+        DiagonalPadePair rMm1 =
+            approximants.get(M - 2);
+
+        DiagonalPadePair rMm2 =
+            (M >= 3)
+                ? approximants.get(M - 3)
+                : null;
+
+        boundSuccessiveDifferences(
+            rMm2,
+            rMm1,
+            rM,
+            z,
+            bits,
+            bound
+        );
+
+        /**
+         * Converged.
+         */
+        if (bound.compareTo(threshold) <= 0) {
+
+          return rM.evaluate(
+              z,
+              order,
+              bits,
+              result
+          );
+        }
+
+        M++;
+      }
+    }
+  }
+
+  /**
+   * Ensure R_M exists in the hierarchy.
+   */
+  private void ensureApproximantExists(
+      int M
+  ) {
+
+    while (approximants.size() < M) {
+
+      int nextM =
+          approximants.size() + 1;
+
+      approximants.add(
+          buildPadePair(nextM)
+      );
+    }
+  }
+
+  /**
+   * Build the diagonal Padé approximant R_M incrementally.
+   */
+  private DiagonalPadePair buildPadePair(
+      int M
+  ) {
+
+    DiagonalPadePair pade =
+        new DiagonalPadePair(M);
+
+    ComplexPolynomial P = pade.P;
+    ComplexPolynomial Q = pade.Q;
+
+    try (
+        ComplexMatrix rhs =
+            ComplexMatrix.newMatrix(M, 1)
+    ) {
+
+      /**
+       * rhs_i = -a_{M+i+1}
+       */
+      for (int i = 0; i < M; i++) {
+
+        rhs.get(i, 0)
+           .set(coeffs.get(M + i + 1))
+           .neg(rhs.get(i, 0));
+      }
+
+      ComplexMatrix q =
+          hankel.solve(
+              rhs,
+              M,
+              workingBits
+          );
+
+      try {
+
+        /**
+         * Denominator:
+         *
+         * <pre>
+         *     Q(z)=1+Σ q_j z^j
+         * </pre>
+         */
+        Q.fitLength(M + 1);
+        Q.setLength(M + 1);
+
+        Q.get(0).one();
+
+        for (int j = 1; j <= M; j++) {
+
+          Q.set(j,
+                q.get(j - 1, 0));
+        }
+
+        /**
+         * Build truncated coefficient polynomial:
+         *
+         * <pre>
+         *     A(z)=Σ a_k z^{k-1}
+         * </pre>
+         */
+        try (
+            ComplexPolynomial A =
+                new ComplexPolynomial();
+
+            ComplexPolynomial AQ =
+                new ComplexPolynomial()
+        ) {
+
+          A.fitLength(2 * M);
+          A.setLength(2 * M);
+
+          for (int k = 0; k < 2 * M; k++) {
+
+            A.get(k)
+             .set(coeffs.get(k + 1));
+          }
+
+          /**
+           * AQ = A*Q
+           */
+          A.mul(Q,
+                workingBits,
+                AQ);
+
+          /**
+           * Numerator:
+           *
+           * <pre>
+           *     P=[AQ]_{<M+1}
+           * </pre>
+           */
+          P.fitLength(M + 1);
+          P.setLength(M + 1);
+
+          P.get(0).zero();
+
+          for (int n = 1; n <= M; n++) {
+
+            P.get(n)
+             .set(AQ.get(n - 1));
+          }
+        }
+
+        return pade;
+      }
+      finally {
+        q.close();
+      }
+    }
+  }
+
+  /**
+   * Successive-difference convergence bound.
+   */
+  private Real boundSuccessiveDifferences(
+      DiagonalPadePair rMm2,
+      DiagonalPadePair rMm1,
+      DiagonalPadePair rM,
+      Complex z,
+      int bits,
+      Real result
+  ) {
+
+    try (
+        Complex valM = new Complex();
+        Complex valMm1 = new Complex();
+        Complex valMm2 = new Complex();
+
+        Complex deltaM = new Complex();
+        Complex deltaMm1 = new Complex();
+
+        Real absM = result.borrowVariable();
+        Real absMm1 = result.borrowVariable();
+
+        Real num = result.borrowVariable();
+        Real denom = result.borrowVariable()
+    ) {
+
+      rM.evaluate(z,
+                  1,
+                  bits,
+                  valM);
+
+      rMm1.evaluate(z,
+                    1,
+                    bits,
+                    valMm1);
+
+      if (rMm2 == null) {
+        valMm2.zero();
+      }
+      else {
+        rMm2.evaluate(z,
+                      1,
+                      bits,
+                      valMm2);
+      }
+
+      return valM.sub(valMm1,
+                      bits,
+                      deltaM)
+                 .abs(bits,
+                      absM)
+                 .mul(absM,
+                      bits,
+                      num)
+                 .div(
+                     valMm1.sub(valMm2,
+                                bits,
+                                deltaMm1)
+                           .abs(bits,
+                                absMm1)
+                           .sub(absM,
+                                bits,
+                                denom),
+                     bits,
+                     result
+                 );
+    }
   }
 
   @Override
-  public void close()
-  {
+  public void close() {
+
     z.close();
-    pade.close();
+
+    v.close();
+
+    hankel.close();
+
+    for (DiagonalPadePair pade : approximants) {
+      pade.close();
+    }
+
+    approximants.clear();
   }
 }
