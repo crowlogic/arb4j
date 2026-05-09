@@ -1,0 +1,985 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsmath,amssymb,amsthm,amsfonts,mathtools,mathrsfs}
+\usepackage{fullpage}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{bm}
+
+\setlength{\parskip}{0.45em}
+\setlength{\parindent}{0pt}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{hypothesis}[theorem]{Hypothesis}
+\newtheorem{assumption}[theorem]{Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\spec}{spec}
+\DeclareMathOperator{\capa}{cap}
+\DeclareMathOperator{\supp}{supp}
+
+\title{The Riemann--Hilbert View of Pad\'e Approximation\\
+and Global Analytic Continuation,\\
+with Application to the Fractional Riccati Equation}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+The diagonal Pad\'e approximant of a function analytic at the origin admits a representation as the solution to a $2\times 2$ matrix Riemann--Hilbert problem. This formulation replaces the local derivative-matching of Taylor approximation with the global reconstruction of a spectral measure from its moments. The convergence domain is determined not by the distance to the nearest singularity, but by the maximal region on which the associated Riemann--Hilbert factorization remains solvable, a region governed by the equilibrium measure of an extremal contour selected by the $S$-property. The poles of the approximant are the eigenvalues of a truncated Jacobi operator, and their condensation along the equilibrium contour is the signature of the underlying Riemann surface. We present the general theory in the form of theorems, corollaries, and limit statements, identify the precise hypotheses under which each conclusion holds, and apply the framework to the constant-coefficient fractional Riccati equation that governs the rough Heston characteristic function in mathematical finance. The application section develops the M\"untz spectral solution, derives a Gamma-ratio convolution recurrence for the Puiseux coefficients, establishes a strictly positive radius of convergence by a Banach fixed-point argument, constructs the diagonal Pad\'e resummation in the variable $z = t^\mu$, and proves global convergence on the positive real axis under explicit meromorphy hypotheses, with a computable a-posteriori error bound.
+\end{abstract}
+
+\tableofcontents
+
+\section{Introduction}
+\label{sec:intro}
+
+Taylor approximation asks for the polynomial that matches the derivatives of a function at a single point. It is local, and its radius of convergence is the distance to the nearest singularity. Pad\'e approximation asks for the spectral measure that generates the given moment sequence, and for the Stieltjes transform of that measure. It is global, and its convergence domain is the maximal region on which the Riemann--Hilbert factorization exists.
+
+The distinction is not merely one of degree. A Taylor polynomial of degree $2n$ and a diagonal Pad\'e approximant $[n/n]$ both consume the same $2n+1$ coefficients, yet they encode fundamentally different information. The Taylor polynomial encodes derivatives at a point; the Pad\'e approximant encodes moments of a measure. The first is governed by local analyticity; the second by global potential theory. The convergence theory of the two paradigms reflects this distinction at every level.
+
+The document proceeds as follows. Section~\ref{sec:rhp} presents the Fokas--Its--Kitaev Riemann--Hilbert formulation for diagonal Pad\'e approximants. Section~\ref{sec:stahl} describes Stahl's geometric theorem and the selection of the equilibrium contour by the $S$-property, together with the Deift--Zhou steepest descent asymptotic. Section~\ref{sec:froissart} explains why convergence holds in capacity rather than uniformly, through the mechanism of Froissart doublets, and gives the Gon\v{c}ar condition under which uniform convergence is recovered. Section~\ref{sec:jacobi} identifies the Pad\'e table with the Toda lattice and the Jacobi operator resolvent, including the non-Hermitian extension via pseudo-spectrum. Section~\ref{sec:poles} contrasts orthogonal polynomial zeros with Fekete points and gives bulk and edge residue estimates. Section~\ref{sec:borel} discusses the Borel plane and Pad\'e--Borel resummation for factorially divergent series. Section~\ref{sec:heston} develops the application to the rough Heston model in detail, treating the constant-coefficient fractional Riccati equation through the M\"untz spectral method and Pad\'e resummation in $z = t^\mu$. Section~\ref{sec:conclusion} summarizes the essential difference between the two paradigms.
+
+\section{The Riemann--Hilbert formulation}
+\label{sec:rhp}
+
+We begin with the foundational equivalence between diagonal Pad\'e approximants and matrix Riemann--Hilbert problems. This equivalence, due to Fokas, Its, and Kitaev, recasts a problem of rational approximation as a problem of matrix factorization on a contour.
+
+\begin{definition}[Cauchy transform]
+\label{def:cauchy}
+Let $\Sigma\subset\mathbb{C}$ be a finite union of smooth oriented arcs, and let $w:\Sigma\to\mathbb{C}$ be a measurable weight with $\int_{\Sigma}|w(s)|\,|ds|<\infty$. The \emph{Cauchy transform} of $w$ on $\Sigma$ is the function
+\begin{equation}
+f(z)=\int_{\Sigma}\frac{w(s)\,ds}{z-s},
+\qquad z\in\mathbb{C}\setminus\Sigma.
+\label{eq:cauchy}
+\end{equation}
+\end{definition}
+
+\begin{definition}[Diagonal Pad\'e approximant]
+\label{def:pade}
+Let $f$ be analytic at infinity with formal expansion $f(z)=\sum_{k=0}^{\infty}a_{k}z^{-k-1}$. The \emph{diagonal Pad\'e approximant} $[n/n]_{f}$ of order $n$ is the unique rational function $P_{n}/Q_{n}$ with $\deg P_{n}<n$, $\deg Q_{n}=n$, and $Q_{n}$ monic, satisfying
+\begin{equation}
+f(z)-\frac{P_{n}(z)}{Q_{n}(z)}=O(z^{-2n-1})
+\qquad\text{as }z\to\infty,
+\label{eq:pade-defining}
+\end{equation}
+whenever the underlying Hankel determinant $\tau_{n}=\det(a_{i+j})_{0\le i,j\le n-1}$ is nonzero.
+\end{definition}
+
+\begin{theorem}[Fokas--Its--Kitaev representation]
+\label{thm:fik}
+Let $f$ be the Cauchy transform \eqref{eq:cauchy} of a weight $w$ on a fixed contour $\Sigma$, and assume the Hankel determinants $\tau_{1},\dots,\tau_{n}$ are nonzero. Then there exists a unique $2\times 2$ matrix-valued function $Y:\mathbb{C}\setminus\Sigma\to GL_{2}(\mathbb{C})$ satisfying:
+\begin{enumerate}[label=(\roman*)]
+\item $Y$ is analytic on $\mathbb{C}\setminus\Sigma$;
+\item $Y$ has continuous boundary values $Y_{\pm}$ on $\Sigma$ related by the jump
+\begin{equation}
+Y_{+}(s)=Y_{-}(s)
+\begin{pmatrix}
+1 & 2\pi i\,w(s)\\
+0 & 1
+\end{pmatrix},
+\qquad s\in\Sigma;
+\label{eq:jump}
+\end{equation}
+\item $Y$ has the asymptotic behavior at infinity
+\begin{equation}
+Y(z)=\left(I+\frac{Y_{1}}{z}+\frac{Y_{2}}{z^{2}}+\cdots\right)
+\begin{pmatrix}
+z^{n} & 0\\
+0 & z^{-n}
+\end{pmatrix},
+\qquad z\to\infty.
+\label{eq:normalization}
+\end{equation}
+\end{enumerate}
+The entries of $Y$ encode the diagonal Pad\'e approximant via
+\begin{equation}
+Y_{11}(z)=Q_{n}(z),
+\qquad
+Y_{12}(z)=\int_{\Sigma}\frac{Q_{n}(s)w(s)\,ds}{s-z},
+\label{eq:y-entries}
+\end{equation}
+and the approximant itself is
+\begin{equation}
+[n/n]_{f}(z)=\frac{P_{n}(z)}{Q_{n}(z)}=\frac{Y_{12}(z)}{Y_{11}(z)}.
+\label{eq:pade-from-y}
+\end{equation}
+\end{theorem}
+
+\begin{corollary}[Orthogonality]
+\label{cor:orthogonality}
+The denominator $Q_{n}$ is the monic orthogonal polynomial of degree $n$ for the moment functional $\mathcal{L}[p]=\int_{\Sigma}p(s)w(s)\,ds$:
+\begin{equation}
+\int_{\Sigma}Q_{n}(s)s^{k}w(s)\,ds=0,
+\qquad k=0,1,\dots,n-1.
+\label{eq:orthogonality}
+\end{equation}
+\end{corollary}
+
+\begin{remark}[Limitation: the contour must be given]
+\label{rem:fixed-contour}
+Theorem~\ref{thm:fik} requires a fixed contour $\Sigma$. For functions specified only by a power series, with branch cuts whose location is unknown, the contour is not given; it must be determined as part of the problem. The Riemann--Hilbert formulation in the form stated above becomes exact only after the equilibrium contour has been selected by the procedure of Section~\ref{sec:stahl}.
+\end{remark}
+
+\section{The contour is determined, not given}
+\label{sec:stahl}
+
+For functions whose singular structure is not specified in advance, the appropriate contour is selected by an extremal principle in logarithmic potential theory. This is the content of Stahl's geometric theorem.
+
+\begin{definition}[Stahl class]
+\label{def:stahl-class}
+A function $f$ analytic at infinity belongs to the \emph{Stahl class} $\mathcal{S}$ if it admits multi-valued meromorphic continuation to a domain $\overline{\mathbb{C}}\setminus E$, where $E$ is a compact set of logarithmic capacity zero.
+\end{definition}
+
+\begin{definition}[Admissible compact]
+\label{def:admissible}
+A compact set $K\subset\mathbb{C}$ is \emph{admissible} for $f\in\mathcal{S}$ if $\overline{\mathbb{C}}\setminus K$ is a domain on which $f$ admits single-valued meromorphic continuation.
+\end{definition}
+
+\begin{theorem}[Stahl's geometric theorem]
+\label{thm:stahl-geometric}
+For every $f\in\mathcal{S}$, there exists a unique admissible compact $\Delta_{f}$ with the following properties:
+\begin{enumerate}[label=(\roman*)]
+\item $\overline{\mathbb{C}}\setminus\Delta_{f}$ is a connected domain $D_{f}$;
+\item $f$ has single-valued meromorphic continuation to $D_{f}$;
+\item $\capa(\Delta_{f})\le\capa(K)$ for every other admissible compact $K$.
+\end{enumerate}
+The set $\Delta_{f}$ is called the \emph{Stahl compact} or \emph{$S$-compact} of $f$.
+\end{theorem}
+
+\begin{theorem}[The $S$-property]
+\label{thm:s-property}
+Let $g(z,\infty)$ denote the Green's function of $D_{f}$ with pole at infinity. The arcs of $\Delta_{f}$ satisfy the symmetry condition
+\begin{equation}
+\frac{\partial g}{\partial n_{+}}(z)=\frac{\partial g}{\partial n_{-}}(z),
+\qquad z\in\Delta_{f}\setminus\{\text{endpoints}\},
+\label{eq:s-property}
+\end{equation}
+where $n_{\pm}$ are the two unit normals to the arc.
+\end{theorem}
+
+\begin{remark}[Variational interpretation]
+\label{rem:variational}
+The $S$-property is the Euler--Lagrange equation of a min-max variational problem. Among admissible compacts in a fixed homotopy class, the minimum of $\capa(K)$ is attained at $\Delta_{f}$, and the harmonic measure exerts equal pull on both sides of each arc.
+\end{remark}
+
+\begin{theorem}[Stahl's convergence theorem]
+\label{thm:stahl-convergence}
+Let $f\in\mathcal{S}$ with Stahl compact $\Delta_{f}$ and complementary domain $D_{f}$. The diagonal Pad\'e approximants converge to $f$ in capacity on compact subsets of $D_{f}\setminus\mathcal{P}_{f}$, where $\mathcal{P}_{f}$ is the pole set of $f$. For every compact $K\subset D_{f}\setminus\mathcal{P}_{f}$ and every $\varepsilon>0$,
+\begin{equation}
+\lim_{n\to\infty}\capa\bigl\{z\in K:\bigl|f(z)-[n/n]_{f}(z)\bigr|>\varepsilon\bigr\}=0.
+\label{eq:convergence-in-capacity}
+\end{equation}
+\end{theorem}
+
+\begin{theorem}[Deift--Zhou asymptotic]
+\label{thm:deift-zhou}
+Under the hypotheses of Theorem~\ref{thm:stahl-convergence}, with the additional regularity that $w$ is analytic in a neighborhood of $\Delta_{f}$ and the endpoints exhibit square-root behavior of the equilibrium density, nonlinear steepest descent yields
+\begin{equation}
+[n/n]_{f}(z)=f(z)\bigl(1+O(e^{-ng(z,\infty)})\bigr)
+\label{eq:deift-zhou-asymptotic}
+\end{equation}
+uniformly on compact subsets of $D_{f}$ bounded away from $\Delta_{f}\cup\mathcal{P}_{f}$.
+\end{theorem}
+
+\begin{corollary}[Exponential rate of convergence]
+\label{cor:exponential-rate}
+\begin{equation}
+\limsup_{n\to\infty}\bigl|f(z)-[n/n]_{f}(z)\bigr|^{1/n}\le e^{-g(z,\infty)},
+\qquad z\in D_{f}\setminus\mathcal{P}_{f}.
+\label{eq:rate}
+\end{equation}
+The level sets $\{g(z,\infty)=c\}$ are loci of equal convergence rate, and $\Delta_{f}=\{g=0\}$.
+\end{corollary}
+
+\begin{remark}[Comparison with Taylor]
+\label{rem:taylor-comparison}
+The Taylor polynomial of degree $2n$ converges geometrically only inside the disk of convergence, with rate $|z|/r$ where $r$ is the distance to the nearest singularity. The Pad\'e rate $e^{-g(z,\infty)}$ extends to all of $D_{f}$, generally a much larger domain. The two rates agree only inside the disk of convergence, where $g(z,\infty)\sim-\log|z|+\mathrm{const}$.
+\end{remark}
+
+\section{Froissart doublets and convergence in capacity}
+\label{sec:froissart}
+
+The convergence statement of Theorem~\ref{thm:stahl-convergence} is in capacity, not uniformly. The reason is the appearance of spurious poles, called Froissart doublets, that wander through the domain of holomorphy without condensing on the Stahl compact.
+
+\begin{definition}[Froissart doublet]
+\label{def:froissart}
+A \emph{Froissart doublet} of $[n/n]_{f}$ is a pole $z_{j}^{(n)}\in D_{f}\setminus\mathcal{P}_{f}$ accompanied by a zero $\zeta_{j}^{(n)}$ at distance $|z_{j}^{(n)}-\zeta_{j}^{(n)}|=O(e^{-cn})$ for some $c>0$, with residue
+\begin{equation}
+\Res\bigl([n/n]_{f},z_{j}^{(n)}\bigr)=O(e^{-cn})
+\qquad\text{as }n\to\infty.
+\label{eq:doublet-residue}
+\end{equation}
+\end{definition}
+
+\begin{proposition}[Boundedness of doublet count]
+\label{prop:doublet-count}
+For $f\in\mathcal{S}$, the number of Froissart doublets of $[n/n]_{f}$ in any compact $K\subset D_{f}\setminus\mathcal{P}_{f}$ is $O(1)$ as $n\to\infty$, but their location may oscillate erratically with $n$.
+\end{proposition}
+
+\begin{definition}[Gon\v{c}ar condition]
+\label{def:goncar}
+A function $f\in\mathcal{S}$ satisfies the \emph{Gon\v{c}ar condition} if the number of poles of $[n/n]_{f}$ in any compact $K\subset D_{f}$ is uniformly bounded in $n$ by a constant depending only on $K$ and $f$.
+\end{definition}
+
+\begin{theorem}[Gon\v{c}ar's uniform convergence theorem]
+\label{thm:goncar}
+If $f\in\mathcal{S}$ satisfies the Gon\v{c}ar condition, then $[n/n]_{f}\to f$ uniformly on compact subsets of $D_{f}\setminus\mathcal{P}_{f}$. The exceptional set vanishes for sufficiently large $n$.
+\end{theorem}
+
+\begin{remark}
+\label{rem:goncar-restrictive}
+The Gon\v{c}ar condition is restrictive. It is satisfied by hyperelliptic functions and by certain explicitly constructed classes, but it fails generically. For most functions of practical interest, including the rough Heston characteristic function discussed in Section~\ref{sec:heston}, only convergence in capacity is available, and the implementation must accommodate the possibility of spurious poles in the working domain through an a-posteriori certificate of the type developed in Section~\ref{sec:heston-error}.
+\end{remark}
+
+\section{The Jacobi operator and the Toda lattice}
+\label{sec:jacobi}
+
+The Pad\'e problem admits a third equivalent formulation, in addition to rational approximation and Riemann--Hilbert factorization. This third formulation is operator-theoretic: the Pad\'e approximant is the resolvent of a truncated Jacobi operator.
+
+\begin{definition}[Hankel matrix and tau function]
+\label{def:hankel}
+For a sequence $\{a_{k}\}_{k\ge 0}$, the \emph{Hankel matrix} of order $n$ is
+\begin{equation}
+H^{(n)}=\bigl(a_{i+j}\bigr)_{0\le i,j\le n-1},
+\label{eq:hankel}
+\end{equation}
+and its determinant $\tau_{n}=\det H^{(n)}$ is the \emph{tau function}.
+\end{definition}
+
+\begin{theorem}[Toda lattice structure]
+\label{thm:toda}
+Assume $\tau_{n}\ne 0$ for all $n\ge 1$. The monic orthogonal polynomials $Q_{n}$ for the moment functional defined by $\{a_{k}\}$ satisfy the three-term recurrence
+\begin{equation}
+Q_{n+1}(z)=(z-b_{n})Q_{n}(z)-a_{n}^{2}Q_{n-1}(z),
+\qquad Q_{-1}=0,\;Q_{0}=1.
+\label{eq:three-term}
+\end{equation}
+Under the spectral evolution $d\mu_{t}(x)=e^{tx}\,d\mu(x)$, the recurrence coefficients evolve according to the Toda equations
+\begin{equation}
+\dot{b}_{n}=a_{n}^{2}-a_{n-1}^{2},
+\qquad
+\dot{a}_{n}=a_{n}(b_{n+1}-b_{n}).
+\label{eq:toda}
+\end{equation}
+The flow is isospectral.
+\end{theorem}
+
+\begin{definition}[Jacobi operator]
+\label{def:jacobi}
+The \emph{infinite Jacobi operator} associated to $\{a_{n},b_{n}\}$ is the tridiagonal matrix
+\begin{equation}
+J_{\infty}=
+\begin{pmatrix}
+b_{0} & a_{0} & 0 & \cdots\\
+a_{0} & b_{1} & a_{1} & \ddots\\
+0 & a_{1} & b_{2} & \ddots\\
+\vdots & \ddots & \ddots & \ddots
+\end{pmatrix}
+\label{eq:jacobi-matrix}
+\end{equation}
+acting on $\ell^{2}(\mathbb{N}_{0})$. Its $n\times n$ \emph{principal truncation} is $J_{n}=[J_{\infty}]_{0\le i,j\le n-1}$.
+\end{definition}
+
+\begin{theorem}[Resolvent representation, self-adjoint case]
+\label{thm:resolvent-representation}
+Assume the moment functional is positive, so that $J_{\infty}$ is self-adjoint and bounded with spectral measure $\mu$ supported on a compact subset of $\mathbb{R}$. Then
+\begin{equation}
+f(z)=\langle e_{0},(J_{\infty}-zI)^{-1}e_{0}\rangle
+=\int\frac{d\mu(x)}{x-z},
+\label{eq:resolvent}
+\end{equation}
+and
+\begin{equation}
+[n/n]_{f}(z)=\langle e_{0},(J_{n}-zI)^{-1}e_{0}\rangle
+=\sum_{j=1}^{n}\frac{|\langle e_{0},\psi_{j}^{(n)}\rangle|^{2}}{\lambda_{j}^{(n)}-z},
+\label{eq:truncated-resolvent}
+\end{equation}
+where $\{\lambda_{j}^{(n)},\psi_{j}^{(n)}\}_{j=1}^{n}$ are the eigenvalue-eigenvector pairs of $J_{n}$.
+\end{theorem}
+
+\begin{corollary}[Poles as eigenvalues]
+\label{cor:poles-eigenvalues}
+The poles of $[n/n]_{f}$ are precisely the eigenvalues of $J_{n}$, and the residues are the squared first components of the corresponding normalized eigenvectors.
+\end{corollary}
+
+\begin{theorem}[Strong resolvent convergence]
+\label{thm:strong-resolvent}
+In the setting of Theorem~\ref{thm:resolvent-representation}, $J_{n}\to J_{\infty}$ in the strong resolvent sense:
+\begin{equation}
+\lim_{n\to\infty}(J_{n}-zI)^{-1}\xi=(J_{\infty}-zI)^{-1}\xi
+\qquad\forall\xi\in\ell^{2},\;z\notin\spec(J_{\infty}).
+\label{eq:strong-resolvent}
+\end{equation}
+Consequently, $[n/n]_{f}(z)\to f(z)$ for every $z\in\mathbb{C}\setminus\spec(J_{\infty})$, locally uniformly.
+\end{theorem}
+
+\begin{corollary}[Self-adjoint convergence domain]
+\label{cor:sa-domain}
+For real measures, the convergence domain of the diagonal Pad\'e approximation coincides with $\mathbb{C}\setminus\spec(J_{\infty})$, and $\Delta_{f}=\spec(J_{\infty})$.
+\end{corollary}
+
+\begin{remark}[Non-Hermitian extension]
+\label{rem:non-hermitian}
+For complex measures and functions with branch points off the real axis, $J_{\infty}$ is non-Hermitian and Theorem~\ref{thm:strong-resolvent} does not apply directly. The relevant convergence theory uses the pseudo-spectrum
+\begin{equation}
+\spec_{\varepsilon}(J_{\infty})=\bigl\{z\in\mathbb{C}:\bigl\|(J_{\infty}-zI)^{-1}\bigr\|\ge\varepsilon^{-1}\bigr\}.
+\label{eq:pseudospectrum}
+\end{equation}
+\end{remark}
+
+\begin{theorem}[Pseudo-spectral limit, regular case]
+\label{thm:pseudo-limit}
+Suppose the recurrence coefficients $\{a_{n},b_{n}\}$ admit a regular asymptotic expansion in $1/n$ and the limiting density is supported on a finite union of analytic arcs. Then
+\begin{equation}
+\lim_{\varepsilon\to 0}\partial\spec_{\varepsilon}(J_{\infty})=\Delta_{f}.
+\label{eq:pseudo-limit}
+\end{equation}
+\end{theorem}
+
+\begin{remark}[Beyond the regular case]
+\label{rem:non-regular}
+In less regular non-Hermitian settings, the limiting object of \eqref{eq:pseudo-limit} is a quadratic differential trajectory in the sense of Strebel; its identification with $\Delta_{f}$ requires additional symmetry conditions and is established case-by-case.
+\end{remark}
+
+\section{Pole condensation: orthogonal polynomials and Fekete points}
+\label{sec:poles}
+
+\begin{definition}[Fekete points]
+\label{def:fekete}
+The \emph{$n$-th Fekete points} of a compact $K\subset\mathbb{C}$ are the maximizers
+\begin{equation}
+\{z_{1}^{F,n},\dots,z_{n}^{F,n}\}=\arg\max_{(z_{1},\dots,z_{n})\in K^{n}}\prod_{i<j}|z_{i}-z_{j}|.
+\label{eq:fekete}
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Equilibrium limit of Fekete points]
+\label{thm:fekete-equilibrium}
+The normalized counting measures of the Fekete points of $K$ converge weak-$\ast$ to the equilibrium measure $\mu_{K}$:
+\begin{equation}
+\frac{1}{n}\sum_{j=1}^{n}\delta_{z_{j}^{F,n}}\xrightarrow{w^{\ast}}\mu_{K}
+\qquad\text{as }n\to\infty.
+\label{eq:fekete-limit}
+\end{equation}
+\end{theorem}
+
+\begin{theorem}[Equilibrium limit of orthogonal polynomial zeros]
+\label{thm:zeros-equilibrium}
+For $f\in\mathcal{S}$ with Stahl compact $\Delta_{f}$, the normalized counting measures of the zeros of $Q_{n}$ converge weak-$\ast$ to the equilibrium measure $\mu_{\Delta_{f}}$:
+\begin{equation}
+\frac{1}{n}\sum_{j=1}^{n}\delta_{\zeta_{j}^{(n)}}\xrightarrow{w^{\ast}}\mu_{\Delta_{f}}.
+\label{eq:zeros-limit}
+\end{equation}
+\end{theorem}
+
+\begin{remark}[Distinct objects, common limit]
+\label{rem:distinct-objects}
+Theorems~\ref{thm:fekete-equilibrium} and \ref{thm:zeros-equilibrium} share a conclusion but describe different sequences. Fekete points are extremal for discrete logarithmic energy and have no recursive relationship across $n$. Orthogonal polynomial zeros are determined by the spectral truncation of the Jacobi operator and are linked across $n$ by the three-term recurrence \eqref{eq:three-term}. Only their normalized counting measures agree in the limit.
+\end{remark}
+
+\begin{theorem}[Bulk residue estimate]
+\label{thm:residue-bulk}
+Let $f\in\mathcal{S}$ satisfy the regularity conditions of Theorem~\ref{thm:deift-zhou}. For poles $z_{j}^{(n)}$ approaching the interior of $\Delta_{f}$,
+\begin{equation}
+\Res\bigl([n/n]_{f},z_{j}^{(n)}\bigr)=
+\frac{P_{n}(z_{j}^{(n)})}{Q_{n}'(z_{j}^{(n)})}
+=O\!\left(\frac{1}{n}\right),
+\label{eq:residue-bulk}
+\end{equation}
+uniformly for poles bounded away from the endpoints.
+\end{theorem}
+
+\begin{theorem}[Edge residue scaling]
+\label{thm:residue-edge}
+For poles within an $O(n^{-2/3})$ neighborhood of an endpoint of $\Delta_{f}$, the rescaled residues satisfy
+\begin{equation}
+n^{1/3}\Res\bigl([n/n]_{f},z_{j}^{(n)}\bigr)\to\rho_{\mathrm{Ai}}(\xi_{j}),
+\qquad\xi_{j}=n^{2/3}(z_{j}^{(n)}-\text{endpoint}),
+\label{eq:residue-edge}
+\end{equation}
+where $\rho_{\mathrm{Ai}}$ is determined by the Airy kernel. The bulk $1/n$ law is replaced by an Airy-type $n^{-1/3}$ decay at the edge, the universal Painlev\'e II scaling of random matrix theory.
+\end{theorem}
+
+\begin{corollary}[Pole-zero cancellation on contours avoiding the cut]
+\label{cor:cancellation}
+For any rectifiable contour $\gamma\subset D_{f}\setminus\mathcal{P}_{f}$ enclosing a region disjoint from $\Delta_{f}$,
+\begin{equation}
+\lim_{n\to\infty}\frac{1}{2\pi i}\oint_{\gamma}[n/n]_{f}(z)\,dz
+=\frac{1}{2\pi i}\oint_{\gamma}f(z)\,dz.
+\label{eq:contour-integral}
+\end{equation}
+\end{corollary}
+
+\section{The Borel plane and resummation}
+\label{sec:borel}
+
+\begin{definition}[Borel transform]
+\label{def:borel}
+For a formal power series $\hat{f}(z)=\sum_{n=0}^{\infty}a_{n}z^{n}$, the \emph{Borel transform} is
+\begin{equation}
+B(t)=\sum_{n=0}^{\infty}\frac{a_{n}}{n!}\,t^{n}.
+\label{eq:borel-transform}
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Inverse Borel transform]
+\label{thm:inverse-borel}
+If $B(t)$ admits analytic continuation to a sector $|\arg t|<\theta$ with at most exponential growth, the Laplace integral
+\begin{equation}
+f_{\mathrm{Borel}}(z)=\int_{0}^{\infty}e^{-t/z}B(t)\,dt
+\label{eq:inverse-borel}
+\end{equation}
+defines a holomorphic function in a sector of the $z$-plane.
+\end{theorem}
+
+\begin{theorem}[Pad\'e--Borel resummation]
+\label{thm:pade-borel}
+Let $\hat{f}$ have factorial coefficient growth $a_{n}\sim n!$, and assume $B(t)$ is in Stahl's class with no positive real singularities. The composition
+\begin{equation}
+f_{\mathrm{P-B}}(z)=
+\int_{0}^{\infty}e^{-t/z}[n/n]_{B}(t)\,dt
+\label{eq:pade-borel}
+\end{equation}
+converges in capacity to $f_{\mathrm{Borel}}(z)$ on the Borel domain of regularity, and assigns a finite value to a series whose original radius of convergence was zero.
+\end{theorem}
+
+\begin{remark}[Resummation versus continuation]
+\label{rem:resummation}
+Pad\'e--Borel resummation is distinct from analytic continuation: the latter extends a function across a singularity from a region where it already exists, while the former assigns a value to a divergent series. The Pad\'e approximant in \eqref{eq:pade-borel} approximates the measure in the Borel plane whose Laplace transform is the physical quantity.
+\end{remark}
+
+\section{Application to rough Heston: the constant-coefficient fractional Riccati equation}
+\label{sec:heston}
+
+The rough Heston characteristic function reduces, after standard transformations, to the constant-coefficient fractional Riccati equation
+\begin{equation}
+D^{\mu}y(t)=c_{0}+c_{1}y(t)+c_{2}y(t)^{2},
+\qquad I^{1-\mu}y(0)=0,
+\label{eq:fractional-riccati}
+\end{equation}
+where $D^{\mu}$ is the Caputo derivative of order $\mu=H+\tfrac{1}{2}\in(\tfrac{1}{2},1)$, $H$ is the Hurst parameter, and the coefficients $c_{0},c_{1},c_{2}\in\mathbb{C}$ depend on the model parameters and the Fourier variable. We develop the M\"untz spectral solution, the Pad\'e resummation in $z=t^{\mu}$, and the global convergence theorem with computable error bound.
+
+\subsection{Fractional calculus and the M\"untz basis}
+\label{sec:heston-prelim}
+
+\begin{definition}[Riemann--Liouville integral and Caputo derivative]
+\label{def:RL-Caputo}
+For $r>0$ and $f\in L^{1}_{\mathrm{loc}}[0,T]$, the \emph{Riemann--Liouville integral} is
+\begin{equation}
+I^{r}f(t)=\frac{1}{\Gamma(r)}\int_{0}^{t}(t-s)^{r-1}f(s)\,ds.
+\label{eq:RL-integral}
+\end{equation}
+For $\mu\in(0,1)$ and $f$ such that $I^{1-\mu}f\in C^{1}[0,T]$, the \emph{Caputo derivative} is
+\begin{equation}
+D^{\mu}f(t)=\frac{d}{dt}\bigl(I^{1-\mu}f(t)\bigr)-\frac{f(0)}{\Gamma(1-\mu)}t^{-\mu}.
+\label{eq:caputo}
+\end{equation}
+The fundamental relations are $I^{\mu}D^{\mu}f(t)=f(t)-f(0)$ and $D^{\mu}I^{\mu}f(t)=f(t)$.
+\end{definition}
+
+\begin{proposition}[Action on power functions]
+\label{prop:powers}
+For $s>-1$ and $r>0$,
+\begin{equation}
+I^{r}t^{s}=\frac{\Gamma(s+1)}{\Gamma(s+r+1)}t^{s+r}.
+\label{eq:Ir-power}
+\end{equation}
+For $\mu\in(0,1)$ and $s>0$,
+\begin{equation}
+D^{\mu}t^{s}=\frac{\Gamma(s+1)}{\Gamma(s+1-\mu)}t^{s-\mu}.
+\label{eq:Dmu-power}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+For \eqref{eq:Ir-power}, the substitution $u=tx$ in the integral defining $I^{r}t^{s}$ yields a Beta function evaluation. For \eqref{eq:Dmu-power}, observe that $s>0$ implies $f(0)=0$, so the correction term in \eqref{eq:caputo} vanishes; differentiating $I^{1-\mu}t^{s}=\Gamma(s+1)/\Gamma(s+2-\mu)\cdot t^{s+1-\mu}$ and applying $\Gamma(s+2-\mu)=(s+1-\mu)\Gamma(s+1-\mu)$ gives the result.
+\end{proof}
+
+\begin{remark}[The Caputo derivative of a constant]
+\label{rem:Dmu-const}
+The hypothesis $s>0$ in \eqref{eq:Dmu-power} cannot be relaxed. For $s=0$, the correction term in \eqref{eq:caputo} cancels the formal power $t^{-\mu}/\Gamma(1-\mu)$ and yields $D^{\mu}(1)=0$, consistent with the convention that constants have zero Caputo derivative.
+\end{remark}
+
+\begin{definition}[M\"untz lattice]
+\label{def:muntz}
+Fix $\mu\in(0,1)$ and $T>0$. The \emph{M\"untz lattice} is
+\begin{equation}
+\mathcal{M}=\mathrm{span}\{1,t^{\mu},t^{2\mu},t^{3\mu},\ldots\}.
+\label{eq:muntz-lattice}
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Closure of the M\"untz lattice]
+\label{thm:closure}
+For every $k\ge 1$ and $r>0$:
+\begin{align}
+D^{\mu}t^{k\mu}&=\frac{\Gamma(k\mu+1)}{\Gamma((k-1)\mu+1)}t^{(k-1)\mu},
+\label{eq:Dmu-muntz}\\
+I^{r}t^{k\mu}&=\frac{\Gamma(k\mu+1)}{\Gamma(k\mu+r+1)}t^{k\mu+r},
+\label{eq:Ir-muntz}\\
+t^{j\mu}\cdot t^{k\mu}&=t^{(j+k)\mu}.
+\label{eq:product-muntz}
+\end{align}
+Consequently $D^{\mu}\mathcal{M}\subset\mathcal{M}$, $I^{r}\mathcal{M}\subset\mathcal{M}$ for $r\in\mu\mathbb{N}\cup(1-\mu)\mathbb{N}$, and $\mathcal{M}$ is closed under multiplication.
+\end{theorem}
+
+\begin{remark}[Why the M\"untz lattice is the natural basis]
+\label{rem:muntz-natural}
+The three closure properties of Theorem~\ref{thm:closure}, under fractional differentiation, fractional integration, and pointwise multiplication, make the M\"untz lattice the canonical basis for any constant-coefficient fractional ODE with polynomial nonlinearity. The M\"untz--Tau substitution preserves the algebraic structure of the equation. Ordinary Taylor series in $t$ fail because they are not closed under $D^{\mu}$ for non-integer $\mu$.
+\end{remark}
+
+\subsection{The series solution and Volterra representation}
+\label{sec:heston-series}
+
+Applying $I^{\mu}$ to \eqref{eq:fractional-riccati} and using $I^{\mu}D^{\mu}y=y-y(0)=y$ yields the equivalent Volterra integral equation
+\begin{equation}
+y(t)=\frac{1}{\Gamma(\mu)}\int_{0}^{t}(t-s)^{\mu-1}\bigl(c_{0}+c_{1}y(s)+c_{2}y(s)^{2}\bigr)\,ds.
+\label{eq:volterra}
+\end{equation}
+
+\begin{remark}[H\"older regularity at the origin]
+\label{rem:holder}
+Evaluating \eqref{eq:volterra} at $t=0$ gives $y(0)=0$. Near the origin,
+\begin{equation}
+y(t)=\frac{c_{0}}{\Gamma(\mu+1)}t^{\mu}+O(t^{2\mu}),
+\label{eq:holder-leading}
+\end{equation}
+so $y$ is H\"older continuous of order $\mu$ but not differentiable at $0$. The H\"older exponent $\mu$ is the natural regularity scale of the problem.
+\end{remark}
+
+\begin{theorem}[M\"untz--Tau Puiseux series solution]
+\label{thm:riccati-series}
+There exist $R>0$ and a sequence $(a_{k})_{k\ge 1}\subset\mathbb{C}$ such that
+\begin{equation}
+y(t)=\sum_{k=1}^{\infty}a_{k}t^{k\mu},
+\qquad |t|<R^{1/\mu},
+\label{eq:y-series}
+\end{equation}
+where the coefficients satisfy the Gamma-ratio convolution recurrence
+\begin{align}
+a_{1}&=\frac{c_{0}}{\Gamma(\mu+1)},
+\label{eq:a1}\\
+a_{k+1}&=\frac{\Gamma(k\mu+1)}{\Gamma((k+1)\mu+1)}\biggl(c_{1}a_{k}+c_{2}\!\!\sum_{\substack{j+\ell=k\\ 1\le j,\ell\le k-1}}\!\!a_{j}a_{\ell}\biggr),
+\qquad k\ge 1.
+\label{eq:ak}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Existence of $R>0$ is established in Theorem~\ref{thm:radius} below by a Banach fixed-point argument. Granting analyticity of $y$ in $z=t^{\mu}$ on $|z|<R$, write $y(t)=\sum_{k\ge 1}a_{k}t^{k\mu}$. By \eqref{eq:product-muntz},
+\begin{equation}
+y(t)^{2}=\sum_{m=2}^{\infty}b_{m}t^{m\mu},
+\qquad b_{m}=\sum_{\substack{j+\ell=m\\ 1\le j,\ell\le m-1}}a_{j}a_{\ell}.
+\label{eq:y-squared}
+\end{equation}
+Substituting into \eqref{eq:volterra}, splitting the integral, and applying \eqref{eq:Ir-power} with $s=k\mu$, $r=\mu$:
+\begin{equation}
+\int_{0}^{t}(t-s)^{\mu-1}s^{k\mu}\,ds=\Gamma(\mu)\frac{\Gamma(k\mu+1)}{\Gamma((k+1)\mu+1)}t^{(k+1)\mu}.
+\label{eq:beta-integral}
+\end{equation}
+Matching the coefficient of $t^{n\mu}$ for each $n\ge 1$ yields \eqref{eq:a1} for $n=1$ and \eqref{eq:ak} after reindexing $n\mapsto k+1$.
+\end{proof}
+
+\begin{remark}[Quadratic convolution at low orders]
+\label{rem:conv-low}
+For $k=1$, the convolution sum in \eqref{eq:ak} is empty: there are no pairs $(j,\ell)$ with $j,\ell\ge 1$ and $j+\ell=1$. Hence
+\begin{equation}
+a_{2}=\frac{\Gamma(\mu+1)}{\Gamma(2\mu+1)}c_{1}a_{1}.
+\label{eq:a2}
+\end{equation}
+The quadratic term first contributes at $k=2$:
+\begin{equation}
+a_{3}=\frac{\Gamma(2\mu+1)}{\Gamma(3\mu+1)}\bigl(c_{1}a_{2}+c_{2}a_{1}^{2}\bigr).
+\label{eq:a3}
+\end{equation}
+\end{remark}
+
+\subsection{Radius of convergence and generic finiteness}
+\label{sec:heston-radius}
+
+\begin{theorem}[Strictly positive Puiseux radius and Cauchy bound]
+\label{thm:radius}
+Let
+\begin{equation}
+T_{0}^{\mu}=\min\!\left(\frac{\Gamma(\mu+1)}{|c_{0}|+|c_{1}|+|c_{2}|+1},\;\frac{\Gamma(\mu+1)}{2(|c_{1}|+2|c_{2}|+1)}\right)>0.
+\label{eq:T0}
+\end{equation}
+\begin{enumerate}[label=(\roman*)]
+\item There exists a unique solution $y\in C[0,T_{0}]$ of \eqref{eq:volterra} with $\|y\|_{\infty}\le 1$. This solution is analytic in $z=t^{\mu}$ on $\{|z|<T_{0}^{\mu}\}$, so the Puiseux series \eqref{eq:y-series} has radius of convergence $R\ge T_{0}^{\mu}>0$.
+\item For every $0<r<R$, with $g(z)=y(z^{1/\mu})$ and $M(r)=\sup_{|z|=r}|g(z)|$,
+\begin{equation}
+|a_{k}|\le \frac{M(r)}{r^{k}}\qquad \forall k\ge 1.
+\label{eq:cauchy-bound}
+\end{equation}
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Define $B_{1}=\{y\in C[0,T_{0}]:\|y\|_{\infty}\le 1\}$ with the supremum norm and the operator
+\begin{equation}
+\Phi(y)(t)=\frac{1}{\Gamma(\mu)}\int_{0}^{t}(t-s)^{\mu-1}\bigl(c_{0}+c_{1}y(s)+c_{2}y(s)^{2}\bigr)\,ds=I^{\mu}(c_{0}+c_{1}y+c_{2}y^{2})(t).
+\label{eq:phi-op}
+\end{equation}
+For $y\in B_{1}$, the integrand is bounded by $|c_{0}|+|c_{1}|+|c_{2}|$, and \eqref{eq:Ir-power} gives
+\begin{equation}
+|\Phi(y)(t)|\le(|c_{0}|+|c_{1}|+|c_{2}|)\cdot\frac{T_{0}^{\mu}}{\Gamma(\mu+1)}<1
+\label{eq:phi-bound}
+\end{equation}
+by the first term in \eqref{eq:T0}. For $y_{1},y_{2}\in B_{1}$,
+\begin{equation}
+|c_{1}(y_{1}-y_{2})+c_{2}(y_{1}^{2}-y_{2}^{2})|\le(|c_{1}|+2|c_{2}|)\|y_{1}-y_{2}\|_{\infty},
+\label{eq:lipschitz}
+\end{equation}
+so
+\begin{equation}
+\|\Phi(y_{1})-\Phi(y_{2})\|_{\infty}\le \frac{T_{0}^{\mu}(|c_{1}|+2|c_{2}|)}{\Gamma(\mu+1)}\|y_{1}-y_{2}\|_{\infty}<\tfrac{1}{2}\|y_{1}-y_{2}\|_{\infty}
+\label{eq:contraction}
+\end{equation}
+by the second term in \eqref{eq:T0}. The Banach fixed-point theorem provides a unique $y^{\ast}\in B_{1}$ solving \eqref{eq:volterra}. The formal Puiseux series defined by \eqref{eq:a1}--\eqref{eq:ak} solves the same equation order by order; by uniqueness, the series equals $y^{\ast}$ on $[0,T_{0}]$, proving (i). Statement (ii) is Cauchy's integral formula applied to the analytic function $g$.
+\end{proof}
+
+\begin{theorem}[Generic finiteness of the radius]
+\label{thm:radius-finite}
+For generic parameters with $c_{2}\ne 0$, the Puiseux radius is finite: $R<\infty$. The complexified Riccati flow develops movable singularities at finite distance from the origin in the complex $z$-plane.
+\end{theorem}
+
+\begin{proof}[Sketch]
+For $\mu=1$ with $c_{2}\ne 0$, the substitution $y=-w'/(c_{2}w)$ reduces $y'=c_{0}+c_{1}y+c_{2}y^{2}$ to a second-order linear ODE with constant coefficients for $w$. The zeros of $w$ generically lie at finite $t$, and at each zero $y$ has a simple pole. The algebraic structure of the recurrence \eqref{eq:ak} persists for $\mu\in(0,1)$, and the resulting $g(z)$ generically inherits movable singularities at finite distance. The exact location of the nearest singularity is encoded by the limiting distribution of the diagonal Pad\'e poles (Theorem~\ref{thm:zeros-equilibrium}).
+\end{proof}
+
+\begin{remark}[The recurrence is only a local representation]
+\label{rem:local}
+Theorem~\ref{thm:radius-finite} is the central obstruction. Even though every $a_{k}$ is computed in closed form by \eqref{eq:ak}, the series \eqref{eq:y-series} does not converge for all $t\ge 0$. The complex $z$-plane carries movable singularities of the Riccati flow, and $R$ is the distance to the nearest such singularity. On the positive real $t$-axis the solution $y(t)$ may exist for all $t$, yet the M\"untz series ceases to converge once $t^{\mu}$ exceeds $R$. A genuine global representation must exploit \emph{analytic continuation}, not raw series summation. This is the role played by Pad\'e approximation in the next subsection.
+\end{remark}
+
+\subsection{Pad\'e resummation in the variable $z=t^{\mu}$}
+\label{sec:heston-pade}
+
+Let $z=t^{\mu}$ and define
+\begin{equation}
+g(z)=y(z^{1/\mu})=\sum_{k=1}^{\infty}a_{k}z^{k},
+\qquad |z|<R.
+\label{eq:g-series}
+\end{equation}
+Fix $M\in\mathbb{N}$ and seek polynomials
+\begin{equation}
+P_{M}(z)=\sum_{k=0}^{M}p_{k}z^{k},
+\qquad Q_{M}(z)=1+\sum_{k=1}^{M}q_{k}z^{k}
+\label{eq:PQ-def}
+\end{equation}
+satisfying the matching condition
+\begin{equation}
+Q_{M}(z)g(z)-P_{M}(z)=O(z^{2M+1})
+\qquad (z\to 0).
+\label{eq:pade-match}
+\end{equation}
+
+\begin{lemma}[Hankel form of the denominator system]
+\label{lem:hankel-form}
+The matching condition \eqref{eq:pade-match} is equivalent to $p_{0}=0$,
+\begin{align}
+p_{n}&=a_{n}+\sum_{j=1}^{\min(n,M)}q_{j}a_{n-j},
+\qquad 1\le n\le M,
+\label{eq:p-eqs}\\
+0&=a_{n}+\sum_{j=1}^{M}q_{j}a_{n-j},
+\qquad M+1\le n\le 2M.
+\label{eq:q-eqs}
+\end{align}
+The denominator system \eqref{eq:q-eqs} is the Hankel linear system
+\begin{equation}
+H_{M}\bm{q}=-\bm{b},
+\qquad
+H_{M}=
+\begin{pmatrix}
+a_{M} & a_{M-1} & \cdots & a_{1}\\
+a_{M+1} & a_{M} & \cdots & a_{2}\\
+\vdots & \vdots & \ddots & \vdots\\
+a_{2M-1} & a_{2M-2} & \cdots & a_{M}
+\end{pmatrix},
+\quad
+\bm{q}=
+\begin{pmatrix}q_{1}\\ \vdots\\ q_{M}\end{pmatrix},
+\quad
+\bm{b}=
+\begin{pmatrix}a_{M+1}\\ \vdots\\ a_{2M}\end{pmatrix}.
+\label{eq:hankel-system}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Direct expansion of $Q_{M}\cdot g$ and identification of coefficients of $z^{n}$ for $0\le n\le 2M$.
+\end{proof}
+
+\begin{remark}[Invertibility of $H_{M}$]
+\label{rem:invertibility}
+$H_{M}$ is invertible if and only if $g(z)$ is not a rational function of degree less than $M$. For $\mu=1$ the Riccati solution is rational, and $H_{M}$ becomes singular for $M$ exceeding the exact pole order. For $\mu\in(0,1)$, $g(z)$ admits no finite-order rational representation, and $\det H_{M}\ne 0$ generically for all $M\ge 1$. If a particular order yields $\det H_{M}=0$, the index $M\pm 1$ may be used.
+\end{remark}
+
+\begin{lemma}[Explicit solution]
+\label{lem:explicit}
+If $\det H_{M}\ne 0$, the system \eqref{eq:hankel-system} has the unique solution $\bm{q}=-H_{M}^{-1}\bm{b}$, and the numerator coefficients are recovered from \eqref{eq:p-eqs}.
+\end{lemma}
+
+\begin{definition}[Diagonal Pad\'e approximant and its domain]
+\label{def:pade-domain}
+The diagonal Pad\'e approximant of order $M$ is
+\begin{equation}
+R_{M}(z)=\frac{P_{M}(z)}{Q_{M}(z)}=\frac{\sum_{k=0}^{M}p_{k}z^{k}}{1+\sum_{k=1}^{M}q_{k}z^{k}},
+\label{eq:RM}
+\end{equation}
+and its \emph{Pad\'e domain} is
+\begin{equation}
+\mathcal{D}_{M}=\{z\in\mathbb{C}:\det H_{M}\ne 0,\;Q_{M}(z)\ne 0\}.
+\label{eq:DM}
+\end{equation}
+\end{definition}
+
+\subsection{Remainder representation and the computable error bound}
+\label{sec:heston-error}
+
+\begin{theorem}[Structural remainder representation]
+\label{thm:remainder-structure}
+Define $\varepsilon_{M}(z)=g(z)-R_{M}(z)$. Then
+\begin{equation}
+\varepsilon_{M}(z)=\frac{\Pi_{M+1}(z)}{Q_{M}(z)^{2}}z^{2M+1}
+\label{eq:remainder-structure}
+\end{equation}
+for some polynomial $\Pi_{M+1}$ of degree at most $M+1$. In particular $\varepsilon_{M}(z)=O(z^{2M+1})$ as $z\to 0$.
+\end{theorem}
+
+\begin{definition}[Successive Pad\'e differences]
+\label{def:differences}
+For $k\ge 1$, the \emph{successive Pad\'e difference} is
+\begin{equation}
+\Delta_{k}(z)=R_{k}(z)-R_{k-1}(z),
+\qquad R_{0}\equiv 0.
+\label{eq:Delta}
+\end{equation}
+\end{definition}
+
+\begin{assumption}[Uniform geometric tail]
+\label{ass:geometric-tail}
+At a fixed $z\in\mathcal{D}_{M}\cap\mathcal{D}_{M-1}$:
+\begin{enumerate}[label=(\roman*)]
+\item $g$ has no poles in $\{|\zeta|\le|z|\}$;
+\item $Q_{M}(z)\ne 0$ and $Q_{M-1}(z)\ne 0$;
+\item there exists $\rho\in(0,1)$ such that $|\Delta_{k+1}(z)|\le\rho|\Delta_{k}(z)|$ for every $k\ge M-1$.
+\end{enumerate}
+\end{assumption}
+
+\begin{theorem}[Computable a-posteriori error bound]
+\label{thm:error-bound}
+Under Assumption~\ref{ass:geometric-tail} with contraction ratio $\rho$, the Pad\'e sequence $R_{k}(z)$ converges, and
+\begin{equation}
+|g(z)-R_{M}(z)|\le \frac{\rho|\Delta_{M}(z)|}{1-\rho}.
+\label{eq:error-uniform}
+\end{equation}
+Defining the observable contraction ratio
+\begin{equation}
+\rho_{\ast}=\frac{|\Delta_{M}(z)|}{|\Delta_{M-1}(z)|}\le\rho,
+\label{eq:rho-star}
+\end{equation}
+and assuming Assumption~\ref{ass:geometric-tail}(iii) holds with this $\rho_{\ast}$,
+\begin{equation}
+\boxed{\;|g(z)-R_{M}(z)|\le \frac{|\Delta_{M}(z)|^{2}}{|\Delta_{M-1}(z)|-|\Delta_{M}(z)|}.\;}
+\label{eq:error-final}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By Assumption~\ref{ass:geometric-tail}(iii) and induction, $|\Delta_{M+j}(z)|\le\rho^{j}|\Delta_{M}(z)|$ for every $j\ge 0$. The telescoping series
+\begin{equation}
+g(z)-R_{M}(z)=\sum_{k=M+1}^{\infty}\Delta_{k}(z)
+\label{eq:telescoping}
+\end{equation}
+converges absolutely and is bounded by $|\Delta_{M}(z)|\sum_{j=1}^{\infty}\rho^{j}=\rho|\Delta_{M}(z)|/(1-\rho)$, which is \eqref{eq:error-uniform}. Substituting $\rho=\rho_{\ast}$ and simplifying yields \eqref{eq:error-final}.
+\end{proof}
+
+\begin{corollary}[Practical convergence certificate]
+\label{cor:practical-cert}
+The bound \eqref{eq:error-final} depends only on the two most recent Pad\'e iterates and is computable in $O(1)$ time given $R_{M-1}$ and $R_{M}$. It serves as an a-posteriori certificate: when $|\Delta_{M}|^{2}/(|\Delta_{M-1}|-|\Delta_{M}|)<2^{-\mathrm{bits}}$, the Pad\'e iterate $R_{M}(z)$ approximates $g(z)$ to the requested precision.
+\end{corollary}
+
+\subsection{Global convergence on the positive real axis}
+\label{sec:heston-global}
+
+\begin{theorem}[de~Montessus de~Ballore]
+\label{thm:dMdB}
+Let $g$ be meromorphic in $\{|z|<\rho\}$ with exactly $n$ poles (counted with multiplicity) in that disc and no poles on the boundary. The diagonal Pad\'e approximants $R_{M}$ converge to $g$ uniformly on compact subsets of $\{|z|<\rho\}\setminus\{\text{poles}\}$ as $M\to\infty$.
+\end{theorem}
+
+\begin{theorem}[Nuttall--Pommerenke]
+\label{thm:NP}
+Let $g$ be meromorphic in $\mathbb{C}$ with at most countably many poles having no finite accumulation point. The diagonal sequence $R_{M}$ converges to $g$ in capacity on $\mathbb{C}\setminus E$, where $\capa(E)=0$. Convergence is quasi-everywhere but not necessarily pointwise.
+\end{theorem}
+
+\begin{remark}[Choice of theorem]
+\label{rem:choice}
+Theorem~\ref{thm:dMdB} gives uniform convergence on compacta but requires knowing the exact pole count. Theorem~\ref{thm:NP} requires no such count but yields only quasi-everywhere convergence and presupposes meromorphy on $\mathbb{C}$. When $g(z)=y(z^{1/\mu})$ is meromorphic in $\mathbb{C}$ with no poles on $(0,\infty)$, the canonical case for globally bounded Riccati solutions on the real time axis, both theorems apply, and $R_{M}(t^{\mu})\to y(t)$ for every $t>0$.
+\end{remark}
+
+\begin{hypothesis}[Stahl class membership]
+\label{hyp:stahl}
+The function $g(z)=y(z^{1/\mu})$ belongs to Stahl's class $\mathcal{S}$: its global singular set has logarithmic capacity zero.
+\end{hypothesis}
+
+\begin{hypothesis}[Square-root branch points]
+\label{hyp:sqrt}
+The branch points of $g$ are of square-root type. This is suggested by the formal Cole--Hopf transformation $h=-w'/((c_{2})w/2)$, which would reduce the quadratic Riccati equation to a second-order linear equation with discriminant yielding square-root branch points; the fractional derivative introduces non-local effects that may alter the local monodromy, so this is a structural assumption rather than a theorem.
+\end{hypothesis}
+
+\begin{hypothesis}[No positive real poles]
+\label{hyp:no-pos-poles}
+The solution $y(t)$ is bounded on $[0,\infty)$, equivalently, $g(z)$ has no poles on the positive real axis.
+\end{hypothesis}
+
+\begin{theorem}[Global Pad\'e--M\"untz representation]
+\label{thm:global}
+Let $y(t)$ solve the fractional Riccati equation \eqref{eq:fractional-riccati}. Under Hypotheses~\ref{hyp:stahl}, \ref{hyp:sqrt}, and \ref{hyp:no-pos-poles}, with $g$ meromorphic in $\mathbb{C}$ with at most countably many poles having no finite accumulation point,
+\begin{equation}
+\boxed{\;y(t)=\lim_{M\to\infty}R_{M}(t^{\mu})=\lim_{M\to\infty}\frac{P_{M}(t^{\mu})}{Q_{M}(t^{\mu})}\qquad\forall t\ge 0.\;}
+\label{eq:global-pade}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Under the meromorphy hypothesis, Theorem~\ref{thm:NP} yields convergence in capacity on $\mathbb{C}\setminus E$ with $\capa(E)=0$. By Hypothesis~\ref{hyp:no-pos-poles}, $g$ is holomorphic in a neighborhood of every point of $(0,\infty)$ and meromorphic in every disc $\{|z|<\rho\}$ with finitely many poles, so Theorem~\ref{thm:dMdB} gives uniform convergence on compact subsets of $\mathbb{C}\setminus\{\text{poles}\}$. In particular, $R_{M}(z)\to g(z)$ pointwise at every $z=t^{\mu}\in(0,\infty)$. At $t=0$, $y(0)=0$ and $R_{M}(0)=p_{0}/Q_{M}(0)=0$, so the limit holds trivially.
+\end{proof}
+
+\begin{remark}[Status of the hypotheses]
+\label{rem:hypothesis-status}
+Hypothesis~\ref{hyp:stahl} is established for $\mu=1$, where the linearization $y=-w'/(c_{2}w)$ reduces the Riccati equation to a linear ODE with entire solutions, hence $g$ is meromorphic with at most countable poles. For $\mu\in(0,1)$ it is conjectured on the basis of the Painlev\'e property of the underlying flow and the empirical pole distribution of the diagonal Pad\'e sequence, and a complete proof for arbitrary $\mu$ remains open. Hypothesis~\ref{hyp:sqrt} is a structural assumption motivated by the classical case. Hypothesis~\ref{hyp:no-pos-poles} is verifiable a-posteriori, in practical computation, by the convergence behavior of $R_{M}(t^{\mu})$ at probe points $t$ of interest, controlled by the bound \eqref{eq:error-final}.
+\end{remark}
+
+\subsection{Spectral interpretation and operator-theoretic synthesis}
+\label{sec:heston-spectral}
+
+\begin{theorem}[Hankel solver as Jacobi truncation]
+\label{thm:hankel-jacobi}
+The incremental Hankel solver that builds $H_{M+1}^{-1}$ from $H_{M}^{-1}$ via a bordered rank-one update in $O(M^{2})$ operations is the algebraic realization of the Jacobi truncation: it adds one row and column to $J_{M}$ to produce $J_{M+1}$, and the resulting Pad\'e iterate $R_{M+1}$ is the resolvent of the enlarged operator at the basis vector $e_{0}$.
+\end{theorem}
+
+\begin{corollary}[Convergence certificate as spectral gap]
+\label{cor:spectral-gap}
+The successive-difference bound \eqref{eq:error-final} certifies that the iterate $R_{M}$ has entered the asymptotic regime where the tail is geometrically controlled by $\exp(-Mg(\xi,\infty))$, with $g$ the Green's function of the cut plane in the variable $\xi=z=t^{\mu}$. The threshold $|\Delta_{M}|^{2}/(|\Delta_{M-1}|-|\Delta_{M}|)<2^{-\mathrm{bits}}$ detects the spectral gap between the working point and the Stahl compact.
+\end{corollary}
+
+\begin{theorem}[Compiled spectral reconstruction]
+\label{thm:compiled}
+Let $\Phi(u,T)$ denote the cumulant generating function of the rough Heston model under standard normalizations:
+\begin{equation}
+\Phi(u,T)=\theta\lambda\int_{0}^{T}h(u,t)\,dt+V_{0}I^{1-\mu}[h(u,\cdot)](T),
+\label{eq:cgf}
+\end{equation}
+where $h$ solves the fractional Riccati equation \eqref{eq:fractional-riccati} with parameters $(c_{0},c_{1},c_{2})$ depending on $u$. Then $\Phi$ admits the explicit representation
+\begin{equation}
+\Phi(u,T)=\sum_{k=1}^{\infty}a_{k}(u)G_{k}(T),
+\label{eq:cgf-series}
+\end{equation}
+where the coefficients $a_{k}(u)$ are the Puiseux coefficients of Theorem~\ref{thm:riccati-series} and the time integrals are
+\begin{equation}
+G_{k}(T)=\theta\lambda\frac{T^{k\mu+1}}{k\mu+1}+V_{0}\frac{\Gamma(k\mu+1)}{\Gamma((k-1)\mu+2)}T^{(k-1)\mu+1}.
+\label{eq:Gk}
+\end{equation}
+Truncated at order $N$ and resummed via Pad\'e in $\xi=T^{\mu}$, the compiled expression
+\begin{equation}
+\Phi:v\mapsto \sum_{k=1}^{N}a_{k}(v)\cdot G_{k}
+\label{eq:compiled}
+\end{equation}
+is the spectral reconstruction of the characteristic function from its moment sequence. Convergence is governed by Theorem~\ref{thm:global} under Hypotheses~\ref{hyp:stahl}--\ref{hyp:no-pos-poles}, and is certified a-posteriori by Corollary~\ref{cor:practical-cert}.
+\end{theorem}
+
+\subsection{Algorithmic summary}
+\label{sec:heston-algorithm}
+
+Given $(c_{0},c_{1},c_{2},\mu)$ and Pad\'e order $M$:
+\begin{enumerate}
+\item Compute the Puiseux coefficients $a_{1},\dots,a_{2M}$ by the recurrence \eqref{eq:a1}--\eqref{eq:ak}. Cost: $O(M^{2})$.
+\item Form the Hankel matrix $H_{M}$ and right-hand side $\bm{b}$ from \eqref{eq:hankel-system}.
+\item Solve $H_{M}\bm{q}=-\bm{b}$ for the denominator coefficients, by direct factorization or by an incremental bordered update. Cost: $O(M^{3})$ direct, $O(M^{2})$ amortized.
+\item Recover the numerator coefficients via \eqref{eq:p-eqs}.
+\item Evaluate $y_{M}(t)=P_{M}(t^{\mu})/Q_{M}(t^{\mu})$ at any $t\ge 0$. Cost: $O(M)$ per query.
+\end{enumerate}
+Steps 1--4 are independent of $t$. The entire family $\{y_{M}(t):t\ge 0\}$ is encoded in a single rational function in $z=t^{\mu}$. There is no grid, no time stepping, no Newton iteration, and no fixed-point loop at evaluation time.
+
+\section{The essential difference}
+\label{sec:conclusion}
+
+Taylor approximation asks: \emph{what polynomial has the same derivatives at this point?} It is local, and its radius is the distance to the nearest singularity.
+
+Pad\'e approximation asks: \emph{what spectral measure produces these moments, and what is its Stieltjes transform?} It is global, and its convergence domain is the maximal region on which the Riemann--Hilbert factorization exists. The poles are not defects; they are the discrete spectrum of a truncated Jacobi operator, and their condensation on the equilibrium contour is the signature of the underlying Riemann surface. The approximant continues $f$ because it is solving for the measure that generated the series, and that reconstruction is valid wherever the logarithmic potential of the equilibrium measure controls the error.
+
+In the rough Heston application, this distinction is decisive. The M\"untz--Tau substitution produces a Puiseux series whose radius of convergence is finite and generically much smaller than the time horizon of practical interest. The series alone is therefore a local representation, useful only on $[0,T_{0}]$ for the Banach radius $T_{0}$ of Theorem~\ref{thm:radius}. Pad\'e resummation in the variable $z=t^{\mu}$ converts the local representation into a global one, valid on all of $[0,\infty)$ under the meromorphy hypotheses, with computable a-posteriori error control. The mechanism is the same in every section of this document: the discrete poles of the truncation reorganize themselves into the equilibrium configuration of the function's true singular set, and the rational function so produced is the Stieltjes transform of the spectral measure that the original series was secretly encoding.
+
+\begin{thebibliography}{99}
+
+\bibitem{Stahl1986a}
+H.~Stahl, \emph{Orthogonal polynomials with complex-valued weight functions. I}, Constr.\ Approx.\ \textbf{2} (1986), 225--240.
+
+\bibitem{Stahl1986b}
+H.~Stahl, \emph{Orthogonal polynomials with complex-valued weight functions. II}, Constr.\ Approx.\ \textbf{2} (1986), 241--251.
+
+\bibitem{Stahl1997}
+H.~Stahl, \emph{The convergence of Pad\'e approximants to functions with branch points}, J.~Approx.\ Theory \textbf{91} (1997), 139--204.
+
+\bibitem{FokasItsKitaev1992}
+A.~S.~Fokas, A.~R.~Its, and A.~V.~Kitaev, \emph{The isomonodromy approach to matrix models in 2D quantum gravity}, Comm.\ Math.\ Phys.\ \textbf{147} (1992), 395--430.
+
+\bibitem{DeiftZhou1993}
+P.~Deift and X.~Zhou, \emph{A steepest descent method for oscillatory Riemann--Hilbert problems}, Ann.\ of Math.\ \textbf{137} (1993), 295--368.
+
+\bibitem{Deift1999}
+P.~Deift, \emph{Orthogonal Polynomials and Random Matrices: A Riemann--Hilbert Approach}, Courant Lecture Notes 3, AMS, 1999.
+
+\bibitem{Goncar1983}
+A.~A.~Gon\v{c}ar, \emph{On the convergence of Pad\'e approximants for some classes of meromorphic functions}, Math.\ USSR Sb.\ \textbf{26} (1983), 551--575.
+
+\bibitem{BakerGravesMorris1996}
+G.~A.~Baker and P.~Graves-Morris, \emph{Pad\'e Approximants}, 2nd ed., Cambridge University Press, 1996.
+
+\bibitem{Montessus1902}
+R.~de~Montessus de~Ballore, \emph{Sur les fractions continues alg\'ebriques}, Bull.\ Soc.\ Math.\ France \textbf{30} (1902), 28--36.
+
+\bibitem{Nuttall1970}
+J.~Nuttall, \emph{The convergence of Pad\'e approximants of meromorphic functions}, J.~Math.\ Anal.\ Appl.\ \textbf{31} (1970), 147--153.
+
+\bibitem{Pommerenke1973}
+Ch.~Pommerenke, \emph{Pad\'e approximants and convergence in capacity}, J.~Math.\ Anal.\ Appl.\ \textbf{41} (1973), 775--780.
+
+\bibitem{Suetin2021}
+S.~P.~Suetin, \emph{On an example of the approximation of a function by the diagonal Pad\'e approximants}, Proc.\ Steklov Inst.\ Math.\ \textbf{315} (2021), 241--255.
+
+\bibitem{Esmaeili2015}
+S.~Esmaeili and M.~Shamsi, \emph{The M\"untz--Legendre Tau method for fractional differential equations}, Appl.\ Math.\ Modelling \textbf{40} (2015), 671--684.
+
+\bibitem{Ecalle1981}
+J.~\'Ecalle, \emph{Les fonctions r\'esurgentes}, Vols.~I--III, Publ.\ Math.\ d'Orsay, 1981--1985.
+
+\bibitem{Costin2008}
+O.~Costin, \emph{Asymptotics and Borel Summability}, Chapman \& Hall/CRC, 2008.
+
+\bibitem{ElEuchRosenbaum2019}
+O.~El~Euch and M.~Rosenbaum, \emph{The characteristic function of rough Heston models}, Math.\ Finance \textbf{29} (2019), 3--38.
+
+\bibitem{GatheralRadoicic2019}
+J.~Gatheral and B.~Radoi\v{c}i\'c, \emph{Rational approximation of the rough Heston solution}, Int.\ J.~Theor.\ Appl.\ Finance \textbf{22} (2019), 1950010.
+
+\bibitem{CallegaroGrasselliPages2021}
+G.~Callegaro, M.~Grasselli, and G.~Pag\`es, \emph{Fast hybrid schemes for fractional Riccati equations (rough is not so tough)}, Math.\ Oper.\ Res.\ \textbf{46} (2021), 221--254.
+
+\end{thebibliography}
+
+\end{document}
