@@ -1,121 +1,323 @@
 package arb.functions.complex;
 
-import java.util.ArrayList;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import arb.Complex;
+import arb.ComplexFunction;
+import arb.ComplexFunctionSequence;
+import arb.ComplexMatrix;
+import arb.ComplexPolynomial;
+import arb.ComplexPolynomialSequence;
+import arb.Integer;
 import arb.Real;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
-import arb.functions.ComplexFunctional;
-import arb.functions.integer.ComplexFunctionSequence;
-import arb.functions.integer.ComplexPolynomialSequence;
+import arb.functions.integer.ComplexSequence;
+import arb4j.expression.Expression;
+import arb4j.expression.compiler.ExpressionCompiler;
+import arb4j.expression.compiler.context.Context;
+import arb4j.expression.compiler.context.Variable;
+import arb4j.expression.compiler.variable.VariableReference;
+import arb4j.util.PrecisionExhaustedException;
+import arb.solvers.exceptions.HankelDegeneracyException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Adaptive Müntz–Padé functional.
+ * Adaptive diagonal Padé approximant for Müntz-type power series.
  *
  * <p>
- * This class no longer attempts to globally choose a Padé order M from an
- * arbitrary representative point. That strategy is mathematically incorrect,
- * because convergence depends on the actual evaluation point:
- *
- * <pre>
- * z = t ^ μ
- * </pre>
- *
- * relative to the singularity structure of the meromorphic continuation.
+ * Given the coefficients $\{a_n\}$ of a function expanded in the Müntz basis
+ * $f(\xi) = \sum_{n=0}^\infty a_n \xi^n$ where $\xi = t^\alpha$ for fractional
+ * exponent $\alpha \in (0,1)$, this class constructs the diagonal Padé hierarchy
+ * $[M/M]$ via the Hankel linear system and evaluates it adaptively at a point $t$.
  *
  * <p>
- * Instead, this functional merely curries the external parameter v and returns
- * an adaptive {@link MuntzPadeApproximant} which incrementally grows the Padé
- * hierarchy:
- *
- * <pre>
- *     R₁, R₂, R₃, ...
- * </pre>
- *
- * on demand during evaluation at the actual requested point t.
+ * The construction applies to any function analytic at the origin in the transformed
+ * variable $\xi$; the fractional Riccati equation is one natural source of such
+ * expansions, but the approximant itself is not tied to any specific differential
+ * equation.
  *
  * <p>
- * The approximant internally caches:
+ * The Hankel system is solved incrementally via Sherman–Morrison rank-1 updates,
+ * with every inverse $H_M^{-1}$ stored so that random access to any order is
+ * available without recomputation.
  *
- * <ul>
- * <li>the incremental Hankel inverse hierarchy, and</li>
- * <li>every previously constructed diagonal Padé pair.</li>
- * </ul>
- *
- * so repeated evaluations amortize naturally.
- *
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * <p>
+ * Evaluation uses the exact successive-difference bound
+ * $B_M = |\Delta_M|^2 / (|\Delta_{M-1}| - |\Delta_M|)$ as the stopping criterion,
+ * with a pre-asymptotic guard against non-monotonic transients. The loop terminates
+ * naturally: either the bound falls below the target precision (point in the
+ * convergence domain), or precision exhaustion is detected (point outside the domain).
  */
-public class MuntzPadeFunctional implements
-                                 ComplexFunctional,
-                                 AutoCloseable
+public class MuntzPadeApproximant implements
+                                     ComplexFunction,
+                                     AutoCloseable
 {
 
-  private static final Logger    log = LoggerFactory.getLogger(MuntzPadeFunctional.class);
+  private final ComplexSequence a;
+  private final int prec;
+  private final Real alpha;
+  private final Context context;
 
-  /**
-   * Fractional exponent μ ∈ (0,1).
-   */
-  public Real                    α;
+  private final ComplexPolynomialSequence Φden;
+  private final ComplexPolynomialSequence Φnum;
+  private final ComplexFunctionSequence Φ;
 
-  /**
-   * Müntz coefficients:
-   *
-   * <pre>
-   *     k ↦ v ↦ a_k(v)
-   * </pre>
-   */
-  public ComplexPolynomialSequence a;
+  // Hankel inverse hierarchy: invs.get(m-1) holds H_m^{-1} for m >= 1
+  private final List<ComplexMatrix> invs = new ArrayList<>();
 
-  protected String               name;
+  // Working vectors for bordered update
+  private ComplexMatrix uVec;
+  private ComplexMatrix vVec;
 
-  public MuntzPadeFunctional()
+  // Scalar scratch
+  private final Complex s = new Complex();
+  private final Complex alphaScalar = new Complex();
+  private final Complex tmp = new Complex();
+
+  // Evaluation temporaries
+  private final Complex z = new Complex();
+  private final Complex valM = new Complex();
+  private final Complex valMm1 = new Complex();
+  private final Complex valMm2 = new Complex();
+  private final Complex deltaM = new Complex();
+  private final Complex deltaMm1 = new Complex();
+  private final Complex num = new Complex();
+  private final Complex denom = new Complex();
+  private final Complex bound = new Complex();
+  private final Complex diff = new Complex();
+
+  private boolean closed = false;
+
+  public MuntzPadeApproximant(Real alpha, ComplexSequence a, Complex v, int bits)
   {
-  }
-
-  public MuntzPadeFunctional(Real α, ComplexPolynomialSequence a)
-  {
-    this.α = α;
     this.a = a;
+    this.alpha = alpha;
+    this.prec = bits;
+
+    this.context = new Context();
+    Variable M = context.declareVariable("M", Integer.class);
+    Variable zVar = context.declareVariable("z", Complex.class);
+    context.registerVariable(new VariableReference<>("a", ComplexSequence.class, a));
+    context.registerVariable(new VariableReference<>("qSeq", ComplexPolynomialSequence.class, this::buildDenominatorPolynomial));
+
+    // Φden is Q_M(z) = 1 + q_1·z + ... + q_M·z^M
+    this.Φden = ComplexPolynomialSequence.express("Φden:M➔z*qSeq(M)+1", context);
+
+    // Φnum is the Padé numerator P_M(z) with p_n = a_n + sum_{j=1}^n q_j·a_{n-j}
+    this.Φnum = ComplexPolynomialSequence.express(
+        "Φnum:M➔sum(n➔(a(n+1)+sum(j➔qSeq(M)[j-1]*a(n-j+1){j=1..n}))*z^n{n=0..M})", context);
+
+    // Padé approximant R_M(z) = P_M(z) / Q_M(z)
+    this.Φ = ComplexFunctionSequence.express("Φ:M➔z➔Φnum(M)(z)/Φden(M)(z)", context);
   }
 
-  public MuntzPadeFunctional(String name, Real α, ComplexPolynomialSequence a)
+  /* ── Hankel inverse maintenance ─────────────────────────────────────── */
+
+  private void growTo(int M) {
+    if (invs.isEmpty()) {
+      bootstrap();
+    }
+    while (invs.size() < M) {
+      growOnce();
+    }
+  }
+
+  private void bootstrap() {
+    Complex h11 = a.apply(1);
+    if (h11.isZero()) {
+      throw new HankelDegeneracyException("Singular Hankel at order 1: a_1 = 0");
+    }
+    ComplexMatrix inv = ComplexMatrix.newMatrix(1, 1);
+    tmp.one().div(h11, prec, inv.get(0, 0));
+    invs.add(inv);
+  }
+
+  private void ensureVecCapacity(int n) {
+    if (uVec == null || uVec.getNumRows() < n) {
+      if (uVec != null) uVec.close();
+      if (vVec != null) vVec.close();
+      uVec = ComplexMatrix.newMatrix(n, 1);
+      vVec = ComplexMatrix.newMatrix(n, 1);
+    }
+  }
+
+  private void growOnce() {
+    int oldM = invs.size();
+    int newM = oldM + 1;
+
+    ensureVecCapacity(oldM);
+
+    // u_i = a_{i + oldM + 1}
+    for (int i = 0; i < oldM; i++) {
+      uVec.get(i, 0).set(a.apply(i + oldM + 1));
+    }
+
+    // v = inv · u
+    ComplexMatrix oldInv = invs.get(oldM - 1);
+    oldInv.mul(uVec, prec, vVec);
+
+    // d = a_{2·oldM + 1}
+    Complex d = a.apply(2 * oldM + 1);
+
+    // s = d − u^T · v
+    s.set(d);
+    for (int i = 0; i < oldM; i++) {
+      uVec.get(i, 0).mul(vVec.get(i, 0), prec, tmp);
+      s.sub(tmp, prec, s);
+    }
+
+    if (s.isZero()) {
+      throw new HankelDegeneracyException("Singular Hankel update at order " + newM);
+    }
+
+    // alpha = 1 / s
+    alphaScalar.one().div(s, prec, alphaScalar);
+
+    // newInv = [ inv + alpha·v·v^T   −alpha·v ]
+    //          [ −alpha·v^T          alpha    ]
+    ComplexMatrix newInv = ComplexMatrix.newMatrix(newM, newM);
+
+    // top-left block
+    for (int i = 0; i < oldM; i++) {
+      for (int j = 0; j < oldM; j++) {
+        vVec.get(i, 0).mul(vVec.get(j, 0), prec, tmp);
+        tmp.mul(alphaScalar, prec, tmp);
+        oldInv.get(i, j).add(tmp, prec, newInv.get(i, j));
+      }
+    }
+
+    // right border
+    for (int i = 0; i < oldM; i++) {
+      vVec.get(i, 0).mul(alphaScalar, prec, tmp);
+      tmp.neg(newInv.get(i, oldM));
+    }
+
+    // bottom border
+    for (int j = 0; j < oldM; j++) {
+      vVec.get(j, 0).mul(alphaScalar, prec, tmp);
+      tmp.neg(newInv.get(oldM, j));
+    }
+
+    // bottom-right corner
+    newInv.get(oldM, oldM).set(alphaScalar);
+
+    invs.add(newInv);
+  }
+
+  private ComplexMatrix solveHankel(int M) {
+    growTo(M);
+    ComplexMatrix rhs = ComplexMatrix.newMatrix(M, 1);
+    for (int i = 0; i < M; i++) {
+      rhs.get(i, 0).set(a.apply(M + i + 1)).neg(rhs.get(i, 0));
+    }
+    ComplexMatrix q = ComplexMatrix.newMatrix(M, 1);
+    ComplexMatrix inv = invs.get(M - 1);
+    inv.mul(rhs, prec, q);
+    rhs.close();
+    return q;
+  }
+
+  /* ── Padé construction ──────────────────────────────────────────────── */
+
+  private ComplexPolynomial buildDenominatorPolynomial(Integer M) {
+    checkOpen();
+    int m = M.getSignedValue();
+    ComplexMatrix qVec = solveHankel(m);
+    ComplexPolynomial qPoly = new ComplexPolynomial();
+    for (int j = 0; j < m; j++) {
+      qPoly.get(j).set(qVec.get(j, 0));
+    }
+    qVec.close();
+    return qPoly;
+  }
+
+  /**
+   * Evaluate the Padé approximant at $t$ with certified error $< 2^{-\\text{bits}}$.
+   */
+  @Override
+  public Complex evaluate(Complex t, int order, int bits, Complex result)
   {
-    this(α,
-         a);
-    this.name = name;
+    if (result == null)
+    {
+      result = new Complex();
+    }
+
+    checkOpen();
+    t.pow(alpha, prec, z);
+
+    Complex threshold = new Complex();
+    threshold.set(Real.newReal(2).neg(threshold));
+    threshold.pow(Real.newReal(bits).neg(threshold), prec, threshold);
+
+    for (int m = 3; ; m++) {
+      try (Complex tmp = new Complex();
+           Integer Mi = new Integer(m);
+           Integer Mm1 = new Integer(m - 1);
+           Integer Mm2 = new Integer(m - 2)) {
+
+        Φ.evaluate(Mi, 1, bits, null).evaluate(z, 1, bits, valM);
+        Φ.evaluate(Mm1, 1, bits, null).evaluate(z, 1, bits, valMm1);
+        Φ.evaluate(Mm2, 1, bits, null).evaluate(z, 1, bits, valMm2);
+
+        valM.sub(valMm1, prec, deltaM);
+        valMm1.sub(valMm2, prec, deltaMm1);
+
+        deltaM.norm(prec, num);
+        num.mul(num, prec, num);
+
+        deltaMm1.norm(prec, denom);
+        deltaM.norm(prec, tmp);
+        denom.sub(tmp, prec, denom);
+
+        if (!denom.isPositive()) {
+          deltaM.sub(deltaMm1, prec, diff);
+          if (diff.contains(Complex.ZERO) && diff.rad() < threshold.rad()) {
+            throw new PrecisionExhaustedException(
+                "Precision exhausted at order " + m +
+                "; evaluation point may be outside convergence domain");
+          }
+          continue;
+        }
+
+        num.div(denom, prec, bound);
+
+        if (bound.compareTo(threshold) <= 0) {
+          result.set(valM);
+          return result;
+        }
+      }
+    }
   }
 
   @Override
-  public ComplexFunction evaluate(Complex v, int order, int bits, ComplexFunction result)
-  {
-
-    /**
-     * No global Padé-order selection occurs here anymore.
-     *
-     * The returned approximant adaptively determines the required order during
-     * evaluation at the actual requested point t.
-     */
-    return new MuntzPadeApproximant(α,
-                                    a,
-                                    v,
-                                    bits);
+  public void close() {
+    if (!closed) {
+      closed = true;
+      for (ComplexMatrix inv : invs) {
+        if (inv != null) inv.close();
+      }
+      if (uVec != null) uVec.close();
+      if (vVec != null) vVec.close();
+      s.close();
+      alphaScalar.close();
+      tmp.close();
+      Φ.close();
+      Φnum.close();
+      Φden.close();
+      z.close();
+      valM.close();
+      valMm1.close();
+      valMm2.close();
+      deltaM.close();
+      deltaMm1.close();
+      num.close();
+      denom.close();
+      bound.close();
+      diff.close();
+    }
   }
 
-  @Override
-  public String getName()
-  {
-    return name;
-  }
-
-  @Override
-  public void close()
-  {
-    // no owned native resources
+  private void checkOpen() {
+    if (closed) {
+      throw new IllegalStateException("MuntzPadeApproximant is closed");
+    }
   }
 }
