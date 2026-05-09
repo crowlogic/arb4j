@@ -39,7 +39,7 @@ import arb.functions.Function;
  * {@link arb.expressions.nodes.binary.ExponentiationNode},
  * {@link arb.expressions.nodes.binary.AdditionNode}, etc.).
  * 
- * The static {@link #parse(Expression)} method is the entry point from the
+ * The static {@link #define(Expression)} method is the entry point from the
  * parser for both Đ and ꟲD syntax. It dispatches to
  * {@code operand.fractionalDerivative(exponent)} which returns either a
  * closed-form node or falls back to creating this integral-form node via
@@ -159,7 +159,7 @@ public class CaputoFractionalDerivativeNode<D, R, F extends Function<? extends D
 
   protected void init(Node<D, R, F> operand, int derivativeOrder)
   {
-    operandFunctionMapping = context.registerFunctionMapping("f", expression.domainType, expression.coDomainType, expression.functionClass);
+    operandFunctionMapping = context.declare("f", expression.domainType, expression.coDomainType, expression.functionClass);
 
     var diffVar = variable != null ? variable : expression.getIndependentVariable();
 

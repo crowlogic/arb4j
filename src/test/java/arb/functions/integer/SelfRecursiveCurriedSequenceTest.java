@@ -64,7 +64,7 @@ public class SelfRecursiveCurriedSequenceTest extends
   public static void testMutuallyRecursiveCurriedSequencesPreserveInnerCurry()
   {
     Context ctx = new Context();
-    ctx.registerFunctionMapping("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
+    ctx.declare("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
     String sExpr = "S:k➔v➔sum(j➔a(j)(v)*a(k-1-j)(v){j=1..k-2})";
     Sequence.compile("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
 
@@ -95,7 +95,7 @@ public class SelfRecursiveCurriedSequenceTest extends
   {
     Context ctx = new Context();
     ComplexFunction.express("p", "v➔v", ctx);
-    ctx.registerFunctionMapping("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
+    ctx.declare("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
     String sExpr = "S:k➔v➔sum(j➔a(j)(v)*a(k-1-j)(v){j=1..k-2})";
     Sequence.compile("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
 
@@ -126,7 +126,7 @@ public class SelfRecursiveCurriedSequenceTest extends
   public static void testMinimalMutuallyRecursiveCurriedPair()
   {
     Context ctx = new Context();
-    ctx.registerFunctionMapping("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
+    ctx.declare("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
     String sExpr = "S:k➔v➔a(k-1)(v)·a(k-1)(v)";
     Sequence.compile("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
 
@@ -160,7 +160,7 @@ public class SelfRecursiveCurriedSequenceTest extends
     μ.setName("μ");
     ctx.registerVariable(μ);
 
-    ctx.registerFunctionMapping("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
+    ctx.declare("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
     String sExpr = "S:k➔v➔a(k-1)(v)·a(k-1)(v)";
     Sequence.compile("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
 
@@ -194,7 +194,7 @@ public class SelfRecursiveCurriedSequenceTest extends
     μ.setName("μ");
     ctx.registerVariable(μ);
 
-    ctx.registerFunctionMapping("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
+    ctx.declare("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
     String sExpr = "S:k➔v➔a(k-1)(v)·a(k-1)(v)";
     Sequence.compile("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
 
@@ -229,7 +229,7 @@ public class SelfRecursiveCurriedSequenceTest extends
     μ.setName("μ");
     ctx.registerVariable(μ);
 
-    ctx.registerFunctionMapping("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
+    ctx.declare("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
     String sExpr = "S:k➔v➔a(k-1)(v)·a(k-1)(v)";
     Sequence.compile("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
 
@@ -262,7 +262,7 @@ public class SelfRecursiveCurriedSequenceTest extends
   {
     Context ctx = new Context();
     ComplexFunction.express("p", "v➔v", ctx);
-    ctx.registerFunctionMapping("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
+    ctx.declare("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
     String sExpr = "S:k➔v➔a(k-1)(v)·a(k-1)(v)";
     Sequence.compile("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
 
@@ -292,7 +292,7 @@ public class SelfRecursiveCurriedSequenceTest extends
   {
     Context ctx = new Context();
     ComplexFunction.express("p", "v➔v", ctx);
-    ctx.registerFunctionMapping("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
+    ctx.declare("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
     String sExpr = "S:k➔v➔a(k-1)(v)·a(k-1)(v)";
     Sequence.compile("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
 
@@ -336,7 +336,7 @@ public class SelfRecursiveCurriedSequenceTest extends
     ComplexFunction.express("q", "v➔v", ctx);
     ComplexFunction.express("r", "v➔v", ctx);
 
-    ctx.registerFunctionMapping("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
+    ctx.declare("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
     String sExpr = "S:k➔v➔sum(j➔a(j)(v)*a(k-1-j)(v){j=1..k-2})";
     Sequence.compile("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
 
@@ -366,7 +366,7 @@ public class SelfRecursiveCurriedSequenceTest extends
   public static void testMutuallyRecursiveCurriedPairWithWhenInPeer()
   {
     Context ctx = new Context();
-    ctx.registerFunctionMapping("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
+    ctx.declare("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
     String sExpr = "S:k➔v➔when(k=2, a(1)(v)·a(1)(v), else, 0)";
     Sequence.compile("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
 

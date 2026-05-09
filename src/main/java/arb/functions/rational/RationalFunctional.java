@@ -42,7 +42,7 @@ public interface RationalFunctional extends
                                                                                       context,
                                                                                       functionName,
                                                                                       null);
-    return expr.parse(true);
+    return expr.define(true);
   }
 
   public static Expression<RationalFunction, RationalFunction, RationalFunctional> compile(String functionName, String expression, Context context)

@@ -708,7 +708,7 @@ public class Parser
                                        functionName,
                                        containingExpression);
 
-    return expr.parse(simplify);
+    return expr.define(simplify);
   }
 
   public static <D, R, F extends Function<? extends D, ? extends R>> Expression<D, R, F> parse(String expression,

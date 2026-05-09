@@ -91,7 +91,7 @@ public class RiemannLiouvilleFractionalIntegralNode<D, R, F extends Function<? e
   protected void init(Node<D, R, F> operand)
   {
     FunctionMapping<D, R, F> operandFunctionMapping =
-                                                   context.registerFunctionMapping("f",
+                                                   context.declare("f",
                                                                                    expression.domainType,
                                                                                    expression.coDomainType,
                                                                                    expression.functionClass);

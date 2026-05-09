@@ -442,7 +442,7 @@ public interface Function<D, CO> extends
 
     if (context != null)
     {
-      context.registerFunctionMapping(functionName, domainClass, coDomainClass, functionClass);
+      context.declare(functionName, domainClass, coDomainClass, functionClass);
     }
 
     return parsedExpression;

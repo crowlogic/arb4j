@@ -1330,14 +1330,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * recompiles on first use.
    *
    * <p>
-   * If {@code rootNode} is null on the source, {@link #parse(boolean)} is driven
+   * If {@code rootNode} is null on the source, {@link #define(boolean)} is driven
    * first so the deep clone always returns an Expression carrying a concrete AST.
    */
   public Expression<D, C, F> deepCloneExpression()
   {
     if (rootNode == null)
     {
-      parse(true);
+      define(true);
     }
     Expression<D, C, F> copy = cloneExpression();
     copy.rootNode      = rootNode.spliceInto(copy);
@@ -1381,7 +1381,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (rootNode == null)
     {
-      parse(true);
+      define(true);
     }
 
     Expression<D, C, F> partial = deepCloneExpression();
@@ -1649,7 +1649,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * Generate the implementation of the function after this{@link #parse(boolean)}
+   * Generate the implementation of the function after this{@link #define(boolean)}
    * has been invoked
    * 
    * @return this
@@ -2114,7 +2114,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (rootNode == null)
     {
-      parse(true);
+      define(true);
     }
 
     nextLocalVariableSlot = 5;
@@ -4113,7 +4113,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     if (rootNode == null)
     {
-      parse(true);
+      define(true);
     }
     // Order matters: deduplicate jet siblings so that the static-hoisting
     // pass sees canonical JetState references, then hoist constant /
@@ -4158,7 +4158,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   @SuppressWarnings("unchecked")
   public <D, C, F extends Function<? extends D, ? extends C>, PD, PC, PF extends Function<? extends PD, ? extends PC>, E extends Expression<D, C, F>>
          E
-         parse(boolean simplify)
+         define(boolean simplify)
   {
     assert rootNode == null : "parse must only be called before anything else has been parsed but rootNode=" + rootNode;
     evaluateOptionalIndependentVariableSpecification();
@@ -5370,7 +5370,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     else if (isIdentifierCharacter())
     {
       String arrowVar = parseExplicitInputVariableIfPresent();
-      if (arrowVar != null && coDomainType.isInterface())
+      if (arrowVar != null )
       {
         node = parseInputVariableAssignment(arrowVar);
       }
@@ -5380,15 +5380,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
       else
       {
-        if (isReifiedFunctional())
-        {
-          assert false : "TODO: call setIndependentVariableName " + arrowVar + " on the polynomial or rational function for " + expression + " with remaining " + remaining() + " where node=" + node;
-        }
+//        if (isReifiedFunctional())
+//        {
+//          assert false : "TODO: call setIndependentVariableName " + arrowVar + " on the polynomial or rational function for " + expression + " with remaining " + remaining() + " where node=" + node;
+//        }
         throw new CompilerException("arrow variable declaration '"
                                     + arrowVar
                                     + "➔' found but coDomain "
                                     + coDomainType.getSimpleName()
-                                    + " is not a functional interface");
+                                    + " is not a functional interface on " + this);
       }
     }
     else if (nextCharacterIs('ꟲ'))

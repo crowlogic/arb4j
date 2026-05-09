@@ -42,7 +42,7 @@ public class AutoCurryTest extends
                             body,
                             null,
                             name,
-                            null).parse(false);
+                            null).define(false);
   }
 
   /**

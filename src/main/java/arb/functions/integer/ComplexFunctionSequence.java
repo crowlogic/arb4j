@@ -46,7 +46,7 @@ public interface ComplexFunctionSequence extends
 
   public static FunctionMapping<Integer, ComplexFunction, ComplexFunctionSequence> declare(String string, Context context)
   {
-    return context.registerFunctionMapping(string, Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
+    return context.declare(string, Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
   }
 
   public static Expression<Integer, ComplexFunction, ComplexFunctionSequence> compile(String string, Context context)
