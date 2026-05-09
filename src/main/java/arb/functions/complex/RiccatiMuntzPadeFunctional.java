@@ -114,6 +114,7 @@ public class RiccatiMuntzPadeFunctional extends
                                     ComplexPolynomialNullaryFunction Q,
                                     ComplexPolynomialNullaryFunction R)
   {
+    
     this.context = context.disableLommelPolynomials();
     this.P       = P;
     this.Q       = Q;

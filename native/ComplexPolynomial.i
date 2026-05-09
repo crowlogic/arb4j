@@ -21,6 +21,12 @@
 
 %typemap(javacode) acb_poly_struct %{
 
+	@SuppressWarnings("resource")
+	public static ComplexPolynomial named(String string)
+	{
+	  return new ComplexPolynomial().setName(string);
+	}
+	
 	public ComplexPolynomialNullaryFunction express(String str)
 	{
 	  return ComplexPolynomialNullaryFunction.express(str);

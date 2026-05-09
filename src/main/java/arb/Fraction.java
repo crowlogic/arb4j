@@ -367,13 +367,6 @@ public class Fraction implements Becomable<Fraction>,AutoCloseable,NamedField<Fr
     result.imaginaryPart.zero();
     return result;
   }
- 
-  public ComplexPolynomial neg( ComplexPolynomial result )
-  {
-    result.set(this);
-    arblib.acb_poly_neg(result, result);
-    return result;
-  }
   
   public ComplexFraction neg( ComplexFraction result )
   {
