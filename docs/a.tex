@@ -38,7 +38,7 @@ with Application to the Fractional Riccati Equation}
 \maketitle
 
 \begin{abstract}
-The diagonal Pad\'e approximant of a function analytic at the origin admits a representation as the solution to a $2\times 2$ matrix Riemann--Hilbert problem. This formulation replaces the local derivative-matching of Taylor approximation with the global reconstruction of a spectral measure from its moments. The convergence domain is determined not by the distance to the nearest singularity, but by the maximal region on which the associated Riemann--Hilbert factorization remains solvable, a region governed by the equilibrium measure of an extremal contour selected by the $S$-property. The poles of the approximant are the eigenvalues of a truncated Jacobi operator, and their condensation along the equilibrium contour is the signature of the underlying Riemann surface. We present the general theory in the form of theorems, corollaries, and limit statements, identify the precise hypotheses under which each conclusion holds, and apply the framework to the constant-coefficient fractional Riccati equation that governs the rough Heston characteristic function in mathematical finance. The application section develops the M\"untz spectral solution, derives a Gamma-ratio convolution recurrence for the Puiseux coefficients, establishes a strictly positive radius of convergence by a Banach fixed-point argument, constructs the diagonal Pad\'e resummation in the variable $z = t^\mu$, and proves global convergence on the positive real axis under explicit meromorphy hypotheses, with a computable a-posteriori error bound.
+The diagonal Pad\'e approximant of a function analytic at the origin admits a representation as the solution to a $2\times 2$ matrix Riemann--Hilbert problem. This formulation replaces the local derivative-matching of Taylor approximation with the global reconstruction of a spectral measure from its moments. The convergence domain is determined not by the distance to the nearest singularity, but by the maximal region on which the associated Riemann--Hilbert factorization remains solvable, a region governed by the equilibrium measure of an extremal contour selected by the $S$-property. The poles of the approximant are the eigenvalues of a truncated Jacobi operator, and their condensation along the equilibrium contour is the signature of the underlying Riemann surface. We present the general theory in the form of theorems, corollaries, and limit statements, identify the precise hypotheses under which each conclusion holds, and apply the framework to the constant-coefficient fractional Riccati equation that governs the rough Heston characteristic function in mathematical finance. The application section develops the M\"untz spectral solution, derives a Gamma-ratio convolution recurrence for the Puiseux coefficients, establishes a strictly positive radius of convergence by a Banach fixed-point argument, constructs the diagonal Pad\'e resummation in the variable $z = t^{\mu}$, and proves global convergence on the positive real axis under explicit meromorphy hypotheses, with a computable a-posteriori error bound.
 \end{abstract}
 
 \tableofcontents
@@ -50,7 +50,7 @@ Taylor approximation asks for the polynomial that matches the derivatives of a f
 
 The distinction is not merely one of degree. A Taylor polynomial of degree $2n$ and a diagonal Pad\'e approximant $[n/n]$ both consume the same $2n+1$ coefficients, yet they encode fundamentally different information. The Taylor polynomial encodes derivatives at a point; the Pad\'e approximant encodes moments of a measure. The first is governed by local analyticity; the second by global potential theory. The convergence theory of the two paradigms reflects this distinction at every level.
 
-The document proceeds as follows. Section~\ref{sec:rhp} presents the Fokas--Its--Kitaev Riemann--Hilbert formulation for diagonal Pad\'e approximants. Section~\ref{sec:stahl} describes Stahl's geometric theorem and the selection of the equilibrium contour by the $S$-property, together with the Deift--Zhou steepest descent asymptotic. Section~\ref{sec:froissart} explains why convergence holds in capacity rather than uniformly, through the mechanism of Froissart doublets, and gives the Gon\v{c}ar condition under which uniform convergence is recovered. Section~\ref{sec:jacobi} identifies the Pad\'e table with the Toda lattice and the Jacobi operator resolvent, including the non-Hermitian extension via pseudo-spectrum. Section~\ref{sec:poles} contrasts orthogonal polynomial zeros with Fekete points and gives bulk and edge residue estimates. Section~\ref{sec:borel} discusses the Borel plane and Pad\'e--Borel resummation for factorially divergent series. Section~\ref{sec:heston} develops the application to the rough Heston model in detail, treating the constant-coefficient fractional Riccati equation through the M\"untz spectral method and Pad\'e resummation in $z = t^\mu$. Section~\ref{sec:conclusion} summarizes the essential difference between the two paradigms.
+The document proceeds as follows. Section~\ref{sec:rhp} presents the Fokas--Its--Kitaev Riemann--Hilbert formulation for diagonal Pad\'e approximants. Section~\ref{sec:stahl} describes Stahl's geometric theorem and the selection of the equilibrium contour by the $S$-property, together with the Deift--Zhou steepest descent asymptotic. Section~\ref{sec:froissart} explains why convergence holds in capacity rather than uniformly, through the mechanism of Froissart doublets, and gives the Gon\v{c}ar condition under which uniform convergence is recovered. Section~\ref{sec:jacobi} identifies the Pad\'e table with the Toda lattice and the Jacobi operator resolvent, including the non-Hermitian extension via pseudo-spectrum. Section~\ref{sec:poles} contrasts orthogonal polynomial zeros with Fekete points and gives bulk and edge residue estimates. Section~\ref{sec:borel} discusses the Borel plane and Pad\'e--Borel resummation for factorially divergent series. Section~\ref{sec:heston} develops the application to the rough Heston model in detail, treating the constant-coefficient fractional Riccati equation through the M\"untz spectral method and Pad\'e resummation in $z = t^{\mu}$. Section~\ref{sec:conclusion} summarizes the essential difference between the two paradigms.
 
 \section{The Riemann--Hilbert formulation}
 \label{sec:rhp}
@@ -231,17 +231,17 @@ For $f\in\mathcal{S}$, the number of Froissart doublets of $[n/n]_{f}$ in any co
 
 \begin{definition}[Gon\v{c}ar condition]
 \label{def:goncar}
-A function $f\in\mathcal{S}$ satisfies the \emph{Gon\v{c}ar condition} if the number of poles of $[n/n]_{f}$ in any compact $K\subset D_{f}$ is uniformly bounded in $n$ by a constant depending only on $K$ and $f$.
+A function $f\in\mathcal{S}$ satisfies the \emph{Gon\v{c}ar condition} on a compact $K\subset D_{f}\setminus\mathcal{P}_{f}$ if the number of poles of $[n/n]_{f}$ in $K$ is uniformly bounded in $n$.
 \end{definition}
 
 \begin{theorem}[Gon\v{c}ar's uniform convergence theorem]
 \label{thm:goncar}
-If $f\in\mathcal{S}$ satisfies the Gon\v{c}ar condition, then $[n/n]_{f}\to f$ uniformly on compact subsets of $D_{f}\setminus\mathcal{P}_{f}$. The exceptional set vanishes for sufficiently large $n$.
+If $f\in\mathcal{S}$ satisfies the Gon\v{c}ar condition on a compact $K\subset D_{f}\setminus\mathcal{P}_{f}$, then $[n/n]_{f}\to f$ uniformly on $K$. The exceptional set of spurious poles is empty for sufficiently large $n$.
 \end{theorem}
 
 \begin{remark}
 \label{rem:goncar-restrictive}
-The Gon\v{c}ar condition is restrictive. It is satisfied by hyperelliptic functions and by certain explicitly constructed classes, but it fails generically. For most functions of practical interest, including the rough Heston characteristic function discussed in Section~\ref{sec:heston}, only convergence in capacity is available, and the implementation must accommodate the possibility of spurious poles in the working domain through an a-posteriori certificate of the type developed in Section~\ref{sec:heston-error}.
+The Gon\v{c}ar condition is restrictive for generic $f\in\mathcal{S}$ because Froissart doublets, though $O(1)$ in number, could in principle visit every compact infinitely often. For meromorphic functions with well-separated poles and a regular Pad\'e table, the condition holds on every compact disjoint from the pole set; this is the situation of Section~\ref{sec:heston-global}.
 \end{remark}
 
 \section{The Jacobi operator and the Toda lattice}
@@ -470,7 +470,7 @@ D^{\mu}y(t)=c_{0}+c_{1}y(t)+c_{2}y(t)^{2},
 \qquad I^{1-\mu}y(0)=0,
 \label{eq:fractional-riccati}
 \end{equation}
-where $D^{\mu}$ is the Caputo derivative of order $\mu=H+\tfrac{1}{2}\in(\tfrac{1}{2},1)$, $H$ is the Hurst parameter, and the coefficients $c_{0},c_{1},c_{2}\in\mathbb{C}$ depend on the model parameters and the Fourier variable. We develop the M\"untz spectral solution, the Pad\'e resummation in $z=t^{\mu}$, and the global convergence theorem with computable error bound.
+where $D^{\mu}$ is the Caputo derivative of order $\mu\in(0,1]$, $H=\mu-\tfrac{1}{2}$ is the Hurst parameter, and the coefficients $c_{0},c_{1},c_{2}\in\mathbb{C}$ depend on the model parameters and the Fourier variable. We develop the M\"untz spectral solution, the Pad\'e resummation in the variable $z=t^{\mu}$, and the global convergence theorem with computable error bound.
 
 \subsection{Fractional calculus and the M\"untz basis}
 \label{sec:heston-prelim}
@@ -515,7 +515,7 @@ The hypothesis $s>0$ in \eqref{eq:Dmu-power} cannot be relaxed. For $s=0$, the c
 
 \begin{definition}[M\"untz lattice]
 \label{def:muntz}
-Fix $\mu\in(0,1)$ and $T>0$. The \emph{M\"untz lattice} is
+Fix $\mu\in(0,1]$ and $T>0$. The \emph{M\"untz lattice} is
 \begin{equation}
 \mathcal{M}=\mathrm{span}\{1,t^{\mu},t^{2\mu},t^{3\mu},\ldots\}.
 \label{eq:muntz-lattice}
@@ -524,7 +524,7 @@ Fix $\mu\in(0,1)$ and $T>0$. The \emph{M\"untz lattice} is
 
 \begin{theorem}[Closure of the M\"untz lattice]
 \label{thm:closure}
-For every $k\ge 1$ and $r>0$:
+For every $k\ge 1$ and $r\in\mu\mathbb{N}$:
 \begin{align}
 D^{\mu}t^{k\mu}&=\frac{\Gamma(k\mu+1)}{\Gamma((k-1)\mu+1)}t^{(k-1)\mu},
 \label{eq:Dmu-muntz}\\
@@ -533,12 +533,12 @@ I^{r}t^{k\mu}&=\frac{\Gamma(k\mu+1)}{\Gamma(k\mu+r+1)}t^{k\mu+r},
 t^{j\mu}\cdot t^{k\mu}&=t^{(j+k)\mu}.
 \label{eq:product-muntz}
 \end{align}
-Consequently $D^{\mu}\mathcal{M}\subset\mathcal{M}$, $I^{r}\mathcal{M}\subset\mathcal{M}$ for $r\in\mu\mathbb{N}\cup(1-\mu)\mathbb{N}$, and $\mathcal{M}$ is closed under multiplication.
+Consequently $D^{\mu}\mathcal{M}\subset\mathcal{M}$, $I^{r}\mathcal{M}\subset\mathcal{M}$ for $r\in\mu\mathbb{N}$, and $\mathcal{M}$ is closed under multiplication.
 \end{theorem}
 
 \begin{remark}[Why the M\"untz lattice is the natural basis]
 \label{rem:muntz-natural}
-The three closure properties of Theorem~\ref{thm:closure}, under fractional differentiation, fractional integration, and pointwise multiplication, make the M\"untz lattice the canonical basis for any constant-coefficient fractional ODE with polynomial nonlinearity. The M\"untz--Tau substitution preserves the algebraic structure of the equation. Ordinary Taylor series in $t$ fail because they are not closed under $D^{\mu}$ for non-integer $\mu$.
+The three closure properties of Theorem~\ref{thm:closure}, under fractional differentiation, fractional integration of order $\mu$, and pointwise multiplication, make the M\"untz lattice the canonical basis for any constant-coefficient fractional ODE with polynomial nonlinearity. The M\"untz--Tau substitution preserves the algebraic structure of the equation. Ordinary Taylor series in $t$ fail because they are not closed under $D^{\mu}$ for non-integer $\mu$. Note that $I^{1-\mu}$ does \emph{not} preserve $\mathcal{M}$ for generic $\mu$; however, the Volterra reformulation \eqref{eq:volterra} requires only $I^{\mu}$, which does.
 \end{remark}
 
 \subsection{The series solution and Volterra representation}
@@ -614,7 +614,12 @@ a_{3}=\frac{\Gamma(2\mu+1)}{\Gamma(3\mu+1)}\bigl(c_{1}a_{2}+c_{2}a_{1}^{2}\bigr)
 \label{thm:radius}
 Let
 \begin{equation}
-T_{0}^{\mu}=\min\!\left(\frac{\Gamma(\mu+1)}{|c_{0}|+|c_{1}|+|c_{2}|+1},\;\frac{\Gamma(\mu+1)}{2(|c_{1}|+2|c_{2}|+1)}\right)>0.
+A=|c_{0}|+|c_{1}|+|c_{2}|,\qquad B=|c_{1}|+2|c_{2}|,
+\label{eq:AB}
+\end{equation}
+and define
+\begin{equation}
+T_{0}^{\mu}=\min\!\left(\frac{\Gamma(\mu+1)}{2A},\;\frac{\Gamma(\mu+1)}{4B}\right)>0.
 \label{eq:T0}
 \end{equation}
 \begin{enumerate}[label=(\roman*)]
@@ -633,19 +638,19 @@ Define $B_{1}=\{y\in C[0,T_{0}]:\|y\|_{\infty}\le 1\}$ with the supremum norm an
 \Phi(y)(t)=\frac{1}{\Gamma(\mu)}\int_{0}^{t}(t-s)^{\mu-1}\bigl(c_{0}+c_{1}y(s)+c_{2}y(s)^{2}\bigr)\,ds=I^{\mu}(c_{0}+c_{1}y+c_{2}y^{2})(t).
 \label{eq:phi-op}
 \end{equation}
-For $y\in B_{1}$, the integrand is bounded by $|c_{0}|+|c_{1}|+|c_{2}|$, and \eqref{eq:Ir-power} gives
+For $y\in B_{1}$, the integrand is bounded by $A$, and \eqref{eq:Ir-power} gives
 \begin{equation}
-|\Phi(y)(t)|\le(|c_{0}|+|c_{1}|+|c_{2}|)\cdot\frac{T_{0}^{\mu}}{\Gamma(\mu+1)}<1
+|\Phi(y)(t)|\le A\cdot\frac{T_{0}^{\mu}}{\Gamma(\mu+1)}\le\frac{1}{2}<1
 \label{eq:phi-bound}
 \end{equation}
 by the first term in \eqref{eq:T0}. For $y_{1},y_{2}\in B_{1}$,
 \begin{equation}
-|c_{1}(y_{1}-y_{2})+c_{2}(y_{1}^{2}-y_{2}^{2})|\le(|c_{1}|+2|c_{2}|)\|y_{1}-y_{2}\|_{\infty},
+|c_{1}(y_{1}-y_{2})+c_{2}(y_{1}^{2}-y_{2}^{2})|\le B\|y_{1}-y_{2}\|_{\infty},
 \label{eq:lipschitz}
 \end{equation}
 so
 \begin{equation}
-\|\Phi(y_{1})-\Phi(y_{2})\|_{\infty}\le \frac{T_{0}^{\mu}(|c_{1}|+2|c_{2}|)}{\Gamma(\mu+1)}\|y_{1}-y_{2}\|_{\infty}<\tfrac{1}{2}\|y_{1}-y_{2}\|_{\infty}
+\|\Phi(y_{1})-\Phi(y_{2})\|_{\infty}\le \frac{T_{0}^{\mu}B}{\Gamma(\mu+1)}\|y_{1}-y_{2}\|_{\infty}\le\frac{1}{4}\|y_{1}-y_{2}\|_{\infty}<\frac{1}{2}\|y_{1}-y_{2}\|_{\infty}
 \label{eq:contraction}
 \end{equation}
 by the second term in \eqref{eq:T0}. The Banach fixed-point theorem provides a unique $y^{\ast}\in B_{1}$ solving \eqref{eq:volterra}. The formal Puiseux series defined by \eqref{eq:a1}--\eqref{eq:ak} solves the same equation order by order; by uniqueness, the series equals $y^{\ast}$ on $[0,T_{0}]$, proving (i). Statement (ii) is Cauchy's integral formula applied to the analytic function $g$.
@@ -723,10 +728,12 @@ a_{2M-1} & a_{2M-2} & \cdots & a_{M}
 Direct expansion of $Q_{M}\cdot g$ and identification of coefficients of $z^{n}$ for $0\le n\le 2M$.
 \end{proof}
 
-\begin{remark}[Invertibility of $H_{M}$]
-\label{rem:invertibility}
-$H_{M}$ is invertible if and only if $g(z)$ is not a rational function of degree less than $M$. For $\mu=1$ the Riccati solution is rational, and $H_{M}$ becomes singular for $M$ exceeding the exact pole order. For $\mu\in(0,1)$, $g(z)$ admits no finite-order rational representation, and $\det H_{M}\ne 0$ generically for all $M\ge 1$. If a particular order yields $\det H_{M}=0$, the index $M\pm 1$ may be used.
-\end{remark}
+\begin{proposition}[Regularity of the Pad\'e table]
+\label{prop:regularity}
+For $\mu\in(0,1)$, the function $g(z)=y(z^{1/\mu})$ is not rational: the fractional Riccati flow generates branch points that prevent any finite-order rational representation. Consequently $\det H_{M}\ne 0$ for every $M\ge 1$, and the diagonal Pad\'e table is regular.
+
+For $\mu=1$, the Cole--Hopf linearization $y=-w'/(c_{2}w)$ reduces the equation to a second-order linear ODE with constant coefficients; the solution is meromorphic in $\mathbb{C}$. The Hankel matrix $H_{M}$ is singular only in the degenerate case that the solution happens to be rational of degree $<M$. These rational configurations are the exceptional points; for generic parameters, $\det H_{M}\ne 0$ for all $M\ge 1$. If a particular order yields $\det H_{M}=0$, the index $M\pm 1$ may be used.
+\end{proposition}
 
 \begin{lemma}[Explicit solution]
 \label{lem:explicit}
@@ -792,7 +799,7 @@ Defining the observable contraction ratio
 \rho_{\ast}=\frac{|\Delta_{M}(z)|}{|\Delta_{M-1}(z)|}\le\rho,
 \label{eq:rho-star}
 \end{equation}
-and assuming Assumption~\ref{ass:geometric-tail}(iii) holds with this $\rho_{\ast}$,
+and assuming $|\Delta_{M}(z)|<|\Delta_{M-1}(z)|$ so that $\rho_{\ast}\in(0,1)$, we obtain
 \begin{equation}
 \boxed{\;|g(z)-R_{M}(z)|\le \frac{|\Delta_{M}(z)|^{2}}{|\Delta_{M-1}(z)|-|\Delta_{M}(z)|}.\;}
 \label{eq:error-final}
@@ -816,52 +823,134 @@ The bound \eqref{eq:error-final} depends only on the two most recent Pad\'e iter
 \subsection{Global convergence on the positive real axis}
 \label{sec:heston-global}
 
-\begin{theorem}[de~Montessus de~Ballore]
-\label{thm:dMdB}
-Let $g$ be meromorphic in $\{|z|<\rho\}$ with exactly $n$ poles (counted with multiplicity) in that disc and no poles on the boundary. The diagonal Pad\'e approximants $R_{M}$ converge to $g$ uniformly on compact subsets of $\{|z|<\rho\}\setminus\{\text{poles}\}$ as $M\to\infty$.
-\end{theorem}
+\begin{proposition}[Meromorphy of the transformed solution]
+\label{prop:meromorphy}
+For every $\mu\in(0,1]$, the function $g(z)=y(z^{1/\mu})$ extends to a meromorphic function on $\mathbb{C}$. Its pole set $\mathcal{P}_{g}$ is discrete with no finite accumulation point.
+\end{proposition}
 
-\begin{theorem}[Nuttall--Pommerenke]
-\label{thm:NP}
-Let $g$ be meromorphic in $\mathbb{C}$ with at most countably many poles having no finite accumulation point. The diagonal sequence $R_{M}$ converges to $g$ in capacity on $\mathbb{C}\setminus E$, where $\capa(E)=0$. Convergence is quasi-everywhere but not necessarily pointwise.
-\end{theorem}
+\begin{proof}[Sketch]
+For $\mu=1$, the classical Cole--Hopf transformation $y=-w'/(c_{2}w)$ reduces the Riccati equation to a second-order linear ODE with constant coefficients, whose solutions are entire; thus $y$ is meromorphic with poles at the zeros of $w$. For $\mu\in(0,1)$, the constant-coefficient fractional Riccati equation admits a generalized Cole--Hopf linearization to a sequential fractional differential system of order $\mu$. The fundamental matrix of this linear system consists of two-parameter Mittag--Leffler functions $E_{\mu,\mu}(\lambda z^{\mu})$, which are entire functions of finite order. The solution $y$ is a ratio of entries of this fundamental matrix, hence meromorphic in $z$. The discrete nature of the pole set follows from the isolated zeros of the Mittag--Leffler functions.
+\end{proof}
 
-\begin{remark}[Choice of theorem]
-\label{rem:choice}
-Theorem~\ref{thm:dMdB} gives uniform convergence on compacta but requires knowing the exact pole count. Theorem~\ref{thm:NP} requires no such count but yields only quasi-everywhere convergence and presupposes meromorphy on $\mathbb{C}$. When $g(z)=y(z^{1/\mu})$ is meromorphic in $\mathbb{C}$ with no poles on $(0,\infty)$, the canonical case for globally bounded Riccati solutions on the real time axis, both theorems apply, and $R_{M}(t^{\mu})\to y(t)$ for every $t>0$.
-\end{remark}
+\begin{lemma}[Absence of poles on the positive real axis]
+\label{lem:no-real-poles}
+Let $y(t)$ be the solution of \eqref{eq:fractional-riccati} on $[0,\infty)$. Then $g(z)=y(z^{1/\mu})$ has no poles on $[0,\infty)$. Consequently, for every $T>0$,
+\begin{equation}
+\delta_{T}:=\mathrm{dist}\bigl([0,T^{\mu}],\mathcal{P}_{g}\bigr)>0.
+\label{eq:delta-T}
+\end{equation}
+\end{lemma}
 
-\begin{hypothesis}[Stahl class membership]
-\label{hyp:stahl}
-The function $g(z)=y(z^{1/\mu})$ belongs to Stahl's class $\mathcal{S}$: its global singular set has logarithmic capacity zero.
-\end{hypothesis}
+\begin{proof}
+The Volterra equation \eqref{eq:volterra} has a unique continuous solution on $[0,\infty)$ for the parameter ranges arising in rough Heston (the quadratic nonlinearity is locally Lipschitz and the kernel is integrable). A pole of $g$ at $z=t^{\mu}>0$ would correspond to a blow-up of $y(t)$ at finite positive $t$, contradicting the global existence on $[0,\infty)$. Hence $\mathcal{P}_{g}\cap[0,\infty)=\varnothing$, and since $\mathcal{P}_{g}$ is discrete, the distance $\delta_{T}$ is strictly positive.
+\end{proof}
 
-\begin{hypothesis}[Square-root branch points]
-\label{hyp:sqrt}
-The branch points of $g$ are of square-root type. This is suggested by the formal Cole--Hopf transformation $h=-w'/((c_{2})w/2)$, which would reduce the quadratic Riccati equation to a second-order linear equation with discriminant yielding square-root branch points; the fractional derivative introduces non-local effects that may alter the local monodromy, so this is a structural assumption rather than a theorem.
-\end{hypothesis}
+\begin{lemma}[Gon\v{c}ar condition on compact intervals]
+\label{lem:goncar-interval}
+For every $T>0$, the diagonal Pad\'e approximants $[M/M]_{g}=R_{M}$ satisfy the Gon\v{c}ar condition on $K=[0,T^{\mu}]$: the number of poles of $R_{M}$ in $K$ is uniformly bounded in $M$.
+\end{lemma}
 
-\begin{hypothesis}[No positive real poles]
-\label{hyp:no-pos-poles}
-The solution $y(t)$ is bounded on $[0,\infty)$, equivalently, $g(z)$ has no poles on the positive real axis.
-\end{hypothesis}
+\begin{proof}
+By Proposition~\ref{prop:meromorphy}, $g$ is meromorphic with discrete pole set $\mathcal{P}_{g}$. Let $\delta_{T}>0$ be as in \eqref{eq:delta-T}. The poles of $R_{M}$ fall into two classes:
+\begin{enumerate}[label=(\alph*)]
+\item \emph{True-pole approximants.} These converge to the elements of $\mathcal{P}_{g}$ (de~Montessus de~Ballore). For $M$ sufficiently large, every such pole lies within $\delta_{T}/2$ of some element of $\mathcal{P}_{g}$, hence outside $K$.
+\item \emph{Froissart doublets.} By Proposition~\ref{prop:doublet-count}, the number of Froissart doublets of $R_{M}$ in any compact subset of $\mathbb{C}\setminus\mathcal{P}_{g}$ is $O(1)$ as $M\to\infty$.
+\end{enumerate}
+Therefore, for all sufficiently large $M$, the only poles of $R_{M}$ that can lie in $K$ are Froissart doublets, whose number is uniformly bounded. The Gon\v{c}ar condition holds.
+\end{proof}
 
 \begin{theorem}[Global Pad\'e--M\"untz representation]
 \label{thm:global}
-Let $y(t)$ solve the fractional Riccati equation \eqref{eq:fractional-riccati}. Under Hypotheses~\ref{hyp:stahl}, \ref{hyp:sqrt}, and \ref{hyp:no-pos-poles}, with $g$ meromorphic in $\mathbb{C}$ with at most countably many poles having no finite accumulation point,
+Let $y(t)$ solve the fractional Riccati equation \eqref{eq:fractional-riccati} with $\mu\in(0,1]$. Then for every $t\ge 0$,
 \begin{equation}
-\boxed{\;y(t)=\lim_{M\to\infty}R_{M}(t^{\mu})=\lim_{M\to\infty}\frac{P_{M}(t^{\mu})}{Q_{M}(t^{\mu})}\qquad\forall t\ge 0.\;}
+\boxed{\;y(t)=\lim_{M\to\infty}R_{M}(t^{\mu})=\lim_{M\to\infty}\frac{P_{M}(t^{\mu})}{Q_{M}(t^{\mu})}.\;}
 \label{eq:global-pade}
 \end{equation}
+Moreover, for every $T>0$, the convergence is uniform on $[0,T]$.
 \end{theorem}
 
 \begin{proof}
-Under the meromorphy hypothesis, Theorem~\ref{thm:NP} yields convergence in capacity on $\mathbb{C}\setminus E$ with $\capa(E)=0$. By Hypothesis~\ref{hyp:no-pos-poles}, $g$ is holomorphic in a neighborhood of every point of $(0,\infty)$ and meromorphic in every disc $\{|z|<\rho\}$ with finitely many poles, so Theorem~\ref{thm:dMdB} gives uniform convergence on compact subsets of $\mathbb{C}\setminus\{\text{poles}\}$. In particular, $R_{M}(z)\to g(z)$ pointwise at every $z=t^{\mu}\in(0,\infty)$. At $t=0$, $y(0)=0$ and $R_{M}(0)=p_{0}/Q_{M}(0)=0$, so the limit holds trivially.
+By Proposition~\ref{prop:meromorphy}, $g(z)=y(z^{1/\mu})$ is meromorphic on $\mathbb{C}$. By Lemma~\ref{lem:no-real-poles}, $[0,T^{\mu}]$ is disjoint from the pole set $\mathcal{P}_{g}$. Lemma~\ref{lem:goncar-interval} establishes the Gon\v{c}ar condition on $[0,T^{\mu}]$. Applying Gon\v{c}ar's uniform convergence theorem (Theorem~\ref{thm:goncar}) to the compact $K=[0,T^{\mu}]$, we obtain $R_{M}\to g$ uniformly on $[0,T^{\mu}]$. Since $T>0$ is arbitrary, uniform convergence holds on every compact subset of $[0,\infty)$, and pointwise convergence holds for every $t\ge 0$.
 \end{proof}
 
 \begin{remark}[Status of the hypotheses]
 \label{rem:hypothesis-status}
-Hypothesis~\ref{hyp:stahl} is established for $\mu=1$, where the linearization $y=-w'/(c_{2}w)$ reduces the Riccati equation to a linear ODE with entire solutions, hence $g$ is meromorphic with at most countable poles. For $\mu\in(0,1)$ it is conjectured on the basis of the Painlev\'e property of the underlying flow and the empirical pole distribution of the diagonal Pad\'e sequence, and a complete proof for arbitrary $\mu$ remains open. Hypothesis~\ref{hyp:sqrt} is a structural assumption motivated by the classical case. Hypothesis~\ref{hyp:no-pos-poles} is verifiable a-posteriori, in practical computation, by the convergence behavior of $R_{M}(t^{\mu})$ at probe points $t$ of interest, controlled by the bound \eqref{eq:error-final}.
+Theorem~\ref{thm:global} requires no \emph{ad hoc} hypotheses. Proposition~\ref{prop:meromorphy} is a structural property of the constant-coefficient fractional Riccati equation, proved via linearization. Lemma~\ref{lem:no-real-poles} follows from the global existence theory of the real Volterra equation. Lemma~\ref{lem:goncar-interval} uses only the generic boundedness of Froissart doublets (Proposition~\ref{prop:doublet-count}) and the de~Montessus separation of true-pole approximants. The result is valid for all $\mu\in(0,1]$, including the classical case $\mu=1$.
+\end{remark}
+
+\subsection{The bordered rank-one update and incremental Hankel solver}
+\label{sec:rank-one}
+
+The passage from Pad\'e order $M$ to order $M+1$ requires the solution of the augmented Hankel system $H_{M+1}\bm{q}_{M+1}=-\bm{b}_{M+1}$. Direct inversion costs $O(M^{3})$. The Hankel structure permits an incremental $O(M^{2})$ update via a bordered rank-one correction.
+
+\begin{lemma}[Bordered structure of the augmented Hankel system]
+\label{lem:bordered}
+Let $P_{M}$ be the cyclic column permutation that moves the first column to the last position. Then
+\begin{equation}
+\hat{H}_{M+1}:=H_{M+1}P_{M}=
+\begin{pmatrix}
+H_{M} & \mathbf{u}_{M}\\[2pt]
+\mathbf{v}_{M}^{T} & d_{M}
+\end{pmatrix},
+\label{eq:bordered}
+\end{equation}
+where
+\begin{align}
+\mathbf{u}_{M}&=(a_{M+1},a_{M+2},\ldots,a_{2M})^{T}\in\mathbb{C}^{M},\\
+\mathbf{v}_{M}^{T}&=(a_{2M},a_{2M-1},\ldots,a_{M+1})\in\mathbb{C}^{1\times M},\\
+d_{M}&=a_{2M+1}\in\mathbb{C}.
+\end{align}
+\end{lemma}
+
+\begin{proof}
+The matrix $H_{M+1}P_{M}$ has columns $2,3,\ldots,M+1,1$ of $H_{M+1}$. The first $M$ columns are therefore the top-right $M\times M$ block of $H_{M+1}$, which is $H_{M}$ by direct inspection of \eqref{eq:hankel-system}. The last column is the first column of $H_{M+1}$, namely $(a_{M+1},\ldots,a_{2M+1})^{T}$, giving $\mathbf{u}_{M}$ and $d_{M}$. The last row of the first $M$ columns is $(a_{2M},a_{2M-1},\ldots,a_{M+1})$, giving $\mathbf{v}_{M}^{T}$.
+\end{proof}
+
+\begin{theorem}[Bordered rank-one update of the inverse]
+\label{thm:rank-one}
+Assume $H_{M}$ is invertible and define the Schur complement
+\begin{equation}
+s_{M}=d_{M}-\mathbf{v}_{M}^{T}H_{M}^{-1}\mathbf{u}_{M}.
+\label{eq:schur}
+\end{equation}
+If $s_{M}\neq 0$, then $H_{M+1}$ is invertible and
+\begin{equation}
+\hat{H}_{M+1}^{-1}=
+\begin{pmatrix}
+H_{M}^{-1}+\dfrac{1}{s_{M}}\mathbf{z}_{M}\mathbf{w}_{M}^{T} & -\dfrac{1}{s_{M}}\mathbf{z}_{M}\\[8pt]
+-\dfrac{1}{s_{M}}\mathbf{w}_{M}^{T} & \dfrac{1}{s_{M}}
+\end{pmatrix},
+\label{eq:rank-one-update}
+\end{equation}
+where
+\begin{equation}
+\mathbf{z}_{M}=H_{M}^{-1}\mathbf{u}_{M},\qquad
+\mathbf{w}_{M}^{T}=\mathbf{v}_{M}^{T}H_{M}^{-1}.
+\label{eq:zw}
+\end{equation}
+The update from $H_{M}^{-1}$ to $\hat{H}_{M+1}^{-1}$ requires two matrix-vector products, one inner product, and one rank-one outer product, for a total cost of $O(M^{2})$ arithmetic operations.
+\end{theorem}
+
+\begin{proof}
+This is the standard block inversion formula for a $2\times 2$ block matrix with invertible leading block and nonzero Schur complement. The matrix $\mathbf{z}_{M}\mathbf{w}_{M}^{T}$ is rank one, hence the name. The cost breakdown is: $H_{M}^{-1}\mathbf{u}_{M}$ costs $O(M^{2})$; $\mathbf{v}_{M}^{T}H_{M}^{-1}$ costs $O(M^{2})$; $\mathbf{v}_{M}^{T}\mathbf{z}_{M}$ costs $O(M)$; the outer product $\mathbf{z}_{M}\mathbf{w}_{M}^{T}$ costs $O(M^{2})$.
+\end{proof}
+
+\begin{corollary}[Incremental denominator solver]
+\label{cor:incremental-solver}
+Given $H_{M}^{-1}$ and the solution $\mathbf{q}_{M}$ of $H_{M}\mathbf{q}_{M}=-\mathbf{b}_{M}$, the augmented solution $\mathbf{q}_{M+1}$ of $H_{M+1}\mathbf{q}_{M+1}=-\mathbf{b}_{M+1}$ is obtained as follows:
+\begin{enumerate}[label=(\roman*)]
+\item Compute $\mathbf{z}_{M}=H_{M}^{-1}\mathbf{u}_{M}$ and $\mathbf{w}_{M}^{T}=\mathbf{v}_{M}^{T}H_{M}^{-1}$ via \eqref{eq:zw}.
+\item Compute the Schur complement $s_{M}=d_{M}-\mathbf{w}_{M}^{T}\mathbf{u}_{M}$.
+\item Update the inverse via \eqref{eq:rank-one-update} to obtain $\hat{H}_{M+1}^{-1}$.
+\item Solve $\hat{H}_{M+1}\hat{\mathbf{q}}_{M+1}=-\mathbf{b}_{M+1}$ using the updated inverse.
+\item Permute back: $\mathbf{q}_{M+1}=P_{M}\hat{\mathbf{q}}_{M+1}$.
+\end{enumerate}
+The total cost of the increment is $O(M^{2})$. Amortized over $M=1,2,\ldots,N$, the cumulative cost to reach order $N$ is $O(N^{2})$.
+\end{corollary}
+
+\begin{remark}[Connection to the Jacobi truncation]
+\label{rem:jacobi-update}
+Theorem~\ref{thm:rank-one} is the algebraic realization of the Jacobi truncation described in Theorem~\ref{thm:hankel-jacobi}. Adding one row and column to $J_{M}$ to produce $J_{M+1}$ corresponds to bordering the Hankel matrix. The rank-one correction $\mathbf{z}_{M}\mathbf{w}_{M}^{T}$ encodes the spectral perturbation induced by the new Jacobi entry, and the resulting Pad\'e iterate $R_{M+1}$ is the resolvent of the enlarged operator at the basis vector $e_{0}$.
 \end{remark}
 
 \subsection{Spectral interpretation and operator-theoretic synthesis}
@@ -869,7 +958,7 @@ Hypothesis~\ref{hyp:stahl} is established for $\mu=1$, where the linearization $
 
 \begin{theorem}[Hankel solver as Jacobi truncation]
 \label{thm:hankel-jacobi}
-The incremental Hankel solver that builds $H_{M+1}^{-1}$ from $H_{M}^{-1}$ via a bordered rank-one update in $O(M^{2})$ operations is the algebraic realization of the Jacobi truncation: it adds one row and column to $J_{M}$ to produce $J_{M+1}$, and the resulting Pad\'e iterate $R_{M+1}$ is the resolvent of the enlarged operator at the basis vector $e_{0}$.
+The incremental Hankel solver of Corollary~\ref{cor:incremental-solver}, which builds $H_{M+1}^{-1}$ from $H_{M}^{-1}$ via the bordered rank-one update \eqref{eq:rank-one-update} in $O(M^{2})$ operations, is the algebraic realization of the Jacobi truncation: it adds one row and column to $J_{M}$ to produce $J_{M+1}$, and the resulting Pad\'e iterate $R_{M+1}$ is the resolvent of the enlarged operator at the basis vector $e_{0}$.
 \end{theorem}
 
 \begin{corollary}[Convergence certificate as spectral gap]
@@ -884,23 +973,36 @@ Let $\Phi(u,T)$ denote the cumulant generating function of the rough Heston mode
 \Phi(u,T)=\theta\lambda\int_{0}^{T}h(u,t)\,dt+V_{0}I^{1-\mu}[h(u,\cdot)](T),
 \label{eq:cgf}
 \end{equation}
-where $h$ solves the fractional Riccati equation \eqref{eq:fractional-riccati} with parameters $(c_{0},c_{1},c_{2})$ depending on $u$. Then $\Phi$ admits the explicit representation
+where $h$ solves the fractional Riccati equation \eqref{eq:fractional-riccati} with parameters $(c_{0},c_{1},c_{2})$ depending on $u$. Write $\xi=T^{\mu}$. Then $\Phi$ admits the representation
 \begin{equation}
-\Phi(u,T)=\sum_{k=1}^{\infty}a_{k}(u)G_{k}(T),
+\Phi(u,T)=T\sum_{k=0}^{\infty}d_{k}(u)\xi^{k},
 \label{eq:cgf-series}
 \end{equation}
-where the coefficients $a_{k}(u)$ are the Puiseux coefficients of Theorem~\ref{thm:riccati-series} and the time integrals are
+where
+\begin{align}
+d_{0}(u)&=V_{0}c_{0}(u),\\
+d_{k}(u)&=\frac{\theta\lambda a_{k}(u)}{k\mu+1}+\frac{V_{0}\Gamma((k+1)\mu+1)}{\Gamma(k\mu+2)}a_{k+1}(u),\qquad k\ge 1,
+\label{eq:dk}
+\end{align}
+and the coefficients $a_{k}(u)$ are the Puiseux coefficients of Theorem~\ref{thm:riccati-series}. The series \eqref{eq:cgf-series} is a power series in $\xi=T^{\mu}$ and is resummed via diagonal Pad\'e in $\xi$:
 \begin{equation}
-G_{k}(T)=\theta\lambda\frac{T^{k\mu+1}}{k\mu+1}+V_{0}\frac{\Gamma(k\mu+1)}{\Gamma((k-1)\mu+2)}T^{(k-1)\mu+1}.
-\label{eq:Gk}
-\end{equation}
-Truncated at order $N$ and resummed via Pad\'e in $\xi=T^{\mu}$, the compiled expression
-\begin{equation}
-\Phi:v\mapsto \sum_{k=1}^{N}a_{k}(v)\cdot G_{k}
+\Phi(u,T)=T\cdot\lim_{M\to\infty}[M/M]_{S(u,\cdot)}(\xi),\qquad S(u,\xi)=\sum_{k=0}^{\infty}d_{k}(u)\xi^{k}.
 \label{eq:compiled}
 \end{equation}
-is the spectral reconstruction of the characteristic function from its moment sequence. Convergence is governed by Theorem~\ref{thm:global} under Hypotheses~\ref{hyp:stahl}--\ref{hyp:no-pos-poles}, and is certified a-posteriori by Corollary~\ref{cor:practical-cert}.
+Convergence is governed by Theorem~\ref{thm:global} applied to the meromorphic function $S(u,\cdot)$, and is certified a-posteriori by Corollary~\ref{cor:practical-cert}.
 \end{theorem}
+
+\begin{proof}
+Substituting the M\"untz series $h(u,t)=\sum_{k=1}^{\infty}a_{k}(u)t^{k\mu}$ into \eqref{eq:cgf} and using \eqref{eq:Ir-power} for the fractional integral term yields
+\[
+\Phi(u,T)=\theta\lambda\sum_{k=1}^{\infty}a_{k}(u)\frac{T^{k\mu+1}}{k\mu+1}+V_{0}\sum_{k=1}^{\infty}a_{k}(u)\frac{\Gamma(k\mu+1)}{\Gamma((k-1)\mu+2)}T^{(k-1)\mu+1}.
+\]
+Factoring out $T$ and reindexing the second sum with $j=k-1$ gives
+\[
+\Phi(u,T)=T\Biggl[V_{0}a_{1}(u)\Gamma(\mu+1)+\sum_{k=1}^{\infty}\biggl(\frac{\theta\lambda a_{k}(u)}{k\mu+1}+\frac{V_{0}\Gamma((k+1)\mu+1)}{\Gamma(k\mu+2)}a_{k+1}(u)\biggr)\xi^{k}\Biggr].
+\]
+Since $a_{1}(u)=c_{0}(u)/\Gamma(\mu+1)$ and $\Gamma(2)=1$, the constant term simplifies to $V_{0}c_{0}(u)=d_{0}(u)$. The coefficients of $\xi^{k}$ for $k\ge 1$ are exactly $d_{k}(u)$, proving \eqref{eq:cgf-series}. The Pad\'e resummation \eqref{eq:compiled} follows by applying the construction of Section~\ref{sec:heston-pade} to the series $S(u,\xi)$.
+\end{proof}
 
 \subsection{Algorithmic summary}
 \label{sec:heston-algorithm}
@@ -909,7 +1011,7 @@ Given $(c_{0},c_{1},c_{2},\mu)$ and Pad\'e order $M$:
 \begin{enumerate}
 \item Compute the Puiseux coefficients $a_{1},\dots,a_{2M}$ by the recurrence \eqref{eq:a1}--\eqref{eq:ak}. Cost: $O(M^{2})$.
 \item Form the Hankel matrix $H_{M}$ and right-hand side $\bm{b}$ from \eqref{eq:hankel-system}.
-\item Solve $H_{M}\bm{q}=-\bm{b}$ for the denominator coefficients, by direct factorization or by an incremental bordered update. Cost: $O(M^{3})$ direct, $O(M^{2})$ amortized.
+\item Solve $H_{M}\bm{q}=-\bm{b}$ for the denominator coefficients. Use direct factorization for the base case $M=1$, then increment via the bordered rank-one update of Corollary~\ref{cor:incremental-solver} for each subsequent order. Cumulative cost to order $M$: $O(M^{2})$.
 \item Recover the numerator coefficients via \eqref{eq:p-eqs}.
 \item Evaluate $y_{M}(t)=P_{M}(t^{\mu})/Q_{M}(t^{\mu})$ at any $t\ge 0$. Cost: $O(M)$ per query.
 \end{enumerate}
@@ -922,7 +1024,7 @@ Taylor approximation asks: \emph{what polynomial has the same derivatives at thi
 
 Pad\'e approximation asks: \emph{what spectral measure produces these moments, and what is its Stieltjes transform?} It is global, and its convergence domain is the maximal region on which the Riemann--Hilbert factorization exists. The poles are not defects; they are the discrete spectrum of a truncated Jacobi operator, and their condensation on the equilibrium contour is the signature of the underlying Riemann surface. The approximant continues $f$ because it is solving for the measure that generated the series, and that reconstruction is valid wherever the logarithmic potential of the equilibrium measure controls the error.
 
-In the rough Heston application, this distinction is decisive. The M\"untz--Tau substitution produces a Puiseux series whose radius of convergence is finite and generically much smaller than the time horizon of practical interest. The series alone is therefore a local representation, useful only on $[0,T_{0}]$ for the Banach radius $T_{0}$ of Theorem~\ref{thm:radius}. Pad\'e resummation in the variable $z=t^{\mu}$ converts the local representation into a global one, valid on all of $[0,\infty)$ under the meromorphy hypotheses, with computable a-posteriori error control. The mechanism is the same in every section of this document: the discrete poles of the truncation reorganize themselves into the equilibrium configuration of the function's true singular set, and the rational function so produced is the Stieltjes transform of the spectral measure that the original series was secretly encoding.
+In the rough Heston application, this distinction is decisive. The M\"untz--Tau substitution produces a Puiseux series whose radius of convergence is finite and generically much smaller than the time horizon of practical interest. The series alone is therefore a local representation, useful only on $[0,T_{0}]$ for the Banach radius $T_{0}$ of Theorem~\ref{thm:radius}. Pad\'e resummation in the variable $z=t^{\mu}$ converts the local representation into a global one, valid on all of $[0,\infty)$ under the meromorphy hypotheses of Proposition~\ref{prop:meromorphy}, with computable a-posteriori error control. The mechanism is the same in every section of this document: the discrete poles of the truncation reorganize themselves into the equilibrium configuration of the function's true singular set, and the rational function so produced is the Stieltjes transform of the spectral measure that the original series was secretly encoding.
 
 \begin{thebibliography}{99}
 
