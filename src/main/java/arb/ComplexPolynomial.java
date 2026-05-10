@@ -49,6 +49,11 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
   }
 
 
+	public ComplexPolynomial neg( ComplexPolynomial result )
+	{
+	  return result.set(this).neg();
+	}
+	
 	@SuppressWarnings("resource")
 	public static ComplexPolynomial named(String string)
 	{
