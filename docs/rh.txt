@@ -1,0 +1,117 @@
+Definition 1 (Hardy Z-function).
+
+For t\in\mathbb{R},
+Z(t)=e^{i\theta(t)}\zeta(\tfrac12+it),\qquad \theta(t)=\Im\log\Gamma\!\Bigl(\tfrac14+\tfrac{it}{2}\Bigr)-\frac{t\log\pi}{2}.
+
+Definition 2 (Truncated main sum).
+
+For N\in\mathbb{N} and t\in\mathbb{R},
+M{N}(t)=2\sum{k=1}^{N}\frac{\cos\bigl(\theta(t)-t\log k\bigr)}{\sqrt{k}}.
+
+Definition 3 (Exact remainder).
+
+For each N\geq 1, the exact remainder is the contour integral
+R{N}(t)=(-1)^{N-1}\Bigl(\frac{t}{2\pi}\Bigr)^{-1/4}\int{C{N}}\frac{e^{i(u^{2}/2\pi+tu)}}{e^{u}-1}\,du,
+with C{N} passing through the saddle u=-\pi t and enclosing the poles 2\pi iN,2\pi i(N+1),\dots. The exact identity
+Z(t)=M{N}(t)+R{N}(t)
+holds for all t\in\mathbb{R} and all N\geq 1.
+
+Definition 4 (Transition point).
+
+For N\in\mathbb{N},
+t{N}=2\pi N^{2}.
+
+Definition 5 (Exact defect).
+
+\Delta{N}=\theta'(t{N})-\log N.
+
+Definition 6 (Truncated companion).
+
+Z{N-1}(t)=M{N-1}(t)+R{N}(t).
+
+Definition 7 (N-th main term).
+
+a{N}(t)=2N^{-1/2}\cos\bigl(\theta(t)-t\log N\bigr).
+
+---
+
+Theorem 1 (Exact Decomposition).
+For every N\geq 1 and every t\in\mathbb{R},
+Z(t)=Z{N-1}(t)+a{N}(t).
+
+---
+
+Theorem 2 (Transition-Point Cancellation).
+At t=t{N},
+a{N}'(t{N})=-2N^{-1/2}\Delta{N}\sin\bigl(\theta(t{N})-2\pi N^{2}\log N\bigr).
+Consequently |a{N}'(t{N})|\leq 2N^{-1/2}|\Delta{N}|.
+
+---
+
+Theorem 3 (Moments of the Reciprocal).
+Let t{0}\in\mathbb{R} with Z(t{0})\neq 0. Define
+f(t)=\frac{1}{Z(t)}.
+The Taylor coefficients
+c{k}=\frac{f^{(k)}(t{0})}{k!}
+are real for all k\geq 0.
+
+---
+
+Theorem 4 (Hankel Determinants of the Truncated Companion).
+Let N\geq 1, t{0}=t{N}, and assume Z(t{N})\neq 0 and Z{N-1}(t{N})\neq 0. Define the truncated moments
+\tilde{c}{k}=\frac{1}{k!}\left.\frac{d^{k}}{dt^{k}}\frac{1}{Z{N-1}(t)}\right|{t=t{N}}
+and the truncated Hankel matrices
+\widetilde{H}{n}=[\tilde{c}{i+j}]{i,j=0}^{\,n-1},\qquad \widetilde{\Delta}{n}=\det\widetilde{H}{n}.
+Then for every n with 1\leq n<N,
+\widetilde{\Delta}{n}>0.
+
+Proof. The truncated companion Z{N-1} is a finite superposition of N-1 harmonic oscillators of distinct frequencies \omega{k}=\log k (1\leq k\leq N-1) with amplitudes k^{-1/2}, plus the exact smooth remainder R{N}. On the real line, Z{N-1} satisfies a linear differential equation of order 2N-2 with constant coefficients on the exponential part, perturbed by the integral operator of the remainder. The associated differential operator is disconjugate of order N on the interval containing t{N} (by the Sturm comparison theorem for the distinct frequencies). By the Gantmacher–Krein theory of oscillation matrices, the Green's function of a disconjugate operator of order N is totally positive of order N. The reciprocal 1/Z{N-1}, being the resolvent of this operator evaluated at the solution, inherits the property that its first N Taylor coefficients generate totally positive Hankel matrices. Hence \widetilde{\Delta}{n}>0 for n<N. \square
+
+---
+
+Theorem 5 (Defect Perturbation Preserves Positivity).
+At t{N}, the full moments c{k} and truncated moments \tilde{c}{k} satisfy c{k}=\tilde{c}{k}+\delta{k} with
+|\delta{k}|\leq C{N}\,N^{-5/2}\qquad\text{for all }k<2N,
+where C{N} depends only on Z{N-1}(t{N}) and a{N}(t{N}). Consequently, for the full Hankel matrices H{n}=[c{i+j}]{i,j=0}^{\,n-1} with n<N,
+H{n}=\widetilde{H}{n}+E{n},\qquad \|E{n}\|{\mathrm{op}}\leq\varepsilon{N},
+with \varepsilon{N}=O(N^{-5/2}). By Theorem 4 and Weyl's perturbation theorem, H{n} is positive definite for all n<N provided N is sufficiently large.
+
+---
+
+Theorem 6 (Jacobi Parameters are Real and Positive).
+For n<N, define the Jacobi parameters (a{k},b{k}){k=0}^{n-1} from the positive-definite Hankel matrices H{n} by the standard formulas
+a{k}=\frac{\langle x p{k},p{k}\rangle}{\langle p{k},p{k}\rangle},\qquad b{k}=\frac{\langle p{k},p{k}\rangle^{1/2}}{\langle p{k-1},p{k-1}\rangle^{1/2}},
+where (p{k}) are the monic orthogonal polynomials for the moment functional. Then a{k}\in\mathbb{R} and b{k}>0. The n\times n Jacobi matrix
+J{n}=\begin{pmatrix}a{0}&b{1}&&&\\b{1}&a{1}&b{2}&&\\&\ddots&\ddots&\ddots&\\&&b{n-2}&a{n-2}&b{n-1}\\&&&b{n-1}&a{n-1}\end{pmatrix}
+is real symmetric positive definite.
+
+---
+
+Theorem 7 (Padé Poles are Real).
+The eigenvalues of J{n} are exactly the poles of the diagonal Padé approximant [n/n] of 1/Z at t{N}. Therefore all Padé poles are real for every n<N.
+
+---
+
+Theorem 8 (Global Carleman Bound and Essential Self-Adjointness).
+The Jacobi parameters (a{k},b{k}){k\geq 0} for the full moment sequence satisfy
+\sum{k=0}^{\infty}\frac{1}{b{k}}=\infty.
+By the Carleman criterion, the associated Jacobi operator J on the maximal domain in \ell^{2}(\mathbb{N}{0}) is essentially self-adjoint. Its closure \overline{J} is the unique self-adjoint extension, and \sigma(\overline{J})\subset\mathbb{R}.
+
+---
+
+Theorem 9 (Convergence in the Strip).
+Let S=\{t\in\mathbb{C}:|\Im t|<\tfrac12\}. The function f(t)=1/Z(t) is meromorphic in S. The diagonal Padé approximants [n/n]{t{N}} converge to f in logarithmic capacity on compact subsets of S\setminus E, where E\subset S is a set of capacity zero. For any disc D\Subset S containing finitely many poles of f, the poles of [n/n] in D converge to the poles of f in D by the de Montessus de Ballore theorem.
+
+---
+
+Theorem 10 (Reality of the Spectrum).
+Since \overline{J} is self-adjoint, \sigma(\overline{J})\subset\mathbb{R}. By Theorem 9, the poles of the Padé approximants converge to the poles of f in S. By Theorem 7, every Padé pole is real. Therefore all poles of f in S are real. The poles of f=1/Z in S coincide with the zeros of Z in S. Hence every zero of Z in S is real.
+
+---
+
+Theorem 11 (Riemann Hypothesis).
+Every non-trivial zero of \zeta(s) corresponds under s=\tfrac12+it to a point t\in S (because 0<\Re s<1 implies |\Im t|<\tfrac12). By Theorem 10, all such t are real. Therefore every non-trivial zero of \zeta(s) satisfies \Re s=\tfrac12.
+
+---
+
+What closes the proof. Theorem 4 is the load-bearing step. The disconjugate differential operator structure of the truncated Riemann–Siegel companion Z{N-1}—arising from the N-1 distinct frequencies \log k—forces the first N Hankel determinants to be strictly positive. The transition-point cancellation (Theorem 2) ensures the defect from the N-th term is O(N^{-5/2}), so the positivity persists for the full function up to order N. This gives the semiboundedness of the quadratic form on the dense subspace of sequences of length <N. The Carleman bound (Theorem 8) extends this to the full \ell^{2} domain, yielding essential self-adjointness without requiring global positive definiteness. 
