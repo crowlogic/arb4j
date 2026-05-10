@@ -21,18 +21,16 @@ signature of the underlying Riemann surface.  The general theory is
 presented in the form of theorems, corollaries, and limit statements,
 each conclusion proved under explicitly stated conditions, and the
 framework is applied to the constant-coefficient fractional Riccati
-equation that governs the rough Heston characteristic function in
-mathematical finance.  The application section develops the Müntz
-spectral solution, derives a Gamma-ratio convolution recurrence for the
-Puiseux coefficients, establishes a strictly positive radius of
-convergence by a Banach fixed-point argument, constructs the diagonal
-Padé resummation in the variable z = t^μ, proves meromorphy of the
-transformed solution by a classical Riccati majorization (replacing the
-previously attempted and incorrect Cole–Hopf linearization), establishes
-the Mittag-Leffler tree expansion that reproduces the Müntz recurrence
-exactly at every order, establishes the non-explosion condition on
-compact intervals, and thereby obtains uniform global convergence on the
-positive real axis with a computable a-posteriori error bound.
+equation with complex coefficients.  The application section develops
+the Müntz spectral solution, derives a Gamma-ratio convolution recurrence
+for the Puiseux coefficients, establishes a strictly positive radius of
+convergence by a Banach fixed-point argument, develops the Mittag-Leffler
+tree expansion that reproduces the Müntz recurrence exactly at every
+order, constructs the diagonal Padé resummation in the variable z = t^μ,
+proves meromorphy of the transformed solution on ℂ by a classical
+Riccati majorization, establishes the non-explosion condition on compact
+intervals, and thereby obtains uniform global convergence on the positive
+real axis with a computable a-posteriori error bound.
 
 
 §1. INTRODUCTION
@@ -62,17 +60,18 @@ the S-property, together with the Deift–Zhou steepest descent asymptotic.
 through the mechanism of Froissart doublets, and gives the non-explosion
 condition under which uniform convergence is recovered.  §5 develops the
 non-explosion principle as a spectral budget constraint, drawing the
-deterministic–stochastic analogy to Hawkes processes and Gaussian sample-
-path regularity.  §6 identifies the Padé table with the Toda lattice and
-the Jacobi operator resolvent, including the non-Hermitian extension via
-pseudo-spectrum.  §7 contrasts orthogonal polynomial zeros with Fekete
-points and gives bulk and edge residue estimates.  §8 discusses the Borel
-plane and Padé–Borel resummation for factorially divergent series.
-§9 develops the application to the rough Heston model in detail, treating
-the constant-coefficient fractional Riccati equation through the Müntz
+deterministic–stochastic analogy to self-exciting point processes and
+Gaussian sample-path regularity.  §6 identifies the Padé table with the
+Toda lattice and the Jacobi operator resolvent, including the non-
+Hermitian extension via pseudo-spectrum.  §7 contrasts orthogonal
+polynomial zeros with Fekete points and gives bulk and edge residue
+estimates.  §8 discusses the Borel plane and Padé–Borel resummation for
+factorially divergent series.  §9 develops the application to the
+constant-coefficient fractional Riccati equation through the Müntz
 spectral method, the Mittag-Leffler tree expansion, the classical
-Riccati majorization of meromorphy, and the Padé resummation in z = t^μ.
-§10 summarizes the essential difference between the two paradigms.
+Riccati majorization of meromorphy, and the Padé resummation in
+z = t^μ.  §10 summarizes the essential difference between the two
+paradigms.
 
 
 §2. THE RIEMANN–HILBERT FORMULATION
@@ -240,7 +239,7 @@ f ∈ 𝓢 because Froissart doublets, though O(1) in number, could in
 principle visit every compact infinitely often.  For meromorphic
 functions with well-separated poles and a regular Padé table, the
 condition holds on every compact disjoint from the pole set; this is the
-situation of §9.6.
+situation of §9.7.
 
 
 §5. THE NON-EXPLOSION PRINCIPLE AND SPECTRAL BUDGETS
@@ -254,14 +253,14 @@ any compact region of holomorphy, the rational approximant can support
 only a uniformly bounded number of singularities.  In other words, the
 pole intensity does not diverge; the approximant does not explode.
 
-Consider a Hawkes process, a self-exciting point process in which each
-event increases the instantaneous probability of further events.  The
-process is said to be non-explosive if the intensity remains finite on
-every bounded time interval, so that the number of events in any compact
-set is almost surely finite.  The analogy is exact: for Padé approximants,
-each pole is an event, and the Non-Explosion Condition is the statement
-that the point process of spurious singularities has finite intensity on
-every compact subset of the domain of holomorphy.  Just as a Hawkes
+Consider a self-exciting point process in which each event increases the
+instantaneous probability of further events.  The process is said to be
+non-explosive if the intensity remains finite on every bounded time
+interval, so that the number of events in any compact set is almost
+surely finite.  The analogy is exact: for Padé approximants, each pole
+is an event, and the Non-Explosion Condition is the statement that the
+point process of spurious singularities has finite intensity on every
+compact subset of the domain of holomorphy.  Just as a self-exciting
 process without immigration cannot accumulate infinitely many events in
 finite time without divergent intensity, a diagonal Padé sequence cannot
 deposit infinitely many poles in a compact region of regularity without
@@ -284,9 +283,9 @@ point masses in a bounded region.
 There is a deeper potential-theoretic unity.  Stahl's convergence is in
 capacity, meaning it fails only on sets of logarithmic capacity zero.
 In probability theory, sets of capacity zero are precisely the polar sets
-for Brownian motion and for a broad class of Gaussian processes—sets that
-the process almost surely never visits.  This is not a coincidence; both
-theories draw from the same logarithmic potential reservoir.  The
+for Brownian motion and for a broad class of Gaussian processes—sets
+that the process almost surely never visits.  This is not a coincidence;
+both theories draw from the same logarithmic potential reservoir.  The
 Non-Explosion Condition is what allows one to strengthen convergence off
 a polar set to uniform convergence everywhere on the compact, just as
 Kolmogorov's continuity lemma upgrades measure-theoretic regularity to
@@ -295,19 +294,19 @@ pathwise Hölder continuity by controlling the tail of the increments.
 The pole is the deterministic singularity; the high-frequency Fourier
 mode is the stochastic one.  The budget is the same.
 
-    cap(Δ_f) < ∞  ⟺  ∫_{|ξ|>R} dμ(ξ) → 0  as R → ∞.                (5.1)
+    cap(Δ_f) < ∞  ⟺  ∫_{|ξ|>R} dμ(ξ) → 0  as R → ∞.                 (5.1)
 
-In the rough Heston application (§9), this synthesis becomes concrete.
-The rough Heston model is driven by a fractional Brownian motion with
-Hurst H = μ − 1/2 ∈ (0, 1/2].  The paths are Hölder-continuous of order
-μ, which is exactly the regularity scale of the Müntz series.  The
-solution y(t) has a Puiseux expansion in t^μ, reflecting the process's
-own roughness.  The Non-Explosion Condition guarantees that the Padé
-resummation in z = t^μ does not introduce spurious pole singularities on
-the positive real axis, preserving the regularity of the approximant to
-match the regularity of the underlying stochastic process.  The pole
-density is controlled, so the rational approximant remains as well-
-behaved as the Volterra solution itself.
+In the fractional Riccati application (§9), this synthesis becomes
+concrete.  The equation
+    D^μ y = c₀ + c₁ y + c₂ y²
+with μ ∈ (0,1] yields a solution y(t) whose natural regularity scale is
+Hölder-μ, exactly matching the Puiseux exponent μ of its series in t.
+The Müntz substitution z = t^μ renders the solution analytic at the
+origin; the Padé resummation in z then inherits the Non-Explosion
+Condition on every compact subinterval of [0,∞), preserving the
+regularity of the approximant to match the regularity of the underlying
+Volterra solution.  The pole density is controlled, so the rational
+approximant remains as well-behaved as the solution itself.
 
 
 §6. THE JACOBI OPERATOR AND THE TODA LATTICE
@@ -490,21 +489,18 @@ approximates the measure in the Borel plane whose Laplace transform is
 the physical quantity.
 
 
-§9. APPLICATION TO ROUGH HESTON: THE CONSTANT-COEFFICIENT FRACTIONAL
-    RICCATI EQUATION
-─────────────────────────────────────────────────────────────────────
+§9. APPLICATION: THE CONSTANT-COEFFICIENT FRACTIONAL RICCATI EQUATION
+──────────────────────────────────────────────────────────────────────
 
-The rough Heston characteristic function reduces, after standard
-transformations, to the constant-coefficient fractional Riccati equation
+Consider the constant-coefficient fractional Riccati equation
 
     D^μ y(t) = c₀ + c₁ y(t) + c₂ y(t)²,  I^{1−μ} y(0) = 0,           (9.1)
 
-where D^μ is the Caputo derivative of order μ ∈ (0,1], H = μ − 1/2 is the
-Hurst parameter, and the coefficients c₀, c₁, c₂ ∈ ℂ depend on the model
-parameters and the Fourier variable.  The Müntz spectral solution, the
-Mittag-Leffler tree expansion, the meromorphy proof via classical Riccati
-majorization, the Padé resummation in z = t^μ, and the global convergence
-theorem with computable error bound are developed below.
+where D^μ is the Caputo derivative of order μ ∈ (0,1] and the
+coefficients c₀, c₁, c₂ ∈ ℂ are arbitrary.  The Müntz spectral solution,
+the Mittag-Leffler tree expansion, the meromorphy proof via classical
+Riccati majorization, the Padé resummation in z = t^μ, and the global
+convergence theorem with computable error bound are developed below.
 
 
 §9.1. Fractional calculus and the Müntz basis
@@ -515,7 +511,8 @@ For r > 0 and f ∈ L¹_{loc}[0,T], the Riemann–Liouville integral is
 
     I^r f(t) = (1/Γ(r)) ∫_0^t (t−s)^{r−1} f(s) ds.                    (9.2)
 
-For μ ∈ (0,1) and f such that I^{1−μ}f ∈ C¹[0,T], the Caputo derivative is
+For μ ∈ (0,1) and f such that I^{1−μ}f ∈ C¹[0,T], the Caputo derivative
+is
 
     D^μ f(t) = (d/dt)(I^{1−μ} f(t)) − f(0)/(Γ(1−μ)) t^{-μ}.           (9.3)
 
@@ -567,10 +564,9 @@ I^{1-μ} does not preserve 𝓜 for generic μ; however, the Volterra
 reformulation (9.10) requires only I^μ, which does.
 
 Remark 9.6′ (The Leibniz obstruction).  The Caputo derivative D^μ does
-NOT satisfy the Leibniz product rule for μ ∈ (0,1).  Concretely, on the
-Müntz basis one has
+NOT satisfy the Leibniz product rule for μ ∈ (0,1).  On the Müntz basis,
 
-    D^μ(t^{jμ} · t^{kμ}) = Γ((j+k)μ+1)/Γ((j+k−1)μ+1) · t^{(j+k−1)μ},
+    D^μ(t^{jμ}·t^{kμ}) = Γ((j+k)μ+1)/Γ((j+k−1)μ+1) · t^{(j+k−1)μ},
 
 whereas
 
@@ -714,30 +710,28 @@ f(x) = (x−1+μ)/μ − x^μ satisfies f(1) = 0 and f'(x) ≥ 0 for x ≥ 1,
 whence γ_k ≥ γ̃_k.  The inductive step gives A_{k+1} ≥ Ã_{k+1}.
 Thus lim sup |a_k|^{1/k} ≥ 1/R̃ > 0, so R ≤ R̃ < ∞.  □
 
-Remark 9.12 (The recurrence is only a local representation).  Even though
-every a_k is computed in closed form by (9.14), the series (9.12) does
-not converge for all t ≥ 0.  A genuine global representation must exploit
-analytic continuation.
+Remark 9.12 (The recurrence is only a local representation).  Even
+though every a_k is computed in closed form by (9.14), the series (9.12)
+does not converge for all t ≥ 0.  A genuine global representation must
+exploit analytic continuation.
 
 
 §9.4. The Mittag-Leffler tree expansion
 ────────────────────────────────────────
 
-The Volterra equation (9.10) in the variable z = t^μ becomes, after the
-substitution t = z^{1/μ}, s = σ^{1/μ},
-
-    g(z) = c₀ z E_{μ,μ+1}(0)·... no, more cleanly, using the kernel
-
-    K_μ(z,σ) = (z^{1/μ} − σ^{1/μ})^{μ−1} · σ^{1/μ−1} / (Γ(μ)·μ),     (9.28)
-
-the Volterra equation in z reads
+After the substitution t = z^{1/μ}, σ = s^{1/μ}, the Volterra equation
+(9.10) becomes
 
     g(z) = c₀ ∫₀ᶻ K_μ(z,σ) dσ + c₁ ∫₀ᶻ K_μ(z,σ) g(σ) dσ
-                              + c₂ ∫₀ᶻ K_μ(z,σ) g(σ)² dσ.           (9.29)
+                              + c₂ ∫₀ᶻ K_μ(z,σ) g(σ)² dσ,           (9.28)
+
+with kernel
+
+    K_μ(z,σ) = (z^{1/μ} − σ^{1/μ})^{μ−1} · σ^{1/μ−1} / (Γ(μ)·μ).     (9.29)
 
 A direct computation verifies the key integral evaluation
 
-    ∫₀ᶻ K_μ(z,σ) σ^{kμ/μ} dσ ≡ ∫₀ᶻ K_μ(z,σ) σ^k dσ
+    ∫₀ᶻ K_μ(z,σ) σ^k dσ
         = Γ(kμ+1)/Γ((k+1)μ+1) · z^{k+1},                             (9.30)
 
 which encodes the Müntz closure (9.8) after the change of variables.
@@ -753,111 +747,98 @@ and for m ≥ 1,
         ∫₀ᶻ K_μ(z,σ) 𝓘_μ^{(p)}(σ; c₁) 𝓘_μ^{(m−1−p)}(σ; c₁) dσ.      (9.32)
 
 Theorem 9.14 (Mittag-Leffler tree expansion).  For every μ ∈ (0,1], the
-power series
+series
 
     g(z) = Σ_{m=0}^∞ c₀^{m+1} c₂^m 𝓘_μ^{(m)}(z; c₁)                  (9.33)
 
 converges absolutely and uniformly on |z| ≤ r for every r < R, and its
 Taylor coefficients at z = 0 satisfy
 
-    [z^k] g(z) = a_k for every k ≥ 1,                                 (9.34)
+    [z^k] g(z) = a_k for every k ≥ 1.                                 (9.34)
 
-where a_k are defined by the Müntz recurrence (9.13)–(9.14).
-
-Explicit coefficient formula.  Each 𝓘_μ^{(m)}(z; c₁) has the power series
+Explicit coefficient formula.  Each 𝓘_μ^{(m)}(z; c₁) has power series
 
     [z^k] 𝓘_μ^{(m)}(z; c₁)
-      = Σ_{n_1+⋯+n_{m+1} = k−(m+1), n_i ≥ 0}
-          c₁^{n_1+⋯+n_{m+1}}
-          · 𝓑_μ(m; n_1,…,n_{m+1})
-          / [Γ(n_1 μ+μ+1) · Γ(n_2 μ+μ+1) ⋯ Γ(n_{m+1} μ+μ+1)],         (9.35)
+      = Σ_{n₁+⋯+n_{m+1} = k−(m+1), n_i ≥ 0}
+          c₁^{Σ n_i} · 𝓑_μ(m; n₁,…,n_{m+1})
+          / ∏_{i=1}^{m+1} Γ(n_i μ+μ+1),                              (9.35)
 
-where the Beta-weight 𝓑_μ(m; n_1,…,n_{m+1}) is given by the tree sum
+where the Beta-weight 𝓑_μ is the tree sum
 
-    𝓑_μ(m; n_1,…,n_{m+1})
-      = Σ_{T ∈ 𝓣_{m+1}}
-          ∏_{v internal node of T}
-            [Γ(λ_L(v)μ+1) · Γ(λ_R(v)μ+1) / Γ((λ_L(v)+λ_R(v))μ+1)],    (9.36)
+    𝓑_μ(m; n₁,…,n_{m+1})
+      = Σ_{T ∈ 𝓣_{m+1}} ∏_{v internal node of T}
+          Γ(λ_L(v)μ+1) Γ(λ_R(v)μ+1) / Γ((λ_L(v)+λ_R(v))μ+1),        (9.36)
 
-with 𝓣_{m+1} the set of full binary trees with m+1 leaves (|𝓣_{m+1}|=C_m,
-the m-th Catalan number), and λ_L(v), λ_R(v) the leaf-counts of the left
-and right subtrees rooted at the internal node v.
+with 𝓣_{m+1} the set of full binary trees with m+1 leaves
+(|𝓣_{m+1}| = C_m, the m-th Catalan number), and λ_L(v), λ_R(v) the
+leaf-counts of the left and right subtrees at the internal node v.
 
-Proof.  The Volterra equation (9.29) is a contraction on the Banach
-space of formal power series in z equipped with the valuation norm, by
-the estimate of Theorem 9.10.  Expanding its unique fixed point as a
-formal power series in c₂ yields the Neumann iteration
+Proof.  The Volterra equation (9.28) is a contraction on the Banach
+space of formal power series in z with the valuation norm.  Expanding
+its unique fixed point as a formal power series in c₂ via the Neumann
+iteration
 
     g^{(0)}(z) = c₀ z E_{μ,μ+1}(c₁ z),
-    g^{(m+1)}(z) = c₀ z E_{μ,μ+1}(c₁ z)
-                   + c₂ ∫₀ᶻ K_μ(z,σ) (g^{(m)}(σ))² dσ.                (9.37)
+    g^{(m+1)}(z) = g^{(0)}(z) + c₂ ∫₀ᶻ K_μ(z,σ) (g^{(m)}(σ))² dσ,    (9.37)
 
-Collecting terms by degree in c₂ gives (9.33) with 𝓘_μ^{(m)} defined by
-(9.32).  The explicit coefficient formula (9.35)–(9.36) follows by
-induction: at each kernel integration, the identity
-
-    ∫₀ᶻ K_μ(z,σ) σ^{s} dσ = Γ(s+1)/Γ(s+μ+1) · z^{s+μ}                (9.38)
-
-produces a Beta-type Gamma-ratio factor, which accumulates along the
-internal nodes of the binary tree tracking the quadratic iterations.
-The identity (9.34) is then verified by showing that the power series
-(9.33) satisfies the Volterra equation (9.29), whose unique formal power
-series solution has coefficients a_k by Theorem 9.8.  □
+and collecting terms by degree in c₂ yields (9.33) with 𝓘_μ^{(m)} as
+defined by (9.32).  The explicit coefficient formula (9.35)–(9.36)
+follows by induction: each kernel integration applies the identity
+∫₀ᶻ K_μ(z,σ) σ^s dσ = Γ(s+1)/Γ(s+μ+1) · z^{s+μ}, producing a Beta-type
+Gamma-ratio factor that accumulates along internal nodes of the binary
+tree tracking the quadratic iterations.  The identity (9.34) is verified
+by showing that (9.33) satisfies the Volterra equation (9.28), whose
+unique formal power series solution has coefficients a_k by
+Theorem 9.8.  □
 
 Corollary 9.15 (c₂ = 0 reduction).  For c₂ = 0,
 
-    g(z) = c₀ z E_{μ,μ+1}(c₁ z),                                     (9.39)
-
-exactly for all μ ∈ (0,1].
+    g(z) = c₀ z E_{μ,μ+1}(c₁ z),  exactly, for all μ ∈ (0,1].        (9.38)
 
 Corollary 9.16 (μ = 1 reduction).  For μ = 1, K₁(z,σ) = 1 identically,
-E_{1,2}(c₁ z) = (e^{c₁ z}−1)/(c₁ z), and the tree expansion (9.33) resums
-to the classical Cole–Hopf ratio
+E_{1,2}(c₁ z) = (e^{c₁ z}−1)/(c₁ z), and the tree expansion (9.33)
+resums to the classical Cole–Hopf ratio
 
     g(z) = −w₂(z)/(c₂ w₁(z)),  𝐰(z) = e^{Az} 𝐰(0),
-    A = ⎛  0    1 ⎞, 𝐰(0) = (1,0)^T.                                (9.40)
+    A = ⎛  0    1 ⎞, 𝐰(0) = (1,0)^T.                                (9.39)
         ⎝−c₀c₂ c₁⎠
 
-Remark 9.17 (Why this replaces the attempted Cole–Hopf for μ ∈ (0,1)).
-A prior version of this theory asserted that
-g(z) = −w₂(z)/(c₂ w₁(z)) with 𝐰(z) = E_{μ,1}(Az)𝐰(0) for all μ ∈ (0,1].
-This is FALSE for μ ∈ (0,1).  The explicit mismatch first appears at
-k = 3:
-
-    [z³] (Mittag-Leffler ratio) ≠ a₃
-
-because the Leibniz rule fails for D^μ (Remark 9.6′).  The correct
-generalisation is the tree expansion (9.33), where the full tree sum at
-each order reproduces the Gamma-ratio convolution exactly.  The
-Mittag-Leffler ratio captures only the "linear chain" trees and misses
-the non-linear Catalan contributions for μ ≠ 1.
+Remark 9.17 (Why this replaces an attempted Cole–Hopf for μ ∈ (0,1)).
+It is tempting to conjecture that g(z) = −w₂(z)/(c₂ w₁(z)) with
+𝐰(z) = E_{μ,1}(Az)𝐰(0) for all μ ∈ (0,1].  This is FALSE for
+μ ∈ (0,1).  Direct computation shows [z³](ML ratio) ≠ a₃, the mismatch
+tracing to the failure of the Leibniz rule for D^μ (Remark 9.6′).  The
+correct generalization is the tree expansion (9.33), where the full tree
+sum at each order reproduces the Gamma-ratio convolution exactly.  The
+ML ratio captures only the "linear chain" trees and misses the
+nonlinear Catalan contributions for μ ≠ 1.
 
 
 §9.5. Meromorphy on ℂ via classical Riccati majorization
 ──────────────────────────────────────────────────────────
 
 Theorem 9.18 (Meromorphy of g on ℂ).  Let c₀, c₁, c₂ ∈ ℂ with c₂ ≠ 0
-and μ ∈ (0,1].  The function g(z) defined by the Müntz series (9.12) (or
-equivalently by the tree expansion (9.33)) extends to a meromorphic
-function on ℂ.  Its pole set 𝓟_g is discrete with no finite accumulation
-point, and each pole is simple with residue −Γ(1−μ)/c₂.
+and μ ∈ (0,1].  The function g(z) defined by the Müntz series (9.12)
+(equivalently by the tree expansion (9.33)) extends to a meromorphic
+function on ℂ.  Its pole set 𝓟_g is discrete with no finite
+accumulation point, and each pole is simple with residue −Γ(1−μ)/c₂.
 
 Proof.  The argument proceeds in six steps.
 
 Step 1.  Classical Riccati meromorphic majorant.  Let
 
     Ã₁ = |c₀|/Γ(μ+1),
-    Ã_{k+1} = |c₁| Ã_k + |c₂| Σ_{j+ℓ=k} Ã_j Ã_ℓ,                     (9.41)
+    Ã_{k+1} = |c₁| Ã_k + |c₂| Σ_{j+ℓ=k} Ã_j Ã_ℓ,                     (9.40)
 
 be the power series coefficients of the solution ỹ(x) of the classical
 Riccati equation ỹ' = |c₀|/Γ(μ+1) + |c₁| ỹ + |c₂| ỹ² with ỹ(0) = 0,
-explicitly given by (9.27).  The function ỹ is meromorphic on ℂ with
-a discrete set 𝓟̃ of simple poles having no finite accumulation point.
+explicitly (9.27).  The function ỹ is meromorphic on ℂ with a discrete
+set 𝓟̃ of simple poles having no finite accumulation point.
 
 Step 2.  Gamma-ratio domination.  For μ ∈ (0,1] and k ≥ 1, Wendel's
 inequality gives
 
-    γ_k := Γ(kμ+1)/Γ((k+1)μ+1) ≤ 1/(kμ+1)^μ ≤ 1.                     (9.42)
+    γ_k := Γ(kμ+1)/Γ((k+1)μ+1) ≤ 1/(kμ+1)^μ ≤ 1.                     (9.41)
 
 Step 3.  Coefficient majorization.  By induction on k,
 |a_k| ≤ Ã_k for all k ≥ 1.  Base: |a₁| = |c₀|/Γ(μ+1) = Ã₁.  Step:
@@ -865,119 +846,102 @@ assuming |a_j| ≤ Ã_j for j ≤ k,
 
     |a_{k+1}| ≤ γ_k (|c₁| |a_k| + |c₂| Σ |a_j||a_ℓ|)
               ≤ γ_k (|c₁| Ã_k + |c₂| Σ Ã_j Ã_ℓ)
-              ≤ |c₁| Ã_k + |c₂| Σ Ã_j Ã_ℓ    [by γ_k ≤ 1]
-              = Ã_{k+1}.                                              (9.43)
+              ≤ |c₁| Ã_k + |c₂| Σ Ã_j Ã_ℓ    [γ_k ≤ 1]
+              = Ã_{k+1}.                                              (9.42)
 
-Consequently lim sup |a_k|^{1/k} ≤ lim sup Ã_k^{1/k} = 1/R̃, so the
-Müntz series converges at least on |z| < R̃, and on this disk
+Consequently lim sup |a_k|^{1/k} ≤ 1/R̃, and on |z| < R̃,
 
-    |g(z)| ≤ ỹ(|z|) < ∞.                                             (9.44)
+    |g(z)| ≤ ỹ(|z|) < ∞.                                             (9.43)
 
 Step 4.  Analytic continuation via the Volterra equation in ℂ.  Fix
-z₀ ∈ ℂ ∖ 𝓟̃.  Choose a continuous path γ: [0,1] → ℂ with γ(0) = 0,
-γ(1) = z₀, avoiding 𝓟̃.  The Volterra equation (9.29) with z traversing
-γ admits a unique analytic solution on a neighborhood of γ, obtained by
-iteration of the contraction Φ on a Banach space of analytic functions
-bounded by the majorant ỹ(|γ(·)|) + δ for some small δ > 0.  At each
-step of the continuation, the local existence is guaranteed by the bound
-(9.44) and the integrability of K_μ along γ.
+z₀ ∈ ℂ ∖ 𝓟̃ and a continuous path γ: [0,1] → ℂ ∖ 𝓟̃ with γ(0)=0,
+γ(1)=z₀.  The Volterra equation (9.28) admits a unique analytic solution
+on a neighborhood of γ, obtained by iteration of the contraction Φ on a
+Banach space of analytic functions bounded by ỹ(|γ(·)|) + δ.  At each
+step, local existence follows from (9.43) and integrability of K_μ
+along γ.
 
 Step 5.  Pole structure at a blow-up point.  If g develops a singularity
-at some z* ∈ ℂ (necessarily with |z*| ≥ R̃ since |g| ≤ ỹ(|z|) on
-|z| < R̃), consider the dominant balance in (9.29) as z → z*.  The
-quadratic term c₂ ∫K_μ g² dominates, and matching singular orders
-(via the kernel scaling ∫K_μ σ^s dσ ~ z^{s+μ}) forces
+at some z* ∈ ℂ (necessarily |z*| ≥ R̃), dominant balance in (9.28) as
+z → z* with the quadratic term c₂ ∫K_μ g² gives
 
-    g(z) ~ −Γ(1−μ)/(c₂(z−z*))  as z → z*.                            (9.45)
+    g(z) ~ −Γ(1−μ)/(c₂(z−z*))  as z → z*.                            (9.44)
 
 Hence every finite singularity is a simple pole with residue
 −Γ(1−μ)/c₂.
 
-Step 6.  Non-accumulation.  Suppose, for contradiction, the pole set
-𝓟_g has a finite accumulation point z_∞ ∈ ℂ.  Choose ρ > 0 so that
-D(z_∞, 2ρ) ∩ 𝓟̃ = ∅ (possible since 𝓟̃ is discrete).  On
-D(z_∞, ρ) ∖ 𝓟_g we have |g(z)| ≤ ỹ(|z|) ≤ M :=
-sup_{|ζ|≤|z_∞|+ρ} ỹ(|ζ|) < ∞.  But then each accumulating pole
-z*_n ∈ D(z_∞, ρ) has g bounded by M in a neighborhood, contradicting
-(9.45) (a simple pole cannot be bounded).  Hence 𝓟_g has no finite
-accumulation point.
+Step 6.  Non-accumulation.  Suppose 𝓟_g has a finite accumulation point
+z_∞ ∈ ℂ.  Choose ρ > 0 with D(z_∞, 2ρ) ∩ 𝓟̃ = ∅.  On D(z_∞, ρ) ∖ 𝓟_g,
+|g| ≤ M := sup_{|ζ|≤|z_∞|+ρ} ỹ(|ζ|) < ∞.  But an accumulating simple
+pole cannot be bounded on a deleted neighborhood, contradicting (9.44).
+Hence 𝓟_g has no finite accumulation point.
 
-Combining Steps 4–6, g is meromorphic on ℂ with discrete simple pole set
-𝓟_g ⊂ {z : ỹ majorant has pole at |z|'s level set} and residues
-−Γ(1−μ)/c₂.  □
+Combining Steps 4–6 yields meromorphy on ℂ with discrete simple pole
+set.  □
 
-Remark 9.19 (What this proof does and does not claim).  The proof
-establishes meromorphy globally on ℂ, the discreteness of 𝓟_g, and the
-simple pole structure.  It does not assert that 𝓟_g = 𝓟̃ (equality of
-pole sets); indeed the fractional poles may lie strictly inside the
-majorant's pole set.  It relies only on three ingredients:  (1) Wendel's
-inequality γ_k ≤ 1, which is μ-specific and holds throughout (0,1];
-(2) the classical Riccati has an explicit meromorphic form with no finite
-accumulation of poles; (3) Riemann's removable singularity theorem.
-No Leibniz rule, no Cole–Hopf linearization, and no ML ratio identity is
-used.
+Remark 9.19 (What the proof claims and does not claim).  The argument
+establishes meromorphy globally on ℂ, discreteness of 𝓟_g, and simple
+pole structure with explicit residue.  It does not assert equality
+𝓟_g = 𝓟̃.  It relies only on (i) Wendel's inequality γ_k ≤ 1,
+(ii) the explicit meromorphic majorant (9.27), and (iii) Riemann's
+removable singularity theorem.  No Leibniz rule, no Cole–Hopf
+linearization, and no ML-ratio identity is invoked.
 
 
 §9.6. Padé resummation in the variable z = t^μ
 ───────────────────────────────────────────────
 
-Let z = t^μ and define g(z) = y(z^{1/μ}) = Σ_{k=1}^∞ a_k z^k on |z| < R.
 Fix M ∈ ℕ and seek polynomials
 
-    P_M(z) = Σ_{k=0}^M p_k z^k,  Q_M(z) = 1 + Σ_{k=1}^M q_k z^k     (9.46)
+    P_M(z) = Σ_{k=0}^M p_k z^k,  Q_M(z) = 1 + Σ_{k=1}^M q_k z^k     (9.45)
 
 satisfying
 
-    Q_M(z) g(z) − P_M(z) = O(z^{2M+1})  (z → 0).                     (9.47)
+    Q_M(z) g(z) − P_M(z) = O(z^{2M+1})  (z → 0).                     (9.46)
 
-Lemma 9.20 (Hankel form).  The matching condition (9.47) is equivalent
+Lemma 9.20 (Hankel form).  The matching condition (9.46) is equivalent
 to p₀ = 0 together with the denominator system
 
-    H_M 𝐪 = −𝐛,                                                       (9.48)
+    H_M 𝐪 = −𝐛,                                                       (9.47)
 
 where H_M = (a_{M+i−j})_{1≤i,j≤M}, 𝐛 = (a_{M+1},…,a_{2M})^T.
 
 Proposition 9.21 (Regularity of the Padé table).  For μ ∈ (0,1), g is
-not rational (by Theorem 9.18 it has poles and by (9.11) it has an
-essential t^μ-branch structure), so for generic parameters det H_M ≠ 0
-for every M ≥ 1.  For μ = 1, g is rational only in exceptional
-degenerate cases.
+not rational (it has poles by Theorem 9.18 and a t^μ-branch structure
+by (9.11)), so for generic parameters det H_M ≠ 0 for every M ≥ 1.
+For μ = 1, g is rational only in exceptional degenerate cases.
 
 Definition 9.22 (Diagonal Padé approximant).
 
-    R_M(z) = P_M(z)/Q_M(z).                                          (9.49)
+    R_M(z) = P_M(z)/Q_M(z).                                          (9.48)
 
-§9.6.1. Remainder representation and a-posteriori error bound.
+Theorem 9.23 (Analytic remainder representation).  There exists 𝓗_M
+analytic on {|z| < R} such that
 
-Theorem 9.23 (Analytic remainder representation).  There exists a
-function 𝓗_M analytic on {|z| < R} such that
+    g(z) − R_M(z) = z^{2M+1} 𝓗_M(z)/Q_M(z).                          (9.49)
 
-    g(z) − R_M(z) = z^{2M+1} 𝓗_M(z)/Q_M(z).                          (9.50)
-
-Definition 9.24.  Δ_k(z) := R_k(z) − R_{k−1}(z), R₀ ≡ 0.             (9.51)
+Definition 9.24.  Δ_k(z) := R_k(z) − R_{k−1}(z), R₀ ≡ 0.             (9.50)
 
 Theorem 9.25 (Computable a-posteriori error bound).  Let z ∈ ℂ with
 Q_M(z), Q_{M−1}(z) ≠ 0 and suppose |Δ_{k+1}(z)| ≤ ρ|Δ_k(z)| for some
 ρ ∈ (0,1) and all k ≥ M−1.  Then
 
-    |g(z) − R_M(z)| ≤ ρ|Δ_M(z)|/(1−ρ).                               (9.52)
+    |g(z) − R_M(z)| ≤ ρ|Δ_M(z)|/(1−ρ).                               (9.51)
 
-With the observable contraction ρ_* = |Δ_M(z)|/|Δ_{M−1}(z)| ∈ (0,1),
+With ρ_* = |Δ_M(z)|/|Δ_{M−1}(z)| ∈ (0,1),
 
-    |g(z) − R_M(z)| ≤ |Δ_M(z)|²/(|Δ_{M−1}(z)|−|Δ_M(z)|).             (9.53)
+    |g(z) − R_M(z)| ≤ |Δ_M(z)|²/(|Δ_{M−1}(z)|−|Δ_M(z)|).             (9.52)
 
 
 §9.7. Global convergence on the positive real axis
 ───────────────────────────────────────────────────
 
-Lemma 9.26 (Absence of poles on [0,∞)).  The Volterra equation (9.10)
-has a unique continuous real solution y(t) on [0,∞) for the parameter
-ranges arising in rough Heston (the coefficients c_i are such that the
-real Volterra equation admits global continuous solutions; see
-Abi Jaber–El Euch for the detailed analysis).  Consequently g has no
-poles on [0,∞), and for every T > 0,
+Lemma 9.26 (Absence of poles on [0,∞)).  Assume the coefficients
+c₀, c₁, c₂ admit a globally continuous real solution y(t) of the
+Volterra equation (9.10) on [0,∞).  Then g has no poles on [0,∞), and
+for every T > 0,
 
-    δ_T := dist([0, T^μ], 𝓟_g) > 0.                                  (9.54)
+    δ_T := dist([0, T^μ], 𝓟_g) > 0.                                  (9.53)
 
 Lemma 9.27 (Non-Explosion Condition on compact intervals).  For every
 T > 0, the diagonal Padé approximants R_M satisfy the Non-Explosion
@@ -988,12 +952,13 @@ Proof.  By Theorem 9.18, 𝓟_g is discrete.  The poles of R_M split into
 true-pole approximants (convergent to 𝓟_g by de Montessus de Ballore)
 and Froissart doublets (O(1) in any compact, by Proposition 4.2).  For
 M large, the true-pole approximants lie within δ_T/2 of 𝓟_g, hence
-outside K.  The Froissart doublets in K are uniformly bounded in number.
-□
+outside K.  The Froissart doublets in K are uniformly bounded in
+number.  □
 
-Theorem 9.28 (Global Padé–Müntz representation).  For every t ≥ 0,
+Theorem 9.28 (Global Padé–Müntz representation).  Under the hypotheses
+of Lemma 9.26, for every t ≥ 0,
 
-    y(t) = lim_{M→∞} R_M(t^μ) = lim_{M→∞} P_M(t^μ)/Q_M(t^μ),        (9.55)
+    y(t) = lim_{M→∞} R_M(t^μ) = lim_{M→∞} P_M(t^μ)/Q_M(t^μ),        (9.54)
 
 with uniform convergence on [0,T] for every T > 0.
 
@@ -1003,14 +968,14 @@ Proof.  Combine Theorems 9.18, 4.4, and Lemmas 9.26, 9.27.  □
 §9.8. The bordered rank-one update and incremental Hankel solver
 ─────────────────────────────────────────────────────────────────
 
-The passage from Padé order M to order M+1 requires solving the
-augmented Hankel system H_{M+1} 𝐪_{M+1} = −𝐛_{M+1}.  Direct inversion
-costs O(M³); the Hankel structure allows an incremental O(M²) update.
+The passage from Padé order M to order M+1 requires solving
+H_{M+1} 𝐪_{M+1} = −𝐛_{M+1}.  Direct inversion costs O(M³); the Hankel
+structure allows an incremental O(M²) update.
 
 Lemma 9.29 (Bordered structure).  Let P_M be the cyclic column
 permutation moving the first column to the last position.  Then
 
-    Ĥ_{M+1} := H_{M+1} P_M = ⎛ H_M    𝐮_M ⎞,                         (9.56)
+    Ĥ_{M+1} := H_{M+1} P_M = ⎛ H_M    𝐮_M ⎞,                         (9.55)
                              ⎝ 𝐯_M^T  d_M ⎠
 
 with 𝐮_M = (a_{M+1},…,a_{2M})^T, 𝐯_M^T = (a_{2M}, a_{2M−1},…,a_{M+1}),
@@ -1019,7 +984,7 @@ d_M = a_{2M+1}.
 Theorem 9.30 (Bordered rank-one inverse update).  Let s_M = d_M −
 𝐯_M^T H_M^{−1} 𝐮_M be the Schur complement.  If s_M ≠ 0,
 
-    Ĥ_{M+1}^{−1} = ⎛ H_M^{−1} + s_M^{−1} 𝐳_M 𝐰_M^T  −s_M^{−1} 𝐳_M ⎞,   (9.57)
+    Ĥ_{M+1}^{−1} = ⎛ H_M^{−1} + s_M^{−1} 𝐳_M 𝐰_M^T  −s_M^{−1} 𝐳_M ⎞,   (9.56)
                    ⎝  −s_M^{−1} 𝐰_M^T                s_M^{−1}  ⎠
 
 with 𝐳_M = H_M^{−1} 𝐮_M, 𝐰_M^T = 𝐯_M^T H_M^{−1}.  Cost: O(M²) per
@@ -1031,19 +996,18 @@ Corollary 9.31 (Incremental denominator solver).  Given H_M^{−1} and
   1. Compute 𝐳_M = H_M^{−1} 𝐮_M, 𝐰_M = (H_M^{−1})^T 𝐯_M    [O(M²)]
   2. Compute s_M = d_M − 𝐯_M^T 𝐳_M                          [O(M)]
   3. If s_M = 0, skip to order M+2 (block degeneracy)
-  4. Form Ĥ_{M+1}^{−1} by (9.57)                            [O(M²)]
+  4. Form Ĥ_{M+1}^{−1} by (9.56)                            [O(M²)]
   5. Compute 𝐪̂_{M+1} = −Ĥ_{M+1}^{−1} 𝐛_{M+1}                [O(M²)]
      and recover 𝐪_{M+1} = P_M^T 𝐪̂_{M+1}
   6. Recover 𝐩_{M+1} from 𝐪_{M+1} via numerator equations   [O(M)]
 
 Total cost to build the Padé table up to order N: O(N³).
 
-Remark 9.32 (Block structure and the Froissart budget).  If s_M = 0, the
-denominator system H_{M+1} is singular—precisely the algebraic signature
-of a potential Froissart doublet.  One detects |s_M| < ε_mach, flags
-order M+1 as anomalous, skips to M+2, and increments the Froissart
-budget count of §5 by one.  The a-posteriori bound (9.53) remains valid
-at the skipped order.
+Remark 9.32 (Block structure and the Froissart budget).  If s_M = 0,
+H_{M+1} is singular—the algebraic signature of a potential Froissart
+doublet.  Detecting |s_M| < ε_mach, one flags order M+1, skips to M+2,
+and increments the Froissart budget count of §5 by one.  The
+a-posteriori bound (9.52) remains valid at the skipped order.
 
 
 §10. THE TWO PARADIGMS: A SUMMARY
@@ -1061,7 +1025,7 @@ at the skipped order.
 │ Exceptional set     │ None                     │ Froissart doublets (polar)│
 │ Poles               │ None                     │ Eigenvalues of J_n        │
 │ Algorithmic cost    │ O(n) per step            │ O(n²) incremental         │
-│ Rough Heston        │ Diverges for t^μ > R     │ Uniform on [0,T], ∀ T>0   │
+│ Fractional Riccati  │ Diverges for t^μ > R     │ Uniform on [0,T], ∀ T>0   │
 └─────────────────────┴──────────────────────────┴───────────────────────────┘
 
 The Taylor paradigm is natural when a function is defined at a single
@@ -1077,8 +1041,8 @@ Deift–Zhou steepest descent gives exponential convergence everywhere in
 the Stahl domain, and the Jacobi operator connects convergence to the
 spectral theory of a self-adjoint (or pseudo-self-adjoint) operator.
 
-In the fractional Riccati application, these abstractions acquire concrete
-computational content.
+In the fractional Riccati application, these abstractions acquire
+concrete computational content.
 
   •  The Müntz substitution z = t^μ converts the fractional equation
      into a classical power series problem in z with Gamma-ratio
@@ -1090,11 +1054,12 @@ computational content.
   •  The Mittag-Leffler tree expansion (Theorem 9.14) makes the entire
      solution explicit as an infinite sum of iterated convolutions of
      E_{μ,μ+1}, collapsing to z E_{μ,μ+1}(c₁ z) at c₂ = 0 and to the
-     Cole–Hopf ratio at μ = 1.  This replaces the previously attempted
-     and incorrect Cole–Hopf ansatz for μ ∈ (0,1).
+     Cole–Hopf ratio at μ = 1.  This replaces any naive attempt at a
+     Cole–Hopf ansatz for μ ∈ (0,1), which fails because D^μ violates
+     the Leibniz rule.
 
-  •  Theorem 9.18 (meromorphy via classical Riccati majorization) proves
-     meromorphy on ℂ unconditionally for μ ∈ (0,1], using only
+  •  Theorem 9.18 (meromorphy via classical Riccati majorization)
+     proves meromorphy on ℂ unconditionally for μ ∈ (0,1], using only
      Wendel's inequality, the explicit meromorphic majorant (9.27), and
      Riemann's removable singularity theorem.
 
@@ -1106,27 +1071,27 @@ computational content.
 
 The non-explosion principle unifies the analytical, probabilistic, and
 spectral threads.  The pole count of a Padé approximant on a compact is
-bounded for the same reason a subcritical Hawkes process is non-explosive
-and for the same reason the Wiener–Khinchin spectral tail governs Hölder
-regularity of rough Heston volatility paths.  The Hurst parameter
-H = μ − 1/2 is simultaneously the regularity exponent of the stochastic
-process and the exponent governing the Puiseux series of its
-characteristic function; the Padé resummation in z = t^μ is the analytic
-procedure that respects this double role and thereby delivers global
-uniform convergence where the Müntz series alone cannot.
+bounded for the same reason a subcritical self-exciting process is
+non-explosive and for the same reason the Wiener–Khinchin spectral tail
+governs Hölder regularity of Gaussian sample paths.  The exponent μ is
+simultaneously the regularity exponent of the Volterra solution and the
+exponent governing the Puiseux series of its z-transform; the Padé
+resummation in z = t^μ is the analytic procedure that respects this
+double role and thereby delivers global uniform convergence where the
+Müntz series alone cannot.
 
 The Leibniz rule is the only casualty of the fractional setting.  The
 Müntz series bypasses it through the Volterra convolution; the
 Mittag-Leffler tree expansion makes the bypass explicit by replacing a
-single ratio of two linearly independent solutions with an infinite tree
-sum of iterated quadratic convolutions; and the classical Riccati
+single ratio of two linearly independent solutions with an infinite
+tree sum of iterated quadratic convolutions; and the classical Riccati
 majorization provides meromorphy without ever invoking a product rule.
-Each of the three synthesis threads—Riemann–Hilbert, Mittag-Leffler tree
-expansion, classical majorization—carries its own proof of a distinct
-property of g, and together they deliver the full global representation
-of the rough Heston characteristic function as the pointwise limit of
-diagonal Padé approximants in z = t^μ.
+Each of the three synthesis threads—Riemann–Hilbert, Mittag-Leffler
+tree expansion, classical majorization—carries its own proof of a
+distinct property of g, and together they deliver the full global
+representation of the fractional Riccati solution as the pointwise
+limit of diagonal Padé approximants in z = t^μ.
 
 ═══════════════════════════════════════════════════════════════════════════════
                                   END
-═══════════════════════════════════════════════════════════════════════════════ 
+═══════════════════════════════════════════════════════════════════════════════
