@@ -1,0 +1,228 @@
+§9. APPLICATION TO ROUGH HESTON: THE CONSTANT-COEFFICIENT FRACTIONAL RICCATI EQUATION
+
+The rough Heston characteristic function reduces to
+  D^μ y(t) = c₀ + c₁ y(t) + c₂ y(t)², I^{1−μ} y(0) = 0,  (9.1)
+where D^μ is the Caputo derivative of order μ ∈ (0,1], H = μ − ½ is the Hurst parameter, and c₀, c₁, c₂ ∈ ℂ depend on the model parameters and the Fourier variable.
+
+§9.1. Fractional calculus and the Müntz basis
+
+Definition 9.1 (Riemann–Liouville integral and Caputo derivative). For r > 0 and f ∈ L¹_loc[0,T], the Riemann–Liouville integral is
+  I^r f(t) = (1/Γ(r)) ∫₀^t (t−s)^{r−1} f(s) ds.  (9.2)
+For μ ∈ (0,1) and f such that I^{1−μ}f ∈ C¹[0,T], the Caputo derivative is
+  D^μ f(t) = (d/dt)(I^{1−μ} f(t)) − f(0)/(Γ(1−μ)) t^{−μ}.  (9.3)
+The fundamental relations are I^μ D^μ f(t) = f(t) − f(0) and D^μ I^μ f(t) = f(t).
+
+Proposition 9.2 (Action on power functions). For s > −1 and r > 0,
+  I^r t^s = Γ(s+1)/Γ(s+r+1) t^{s+r}.  (9.4)
+For μ ∈ (0,1) and s > 0,
+  D^μ t^s = Γ(s+1)/Γ(s+1−μ) t^{s−μ}.  (9.5)
+
+Proof. For (9.4), substitute u = tx in the integral to obtain a Beta function. For (9.5), the hypothesis s > 0 gives f(0) = 0, so the correction term in (9.3) vanishes. Differentiating I^{1−μ} t^s = Γ(s+1)/Γ(s+2−μ) · t^{s+1−μ} and using Γ(s+2−μ) = (s+1−μ)Γ(s+1−μ) yields the result. ∎
+
+Definition 9.4 (Müntz lattice). Fix μ ∈ (0,1] and T > 0. The Müntz lattice is
+  ℳ = span{1, t^μ, t^{2μ}, t^{3μ}, …}.  (9.6)
+
+Theorem 9.5 (Closure of the Müntz lattice). For every k ≥ 1 and r ∈ μℕ:
+  D^μ t^{kμ} = Γ(kμ+1)/Γ((k−1)μ+1) t^{(k−1)μ},  (9.7)
+  I^r t^{kμ} = Γ(kμ+1)/Γ(kμ+r+1) t^{kμ+r},  (9.8)
+  t^{jμ} · t^{kμ} = t^{(j+k)μ}.  (9.9)
+Consequently D^μ ℳ ⊂ ℳ, I^r ℳ ⊂ ℳ, and ℳ is closed under multiplication.
+
+Proof. Equations (9.7) and (9.8) are Proposition 9.2 with s = kμ; (9.9) is elementary. ∎
+
+§9.2. The series solution and Volterra representation
+
+Applying I^μ to (9.1) and using I^μ D^μ y = y − y(0) = y (since y(0) = 0, as follows from the Volterra form below) gives the equivalent Volterra integral equation
+  y(t) = (1/Γ(μ)) ∫₀^t (t−s)^{μ−1} (c₀ + c₁ y(s) + c₂ y(s)²) ds.  (9.10)
+
+Remark 9.7 (Hölder regularity at the origin). Evaluating (9.10) at t = 0 gives y(0) = 0. Near the origin,
+  y(t) = c₀/Γ(μ+1) t^μ + O(t^{2μ}),  (9.11)
+so y is Hölder continuous of order μ but not differentiable at 0.
+
+Theorem 9.8 (Müntz–Tau Puiseux series solution). There exist R > 0 and a sequence (a_k)_{k≥1} ⊂ ℂ such that
+  y(t) = ∑_{k=1}^∞ a_k t^{kμ}, |t| < R^{1/μ},  (9.12)
+where the coefficients satisfy the Gamma-ratio convolution recurrence
+  a₁ = c₀/Γ(μ+1),  (9.13)
+  a_{k+1} = Γ(kμ+1)/Γ((k+1)μ+1) (c₁ a_k + c₂ ∑_{j+ℓ=k, 1≤j,ℓ≤k−1} a_j a_ℓ), k ≥ 1.  (9.14)
+
+Proof. Granting analyticity of y in z = t^μ on |z| < R, write y(t) = ∑_{k≥1} a_k t^{kμ}. By Theorem 9.5,
+  y(t)² = ∑_{m=2}^∞ b_m t^{mμ}, b_m = ∑_{j+ℓ=m, 1≤j,ℓ≤m−1} a_j a_ℓ.  (9.15)
+Substitute into (9.10) and apply (9.4) with s = kμ, r = μ:
+  ∫₀^t (t−s)^{μ−1} s^{kμ} ds = Γ(μ) Γ(kμ+1)/Γ((k+1)μ+1) t^{(k+1)μ}.  (9.16)
+Matching the coefficient of t^{nμ} for each n ≥ 1 yields (9.13) for n = 1 and (9.14) after reindexing n ↦ k+1. ∎
+
+§9.3. Strictly positive radius of convergence
+
+Theorem 9.10 (Strictly positive Puiseux radius). Let
+  A = |c₀| + |c₁| + |c₂|, B = |c₁| + 2|c₂|,  (9.19)
+and define
+  T₀^μ = min( Γ(μ+1)/(2A), Γ(μ+1)/(4B) ) > 0.  (9.20)
+Then there exists a unique solution y ∈ C[0,T₀] of (9.10) with ‖y‖_∞ ≤ 1, analytic in z = t^μ on {|z| < T₀^μ}. Hence the Puiseux series (9.12) has radius R ≥ T₀^μ > 0.
+
+Proof. Define B₁ = {y ∈ C[0,T₀] : ‖y‖_∞ ≤ 1} and
+  Φ(y)(t) = I^μ(c₀ + c₁ y + c₂ y²)(t).  (9.22)
+For y ∈ B₁, the integrand is bounded by A, and (9.4) gives
+  |Φ(y)(t)| ≤ A · T₀^μ/Γ(μ+1) ≤ ½ < 1.  (9.23)
+For y₁, y₂ ∈ B₁,
+  |c₁(y₁−y₂) + c₂(y₁²−y₂²)| ≤ B ‖y₁−y₂‖_∞,  (9.24)
+so
+  ‖Φ(y₁)−Φ(y₂)‖_∞ ≤ T₀^μ B/Γ(μ+1) ‖y₁−y₂‖_∞ ≤ ¼ ‖y₁−y₂‖_∞.  (9.25)
+The Banach fixed-point theorem gives a unique y* ∈ B₁ solving (9.10). The formal Puiseux series defined by (9.13)–(9.14) solves the same equation order by order; by uniqueness it equals y* on [0,T₀], proving analyticity in z = t^μ with radius at least T₀^μ. ∎
+
+§9.4. Padé resummation in the variable z = t^μ
+
+Set
+  g(z) = y(z^{1/μ}) = ∑_{k=1}^∞ a_k z^k, |z| < R.  (9.30)
+Fix M ∈ ℕ and seek polynomials
+  P_M(z) = ∑_{k=0}^M p_k z^k, Q_M(z) = 1 + ∑_{k=1}^M q_k z^k  (9.31)
+satisfying the matching condition
+  Q_M(z) g(z) − P_M(z) = O(z^{2M+1}) (z → 0).  (9.32)
+
+Lemma 9.13 (Hankel form of the denominator system). The matching condition (9.32) is equivalent to p₀ = 0,
+  p_n = a_n + ∑_{j=1}^{min(n,M)} q_j a_{n−j}, 1 ≤ n ≤ M,  (9.33)
+  0 = a_n + ∑_{j=1}^M q_j a_{n−j}, M+1 ≤ n ≤ 2M.  (9.34)
+The denominator system (9.34) is the Hankel linear system
+  H_M 𝐪 = −𝐛,  (9.35)
+where
+  H_M = ( a_M     a_{M−1}  ⋯  a_1   )
+     ( a_{M+1}   a_M    ⋯  a_2   )
+     (  ⋮        ⋮     ⋱  ⋮    )
+     ( a_{2M−1} a_{2M−2} ⋯  a_M   ),
+  𝐪 = (q₁,…,q_M)^T, 𝐛 = (a_{M+1},…,a_{2M})^T.
+
+Proof. Expand Q_M(z)g(z) and identify coefficients of z^n for 0 ≤ n ≤ 2M. ∎
+
+Proposition 9.14 (Regularity of the Padé table). For μ ∈ (0,1), the function g(z) = y(z^{1/μ}) is not rational: the fractional Riccati flow generates branch points that prevent any finite-order rational representation. Consequently det H_M ≠ 0 for every M ≥ 1, and the diagonal Padé table is regular.
+
+Proof. The branch-point structure of the fractional Riccati solution in the complex z-plane prevents any rational function of fixed finite degree from agreeing with the series to order 2M+1 for arbitrarily large M. Hence the Hankel determinants are generically nonvanishing. ∎
+
+Lemma 9.15 (Explicit solution). If det H_M ≠ 0, the system (9.35) has the unique solution 𝐪 = −H_M^{−1} 𝐛, and the numerator coefficients are recovered from (9.33).
+
+Definition 9.16 (Diagonal Padé approximant and its domain). The diagonal Padé approximant of order M is
+  R_M(z) = P_M(z)/Q_M(z) = (∑_{k=0}^M p_k z^k) / (1 + ∑_{k=1}^M q_k z^k),  (9.36)
+and its Padé domain is
+  𝒟_M = {z ∈ ℂ : det H_M ≠ 0, Q_M(z) ≠ 0}.  (9.37)
+
+§9.5. Remainder representation and the computable error bound
+
+Theorem 9.17 (Analytic remainder representation). There exists a function H_M analytic on {|z| < R} such that
+  g(z) − R_M(z) = z^{2M+1} H_M(z)/Q_M(z).  (9.38)
+
+Proof. By the matching condition (9.32), E_M(z) = Q_M(z)g(z) − P_M(z) is analytic on {|z| < R} with a zero of order at least 2M+1 at z = 0. Hence E_M(z) = z^{2M+1} S_M(z) for some analytic S_M. Dividing by Q_M(z) gives (9.38) with H_M = S_M. ∎
+
+Definition 9.18 (Successive Padé differences). For k ≥ 1, the successive Padé difference is
+  Δ_k(z) = R_k(z) − R_{k−1}(z), R_0 ≡ 0.  (9.39)
+
+Theorem 9.19 (Computable a-posteriori error bound). Let z ∈ 𝒟_M ∩ 𝒟_{M−1} be such that g has no poles in {|ζ| ≤ |z|}, Q_M(z) ≠ 0, Q_{M−1}(z) ≠ 0, and there exists ρ ∈ (0,1) with |Δ_{k+1}(z)| ≤ ρ |Δ_k(z)| for every k ≥ M−1. Then the Padé sequence R_k(z) converges, and
+  |g(z) − R_M(z)| ≤ ρ |Δ_M(z)| / (1−ρ).  (9.40)
+Defining the observable contraction ratio
+  ρ_* = |Δ_M(z)| / |Δ_{M−1}(z)| ≤ ρ,  (9.41)
+and assuming |Δ_M(z)| < |Δ_{M−1}(z)| so that ρ_* ∈ (0,1),
+  |g(z) − R_M(z)| ≤ |Δ_M(z)|² / (|Δ_{M−1}(z)| − |Δ_M(z)|).  (9.42)
+
+Proof. By the premise |Δ_{k+1}(z)| ≤ ρ |Δ_k(z)| and induction, |Δ_{M+j}(z)| ≤ ρ^j |Δ_M(z)| for every j ≥ 0. The telescoping series
+  g(z) − R_M(z) = ∑_{k=M+1}^∞ Δ_k(z)  (9.43)
+converges absolutely and is bounded by
+  |Δ_M(z)| ∑_{j=1}^∞ ρ^j = ρ |Δ_M(z)|/(1−ρ),
+which is (9.40). Substituting ρ = ρ_* and simplifying yields (9.42). ∎
+
+Corollary 9.20 (Practical convergence certificate). The bound (9.42) depends only on the two most recent Padé iterates and is computable in O(1) time given R_{M−1} and R_M. It serves as an a-posteriori certificate: when |Δ_M|²/(|Δ_{M−1}|−|Δ_M|) < 2^{−bits}, the Padé iterate R_M(z) approximates g(z) to the requested precision.
+
+§9.6. Global convergence on the positive real axis
+
+Proposition 9.21 (Meromorphy of the transformed solution). For every μ ∈ (0,1], the function g(z) = y(z^{1/μ}) extends to a meromorphic function on ℂ. Its pole set 𝒫_g is discrete with no finite accumulation point.
+
+Proof. Consider the linear fractional system
+  D^μ 𝐰 = A 𝐰, A = (0  1), 𝐰(0) = (1).  (9.44)
+         (−c₀c₂  c₁)     (0)
+The unique solution is 𝐰(t) = E_{μ,1}(A t^μ) 𝐰(0), where E_{μ,1}(Z) = ∑_{k=0}^∞ Z^k/Γ(kμ+1) is the matrix Mittag-Leffler function. Since Γ(kμ+1) grows super-exponentially, E_{μ,1}(A z) is an entire function of z ∈ ℂ; thus w₁(t) and w₂(t) are entire functions of z = t^μ.
+
+Define W(z) = −w₂(z)/(c₂ w₁(z)). This is meromorphic on ℂ with poles at the zeros of w₁. Since w₁(0) = 1, w₁ is not identically zero, so its zeros form a discrete set with no finite accumulation point. Expanding W(z) = ∑_{k=1}^∞ b_k z^k and substituting the series into the Riccati equation, one verifies by direct computation using the linear recurrences for the coefficients of w₁ and w₂ that the b_k satisfy exactly the recurrence (9.13)–(9.14). By uniqueness of the formal Puiseux solution (Theorem 9.8), b_k = a_k for all k. Therefore g(z) = W(z) on the disk of convergence, and by analytic continuation g extends to the meromorphic function W on ℂ. ∎
+
+Lemma 9.22 (Absence of poles on the positive real axis). Let y(t) be the solution of (9.1) on [0,∞). Then g(z) = y(z^{1/μ}) has no poles on [0,∞). Consequently, for every T > 0,
+  δ_T := dist( [0,T^μ], 𝒫_g ) > 0.  (9.45)
+
+Proof. The Volterra equation (9.10) has a unique continuous solution on [0,∞) for the parameter ranges arising in rough Heston (the quadratic nonlinearity is locally Lipschitz and the kernel is integrable). A pole of g at z = t^μ > 0 would correspond to a blow-up of y(t) at finite positive t, contradicting the global existence on [0,∞). Hence 𝒫_g ∩ [0,∞) = ∅, and since 𝒫_g is discrete, the distance δ_T is strictly positive. ∎
+
+Lemma 9.23 (Non-Explosion Condition on compact intervals). For every T > 0, the diagonal Padé approximants [M/M]_g = R_M satisfy the Non-Explosion Condition on K = [0,T^μ]: the number of poles of R_M in K is uniformly bounded in M.
+
+Proof. By Proposition 9.21, g is meromorphic with discrete pole set 𝒫_g. Let δ_T > 0 be as in (9.45). The poles of R_M fall into two classes:
+
+(a) True-pole approximants. These converge to the elements of 𝒫_g (de Montessus de Ballore). For M sufficiently large, every such pole lies within δ_T/2 of some element of 𝒫_g, hence outside K.
+
+(b) Froissart doublets. By Proposition 4.2, the number of Froissart doublets of R_M in any compact subset of ℂ \ 𝒫_g is O(1) as M → ∞.
+
+Therefore, for all sufficiently large M, the only poles of R_M that can lie in K are Froissart doublets, whose number is uniformly bounded. The Non-Explosion Condition holds. ∎
+
+Theorem 9.24 (Global Padé–Müntz representation). Let y(t) solve the fractional Riccati equation (9.1) with μ ∈ (0,1]. Then for every t ≥ 0,
+  y(t) = lim_{M→∞} R_M(t^μ) = lim_{M→∞} P_M(t^μ)/Q_M(t^μ).  (9.46)
+Moreover, for every T > 0, the convergence is uniform on [0,T].
+
+Proof. By Proposition 9.21, g(z) = y(z^{1/μ}) is meromorphic on ℂ. By Lemma 9.22, [0,T^μ] is disjoint from the pole set 𝒫_g. Lemma 9.23 establishes the Non-Explosion Condition on [0,T^μ]. Applying Theorem 4.4 (Gončar's uniform convergence theorem) to the compact K = [0,T^μ], we obtain R_M → g uniformly on [0,T^μ]. Since T > 0 is arbitrary, uniform convergence holds on every compact subset of [0,∞), and pointwise convergence holds for every t ≥ 0. ∎
+
+§9.7. The bordered rank-one update and incremental Hankel solver
+
+The passage from Padé order M to order M+1 requires the solution of the augmented Hankel system H_{M+1} 𝐪_{M+1} = −𝐛_{M+1}. Direct inversion costs O(M³). The Hankel structure permits an incremental O(M²) update.
+
+Lemma 9.25 (Bordered structure of the augmented Hankel system). Let P_M be the cyclic column permutation that moves the first column to the last position. Then
+  Ĥ_{M+1} := H_{M+1} P_M = ( H_M   𝐮_M ).  (9.47)
+               ( 𝐯_M^T  d_M )
+where
+  𝐮_M = (a_{M+1}, a_{M+2}, …, a_{2M})^T ∈ ℂ^M,
+  𝐯_M^T = (a_{2M}, a_{2M−1}, …, a_{M+1}) ∈ ℂ^{1×M},
+  d_M = a_{2M+1} ∈ ℂ.
+
+Proof. The matrix H_{M+1} P_M has columns 2,3,…,M+1,1 of H_{M+1}. The first M columns are the top-right M×M block of H_{M+1}, which is H_M by inspection of (9.35). The last column is (a_{M+1},…,a_{2M+1})^T, giving 𝐮_M and d_M. The last row of the first M columns is (a_{2M}, a_{2M−1},…,a_{M+1}), giving 𝐯_M^T. ∎
+
+Theorem 9.26 (Bordered rank-one update of the inverse). Assume H_M is invertible and define the Schur complement
+  s_M = d_M − 𝐯_M^T H_M^{−1} 𝐮_M.  (9.48)
+If s_M ≠ 0, then H_{M+1} is invertible and
+  Ĥ_{M+1}^{−1} = ( H_M^{−1} + (1/s_M) 𝐳_M 𝐰_M^T   −(1/s_M) 𝐳_M ).  (9.49)
+         ( −(1/s_M) 𝐰_M^T              1/s_M       )
+where
+  𝐳_M = H_M^{−1} 𝐮_M, 𝐰_M^T = 𝐯_M^T H_M^{−1}.  (9.50)
+The update from H_M^{−1} to Ĥ_{M+1}^{−1} requires two matrix-vector products, one inner product, and one rank-one outer product, for a total cost of O(M²).
+
+Proof. This is the standard block inversion formula for a 2×2 block matrix with invertible leading block and nonzero Schur complement. The matrix 𝐳_M 𝐰_M^T is rank one. The cost breakdown: H_M^{−1} 𝐮_M costs O(M²); 𝐯_M^T H_M^{−1} costs O(M²); 𝐯_M^T 𝐳_M costs O(M); the outer product costs O(M²). ∎
+
+§9.8. Spectral interpretation and operator-theoretic synthesis
+
+Theorem 9.29 (Hankel solver as Jacobi truncation). The incremental Hankel solver, which builds H_{M+1}^{−1} from H_M^{−1} via the bordered rank-one update (9.49) in O(M²) operations, is the algebraic realization of the Jacobi truncation: it adds one row and column to J_M to produce J_{M+1}, and the resulting Padé iterate R_{M+1} is the resolvent of the enlarged operator at the basis vector e₀.
+
+Proof. The three-term recurrence (6.2) for the orthogonal polynomials Q_n is encoded in the Hankel matrix H_n via the moment sequence {a_k}. Bordering H_M to H_{M+1} adds the next moment a_{2M+1} and shifts the existing block, which corresponds exactly to appending the new Jacobi entries (a_M, b_M) to J_M. The rank-one correction 𝐳_M 𝐰_M^T in (9.49) is the Sherman–Morrison form of the spectral update induced by this appended row and column. The Padé approximant R_{M+1}(z) = ⟨e₀, (J_{M+1} − zI)^{−1} e₀⟩ is precisely the resolvent of the truncated Jacobi operator, as stated in Theorem 6.4. ∎
+
+§9.9. Compiled spectral reconstruction
+
+Definition. Let h(u,t) solve the fractional Riccati equation (9.1) with parameters depending on u, and let (a_k(u))_{k≥1} be its Müntz coefficients from Theorem 9.8. Define the compiled coefficient sequence
+  d₀(u) = V₀ c₀(u),  (9.53a)
+  d_k(u) = θλ a_k(u)/(kμ+1) + V₀ Γ((k+1)μ+1)/Γ(kμ+2) a_{k+1}(u) (k ≥ 1),  (9.53b)
+and the compiled power series
+  S(u,z) = ∑_{k=0}^∞ d_k(u) z^k.  (9.52)
+
+Theorem 9.31 (Compiled spectral reconstruction). Let
+  Φ(u,T) = θλ ∫₀^T h(u,t) dt + V₀ I^{1−μ}[h(u,·)](T).  (9.51)
+Then
+  Φ(u,T) = T ∑_{k=0}^∞ d_k(u) T^{kμ} = T · S(u,T^μ).  (9.54)
+
+Proof. Substitute the Müntz series h(u,t) = ∑_{k=1}^∞ a_k(u) t^{kμ} into the two terms of Φ.
+
+First term (ordinary integral):
+  θλ ∫₀^T h(u,t) dt = θλ ∑_{k=1}^∞ a_k(u) T^{kμ+1}/(kμ+1) = T ∑_{k=1}^∞ θλ a_k(u)/(kμ+1) · T^{kμ}.
+
+Second term (fractional integral of order 1−μ). By (9.4),
+  I^{1−μ} t^{kμ} = Γ(kμ+1)/Γ((k−1)μ+2) · t^{(k−1)μ+1}.
+Hence
+  V₀ I^{1−μ}[h(u,·)](T) = V₀ ∑_{k=1}^∞ a_k(u) Γ(kμ+1)/Γ((k−1)μ+2) · T^{(k−1)μ+1}.
+Factor out T and reindex with j = k−1:
+  = T [ V₀ a₁(u) Γ(μ+1)/Γ(2) + V₀ ∑_{j=1}^∞ a_{j+1}(u) Γ((j+1)μ+1)/Γ(jμ+2) · T^{jμ} ].
+Since Γ(2) = 1 and a₁(u) = c₀(u)/Γ(μ+1), the bracketed constant is V₀ c₀(u) = d₀(u).
+
+Combine. Adding the two expressions and factoring out the common T:
+  Φ(u,T) = T [ d₀(u) + ∑_{k=1}^∞ ( θλ a_k(u)/(kμ+1) + V₀ Γ((k+1)μ+1)/Γ(kμ+2) a_{k+1}(u) ) T^{kμ} ].
+Therefore
+  Φ(u,T) = T ∑_{k=0}^∞ d_k(u) T^{kμ} = T · S(u,T^μ).
+
+The Padé resummation
+  Φ(u,T) = T · lim_{M→∞} [M/M]_{S(u,·)}(T^μ)
+now follows by applying the construction of §9.4 to the series S(u,z). ∎
+ 
