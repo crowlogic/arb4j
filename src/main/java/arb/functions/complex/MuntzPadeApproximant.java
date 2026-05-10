@@ -3,7 +3,6 @@ package arb.functions.complex;
 import arb.*;
 import arb.Integer;
 import arb.expressions.Context;
-import arb.functions.ComplexFunction;
 import arb.functions.integer.ComplexFunctionSequence;
 import arb.functions.integer.ComplexPolynomialSequence;
 import arb.functions.integer.ComplexSequence;
@@ -37,7 +36,9 @@ public final class MuntzPadeApproximant implements
 
     public PrecisionExhaustedException(int orderM, int precisionUsed)
     {
-      super(String.format("Schur complement straddles zero at M=%d with %d bits", orderM, precisionUsed));
+      super(String.format("Schur complement straddles zero at M=%d with %d bits",
+                          orderM,
+                          precisionUsed));
       this.orderM        = orderM;
       this.precisionUsed = precisionUsed;
     }
@@ -56,13 +57,13 @@ public final class MuntzPadeApproximant implements
     }
   }
 
-  public final Real     α;
-  public final Complex  v;
-  private final int     workingBits;
-  private final Context context;
+  public final Real                    α;
+  public final Complex                 v;
+  private final int                    workingBits;
+  private final Context                context;
   private final ComplexFunctionSequence Φ;
-
-  private final ComplexSequence a;
+  private final ComplexSequence        ΦBound;
+  private final ComplexPolynomialSequence a;
 
   private int       currentOrder;
   private ComplexMatrix currentInverse;
@@ -80,7 +81,7 @@ public final class MuntzPadeApproximant implements
 
   private boolean closed;
 
-  public MuntzPadeApproximant(Real α, ComplexSequence a, Complex v, int bits)
+  public MuntzPadeApproximant(Real α, ComplexPolynomialSequence a, Complex v, int bits)
   {
     this.α           = α;
     this.v           = new Complex(v);
@@ -88,7 +89,15 @@ public final class MuntzPadeApproximant implements
     this.a           = a;
     this.context     = new Context();
 
-    context.registerSequence("a", a);
+    context.registerVariable("z", z);
+
+    ComplexSequence aScalars = (k, order, abits, result) ->
+    {
+      int             idx = k.getSignedValue();
+      ComplexPolynomial p   = this.a.apply(idx);
+      return p.evaluate(this.v, 1, abits, result);
+    };
+    context.registerSequence("a", aScalars);
 
     ComplexPolynomialSequence qSeq = (M, order, abits, result) ->
     {
@@ -96,18 +105,28 @@ public final class MuntzPadeApproximant implements
       ensureOrder(m);
       return solveDenominator(m, result);
     };
-    context.registerFunctionMapping("qSeq", qSeq, Integer.class, ComplexPolynomial.class);
+    context.registerFunctionMapping("qSeq",
+                                    qSeq,
+                                    Integer.class,
+                                    ComplexPolynomial.class);
 
     ComplexPolynomialSequence Φden =
-        ComplexPolynomialSequence.express("Φden:M➔sum(j➔qSeq(M)[j-1]*z^j{j=1..M})+1", context);
+        ComplexPolynomialSequence.express("Φden:M➔sum(j➔qSeq(M)[j-1]*z^j{j=1..M})+1",
+                                        context);
     Φden.setName("Φden");
 
     ComplexPolynomialSequence Φnum =
-        ComplexPolynomialSequence.express("Φnum:M➔sum(n➔(a(n)+sum(j➔qSeq(M)[j-1]*a(n-j){j=1..n-1}))*z^n{n=1..M})", context);
+        ComplexPolynomialSequence.express("Φnum:M➔sum(n➔(a(n)+sum(j➔qSeq(M)[j-1]*a(n-j){j=1..n-1}))*z^n{n=1..M})",
+                                          context);
     Φnum.setName("Φnum");
 
-    this.Φ = ComplexFunctionSequence.express("Φ:M➔z➔Φnum(M)(z)/Φden(M)(z)", context);
+    this.Φ = ComplexFunctionSequence.express("Φ:M➔z➔Φnum(M)(z)/Φden(M)(z)",
+                                               context);
     this.Φ.setName("Φ");
+
+    this.ΦBound = ComplexSequence.express(
+        "ΦBound:M➔abs(Φ(M)(z)-Φ(M-1)(z))^2/(abs(Φ(M-1)(z)-Φ(M-2)(z))-abs(Φ(M)(z)-Φ(M-1)(z)))",
+        context);
   }
 
   @Override
@@ -118,9 +137,7 @@ public final class MuntzPadeApproximant implements
 
     try ( Real    threshold = new Real();
           Real    bound     = new Real();
-          Integer M         = new Integer();
-          Integer Mm1       = new Integer();
-          Integer Mm2       = new Integer() )
+          Integer M         = new Integer() )
     {
       threshold.one().mul2e(-bits, threshold);
 
@@ -128,13 +145,8 @@ public final class MuntzPadeApproximant implements
       while (true)
       {
         M.set(m);
-        Mm1.set(m - 1);
-        Mm2.set(m - 2);
 
-        // B_M(z) = |Δ_M(z)|² / (|Δ_{M−1}(z)| − |Δ_M(z)|)
-        // Compiled as a scalar expression in M, z, and the memoized Φ.
-        // Cache hits for Φ(M−1) and Φ(M−2) after first iteration.
-        bound.set(ΦBound.evaluate(M, Mm1, Mm2, z, bits));
+        bound.set(ΦBound.evaluate(M, 1, bits, null));
 
         if (bound.isPositive() && bound.compareTo(threshold) <= 0)
         {
@@ -162,7 +174,7 @@ public final class MuntzPadeApproximant implements
     else
     {
       ComplexMatrix prev = currentInverse;
-      currentInverse = buildNextInverse(oldM, prev);
+      currentInverse     = buildNextInverse(oldM, prev);
       prev.close();
     }
     currentOrder = oldM + 1;
@@ -170,21 +182,28 @@ public final class MuntzPadeApproximant implements
 
   private void bootstrapInverse()
   {
-    Complex a1 = a.apply(1);
-    if (a1.contains(Complex.ZERO))
+    ComplexPolynomial p1 = a.apply(1);
+    p1.evaluate(v, 1, workingBits, tmp);
+    if (tmp.containsZero())
     {
-      if (a1.isZero()) throw new HankelDegeneracyException(1);
+      if (tmp.isZero()) throw new HankelDegeneracyException(1);
       throw new PrecisionExhaustedException(1, workingBits);
     }
     currentInverse = ComplexMatrix.newMatrix(1, 1);
-    tmp.one().div(a1, workingBits, currentInverse.get(0, 0));
+    Complex one    = new Complex().one();
+    one.div(tmp, workingBits, currentInverse.get(0, 0));
+    one.close();
   }
 
   private ComplexMatrix buildNextInverse(int oldM, ComplexMatrix prevInv)
   {
     ensureVecCapacity(oldM);
 
-    for (int i = 0; i < oldM; i++) uVec.get(i, 0).set(a.apply(i + oldM + 1));
+    for (int i = 0; i < oldM; i++)
+    {
+      ComplexPolynomial p = a.apply(i + oldM + 1);
+      p.evaluate(v, 1, workingBits, uVec.get(i, 0));
+    }
     prevInv.mul(uVec, workingBits, zVec);
 
     for (int j = 0; j < oldM; j++)
@@ -192,21 +211,24 @@ public final class MuntzPadeApproximant implements
       wVec.get(j, 0).zero();
       for (int i = 0; i < oldM; i++)
       {
-        tmp.set(a.apply(2 * oldM - i));
+        ComplexPolynomial p = a.apply(2 * oldM - i);
+        p.evaluate(v, 1, workingBits, tmp);
         tmp.mul(prevInv.get(i, j), workingBits, tmp);
         wVec.get(j, 0).add(tmp, workingBits, wVec.get(j, 0));
       }
     }
 
-    s.set(a.apply(2 * oldM + 1));
+    ComplexPolynomial p = a.apply(2 * oldM + 1);
+    p.evaluate(v, 1, workingBits, s);
     for (int i = 0; i < oldM; i++)
     {
-      tmp.set(a.apply(2 * oldM - i));
+      ComplexPolynomial pi = a.apply(2 * oldM - i);
+      pi.evaluate(v, 1, workingBits, tmp);
       tmp.mul(zVec.get(i, 0), workingBits, tmp);
       s.sub(tmp, workingBits, s);
     }
 
-    if (s.contains(Complex.ZERO))
+    if (s.containsZero())
     {
       if (s.isZero()) throw new HankelDegeneracyException(oldM + 1);
       throw new PrecisionExhaustedException(oldM + 1, workingBits);
@@ -214,7 +236,7 @@ public final class MuntzPadeApproximant implements
 
     alpha.one().div(s, workingBits, alpha);
 
-    int newM = oldM + 1;
+    int         newM   = oldM + 1;
     ComplexMatrix newInv = ComplexMatrix.newMatrix(newM, newM);
 
     for (int i = 0; i < oldM; i++)
@@ -245,7 +267,11 @@ public final class MuntzPadeApproximant implements
   {
     ensureRhsCapacity(M);
     for (int i = 0; i < M; i++)
-      rhsVec.get(i, 0).set(a.apply(M + i + 1)).neg(rhsVec.get(i, 0));
+    {
+      ComplexPolynomial p = a.apply(M + i + 1);
+      p.evaluate(v, 1, workingBits, rhsVec.get(i, 0));
+      rhsVec.get(i, 0).neg(rhsVec.get(i, 0));
+    }
     currentInverse.mul(rhsVec, workingBits, qVec);
 
     result.fitLength(M);
@@ -306,6 +332,8 @@ public final class MuntzPadeApproximant implements
     z.close();
     v.close();
 
+    if (ΦBound != null) ΦBound.close();
+    if (Φ != null) Φ.close();
     if (context != null) context.close();
   }
 }
