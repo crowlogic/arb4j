@@ -1,0 +1,87 @@
+§11. CONCLUSION
+
+The diagonal Padé approximant of a function analytic at the origin admits
+a representation as the solution to a 2×2 matrix Riemann–Hilbert problem.
+This formulation replaces the local derivative-matching of Taylor
+approximation with the global reconstruction of a spectral measure from
+its moments. The convergence domain is determined not by the distance to
+the nearest singularity, but by the maximal region on which the associated
+Riemann–Hilbert factorization remains solvable, a region governed by the
+equilibrium measure of an extremal contour selected by the S-property.
+
+For the constant-coefficient fractional Riccati equation that governs the
+rough Heston characteristic function, this abstract framework acquires
+concrete and computable content. The Cole–Hopf linearization reduces the
+nonlinear fractional ODE to a linear system solvable by the matrix
+Mittag-Leffler function E_{μ,1}(Az). The ratio of two entries of this
+entire matrix function yields a globally meromorphic solution g(z) whose
+poles are the zeros of E_{11}(z) and whose residues are ratios of the
+other Mittag-Leffler entries at those zeros. The discrete spectral measure
+
+    μ_g = Σ_{p ∈ P_g} Res(g,p) · δ_p
+
+concentrated on this pole set generates the moment sequence, the Hankel
+matrices, the orthogonal polynomials, the Jacobi operator, and ultimately
+the Padé approximant itself.
+
+The fractional Fokas–Its–Kitaev theorem of §9.10 identifies the
+Riemann–Hilbert data explicitly. The weight w(s) is not an arbitrary
+density but a sum of Dirac masses at the zeros of E_{11}(z), with masses
+given by the residues of -E_{21}(z)/(c_2 E_{11}(z)). The contour Σ is not
+selected by an abstract variational principle but is the Stahl compact of
+a globally meromorphic function, which decomposes into the pole set plus
+connecting arcs. The asymptotic matrix carries ordinary polynomial scaling
+z^{±n} because the orthogonal polynomials are ordinary polynomials in the
+transformed variable z = t^μ; the fractional parameter μ governs the
+analytic structure of the Green's function and the equilibrium measure,
+not the degree of the approximant.
+
+The closure theorem of §9.10.5 shows that the diagram commutes:
+
+    Fractional Riccati → Mittag-Leffler → meromorphic g
+        → spectral measure μ_g → Hankel H_n → Jacobi J_n
+        → Padé resolvent → Riemann–Hilbert Y
+        → rational function → Stieltjes transform of truncated μ_g
+
+As the truncation order n → ∞, the Padé poles condense on the Stahl
+compact, the rational approximant converges uniformly on compact intervals
+of the positive real axis by the non-explosion condition, and the
+computable a-posteriori error bound of Theorem 9.19 certifies the
+precision of the approximation in O(1) time.
+
+The rough Heston model thus furnishes a test case where every object in
+the abstract Padé–Riemann–Hilbert theory can in principle be computed from
+a special-function exact solution, even though the pole locations are
+transcendental numbers. The Müntz spectral method preserves the algebraic
+structure of the fractional equation; the Padé resummation converts the
+local Puiseux series into a global representation valid on all of
+[0,∞); and the Riemann–Hilbert formulation reveals that the approximant
+is not merely extrapolating derivatives but reconstructing the spectral
+measure that generated the series.
+
+The essential difference remains. Taylor approximation asks: what
+polynomial has the same derivatives at this point? It is local, and its
+radius is the distance to the nearest singularity. Padé approximation
+asks: what spectral measure produces these moments, and what is its
+Stieltjes transform? It is global, and its convergence domain is the
+maximal region on which the Riemann–Hilbert factorization exists. For
+the fractional Riccati equation, that measure is the Mittag-Leffler
+spectral measure of Definition 9.32, and its Stieltjes transform is the
+meromorphic function -E_{21}(z)/(c_2 E_{11}(z)). The Padé approximant
+reconstructs this measure from finitely many moments, and the
+Riemann–Hilbert problem encodes the reconstruction as a matrix
+factorization. The convergence is global because the measure is global;
+the poles are not defects but the discrete spectrum of the truncated Jacobi
+operator; and the error is controlled because the logarithmic potential
+of the equilibrium measure governs the approximation.
+
+The three paradigms — exact special-function solution, rational Padé
+approximation, and matrix Riemann–Hilbert factorization — are
+mathematically equivalent for the fractional Riccati equation, with
+explicit convergence certificates and computable error bounds. The paper
+has presented the general theory in the form of theorems, corollaries,
+and limit statements, each conclusion proved under explicitly stated
+conditions, and has applied the framework to the rough Heston model in
+detail, closing the loop between the abstract Riemann–Hilbert
+formulation and the concrete Mittag-Leffler solution.
+ 
