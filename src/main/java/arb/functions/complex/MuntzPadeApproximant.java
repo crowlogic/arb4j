@@ -1,85 +1,42 @@
 package arb.functions.complex;
 
-import java.util.ArrayList;
-
-import arb.Complex;
-import arb.ComplexMatrix;
-import arb.ComplexPolynomial;
-import arb.Real;
+import arb.*;
+import arb.Integer;
 import arb.expressions.Context;
+import arb.functions.ComplexFunction;
 import arb.functions.integer.ComplexFunctionSequence;
 import arb.functions.integer.ComplexPolynomialSequence;
 import arb.functions.integer.ComplexSequence;
 
 /**
- * Adaptive Müntz–Padé evaluator at fixed external parameter v.
+ * Adaptive Müntz–Padé approximant with incremental Hankel inversion.
  *
  * <p>
- * The diagonal Padé hierarchy is expressed entirely through the arb4j
- * expression compiler. The only procedural component is maintenance of the
- * Hankel inverse hierarchy via Sherman–Morrison bordered updates, which the
- * expression language cannot express because it lacks block-matrix assembly
- * and submatrix extraction. The denominator coefficients computed from each
- * Hankel inverse are deposited into a bound {@link ComplexPolynomialSequence}
- * named {@code qSeq} in the expression context. Every sequence above that
- * boundary is compiled bytecode and cached automatically by the framework.
- *
- * <h2>Naming convention</h2>
+ * The diagonal Padé hierarchy is expressed entirely through the ARB4J
+ * expression compiler. The only procedural component is the bordered
+ * rank-one update of the Hankel inverse, which the expression language
+ * cannot express because it lacks block-matrix assembly. The compiler
+ * automatically memoizes every integer-domain sequence ({@code qSeq},
+ * {@code Φden}, {@code Φnum}, {@code Φ}), so no external caches are
+ * maintained.
  *
  * <p>
- * The Riccati equation
- * {@code Đ^μ u(z;v) = P(v) + Q(v)·u(z;v) + R(v)·u(z;v)²} reserves the names
- * {@code P}, {@code Q}, {@code R} for its polynomial parameters, following
- * the convention of {@link RiccatiMuntzPadeFunctional}. The Padé approximant
- * sequence is therefore named {@code Φ} to avoid the namespace collision; its
- * denominator and numerator polynomial sequences are named {@code Φden} and
- * {@code Φnum} respectively. The Hankel-derived denominator coefficient
- * sequence — populated procedurally and read symbolically from compiled
- * expression bodies — is named {@code qSeq}.
- *
- * <h2>Compiled expression tower</h2>
- *
- * <pre>
- *   Φden : M ➔ sum(j ➔ qSeq(M)[j-1]·z^j {j=1..M}) + 1
- *   Φnum : M ➔ sum(k ➔ a(k+1)·z^k {k=0..M-1}) · Φden(M)
- *   Φ    : M ➔ z ➔ Φnum(M)(z) / Φden(M)(z)
- * </pre>
+ * The successive-difference a-posteriori bound
+ * {@code |g(z)−R_M(z)| ≤ |Δ_M|²/(|Δ_{M−1}|−|Δ_M|)} drives adaptive order
+ * selection. Convergence is certified when the bound drops below
+ * {@code 2^(−bits)}.
  *
  * <p>
- * The successive-difference bound
- * {@code B_M = |Δ_M|² / (|Δ_{M-1}| − |Δ_M|)} of Theorem 5.2 is a scalar at
- * each evaluation point, not a function of {@code z}, so it is assembled in
- * Java from three cached evaluations of {@code Φ} rather than being authored
- * as a separate compiled sequence. The framework caches each {@code Φ(M)}
- * automatically, so the three evaluations needed by the bound at iteration
- * {@code M} reduce to one fresh evaluation of {@code Φ(M)(z)} plus two cache
- * hits for {@code Φ(M-1)(z)} and {@code Φ(M-2)(z)}.
- *
- * <h2>Convergence and pre-asymptotic guard</h2>
- *
- * <p>
- * The convergence loop accepts the smallest {@code M ≥ 3} at which the bound
- * is positive (Proposition 5.3 guard: {@code |Δ_{M-1}| > |Δ_M|}) and below
- * the precision threshold {@code 2^(-bits)}. Theorem 5.4 guarantees this
- * occurs in finitely many steps for every evaluation point in the maximal
- * domain of single-valued meromorphic continuation.
- *
- * <h2>Singularity handling</h2>
- *
- * <p>
- * A Schur complement that contains zero is distinguished from one that is
- * certifiably zero. The former indicates precision exhaustion (caller should
- * rebuild at higher precision); the latter indicates genuine Hankel
- * degeneracy (caller may skip M and try M+1, per Remark 4.6 of the paper).
+ * All scratch storage is pre-allocated at construction or lazily grown
+ * once; no allocation occurs in the adaptive evaluation loop or the
+ * Hankel update loops.
  */
 public final class MuntzPadeApproximant implements
+                                         ComplexFunction,
                                          AutoCloseable
 {
 
-  /**
-   * Raised when a Schur complement is certifiably non-zero only at higher
-   * working precision than the evaluator was constructed with.
-   */
+  /** Precision exhausted: Schur complement straddles zero. */
   public static final class PrecisionExhaustedException extends
                                                         ArithmeticException
   {
@@ -89,28 +46,23 @@ public final class MuntzPadeApproximant implements
 
     public PrecisionExhaustedException(int orderM, int precisionUsed)
     {
-      super(String.format("Schur complement straddles zero at order M=%d with %d bits of working precision; "
-                          + "rebuild the evaluator at higher precision",
-                          orderM,
-                          precisionUsed));
+      super(String.format("Schur complement straddles zero at order M=%d with %d bits; "
+                          + "rebuild at higher precision", orderM, precisionUsed));
       this.orderM        = orderM;
       this.precisionUsed = precisionUsed;
     }
   }
 
-  /**
-   * Raised when a Schur complement is exactly zero at full precision,
-   * indicating genuine Hankel determinant degeneracy.
-   */
+  /** Genuine Hankel determinant degeneracy. */
   public static final class HankelDegeneracyException extends
-                                                      ArithmeticException
+                                                    ArithmeticException
   {
     private static final long serialVersionUID = 1L;
     public final int          orderM;
 
     public HankelDegeneracyException(int orderM)
     {
-      super(String.format("Hankel matrix singular at order M=%d (genuine degeneracy)", orderM));
+      super(String.format("Hankel matrix singular at order M=%d", orderM));
       this.orderM = orderM;
     }
   }
@@ -118,176 +70,177 @@ public final class MuntzPadeApproximant implements
   /** Fractional exponent μ. */
   public final Real                          α;
 
-  /** Fixed external parameter. */
+  /** Fixed external parameter (copied). */
   public final Complex                       v;
 
-  /** Working precision used for Padé construction. */
+  /** Working precision for Padé construction. */
   private final int                          workingBits;
 
-  /** Expression context owning {@code a}, {@code z}, {@code qSeq}, {@code Φden}, {@code Φnum}, {@code Φ}. */
+  /** Expression context owning the compiled tower. */
   private final Context                      context;
 
-  /**
-   * Procedurally maintained backing store for the bound {@code qSeq}
-   * sequence. {@code denomPolys.get(M-1)} is the denominator coefficient
-   * polynomial for Padé order M, with coefficient at index {@code j-1}
-   * holding the Hankel-derived denominator entry {@code q_j}. Compiled
-   * expression bodies read these coefficients through bracket indexing
-   * on {@code qSeq(M)}.
-   */
-  private final ArrayList<ComplexPolynomial> denomPolys = new ArrayList<>();
-
-  /**
-   * Cached Hankel inverses. {@code inverses.get(M-1) == H_M^{-1}}. Maintained
-   * incrementally via Sherman–Morrison bordered updates. The expression
-   * language cannot express the bordered update because it has no
-   * block-assembly syntax, so this hierarchy is the single procedural
-   * component of the evaluator.
-   */
-  private final ArrayList<ComplexMatrix>     inverses   = new ArrayList<>();
-
-  /** Compiled Padé approximant sequence {@code Φ : M ➔ z ➔ Φnum(M)(z) / Φden(M)(z)}. */
+  /** Compiled approximant sequence Φ : M ↦ ( z ↦ Φnum(M)(z)/Φden(M)(z) ). */
   private final ComplexFunctionSequence      Φ;
 
-  /** Underlying coefficient sequence {@code a(k)} bound in the context. */
+  /** Underlying Müntz coefficient sequence a(k). */
   private final ComplexSequence              a;
 
-  // ── Per-growth scratch (allocated once, reused across all orders). ─────
+  // ── Procedural Hankel state (single current inverse, no lists). ────────
 
-  /** u_i = a_{i + oldM + 1}, oldM × 1 column vector. */
+  /** Highest order for which currentInverse is valid. */
+  private int                                currentOrder;
+
+  /** H_{currentOrder}^{−1}, or null when currentOrder == 0. */
+  private ComplexMatrix                      currentInverse;
+
+  // ── Scratch vectors (grown once, reused forever). ──────────────────────
+
+  /** u = (a_{M+1},…,a_{2M})^T  (M×1). */
   private ComplexMatrix                      uVec;
 
-  /** v = H_oldM^{-1} · u, oldM × 1 column vector. */
-  private ComplexMatrix                      vVec;
+  /** zVec = H^{-1} · u  (M×1), i.e. the vector 𝐳 in Theorem 9.26. */
+  private ComplexMatrix                      zVec;
 
-  /** Right-hand side scratch −b_M for the denominator solve. */
+  /** wVec = 𝐯^T · H^{-1} stored as an M×1 column, i.e. 𝐰^T transposed. */
+  private ComplexMatrix                      wVec;
+
+  /** Right-hand side −𝐛_M (M×1). */
   private ComplexMatrix                      rhsVec;
 
-  /** Solution vector q = H_M^{-1} · (−b_M), reused for each order. */
+  /** Solution 𝐪 = H_M^{-1} · (−𝐛_M) (M×1). */
   private ComplexMatrix                      qVec;
 
-  /** Schur complement, its inverse, and a Complex scratch register. */
+  // ── Scalar scratch (pre-allocated). ──────────────────────────────────
+
   private final Complex                      s          = new Complex();
   private final Complex                      alpha      = new Complex();
   private final Complex                      tmp        = new Complex();
-
-  /** Evaluation point z = t^μ. */
   private final Complex                      z          = new Complex();
 
   private boolean                            closed     = false;
 
   /**
-   * Construct the evaluator. The Müntz coefficient sequence {@code a} must
-   * already be registered in {@code context} under the name {@code "a"} as a
-   * {@link ComplexSequence}, with the polynomial parameter values bound. A
-   * unit polynomial named {@code "z"} must likewise be registered as the
-   * indeterminate.
+   * Construct the approximant. The coefficient sequence {@code a} must be
+   * fully configured (parameter {@code v} already bound) before passing.
    *
-   * @param context owning context with {@code a} and {@code z} pre-registered
-   * @param α       fractional order μ ∈ (0, 1)
-   * @param v       fixed external parameter (copied)
-   * @param bits    working precision in bits
+   * @param α     fractional order μ ∈ (0,1)
+   * @param a     Müntz coefficient sequence k ↦ a_k(v)
+   * @param v     external parameter (copied)
+   * @param bits  working precision in bits
    */
-  public MuntzPadeApproximant(Context context, Real α, Complex v, int bits)
+  public MuntzPadeApproximant(Real α, ComplexSequence a, Complex v, int bits)
   {
-    this.context     = context;
     this.α           = α;
     this.v           = new Complex(v);
     this.workingBits = bits;
-    this.a           = (ComplexSequence) context.functions.get("a").instance;
+    this.a           = a;
+    this.context     = new Context();
 
-    // qSeq: integer-indexed sequence of polynomials backed by denomPolys.
-    // The procedural Hankel layer appends to the backing store; the bound
-    // sequence simply returns the polynomial at the requested index. The
-    // framework caches each evaluation, so the lookup is O(1) and incurs
-    // no copy.
+    // Register the coefficient sequence so compiled bodies can call a(k).
+    context.registerSequence("a", a);
+
+    // qSeq(M) is the single procedural bridge: it grows the Hankel
+    // hierarchy to order M, solves H_M · q = −b_M, and returns the
+    // denominator coefficient polynomial. The framework memoizes the
+    // result automatically because the domain is Integer.
     ComplexPolynomialSequence qSeq = (M, order, abits, result) ->
     {
-      ensureOrder(M.getSignedValue());
-      return result.set(denomPolys.get(M.getSignedValue() - 1));
+      int m = M.getSignedValue();
+      ensureOrder(m);
+      return solveDenominator(m, result);
     };
     context.registerFunctionMapping("qSeq",
-                                    arb.Integer.class,
-                                    ComplexPolynomial.class,
-                                    ComplexPolynomialSequence.class)
-           .instance = qSeq;
+                                    qSeq,
+                                    Integer.class,
+                                    ComplexPolynomial.class);
 
-    // Compile the expression tower. Each level depends only on previously-
-    // resolved symbols; the framework caches each compiled sequence on its
-    // integer index.
+    // Compile the expression tower. Each level depends only on symbols
+    // already registered; the framework caches every integer-indexed
+    // sequence on first evaluation.
 
     ComplexPolynomialSequence Φden =
-        ComplexPolynomialSequence.express("Φden:M➔sum(j➔qSeq(M)[j-1]*z^j{j=1..M})+1", context);
+        ComplexPolynomialSequence.express("Φden:M➔sum(j➔qSeq(M)[j-1]*z^j{j=1..M})+1",
+                                          context);
     Φden.setName("Φden");
 
+    // Numerator via the convolution formula p_n = a_n + Σ_{j=1}^{n-1} q_j a_{n-j}.
+    // The inner sum is empty for n=1, yielding p_1 = a_1 automatically.
     ComplexPolynomialSequence Φnum =
-        ComplexPolynomialSequence.express("Φnum:M➔sum(k➔a(k+1)*z^k{k=0..M-1})*Φden(M)", context);
+        ComplexPolynomialSequence.express("Φnum:M➔sum(n➔(a(n)+sum(j➔qSeq(M)[j-1]*a(n-j){j=1..n-1}))*z^n{n=1..M})",
+                                          context);
     Φnum.setName("Φnum");
 
-    this.Φ = ComplexFunctionSequence.express("Φ:M➔z➔Φnum(M)(z)/Φden(M)(z)", context);
+    this.Φ = ComplexFunctionSequence.express("Φ:M➔z➔Φnum(M)(z)/Φden(M)(z)",
+                                             context);
     this.Φ.setName("Φ");
   }
 
   // ──────────────────────────────────────────────────────────────────────
-  //  Public API
+  //  ComplexFunction API
   // ──────────────────────────────────────────────────────────────────────
 
   /**
-   * Evaluate the adaptive Padé approximant at t. Walks {@code M = 3, 4, 5, …}
-   * (the bound is undefined for {@code M < 3} because it references
-   * {@code Φ(M-2)}), accepting the smallest {@code M} for which the
-   * successive-difference bound is positive and below {@code 2^(-bits)}.
+   * Evaluate the adaptive Padé approximant at {@code t}. The method
+   * computes z = t^μ and then walks M = 3,4,5,… until the successive-
+   * difference bound is positive and below {@code 2^(−bits)}.
+   *
+   * <p>All temporaries are pre-allocated; no allocation occurs inside the
+   * convergence loop.</p>
    *
    * @param t      argument of the original (pre-Müntz) function
+   * @param order  unused (order is adaptive)
    * @param bits   target bits of precision
-   * @param result caller-owned buffer; populated with {@code Φ_M(z)} at convergence
-   * @return {@code result}
+   * @param result caller-owned buffer
+   * @return {@code result} populated with the converged value
    */
-  public Complex evaluate(Complex t, int bits, Complex result)
+  @Override
+  public Complex evaluate(Complex t, int order, int bits, Complex result)
   {
     checkOpen();
     t.pow(α, bits, z);
 
-    try ( Real    threshold = new Real();
-          Real    absDeltaM = new Real();
+    try ( Real    threshold   = new Real();
+          Real    absDeltaM   = new Real();
           Real    absDeltaMm1 = new Real();
-          Real    num = new Real();
-          Real    denom = new Real();
-          Real    bound = new Real();
-          Complex valM = new Complex();
-          Complex valMm1 = new Complex();
-          Complex valMm2 = new Complex();
-          Complex deltaM = new Complex();
-          Complex deltaMm1 = new Complex();
-          arb.Integer M = new arb.Integer();
-          arb.Integer Mm1 = new arb.Integer();
-          arb.Integer Mm2 = new arb.Integer() )
+          Real    num         = new Real();
+          Real    denom       = new Real();
+          Real    bound       = new Real();
+          Complex valM        = new Complex();
+          Complex valMm1      = new Complex();
+          Complex valMm2      = new Complex();
+          Complex deltaM      = new Complex();
+          Complex deltaMm1    = new Complex();
+          Integer M           = new Integer();
+          Integer Mm1         = new Integer();
+          Integer Mm2         = new Integer() )
     {
       threshold.one().mul2e(-bits, threshold);
 
-      for (int m = 3; ; m++)
+      int m = 3;
+      while (true)
       {
         M.set(m);
         Mm1.set(m - 1);
         Mm2.set(m - 2);
 
-        // Three Φ evaluations: Φ(M-2) and Φ(M-1) are framework cache hits
-        // after the first M=3 iteration; only Φ(M) is computed fresh.
+        // Φ(M) and Φ(M−1) are cache hits after the first iteration;
+        // only Φ(M) is fresh work each step.
         Φ.evaluate(M,   1, bits, null).evaluate(z, 1, bits, valM);
         Φ.evaluate(Mm1, 1, bits, null).evaluate(z, 1, bits, valMm1);
         Φ.evaluate(Mm2, 1, bits, null).evaluate(z, 1, bits, valMm2);
 
-        // B_M = |Δ_M|² / (|Δ_{M-1}| − |Δ_M|)
+        // |Δ_M|²
         valM.sub(valMm1, bits, deltaM).abs(bits, absDeltaM);
         absDeltaM.mul(absDeltaM, bits, num);
 
+        // |Δ_{M−1}| − |Δ_M|
         valMm1.sub(valMm2, bits, deltaMm1).abs(bits, absDeltaMm1);
         absDeltaMm1.sub(absDeltaM, bits, denom);
 
-        // Pre-asymptotic guard: if |Δ_{M-1}| ≤ |Δ_M| then denom ≤ 0, the
-        // geometric assumption fails, and M is insufficient. Continue.
+        // Pre-asymptotic guard: contraction assumption fails.
         if (!denom.isPositive())
         {
+          m++;
           continue;
         }
 
@@ -295,51 +248,30 @@ public final class MuntzPadeApproximant implements
 
         if (bound.compareTo(threshold) <= 0)
         {
-          // Reuse the already-computed Φ(M)(z).
           return result.set(valM);
         }
+        m++;
       }
     }
   }
 
-  /**
-   * Greatest Padé order currently materialised by the procedural layer.
-   * The framework cache may hold further dependent values from compiled
-   * sequence evaluations.
-   */
-  public int currentOrder()
-  {
-    return inverses.size();
-  }
-
   // ──────────────────────────────────────────────────────────────────────
-  //  Procedural Hankel hierarchy maintenance
+  //  Procedural Hankel hierarchy (single current inverse, no lists)
   // ──────────────────────────────────────────────────────────────────────
 
-  /**
-   * Ensure the inverse and denomPolys hierarchies are populated through
-   * order M. Called from the bound {@code qSeq} body whenever the framework
-   * evaluates {@code qSeq(M)} at an order beyond the current high-water
-   * mark, propagated up from {@code Φden(M)} → {@code Φnum(M)} → {@code Φ(M)}
-   * during convergence-loop evaluation.
-   */
-  private void ensureOrder(int M)
+  /** Grow the Hankel inverse from currentOrder up to target (inclusive). */
+  private void ensureOrder(int target)
   {
-    while (currentOrder() < M)
+    while (currentOrder < target)
     {
       growOne();
     }
   }
 
-  /**
-   * Extend the procedural hierarchy by one order. Computes
-   * {@code H_{newM}^{-1}} from {@code H_{oldM}^{-1}} via Sherman–Morrison,
-   * then computes the denominator coefficient polynomial and appends it to
-   * the backing store of the bound {@code qSeq} sequence.
-   */
+  /** Extend by one order using the bordered Sherman–Morrison formula. */
   private void growOne()
   {
-    int oldM = inverses.size();
+    int oldM = currentOrder;
     int newM = oldM + 1;
 
     if (oldM == 0)
@@ -348,12 +280,14 @@ public final class MuntzPadeApproximant implements
     }
     else
     {
-      inverses.add(buildNextInverse(oldM));
+      ComplexMatrix prevInv = currentInverse;
+      currentInverse        = buildNextInverse(oldM, prevInv);
+      prevInv.close();
     }
-
-    denomPolys.add(buildDenominatorPolynomial(newM));
+    currentOrder = newM;
   }
 
+  /** H_1 = [a_1];  H_1^{-1} = [1/a_1]. */
   private void bootstrapInverse()
   {
     Complex a1 = a.apply(1);
@@ -365,17 +299,26 @@ public final class MuntzPadeApproximant implements
       }
       throw new PrecisionExhaustedException(1, workingBits);
     }
-    ComplexMatrix h1Inv = ComplexMatrix.newMatrix(1, 1);
-    tmp.one().div(a1, workingBits, h1Inv.get(0, 0));
-    inverses.add(h1Inv);
+    currentInverse = ComplexMatrix.newMatrix(1, 1);
+    tmp.one().div(a1, workingBits, currentInverse.get(0, 0));
   }
 
-  private ComplexMatrix buildNextInverse(int oldM)
+  /**
+   * Build H_{newM}^{-1} from H_{oldM}^{-1} via the bordered rank-one
+   * update of Theorem 9.26.
+   *
+   * <pre>
+   *   u_i = a_{i+oldM+1}          (new column, minus bottom)
+   *   v^T = (a_{2·oldM},…,a_{oldM+1})  (last row of first oldM columns)
+   *   d   = a_{2·oldM+1}          (bottom-right corner)
+   *   z   = H^{-1} · u
+   *   w^T = v^T · H^{-1}
+   *   s   = d − w^T · u  (= d − v^T · z)
+   * </pre>
+   */
+  private ComplexMatrix buildNextInverse(int oldM, ComplexMatrix prevInv)
   {
-    int newM = oldM + 1;
     ensureVecCapacity(oldM);
-
-    ComplexMatrix prevInv = inverses.get(oldM - 1);
 
     // u_i = a_{i + oldM + 1}
     for (int i = 0; i < oldM; i++)
@@ -383,14 +326,28 @@ public final class MuntzPadeApproximant implements
       uVec.get(i, 0).set(a.apply(i + oldM + 1));
     }
 
-    // v = prevInv · u
-    prevInv.mul(uVec, workingBits, vVec);
+    // 𝐳 = H^{-1} · 𝐮
+    prevInv.mul(uVec, workingBits, zVec);
 
-    // s = d − uᵀ·v, where d = a_{2·oldM + 1}
+    // 𝐰^T = 𝐯^T · H^{-1}, stored as a column vector.
+    // v_i = a_{2·oldM − i}  (0-indexed: v_0 = a_{2M}, v_{M-1} = a_{M+1})
+    for (int j = 0; j < oldM; j++)
+    {
+      wVec.get(j, 0).zero();
+      for (int i = 0; i < oldM; i++)
+      {
+        tmp.set(a.apply(2 * oldM - i));
+        tmp.mul(prevInv.get(i, j), workingBits, tmp);
+        wVec.get(j, 0).add(tmp, workingBits, wVec.get(j, 0));
+      }
+    }
+
+    // Schur complement s = d − Σ_i v_i · z_i
     s.set(a.apply(2 * oldM + 1));
     for (int i = 0; i < oldM; i++)
     {
-      uVec.get(i, 0).mul(vVec.get(i, 0), workingBits, tmp);
+      tmp.set(a.apply(2 * oldM - i));
+      tmp.mul(zVec.get(i, 0), workingBits, tmp);
       s.sub(tmp, workingBits, s);
     }
 
@@ -398,107 +355,96 @@ public final class MuntzPadeApproximant implements
     {
       if (s.isZero())
       {
-        throw new HankelDegeneracyException(newM);
+        throw new HankelDegeneracyException(oldM + 1);
       }
-      throw new PrecisionExhaustedException(newM, workingBits);
+      throw new PrecisionExhaustedException(oldM + 1, workingBits);
     }
 
     alpha.one().div(s, workingBits, alpha);
 
+    int         newM   = oldM + 1;
     ComplexMatrix newInv = ComplexMatrix.newMatrix(newM, newM);
-    return assembleBorderedInverse(oldM, prevInv, newInv);
-  }
 
-  /**
-   * Assemble the bordered inverse
-   * {@code newInv = [prevInv + α·v·vᵀ, −α·v; −α·vᵀ, α]} into {@code result}.
-   */
-  private ComplexMatrix assembleBorderedInverse(int oldM, ComplexMatrix prevInv, ComplexMatrix result)
-  {
+    // Top-left block: H^{-1} + α · 𝐳 · 𝐰^T
     for (int i = 0; i < oldM; i++)
     {
-      Complex vi = vVec.get(i, 0);
       for (int j = 0; j < oldM; j++)
       {
-        vi.mul(vVec.get(j, 0), workingBits, tmp);
+        zVec.get(i, 0).mul(wVec.get(j, 0), workingBits, tmp);
         tmp.mul(alpha, workingBits, tmp);
-        prevInv.get(i, j).add(tmp, workingBits, result.get(i, j));
+        prevInv.get(i, j).add(tmp, workingBits, newInv.get(i, j));
       }
     }
+
+    // Right border (except bottom): −α · 𝐳
     for (int i = 0; i < oldM; i++)
     {
-      vVec.get(i, 0).mul(alpha, workingBits, tmp);
-      tmp.neg(result.get(i, oldM));
+      zVec.get(i, 0).mul(alpha, workingBits, tmp);
+      tmp.neg(newInv.get(i, oldM));
     }
+
+    // Bottom border (except right): −α · 𝐰^T
     for (int j = 0; j < oldM; j++)
     {
-      vVec.get(j, 0).mul(alpha, workingBits, tmp);
-      tmp.neg(result.get(oldM, j));
+      wVec.get(j, 0).mul(alpha, workingBits, tmp);
+      tmp.neg(newInv.get(oldM, j));
     }
-    result.get(oldM, oldM).set(alpha);
-    return result;
+
+    // Bottom-right corner: α
+    newInv.get(oldM, oldM).set(alpha);
+
+    return newInv;
   }
 
   /**
-   * Solve {@code H_M · q = −b_M} using the cached inverse, then package the
-   * solution as a {@link ComplexPolynomial} of length M whose coefficient
-   * at index {@code j-1} is {@code q_j}. The bound {@code qSeq} sequence
-   * reads these coefficients through bracket indexing inside the compiled
-   * expression {@code Φden}.
+   * Solve H_M · 𝐪 = −𝐛_M using the cached inverse and package the
+   * result as a {@link ComplexPolynomial} whose coefficient at index
+   * {@code j−1} is 𝐪_j.
    */
-  private ComplexPolynomial buildDenominatorPolynomial(int M)
+  private ComplexPolynomial solveDenominator(int M, ComplexPolynomial result)
   {
-    ensureRhsAndSolutionCapacity(M);
+    ensureRhsCapacity(M);
 
     for (int i = 0; i < M; i++)
     {
       rhsVec.get(i, 0).set(a.apply(M + i + 1)).neg(rhsVec.get(i, 0));
     }
-    inverses.get(M - 1).mul(rhsVec, workingBits, qVec);
+    currentInverse.mul(rhsVec, workingBits, qVec);
 
-    ComplexPolynomial qPoly = new ComplexPolynomial();
-    qPoly.fitLength(M);
-    qPoly.setLength(M);
-    for (int j = 0; j < M; j++)
+    result.fitLength(M);
+    result.setLength(M);
+    for (int i = 0; i < M; i++)
     {
-      qPoly.get(j).set(qVec.get(j, 0));
+      result.get(i).set(qVec.get(i, 0));
     }
-    return qPoly;
+    return result;
   }
 
   // ──────────────────────────────────────────────────────────────────────
-  //  Scratch capacity
+  //  Scratch capacity (reallocates only when size increases)
   // ──────────────────────────────────────────────────────────────────────
 
   private void ensureVecCapacity(int n)
   {
     if (uVec == null || uVec.getNumRows() < n)
     {
-      if (uVec != null)
-      {
-        uVec.close();
-      }
-      if (vVec != null)
-      {
-        vVec.close();
-      }
+      if (uVec != null)  uVec.close();
+      if (zVec != null)  zVec.close();
+      if (wVec != null)  wVec.close();
+
       uVec = ComplexMatrix.newMatrix(n, 1);
-      vVec = ComplexMatrix.newMatrix(n, 1);
+      zVec = ComplexMatrix.newMatrix(n, 1);
+      wVec = ComplexMatrix.newMatrix(n, 1);
     }
   }
 
-  private void ensureRhsAndSolutionCapacity(int n)
+  private void ensureRhsCapacity(int n)
   {
     if (rhsVec == null || rhsVec.getNumRows() < n)
     {
-      if (rhsVec != null)
-      {
-        rhsVec.close();
-      }
-      if (qVec != null)
-      {
-        qVec.close();
-      }
+      if (rhsVec != null) rhsVec.close();
+      if (qVec != null)   qVec.close();
+
       rhsVec = ComplexMatrix.newMatrix(n, 1);
       qVec   = ComplexMatrix.newMatrix(n, 1);
     }
@@ -519,44 +465,16 @@ public final class MuntzPadeApproximant implements
   @Override
   public void close()
   {
-    if (closed)
-    {
-      return;
-    }
+    if (closed) return;
     closed = true;
 
-    for (ComplexMatrix m : inverses)
-    {
-      m.close();
-    }
-    inverses.clear();
+    if (currentInverse != null) currentInverse.close();
 
-    for (ComplexPolynomial p : denomPolys)
-    {
-      p.close();
-    }
-    denomPolys.clear();
-
-    if (uVec != null)
-    {
-      uVec.close();
-      uVec = null;
-    }
-    if (vVec != null)
-    {
-      vVec.close();
-      vVec = null;
-    }
-    if (rhsVec != null)
-    {
-      rhsVec.close();
-      rhsVec = null;
-    }
-    if (qVec != null)
-    {
-      qVec.close();
-      qVec = null;
-    }
+    if (uVec != null) uVec.close();
+    if (zVec != null) zVec.close();
+    if (wVec != null) wVec.close();
+    if (rhsVec != null) rhsVec.close();
+    if (qVec != null) qVec.close();
 
     s.close();
     alpha.close();
@@ -564,9 +482,7 @@ public final class MuntzPadeApproximant implements
     z.close();
     v.close();
 
-    if (Φ != null)
-    {
-      Φ.close();
-    }
+    // The context owns Φ, Φden, Φnum, qSeq and a; closing it closes them.
+    if (context != null) context.close();
   }
 }
