@@ -21,11 +21,6 @@
 
 %typemap(javacode) acb_poly_struct %{
 
-	public ComplexPolynomial neg( ComplexPolynomial result )
-	{
-	  return result.set(this).neg();
-	}
-	
 	@SuppressWarnings("resource")
 	public static ComplexPolynomial named(String string)
 	{

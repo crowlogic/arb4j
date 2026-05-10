@@ -72,6 +72,12 @@ public class Fraction implements Becomable<Fraction>,AutoCloseable,NamedField<Fr
   }
 
 
+
+	public ComplexPolynomial neg( ComplexPolynomial result )
+	{
+	  return result.set(this).neg();
+	}
+
 	public AlgebraicNumber pow(Integer exponent, int bits, AlgebraicNumber result)
 	{
 	  return result.set(this).pow(exponent );
