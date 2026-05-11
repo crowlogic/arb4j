@@ -7,18 +7,17 @@ import arb.Integer;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
-import arb.functions.integer.RealToComplexFunctionSequence;
+import arb.functions.integer.ComplexPolynomialSequence;
 import arb.functions.real.RealFunction;
-import arb.utensils.ShellFunctions;
-import arb.utensils.Utensils;
 
 public class a implements
-               RealToComplexFunctionSequence,
+               ComplexPolynomialSequence,
                Typesettable,
                AutoCloseable,
                Initializable,
                Named
 {
+
   public static void main(String args[])
   {
     a   a       = new a();
@@ -40,29 +39,22 @@ public class a implements
     context.registerFunction("r", r);
 
     context.injectReferences(a);
-    
-       
-    RealFunction a1 = a.apply(1).realPart();
-    System.out.println("a1r=" + a1.eval(1.2));
-    RealToComplexFunction a5 = a.apply(25);
-    RealFunction a5r = a5.realPart();
-    System.out.println("a5r=" + a5r.eval(1.2));
 
+    var a1 = a.apply(1);
+    System.out.println( "a1=" + a1 );
   }
 
-  public boolean                                             isInitialized;
-  protected Context                                          context;
-  public Expression                                          expression;
-  private final TreeMap<Integer, RealToComplexFunction>      cache = new TreeMap<>();
-  public a                                                   a;
-  public ComplexPolynomial                                   r;
-  public ComplexPolynomial                                   q;
-  public ComplexPolynomial                                   p;
-  public Real                                                λ;
-  public Real                                                μ;
-  public Real                                                ν;
-  public Real                                                ρ;
-  public ArrayList<Function<Integer, RealToComplexFunction>> derivativeCache;
+  public boolean                                         isInitialized;
+  protected Context                                      context;
+  public Expression                                      expression;
+  private final TreeMap<Integer, ComplexPolynomial>      cache = new TreeMap<>();
+  public a                                               a;
+  public ComplexPolynomial                               p;
+  public ComplexPolynomial                               q;
+  public ComplexPolynomial                               r;
+  public Real                                            μ;
+  public ArrayList<Function<Integer, ComplexPolynomial>> derivativeCache;
+  public Integer                                         cseℤ0001;
 
   @Override
   public Class<Integer> domainType()
@@ -71,13 +63,13 @@ public class a implements
   }
 
   @Override
-  public Class<RealToComplexFunction> coDomainType()
+  public Class<ComplexPolynomial> coDomainType()
   {
-    return RealToComplexFunction.class;
+    return ComplexPolynomial.class;
   }
 
   @Override
-  public RealToComplexFunction evaluate(Integer l, int order, int bits, RealToComplexFunction result)
+  public ComplexPolynomial evaluate(Integer k, int order, int bits, ComplexPolynomial result)
   {
     if (!this.isInitialized)
     {
@@ -86,32 +78,65 @@ public class a implements
 
     if (order <= 1)
     {
-      RealToComplexFunction var11 = (RealToComplexFunction) Function.peek(this.cache, l);
+      ComplexPolynomial var11 = (ComplexPolynomial) Function.peek(this.cache, k);
       if (var11 != null)
       {
-        return var11;
+        result.set(var11);
+        return result;
       }
       else
       {
         TreeMap var9  = this.cache;
-        Integer var10 = l;
-        afunc   var12 = new afunc();
-        if (var12.l == null)
+        Integer var10 = k;
+        switch (this.k.getSignedValue())
         {
-          var12.l = new Integer();
+        case 1:
+          this.p.div(this.μ.add(this.cℤ0000, bits, this.vℝ0001).Γ(bits, this.vℝ0002), bits, result);
+          break;
+        default:
+          Real var12 = this.k.sub(this.cℤ0000, bits, this.vℤ0001)
+                             .mul(this.μ, bits, this.vℝ0003)
+                             .add(this.cℤ0000, bits, this.vℝ0004)
+                             .Γ(bits, this.vℝ0005)
+                             .div(this.k.mul(this.μ, bits, this.vℝ0006).add(this.cℤ0000, bits, this.vℝ0007).Γ(bits, this.vℝ0008), bits, this.vℝ0009);
+          ComplexPolynomial var10001 = this.q.mul(
+                                                  (Complex) ((ComplexPolynomial) this.a.evaluate(this.k.sub(this.cℤ0000, bits, this.vℤ0002),
+                                                                                                 order,
+                                                                                                 bits,
+                                                                                                 this.vXℂ0007)).evaluate(k, order, bits, this.vℂ0001),
+                                                  bits,
+                                                  this.vXℂ0008);
+          ComplexPolynomial var10002 = this.r;
+          if (this.operandF0001.v == null)
+          {
+            this.operandF0001.v = new Integer();
+          }
+
+          this.operandF0001.v.set(k);
+          if (this.operandF0001.k == null)
+          {
+            this.operandF0001.k = new Integer();
+          }
+
+          this.operandF0001.k.set(this.k);
+          this.sumXℂ0001.additiveIdentity();
+          this.jXℂ0001ℤ0001.set(this.cℤ0000);
+          Integer var10003 = this.jXℂ0001ℤ0001;
+          this.upperLimitℤ0001.set(this.k.sub(this.cℤ0001, bits, this.vℤ0003));
+
+          while (var10003.compareTo(this.upperLimitℤ0001) <= 0)
+          {
+            this.sumXℂ0001.add((ComplexPolynomial) this.operandF0001.evaluate(this.jXℂ0001ℤ0001, bits, this.valueXℂ0001), bits);
+            var10003 = this.jXℂ0001ℤ0001.increment();
+          }
+
+          var12.mul(var10001.add(var10002.mul(this.sumXℂ0001, bits, this.vXℂ0009), bits, this.vXℂ0010), bits, result);
         }
 
-        var12.l.set(l);
-        var12.ρ = this.ρ;
-        var12.λ = this.λ;
-        var12.μ = this.μ;
-        var12.ν = this.ν;
-        var12.p = this.p;
-        var12.q = this.q;
-        var12.r = this.r;
-        var12.initialize();
-        Function.poke(var9, var10, var12);
-        return var12;
+        ComplexPolynomial var7 = new ComplexPolynomial();
+        var7.set(result);
+        Function.poke(var9, var10, var7);
+        return result;
       }
     }
     else
@@ -142,7 +167,7 @@ public class a implements
 
         Function var10000 = this.derivativeCache.get(var5);
         Object   var8     = ((Field) result).get(var5);
-        var10000.evaluate(l, 1, bits, var8);
+        var10000.evaluate(k, 1, bits, var8);
         if (var5 >= 2)
         {
           ((Field) var8).div((int) var6, bits, (Field) var8);
@@ -158,24 +183,9 @@ public class a implements
     if (var1.add(this))
     {
       this.cache.clear();
-      if (this.p != null)
-      {
-        this.p.invalidateCache(var1);
-      }
-
-      if (this.q != null)
-      {
-        this.q.invalidateCache(var1);
-      }
-
       if (this.a != null)
       {
         this.a.invalidateCache(var1);
-      }
-
-      if (this.r != null)
-      {
-        this.r.invalidateCache(var1);
       }
     }
   }
@@ -183,28 +193,6 @@ public class a implements
   public void invalidateCache()
   {
     this.invalidateCache(Collections.newSetFromMap(new IdentityHashMap<>()));
-  }
-
-  @Override
-  public RealToComplexFunctionSequence derivative()
-  {
-    return Function.express(Integer.class,
-                            RealToComplexFunction.class,
-                            RealToComplexFunctionSequence.class,
-                            "diffa",
-                            "diff(when(l=1,p(v)/Γ(μ+1),else,(Γ(((l-1)*μ)+1)/Γ((l*μ)+1))*((q(v)*(a(l-1)(v)))+(r(v)*Σj➔(a(j)(v))*(a((l-1)-j)(v)){j=1…l-2}))),l)",
-                            this.context);
-  }
-
-  @Override
-  public RealToComplexFunctionSequence integral()
-  {
-    return Function.express(Integer.class,
-                            RealToComplexFunction.class,
-                            RealToComplexFunctionSequence.class,
-                            "inta",
-                            "int(when(l=1,p(v)/Γ(μ+1),else,(Γ(((l-1)*μ)+1)/Γ((l*μ)+1))*((q(v)*(a(l-1)(v)))+(r(v)*Σj➔(a(j)(v))*(a((l-1)-j)(v)){j=1…l-2}))),l)",
-                            this.context);
   }
 
   @Override
@@ -223,7 +211,15 @@ public class a implements
 
   public a()
   {
-    this.context = new Context();
+    this.context  = new Context();
+    this.cseℤ0001 = new Integer();
+  }
+
+  @Override
+  public void close()
+  {
+    this.cseℤ0001.close();
+    this.a.close();
   }
 
   @Override
@@ -241,19 +237,18 @@ public class a implements
   @Override
   public Expression getExpression()
   {
-    return expression;
+    return this.expression;
   }
 
   @Override
   public String toString()
   {
-    return "a:when(%s=1,p(v)/Γ(μ+1),else,(Γ(((%s-1)*μ)+1)/Γ((%s*μ)+1))*((q(v)*(a(%s-1)(v)))+(r(v)*Σj➔(a(j)(%s))*(a((%s-1)-j)(%s)){j=1…%s-2})))";
-
+    return "a:when(%s=1,p/Γ(μ+1),else,(Γ(((%s-1)*μ)+1)/Γ((%s*μ)+1))*((q*(a(%s-1)(v)))+(r*Σj➔(a(j)(%s))*(a((%s-1)-j)(%s)){j=1…%s-2})))";
   }
 
   @Override
   public String typeset()
   {
-    return "\\\\left\\\\{\\\\begin{array}{ll}\\n\\frac{\\p\\left(v\\right)}{\\Gamma(\\left(μ + 1\\right))} & \\\\text{if } \\left(l = 1\\right)\\\\\\\\\\n\\left(\\frac{\\Gamma(\\left(\\left(\\left(l-1\\right) \\cdot μ\\right) + 1\\right))}{\\Gamma(\\left(\\left(l \\cdot μ\\right) + 1\\right))} \\cdot \\left(\\left(\\q\\left(v\\right) \\cdot \\a\\left(\\left(l-1\\right)\\right)\\left(v\\right)\\right) + \\left(\\r\\left(v\\right) \\cdot \\sum_{j = 1}^{\\left(l-2\\right)}{\\left(\\a\\left(j\\right)\\left(v\\right) \\cdot \\a\\left(\\left(\\left(l-1\\right)-j\\right)\\right)\\left(v\\right)\\right)}\\right)\\right)\\right) & \\\\text{otherwise}\\n\\\\end{array}\\\\right.";
+    return "\\\\left\\\\{\\\\begin{array}{ll}\\n\\frac{p}{\\Gamma(\\left(μ + 1\\right))} & \\\\text{if } \\left(k = 1\\right)\\\\\\\\\\n\\left(\\frac{\\Gamma(\\left(\\left(\\left(k-1\\right) \\cdot μ\\right) + 1\\right))}{\\Gamma(\\left(\\left(k \\cdot μ\\right) + 1\\right))} \\cdot \\left(\\left(q \\cdot \\a\\left(\\left(k-1\\right)\\right)\\left(v\\right)\\right) + \\left(r \\cdot \\sum_{j = 1}^{\\left(k-2\\right)}{\\left(\\a\\left(j\\right)\\left(v\\right) \\cdot \\a\\left(\\left(\\left(k-1\\right)-j\\right)\\right)\\left(v\\right)\\right)}\\right)\\right)\\right) & \\\\text{otherwise}\\n\\\\end{array}\\\\right.";
   }
 }

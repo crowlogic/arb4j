@@ -12,5 +12,5 @@ var r = R.evaluate(bits).setName("r");
 context.registerFunction("p",p);
 context.registerFunction("q",q);
 context.registerFunction("r",r);
-var a= RealToComplexFunctionSequence.express(null,"a:l➔v->when(l=1,p(v)/Γ(μ+1),else,(Γ((l-1)*μ+1)/Γ(l*μ+1))*(q(v)*a(l-1)(v)+r(v)*∑j➔a(j)(v)*a(l-1-j)(v){j=1..l-2}))",context);
+var a= ComplexPolynomialSequence.express(null,"a:l➔v->when(l=1,p(v)/Γ(μ+1),else,(Γ((l-1)*μ+1)/Γ(l*μ+1))*(q(v)*a(l-1)(v)+r(v)*∑j➔a(j)(v)*a(l-1-j)(v){j=1..l-2}))",context);
 var a1 = a.apply(1);

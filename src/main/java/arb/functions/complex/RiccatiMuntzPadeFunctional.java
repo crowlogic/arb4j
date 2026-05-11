@@ -114,7 +114,7 @@ public class RiccatiMuntzPadeFunctional extends
                                     ComplexPolynomialNullaryFunction Q,
                                     ComplexPolynomialNullaryFunction R)
   {
-    
+
     this.context = context.disableLommelPolynomials();
     this.P       = P;
     this.Q       = Q;
@@ -128,28 +128,24 @@ public class RiccatiMuntzPadeFunctional extends
     context.registerVariable(r = ComplexPolynomial.named("r"));
 
     // Discriminant: q(v)² − 4·p(v)·r(v)
-    discriminant = ComplexPolynomialNullaryFunction.express("D:Q(v)² − 4·P(v)·R(v)", context);
+    discriminant = ComplexPolynomialNullaryFunction.express("D:Q()² − 4·P()·R()", context);
 
     // Declare the Müntz coefficient sequence
     ComplexFunctionSequence.declare("a", context);
 
-    // Compile the convolution sum S(k)(v) = Σ_{j=1}^{k-2} a(j)(v)·a(k-1-j)(v)
-    ComplexFunctionSequence.compile("S:k➔v➔∑j➔a(j)(v)*a(k-1-j)(v){j=1..k-2}", context);
-
     // Compile the full recurrence
-    a = ComplexPolynomialSequence.express("a:k➔v➔when(k=1,P(v)/Γ(μ+1),else,(Γ((k-1)*μ+1)/Γ(k*μ+1))*(Q(v)*a(k-1)(v)+R(v)*S(k)(v)))", context);
+    a = ComplexPolynomialSequence.express("a:k➔v➔when(k=1,p/Γ(μ+1),else,(Γ((k-1)*μ+1)/Γ(k*μ+1))*(q*a(k-1)(v)+r*∑j➔a(j)(v)*a(k-1-j)(v){j=1..k-2}))",
+                                          context);
   }
-
 
   /**
    * Build w(t;v) = ∂y/∂v as a {@link MuntzPadeFunctional}.
    *
    * FIXME: theres prolly a better way to do this
    * <p>
-   * p, q, r are polynomial variables in {@link #context}. Their 
-   * v-derivatives are obtained via {@link ComplexPolynomial#derivative()}, then
-   * registered as variables p_dv, q_dv, r_dv for use in the f, g, w recurrence
-   * expressions.
+   * p, q, r are polynomial variables in {@link #context}. Their v-derivatives are
+   * obtained via {@link ComplexPolynomial#derivative()}, then registered as
+   * variables p_dv, q_dv, r_dv for use in the f, g, w recurrence expressions.
    * </p>
    */
   private ComplexFunctional partialDerivativeWithRespectToV()
@@ -169,18 +165,15 @@ public class RiccatiMuntzPadeFunctional extends
     // g(k)(v) : k=0 → q(v); k≥1 → 2·r(v)·a(k)(v)
     ComplexFunctionSequence.compile("g:k➔v➔when(k=0,q(v),else,2*r(v)*a(k)(v))", context);
 
-    ComplexFunctionSequence.compile("h:k➔v➔(Γ((k-1)*μ+1)/Γ(k*μ+1))*(f(k-1)(v)+∑j➔g(k-2-j)(v)*w(j+1)(v){j=0..k-2})",context);
+    ComplexFunctionSequence.compile("h:k➔v➔(Γ((k-1)*μ+1)/Γ(k*μ+1))*(f(k-1)(v)+∑j➔g(k-2-j)(v)*w(j+1)(v){j=0..k-2})", context);
     // w(k)(v) linear Volterra recurrence
-    var w =
-          ComplexPolynomialSequence.express("w:k➔v➔when(k=1,pdv(v)/Γ(μ+1),else,h(k,v))",
-                                            context);
+    var w = ComplexPolynomialSequence.express("w:k➔v➔when(k=1,pdv(v)/Γ(μ+1),else,h(k,v))", context);
 
     return new MuntzPadeFunctional("∂y/∂v",
                                    α,
                                    w);
   }
 
-  
   /**
    ** Register fractional order μ
    * 
