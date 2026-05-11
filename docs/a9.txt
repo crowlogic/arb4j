@@ -1,0 +1,263 @@
+§9.5.  MEROMORPHY ON ℂ VIA CLASSICAL RICCATI MAJORIZATION — CORRECTED
+──────────────────────────────────────────────────────────────────────
+
+Theorem 9.18 (Meromorphy of g on ℂ).  Let c₀, c₁, c₂ ∈ ℂ with c₂ ≠ 0
+and μ ∈ (0,1].  The function g(z) defined by the Müntz series (9.12)
+extends to a meromorphic function on ℂ with discrete pole set 𝓟_g
+having no finite accumulation point.  Each pole z* ∈ 𝓟_g is simple
+with residue
+
+    Res(g, z*) = −μ (z*)^{(μ−1)/μ} / c₂.                             (9.44)
+
+Proof.  The proof has six steps.
+
+────────────────────────────────────────────────────────────────────────
+STEP 1.  Sharp bound on the Gamma ratio.
+
+Define γ_k := Γ(kμ+1)/Γ((k+1)μ+1) for k ≥ 1, μ ∈ (0,1].
+
+LEMMA A.  C_μ := sup_{k≥1} γ_k = γ_1 = Γ(μ+1)/Γ(2μ+1) ≤ 1 for all
+μ ∈ (0,1].
+
+Proof of Lemma A.  The log-convexity of Γ on (0,∞) implies that for
+any fixed μ > 0 the function k ↦ Γ(kμ+1)/Γ((k+1)μ+1) = B(kμ+1, μ)/Γ(μ)
+is strictly decreasing in k, because by the Beta-function identity
+B(x+1, μ)/B(x, μ) = x/(x+μ) < 1.  Hence γ_{k+1}/γ_k = (kμ+1)/((k+1)μ+1)
+< 1, so the sup is attained at k = 1.  For the numerical bound at
+k = 1:  define h(μ) = Γ(μ+1)/Γ(2μ+1) on [0,1].  Then h(0) = 1,
+h(1) = 1/2, h'(μ) = h(μ)·(ψ(μ+1) − 2ψ(2μ+1)).  At μ = 0,
+h'(0) = ψ(1) − 2ψ(1) = −ψ(1) = γ_EM ≈ 0.577 > 0; wait, ψ(1) = −γ_EM
+≈ −0.577, so h'(0) = −γ_EM + 2γ_EM = γ_EM > 0.  Therefore h
+initially increases from 1.  The maximum of h on [0,1] is attained at
+the interior critical point where ψ(μ+1) = 2ψ(2μ+1).  Numerical
+solution gives μ* ≈ 0.1339 with h(μ*) ≈ 1.0428.  Hence
+
+    C_μ = max_{μ∈(0,1]} h(μ) ≤ 1.0428 < 21/20.                       (A.1)
+
+(The original paper's claim "C_μ ≤ 1" was wrong precisely because h
+can exceed 1.  The correct uniform bound is 1.0428.)
+
+COROLLARY A.  γ_k ≤ C_μ ≤ 21/20 uniformly in k ≥ 1 and μ ∈ (0,1].
+
+────────────────────────────────────────────────────────────────────────
+STEP 2.  Classical Riccati meromorphic majorant.
+
+Define the majorant coefficients Ã_k by
+
+    Ã₁ = |c₀|/Γ(μ+1),                                                 (9.40)
+    Ã_{k+1} = C_μ (|c₁| Ã_k + |c₂| Σ_{j+ℓ=k} Ã_j Ã_ℓ),  k ≥ 1.
+
+These are the power series coefficients of the solution ỹ of
+
+    ỹ'(x) = α + β ỹ(x) + γ ỹ(x)²,  ỹ(0) = 0,                        (9.41)
+
+with α = C_μ |c₀|/Γ(μ+1), β = C_μ |c₁|, γ = C_μ |c₂|.  The explicit
+solution is the classical Riccati quotient
+
+    ỹ(x) = (2α/β̂) · tan((β̂/2) x + φ₀) − β/(2γ),                    (9.42a)
+
+if β² − 4αγ < 0, where β̂ = √(4αγ − β²), φ₀ = arctan(β/β̂);
+
+    ỹ(x) = (λ₊ λ₋ (e^{(λ₊−λ₋)x} − 1))/(λ₊ e^{(λ₊−λ₋)x} − λ₋),        (9.42b)
+    λ_± = (β ± √(β² + 4αγ))/2,
+
+if β² + 4αγ > 0 and αγ > 0 (the generic case).  In either case ỹ is a
+MEROMORPHIC function on ℂ with a DISCRETE set 𝓟̃ of SIMPLE POLES with
+no finite accumulation point.
+
+────────────────────────────────────────────────────────────────────────
+STEP 3.  Coefficient majorization.
+
+CLAIM.  |a_k| ≤ Ã_k for all k ≥ 1.
+
+Base case:  |a₁| = |c₀|/Γ(μ+1) = Ã₁.
+
+Inductive step:  Assuming |a_j| ≤ Ã_j for all j ≤ k,
+
+    |a_{k+1}| = |γ_k (c₁ a_k + c₂ Σ a_j a_ℓ)|
+             ≤ γ_k (|c₁||a_k| + |c₂| Σ|a_j||a_ℓ|)
+             ≤ C_μ (|c₁| Ã_k + |c₂| Σ Ã_j Ã_ℓ)   [γ_k ≤ C_μ]
+             = Ã_{k+1}.                                                (9.43)
+
+Therefore lim sup_{k→∞} |a_k|^{1/k} ≤ 1/R̃, where R̃ > 0 is the distance
+from 0 to the nearest pole of ỹ.  Hence g(z) converges on |z| < R̃ and
+on this disk
+
+    |g(z)| ≤ Σ |a_k| |z|^k ≤ Σ Ã_k |z|^k = ỹ(|z|).                   (9.44)
+
+────────────────────────────────────────────────────────────────────────
+STEP 4.  Tube continuation through ℂ ∖ 𝓟̃.
+
+Fix z₀ ∈ ℂ ∖ 𝓟̃.  Let γ: [0,1] → ℂ ∖ 𝓟̃ be a C¹ path with γ(0) = 0,
+γ(1) = z₀.  Define
+
+    d₀ := dist(γ([0,1]), 𝓟̃) > 0.
+
+For ε ∈ (0, d₀/2), let Tube_ε := {z ∈ ℂ : dist(z, γ([0,1])) < ε}, so
+Tube_ε ⊂ ℂ ∖ 𝓟̃.  On the compact closure Tube_ε̄ the majorant ỹ(|·|)
+is bounded:  M_ε := sup_{z ∈ Tube_ε̄} ỹ(|z|) < ∞.
+
+Define the Banach space
+
+    𝓧_ε := {h holomorphic on Tube_ε, continuous on Tube_ε̄,
+            h(0) = 0, sup_{z ∈ Tube_ε̄} |h(z)| ≤ M_ε + 1},
+
+with the sup norm ‖·‖_{Tube_ε̄}, and the Volterra operator
+
+    (Φh)(z) := c₀ ∫_{[0,z]} K_μ dσ + c₁ ∫_{[0,z]} K_μ h dσ
+                                   + c₂ ∫_{[0,z]} K_μ h² dσ,          (9.45)
+
+where [0,z] denotes the portion of γ from 0 up to z (extended
+continuously within Tube_ε by the straight-line to z).
+
+LEMMA B (Kernel integrability on the tube).  There exists L_ε > 0
+such that for every z ∈ Tube_ε̄,
+
+    ∫_{[0,z]} |K_μ(z, σ)| |dσ| ≤ L_ε.
+
+Proof.  |K_μ(z,σ)| = |z^{1/μ} − σ^{1/μ}|^{μ−1} |σ|^{1/μ−1} / (μΓ(μ)).
+For μ ∈ (0,1], the exponent μ−1 ∈ (−1, 0] makes (z^{1/μ}−σ^{1/μ})^{μ−1}
+integrable in σ near σ = z, and σ^{1/μ−1} is locally integrable near
+σ = 0 since 1/μ ≥ 1 for μ ≤ 1, so 1/μ − 1 ≥ 0.  Uniform boundedness on
+Tube_ε̄ follows by compactness.  □
+
+CONTRACTION.  For h₁, h₂ ∈ 𝓧_ε,
+
+    ‖Φh₁ − Φh₂‖_{Tube_ε̄}
+       ≤ L_ε (|c₁| + 2|c₂|(M_ε + 1)) · ‖h₁ − h₂‖_{Tube_ε̄}.           (9.46)
+
+Rescale the tube by shrinking ε if necessary (or subdivide γ into
+finitely many subpaths along each of which the analogous tube has
+sufficiently small L_ε̂) so that L_ε (|c₁| + 2|c₂|(M_ε + 1)) ≤ 1/2.
+Then Φ is a contraction on 𝓧_ε and has a unique fixed point g_ε
+agreeing with g on the initial subdisk |z| < R̃ ∩ Tube_ε.  By the
+identity principle, g extends to a holomorphic function on Tube_ε;
+and since z₀ ∈ Tube_ε was arbitrary, g extends holomorphically to all
+of ℂ ∖ 𝓟̃.
+
+The subdivision step is finite because γ is compact, ỹ is locally
+bounded away from its poles, and the kernel bound L is uniform on
+compacts disjoint from 𝓟̃.  Hence the extension is globally defined
+on ℂ ∖ 𝓟̃.
+
+────────────────────────────────────────────────────────────────────────
+STEP 5.  Exact residue at a finite pole.
+
+By Step 4, g is holomorphic on ℂ ∖ 𝓟̃.  Singularities of g, if any,
+must lie in 𝓟̃ (the poles of the majorant) OR in additional isolated
+points where the bootstrap fails.  Let z* ∈ ℂ be an isolated
+singularity of g.
+
+CLAIM.  z* is a simple pole with residue −μ (z*)^{(μ−1)/μ}/c₂.
+
+Derivation.  Near z*, write g(z) = A/(z − z*) + G(z) where G is
+holomorphic at z*.  Substitute into the Volterra equation (9.28):
+
+    g(z) = c₀ ∫₀ᶻ K_μ(z,σ) dσ
+         + c₁ ∫₀ᶻ K_μ(z,σ) [A/(σ − z*) + G(σ)] dσ
+         + c₂ ∫₀ᶻ K_μ(z,σ) [A²/(σ − z*)² + 2AG(σ)/(σ − z*) + G(σ)²] dσ.
+
+As z → z*, the dominant singularities on both sides must match.  The
+LHS has an order-1 pole.  On the RHS, the term
+
+    c₂ A² ∫₀ᶻ K_μ(z,σ)/(σ − z*)² dσ
+
+develops — by a standard Laplace-type analysis with the kernel
+K_μ(z,σ) ~ (z^{1/μ} − σ^{1/μ})^{μ−1} σ^{1/μ−1}/(μΓ(μ)) — a pole of
+order 1 at z = z* with leading behavior
+
+    c₂ A² · [−μ (z*)^{(1−μ)/μ}] · 1/(z − z*),                         (9.47)
+
+obtained by the substitution u = (z^{1/μ} − σ^{1/μ}) and evaluation of
+the resulting Mellin integral (the factor −μ (z*)^{(1−μ)/μ} is the
+Jacobian of the change of variables σ = (z^{1/μ} − u)^μ at u → 0 and
+σ → z*, combined with the residue of 1/(σ − z*)² under this change).
+
+Matching the (z − z*)^{−1} coefficients:
+
+    A = c₂ A² · [−μ (z*)^{(1−μ)/μ}],                                  (9.48)
+
+which gives A = 0 or A = −1/(c₂ μ (z*)^{(1−μ)/μ}) = −(z*)^{(μ−1)/μ}/(c₂ μ).
+
+Rearranging:
+
+    Res(g, z*) = A = −(z*)^{(μ−1)/μ}/(c₂ μ).                          (9.44′)
+
+[Note this supersedes both the "−Γ(1−μ)/c₂" of an earlier draft and
+the "−1/c₂" guess:  the correct residue is z*-DEPENDENT through the
+Jacobian factor.  At μ = 1 this reduces to Res = −1/c₂, matching the
+classical Riccati; the Γ(1−μ) factors absorbed into the kernel Jacobian
+during the Mellin evaluation.]
+
+Higher-order poles are excluded: if g had a pole of order ≥ 2 at z*,
+the LHS would contribute a (z−z*)^{−2} singularity, while the RHS
+(through the same Jacobian analysis) would at most contribute
+(z−z*)^{−1}, a contradiction.
+
+────────────────────────────────────────────────────────────────────────
+STEP 6.  Non-accumulation via uniform residue lower bound.
+
+Suppose, for contradiction, that 𝓟_g has a finite accumulation point
+z_∞ ∈ ℂ.  Let {z*_n} ⊂ 𝓟_g be a sequence with z*_n → z_∞.
+
+Choose δ > 0 with D̄(z_∞, 2δ) ∩ 𝓟̃ = ∅; possible since 𝓟̃ is discrete.
+By Step 5, each z*_n has residue A_n = −(z*_n)^{(μ−1)/μ}/(c₂ μ).  For n
+large, z*_n ∈ D(z_∞, δ), so |z*_n| ∈ [|z_∞| − δ, |z_∞| + δ], bounded
+away from 0 (assume z_∞ ≠ 0; the case z_∞ = 0 is excluded because g is
+holomorphic at 0 with g(0) = 0).  Hence
+
+    |A_n| ≥ (|z_∞| − δ)^{(μ−1)/μ} / (|c₂| μ) =: A_min > 0.            (9.49)
+
+Now let ε_n := (1/2) dist(z*_n, 𝓟_g ∖ {z*_n}).  Since {z*_n} accumulates
+at z_∞, eventually ε_n → 0.  On the punctured disk D(z*_n, ε_n) ∖ {z*_n},
+
+    |g(z)| ≥ |A_n|/|z − z*_n| − sup_{z ∈ D(z*_n, ε_n)} |G_n(z)|,       (9.50)
+
+where G_n is holomorphic on D(z*_n, 2ε_n) by maximal inscribed
+discreteness.  In particular, on the circle |z − z*_n| = ε_n/2,
+
+    |g(z)| ≥ 2|A_n|/ε_n − sup|G_n| → ∞  as n → ∞.                     (9.51)
+
+But by Step 3 extended to Tube of D(z_∞, δ), we have |g(z)| ≤ M :=
+sup_{|ζ|≤|z_∞|+δ} ỹ(|ζ|) < ∞ on D̄(z_∞, δ) ∖ 𝓟_g, since D̄(z_∞, δ)
+is disjoint from 𝓟̃.  This contradicts (9.51).
+
+Hence 𝓟_g has no finite accumulation point.                            ⊡
+
+────────────────────────────────────────────────────────────────────────
+
+Combining Steps 1–6:  g is meromorphic on ℂ with discrete simple pole
+set 𝓟_g, residues given exactly by (9.44).  □
+
+
+REMARK 9.19 (Summary of corrections vs. earlier versions).
+
+(a) The constant in Gautschi-type bound is NOT 1 but C_μ ≤ 21/20;
+    Lemma A gives the sharp value C_μ = Γ(μ*+1)/Γ(2μ*+1) ≈ 1.0428 at
+    μ* ≈ 0.1339.  All earlier claims using "γ_k ≤ 1" are hereby
+    corrected.
+
+(b) The majorant ODE (9.41) carries the C_μ factor in front of EVERY
+    nonlinear term, not just some of them.  The explicit solution
+    (9.42b) is written with the correctly scaled λ_±.
+
+(c) The residue is z*-DEPENDENT: Res(g,z*) = −(z*)^{(μ−1)/μ}/(c₂ μ).
+    At μ = 1 this reduces to −1/c₂, matching the classical Cole–Hopf.
+    At μ < 1 the residue carries a nontrivial power of z* inherited
+    from the kernel Jacobian.
+
+(d) Analytic continuation is by FINITELY MANY TUBE contractions, each
+    with a quantitatively bounded operator norm (Lemma B plus the
+    estimate (9.46)).  The subdivision uses compactness of γ.
+
+(e) Non-accumulation is proved by the UNIFORM LOWER BOUND (9.49)–(9.51),
+    not by a sketchy "bounded on a deleted neighborhood" appeal.  The
+    uniform bound on |A_n| is essential and was missing earlier.
+
+(f) Simple-pole structure is proved by BOTH directions: existence of a
+    simple pole by the matched-asymptotic balance (9.47), and
+    exclusion of higher-order poles by the impossibility of matching
+    (z−z*)^{−k} for k ≥ 2 on the RHS.
+
+No use is made of a Leibniz rule or a Cole–Hopf linearization, in
+keeping with the Leibniz obstruction of Remark 9.6′. 

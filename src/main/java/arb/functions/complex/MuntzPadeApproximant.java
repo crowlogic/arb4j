@@ -63,7 +63,7 @@ public final class MuntzPadeApproximant implements
   private final Context                context;
   private final ComplexFunctionSequence Φ;
   private final ComplexSequence        ΦBound;
-  private final ComplexPolynomialSequence a;
+  private final ComplexSequence        a;  // frozen scalar sequence k ↦ a_k(v)
 
   private int       currentOrder;
   private ComplexMatrix currentInverse;
@@ -81,23 +81,18 @@ public final class MuntzPadeApproximant implements
 
   private boolean closed;
 
-  public MuntzPadeApproximant(Real α, ComplexPolynomialSequence a, Complex v, int bits)
+  public MuntzPadeApproximant(Real α, ComplexPolynomialSequence aRaw, Complex v, int bits)
   {
     this.α           = α;
     this.v           = new Complex(v);
     this.workingBits = bits;
-    this.a           = a;
     this.context     = new Context();
 
     context.registerVariable("z", z);
 
-    ComplexSequence aScalars = (k, order, abits, result) ->
-    {
-      int             idx = k.getSignedValue();
-      ComplexPolynomial p   = this.a.apply(idx);
-      return p.evaluate(this.v, 1, abits, result);
-    };
-    context.registerSequence("a", aScalars);
+    // Freeze the polynomial sequence at v: a(k) = aRaw(k)(v)
+    this.a = ComplexSequence.express("a:k➔aRaw(k)(v)", context);
+    context.registerSequence("a", this.a);
 
     ComplexPolynomialSequence qSeq = (M, order, abits, result) ->
     {
@@ -182,8 +177,7 @@ public final class MuntzPadeApproximant implements
 
   private void bootstrapInverse()
   {
-    ComplexPolynomial p1 = a.apply(1);
-    p1.evaluate(v, 1, workingBits, tmp);
+    a.apply(1, 1, workingBits, tmp);
     if (tmp.containsZero())
     {
       if (tmp.isZero()) throw new HankelDegeneracyException(1);
@@ -199,11 +193,7 @@ public final class MuntzPadeApproximant implements
   {
     ensureVecCapacity(oldM);
 
-    for (int i = 0; i < oldM; i++)
-    {
-      ComplexPolynomial p = a.apply(i + oldM + 1);
-      p.evaluate(v, 1, workingBits, uVec.get(i, 0));
-    }
+    for (int i = 0; i < oldM; i++) a.apply(i + oldM + 1, 1, workingBits, uVec.get(i, 0));
     prevInv.mul(uVec, workingBits, zVec);
 
     for (int j = 0; j < oldM; j++)
@@ -211,19 +201,16 @@ public final class MuntzPadeApproximant implements
       wVec.get(j, 0).zero();
       for (int i = 0; i < oldM; i++)
       {
-        ComplexPolynomial p = a.apply(2 * oldM - i);
-        p.evaluate(v, 1, workingBits, tmp);
+        a.apply(2 * oldM - i, 1, workingBits, tmp);
         tmp.mul(prevInv.get(i, j), workingBits, tmp);
         wVec.get(j, 0).add(tmp, workingBits, wVec.get(j, 0));
       }
     }
 
-    ComplexPolynomial p = a.apply(2 * oldM + 1);
-    p.evaluate(v, 1, workingBits, s);
+    a.apply(2 * oldM + 1, 1, workingBits, s);
     for (int i = 0; i < oldM; i++)
     {
-      ComplexPolynomial pi = a.apply(2 * oldM - i);
-      pi.evaluate(v, 1, workingBits, tmp);
+      a.apply(2 * oldM - i, 1, workingBits, tmp);
       tmp.mul(zVec.get(i, 0), workingBits, tmp);
       s.sub(tmp, workingBits, s);
     }
@@ -268,8 +255,7 @@ public final class MuntzPadeApproximant implements
     ensureRhsCapacity(M);
     for (int i = 0; i < M; i++)
     {
-      ComplexPolynomial p = a.apply(M + i + 1);
-      p.evaluate(v, 1, workingBits, rhsVec.get(i, 0));
+      a.apply(M + i + 1, 1, workingBits, rhsVec.get(i, 0));
       rhsVec.get(i, 0).neg(rhsVec.get(i, 0));
     }
     currentInverse.mul(rhsVec, workingBits, qVec);

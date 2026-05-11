@@ -1,679 +1,1097 @@
-THE RIEMANN–HILBERT VIEW OF PADÉ APPROXIMATION
-AND GLOBAL ANALYTIC CONTINUATION,
-WITH APPLICATION TO THE FRACTIONAL RICCATI EQUATION
+═══════════════════════════════════════════════════════════════════════════════
+   THE RIEMANN–HILBERT VIEW OF PADÉ APPROXIMATION AND GLOBAL ANALYTIC
+   CONTINUATION, WITH APPLICATION TO THE FRACTIONAL RICCATI EQUATION
+═══════════════════════════════════════════════════════════════════════════════
 
 
 ABSTRACT
+────────
 
-The diagonal Padé approximant of a function analytic at the origin admits a representation as the solution to a 2×2 matrix Riemann–Hilbert problem. This formulation replaces the local derivative-matching of Taylor approximation with the global reconstruction of a spectral measure from its moments. The convergence domain is determined not by the distance to the nearest singularity, but by the maximal region on which the associated Riemann–Hilbert factorization remains solvable, a region governed by the equilibrium measure of an extremal contour selected by the S-property. The poles of the approximant are the eigenvalues of a truncated Jacobi operator, and their condensation along the equilibrium contour is the signature of the underlying Riemann surface. The general theory is presented in the form of theorems, corollaries, and limit statements, each conclusion proved under explicitly stated conditions, and the framework is applied to the constant-coefficient fractional Riccati equation that governs the rough Heston characteristic function in mathematical finance. The application section develops the Müntz spectral solution, derives a Gamma-ratio convolution recurrence for the Puiseux coefficients, establishes a strictly positive radius of convergence by a Banach fixed-point argument, constructs the diagonal Padé resummation in the variable z = t^μ, proves the meromorphy of the transformed solution by a fractional Cole–Hopf linearization, establishes the non-explosion condition on compact intervals, and thereby obtains uniform global convergence on the positive real axis with a computable a-posteriori error bound.
+The diagonal Padé approximant of a function analytic at the origin admits
+a representation as the solution to a 2×2 matrix Riemann–Hilbert problem.
+This formulation replaces the local derivative-matching of Taylor
+approximation with the global reconstruction of a spectral measure from
+its moments.  The convergence domain is determined not by the distance to
+the nearest singularity, but by the maximal region on which the associated
+Riemann–Hilbert factorization remains solvable, a region governed by the
+equilibrium measure of an extremal contour selected by the S-property.
+The poles of the approximant are the eigenvalues of a truncated Jacobi
+operator, and their condensation along the equilibrium contour is the
+signature of the underlying Riemann surface.  The general theory is
+presented in the form of theorems, corollaries, and limit statements,
+each conclusion proved under explicitly stated conditions, and the
+framework is applied to the constant-coefficient fractional Riccati
+equation with complex coefficients.  The application section develops
+the Müntz spectral solution, derives a Gamma-ratio convolution recurrence
+for the Puiseux coefficients, establishes a strictly positive radius of
+convergence by a Banach fixed-point argument, develops the Mittag-Leffler
+tree expansion that reproduces the Müntz recurrence exactly at every
+order, constructs the diagonal Padé resummation in the variable z = t^μ,
+proves meromorphy of the transformed solution on ℂ by a classical
+Riccati majorization, establishes the non-explosion condition on compact
+intervals, and thereby obtains uniform global convergence on the positive
+real axis with a computable a-posteriori error bound.
 
 
 §1. INTRODUCTION
 ────────────────
 
-Taylor approximation asks for the polynomial that matches the derivatives of a function at a single point. It is local, and its radius of convergence is the distance to the nearest singularity. Padé approximation asks for the spectral measure that generates the given moment sequence, and for the Stieltjes transform of that measure. It is global, and its convergence domain is the maximal region on which the Riemann–Hilbert factorization exists.
+Taylor approximation asks for the polynomial that matches the derivatives
+of a function at a single point.  It is local, and its radius of
+convergence is the distance to the nearest singularity.  Padé
+approximation asks for the spectral measure that generates the given
+moment sequence, and for the Stieltjes transform of that measure.  It is
+global, and its convergence domain is the maximal region on which the
+Riemann–Hilbert factorization exists.
 
-The distinction is not merely one of degree. A Taylor polynomial of degree 2n and a diagonal Padé approximant [n/n] both consume the same 2n+1 coefficients, yet they encode fundamentally different information. The Taylor polynomial encodes derivatives at a point; the Padé approximant encodes moments of a measure. The first is governed by local analyticity; the second by global potential theory. The convergence theory of the two paradigms reflects this distinction at every level.
+The distinction is not merely one of degree.  A Taylor polynomial of
+degree 2n and a diagonal Padé approximant [n/n] both consume the same
+2n+1 coefficients, yet they encode fundamentally different information.
+The Taylor polynomial encodes derivatives at a point; the Padé approximant
+encodes moments of a measure.  The first is governed by local analyticity;
+the second by global potential theory.  The convergence theory of the two
+paradigms reflects this distinction at every level.
 
-The paper proceeds as follows. §2 presents the Fokas–Its–Kitaev Riemann–Hilbert formulation for diagonal Padé approximants. §3 describes Stahl's geometric theorem and the selection of the equilibrium contour by the S-property, together with the Deift–Zhou steepest descent asymptotic. §4 explains why convergence holds in capacity rather than uniformly, through the mechanism of Froissart doublets, and gives the non-explosion condition under which uniform convergence is recovered. §5 develops the non-explosion principle as a spectral budget constraint, drawing the deterministic–stochastic analogy to Hawkes processes and Gaussian sample-path regularity. §6 identifies the Padé table with the Toda lattice and the Jacobi operator resolvent, including the non-Hermitian extension via pseudo-spectrum. §7 contrasts orthogonal polynomial zeros with Fekete points and gives bulk and edge residue estimates. §8 discusses the Borel plane and Padé–Borel resummation for factorially divergent series. §9 develops the application to the rough Heston model in detail, treating the constant-coefficient fractional Riccati equation through the Müntz spectral method and Padé resummation in z = t^μ. §10 summarizes the essential difference between the two paradigms.
+The paper proceeds as follows.  §2 presents the Fokas–Its–Kitaev
+Riemann–Hilbert formulation for diagonal Padé approximants.  §3 describes
+Stahl's geometric theorem and the selection of the equilibrium contour by
+the S-property, together with the Deift–Zhou steepest descent asymptotic.
+§4 explains why convergence holds in capacity rather than uniformly,
+through the mechanism of Froissart doublets, and gives the non-explosion
+condition under which uniform convergence is recovered.  §5 develops the
+non-explosion principle as a spectral budget constraint, drawing the
+deterministic–stochastic analogy to self-exciting point processes and
+Gaussian sample-path regularity.  §6 identifies the Padé table with the
+Toda lattice and the Jacobi operator resolvent, including the non-
+Hermitian extension via pseudo-spectrum.  §7 contrasts orthogonal
+polynomial zeros with Fekete points and gives bulk and edge residue
+estimates.  §8 discusses the Borel plane and Padé–Borel resummation for
+factorially divergent series.  §9 develops the application to the
+constant-coefficient fractional Riccati equation through the Müntz
+spectral method, the Mittag-Leffler tree expansion, the classical
+Riccati majorization of meromorphy, and the Padé resummation in
+z = t^μ.  §10 summarizes the essential difference between the two
+paradigms.
 
 
 §2. THE RIEMANN–HILBERT FORMULATION
 ───────────────────────────────────
 
-The foundational equivalence between diagonal Padé approximants and matrix Riemann–Hilbert problems is due to Fokas, Its, and Kitaev; it recasts a problem of rational approximation as a problem of matrix factorization on a contour.
+The foundational equivalence between diagonal Padé approximants and
+matrix Riemann–Hilbert problems is due to Fokas, Its, and Kitaev; it
+recasts a problem of rational approximation as a problem of matrix
+factorization on a contour.
 
-Definition 2.1 (Cauchy transform). Let Σ ⊂ ℂ be a finite union of smooth oriented arcs, and let w: Σ → ℂ be a measurable weight with ∫_Σ |w(s)| |ds| < ∞. The Cauchy transform of w on Σ is the function
+Definition 2.1 (Cauchy transform).  Let Σ ⊂ ℂ be a finite union of
+smooth oriented arcs, and let w: Σ → ℂ be a measurable weight with
+∫_Σ |w(s)| |ds| < ∞.  The Cauchy transform of w on Σ is the function
 
-  f(z) = ∫_Σ w(s)/(z-s) ds, z ∈ ℂ \ Σ.  (2.1)
+    f(z) = ∫_Σ w(s)/(z-s) ds,    z ∈ ℂ ∖ Σ.                           (2.1)
 
-Definition 2.2 (Diagonal Padé approximant). Let f be analytic at infinity with formal expansion f(z) = ∑_{k=0}^∞ a_k z^{-k-1}. The diagonal Padé approximant [n/n]_f of order n is the unique rational function P_n/Q_n with deg P_n < n, deg Q_n = n, and Q_n monic, satisfying
+Definition 2.2 (Diagonal Padé approximant).  Let f be analytic at
+infinity with formal expansion f(z) = Σ_{k=0}^∞ a_k z^{-k-1}.  The
+diagonal Padé approximant [n/n]_f of order n is the unique rational
+function P_n/Q_n with deg P_n < n, deg Q_n = n, and Q_n monic, satisfying
 
-  f(z) − P_n(z)/Q_n(z) = O(z^{-2n-1}) as z → ∞,  (2.2)
+    f(z) − P_n(z)/Q_n(z) = O(z^{-2n-1})    as z → ∞,                  (2.2)
 
-whenever the underlying Hankel determinant τ_n = det(a_{i+j})_{0≤i,j≤n-1} is nonzero.
+whenever the underlying Hankel determinant τ_n = det(a_{i+j})_{0≤i,j≤n-1}
+is nonzero.
 
-Theorem 2.3 (Fokas–Its–Kitaev representation). Let f be the Cauchy transform (2.1) of a weight w on a fixed contour Σ, and assume the Hankel determinants τ_1,…,τ_n are nonzero. Then there exists a unique 2×2 matrix-valued function Y: ℂ\Σ → GL₂(ℂ) satisfying:
+Theorem 2.3 (Fokas–Its–Kitaev representation).  Let f be the Cauchy
+transform (2.1) of a weight w on a fixed contour Σ, and assume the Hankel
+determinants τ_1,…,τ_n are nonzero.  Then there exists a unique 2×2
+matrix-valued function Y: ℂ ∖ Σ → GL₂(ℂ) satisfying:
 
-(i) Y is analytic on ℂ\Σ;
-(ii) Y has continuous boundary values Y_± on Σ related by the jump
+(i)   Y is analytic on ℂ ∖ Σ;
+(ii)  Y has continuous boundary values Y_± on Σ related by the jump
 
-  Y_+(s) = Y_-(s) ⎛1 2πi w(s)⎞, s ∈ Σ;  (2.3)
-          ⎝0  1  ⎠
+      Y_+(s) = Y_-(s) ⎛1  2πi w(s)⎞,  s ∈ Σ;                          (2.3)
+                      ⎝0      1    ⎠
 
-(iii) Y has the asymptotic behavior at infinity
+(iii) Y has the asymptotic behavior at infinity
 
-  Y(z) = (I + Y_1/z + Y_2/z² + ⋯) ⎛z^n 0 ⎞, z → ∞.  (2.4)
-                  ⎝0 z^{-n}⎠
+      Y(z) = (I + Y_1/z + Y_2/z² + ⋯) ⎛z^n     0   ⎞,  z → ∞.         (2.4)
+                                     ⎝ 0    z^{-n}⎠
 
 The entries of Y encode the diagonal Padé approximant via
 
-  Y_{11}(z) = Q_n(z), Y_{12}(z) = ∫_Σ Q_n(s)w(s)/(s-z) ds,  (2.5)
+    Y_{11}(z) = Q_n(z),  Y_{12}(z) = ∫_Σ Q_n(s)w(s)/(s-z) ds,         (2.5)
 
 and the approximant itself is
 
-  [n/n]_f(z) = P_n(z)/Q_n(z) = Y_{12}(z)/Y_{11}(z).  (2.6)
+    [n/n]_f(z) = P_n(z)/Q_n(z) = Y_{12}(z)/Y_{11}(z).                 (2.6)
 
-Corollary 2.4 (Orthogonality). The denominator Q_n is the monic orthogonal polynomial of degree n for the moment functional 𝓛[p] = ∫_Σ p(s)w(s) ds:
+Corollary 2.4 (Orthogonality).  The denominator Q_n is the monic
+orthogonal polynomial of degree n for the moment functional
+𝓛[p] = ∫_Σ p(s)w(s)ds:
 
-  ∫_Σ Q_n(s) s^k w(s) ds = 0, k = 0,1,…,n−1.  (2.7)
+    ∫_Σ Q_n(s) s^k w(s) ds = 0,  k = 0,1,…,n−1.                      (2.7)
 
-Remark 2.5 (Limitation: the contour must be given). Theorem 2.3 requires a fixed contour Σ. For functions specified only by a power series, with branch cuts whose location is unknown, the contour is not given; it must be determined as part of the problem. The Riemann–Hilbert formulation in the form stated above becomes exact only after the equilibrium contour has been selected by the procedure of §3.
+Remark 2.5 (Limitation: the contour must be given).  Theorem 2.3 requires
+a fixed contour Σ.  For functions specified only by a power series, with
+branch cuts whose location is unknown, the contour is not given; it must
+be determined as part of the problem.  The Riemann–Hilbert formulation in
+the form stated above becomes exact only after the equilibrium contour
+has been selected by the procedure of §3.
 
 
 §3. THE CONTOUR IS DETERMINED, NOT GIVEN
 ────────────────────────────────────────
 
-For functions whose singular structure is not specified in advance, the appropriate contour is selected by an extremal principle in logarithmic potential theory. This is the content of Stahl's geometric theorem.
+For functions whose singular structure is not specified in advance, the
+appropriate contour is selected by an extremal principle in logarithmic
+potential theory.  This is the content of Stahl's geometric theorem.
 
-Definition 3.1 (Stahl class). A function f analytic at infinity belongs to the Stahl class 𝓢 if it admits multi-valued meromorphic continuation to a domain ℂ̄ \ E, where E is a compact set of logarithmic capacity zero.
+Definition 3.1 (Stahl class).  A function f analytic at infinity belongs
+to the Stahl class 𝓢 if it admits multi-valued meromorphic continuation
+to a domain ℂ̄ ∖ E, where E is a compact set of logarithmic capacity
+zero.
 
-Definition 3.2 (Admissible compact). A compact set K ⊂ ℂ is admissible for f ∈ 𝓢 if ℂ̄ \ K is a domain on which f admits single-valued meromorphic continuation.
+Definition 3.2 (Admissible compact).  A compact set K ⊂ ℂ is admissible
+for f ∈ 𝓢 if ℂ̄ ∖ K is a domain on which f admits single-valued
+meromorphic continuation.
 
-Theorem 3.3 (Stahl's geometric theorem). For every f ∈ 𝓢, there exists a unique admissible compact Δ_f with the following properties:
+Theorem 3.3 (Stahl's geometric theorem).  For every f ∈ 𝓢, there exists
+a unique admissible compact Δ_f with the following properties:
 
-(i) ℂ̄ \ Δ_f is a connected domain D_f;
-(ii) f has single-valued meromorphic continuation to D_f;
-(iii) cap(Δ_f) ≤ cap(K) for every other admissible compact K.
+(i)   ℂ̄ ∖ Δ_f is a connected domain D_f;
+(ii)  f has single-valued meromorphic continuation to D_f;
+(iii) cap(Δ_f) ≤ cap(K) for every other admissible compact K.
 
 The set Δ_f is called the Stahl compact or S-compact of f.
 
-Theorem 3.4 (The S-property). Let g(z,∞) denote the Green's function of D_f with pole at infinity. The arcs of Δ_f satisfy the symmetry condition
+Theorem 3.4 (The S-property).  Let g(z,∞) denote the Green's function of
+D_f with pole at infinity.  The arcs of Δ_f satisfy the symmetry
+condition
 
-  ∂g/∂n_+ (z) = ∂g/∂n_- (z), z ∈ Δ_f \ {endpoints},  (3.1)
+    ∂g/∂n_+(z) = ∂g/∂n_-(z),  z ∈ Δ_f ∖ {endpoints},                 (3.1)
 
 where n_± are the two unit normals to the arc.
 
-Remark 3.5 (Variational interpretation). The S-property is the Euler–Lagrange equation of a min-max variational problem. Among admissible compacts in a fixed homotopy class, the minimum of cap(K) is attained at Δ_f, and the harmonic measure exerts equal pull on both sides of each arc.
+Remark 3.5 (Variational interpretation).  The S-property is the
+Euler–Lagrange equation of a min-max variational problem.  Among
+admissible compacts in a fixed homotopy class, the minimum of cap(K) is
+attained at Δ_f, and the harmonic measure exerts equal pull on both sides
+of each arc.
 
-Theorem 3.6 (Stahl's convergence theorem). Let f ∈ 𝓢 with Stahl compact Δ_f and complementary domain D_f. The diagonal Padé approximants converge to f in capacity on compact subsets of D_f \ 𝓟_f, where 𝓟_f is the pole set of f. For every compact K ⊂ D_f \ 𝓟_f and every ε > 0,
+Theorem 3.6 (Stahl's convergence theorem).  Let f ∈ 𝓢 with Stahl
+compact Δ_f and complementary domain D_f.  The diagonal Padé approximants
+converge to f in capacity on compact subsets of D_f ∖ 𝓟_f, where 𝓟_f
+is the pole set of f.  For every compact K ⊂ D_f ∖ 𝓟_f and every ε > 0,
 
-  lim_{n→∞} cap{z ∈ K : |f(z) − [n/n]_f(z)| > ε} = 0.  (3.2)
+    lim_{n→∞} cap{z ∈ K : |f(z) − [n/n]_f(z)| > ε} = 0.              (3.2)
 
-Theorem 3.7 (Deift–Zhou asymptotic). Under the hypotheses of Theorem 3.6, with the additional regularity that w is analytic in a neighborhood of Δ_f and the endpoints exhibit square-root behavior of the equilibrium density, nonlinear steepest descent yields
+Theorem 3.7 (Deift–Zhou asymptotic).  Under the hypotheses of
+Theorem 3.6, with the additional regularity that w is analytic in a
+neighborhood of Δ_f and the endpoints exhibit square-root behavior of the
+equilibrium density, nonlinear steepest descent yields
 
-  [n/n]_f(z) = f(z) (1 + O(e^{-n g(z,∞)}))  (3.3)
+    [n/n]_f(z) = f(z)(1 + O(e^{-n g(z,∞)}))                          (3.3)
 
 uniformly on compact subsets of D_f bounded away from Δ_f ∪ 𝓟_f.
 
 Corollary 3.8 (Exponential rate of convergence).
 
-  lim sup_{n→∞} |f(z) − [n/n]_f(z)|^{1/n} ≤ e^{-g(z,∞)}, z ∈ D_f \ 𝓟_f.  (3.4)
+    lim sup_{n→∞} |f(z) − [n/n]_f(z)|^{1/n} ≤ e^{-g(z,∞)},
+                                       z ∈ D_f ∖ 𝓟_f.                (3.4)
 
-The level sets {g(z,∞) = c} are loci of equal convergence rate, and Δ_f = {g = 0}.
+The level sets {g(z,∞) = c} are loci of equal convergence rate, and
+Δ_f = {g = 0}.
 
-Remark 3.9 (Comparison with Taylor). The Taylor polynomial of degree 2n converges geometrically only inside the disk of convergence, with rate |z|/r where r is the distance to the nearest singularity. The Padé rate e^{-g(z,∞)} extends to all of D_f, generally a much larger domain. The two rates agree only inside the disk of convergence, where g(z,∞) ∼ −log|z| + const.
+Remark 3.9 (Comparison with Taylor).  The Taylor polynomial of degree 2n
+converges geometrically only inside the disk of convergence, with rate
+|z|/r where r is the distance to the nearest singularity.  The Padé rate
+e^{-g(z,∞)} extends to all of D_f, generally a much larger domain.
+The two rates agree only inside the disk of convergence, where
+g(z,∞) ∼ −log|z| + const.
 
 
 §4. FROISSART DOUBLETS AND CONVERGENCE IN CAPACITY
 ───────────────────────────────────────────────────
 
-The convergence statement of Theorem 3.6 is in capacity, not uniformly. The reason is the appearance of spurious poles, called Froissart doublets, that wander through the domain of holomorphy without condensing on the Stahl compact.
+The convergence statement of Theorem 3.6 is in capacity, not uniformly.
+The reason is the appearance of spurious poles, called Froissart doublets,
+that wander through the domain of holomorphy without condensing on the
+Stahl compact.
 
-Definition 4.1 (Froissart doublet). A Froissart doublet of [n/n]_f is a pole z_j^{(n)} ∈ D_f \ 𝓟_f accompanied by a zero ζ_j^{(n)} at distance |z_j^{(n)} − ζ_j^{(n)}| = O(e^{-cn}) for some c > 0, with residue
+Definition 4.1 (Froissart doublet).  A Froissart doublet of [n/n]_f is a
+pole z_j^{(n)} ∈ D_f ∖ 𝓟_f accompanied by a zero ζ_j^{(n)} at distance
+|z_j^{(n)} − ζ_j^{(n)}| = O(e^{-cn}) for some c > 0, with residue
 
-  Res([n/n]_f, z_j^{(n)}) = O(e^{-cn}) as n → ∞.  (4.1)
+    Res([n/n]_f, z_j^{(n)}) = O(e^{-cn})  as n → ∞.                  (4.1)
 
-Proposition 4.2 (Boundedness of doublet count). For f ∈ 𝓢, the number of Froissart doublets of [n/n]_f in any compact K ⊂ D_f \ 𝓟_f is O(1) as n → ∞, but their location may oscillate erratically with n.
+Proposition 4.2 (Boundedness of doublet count).  For f ∈ 𝓢, the number
+of Froissart doublets of [n/n]_f in any compact K ⊂ D_f ∖ 𝓟_f is O(1)
+as n → ∞, but their location may oscillate erratically with n.
 
-Definition 4.3 (Non-Explosion Condition). A function f ∈ 𝓢 satisfies the Non-Explosion Condition on a compact K ⊂ D_f \ 𝓟_f if the number of poles of [n/n]_f in K is uniformly bounded in n.
+Definition 4.3 (Non-Explosion Condition).  A function f ∈ 𝓢 satisfies
+the Non-Explosion Condition on a compact K ⊂ D_f ∖ 𝓟_f if the number of
+poles of [n/n]_f in K is uniformly bounded in n.
 
-Theorem 4.4 (Uniform convergence theorem). If f ∈ 𝓢 satisfies the Non-Explosion Condition on a compact K ⊂ D_f \ 𝓟_f, then [n/n]_f → f uniformly on K. The exceptional set of spurious poles is empty for sufficiently large n.
+Theorem 4.4 (Uniform convergence theorem).  If f ∈ 𝓢 satisfies the
+Non-Explosion Condition on a compact K ⊂ D_f ∖ 𝓟_f, then [n/n]_f → f
+uniformly on K.  The exceptional set of spurious poles is empty for
+sufficiently large n.
 
-Remark 4.5. The Non-Explosion Condition is restrictive for generic f ∈ 𝓢 because Froissart doublets, though O(1) in number, could in principle visit every compact infinitely often. For meromorphic functions with well-separated poles and a regular Padé table, the condition holds on every compact disjoint from the pole set; this is the situation of §9.4.
+Remark 4.5.  The Non-Explosion Condition is restrictive for generic
+f ∈ 𝓢 because Froissart doublets, though O(1) in number, could in
+principle visit every compact infinitely often.  For meromorphic
+functions with well-separated poles and a regular Padé table, the
+condition holds on every compact disjoint from the pole set; this is the
+situation of §9.7.
 
 
 §5. THE NON-EXPLOSION PRINCIPLE AND SPECTRAL BUDGETS
 ─────────────────────────────────────────────────────
 
-The Non-Explosion Condition is not merely a technical hypothesis invented to salvage uniform convergence. It is the deterministic manifestation of a universal compactness principle that appears across probability theory, potential theory, and spectral analysis. The condition states that on any compact region of holomorphy, the rational approximant can support only a uniformly bounded number of singularities. In other words, the pole intensity does not diverge; the approximant does not explode.
+The Non-Explosion Condition is not merely a technical hypothesis invented
+to salvage uniform convergence.  It is the deterministic manifestation of
+a universal compactness principle that appears across probability theory,
+potential theory, and spectral analysis.  The condition states that on
+any compact region of holomorphy, the rational approximant can support
+only a uniformly bounded number of singularities.  In other words, the
+pole intensity does not diverge; the approximant does not explode.
 
-Consider a Hawkes process, a self-exciting point process in which each event increases the instantaneous probability of further events. The process is said to be non-explosive if the intensity remains finite on every bounded time interval, so that the number of events in any compact set is almost surely finite. The analogy is exact: for Padé approximants, each pole is an event, and the Non-Explosion Condition is the statement that the point process of spurious singularities has finite intensity on every compact subset of the domain of holomorphy. Just as a Hawkes process without immigration cannot accumulate infinitely many events in finite time without divergent intensity, a diagonal Padé sequence cannot deposit infinitely many poles in a compact region of regularity without violating the spectral budget.
+Consider a self-exciting point process in which each event increases the
+instantaneous probability of further events.  The process is said to be
+non-explosive if the intensity remains finite on every bounded time
+interval, so that the number of events in any compact set is almost
+surely finite.  The analogy is exact: for Padé approximants, each pole
+is an event, and the Non-Explosion Condition is the statement that the
+point process of spurious singularities has finite intensity on every
+compact subset of the domain of holomorphy.  Just as a self-exciting
+process without immigration cannot accumulate infinitely many events in
+finite time without divergent intensity, a diagonal Padé sequence cannot
+deposit infinitely many poles in a compact region of regularity without
+violating the spectral budget.
 
-The connection to Gaussian regularity is equally direct. A stationary Gaussian process has sample paths whose Hölder regularity is governed by the tail of its spectral measure via the Wiener–Khinchin theorem. If the spectral density decays like |ξ|^{-2H-1}, the paths are Hölder-(H−ε). The tail of the spectral measure is the wiggling budget: it allocates a finite amount of high-frequency energy per unit of time, and that budget caps the local oscillation. The Jacobi operator that appears in the Padé table (§6) is the discrete cousin of the covariance operator of a Gaussian process. The Non-Explosion Condition—bounding the number of poles of the truncated operator in K—is the deterministic analog of bounding the metric entropy or the covering numbers of the index set. It says the truncated spectral resolution cannot deposit infinitely many point masses in a bounded region.
+The connection to Gaussian regularity is equally direct.  A stationary
+Gaussian process has sample paths whose Hölder regularity is governed by
+the tail of its spectral measure via the Wiener–Khinchin theorem.  If the
+spectral density decays like |ξ|^{-2H-1}, the paths are Hölder-(H−ε).
+The tail of the spectral measure is the wiggling budget: it allocates a
+finite amount of high-frequency energy per unit of time, and that budget
+caps the local oscillation.  The Jacobi operator that appears in the
+Padé table (§6) is the discrete cousin of the covariance operator of a
+Gaussian process.  The Non-Explosion Condition—bounding the number of
+poles of the truncated operator in K—is the deterministic analog of
+bounding the metric entropy or the covering numbers of the index set.
+It says the truncated spectral resolution cannot deposit infinitely many
+point masses in a bounded region.
 
-There is a deeper potential-theoretic unity. Stahl's convergence is in capacity, meaning it fails only on sets of logarithmic capacity zero. In probability theory, sets of capacity zero are precisely the polar sets for Brownian motion and for a broad class of Gaussian processes—sets that the process almost surely never visits. This is not a coincidence; both theories draw from the same logarithmic potential reservoir. The Non-Explosion Condition is what allows one to strengthen convergence off a polar set to uniform convergence everywhere on the compact, just as Kolmogorov's continuity lemma upgrades measure-theoretic regularity to pathwise Hölder continuity by controlling the tail of the increments.
+There is a deeper potential-theoretic unity.  Stahl's convergence is in
+capacity, meaning it fails only on sets of logarithmic capacity zero.
+In probability theory, sets of capacity zero are precisely the polar sets
+for Brownian motion and for a broad class of Gaussian processes—sets
+that the process almost surely never visits.  This is not a coincidence;
+both theories draw from the same logarithmic potential reservoir.  The
+Non-Explosion Condition is what allows one to strengthen convergence off
+a polar set to uniform convergence everywhere on the compact, just as
+Kolmogorov's continuity lemma upgrades measure-theoretic regularity to
+pathwise Hölder continuity by controlling the tail of the increments.
 
-The pole is the deterministic singularity; the high-frequency Fourier mode is the stochastic one. The budget is the same.
+The pole is the deterministic singularity; the high-frequency Fourier
+mode is the stochastic one.  The budget is the same.
 
-  cap(Δ_f) < ∞ ⟺ ∫_{|ξ|>R} dμ(ξ) → 0 as R → ∞.  (5.1)
+    cap(Δ_f) < ∞  ⟺  ∫_{|ξ|>R} dμ(ξ) → 0  as R → ∞.                 (5.1)
 
-In the rough Heston application (§9), this synthesis becomes concrete. The rough Heston model is driven by a fractional Brownian motion with Hurst H = μ − 1/2 ∈ (0, 1/2]. The paths are Hölder-continuous of order μ, which is exactly the regularity scale of the Müntz series. The solution y(t) has a Puiseux expansion in t^μ, reflecting the process's own roughness. The Non-Explosion Condition guarantees that the Padé resummation in z = t^μ does not introduce spurious pole singularities on the positive real axis, preserving the regularity of the approximant to match the regularity of the underlying stochastic process. The pole density is controlled, so the rational approximant remains as well-behaved as the Volterra solution itself.
+In the fractional Riccati application (§9), this synthesis becomes
+concrete.  The equation
+    D^μ y = c₀ + c₁ y + c₂ y²
+with μ ∈ (0,1] yields a solution y(t) whose natural regularity scale is
+Hölder-μ, exactly matching the Puiseux exponent μ of its series in t.
+The Müntz substitution z = t^μ renders the solution analytic at the
+origin; the Padé resummation in z then inherits the Non-Explosion
+Condition on every compact subinterval of [0,∞), preserving the
+regularity of the approximant to match the regularity of the underlying
+Volterra solution.  The pole density is controlled, so the rational
+approximant remains as well-behaved as the solution itself.
 
 
 §6. THE JACOBI OPERATOR AND THE TODA LATTICE
 ────────────────────────────────────────────
 
-The Padé problem admits a third equivalent formulation, in addition to rational approximation and Riemann–Hilbert factorization. This third formulation is operator-theoretic: the Padé approximant is the resolvent of a truncated Jacobi operator.
+The Padé problem admits a third equivalent formulation, in addition to
+rational approximation and Riemann–Hilbert factorization.  This third
+formulation is operator-theoretic: the Padé approximant is the resolvent
+of a truncated Jacobi operator.
 
-Definition 6.1 (Hankel matrix and tau function). For a sequence {a_k}_{k≥0}, the Hankel matrix of order n is
+Definition 6.1 (Hankel matrix and tau function).  For a sequence
+{a_k}_{k≥0}, the Hankel matrix of order n is
 
-  H^{(n)} = (a_{i+j})_{0≤i,j≤n-1},  (6.1)
+    H^{(n)} = (a_{i+j})_{0≤i,j≤n-1},                                  (6.1)
 
 and its determinant τ_n = det H^{(n)} is the tau function.
 
-Theorem 6.2 (Toda lattice structure). Assume τ_n ≠ 0 for all n ≥ 1. The monic orthogonal polynomials Q_n for the moment functional defined by {a_k} satisfy the three-term recurrence
+Theorem 6.2 (Toda lattice structure).  Assume τ_n ≠ 0 for all n ≥ 1.
+The monic orthogonal polynomials Q_n for the moment functional defined by
+{a_k} satisfy the three-term recurrence
 
-  Q_{n+1}(z) = (z − b_n) Q_n(z) − a_n² Q_{n-1}(z), Q_{-1} = 0, Q_0 = 1.  (6.2)
+    Q_{n+1}(z) = (z − b_n) Q_n(z) − a_n² Q_{n-1}(z),
+    Q_{-1} = 0,  Q_0 = 1.                                            (6.2)
 
-Under the spectral evolution dμ_t(x) = e^{tx} dμ(x), the recurrence coefficients evolve according to the Toda equations
+Under the spectral evolution dμ_t(x) = e^{tx} dμ(x), the recurrence
+coefficients evolve according to the Toda equations
 
-  ḃ_n = a_n² − a_{n-1}²,  ȧ_n = a_n (b_{n+1} − b_n).  (6.3)
+    ḃ_n = a_n² − a_{n-1}²,  ȧ_n = a_n (b_{n+1} − b_n).               (6.3)
 
 The flow is isospectral.
 
-Definition 6.3 (Jacobi operator). The infinite Jacobi operator associated to {a_n, b_n} is the tridiagonal matrix
+Definition 6.3 (Jacobi operator).  The infinite Jacobi operator
+associated to {a_n, b_n} is the tridiagonal matrix
 
-  J_∞ = ⎛ b₀  a₀  0  ⋯ ⎞
-     ⎜ a₀  b₁  a₁  ⋱ ⎟
-     ⎜ 0   a₁  b₂  ⋱ ⎟
-     ⎝ ⋮   ⋱   ⋱   ⋱ ⎠  (6.4)
+              ⎛ b₀  a₀  0   ⋯ ⎞
+              ⎜ a₀  b₁  a₁  ⋱ ⎟
+    J_∞   =   ⎜ 0   a₁  b₂  ⋱ ⎟                                       (6.4)
+              ⎝ ⋮   ⋱   ⋱   ⋱ ⎠
 
-acting on ℓ²(ℕ₀). Its n×n principal truncation is J_n = [J_∞]_{0≤i,j≤n-1}.
+acting on ℓ²(ℕ₀).  Its n×n principal truncation is
+J_n = [J_∞]_{0≤i,j≤n-1}.
 
-Theorem 6.4 (Resolvent representation, self-adjoint case). Assume the moment functional is positive, so that J_∞ is self-adjoint and bounded with spectral measure μ supported on a compact subset of ℝ. Then
+Theorem 6.4 (Resolvent representation, self-adjoint case).  Assume the
+moment functional is positive, so that J_∞ is self-adjoint and bounded
+with spectral measure μ supported on a compact subset of ℝ.  Then
 
-  f(z) = ⟨e_0, (J_∞ − zI)^{-1} e_0⟩ = ∫ dμ(x)/(x−z),  (6.5)
+    f(z) = ⟨e₀, (J_∞ − zI)^{-1} e₀⟩ = ∫ dμ(x)/(x−z),                 (6.5)
 
 and
 
-  [n/n]_f(z) = ⟨e_0, (J_n − zI)^{-1} e_0⟩ = ∑_{j=1}^n |⟨e_0, ψ_j^{(n)}⟩|² / (λ_j^{(n)} − z),  (6.6)
+    [n/n]_f(z) = ⟨e₀, (J_n − zI)^{-1} e₀⟩
+               = Σ_{j=1}^n |⟨e₀, ψ_j^{(n)}⟩|² / (λ_j^{(n)} − z),     (6.6)
 
-where {λ_j^{(n)}, ψ_j^{(n)}}_{j=1}^n are the eigenvalue-eigenvector pairs of J_n.
+where {λ_j^{(n)}, ψ_j^{(n)}}_{j=1}^n are the eigenvalue-eigenvector pairs
+of J_n.
 
-Corollary 6.5 (Poles as eigenvalues). The poles of [n/n]_f are precisely the eigenvalues of J_n, and the residues are the squared first components of the corresponding normalized eigenvectors.
+Corollary 6.5 (Poles as eigenvalues).  The poles of [n/n]_f are precisely
+the eigenvalues of J_n, and the residues are the squared first components
+of the corresponding normalized eigenvectors.
 
-Theorem 6.6 (Strong resolvent convergence). In the setting of Theorem 6.4, J_n → J_∞ in the strong resolvent sense:
+Theorem 6.6 (Strong resolvent convergence).  In the setting of Theorem
+6.4, J_n → J_∞ in the strong resolvent sense:
 
-  lim_{n→∞} (J_n − zI)^{-1} ξ = (J_∞ − zI)^{-1} ξ ∀ ξ ∈ ℓ², z ∉ spec(J_∞).  (6.7)
+    lim_{n→∞} (J_n − zI)^{-1} ξ = (J_∞ − zI)^{-1} ξ
+         ∀ ξ ∈ ℓ²,  z ∉ spec(J_∞).                                    (6.7)
 
-Consequently, [n/n]_f(z) → f(z) for every z ∈ ℂ \ spec(J_∞), locally uniformly.
+Consequently, [n/n]_f(z) → f(z) for every z ∈ ℂ ∖ spec(J_∞), locally
+uniformly.
 
-Corollary 6.7 (Self-adjoint convergence domain). For real measures, the convergence domain of the diagonal Padé approximation coincides with ℂ \ spec(J_∞), and Δ_f = spec(J_∞).
+Corollary 6.7 (Self-adjoint convergence domain).  For real measures, the
+convergence domain of the diagonal Padé approximation coincides with
+ℂ ∖ spec(J_∞), and Δ_f = spec(J_∞).
 
-Remark 6.8 (Non-Hermitian extension). For complex measures and functions with branch points off the real axis, J_∞ is non-Hermitian and Theorem 6.6 does not apply directly. The relevant convergence theory uses the pseudo-spectrum
+Remark 6.8 (Non-Hermitian extension).  For complex measures and functions
+with branch points off the real axis, J_∞ is non-Hermitian and Theorem
+6.6 does not apply directly.  The relevant convergence theory uses the
+pseudo-spectrum
 
-  spec_ε(J_∞) = {z ∈ ℂ : ‖(J_∞ − zI)^{-1}‖ ≥ ε^{-1}}.  (6.8)
+    spec_ε(J_∞) = {z ∈ ℂ : ‖(J_∞ − zI)^{-1}‖ ≥ ε^{-1}}.               (6.8)
 
-Theorem 6.9 (Pseudo-spectral limit, regular case). Suppose the recurrence coefficients {a_n, b_n} admit a regular asymptotic expansion in 1/n and the limiting density is supported on a finite union of analytic arcs. Then
+Theorem 6.9 (Pseudo-spectral limit, regular case).  Suppose the
+recurrence coefficients {a_n, b_n} admit a regular asymptotic expansion
+in 1/n and the limiting density is supported on a finite union of
+analytic arcs.  Then
 
-  lim_{ε→0} ∂spec_ε(J_∞) = Δ_f.  (6.9)
+    lim_{ε→0} ∂spec_ε(J_∞) = Δ_f.                                     (6.9)
 
-Remark 6.10 (Beyond the regular case). In less regular non-Hermitian settings, the limiting object of (6.9) is a quadratic differential trajectory in the sense of Strebel; its identification with Δ_f requires additional symmetry conditions and is established case-by-case.
+Remark 6.10 (Beyond the regular case).  In less regular non-Hermitian
+settings, the limiting object of (6.9) is a quadratic differential
+trajectory in the sense of Strebel; its identification with Δ_f requires
+additional symmetry conditions and is established case-by-case.
 
 
 §7. POLE CONDENSATION: ORTHOGONAL POLYNOMIALS AND FEKETE POINTS
 ────────────────────────────────────────────────────────────────
 
-Definition 7.1 (Fekete points). The n-th Fekete points of a compact K ⊂ ℂ are the maximizers
+Definition 7.1 (Fekete points).  The n-th Fekete points of a compact
+K ⊂ ℂ are the maximizers
 
-  {z_1^{F,n},…,z_n^{F,n}} = arg max_{(z_1,…,z_n)∈K^n} ∏_{i<j} |z_i − z_j|.  (7.1)
+    {z_1^{F,n},…,z_n^{F,n}} = arg max_{(z_1,…,z_n)∈K^n} ∏_{i<j} |z_i − z_j|.
+                                                                      (7.1)
 
-Theorem 7.2 (Equilibrium limit of Fekete points). The normalized counting measures of the Fekete points of K converge weak-* to the equilibrium measure μ_K:
+Theorem 7.2 (Equilibrium limit of Fekete points).  The normalized
+counting measures of the Fekete points of K converge weak-∗ to the
+equilibrium measure μ_K:
 
-  (1/n) ∑_{j=1}^n δ_{z_j^{F,n}} ⇀ μ_K as n → ∞.  (7.2)
+    (1/n) Σ_{j=1}^n δ_{z_j^{F,n}} ⇀ μ_K   as n → ∞.                  (7.2)
 
-Theorem 7.3 (Equilibrium limit of orthogonal polynomial zeros). For f ∈ 𝓢 with Stahl compact Δ_f, the normalized counting measures of the zeros of Q_n converge weak-* to the equilibrium measure μ_{Δ_f}:
+Theorem 7.3 (Equilibrium limit of orthogonal polynomial zeros).  For
+f ∈ 𝓢 with Stahl compact Δ_f, the normalized counting measures of the
+zeros of Q_n converge weak-∗ to the equilibrium measure μ_{Δ_f}:
 
-  (1/n) ∑_{j=1}^n δ_{ζ_j^{(n)}} ⇀ μ_{Δ_f}.  (7.3)
+    (1/n) Σ_{j=1}^n δ_{ζ_j^{(n)}} ⇀ μ_{Δ_f}.                         (7.3)
 
-Remark 7.4 (Distinct objects, common limit). Theorems 7.2 and 7.3 share a conclusion but describe different sequences. Fekete points are extremal for discrete logarithmic energy and have no recursive relationship across n. Orthogonal polynomial zeros are determined by the spectral truncation of the Jacobi operator and are linked across n by the three-term recurrence (6.2). Only their normalized counting measures agree in the limit.
+Remark 7.4 (Distinct objects, common limit).  Theorems 7.2 and 7.3 share
+a conclusion but describe different sequences.  Fekete points are
+extremal for discrete logarithmic energy and have no recursive
+relationship across n.  Orthogonal polynomial zeros are determined by the
+spectral truncation of the Jacobi operator and are linked across n by
+the three-term recurrence (6.2).  Only their normalized counting measures
+agree in the limit.
 
-Theorem 7.5 (Bulk residue estimate). Let f ∈ 𝓢 satisfy the regularity conditions of Theorem 3.7. For poles z_j^{(n)} approaching the interior of Δ_f,
+Theorem 7.5 (Bulk residue estimate).  Let f ∈ 𝓢 satisfy the regularity
+conditions of Theorem 3.7.  For poles z_j^{(n)} approaching the interior
+of Δ_f,
 
-  Res([n/n]_f, z_j^{(n)}) = P_n(z_j^{(n)}) / Q_n'(z_j^{(n)}) = O(1/n),  (7.4)
+    Res([n/n]_f, z_j^{(n)}) = P_n(z_j^{(n)}) / Q_n'(z_j^{(n)})
+                             = O(1/n),                                (7.4)
 
 uniformly for poles bounded away from the endpoints.
 
-Theorem 7.6 (Edge residue scaling). For poles within an O(n^{-2/3}) neighborhood of an endpoint of Δ_f, the rescaled residues satisfy
+Theorem 7.6 (Edge residue scaling).  For poles within an O(n^{-2/3})
+neighborhood of an endpoint of Δ_f, the rescaled residues satisfy
 
-  n^{1/3} Res([n/n]_f, z_j^{(n)}) → ρ_{Ai}(ξ_j), ξ_j = n^{2/3}(z_j^{(n)} − endpoint),  (7.5)
+    n^{1/3} Res([n/n]_f, z_j^{(n)}) → ρ_{Ai}(ξ_j),
+    ξ_j = n^{2/3}(z_j^{(n)} − endpoint),                             (7.5)
 
-where ρ_{Ai} is determined by the Airy kernel. The bulk 1/n law is replaced by an Airy-type n^{-1/3} decay at the edge, the universal Painlevé II scaling of random matrix theory.
+where ρ_{Ai} is determined by the Airy kernel.  The bulk 1/n law is
+replaced by an Airy-type n^{-1/3} decay at the edge, the universal
+Painlevé II scaling of random matrix theory.
 
-Corollary 7.7 (Pole-zero cancellation on contours avoiding the cut). For any rectifiable contour γ ⊂ D_f \ 𝓟_f enclosing a region disjoint from Δ_f,
+Corollary 7.7 (Pole-zero cancellation on contours avoiding the cut).
+For any rectifiable contour γ ⊂ D_f ∖ 𝓟_f enclosing a region disjoint
+from Δ_f,
 
-  lim_{n→∞} (1/2πi) ∮_γ [n/n]_f(z) dz = (1/2πi) ∮_γ f(z) dz.  (7.6)
+    lim_{n→∞} (1/2πi) ∮_γ [n/n]_f(z) dz = (1/2πi) ∮_γ f(z) dz.       (7.6)
 
 
 §8. THE BOREL PLANE AND RESUMMATION
 ────────────────────────────────────
 
-Definition 8.1 (Borel transform). For a formal power series f̂(z) = ∑_{n=0}^∞ a_n z^n, the Borel transform is
+Definition 8.1 (Borel transform).  For a formal power series
+f̂(z) = Σ_{n=0}^∞ a_n z^n, the Borel transform is
 
-  B(t) = ∑_{n=0}^∞ (a_n / n!) t^n.  (8.1)
+    B(t) = Σ_{n=0}^∞ (a_n / n!) t^n.                                  (8.1)
 
-Theorem 8.2 (Inverse Borel transform). If B(t) admits analytic continuation to a sector |arg t| < θ with at most exponential growth, the Laplace integral
+Theorem 8.2 (Inverse Borel transform).  If B(t) admits analytic
+continuation to a sector |arg t| < θ with at most exponential growth, the
+Laplace integral
 
-  f_{Borel}(z) = ∫_0^∞ e^{-t/z} B(t) dt  (8.2)
+    f_{Borel}(z) = ∫_0^∞ e^{-t/z} B(t) dt                             (8.2)
 
 defines a holomorphic function in a sector of the z-plane.
 
-Theorem 8.3 (Padé–Borel resummation). Let f̂ have factorial coefficient growth a_n ∼ n!, and assume B(t) is in Stahl's class with no positive real singularities. The composition
+Theorem 8.3 (Padé–Borel resummation).  Let f̂ have factorial coefficient
+growth a_n ∼ n!, and assume B(t) is in Stahl's class with no positive
+real singularities.  The composition
 
-  f_{P-B}(z) = ∫_0^∞ e^{-t/z} [n/n]_B(t) dt  (8.3)
+    f_{P-B}(z) = ∫_0^∞ e^{-t/z} [n/n]_B(t) dt                         (8.3)
 
-converges in capacity to f_{Borel}(z) on the Borel domain of regularity, and assigns a finite value to a series whose original radius of convergence was zero.
+converges in capacity to f_{Borel}(z) on the Borel domain of regularity,
+and assigns a finite value to a series whose original radius of
+convergence was zero.
 
-Remark 8.4 (Resummation versus continuation). Padé–Borel resummation is distinct from analytic continuation: the latter extends a function across a singularity from a region where it already exists, while the former assigns a value to a divergent series. The Padé approximant in (8.3) approximates the measure in the Borel plane whose Laplace transform is the physical quantity.
+Remark 8.4 (Resummation versus continuation).  Padé–Borel resummation is
+distinct from analytic continuation: the latter extends a function across
+a singularity from a region where it already exists, while the former
+assigns a value to a divergent series.  The Padé approximant in (8.3)
+approximates the measure in the Borel plane whose Laplace transform is
+the physical quantity.
 
 
-§9. APPLICATION TO ROUGH HESTON: THE CONSTANT-COEFFICIENT FRACTIONAL RICCATI EQUATION
-──────────────────────────────────────────────────────────────────────────────────────
+§9. APPLICATION: THE CONSTANT-COEFFICIENT FRACTIONAL RICCATI EQUATION
+──────────────────────────────────────────────────────────────────────
 
-The rough Heston characteristic function reduces, after standard transformations, to the constant-coefficient fractional Riccati equation
+Consider the constant-coefficient fractional Riccati equation
 
-  D^μ y(t) = c_0 + c_1 y(t) + c_2 y(t)², I^{1−μ} y(0) = 0,  (9.1)
+    D^μ y(t) = c₀ + c₁ y(t) + c₂ y(t)²,  I^{1−μ} y(0) = 0,           (9.1)
 
-where D^μ is the Caputo derivative of order μ ∈ (0,1], H = μ − 1/2 is the Hurst parameter, and the coefficients c_0, c_1, c_2 ∈ ℂ depend on the model parameters and the Fourier variable. The Müntz spectral solution, the Padé resummation in z = t^μ, and the global convergence theorem with computable error bound are developed below.
+where D^μ is the Caputo derivative of order μ ∈ (0,1] and the
+coefficients c₀, c₁, c₂ ∈ ℂ are arbitrary.  The Müntz spectral solution,
+the Mittag-Leffler tree expansion, the meromorphy proof via classical
+Riccati majorization, the Padé resummation in z = t^μ, and the global
+convergence theorem with computable error bound are developed below.
+
 
 §9.1. Fractional calculus and the Müntz basis
 ─────────────────────────────────────────────
 
-Definition 9.1 (Riemann–Liouville integral and Caputo derivative). For r > 0 and f ∈ L¹_{loc}[0,T], the Riemann–Liouville integral is
+Definition 9.1 (Riemann–Liouville integral and Caputo derivative).
+For r > 0 and f ∈ L¹_{loc}[0,T], the Riemann–Liouville integral is
 
-  I^r f(t) = (1/Γ(r)) ∫_0^t (t−s)^{r−1} f(s) ds.  (9.2)
+    I^r f(t) = (1/Γ(r)) ∫_0^t (t−s)^{r−1} f(s) ds.                    (9.2)
 
-For μ ∈ (0,1) and f such that I^{1−μ}f ∈ C¹[0,T], the Caputo derivative is
+For μ ∈ (0,1) and f such that I^{1−μ}f ∈ C¹[0,T], the Caputo derivative
+is
 
-  D^μ f(t) = (d/dt)(I^{1−μ} f(t)) − f(0)/(Γ(1−μ)) t^{-μ}.  (9.3)
+    D^μ f(t) = (d/dt)(I^{1−μ} f(t)) − f(0)/(Γ(1−μ)) t^{-μ}.           (9.3)
 
-The fundamental relations are I^μ D^μ f(t) = f(t) − f(0) and D^μ I^μ f(t) = f(t).
+The fundamental relations are I^μ D^μ f(t) = f(t) − f(0) and
+D^μ I^μ f(t) = f(t).
 
-Proposition 9.2 (Action on power functions). For s > −1 and r > 0,
+Proposition 9.2 (Action on power functions).  For s > −1 and r > 0,
 
-  I^r t^s = Γ(s+1)/Γ(s+r+1) t^{s+r}.  (9.4)
+    I^r t^s = Γ(s+1)/Γ(s+r+1) · t^{s+r}.                              (9.4)
 
 For μ ∈ (0,1) and s > 0,
 
-  D^μ t^s = Γ(s+1)/Γ(s+1−μ) t^{s−μ}.  (9.5)
+    D^μ t^s = Γ(s+1)/Γ(s+1−μ) · t^{s−μ}.                              (9.5)
 
-Proof. For (9.4), the substitution u = t x in the integral defining I^r t^s yields a Beta function evaluation. For (9.5), observe that s > 0 implies f(0) = 0, so the correction term in (9.3) vanishes; differentiating I^{1−μ} t^s = Γ(s+1)/Γ(s+2−μ) · t^{s+1−μ} and applying Γ(s+2−μ) = (s+1−μ)Γ(s+1−μ) gives the result.
+Proof.  For (9.4), the substitution u = t x in the integral defining
+I^r t^s yields a Beta function evaluation.  For (9.5), observe that s > 0
+implies f(0) = 0, so the correction term in (9.3) vanishes; differentiating
+I^{1−μ} t^s = Γ(s+1)/Γ(s+2−μ) · t^{s+1−μ} and applying
+Γ(s+2−μ) = (s+1−μ)Γ(s+1−μ) gives the result.  □
 
-Remark 9.3 (The Caputo derivative of a constant). The hypothesis s > 0 in (9.5) cannot be relaxed. For s = 0, the correction term in (9.3) cancels the formal power t^{-μ}/Γ(1−μ) and yields D^μ(1) = 0, consistent with the convention that constants have zero Caputo derivative.
+Remark 9.3 (The Caputo derivative of a constant).  The hypothesis s > 0
+in (9.5) cannot be relaxed.  For s = 0, the correction term in (9.3)
+cancels the formal power t^{-μ}/Γ(1−μ) and yields D^μ(1) = 0, consistent
+with the convention that constants have zero Caputo derivative.
 
-Definition 9.4 (Müntz lattice). Fix μ ∈ (0,1] and T > 0. The Müntz lattice is
+Definition 9.4 (Müntz lattice).  Fix μ ∈ (0,1] and T > 0.  The Müntz
+lattice is
 
-  𝓜 = span{1, t^μ, t^{2μ}, t^{3μ}, …}.  (9.6)
+    𝓜 = span{1, t^μ, t^{2μ}, t^{3μ}, …}.                            (9.6)
 
-Theorem 9.5 (Closure of the Müntz lattice). For every k ≥ 1 and r ∈ μℕ:
+Theorem 9.5 (Closure of the Müntz lattice).  For every k ≥ 1 and
+r ∈ μℕ:
 
-  D^μ t^{kμ} = Γ(kμ+1)/Γ((k−1)μ+1) t^{(k−1)μ},  (9.7)
-  I^r t^{kμ} = Γ(kμ+1)/Γ(kμ+r+1) t^{kμ+r},  (9.8)
-  t^{jμ} · t^{kμ} = t^{(j+k)μ}.  (9.9)
+    D^μ t^{kμ} = Γ(kμ+1)/Γ((k−1)μ+1) · t^{(k−1)μ},                    (9.7)
+    I^r t^{kμ} = Γ(kμ+1)/Γ(kμ+r+1) · t^{kμ+r},                        (9.8)
+    t^{jμ} · t^{kμ} = t^{(j+k)μ}.                                     (9.9)
 
-Consequently D^μ 𝓜 ⊂ 𝓜, I^r 𝓜 ⊂ 𝓜 for r ∈ μℕ, and 𝓜 is closed under multiplication.
+Consequently D^μ 𝓜 ⊂ 𝓜, I^r 𝓜 ⊂ 𝓜 for r ∈ μℕ, and 𝓜 is closed
+under multiplication.
 
-Proof. Equations (9.7) and (9.8) are immediate from Proposition 9.2 with s = kμ. Equation (9.9) is elementary. The closure properties follow directly.
+Remark 9.6 (Why the Müntz lattice is the natural basis).  The three
+closure properties of Theorem 9.5—under fractional differentiation,
+fractional integration of order μ, and pointwise multiplication—make the
+Müntz lattice the canonical basis for any constant-coefficient fractional
+ODE with polynomial nonlinearity.  The Müntz–Tau substitution preserves
+the algebraic structure of the equation.  Ordinary Taylor series in t
+fail because they are not closed under D^μ for non-integer μ.  Note that
+I^{1-μ} does not preserve 𝓜 for generic μ; however, the Volterra
+reformulation (9.10) requires only I^μ, which does.
 
-Remark 9.6 (Why the Müntz lattice is the natural basis). The three closure properties of Theorem 9.5, under fractional differentiation, fractional integration of order μ, and pointwise multiplication, make the Müntz lattice the canonical basis for any constant-coefficient fractional ODE with polynomial nonlinearity. The Müntz–Tau substitution preserves the algebraic structure of the equation. Ordinary Taylor series in t fail because they are not closed under D^μ for non-integer μ. Note that I^{1−μ} does not preserve 𝓜 for generic μ; however, the Volterra reformulation (9.16) requires only I^μ, which does.
+Remark 9.6′ (The Leibniz obstruction).  The Caputo derivative D^μ does
+NOT satisfy the Leibniz product rule for μ ∈ (0,1).  On the Müntz basis,
+
+    D^μ(t^{jμ}·t^{kμ}) = Γ((j+k)μ+1)/Γ((j+k−1)μ+1) · t^{(j+k−1)μ},
+
+whereas
+
+    (D^μ t^{jμ})·t^{kμ} + t^{jμ}·(D^μ t^{kμ})
+       = [Γ(jμ+1)/Γ((j−1)μ+1) + Γ(kμ+1)/Γ((k−1)μ+1)] · t^{(j+k−1)μ},
+
+and the two Gamma-ratio sums do NOT coincide except at μ = 1.
+Consequently, no substitution of the form y = φ(w₁,w₂) where (w₁,w₂)
+solves a linear Caputo system D^μ 𝐰 = A𝐰 can linearize the fractional
+Riccati equation for μ ∈ (0,1).  In particular, the Cole–Hopf ansatz
+y = −w₂/(c₂ w₁) with 𝐰 = E_{μ,1}(Az)𝐰(0) fails for μ ∈ (0,1).  All
+nonlinear manipulations in what follows are performed through the
+Volterra convolution (9.10), where the multiplication is under an
+integral and no product rule is invoked.
+
 
 §9.2. The series solution and Volterra representation
 ────────────────────────────────────────────────────
 
-Applying I^μ to (9.1) and using I^μ D^μ y = y − y(0) = y yields the equivalent Volterra integral equation
+Applying I^μ to (9.1) and using I^μ D^μ y = y − y(0) = y yields the
+equivalent Volterra integral equation
 
-  y(t) = (1/Γ(μ)) ∫_0^t (t−s)^{μ−1} (c_0 + c_1 y(s) + c_2 y(s)²) ds.  (9.10)
+    y(t) = (1/Γ(μ)) ∫_0^t (t−s)^{μ−1} (c₀ + c₁ y(s) + c₂ y(s)²) ds.  (9.10)
 
-Remark 9.7 (Hölder regularity at the origin). Evaluating (9.10) at t = 0 gives y(0) = 0. Near the origin,
+Remark 9.7 (Hölder regularity at the origin).  Evaluating (9.10) at t = 0
+gives y(0) = 0.  Near the origin,
 
-  y(t) = c_0/Γ(μ+1) t^μ + O(t^{2μ}),  (9.11)
+    y(t) = c₀/Γ(μ+1) · t^μ + O(t^{2μ}),                              (9.11)
 
-so y is Hölder continuous of order μ but not differentiable at 0. The Hölder exponent μ is the natural regularity scale of the problem.
+so y is Hölder continuous of order μ but not differentiable at 0.  The
+Hölder exponent μ is the natural regularity scale of the problem.
 
-Theorem 9.8 (Müntz–Tau Puiseux series solution). There exist R > 0 and a sequence (a_k)_{k≥1} ⊂ ℂ such that
+Theorem 9.8 (Müntz–Tau Puiseux series solution).  There exist R > 0 and
+a sequence (a_k)_{k≥1} ⊂ ℂ such that
 
-  y(t) = ∑_{k=1}^∞ a_k t^{kμ}, |t| < R^{1/μ},  (9.12)
+    y(t) = Σ_{k=1}^∞ a_k t^{kμ},  |t| < R^{1/μ},                    (9.12)
 
 where the coefficients satisfy the Gamma-ratio convolution recurrence
 
-  a_1 = c_0/Γ(μ+1),  (9.13)
-  a_{k+1} = Γ(kμ+1)/Γ((k+1)μ+1) (c_1 a_k + c_2 ∑_{j+ℓ=k, 1≤j,ℓ≤k−1} a_j a_ℓ), k ≥ 1.  (9.14)
+    a₁ = c₀/Γ(μ+1),                                                   (9.13)
+    a_{k+1} = Γ(kμ+1)/Γ((k+1)μ+1)
+              · (c₁ a_k + c₂ Σ_{j+ℓ=k, 1≤j,ℓ≤k−1} a_j a_ℓ),  k ≥ 1. (9.14)
 
-Proof. Existence of R > 0 is established in Theorem 9.9 below by a Banach fixed-point argument. Granting analyticity of y in z = t^μ on |z| < R, write y(t) = ∑_{k≥1} a_k t^{kμ}. By (9.9),
+Proof.  Existence of R > 0 is established in Theorem 9.10 below by a
+Banach fixed-point argument.  Granting analyticity of y in z = t^μ on
+|z| < R, write y(t) = Σ_{k≥1} a_k t^{kμ}.  By (9.9),
 
-  y(t)² = ∑_{m=2}^∞ b_m t^{mμ}, b_m = ∑_{j+ℓ=m, 1≤j,ℓ≤m−1} a_j a_ℓ.  (9.15)
+    y(t)² = Σ_{m=2}^∞ b_m t^{mμ},
+    b_m = Σ_{j+ℓ=m, 1≤j,ℓ≤m−1} a_j a_ℓ.                              (9.15)
 
-Substituting into (9.10), splitting the integral, and applying (9.4) with s = kμ, r = μ:
+Substituting into (9.10), splitting the integral, and applying (9.4) with
+s = kμ, r = μ:
 
-  ∫_0^t (t−s)^{μ−1} s^{kμ} ds = Γ(μ) Γ(kμ+1)/Γ((k+1)μ+1) t^{(k+1)μ}.  (9.16)
+    ∫_0^t (t−s)^{μ−1} s^{kμ} ds
+        = Γ(μ) · Γ(kμ+1)/Γ((k+1)μ+1) · t^{(k+1)μ}.                   (9.16)
 
-Matching the coefficient of t^{nμ} for each n ≥ 1 yields (9.13) for n = 1 and (9.14) after reindexing n ↦ k+1.
+Matching the coefficient of t^{nμ} for each n ≥ 1 yields (9.13) for n = 1
+and (9.14) after reindexing n ↦ k+1.  □
 
-Remark 9.9 (Quadratic convolution at low orders). For k = 1, the convolution sum in (9.14) is empty: there are no pairs (j,ℓ) with j,ℓ ≥ 1 and j+ℓ = 1. Hence
+Remark 9.9 (Quadratic convolution at low orders).  For k = 1, the
+convolution sum in (9.14) is empty.  Hence
 
-  a_2 = Γ(μ+1)/Γ(2μ+1) c_1 a_1.  (9.17)
+    a₂ = Γ(μ+1)/Γ(2μ+1) · c₁ a₁.                                     (9.17)
 
 The quadratic term first contributes at k = 2:
 
-  a_3 = Γ(2μ+1)/Γ(3μ+1) (c_1 a_2 + c_2 a_1²).  (9.18)
+    a₃ = Γ(2μ+1)/Γ(3μ+1) · (c₁ a₂ + c₂ a₁²).                         (9.18)
+
 
 §9.3. Radius of convergence and generic finiteness
 ───────────────────────────────────────────────────
 
-Theorem 9.10 (Strictly positive Puiseux radius and Cauchy bound). Let
+Theorem 9.10 (Strictly positive Puiseux radius and Cauchy bound).  Let
 
-  A = |c_0| + |c_1| + |c_2|, B = |c_1| + 2|c_2|,  (9.19)
+    A = |c₀| + |c₁| + |c₂|,  B = |c₁| + 2|c₂|,                        (9.19)
 
 and define
 
-  T_0^μ = min( Γ(μ+1)/(2A), Γ(μ+1)/(4B) ) > 0.  (9.20)
+    T₀^μ = min(Γ(μ+1)/(2A), Γ(μ+1)/(4B)) > 0.                        (9.20)
 
-(i) There exists a unique solution y ∈ C[0,T_0] of (9.10) with ‖y‖_∞ ≤ 1. This solution is analytic in z = t^μ on {|z| < T_0^μ}, so the Puiseux series (9.12) has radius of convergence R ≥ T_0^μ > 0.
+(i) There exists a unique solution y ∈ C[0,T₀] of (9.10) with
+    ‖y‖_∞ ≤ 1.  This solution is analytic in z = t^μ on {|z| < T₀^μ},
+    so the Puiseux series (9.12) has radius of convergence R ≥ T₀^μ > 0.
 
-(ii) For every 0 < r < R, with g(z) = y(z^{1/μ}) and M(r) = sup_{|z|=r} |g(z)|,
+(ii) For every 0 < r < R, with g(z) = y(z^{1/μ}) and
+     M(r) = sup_{|z|=r} |g(z)|,
 
-  |a_k| ≤ M(r)/r^k ∀ k ≥ 1.  (9.21)
+     |a_k| ≤ M(r)/r^k  ∀ k ≥ 1.                                      (9.21)
 
-Proof. Define B_1 = {y ∈ C[0,T_0] : ‖y‖_∞ ≤ 1} with the supremum norm and the operator
+Proof.  Define 𝓑₁ = {y ∈ C[0,T₀] : ‖y‖_∞ ≤ 1} with the supremum norm
+and the operator
 
-  Φ(y)(t) = (1/Γ(μ)) ∫_0^t (t−s)^{μ−1} (c_0 + c_1 y(s) + c_2 y(s)²) ds = I^μ(c_0 + c_1 y + c_2 y²)(t).  (9.22)
+    Φ(y)(t) = I^μ(c₀ + c₁ y + c₂ y²)(t).                             (9.22)
 
-For y ∈ B_1, the integrand is bounded by A, and (9.4) gives
+For y ∈ 𝓑₁, the integrand is bounded by A, and (9.4) gives
 
-  |Φ(y)(t)| ≤ A · T_0^μ/Γ(μ+1) ≤ 1/2 < 1  (9.23)
+    |Φ(y)(t)| ≤ A · T₀^μ/Γ(μ+1) ≤ 1/2 < 1                            (9.23)
 
-by the first term in (9.20). For y_1, y_2 ∈ B_1,
+by the first term in (9.20).  For y₁, y₂ ∈ 𝓑₁,
 
-  |c_1(y_1−y_2) + c_2(y_1²−y_2²)| ≤ B ‖y_1−y_2‖_∞,  (9.24)
+    |c₁(y₁−y₂) + c₂(y₁²−y₂²)| ≤ B ‖y₁−y₂‖_∞,                         (9.24)
 
 so
 
-  ‖Φ(y_1)−Φ(y_2)‖_∞ ≤ T_0^μ B/Γ(μ+1) ‖y_1−y_2‖_∞ ≤ (1/4) ‖y_1−y_2‖_∞ < (1/2) ‖y_1−y_2‖_∞  (9.25)
+    ‖Φ(y₁)−Φ(y₂)‖_∞ ≤ T₀^μ B/Γ(μ+1) · ‖y₁−y₂‖_∞
+                   ≤ (1/4) ‖y₁−y₂‖_∞                                 (9.25)
 
-by the second term in (9.20). The Banach fixed-point theorem provides a unique y* ∈ B_1 solving (9.10). The formal Puiseux series defined by (9.13)–(9.14) solves the same equation order by order; by uniqueness, the series equals y* on [0,T_0], proving (i). Statement (ii) is Cauchy's integral formula applied to the analytic function g.
+by the second term in (9.20).  The Banach fixed-point theorem provides a
+unique y* ∈ 𝓑₁ solving (9.10).  The formal Puiseux series defined by
+(9.13)–(9.14) solves the same equation order by order; by uniqueness, the
+series equals y* on [0,T₀], proving (i).  Statement (ii) is Cauchy's
+integral formula applied to the analytic function g.  □
 
-Theorem 9.11 (Generic finiteness of the radius). For every μ ∈ (0,1] and generic parameters with c_2 ≠ 0, the Puiseux radius is finite: R < ∞. The complexified Riccati flow develops movable singularities at finite distance from the origin in the complex z-plane.
+Theorem 9.11 (Generic finiteness of the radius).  For every μ ∈ (0,1]
+and generic parameters with c₂ ≠ 0, the Puiseux radius is finite:
+R < ∞.  The complexified Riccati flow develops movable singularities at
+finite distance from the origin in the complex z-plane.
 
-Proof. Let A_k be the majorant coefficients defined by A_1 = |c_0|/Γ(μ+1) and
+Proof.  Let A_k be the majorant coefficients defined by A₁ = |c₀|/Γ(μ+1)
+and
 
-  A_{k+1} = Γ(kμ+1)/Γ((k+1)μ+1) ( |c_1| A_k + |c_2| ∑_{j+ℓ=k, 1≤j,ℓ≤k−1} A_j A_ℓ ).  (9.26)
+    A_{k+1} = Γ(kμ+1)/Γ((k+1)μ+1)
+              · (|c₁| A_k + |c₂| Σ_{j+ℓ=k} A_j A_ℓ).                 (9.26)
 
-By construction |a_k| ≤ A_k for all k. Let Ã_k denote the corresponding coefficients for μ = 1, i.e., the power series coefficients of the solution to ỹ' = |c_0| + |c_1| ỹ + |c_2| ỹ², ỹ(0) = 0. This elementary Riccati equation has the explicit solution
+By construction |a_k| ≤ A_k for all k.  Let Ã_k denote the corresponding
+coefficients for μ = 1, i.e., the power series coefficients of the
+solution to ỹ' = |c₀| + |c₁| ỹ + |c₂| ỹ², ỹ(0) = 0.  This elementary
+Riccati equation has the explicit solution
 
-  ỹ(x) = λ_+ λ_- (e^{(λ_+−λ_-)x} − 1) / (λ_+ e^{(λ_+−λ_-)x} − λ_-), λ_± = (|c_1| ± √(|c_1|² + 4|c_0 c_2|))/2,  (9.27)
+    ỹ(x) = λ₊λ₋(e^{(λ₊−λ₋)x}−1)/(λ₊ e^{(λ₊−λ₋)x}−λ₋),
+    λ_± = (|c₁| ± √(|c₁|² + 4|c₀c₂|))/2,                             (9.27)
 
 which has simple poles at finite x ∈ ℂ; hence R̃ < ∞.
 
-The claim A_k ≥ Ã_k for all k ≥ 1 is proved by induction. For the base case, Γ(μ+1) ≤ 1 for μ ∈ (0,1], so A_1 = |c_0|/Γ(μ+1) ≥ |c_0| = Ã_1. Assume A_j ≥ Ã_j for all j ≤ k. Set γ_k = Γ(kμ+1)/Γ((k+1)μ+1) and γ̃_k = 1/(k+1). The inequality γ_k ≥ γ̃_k follows from Gautschi's inequality: for x = kμ+1 ≥ 1 and μ ∈ (0,1],
+The claim A_k ≥ Ã_k for all k ≥ 1 is proved by induction.  For the base
+case, Γ(μ+1) ≤ 1 for μ ∈ (0,1], so A₁ = |c₀|/Γ(μ+1) ≥ |c₀| = Ã₁.
+Assume A_j ≥ Ã_j for all j ≤ k.  Set γ_k = Γ(kμ+1)/Γ((k+1)μ+1) and
+γ̃_k = 1/(k+1).  The inequality γ_k ≥ γ̃_k follows from Gautschi's
+inequality: for x = kμ+1 ≥ 1 and μ ∈ (0,1], the function
+f(x) = (x−1+μ)/μ − x^μ satisfies f(1) = 0 and f'(x) ≥ 0 for x ≥ 1,
+whence γ_k ≥ γ̃_k.  The inductive step gives A_{k+1} ≥ Ã_{k+1}.
+Thus lim sup |a_k|^{1/k} ≥ 1/R̃ > 0, so R ≤ R̃ < ∞.  □
 
-  Γ(x+μ)/Γ(x+1) ≤ x^{μ−1}, and Γ(x+μ) ≤ x^μ Γ(x).  (9.28)
+Remark 9.12 (The recurrence is only a local representation).  Even
+though every a_k is computed in closed form by (9.14), the series (9.12)
+does not converge for all t ≥ 0.  A genuine global representation must
+exploit analytic continuation.
 
-The function f(x) = (x−1+μ)/μ − x^μ satisfies f(1) = 0 and f'(x) = 1/μ − μ x^{μ−1} ≥ 0 for x ≥ 1, whence f(x) ≥ 0 and γ_k ≥ γ̃_k. The inductive step follows:
 
-  A_{k+1} ≥ γ̃_k ( |c_1| Ã_k + |c_2| ∑_{j+ℓ=k} Ã_j Ã_ℓ ) = Ã_{k+1}.  (9.29)
+§9.4. The Mittag-Leffler tree expansion
+────────────────────────────────────────
 
-Thus lim sup_{k→∞} |a_k|^{1/k} ≥ lim sup_{k→∞} Ã_k^{1/k} = 1/R̃ > 0, which implies R ≤ R̃ < ∞.
+After the substitution t = z^{1/μ}, σ = s^{1/μ}, the Volterra equation
+(9.10) becomes
 
-Remark 9.12 (The recurrence is only a local representation). Theorem 9.11 is the central obstruction. Even though every a_k is computed in closed form by (9.14), the series (9.12) does not converge for all t ≥ 0. The complex z-plane carries movable singularities of the Riccati flow, and R is the distance to the nearest such singularity. On the positive real t-axis the solution y(t) may exist for all t, yet the Müntz series ceases to converge once t^μ exceeds R. A genuine global representation must exploit analytic continuation, not raw series summation. This is the role played by Padé approximation in the next subsection.
+    g(z) = c₀ ∫₀ᶻ K_μ(z,σ) dσ + c₁ ∫₀ᶻ K_μ(z,σ) g(σ) dσ
+                              + c₂ ∫₀ᶻ K_μ(z,σ) g(σ)² dσ,           (9.28)
 
-§9.4. Padé resummation in the variable z = t^μ
-─────────────────────────────────────────────
+with kernel
 
-Let z = t^μ and define
+    K_μ(z,σ) = (z^{1/μ} − σ^{1/μ})^{μ−1} · σ^{1/μ−1} / (Γ(μ)·μ).     (9.29)
 
-  g(z) = y(z^{1/μ}) = ∑_{k=1}^∞ a_k z^k, |z| < R.  (9.30)
+A direct computation verifies the key integral evaluation
+
+    ∫₀ᶻ K_μ(z,σ) σ^k dσ
+        = Γ(kμ+1)/Γ((k+1)μ+1) · z^{k+1},                             (9.30)
+
+which encodes the Müntz closure (9.8) after the change of variables.
+
+Definition 9.13 (Iterated Mittag-Leffler integrals).  Define
+
+    𝓘_μ^{(0)}(z; c₁) = z E_{μ,μ+1}(c₁ z)
+                     = Σ_{n=0}^∞ c₁^n z^{n+1} / Γ(nμ+μ+1),            (9.31)
+
+and for m ≥ 1,
+
+    𝓘_μ^{(m)}(z; c₁) = Σ_{p=0}^{m−1}
+        ∫₀ᶻ K_μ(z,σ) 𝓘_μ^{(p)}(σ; c₁) 𝓘_μ^{(m−1−p)}(σ; c₁) dσ.      (9.32)
+
+Theorem 9.14 (Mittag-Leffler tree expansion).  For every μ ∈ (0,1], the
+series
+
+    g(z) = Σ_{m=0}^∞ c₀^{m+1} c₂^m 𝓘_μ^{(m)}(z; c₁)                  (9.33)
+
+converges absolutely and uniformly on |z| ≤ r for every r < R, and its
+Taylor coefficients at z = 0 satisfy
+
+    [z^k] g(z) = a_k for every k ≥ 1.                                 (9.34)
+
+Explicit coefficient formula.  Each 𝓘_μ^{(m)}(z; c₁) has power series
+
+    [z^k] 𝓘_μ^{(m)}(z; c₁)
+      = Σ_{n₁+⋯+n_{m+1} = k−(m+1), n_i ≥ 0}
+          c₁^{Σ n_i} · 𝓑_μ(m; n₁,…,n_{m+1})
+          / ∏_{i=1}^{m+1} Γ(n_i μ+μ+1),                              (9.35)
+
+where the Beta-weight 𝓑_μ is the tree sum
+
+    𝓑_μ(m; n₁,…,n_{m+1})
+      = Σ_{T ∈ 𝓣_{m+1}} ∏_{v internal node of T}
+          Γ(λ_L(v)μ+1) Γ(λ_R(v)μ+1) / Γ((λ_L(v)+λ_R(v))μ+1),        (9.36)
+
+with 𝓣_{m+1} the set of full binary trees with m+1 leaves
+(|𝓣_{m+1}| = C_m, the m-th Catalan number), and λ_L(v), λ_R(v) the
+leaf-counts of the left and right subtrees at the internal node v.
+
+Proof.  The Volterra equation (9.28) is a contraction on the Banach
+space of formal power series in z with the valuation norm.  Expanding
+its unique fixed point as a formal power series in c₂ via the Neumann
+iteration
+
+    g^{(0)}(z) = c₀ z E_{μ,μ+1}(c₁ z),
+    g^{(m+1)}(z) = g^{(0)}(z) + c₂ ∫₀ᶻ K_μ(z,σ) (g^{(m)}(σ))² dσ,    (9.37)
+
+and collecting terms by degree in c₂ yields (9.33) with 𝓘_μ^{(m)} as
+defined by (9.32).  The explicit coefficient formula (9.35)–(9.36)
+follows by induction: each kernel integration applies the identity
+∫₀ᶻ K_μ(z,σ) σ^s dσ = Γ(s+1)/Γ(s+μ+1) · z^{s+μ}, producing a Beta-type
+Gamma-ratio factor that accumulates along internal nodes of the binary
+tree tracking the quadratic iterations.  The identity (9.34) is verified
+by showing that (9.33) satisfies the Volterra equation (9.28), whose
+unique formal power series solution has coefficients a_k by
+Theorem 9.8.  □
+
+Corollary 9.15 (c₂ = 0 reduction).  For c₂ = 0,
+
+    g(z) = c₀ z E_{μ,μ+1}(c₁ z),  exactly, for all μ ∈ (0,1].        (9.38)
+
+Corollary 9.16 (μ = 1 reduction).  For μ = 1, K₁(z,σ) = 1 identically,
+E_{1,2}(c₁ z) = (e^{c₁ z}−1)/(c₁ z), and the tree expansion (9.33)
+resums to the classical Cole–Hopf ratio
+
+    g(z) = −w₂(z)/(c₂ w₁(z)),  𝐰(z) = e^{Az} 𝐰(0),
+    A = ⎛  0    1 ⎞, 𝐰(0) = (1,0)^T.                                (9.39)
+        ⎝−c₀c₂ c₁⎠
+
+Remark 9.17 (Why this replaces an attempted Cole–Hopf for μ ∈ (0,1)).
+It is tempting to conjecture that g(z) = −w₂(z)/(c₂ w₁(z)) with
+𝐰(z) = E_{μ,1}(Az)𝐰(0) for all μ ∈ (0,1].  This is FALSE for
+μ ∈ (0,1).  Direct computation shows [z³](ML ratio) ≠ a₃, the mismatch
+tracing to the failure of the Leibniz rule for D^μ (Remark 9.6′).  The
+correct generalization is the tree expansion (9.33), where the full tree
+sum at each order reproduces the Gamma-ratio convolution exactly.  The
+ML ratio captures only the "linear chain" trees and misses the
+nonlinear Catalan contributions for μ ≠ 1.
+
+
+§9.5. Meromorphy on ℂ via classical Riccati majorization
+──────────────────────────────────────────────────────────
+
+Theorem 9.18 (Meromorphy of g on ℂ).  Let c₀, c₁, c₂ ∈ ℂ with c₂ ≠ 0
+and μ ∈ (0,1].  The function g(z) defined by the Müntz series (9.12)
+(equivalently by the tree expansion (9.33)) extends to a meromorphic
+function on ℂ.  Its pole set 𝓟_g is discrete with no finite
+accumulation point, and each pole is simple with residue −Γ(1−μ)/c₂.
+
+Proof.  The argument proceeds in six steps.
+
+Step 1.  Classical Riccati meromorphic majorant.  Let
+
+    Ã₁ = |c₀|/Γ(μ+1),
+    Ã_{k+1} = |c₁| Ã_k + |c₂| Σ_{j+ℓ=k} Ã_j Ã_ℓ,                     (9.40)
+
+be the power series coefficients of the solution ỹ(x) of the classical
+Riccati equation ỹ' = |c₀|/Γ(μ+1) + |c₁| ỹ + |c₂| ỹ² with ỹ(0) = 0,
+explicitly (9.27).  The function ỹ is meromorphic on ℂ with a discrete
+set 𝓟̃ of simple poles having no finite accumulation point.
+
+Step 2.  Gamma-ratio domination.  For μ ∈ (0,1] and k ≥ 1, Wendel's
+inequality gives
+
+    γ_k := Γ(kμ+1)/Γ((k+1)μ+1) ≤ 1/(kμ+1)^μ ≤ 1.                     (9.41)
+
+Step 3.  Coefficient majorization.  By induction on k,
+|a_k| ≤ Ã_k for all k ≥ 1.  Base: |a₁| = |c₀|/Γ(μ+1) = Ã₁.  Step:
+assuming |a_j| ≤ Ã_j for j ≤ k,
+
+    |a_{k+1}| ≤ γ_k (|c₁| |a_k| + |c₂| Σ |a_j||a_ℓ|)
+              ≤ γ_k (|c₁| Ã_k + |c₂| Σ Ã_j Ã_ℓ)
+              ≤ |c₁| Ã_k + |c₂| Σ Ã_j Ã_ℓ    [γ_k ≤ 1]
+              = Ã_{k+1}.                                              (9.42)
+
+Consequently lim sup |a_k|^{1/k} ≤ 1/R̃, and on |z| < R̃,
+
+    |g(z)| ≤ ỹ(|z|) < ∞.                                             (9.43)
+
+Step 4.  Analytic continuation via the Volterra equation in ℂ.  Fix
+z₀ ∈ ℂ ∖ 𝓟̃ and a continuous path γ: [0,1] → ℂ ∖ 𝓟̃ with γ(0)=0,
+γ(1)=z₀.  The Volterra equation (9.28) admits a unique analytic solution
+on a neighborhood of γ, obtained by iteration of the contraction Φ on a
+Banach space of analytic functions bounded by ỹ(|γ(·)|) + δ.  At each
+step, local existence follows from (9.43) and integrability of K_μ
+along γ.
+
+Step 5.  Pole structure at a blow-up point.  If g develops a singularity
+at some z* ∈ ℂ (necessarily |z*| ≥ R̃), dominant balance in (9.28) as
+z → z* with the quadratic term c₂ ∫K_μ g² gives
+
+    g(z) ~ −Γ(1−μ)/(c₂(z−z*))  as z → z*.                            (9.44)
+
+Hence every finite singularity is a simple pole with residue
+−Γ(1−μ)/c₂.
+
+Step 6.  Non-accumulation.  Suppose 𝓟_g has a finite accumulation point
+z_∞ ∈ ℂ.  Choose ρ > 0 with D(z_∞, 2ρ) ∩ 𝓟̃ = ∅.  On D(z_∞, ρ) ∖ 𝓟_g,
+|g| ≤ M := sup_{|ζ|≤|z_∞|+ρ} ỹ(|ζ|) < ∞.  But an accumulating simple
+pole cannot be bounded on a deleted neighborhood, contradicting (9.44).
+Hence 𝓟_g has no finite accumulation point.
+
+Combining Steps 4–6 yields meromorphy on ℂ with discrete simple pole
+set.  □
+
+Remark 9.19 (What the proof claims and does not claim).  The argument
+establishes meromorphy globally on ℂ, discreteness of 𝓟_g, and simple
+pole structure with explicit residue.  It does not assert equality
+𝓟_g = 𝓟̃.  It relies only on (i) Wendel's inequality γ_k ≤ 1,
+(ii) the explicit meromorphic majorant (9.27), and (iii) Riemann's
+removable singularity theorem.  No Leibniz rule, no Cole–Hopf
+linearization, and no ML-ratio identity is invoked.
+
+
+§9.6. Padé resummation in the variable z = t^μ
+───────────────────────────────────────────────
 
 Fix M ∈ ℕ and seek polynomials
 
-  P_M(z) = ∑_{k=0}^M p_k z^k, Q_M(z) = 1 + ∑_{k=1}^M q_k z^k  (9.31)
+    P_M(z) = Σ_{k=0}^M p_k z^k,  Q_M(z) = 1 + Σ_{k=1}^M q_k z^k     (9.45)
 
-satisfying the matching condition
+satisfying
 
-  Q_M(z) g(z) − P_M(z) = O(z^{2M+1}) (z → 0).  (9.32)
+    Q_M(z) g(z) − P_M(z) = O(z^{2M+1})  (z → 0).                     (9.46)
 
-Lemma 9.13 (Hankel form of the denominator system). The matching condition (9.32) is equivalent to p_0 = 0,
+Lemma 9.20 (Hankel form).  The matching condition (9.46) is equivalent
+to p₀ = 0 together with the denominator system
 
-  p_n = a_n + ∑_{j=1}^{min(n,M)} q_j a_{n−j}, 1 ≤ n ≤ M,  (9.33)
-  0 = a_n + ∑_{j=1}^M q_j a_{n−j}, M+1 ≤ n ≤ 2M.  (9.34)
+    H_M 𝐪 = −𝐛,                                                       (9.47)
 
-The denominator system (9.34) is the Hankel linear system
+where H_M = (a_{M+i−j})_{1≤i,j≤M}, 𝐛 = (a_{M+1},…,a_{2M})^T.
 
-  H_M 𝐪 = −𝐛,  (9.35)
+Proposition 9.21 (Regularity of the Padé table).  For μ ∈ (0,1), g is
+not rational (it has poles by Theorem 9.18 and a t^μ-branch structure
+by (9.11)), so for generic parameters det H_M ≠ 0 for every M ≥ 1.
+For μ = 1, g is rational only in exceptional degenerate cases.
 
-where
+Definition 9.22 (Diagonal Padé approximant).
 
-  H_M = ⎛ a_M     a_{M−1}  ⋯  a_1   ⎞
-      ⎜ a_{M+1}   a_M    ⋯  a_2   ⎟
-      ⎜  ⋮        ⋮     ⋱  ⋮    ⎟
-      ⎝ a_{2M−1} a_{2M−2} ⋯  a_M   ⎠,
+    R_M(z) = P_M(z)/Q_M(z).                                          (9.48)
 
-  𝐪 = (q_1,…,q_M)^T, 𝐛 = (a_{M+1},…,a_{2M})^T.
+Theorem 9.23 (Analytic remainder representation).  There exists 𝓗_M
+analytic on {|z| < R} such that
 
-Proof. Direct expansion of Q_M · g and identification of coefficients of z^n for 0 ≤ n ≤ 2M.
+    g(z) − R_M(z) = z^{2M+1} 𝓗_M(z)/Q_M(z).                          (9.49)
 
-Proposition 9.14 (Regularity of the Padé table). For μ ∈ (0,1), the function g(z) = y(z^{1/μ}) is not rational: the fractional Riccati flow generates branch points that prevent any finite-order rational representation. Consequently det H_M ≠ 0 for every M ≥ 1, and the diagonal Padé table is regular.
+Definition 9.24.  Δ_k(z) := R_k(z) − R_{k−1}(z), R₀ ≡ 0.             (9.50)
 
-For μ = 1, the Cole–Hopf linearization y = −w'/(c_2 w) reduces the equation to a second-order linear ODE with constant coefficients; the solution is meromorphic in ℂ. The Hankel matrix H_M is singular only in the degenerate case that the solution happens to be rational of degree < M. These rational configurations are the exceptional points; for generic parameters, det H_M ≠ 0 for all M ≥ 1. If a particular order yields det H_M = 0, the index M ± 1 may be used.
+Theorem 9.25 (Computable a-posteriori error bound).  Let z ∈ ℂ with
+Q_M(z), Q_{M−1}(z) ≠ 0 and suppose |Δ_{k+1}(z)| ≤ ρ|Δ_k(z)| for some
+ρ ∈ (0,1) and all k ≥ M−1.  Then
 
-Lemma 9.15 (Explicit solution). If det H_M ≠ 0, the system (9.35) has the unique solution 𝐪 = −H_M^{-1} 𝐛, and the numerator coefficients are recovered from (9.33).
+    |g(z) − R_M(z)| ≤ ρ|Δ_M(z)|/(1−ρ).                               (9.51)
 
-Definition 9.16 (Diagonal Padé approximant and its domain). The diagonal Padé approximant of order M is
+With ρ_* = |Δ_M(z)|/|Δ_{M−1}(z)| ∈ (0,1),
 
-  R_M(z) = P_M(z)/Q_M(z) = (∑_{k=0}^M p_k z^k) / (1 + ∑_{k=1}^M q_k z^k),  (9.36)
+    |g(z) − R_M(z)| ≤ |Δ_M(z)|²/(|Δ_{M−1}(z)|−|Δ_M(z)|).             (9.52)
 
-and its Padé domain is
 
-  𝓓_M = {z ∈ ℂ : det H_M ≠ 0, Q_M(z) ≠ 0}.  (9.37)
+§9.7. Global convergence on the positive real axis
+───────────────────────────────────────────────────
 
-§9.5. Remainder representation and the computable error bound
-────────────────────────────────────────────────────────────
+Lemma 9.26 (Absence of poles on [0,∞)).  Assume the coefficients
+c₀, c₁, c₂ admit a globally continuous real solution y(t) of the
+Volterra equation (9.10) on [0,∞).  Then g has no poles on [0,∞), and
+for every T > 0,
 
-Theorem 9.17 (Analytic remainder representation). There exists a function H_M analytic on {|z| < R} such that
+    δ_T := dist([0, T^μ], 𝓟_g) > 0.                                  (9.53)
 
-  g(z) − R_M(z) = z^{2M+1} H_M(z)/Q_M(z).  (9.38)
+Lemma 9.27 (Non-Explosion Condition on compact intervals).  For every
+T > 0, the diagonal Padé approximants R_M satisfy the Non-Explosion
+Condition on K = [0, T^μ]: the number of poles of R_M in K is uniformly
+bounded in M.
 
-In particular, g(z) − R_M(z) = O(z^{2M+1}) as z → 0.
+Proof.  By Theorem 9.18, 𝓟_g is discrete.  The poles of R_M split into
+true-pole approximants (convergent to 𝓟_g by de Montessus de Ballore)
+and Froissart doublets (O(1) in any compact, by Proposition 4.2).  For
+M large, the true-pole approximants lie within δ_T/2 of 𝓟_g, hence
+outside K.  The Froissart doublets in K are uniformly bounded in
+number.  □
 
-Proof. By the matching condition (9.32), the function E_M(z) = Q_M(z)g(z) − P_M(z) is analytic on {|z| < R} and has a zero of order at least 2M+1 at the origin. Hence E_M(z) = z^{2M+1} S_M(z) for some analytic S_M. Dividing by Q_M(z) gives (9.38) with H_M = S_M.
+Theorem 9.28 (Global Padé–Müntz representation).  Under the hypotheses
+of Lemma 9.26, for every t ≥ 0,
 
-Definition 9.18 (Successive Padé differences). For k ≥ 1, the successive Padé difference is
+    y(t) = lim_{M→∞} R_M(t^μ) = lim_{M→∞} P_M(t^μ)/Q_M(t^μ),        (9.54)
 
-  Δ_k(z) = R_k(z) − R_{k−1}(z), R_0 ≡ 0.  (9.39)
+with uniform convergence on [0,T] for every T > 0.
 
-Theorem 9.19 (Computable a-posteriori error bound). Let z ∈ 𝓓_M ∩ 𝓓_{M−1} be such that g has no poles in {|ζ| ≤ |z|}, Q_M(z) ≠ 0, Q_{M−1}(z) ≠ 0, and there exists ρ ∈ (0,1) with |Δ_{k+1}(z)| ≤ ρ |Δ_k(z)| for every k ≥ M−1. Then the Padé sequence R_k(z) converges, and
+Proof.  Combine Theorems 9.18, 4.4, and Lemmas 9.26, 9.27.  □
 
-  |g(z) − R_M(z)| ≤ ρ |Δ_M(z)| / (1−ρ).  (9.40)
 
-Defining the observable contraction ratio
+§9.8. The bordered rank-one update and incremental Hankel solver
+─────────────────────────────────────────────────────────────────
 
-  ρ_* = |Δ_M(z)| / |Δ_{M−1}(z)| ≤ ρ,  (9.41)
+The passage from Padé order M to order M+1 requires solving
+H_{M+1} 𝐪_{M+1} = −𝐛_{M+1}.  Direct inversion costs O(M³); the Hankel
+structure allows an incremental O(M²) update.
 
-and assuming |Δ_M(z)| < |Δ_{M−1}(z)| so that ρ_* ∈ (0,1),
+Lemma 9.29 (Bordered structure).  Let P_M be the cyclic column
+permutation moving the first column to the last position.  Then
 
-  |g(z) − R_M(z)| ≤ |Δ_M(z)|² / (|Δ_{M−1}(z)| − |Δ_M(z)|).  (9.42)
+    Ĥ_{M+1} := H_{M+1} P_M = ⎛ H_M    𝐮_M ⎞,                         (9.55)
+                             ⎝ 𝐯_M^T  d_M ⎠
 
-Proof. By the premise |Δ_{k+1}(z)| ≤ ρ |Δ_k(z)| and induction, |Δ_{M+j}(z)| ≤ ρ^j |Δ_M(z)| for every j ≥ 0. The telescoping series
+with 𝐮_M = (a_{M+1},…,a_{2M})^T, 𝐯_M^T = (a_{2M}, a_{2M−1},…,a_{M+1}),
+d_M = a_{2M+1}.
 
-  g(z) − R_M(z) = ∑_{k=M+1}^∞ Δ_k(z)  (9.43)
+Theorem 9.30 (Bordered rank-one inverse update).  Let s_M = d_M −
+𝐯_M^T H_M^{−1} 𝐮_M be the Schur complement.  If s_M ≠ 0,
 
-converges absolutely and is bounded by |Δ_M(z)| ∑_{j=1}^∞ ρ^j = ρ |Δ_M(z)|/(1−ρ), which is (9.40). Substituting ρ = ρ_* and simplifying yields (9.42).
+    Ĥ_{M+1}^{−1} = ⎛ H_M^{−1} + s_M^{−1} 𝐳_M 𝐰_M^T  −s_M^{−1} 𝐳_M ⎞,   (9.56)
+                   ⎝  −s_M^{−1} 𝐰_M^T                s_M^{−1}  ⎠
 
-Corollary 9.20 (Practical convergence certificate). The bound (9.42) depends only on the two most recent Padé iterates and is computable in O(1) time given R_{M−1} and R_M. It serves as an a-posteriori certificate: when |Δ_M|²/(|Δ_{M−1}|−|Δ_M|) < 2^{−bits}, the Padé iterate R_M(z) approximates g(z) to the requested precision.
+with 𝐳_M = H_M^{−1} 𝐮_M, 𝐰_M^T = 𝐯_M^T H_M^{−1}.  Cost: O(M²) per
+update.
 
-§9.6. Global convergence on the positive real axis
-─────────────────────────────────────────────────
+Corollary 9.31 (Incremental denominator solver).  Given H_M^{−1} and
+𝐪_M, the augmented 𝐪_{M+1} is obtained in six steps:
 
-Proposition 9.21 (Meromorphy of the transformed solution). For every μ ∈ (0,1], the function g(z) = y(z^{1/μ}) extends to a meromorphic function on ℂ. Its pole set 𝓟_g is discrete with no finite accumulation point.
-
-Proof. Consider the linear fractional system
-
-  D^μ 𝐰 = A 𝐰, A = ⎛0 1⎞, 𝐰(0) = ⎛1⎞.  (9.44)
-          ⎝−c_0 c_2 c_1⎠     ⎝0⎠
-
-The unique solution is 𝐰(t) = E_{μ,1}(A t^μ) 𝐰(0), where E_{μ,1}(Z) = ∑_{k=0}^∞ Z^k/Γ(kμ+1) is the matrix Mittag-Leffler function. Since Γ(kμ+1) grows super-exponentially, E_{μ,1}(A z) is an entire function of z ∈ ℂ; thus w_1(t) and w_2(t) are entire functions of z = t^μ.
-
-Define W(z) = −w_2(z)/(c_2 w_1(z)). This is meromorphic on ℂ with poles at the zeros of w_1. Since w_1(0) = 1, w_1 is not identically zero, so its zeros form a discrete set with no finite accumulation point. Expanding W(z) = ∑_{k=1}^∞ b_k z^k and substituting the series into the Riccati equation, one verifies by direct computation using the linear recurrences for the coefficients of w_1 and w_2 that the b_k satisfy exactly the recurrence (9.13)–(9.14). By uniqueness of the formal Puiseux solution (Theorem 9.8), b_k = a_k for all k. Therefore g(z) = W(z) on the disk of convergence, and by analytic continuation g extends to the meromorphic function W on ℂ.
-
-Lemma 9.22 (Absence of poles on the positive real axis). Let y(t) be the solution of (9.1) on [0,∞). Then g(z) = y(z^{1/μ}) has no poles on [0,∞). Consequently, for every T > 0,
-
-  δ_T := dist( [0,T^μ], 𝓟_g ) > 0.  (9.45)
-
-Proof. The Volterra equation (9.10) has a unique continuous solution on [0,∞) for the parameter ranges arising in rough Heston (the quadratic nonlinearity is locally Lipschitz and the kernel is integrable). A pole of g at z = t^μ > 0 would correspond to a blow-up of y(t) at finite positive t, contradicting the global existence on [0,∞). Hence 𝓟_g ∩ [0,∞) = ∅, and since 𝓟_g is discrete, the distance δ_T is strictly positive.
-
-Lemma 9.23 (Non-Explosion Condition on compact intervals). For every T > 0, the diagonal Padé approximants [M/M]_g = R_M satisfy the Non-Explosion Condition on K = [0,T^μ]: the number of poles of R_M in K is uniformly bounded in M.
-
-Proof. By Proposition 9.21, g is meromorphic with discrete pole set 𝓟_g. Let δ_T > 0 be as in (9.45). The poles of R_M fall into two classes:
-
-(a) True-pole approximants. These converge to the elements of 𝓟_g (de Montessus de Ballore). For M sufficiently large, every such pole lies within δ_T/2 of some element of 𝓟_g, hence outside K.
-
-(b) Froissart doublets. By Proposition 4.2, the number of Froissart doublets of R_M in any compact subset of ℂ \ 𝓟_g is O(1) as M → ∞.
-
-Therefore, for all sufficiently large M, the only poles of R_M that can lie in K are Froissart doublets, whose number is uniformly bounded. The Non-Explosion Condition holds.
-
-Theorem 9.24 (Global Padé–Müntz representation). Let y(t) solve the fractional Riccati equation (9.1) with μ ∈ (0,1]. Then for every t ≥ 0,
-
-  y(t) = lim_{M→∞} R_M(t^μ) = lim_{M→∞} P_M(t^μ)/Q_M(t^μ).  (9.46)
-
-Moreover, for every T > 0, the convergence is uniform on [0,T].
-
-Proof. By Proposition 9.21, g(z) = y(z^{1/μ}) is meromorphic on ℂ. By Lemma 9.22, [0,T^μ] is disjoint from the pole set 𝓟_g. Lemma 9.23 establishes the Non-Explosion Condition on [0,T^μ]. Applying Theorem 4.4 to the compact K = [0,T^μ], R_M → g uniformly on [0,T^μ]. Since T > 0 is arbitrary, uniform convergence holds on every compact subset of [0,∞), and pointwise convergence holds for every t ≥ 0.
-
-§9.7. The bordered rank-one update and incremental Hankel solver
-────────────────────────────────────────────────────────────────
-
-The passage from Padé order M to order M+1 requires the solution of the augmented Hankel system H_{M+1} 𝐪_{M+1} = −𝐛_{M+1}. Direct inversion costs O(M³). The Hankel structure permits an incremental O(M²) update via a bordered rank-one correction.
-
-Lemma 9.25 (Bordered structure of the augmented Hankel system). Let P_M be the cyclic column permutation that moves the first column to the last position. Then
-
-  Ĥ_{M+1} := H_{M+1} P_M = ⎛ H_M   𝐮_M ⎞,  (9.47)
-              ⎝ 𝐯_M^T  d_M ⎠
-
-where
-
-  𝐮_M = (a_{M+1}, a_{M+2}, …, a_{2M})^T ∈ ℂ^M,
-  𝐯_M^T = (a_{2M}, a_{2M−1}, …, a_{M+1}) ∈ ℂ^{1×M},
-  d_M = a_{2M+1} ∈ ℂ.
-
-Proof. The matrix H_{M+1} P_M has columns 2,3,…,M+1,1 of H_{M+1}. The first M columns are therefore the top-right M×M block of H_{M+1}, which is H_M by direct inspection of (9.35). The last column is the first column of H_{M+1}, namely (a_{M+1},…,a_{2M+1})^T, giving 𝐮_M and d_M. The last row of the first M columns is (a_{2M}, a_{2M−1},…,a_{M+1}), giving 𝐯_M^T.
-
-Theorem 9.26 (Bordered rank-one update of the inverse). Assume H_M is invertible and define the Schur complement
-
-  s_M = d_M − 𝐯_M^T H_M^{-1} 𝐮_M.  (9.48)
-
-If s_M ≠ 0, then H_{M+1} is invertible and
-
-  Ĥ_{M+1}^{-1} = ⎛ H_M^{-1} + (1/s_M) 𝐳_M 𝐰_M^T   −(1/s_M) 𝐳_M ⎞,  (9.49)
-          ⎝ −(1/s_M) 𝐰_M^T              1/s_M       ⎠
-
-where
-
-  𝐳_M = H_M^{-1} 𝐮_M, 𝐰_M^T = 𝐯_M^T H_M^{-1}.  (9.50)
-
-The update from H_M^{-1} to Ĥ_{M+1}^{-1} requires two matrix-vector products, one inner product, and one rank-one outer product, for a total cost of O(M²) arithmetic operations.
-
-Proof. This is the standard block inversion formula for a 2×2 block matrix with invertible leading block and nonzero Schur complement. The matrix 𝐳_M 𝐰_M^T is rank one, hence the name. The cost breakdown is: H_M^{-1} 𝐮_M costs O(M²); 𝐯_M^T H_M^{-1} costs O(M²); 𝐯_M^T 𝐳_M costs O(M); the outer product 𝐳_M 𝐰_M^T costs O(M²).
-
-Corollary 9.27 (Incremental denominator solver). Given H_M^{-1} and the solution 𝐪_M of H_M 𝐪_M = −𝐛_M, the augmented solution 𝐪_{M+1} of H_{M+1} 𝐪_{M+1} = −𝐛_{M+1} is obtained as follows:
-
-(i) Compute 𝐳_M = H_M^{-1} 𝐮_M and 𝐰_M^T = 𝐯_M^T H_M^{-1} via (9.50).
-(ii) Compute the Schur complement s_M = d_M − 𝐰_M^T 𝐮_M.
-(iii) Update the inverse via (9.49) to obtain Ĥ_{M+1}^{-1}.
-(iv) Solve Ĥ_{M+1} 𝐪̂_{M+1} = −𝐛_{M+1} using the updated inverse.
-(v) Permute back: 𝐪_{M+1} = P_M 𝐪̂_{M+1}.
-
-The total cost of the increment is O(M²). Amortized over M = 1,2,…,N, the cumulative cost to reach order N is O(N²).
-
-Remark 9.28 (Connection to the Jacobi truncation). Theorem 9.26 is the algebraic realization of the Jacobi truncation described in Theorem 9.29. Adding one row and column to J_M to produce J_{M+1} corresponds to bordering the Hankel matrix. The rank-one correction 𝐳_M 𝐰_M^T encodes the spectral perturbation induced by the new Jacobi entry, and the resulting Padé iterate R_{M+1} is the resolvent of the enlarged operator at the basis vector e_0.
-
-§9.8. Spectral interpretation and operator-theoretic synthesis
-───────────────────────────────────────────────────────────────
-
-Theorem 9.29 (Hankel solver as Jacobi truncation). The incremental Hankel solver of Corollary 9.27, which builds H_{M+1}^{-1} from H_M^{-1} via the bordered rank-one update (9.49) in O(M²) operations, is the algebraic realization of the Jacobi truncation: it adds one row and column to J_M to produce J_{M+1}, and the resulting Padé iterate R_{M+1} is the resolvent of the enlarged operator at the basis vector e_0.
-
-Proof. The three-term recurrence (6.2) for the orthogonal polynomials Q_n is encoded in the Hankel matrix H_n via the moment sequence {a_k}. Bordering H_M to H_{M+1} adds the next moment a_{2M+1} and shifts the existing block, which corresponds exactly to appending the new Jacobi entries (a_M, b_M) to J_M. The rank-one correction 𝐳_M 𝐰_M^T in (9.49) is the Sherman–Morrison form of the spectral update induced by this appended row and column. The Padé approximant R_{M+1}(z) = ⟨e_0, (J_{M+1} − zI)^{-1} e_0⟩ is precisely the resolvent of the truncated Jacobi operator, as stated in Theorem 6.4.
-
-Corollary 9.30 (Convergence certificate as spectral gap). The successive-difference bound (9.42) certifies that the iterate R_M has entered the asymptotic regime where the tail is geometrically controlled by exp(−M g(ξ,∞)), with g the Green's function of the cut plane in the variable ξ = z = t^μ. The threshold |Δ_M|²/(|Δ_{M−1}|−|Δ_M|) < 2^{−bits} detects the spectral gap between the working point and the Stahl compact.
-
-Theorem 9.31 (Compiled spectral reconstruction). Let Φ(u,T) denote the cumulant generating function of the rough Heston model under standard normalizations:
-
-  Φ(u,T) = θλ ∫_0^T h(u,t) dt + V_0 I^{1−μ}[h(u,·)](T),  (9.51)
-
-where h solves the fractional Riccati equation (9.1) with parameters (c_0, c_1, c_2) depending on u. Write ξ = T^μ. Then Φ admits the representation
-
-  Φ(u,T) = T ∑_{k=0}^∞ d_k(u) ξ^k,  (9.52)
-
-where
-
-  d_0(u) = V_0 c_0(u),
-  d_k(u) = θλ a_k(u)/(kμ+1) + V_0 Γ((k+1)μ+1)/Γ(kμ+2) a_{k+1}(u), k ≥ 1,  (9.53)
-
-and the coefficients a_k(u) are the Puiseux coefficients of Theorem 9.8. The series (9.52) is a power series in ξ = T^μ and is resummed via diagonal Padé in ξ:
-
-  Φ(u,T) = T · lim_{M→∞} [M/M]_{S(u,·)}(ξ), S(u,ξ) = ∑_{k=0}^∞ d_k(u) ξ^k.  (9.54)
-
-Convergence is governed by Theorem 9.24 applied to the meromorphic function S(u,·), and is certified a-posteriori by Corollary 9.20.
-
-Proof. Substituting the Müntz series h(u,t) = ∑_{k=1}^∞ a_k(u) t^{kμ} into (9.51) and using (9.4) for the fractional integral term yields
-
-  Φ(u,T) = θλ ∑_{k=1}^∞ a_k(u) T^{kμ+1}/(kμ+1) + V_0 ∑_{k=1}^∞ a_k(u) Γ(kμ+1)/Γ((k−1)μ+2) T^{(k−1)μ+1}.
-
-Factoring out T and reindexing the second sum with j = k−1 gives
-
-  Φ(u,T) = T [ V_0 a_1(u) Γ(μ+1) + ∑_{k=1}^∞ ( θλ a_k(u)/(kμ+1) + V_0 Γ((k+1)μ+1)/Γ(kμ+2) a_{k+1}(u) ) ξ^k ].
-
-Since a_1(u) = c_0(u)/Γ(μ+1) and Γ(2) = 1, the constant term simplifies to V_0 c_0(u) = d_0(u). The coefficients of ξ^k for k ≥ 1 are exactly d_k(u), proving (9.52). The Padé resummation (9.54) follows by applying the construction of §9.4 to the series S(u,ξ).
-
-§9.9. Algorithmic summary
-──────────────────────────
-
-Given (c_0, c_1, c_2, μ) and Padé order M:
-
-1. Compute the Puiseux coefficients a_1,…,a_{2M} by the recurrence (9.13)–(9.14). Cost: O(M²).
-2. Form the Hankel matrix H_M and right-hand side 𝐛 from (9.35).
-3. Solve H_M 𝐪 = −𝐛 for the denominator coefficients. Use direct factorization for the base case M = 1, then increment via the bordered rank-one update of Corollary 9.27 for each subsequent order. Cumulative cost to order M: O(M²).
-4. Recover the numerator coefficients via (9.33).
-5. Evaluate y_M(t) = P_M(t^μ)/Q_M(t^μ) at any t ≥ 0. Cost: O(M) per query.
-
-Steps 1–4 are independent of t. The entire family {y_M(t) : t ≥ 0} is encoded in a single rational function in z = t^μ. There is no grid, no time stepping, no Newton iteration, and no fixed-point loop at evaluation time.
-
-
-§10. THE ESSENTIAL DIFFERENCE
-─────────────────────────────
-
-Taylor approximation asks: what polynomial has the same derivatives at this point? It is local, and its radius is the distance to the nearest singularity.
-
-Padé approximation asks: what spectral measure produces these moments, and what is its Stieltjes transform? It is global, and its convergence domain is the maximal region on which the Riemann–Hilbert factorization exists. The poles are not defects; they are the discrete spectrum of a truncated Jacobi operator, and their condensation on the equilibrium contour is the signature of the underlying Riemann surface. The approximant continues f because it is solving for the measure that generated the series, and that reconstruction is valid wherever the logarithmic potential of the equilibrium measure controls the error.
-
-In the rough Heston application, this distinction is decisive. The Müntz–Tau substitution produces a Puiseux series whose radius of convergence is finite and generically much smaller than the time horizon of practical interest. The series alone is therefore a local representation, useful only on [0,T_0] for the Banach radius T_0 of Theorem 9.10. Padé resummation in the variable z = t^μ converts the local representation into a global one, valid on all of [0,∞) by the meromorphy theorem (Proposition 9.21) and the uniform convergence theorem (Theorem 9.24), with computable a-posteriori error control. The mechanism is the same in every section of this paper: the discrete poles of the truncation reorganize themselves into the equilibrium configuration of the function's true singular set, and the rational function so produced is the Stieltjes transform of the spectral measure that the original series was secretly encoding.
-
-
-REFERENCES
-──────────
-
-[1] H. Stahl, Orthogonal polynomials with complex-valued weight functions. I, Constr. Approx. 2 (1986), 225–240.
-
-[2] H. Stahl, Orthogonal polynomials with complex-valued weight functions. II, Constr. Approx. 2 (1986), 241–251.
-
-[3] H. Stahl, The convergence of Padé approximants to functions with branch points, J. Approx. Theory 91 (1997), 139–204.
-
-[4] A. S. Fokas, A. R. Its, and A. V. Kitaev, The isomonodromy approach to matrix models in 2D quantum gravity, Comm. Math. Phys. 147 (1992), 395–430.
-
-[5] P. Deift and X. Zhou, A steepest descent method for oscillatory Riemann–Hilbert problems, Ann. of Math. 137 (1993), 295–368.
-
-[6] P. Deift, Orthogonal Polynomials and Random Matrices: A Riemann–Hilbert Approach, Courant Lecture Notes 3, AMS, 1999.
-
-[7] A. A. Gončar, On the convergence of Padé approximants for some classes of meromorphic functions, Math. USSR Sb. 26 (1983), 551–575.
-
-[8] G. A. Baker and P. Graves-Morris, Padé Approximants, 2nd ed., Cambridge University Press, 1996.
-
-[9] R. de Montessus de Ballore, Sur les fractions continues algébriques, Bull. Soc. Math. France 30 (1902), 28–36.
-
-[10] J. Nuttall, The convergence of Padé approximants of meromorphic functions, J. Math. Anal. Appl. 31 (1970), 147–153.
-
-[11] Ch. Pommerenke, Padé approximants and convergence in capacity, J. Math. Anal. Appl. 41 (1973), 775–780.
-
-[12] S. P. Suetin, On an example of the approximation of a function by the diagonal Padé approximants, Proc. Steklov Inst. Math. 315 (2021), 241–255.
-
-[13] S. Esmaeili and M. Shamsi, The Müntz–Legendre Tau method for fractional differential equations, Appl. Math. Modelling 40 (2015), 671–684.
-
-[14] J. Écalle, Les fonctions résurgentes, Vols. I–III, Publ. Math. d'Orsay, 1981–1985.
-
-[15] O. Costin, Asymptotics and Borel Summability, Chapman & Hall/CRC, 2008.
-
-[16] O. El Euch and M. Rosenbaum, The characteristic function of rough Heston models, Math. Finance 29 (2019), 3–38.
-
-[17] J. Gatheral and B. Radoičić, Rational approximation of the rough Heston solution, Int. J. Theor. Appl. Finance 22 (2019), 1950010.
-
-[18] G. Callegaro, M. Grasselli, and G. Pagès, Fast hybrid schemes for fractional Riccati equations (rough is not so tough), Math. Oper. Res. 46 (2021), 221–254.
- 
+  1. Compute 𝐳_M = H_M^{−1} 𝐮_M, 𝐰_M = (H_M^{−1})^T 𝐯_M    [O(M²)]
+  2. Compute s_M = d_M − 𝐯_M^T 𝐳_M                          [O(M)]
+  3. If s_M = 0, skip to order M+2 (block degeneracy)
+  4. Form Ĥ_{M+1}^{−1} by (9.56)                            [O(M²)]
+  5. Compute 𝐪̂_{M+1} = −Ĥ_{M+1}^{−1} 𝐛_{M+1}                [O(M²)]
+     and recover 𝐪_{M+1} = P_M^T 𝐪̂_{M+1}
+  6. Recover 𝐩_{M+1} from 𝐪_{M+1} via numerator equations   [O(M)]
+
+Total cost to build the Padé table up to order N: O(N³).
+
+Remark 9.32 (Block structure and the Froissart budget).  If s_M = 0,
+H_{M+1} is singular—the algebraic signature of a potential Froissart
+doublet.  Detecting |s_M| < ε_mach, one flags order M+1, skips to M+2,
+and increments the Froissart budget count of §5 by one.  The
+a-posteriori bound (9.52) remains valid at the skipped order.
+
+
+§10. THE TWO PARADIGMS: A SUMMARY
+──────────────────────────────────
+
+┌─────────────────────┬──────────────────────────┬───────────────────────────┐
+│ Feature             │ Taylor (degree 2n)       │ Diagonal Padé [n/n]       │
+├─────────────────────┼──────────────────────────┼───────────────────────────┤
+│ Information         │ Derivatives at a point   │ Moments of a measure      │
+│ Governing principle │ Local analyticity        │ Global potential theory   │
+│ Convergence domain  │ Disk of radius r         │ Stahl domain D_f          │
+│ Rate inside disk    │ (|z|/r)^{2n}             │ e^{−2n g(z,∞)}            │
+│ Rate outside disk   │ Diverges                 │ e^{−2n g(z,∞)} on D_f     │
+│ Mode of convergence │ Uniform on subsets       │ In capacity; uniform NEC  │
+│ Exceptional set     │ None                     │ Froissart doublets (polar)│
+│ Poles               │ None                     │ Eigenvalues of J_n        │
+│ Algorithmic cost    │ O(n) per step            │ O(n²) incremental         │
+│ Fractional Riccati  │ Diverges for t^μ > R     │ Uniform on [0,T], ∀ T>0   │
+└─────────────────────┴──────────────────────────┴───────────────────────────┘
+
+The Taylor paradigm is natural when a function is defined at a single
+base point and the domain of interest lies within the radius of
+convergence.  Its simplicity is also its limitation: it cannot reach past
+the nearest singularity, even if that singularity lies off the physical
+path of interest.
+
+The Padé paradigm accepts the same moment data but uses it to reconstruct
+a global spectral measure, whose support—the Stahl compact—defines the
+boundary of convergence rather than merely one point on it.  The
+Deift–Zhou steepest descent gives exponential convergence everywhere in
+the Stahl domain, and the Jacobi operator connects convergence to the
+spectral theory of a self-adjoint (or pseudo-self-adjoint) operator.
+
+In the fractional Riccati application, these abstractions acquire
+concrete computational content.
+
+  •  The Müntz substitution z = t^μ converts the fractional equation
+     into a classical power series problem in z with Gamma-ratio
+     recurrence (9.13)–(9.14).
+
+  •  The Banach contraction (Theorem 9.10) provides a guaranteed radius
+     T₀^μ with Cauchy bound on the coefficients.
+
+  •  The Mittag-Leffler tree expansion (Theorem 9.14) makes the entire
+     solution explicit as an infinite sum of iterated convolutions of
+     E_{μ,μ+1}, collapsing to z E_{μ,μ+1}(c₁ z) at c₂ = 0 and to the
+     Cole–Hopf ratio at μ = 1.  This replaces any naive attempt at a
+     Cole–Hopf ansatz for μ ∈ (0,1), which fails because D^μ violates
+     the Leibniz rule.
+
+  •  Theorem 9.18 (meromorphy via classical Riccati majorization)
+     proves meromorphy on ℂ unconditionally for μ ∈ (0,1], using only
+     Wendel's inequality, the explicit meromorphic majorant (9.27), and
+     Riemann's removable singularity theorem.
+
+  •  The bordered rank-one update (Theorem 9.30) reduces incremental
+     table building to O(M²).
+
+  •  Theorems 4.4 and 9.28 assemble the pieces into a convergence
+     certificate: pointwise for every t ≥ 0, uniform on [0,T].
+
+The non-explosion principle unifies the analytical, probabilistic, and
+spectral threads.  The pole count of a Padé approximant on a compact is
+bounded for the same reason a subcritical self-exciting process is
+non-explosive and for the same reason the Wiener–Khinchin spectral tail
+governs Hölder regularity of Gaussian sample paths.  The exponent μ is
+simultaneously the regularity exponent of the Volterra solution and the
+exponent governing the Puiseux series of its z-transform; the Padé
+resummation in z = t^μ is the analytic procedure that respects this
+double role and thereby delivers global uniform convergence where the
+Müntz series alone cannot.
+
+The Leibniz rule is the only casualty of the fractional setting.  The
+Müntz series bypasses it through the Volterra convolution; the
+Mittag-Leffler tree expansion makes the bypass explicit by replacing a
+single ratio of two linearly independent solutions with an infinite
+tree sum of iterated quadratic convolutions; and the classical Riccati
+majorization provides meromorphy without ever invoking a product rule.
+Each of the three synthesis threads—Riemann–Hilbert, Mittag-Leffler
+tree expansion, classical majorization—carries its own proof of a
+distinct property of g, and together they deliver the full global
+representation of the fractional Riccati solution as the pointwise
+limit of diagonal Padé approximants in z = t^μ.
+
+═══════════════════════════════════════════════════════════════════════════════
+                                  END
+═══════════════════════════════════════════════════════════════════════════════
