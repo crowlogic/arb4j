@@ -241,13 +241,14 @@ public class VariableNodeResolutionTest extends
       assertEquals("(½-z/2)^0 = 1", "1", result.toString());
 
       seq.evaluate(1, 128, result);
-      assertEquals("(½-z/2)^1 = (-x+1)/2", "(-x+1)/2", result.toString());
+      // Issue #1014: indeterminate is the placeholder name (z) from the body.
+      assertEquals("(½-z/2)^1 = (-z+1)/2", "(-z+1)/2", result.toString());
 
       seq.evaluate(2, 128, result);
-      assertEquals("(½-z/2)^2 = (x^2-2*x+1)/4", "(x^2-2*x+1)/4", result.toString());
+      assertEquals("(½-z/2)^2 = (z^2-2*z+1)/4", "(z^2-2*z+1)/4", result.toString());
 
       seq.evaluate(3, 128, result);
-      assertEquals("(½-z/2)^3", "(-x^3+3*x^2-3*x+1)/8", result.toString());
+      assertEquals("(½-z/2)^3", "(-z^3+3*z^2-3*z+1)/8", result.toString());
     }
   }
 
@@ -260,7 +261,8 @@ public class VariableNodeResolutionTest extends
     try ( RationalFunction result = new RationalFunction())
     {
       seq.evaluate(-2, 128, result);
-      assertEquals("(½-z/2)^(-2)", "4/(x^2-2*x+1)", result.toString());
+      // Issue #1014: indeterminate is the placeholder name (z) from the body.
+      assertEquals("(½-z/2)^(-2)", "4/(z^2-2*z+1)", result.toString());
     }
   }
 

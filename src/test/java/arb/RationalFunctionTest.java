@@ -61,13 +61,15 @@ public class RationalFunctionTest extends
     RationalFunction expressed = seq.evaluate(0, 128);
     assertEquals("1", expressed.toString());
     seq.evaluate(1, 128, expressed);
-    assertEquals("(-x+1)/2", expressed.toString());
+    // Issue #1014: result polynomial's indeterminate is the placeholder name
+    // (z, from the (½-z/2) expression body) — not hardcoded "x".
+    assertEquals("(-z+1)/2", expressed.toString());
     seq.evaluate(2, 128, expressed);
-    assertEquals("(x^2-2*x+1)/4", expressed.toString());
+    assertEquals("(z^2-2*z+1)/4", expressed.toString());
     seq.evaluate(3, 128, expressed);
-    assertEquals("(-x^3+3*x^2-3*x+1)/8", expressed.toString());
+    assertEquals("(-z^3+3*z^2-3*z+1)/8", expressed.toString());
     seq.evaluate(-2, 128, expressed);
-    assertEquals("4/(x^2-2*x+1)", expressed.toString());
+    assertEquals("4/(z^2-2*z+1)", expressed.toString());
   }
 
   public void testRationalIdentityExpression()

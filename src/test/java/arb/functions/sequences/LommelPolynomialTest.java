@@ -26,7 +26,8 @@ public class LommelPolynomialTest extends
   {
     RationalFunctionSequence sequence = RationalFunctionSequence.express("R(n,1⁄2;z)");
     RationalFunction         R3       = sequence.evaluate(3, 128);
-    assertEquals("(-6*x^2+15)/(x^3)", R3.toString());
+    // Issue #1014: indeterminate is the placeholder name (z) from the body.
+    assertEquals("(-6*z^2+15)/(z^3)", R3.toString());
     Fraction R3AtTwoPointThree = R3.evaluate(new Fraction(23,
                                                           10));
     assertEquals(new Fraction(-16740,
@@ -40,7 +41,8 @@ public class LommelPolynomialTest extends
     context.registerVariable("v", RealConstants.half);
     var R = RationalFunctionSequence.express("n➔v₍ₙ₎*(z/2)^(-n)*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)", context);
     var x = R.evaluate(3, 128);
-    assertEquals("(-6*x^2+15)/(x^3)", x.toString());
+    // Issue #1014: indeterminate is the placeholder name (z) from the body.
+    assertEquals("(-6*z^2+15)/(z^3)", x.toString());
 
     double y = x.asRealFunction().eval(2.3);
     assertEquals(-1.375852716363935234651105449165776280101915, y);
@@ -55,7 +57,8 @@ public class LommelPolynomialTest extends
     var    x       = R.evaluate();
     double y       = x.asRealFunction().eval(2.3);
     // System.out.println("y=" + y );
-    assertEquals("(-6*x^2+15)/(x^3)", x.toString());
+    // Issue #1014: indeterminate is the placeholder name (z) from the body.
+    assertEquals("(-6*z^2+15)/(z^3)", x.toString());
   }
 
   public void testLommelPolynomial()
@@ -88,7 +91,8 @@ public class LommelPolynomialTest extends
     var F = RationalNullaryFunction.express("R(3,½;z)");
     // System.out.println("F=" + F);
     var f = F.evaluate(128);
-    assertEquals("(-6*x^2+15)/(x^3)", f.toString());
+    // Issue #1014: indeterminate is the placeholder name (z) from the body.
+    assertEquals("(-6*z^2+15)/(z^3)", f.toString());
     // System.out.println("f=" + f);
     double hmm = f.asRealFunction().eval(2.3);
     // System.out.println("f(2.3)="+hmm);

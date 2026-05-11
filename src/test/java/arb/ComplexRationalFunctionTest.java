@@ -56,8 +56,9 @@ public class ComplexRationalFunctionTest extends
 
     var x    = R.evaluate(3, 128);
     var xToo = Rtoo.evaluate(3, 128);
-    assertEquals("(-6*x^2+15)/(x^3) + 0i", x.toString());
-    assertEquals("(-6*x^2+15)/(x^3) + 0i", xToo.toString());
+    // Issue #1014: indeterminate is the placeholder name (z) from the body.
+    assertEquals("(-6*z^2+15)/(z^3) + 0i", x.toString());
+    assertEquals("(-6*z^2+15)/(z^3) + 0i", xToo.toString());
   }
 
   public void testComplexRationalLommelPolynomialsAsNullary()
@@ -69,7 +70,8 @@ public class ComplexRationalFunctionTest extends
     var    x       = R;
 
     Object x3      = x.evaluate(128);
-    assertEquals("(-6*x^2+15)/(x^3) + 0i", x3.toString());
+    // Issue #1014: indeterminate is the placeholder name (z) from the body.
+    assertEquals("(-6*z^2+15)/(z^3) + 0i", x3.toString());
   }
 
   @SuppressWarnings("resource")
@@ -88,14 +90,16 @@ public class ComplexRationalFunctionTest extends
     ComplexRationalFunction expressed = seq.evaluate(0, 128);
     assertEquals("1 + 0i", expressed.toString());
     seq.evaluate(1, 128, expressed);
-    assertEquals("(-x+1)/2 + 0i", expressed.toString());
+    // Issue #1014: result polynomial's indeterminate is the placeholder name
+    // (z, from the (½-z/2) expression body) — not hardcoded "x".
+    assertEquals("(-z+1)/2 + 0i", expressed.toString());
 
     seq.evaluate(2, 128, expressed);
-    assertEquals("(x^2-2*x+1)/4 + 0i", expressed.toString());
+    assertEquals("(z^2-2*z+1)/4 + 0i", expressed.toString());
     seq.evaluate(3, 128, expressed);
-    assertEquals("(-x^3+3*x^2-3*x+1)/8 + 0i", expressed.toString());
+    assertEquals("(-z^3+3*z^2-3*z+1)/8 + 0i", expressed.toString());
     seq.evaluate(-2, 128, expressed);
-    assertEquals("4/(x^2-2*x+1) + 0i", expressed.toString());
+    assertEquals("4/(z^2-2*z+1) + 0i", expressed.toString());
   }
 
   public void testRationalIdentityExpression()

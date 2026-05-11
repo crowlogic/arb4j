@@ -168,10 +168,29 @@ public class IntegerPolynomial implements Named,AutoCloseable,Ring<IntegerPolyno
     
   public IntegerPolynomial remainder;
   
+  public String independentVariableName = "x";
+
+  public String getIndependentVariableName()
+  {
+    return independentVariableName;
+  }
+
+  /**
+   * Set the symbolic name of this polynomial's independent variable (the
+   * indeterminate displayed by {@link #toString()} and used by the expression
+   * compiler to designate the result of an arrow-declared reified-functional
+   * expression body — see issue #1014).
+   */
+  public IntegerPolynomial setIndependentVariableName(String independentVariableName)
+  {
+    this.independentVariableName = independentVariableName;
+    return this;
+  }
+
   @Override
   public String toString()
   {
-    return arblib.fmpz_poly_get_str_pretty(this, "x");
+    return arblib.fmpz_poly_get_str_pretty(this, independentVariableName);
   }
   
   public String name;

@@ -419,20 +419,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    */
   private VariableNode<D, C, F>                           placeholderVariable;
 
-  /**
-   * Issue #1014: when the expression body is preceded by an explicit arrow
-   * declaration {@code v➔...} AND {@link #isReifiedFunctional()} is true
-   * (codomain is a {@code ComplexPolynomial}, {@code RealPolynomial},
-   * {@code RationalFunction}, or {@code ComplexRationalFunction} — i.e. a
-   * concrete class that already carries its own indeterminate name), the
-   * arrow names the indeterminate of the returned reified-functional, not a
-   * JVM-level method input. This field records that name so
-   * {@link #generateEvaluationMethod} can emit a final
-   * {@code result.setIndependentVariableName(name)} call on the result
-   * before {@code ARETURN}.
-   */
-  public String                                           reifiedFunctionalIndependentVariableName;
-
   public int                                              position                      = -1;
 
   public Expression<?, ?, ?>                              upstreamExpression;
@@ -2216,13 +2202,23 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // Issue #1014: for reified-functional results (ComplexPolynomial, etc.)
     // that were declared with an arrow (v➔body), tag the result with its
     // indeterminate name so subsequent toString/evaluate calls use the
-    // user-declared symbol rather than the default "x". Stack top here is
-    // the result reference (left by generateSetResultInvocation in
-    // root-node generation, which returns the result after set()).
-    if (reifiedFunctionalIndependentVariableName != null && !isGeneratedFunctional())
+    // user-declared symbol rather than the default "x". The arrow variable
+    // is already recorded as this expression's placeholderVariable by
+    // resolveOperand, so read the name from there — no separate field
+    // needed. Stack top here is the result reference (left by
+    // generateSetResultInvocation in root-node generation, which returns
+    // the result after set()).
+    if (isReifiedFunctional() && getPlaceholderVariable() != null)
     {
+      // Stack top is the result reference, possibly typed as Object
+      // (generic evaluate(Object, int, int, Object) signature). DUP it,
+      // CHECKCAST to coDomainType so invokevirtual on the typed method
+      // verifies, push the placeholder name, invoke the setter, pop the
+      // returned (this) reference; the original result reference remains
+      // for ARETURN.
       duplicateTopOfTheStack(mv);
-      mv.visitLdcInsn(reifiedFunctionalIndependentVariableName);
+      mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
+      mv.visitLdcInsn(getPlaceholderVariable().getName());
       Compiler.generateVirtualMethodInvocation(mv, coDomainType, "setIndependentVariableName", coDomainType, String.class);
       mv.visitInsn(Opcodes.POP);
     }
@@ -5438,14 +5434,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         // NoSuchFieldError of issue #1015.
         if (isReifiedFunctional())
         {
-          reifiedFunctionalIndependentVariableName = arrowVar;
           // Register `arrowVar` as the placeholder of THIS expression so any
           // body reference to it resolves as the indeterminate (placeholder)
           // — not as a context variable picked up by first-seen-resolution.
-          VariableNode<D, C, F> arrowNode = newVariableNode(arrowVar);
+          // generateEvaluationMethod reads the name back off the placeholder
+          // to emit the final result.setIndependentVariableName(name) call.
           if (placeholderVariable == null)
           {
-            setPlaceholderVariable(arrowNode);
+            setPlaceholderVariable(newVariableNode(arrowVar));
           }
           node = resolve();
         }
