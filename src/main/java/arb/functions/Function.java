@@ -90,6 +90,7 @@ public interface Function<D, CO> extends
     return null;
   }
 
+  @SuppressWarnings("unchecked")
   public default <F extends Function<D, CO>> F derivative()
   {
     throw new UnsupportedOperationException("TODO: " + getClass() + " should implement derivative()");

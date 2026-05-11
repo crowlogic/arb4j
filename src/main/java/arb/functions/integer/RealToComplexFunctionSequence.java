@@ -41,6 +41,12 @@ public interface RealToComplexFunctionSequence extends
     return Sequence.parse(null, RealToComplexFunctionSequence.class, RealToComplexFunction.class, expr);
   }
 
+  public static Expression<Integer, RealToComplexFunction, RealToComplexFunctionSequence> parse(String expr, Context context )
+  {
+    return Sequence.parse(null, RealToComplexFunctionSequence.class, RealToComplexFunction.class, expr, context);
+  }
+
+  
   public static RealToComplexFunctionSequence express(String name, String expr)
   {
     return express(name, expr, null);
@@ -55,4 +61,7 @@ public interface RealToComplexFunctionSequence extends
   {
     return Sequence.compile(RealToComplexFunction.class, string, RealToComplexFunctionSequence.class, context);
   }
+
+
+
 }

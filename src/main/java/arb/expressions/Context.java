@@ -564,6 +564,15 @@ public class Context implements
     return registerFunctionMapping(name, seq, seq.domainType(), seq.coDomainType());
   }
 
+  public <R extends Named> Context registerVariables(R... vars)
+  {
+    for ( R rvar : vars )
+    {
+      registerVariable(rvar);
+    }
+    return this;
+  }
+  
   public <R extends Named> R registerVariable(R var)
   {
     if (Expression.trace)
@@ -744,5 +753,7 @@ public class Context implements
     disableLommelPolynomials = true;
     return this;
   }
+
+ 
 
 }

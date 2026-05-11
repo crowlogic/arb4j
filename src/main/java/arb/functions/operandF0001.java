@@ -220,7 +220,7 @@ public class operandF0001 implements
   @Override
   public String toString()
   {
-    return String.format("j➔(a(j)(%2$s))*(a((%1$s-1)-j)(%2$s))", l.toString(), v.toString());
+    return "j➔(a(j)(%2$s))*(a((%1$s-1)-j)(%2$s))";
   }
 
   @Override

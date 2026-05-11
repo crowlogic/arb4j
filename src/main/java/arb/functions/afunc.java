@@ -170,12 +170,12 @@ public class afunc implements
           derivativeCache.add(derivativeCache.get(derivativeCache.size() - 1).derivative());
         }
 
-        Function var10000 = derivativeCache.get(var5);
-        Object   var8     = ((Field) result).get(var5);
+        RealToComplexFunction var10000 = derivativeCache.get(var5);
+        Complex               var8     = result.get(var5);
         var10000.evaluate(v, 1, bits, var8);
         if (var5 >= 2)
         {
-          ((Field) var8).div((int) var6, bits, (Field) var8);
+          var8.div((int) var6, bits, var8);
         }
       }
 
@@ -220,6 +220,7 @@ public class afunc implements
     invalidateCache(Collections.newSetFromMap(new IdentityHashMap<>()));
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public RealToComplexFunction derivative()
   {
@@ -231,6 +232,7 @@ public class afunc implements
                             context);
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public RealToComplexFunction integral()
   {
@@ -408,8 +410,9 @@ public class afunc implements
     return context;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
-  public Expression getExpression()
+  public Expression<Integer, RealToComplexFunction, RealToComplexFunctionSequence> getExpression()
   {
     return expression;
   }
@@ -417,8 +420,8 @@ public class afunc implements
   @Override
   public String toString()
   {
-    return String.format("afunc:when(%1$s=1,p(v)/Γ(μ+1),else,(Γ(((%1$s-1)*μ)+1)/Γ((%1$s*μ)+1))*((q(v)*(a(%1$s-1)(v)))+(r(v)*Σj➔(a(j)(%s))*(a((%1$s-1)-j)(%s)){j=1…%1$s-2})))",
-                         l.toString());
+    return "afunc:when(%1$s=1,p(v)/Γ(μ+1),else,(Γ(((%1$s-1)*μ)+1)/Γ((%1$s*μ)+1))*((q(v)*(a(%1$s-1)(v)))+(r(v)*Σj➔(a(j)(%s))*(a((%1$s-1)-j)(%s)){j=1…%1$s-2})))";
+
   }
 
   @Override
