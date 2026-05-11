@@ -6,6 +6,7 @@ import arb.*;
 import arb.Integer;
 import arb.expressions.Context;
 import arb.expressions.Expression;
+import arb.functions.integer.RealToComplexFunctionSequence;
 
 public class afunc implements
                    RealToComplexFunction,
@@ -14,51 +15,51 @@ public class afunc implements
                    Initializable,
                    Named
 {
-  public boolean                            isInitialized;
-  protected Context                         context;
-  public Expression                         expression;
-  private Real                              lastV;
-  private Complex                           cachedResult;
-  public final Integer                      cℤ0000          = new Integer("1");
-  public final Integer                      cℤ0001          = new Integer("2");
-  public operandF0001                       operandF0001;
-  public a                                  a;
-  public ComplexPolynomial                  r;
-  public ComplexPolynomial                  q;
-  public ComplexPolynomial                  p;
-  public Integer                            l;
-  public Real                               λ;
-  public Real                               μ;
-  public Real                               ν;
-  public Real                               ρ;
-  public ArrayList<Function<Real, Complex>> derivativeCache;
-  public Integer                            jℂ0001ℤ0001     = new Integer();
-  public Complex                            sumℂ0001        = new Complex();
-  public Integer                            upperLimitℤ0001 = new Integer();
-  public RealToComplexFunction              vFℝℂ0001;
-  public Complex                            valueℂ0002      = new Complex();
-  public Complex                            vℂ0001          = new Complex();
-  public Complex                            vℂ0002          = new Complex();
-  public Complex                            vℂ0003          = new Complex();
-  public Complex                            vℂ0004          = new Complex();
-  public Complex                            vℂ0005          = new Complex();
-  public Complex                            vℂ0006          = new Complex();
-  public Complex                            vℂ0007          = new Complex();
-  public Complex                            vℂ0008          = new Complex();
-  public Complex                            vℂ0009          = new Complex();
-  public Complex                            vℂ0010          = new Complex();
-  public Real                               vℝ0004          = new Real();
-  public Real                               vℝ0005          = new Real();
-  public Real                               vℝ0006          = new Real();
-  public Real                               vℝ0007          = new Real();
-  public Real                               vℝ0008          = new Real();
-  public Real                               vℝ0009          = new Real();
-  public Real                               vℝ0010          = new Real();
-  public Real                               vℝ0011          = new Real();
-  public Real                               vℝ0012          = new Real();
-  public Integer                            vℤ0001          = new Integer();
-  public Integer                            vℤ0002          = new Integer();
-  public Integer                            vℤ0003          = new Integer();
+  public boolean                                                                   isInitialized;
+  protected Context                                                                context;
+  public Expression<Integer, RealToComplexFunction, RealToComplexFunctionSequence> expression;
+  private Real                                                                     lastV;
+  private Complex                                                                  cachedResult;
+  public final Integer                                                             cℤ0000          = new Integer("1");
+  public final Integer                                                             cℤ0001          = new Integer("2");
+  public operandF0001                                                              operandF0001;
+  public a                                                                         a;
+  public ComplexPolynomial                                                         r;
+  public ComplexPolynomial                                                         q;
+  public ComplexPolynomial                                                         p;
+  public Integer                                                                   l;
+  public Real                                                                      λ;
+  public Real                                                                      μ;
+  public Real                                                                      ν;
+  public Real                                                                      ρ;
+  public ArrayList<RealToComplexFunction>                                          derivativeCache;
+  public Integer                                                                   jℂ0001ℤ0001     = new Integer();
+  public Complex                                                                   sumℂ0001        = new Complex();
+  public Integer                                                                   upperLimitℤ0001 = new Integer();
+  public RealToComplexFunction                                                     vFℝℂ0001;
+  public Complex                                                                   valueℂ0002      = new Complex();
+  public Complex                                                                   vℂ0001          = new Complex();
+  public Complex                                                                   vℂ0002          = new Complex();
+  public Complex                                                                   vℂ0003          = new Complex();
+  public Complex                                                                   vℂ0004          = new Complex();
+  public Complex                                                                   vℂ0005          = new Complex();
+  public Complex                                                                   vℂ0006          = new Complex();
+  public Complex                                                                   vℂ0007          = new Complex();
+  public Complex                                                                   vℂ0008          = new Complex();
+  public Complex                                                                   vℂ0009          = new Complex();
+  public Complex                                                                   vℂ0010          = new Complex();
+  public Real                                                                      vℝ0004          = new Real();
+  public Real                                                                      vℝ0005          = new Real();
+  public Real                                                                      vℝ0006          = new Real();
+  public Real                                                                      vℝ0007          = new Real();
+  public Real                                                                      vℝ0008          = new Real();
+  public Real                                                                      vℝ0009          = new Real();
+  public Real                                                                      vℝ0010          = new Real();
+  public Real                                                                      vℝ0011          = new Real();
+  public Real                                                                      vℝ0012          = new Real();
+  public Integer                                                                   vℤ0001          = new Integer();
+  public Integer                                                                   vℤ0002          = new Integer();
+  public Integer                                                                   vℤ0003          = new Integer();
 
   @Override
   public Class<Real> domainType()

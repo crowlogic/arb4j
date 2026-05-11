@@ -8,6 +8,14 @@ import arb.functions.RealToComplexFunction;
 public interface RealToComplexFunctionSequence extends
                                                Sequence<RealToComplexFunction>
 {
+  @Override
+  default RealToComplexFunctionSequence derivative()
+  {
+    // TODO Auto-generated method stub
+    return Sequence.super.derivative();
+  }
+
+
   public static RealToComplexFunctionSequence express(String expression, Context context)
   {
     return express(null, expression, context);

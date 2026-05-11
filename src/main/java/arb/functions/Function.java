@@ -90,7 +90,7 @@ public interface Function<D, CO> extends
     return null;
   }
 
-  public default Function<D, CO> derivative()
+  public default <F extends Function<D, CO>> F derivative()
   {
     throw new UnsupportedOperationException("TODO: " + getClass() + " should implement derivative()");
   }
@@ -111,12 +111,12 @@ public interface Function<D, CO> extends
    * @return a {@link Function} computing {@code ∂this/∂variable}
    */
   @SuppressWarnings("unchecked")
-  public default Function<D, CO> derivative(VariableReference<?, ?, ?> variable)
+  public default <F extends Function<D, CO>> F  derivative(VariableReference<?, ?, ?> variable)
   {
     Expression<?, ?, ?> expr = getExpression();
     if (expr != null)
     {
-      return (Function<D, CO>) expr.derivative(variable);
+      return (F) expr.derivative(variable);
     }
     throw new UnsupportedOperationException("TODO: " + getClass() + " should implement derivative(VariableReference) or expose getExpression()");
   }
@@ -130,7 +130,7 @@ public interface Function<D, CO> extends
    * @param variableName name of the parameter to differentiate w.r.t.
    * @return a {@link Function} computing {@code ∂this/∂variableName}
    */
-  public default Function<D, CO> derivative(String variableName)
+  public default <F extends Function<D, CO>> F  derivative(String variableName)
   {
     return derivative(new VariableReference<D, CO, Function<D, CO>>(variableName));
   }
@@ -156,14 +156,15 @@ public interface Function<D, CO> extends
    * @return a fresh function instance independent of {@code this} for the
    *         purposes of concurrent evaluation
    */
-  public default Function<D, CO> cloneFunction()
+  public default <F extends Function<D, CO>> F cloneFunction()
   {
     throw new UnsupportedOperationException(getClass() + " must override cloneFunction() to be safely shared across threads");
   }
 
-  public default Function<D, CO> derivative(int n)
+  public default <F extends Function<D, CO>> F  derivative(int n)
   {
-    Function<D, CO> result = this;
+    @SuppressWarnings("unchecked")
+    F result = (F) this;
     for (int i = 0; i < n; i++)
     {
       result = result.derivative();
@@ -171,7 +172,7 @@ public interface Function<D, CO> extends
     return result;
   }
 
-  public default Function<D, CO> integral()
+  public default <F extends Function<D, CO>> F  integral()
   {
     assert false : "TODO: " + getClass() + " should implement this";
     return null;
@@ -188,7 +189,7 @@ public interface Function<D, CO> extends
    * @param variables ordered list of parameter names whose partials to return
    * @return a {@link Jacobian} whose i-th partial is ∂this/∂variables[i]
    */
-  public default Jacobian<D, CO, ? extends Function<D, CO>> jacobian(String[] variables)
+  public default <F extends Function<D, CO>> Jacobian<D, CO, F> jacobian(String[] variables)
   {
     throw new UnsupportedOperationException("TODO: " + getClass() + " should implement jacobian(String[])");
   }
@@ -200,7 +201,7 @@ public interface Function<D, CO> extends
    * classes that have direct access to the references (and so can avoid the
    * name-lookup round trip) are free to override.
    */
-  public default Jacobian<D, CO, ? extends Function<D, CO>> jacobian(VariableReference<?, ?, ?>[] variables)
+  public default <F extends Function<D, CO>> Jacobian<D, CO, F>  jacobian(VariableReference<?, ?, ?>[] variables)
   {
     String[] names = new String[variables.length];
     for (int i = 0; i < variables.length; i++)
@@ -216,7 +217,7 @@ public interface Function<D, CO> extends
    * node's name and dispatches to {@link #jacobian(String[])}; implementing
    * classes that have direct access to the nodes are free to override.
    */
-  public default Jacobian<D, CO, ? extends Function<D, CO>> jacobian(VariableNode<?, ?, ?>[] variables)
+  public default <F extends Function<D, CO>> Jacobian<D, CO, F>  jacobian(VariableNode<?, ?, ?>[] variables)
   {
     String[] names = new String[variables.length];
     for (int i = 0; i < variables.length; i++)
