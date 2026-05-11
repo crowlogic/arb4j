@@ -24,9 +24,11 @@ import arb.expressions.Context;
  * the rational function is evaluated.
  *
  * <p>
- * Singular Hankel solves are signaled by the sentinel pair (P, Q) = (∞, ∞) —
- * both polynomials of length 1 with their constant term set to positive
- * infinity. Callers test {@link #isSingularSentinel}.
+ * An indefinite moment functional (equivalently a singular Hankel system, or
+ * an h_j that contains zero in the Chebyshev recurrence) is signaled by the
+ * sentinel pair (P, Q) = (∞, ∞) — both polynomials of length 1 with their
+ * constant term set to positive infinity. Callers test
+ * {@link #isSingularSentinel}.
  *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
@@ -48,8 +50,9 @@ public final class DiagonalPadePair implements
   /**
    * Allocate a (P, Q) pair of Padé order M with capacity M+1 each. The parent
    * Context is optional; pass null to start with an empty sub-Context. The
-   * polynomials start zero-length; the producer (typically a Hankel solve) fills
-   * them via {@link #set}.
+   * polynomials start zero-length; the producer (typically a Chebyshev
+   * recurrence in {@link MuntzPadeApproximant}, or any equivalent solver of
+   * the diagonal Padé normal equations) fills them via {@link #set}.
    */
   public DiagonalPadePair(int M)
   {
@@ -67,8 +70,9 @@ public final class DiagonalPadePair implements
   // ── Producer-side mutation; fluent return of `this` ───────────────────────
 
   /**
-   * Mark this pair as the singular-Hankel sentinel: both polynomials become
-   * length-1 with constant term +∞.
+   * Mark this pair as the singular-moment-functional sentinel (equivalently
+   * a singular Hankel system at order M): both polynomials become length-1
+   * with constant term +∞.
    */
   public DiagonalPadePair markSingular()
   {
@@ -82,8 +86,9 @@ public final class DiagonalPadePair implements
   }
 
   /**
-   * @return true iff P[0] = +∞ — set by {@link #markSingular} or by a downstream
-   *         Hankel solver that detected a singular system.
+   * @return true iff P[0] = +∞ — set by {@link #markSingular} or by a
+   *         downstream solver that detected an indefinite moment functional
+   *         (equivalently a singular Hankel system) at order M.
    */
   public boolean isSingularSentinel()
   {
