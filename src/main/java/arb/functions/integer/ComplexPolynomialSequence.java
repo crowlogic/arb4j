@@ -5,9 +5,9 @@ import arb.ComplexPolynomial;
 import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.Context;
-import arb.expressions.Expression;
+import arb.expressions.*;
 import arb.functions.Function;
+import arb.functions.complex.ComplexFunction;
 import arb.functions.polynomials.PolynomialSequence;
 
 /**
@@ -18,6 +18,11 @@ import arb.functions.polynomials.PolynomialSequence;
 public interface ComplexPolynomialSequence extends
                                            PolynomialSequence<Complex, ComplexPolynomial>
 {
+
+  public static FunctionMapping<Integer, ComplexPolynomial, ComplexPolynomialSequence> declare(String string, Context context)
+  {
+    return context.declare(string, Integer.class, ComplexPolynomial.class, ComplexPolynomialSequence.class);
+  }
 
   @Override
   default ComplexPolynomialSequence integral()

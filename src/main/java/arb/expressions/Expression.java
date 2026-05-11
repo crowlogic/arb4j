@@ -5380,10 +5380,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
       else
       {
-//        if (isReifiedFunctional())
-//        {
-//          assert false : "TODO: call setIndependentVariableName " + arrowVar + " on the polynomial or rational function for " + expression + " with remaining " + remaining() + " where node=" + node;
-//        }
+        if (isReifiedFunctional())
+        {
+          assert false : "TODO: call setIndependentVariableName " + arrowVar + " on the polynomial or rational function for " + expression + " with remaining " + remaining() + " where node=" + node;
+        }
         throw new CompilerException("arrow variable declaration '"
                                     + arrowVar
                                     + "➔' found but coDomain "

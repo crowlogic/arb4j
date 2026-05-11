@@ -21,6 +21,13 @@
 
 %typemap(javacode) acb_poly_struct %{
 
+	public ComplexPolynomial div(Real s, int prec, ComplexPolynomial res)
+	{
+	  try ( var blip = new Complex())
+	  {
+	    return res.set(this).div(blip.set(s), prec, res);
+	  }
+	}
 	@SuppressWarnings("resource")
 	public static ComplexPolynomial named(String string)
 	{

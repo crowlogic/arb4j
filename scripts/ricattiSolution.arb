@@ -1,0 +1,16 @@
+int bits = 128;
+var context = new Context(Real.named("μ").set("0.1",128),
+                          Real.named("ν").set("0.1",128),
+			  Real.named("ρ").set("-0.75",128),
+			  Real.named("λ").set("0.5",128)).disableLommelPolynomials();
+var P = ComplexPolynomialNullaryFunction.express("P:v->-(v^2+I*v)/2",context);
+var Q = ComplexPolynomialNullaryFunction.express("Q:v->λ*(I*v*ρ*ν-1)",context);
+var R = ComplexPolynomialNullaryFunction.express("R:v->(λ^2*ν^2)/2",context);
+var p = P.evaluate(bits).setName("p");
+var q = Q.evaluate(bits).setName("q");
+var r = R.evaluate(bits).setName("r");
+context.registerFunction("p",p);
+context.registerFunction("q",q);
+context.registerFunction("r",r);
+var a= RealToComplexFunctionSequence.express(null,"a:l➔v->when(l=1,p(v)/Γ(μ+1),else,(Γ((l-1)*μ+1)/Γ(l*μ+1))*(q(v)*a(l-1)(v)+r(v)*∑j➔a(j)(v)*a(l-1-j)(v){j=1..l-2}))",context);
+var a1 = a.apply(1);
