@@ -503,7 +503,7 @@ public class ComplexPolynomial implements
 
   public ComplexPolynomial remainder;
 
-  private String                   independentVariableName = "x";
+  public String                    independentVariableName = "x";
 
   boolean                  printPrecision          = false;
 
@@ -692,14 +692,21 @@ public class ComplexPolynomial implements
          true);
   }
 
-  String getIndependentVariableName()
+  public String getIndependentVariableName()
   {
     return independentVariableName;
   }
 
-  void setIndependentVariableName(String independentVariableName)
+  /**
+   * Set the symbolic name of this polynomial's independent variable (the
+   * indeterminate displayed by {@link #toString()} and used by the expression
+   * compiler to designate the result of an arrow-declared reified-functional
+   * expression body — see issue #1014).
+   */
+  public ComplexPolynomial setIndependentVariableName(String independentVariableName)
   {
     this.independentVariableName = independentVariableName;
+    return this;
   }
 
 

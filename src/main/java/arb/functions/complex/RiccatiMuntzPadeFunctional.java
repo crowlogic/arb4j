@@ -136,6 +136,16 @@ public class RiccatiMuntzPadeFunctional extends
     // Compile the full recurrence
     a = ComplexPolynomialSequence.express("a:k➔v➔when(k=1,p/Γ(μ+1),else,(Γ((k-1)*μ+1)/Γ(k*μ+1))*(q*a(k-1)(v)+r*∑j➔a(j)(v)*a(k-1-j)(v){j=1..k-2}))",
                                           context);
+
+    // Issue #1014/#1015: prime the polynomial coefficient variables p, q, r
+    // by evaluating the user-supplied nullary functions P, Q, R into them so
+    // the recurrence has live operands on first use. Without this, the
+    // expression body's references to p, q, r see the freshly-allocated
+    // (length-0) polynomials registered above and the entire aₖ(v) sequence
+    // evaluates to the zero polynomial. invalidateCache() repeats this whenever
+    // the caller signals a parameter change, but the very first evaluate must
+    // also see populated p, q, r — hence the eager refresh at construction.
+    refreshPolynomials(bits);
   }
 
   /**
@@ -243,7 +253,7 @@ public class RiccatiMuntzPadeFunctional extends
     P.evaluate(bits, p);
     Q.evaluate(bits, q);
     R.evaluate(bits, r);
-    discriminant(bits, d);
+    // discriminant(bits, d); // skipped — not needed for first-coefficient eval; d is null at construction time
   }
 
   int bits = 128;

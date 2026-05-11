@@ -671,6 +671,25 @@ public class ComplexRationalFunction implements
     return sub(result.set(element), prec, result);
   }
 
+  /**
+   * Set the symbolic name of this rational function's independent variable
+   * (the indeterminate displayed by {@link #toString()} and used by the
+   * expression compiler to designate the result of an arrow-declared
+   * reified-functional expression body — see issue #1014). Propagates to
+   * both the real and imaginary halves so their toString uses the same name.
+   */
+  public ComplexRationalFunction setIndependentVariableName(String name)
+  {
+    realPart.setIndependentVariableName(name);
+    imaginaryPart.setIndependentVariableName(name);
+    return this;
+  }
+
+  public String getIndependentVariableName()
+  {
+    return realPart.getIndependentVariableName();
+  }
+
   @Override
   public String toString()
   {

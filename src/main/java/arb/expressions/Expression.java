@@ -419,6 +419,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    */
   private VariableNode<D, C, F>                           placeholderVariable;
 
+  /**
+   * Issue #1014: when the expression body is preceded by an explicit arrow
+   * declaration {@code v➔...} AND {@link #isReifiedFunctional()} is true
+   * (codomain is a {@code ComplexPolynomial}, {@code RealPolynomial},
+   * {@code RationalFunction}, or {@code ComplexRationalFunction} — i.e. a
+   * concrete class that already carries its own indeterminate name), the
+   * arrow names the indeterminate of the returned reified-functional, not a
+   * JVM-level method input. This field records that name so
+   * {@link #generateEvaluationMethod} can emit a final
+   * {@code result.setIndependentVariableName(name)} call on the result
+   * before {@code ARETURN}.
+   */
+  public String                                           reifiedFunctionalIndependentVariableName;
+
   public int                                              position                      = -1;
 
   public Expression<?, ?, ?>                              upstreamExpression;
@@ -2129,6 +2143,28 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     designateLabel(mv, startLabel);
     Compiler.annotateWithOverride(mv);
 
+    // Issue #1014: for reified-functional codomains (ComplexPolynomial,
+    // RealPolynomial, RationalFunction, ComplexRationalFunction) the
+    // generated evaluate(...) needs a destination instance to land the
+    // computed polynomial/rational into. Callers commonly pass null
+    // (matching the contract of generated-functional codomains, where the
+    // method constructs and returns a fresh inner class instance). For
+    // reified results we restore that contract by allocating a fresh
+    // instance of coDomainType when the result parameter is null and
+    // writing it back into slot 4 so downstream `result.set(...)` calls
+    // see a non-null target.
+    if (isReifiedFunctional())
+    {
+      Label resultIsNonNull = new Label();
+      Compiler.loadResultParameter(mv);
+      mv.visitJumpInsn(Opcodes.IFNONNULL, resultIsNonNull);
+      Compiler.generateNewObjectInstruction(mv, coDomainType);
+      duplicateTopOfTheStack(mv);
+      Compiler.invokeDefaultConstructor(mv, coDomainType);
+      mv.visitVarInsn(Opcodes.ASTORE, 4);
+      designateLabel(mv, resultIsNonNull);
+    }
+
     if (needsInitializer())
     {
       generateConditionalInitializater(mv);
@@ -2175,6 +2211,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     else
     {
       rootNode.generate(mv, coDomainType);
+    }
+
+    // Issue #1014: for reified-functional results (ComplexPolynomial, etc.)
+    // that were declared with an arrow (v➔body), tag the result with its
+    // indeterminate name so subsequent toString/evaluate calls use the
+    // user-declared symbol rather than the default "x". Stack top here is
+    // the result reference (left by generateSetResultInvocation in
+    // root-node generation, which returns the result after set()).
+    if (reifiedFunctionalIndependentVariableName != null && !isGeneratedFunctional())
+    {
+      duplicateTopOfTheStack(mv);
+      mv.visitLdcInsn(reifiedFunctionalIndependentVariableName);
+      Compiler.generateVirtualMethodInvocation(mv, coDomainType, "setIndependentVariableName", coDomainType, String.class);
+      mv.visitInsn(Opcodes.POP);
     }
 
     if (cache)
@@ -5370,25 +5420,43 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     else if (isIdentifierCharacter())
     {
       String arrowVar = parseExplicitInputVariableIfPresent();
-      if (arrowVar != null )
+      if (arrowVar != null)
       {
-        node = parseInputVariableAssignment(arrowVar);
-      }
-      else if (arrowVar == null)
-      {
-        node = resolveIdentifier();
+        // Issue #1014: when the codomain is a reified functional (concrete
+        // class that carries its own indeterminate — ComplexPolynomial,
+        // RealPolynomial, RationalFunction, ComplexRationalFunction), the
+        // arrow does NOT create a separate generated class. It just names
+        // the indeterminate of the returned reified-functional. Parse the
+        // body on `this` so all literals/intermediates/referenced variables
+        // land on the class-owning expression, and remember the arrow name
+        // so generateEvaluationMethod can emit a final
+        // result.setIndependentVariableName(name) call. Without this we
+        // would fall into parseInputVariableAssignment, which clones this
+        // Expression into a subExpr sharing the same className but with its
+        // own literalConstants/intermediateVariables/referencedVariables
+        // maps that declareFields() never reads — producing the
+        // NoSuchFieldError of issue #1015.
+        if (isReifiedFunctional())
+        {
+          reifiedFunctionalIndependentVariableName = arrowVar;
+          // Register `arrowVar` as the placeholder of THIS expression so any
+          // body reference to it resolves as the indeterminate (placeholder)
+          // — not as a context variable picked up by first-seen-resolution.
+          VariableNode<D, C, F> arrowNode = newVariableNode(arrowVar);
+          if (placeholderVariable == null)
+          {
+            setPlaceholderVariable(arrowNode);
+          }
+          node = resolve();
+        }
+        else
+        {
+          node = parseInputVariableAssignment(arrowVar);
+        }
       }
       else
       {
-        if (isReifiedFunctional())
-        {
-          assert false : "TODO: call setIndependentVariableName " + arrowVar + " on the polynomial or rational function for " + expression + " with remaining " + remaining() + " where node=" + node;
-        }
-        throw new CompilerException("arrow variable declaration '"
-                                    + arrowVar
-                                    + "➔' found but coDomain "
-                                    + coDomainType.getSimpleName()
-                                    + " is not a functional interface on " + this);
+        node = resolveIdentifier();
       }
     }
     else if (nextCharacterIs('ꟲ'))

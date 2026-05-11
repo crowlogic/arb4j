@@ -592,12 +592,31 @@ public class RationalFunction implements RealFunction,NamedField<RationalFunctio
     return zero();
   }
     
+  public String independentVariableName = "x";
+
+  public String getIndependentVariableName()
+  {
+    return independentVariableName;
+  }
+
+  /**
+   * Set the symbolic name of this rational function's independent variable
+   * (the indeterminate displayed by {@link #toString()} and used by the
+   * expression compiler to designate the result of an arrow-declared
+   * reified-functional expression body — see issue #1014).
+   */
+  public RationalFunction setIndependentVariableName(String independentVariableName)
+  {
+    this.independentVariableName = independentVariableName;
+    return this;
+  }
+
   @Override
   public String toString()
   {
       assertPointerConsistency();  
   
-    return arblib.fmpz_poly_q_get_str_pretty(this, "x");
+    return arblib.fmpz_poly_q_get_str_pretty(this, independentVariableName);
   }
   
   public RationalFunction identity()

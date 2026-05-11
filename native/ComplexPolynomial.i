@@ -469,7 +469,24 @@
   
   public ComplexPolynomial remainder;
   
-  String independentVariableName = "x";
+  public String independentVariableName = "x";
+
+  public String getIndependentVariableName()
+  {
+    return independentVariableName;
+  }
+
+  /**
+   * Set the symbolic name of this polynomial's independent variable (the
+   * indeterminate displayed by {@link #toString()} and used by the expression
+   * compiler to designate the result of an arrow-declared reified-functional
+   * expression body — see issue #1014).
+   */
+  public ComplexPolynomial setIndependentVariableName(String independentVariableName)
+  {
+    this.independentVariableName = independentVariableName;
+    return this;
+  }
   
   boolean printPrecision = false;
   
