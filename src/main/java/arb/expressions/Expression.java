@@ -3038,7 +3038,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       duplicateTopOfTheStack(methodVisitor);
       methodVisitor.visitLdcInsn(i);
       loadThisAndFieldOntoStack(methodVisitor, matchedNames.get(i), matchedNodes.get(i).type());
-      generateVirtualMethodInvocation(methodVisitor, Object.class, "toString", String.class);
+      // Use String.valueOf(Object) rather than Object.toString(): the field
+      // can be null when toString() is invoked before injection, e.g. when
+      // a trace-log statement in Context.registerFunctionMapping formats a
+      // freshly-constructed instance during parse-time subexpression
+      // registration. valueOf is the null-safe equivalent and returns the
+      // string "null" rather than throwing NullPointerException.
+      invokeStaticMethod(methodVisitor, String.class, "valueOf", String.class, Object.class);
       methodVisitor.visitInsn(AASTORE);
     }
 
