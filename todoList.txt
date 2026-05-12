@@ -1,2 +1,0 @@
-move intermediateVariableCounters from Context to Expression
-todo: support package prefixes in the expression compiler and somehow make the package name dynamically set by the junit test name so the decompiled output from different tests doesnt overwrite each other in the output dir
