@@ -199,3 +199,65 @@ fractional Riccati equations — three polynomial parameters
 `(P(u), Q(u), R(u)) ∈ ℝ[u]³` (or `ℂ[u]³`) and one fractional order
 `μ ∈ (0, 1]` — with the rough Heston characteristic function as one direct
 application.
+
+## Extension to arbitrary real μ > 1 (future work, not in scope)
+
+The current scope is `μ ∈ (0, 1]`. The method extends to any real `μ > 0`
+by the standard Caputo splitting; this note records the extension so a
+future user or contributor can pick it up without rederiving it.
+
+**Splitting.** For real `μ > 0`, write `μ = n + ν` with `n := ⌊μ⌋ ∈ ℤ_{≥0}`
+and `ν := μ − n ∈ [0, 1)`. The Caputo derivative is
+
+    D^μ f(t) = D^ν ( D^n f(t) )
+
+so an order-`μ` IVP is an order-`ν` Caputo IVP on the `n`-th ordinary
+derivative, with `⌈μ⌉ = n + 1` initial conditions when `ν ≠ 0` (or `n`
+when `ν = 0`).
+
+**Müntz basis.** For `μ = n + ν`, `ν ∈ (0, 1)`, the natural basis for the
+solution is
+
+    { t^{n + kν} : k = 0, 1, 2, … }   ∪   { t^0, t^1, …, t^{n−1} }
+
+The polynomial part covers the `n` initial conditions; the fractional part
+is the same Müntz lattice `t^{kν}` shifted by `t^n`. The Müntz–Tau
+coefficient recurrence has the same Gamma-ratio + convolution shape as the
+`μ ∈ (0, 1]` case, with `(kμ + 1)` replaced by `(kν + n + 1)` in the Gamma
+ratios and seeds determined by the initial conditions instead of by
+`P(u)/Γ(μ + 1)` alone.
+
+**What transfers unchanged.**
+
+- Steps 3–4 (Chebyshev/Wheeler, OPS recurrence extraction, reciprocal
+  flip): unchanged. These steps see only the moment sequence `m(k; u)` and
+  do not care about its origin.
+- Step 6 (integrated / fractionally integrated Riccati): unchanged.
+  Fractional integration `I^ρ` of any real order `ρ > 0` acts on `t^{n+kν}`
+  by another Gamma ratio, so the integrated moment sequence is the
+  Riccati moment sequence reweighted by a known `k`-dependent Gamma ratio.
+- Step 7 assembly for characteristic functions: unchanged.
+- The class hierarchy in issue #1021: unchanged. The Riccati subclass
+  already takes `μ` as input; supplying any real `μ > 1` requires only that
+  the moment-supplier expression and the seeds be parameterized by the
+  `(n, ν)` split. No new abstract class.
+
+**What needs new work.**
+
+- The Volterra contraction proof in §9.5 (Stahl compact disjoint from `ℝ`)
+  is stated for `μ ∈ (0, 1]`. For `μ > 1` the analogous result follows from
+  the standard fixed-point argument on the iterated Volterra operator,
+  but with different contraction constants; the proof needs to be redone.
+  Until then, Step 5 (global Stahl convergence on `ℂ \ Δ_g(u)`) is a
+  conjecture for `μ > 1`, not a theorem.
+- Initial-data wiring in the class: the constructor needs to accept the
+  `⌈μ⌉` initial conditions instead of assuming `y(0) = 0`.
+- The classical Riccati boundary case (`μ = 1`, `n = 1`, `ν = 0`) is
+  already a degenerate case of the current framework; nothing new needed
+  there.
+
+**Status.** Deferred. Constant-coefficient fractional Riccati for `μ ∈ (0, 1]`
+is what motivates the current implementation (rough Heston characteristic
+function lives entirely in `μ = H + 1/2 ∈ (1/2, 1)` with `H ∈ (0, 1/2)`).
+The `μ > 1` extension is recorded here so it can be picked up later without
+rediscovery.
