@@ -97,7 +97,8 @@ public class OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequence exten
    */
   private static Sequence<ComplexPolynomial> riccatiMomentSequence(RiccatiMuntzPadeFunctional muntz)
   {
-    ComplexPolynomialSequence a = muntz.muntzBasis();
-    return ComplexPolynomialSequence.express("m", "k ➔ a(k + 1)", muntz.context);
+    // m(k)(u) := a(k+1)(u). Carry u through the curried call so the moment
+    // sequence's polynomial-in-u structure is preserved.
+    return ComplexPolynomialSequence.express("m:k ➔ u ➔ a(k + 1)(u)", muntz.context);
   }
 }

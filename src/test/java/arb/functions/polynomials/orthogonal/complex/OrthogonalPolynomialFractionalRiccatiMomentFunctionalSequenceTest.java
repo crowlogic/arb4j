@@ -1,8 +1,8 @@
 package arb.functions.polynomials.orthogonal.complex;
 
-import arb.ComplexPolynomial;
 import arb.Real;
 import arb.Integer;
+import arb.functions.complex.ComplexFunction;
 import junit.framework.TestCase;
 
 /**
@@ -41,29 +41,23 @@ public class OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequenceTest e
                                                                                      "3/10"))
     {
       assertNotNull("moment sequence m must be compiled", ops.m);
-      assertNotNull("generating polynomial sequence S must be compiled", ops.S);
-      assertNotNull("β must be compiled", ops.β);
-      assertNotNull("α must be compiled", ops.α);
+      assertNotNull("sequence S must be compiled", ops.S);
 
       Integer n = new Integer();
 
-      // m(0), m(1): basic Müntz coefficients
-      ComplexPolynomial m0 = new ComplexPolynomial();
-      ComplexPolynomial m1 = new ComplexPolynomial();
-      n.set(0);
-      ops.m.evaluate(n, 1, bits, m0);
-      n.set(1);
-      ops.m.evaluate(n, 1, bits, m1);
-      System.out.println("m(0) = " + m0);
-      System.out.println("m(1) = " + m1);
-
-      // S(-1, z), S(0, z), S(1, z)
-      for (int i = -1; i <= 2; i++)
+      // Each m(k) is a ComplexPolynomial in u; same for S(i).
+      for (int k = 0; k <= 2; k++)
       {
-        ComplexPolynomial Si = new ComplexPolynomial();
+        n.set(k);
+        ComplexFunction mk = ops.m.evaluate(n, 1, bits, null);
+        System.out.println("m(" + k + ") = " + mk);
+      }
+
+      for (int i = 0; i <= 2; i++)
+      {
         n.set(i);
-        ops.S.evaluate(n, 1, bits, Si);
-        System.out.println("S(" + i + ", z) = " + Si);
+        ComplexFunction Si = ops.S.evaluate(n, 1, bits, null);
+        System.out.println("S(" + i + ") = " + Si);
       }
     }
     finally
