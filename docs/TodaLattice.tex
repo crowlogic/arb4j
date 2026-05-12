@@ -1,0 +1,754 @@
+\documentclass[12pt,a4paper]{article}
+
+%─────────────────────────────────────────────────────────────────────────────
+%  Packages
+%─────────────────────────────────────────────────────────────────────────────
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\geometry{margin=1in}
+
+%─────────────────────────────────────────────────────────────────────────────
+%  Theorem environments
+%─────────────────────────────────────────────────────────────────────────────
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\theoremstyle{definition}
+\newtheorem{example}[theorem]{Example}
+
+%─────────────────────────────────────────────────────────────────────────────
+%  Macros
+%─────────────────────────────────────────────────────────────────────────────
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\ell}{\ell}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\diag}{\operatorname{diag}}
+\DeclareMathOperator{\sign}{sign}
+
+%─────────────────────────────────────────────────────────────────────────────
+%  Document
+%─────────────────────────────────────────────────────────────────────────────
+\title{\textbf{The Toda Lattice}\\[4pt]
+       \large Structure, Integrability, Solitons, and
+       Orthogonal Polynomials}
+\author{Notes compiled from the literature}
+\date{May 2026}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction and Historical Background}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The \emph{Toda lattice}, introduced by the Japanese physicist Morikazu Toda
+in 1967~\cite{Toda1967}, is a one-dimensional model of particles on a line
+interacting via nearest-neighbour exponential forces.  It is one of the most
+celebrated examples of a \emph{completely integrable nonlinear Hamiltonian
+system} and has had profound influence on mathematical physics, soliton
+theory, symplectic geometry, numerical linear algebra, random matrix theory,
+and the theory of orthogonal polynomials~\cite{Teschl2000,Toda1989}.
+
+\begin{remark}[Relation to the FPU lattice]
+The Fermi--Pasta--Ulam (FPU) lattice is a nonlinear lattice that was
+studied numerically in 1955 and famously failed to thermalise.  The Toda
+lattice provides a theoretical explanation: for small displacements the
+exponential potential is well approximated by the FPU cubic potential, and
+the \emph{exact} integrability of the Toda lattice forbids thermalisation.
+\end{remark}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Physical Setup and Hamiltonian}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Let $q(n,t)\in\R$ denote the displacement of the $n$-th particle from its
+equilibrium position, and $p(n,t)\in\R$ its momentum ($n\in\Z$).
+
+\begin{definition}[Toda potential]
+The \emph{Toda potential} is
+\begin{equation}\label{eq:potential}
+  V(r) \;=\; e^{-r} + r - 1 \;\geq\; 0,
+\end{equation}
+a smooth, strictly convex function with a unique minimum $V(0)=0$.  For
+small $|r|$ one has $V(r)=\tfrac{1}{2}r^2 - \tfrac{1}{6}r^3 + O(r^4)$,
+recovering harmonic coupling to leading order.
+\end{definition}
+
+\begin{definition}[Toda Hamiltonian]
+\begin{equation}\label{eq:Ham}
+  H(p,q) \;=\; \sum_{n\in\Z}
+    \left(\frac{p(n,t)^{2}}{2} + V\!\bigl(q(n+1,t)-q(n,t)\bigr)\right).
+\end{equation}
+\end{definition}
+
+Hamilton's equations $\dot{q}=\partial H/\partial p$,
+$\dot{p}=-\partial H/\partial q$ give
+
+\begin{equation}\label{eq:EOM}
+\boxed{
+  \dot{p}(n,t) \;=\; e^{-(q(n,t)-q(n-1,t))} - e^{-(q(n+1,t)-q(n,t))},
+  \qquad
+  \dot{q}(n,t) \;=\; p(n,t).}
+\end{equation}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Flaschka Variables and the Lax Pair}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Flaschka's change of variables}
+
+\begin{definition}[Flaschka variables~\cite{Flaschka1974,Manakov1974}]
+\begin{equation}\label{eq:Flaschka}
+  a(n,t) \;=\; \tfrac{1}{2}\,e^{-(q(n+1,t)-q(n,t))/2} \;>\; 0,
+  \qquad
+  b(n,t) \;=\; -\tfrac{1}{2}\,p(n,t) \;\in\;\R.
+\end{equation}
+\end{definition}
+
+Under this substitution, equations~\eqref{eq:EOM} become
+
+\begin{equation}\label{eq:TodaFlaschka}
+  \dot{a}(n,t) \;=\; a(n,t)\bigl(b(n+1,t)-b(n,t)\bigr),
+  \qquad
+  \dot{b}(n,t) \;=\; 2\bigl(a(n,t)^{2} - a(n-1,t)^{2}\bigr).
+\end{equation}
+
+\subsection{The Lax pair}
+
+Define the following two operators on $\ell^{2}(\Z)$:
+
+\begin{align}
+  (Lf)(n) &\;=\; a(n,t)\,f(n+1) + a(n-1,t)\,f(n-1) + b(n,t)\,f(n),
+  \label{eq:L}\\
+  (Pf)(n) &\;=\; a(n,t)\,f(n+1) - a(n-1,t)\,f(n-1).
+  \label{eq:P}
+\end{align}
+
+$L(t)$ is a bounded self-adjoint Jacobi (tridiagonal) operator;
+$P(t)$ is skew-symmetric ($P^*=-P$).
+
+\begin{theorem}[Lax equation~\cite{Flaschka1974,Manakov1974}]
+The Toda equations~\eqref{eq:TodaFlaschka} are equivalent to the
+\emph{Lax equation}
+\begin{equation}\label{eq:Lax}
+  \frac{d}{dt}L(t) \;=\; [P(t),\, L(t)] \;=\; P(t)L(t) - L(t)P(t).
+\end{equation}
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+Compute $[P,L]$ directly in the standard basis.  The $(n,n)$-entry gives
+$\dot{b}(n) = 2(a(n)^2-a(n-1)^2)$ and the $(n,n+1)$-entry gives
+$\dot{a}(n) = a(n)(b(n+1)-b(n))$, which are precisely~\eqref{eq:TodaFlaschka}.
+\end{proof}
+
+\begin{corollary}[Isospectral deformation]\label{cor:isospec}
+Because $P$ is skew-symmetric, \eqref{eq:Lax} implies
+$L(t) = U(t)^{-1}L(0)U(t)$ for a unitary (orthogonal, in the real case)
+propagator $U(t)$ satisfying $\dot{U}=PU$.  Consequently the spectrum
+$\sigma(L)$ is constant in time.
+\end{corollary}
+
+\subsection{Conserved quantities}
+
+\begin{theorem}[Involutive conserved quantities~\cite{Flaschka1974}]
+For the finite $N$-particle lattice the quantities
+\begin{equation}
+  F_k \;=\; \tr(L^{k}), \quad k = 1,\ldots,N,
+\end{equation}
+are independent and pairwise in involution: $\{F_j,F_k\}=0$ for all
+$j,k$.  They constitute a complete set of first integrals.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+Isospectrality (Corollary~\ref{cor:isospec}) implies $\tr(L^k)=\tr(L(0)^k)$
+is constant.  Involutivity follows because the eigenvalues $\lambda_i$ of
+$L$ satisfy $\{\lambda_i,\lambda_j\}=0$, which can be verified via a
+discrete Wronskian / $r$-matrix argument.
+\end{proof}
+
+\begin{corollary}[Complete integrability]
+By the Arnold--Liouville theorem, the Toda lattice with $N$ particles is
+completely Liouville-integrable: the common level sets of $F_1,\ldots,F_N$
+are (generically) $N$-dimensional invariant tori, and the motion is linear
+(quasi-periodic) in angle coordinates.  In particular, the lattice does
+\emph{not} thermalise.
+\end{corollary}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Soliton Solutions}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{N-soliton formula}
+
+\begin{theorem}[$N$-soliton solutions~\cite{Hirota1973,Toda1989}]
+For any parameters $\kappa_j > 0$ and $\gamma_j > 0$,
+$j=1,\ldots,N$, the Toda lattice admits the explicit solution
+\begin{equation}\label{eq:Nsoliton}
+  q_N(n,t) \;=\; q_+ + \log\frac{\det\!\bigl(\mathbf{I}+C_N(n,t)\bigr)}
+                                  {\det\!\bigl(\mathbf{I}+C_N(n+1,t)\bigr)},
+\end{equation}
+where $C_N$ is the $N\times N$ matrix with entries
+$[C_N(n,t)]_{ij} = \sqrt{\gamma_i\gamma_j}\,
+e^{(\kappa_i+\kappa_j)n + (\sinh\kappa_i+\sinh\kappa_j)t}/
+(\cosh\tfrac{\kappa_i+\kappa_j}{2})^{-1}$ (up to explicit normalisation).
+Each soliton travels at speed $v_j = (\sinh\kappa_j)/\kappa_j$ and
+undergoes a finite phase shift upon collision with another soliton.
+Collisions are \emph{elastic}: no energy is exchanged.
+\end{theorem}
+
+\begin{remark}
+The $N=1$ soliton is a travelling pulse:
+$e^{q(n,t)-q(n+1,t)} = 1 + \kappa^2/\cosh^2(\kappa n - \nu t + \delta)$
+where $\nu = \sinh\kappa$.
+\end{remark}
+
+\subsection{Soliton resolution}
+
+\begin{theorem}[Asymptotic soliton resolution~\cite{Teschl2000}]
+Let the initial data $a_n(0)-\tfrac{1}{2}$, $b_n(0)$ decay rapidly.
+Then as $t\to\infty$ the solution decomposes into a finite number of
+solitons (indexed by the eigenvalues of $L(0)$) plus a dispersive tail
+of order $O(t^{-1/2})$.
+\end{theorem}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{The Inverse Scattering Transform}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{theorem}[Solution via IST~\cite{Teschl2000,Miller2018}]
+\label{thm:IST}
+The initial-value problem for the Toda lattice with rapidly decaying data is
+solved in three steps:
+\begin{enumerate}[label=(\roman*)]
+  \item \textbf{Direct scattering.} From $\{a_k(0),b_k(0)\}$ compute the
+        eigenvalues $\lambda_1 < \cdots < \lambda_N$ of $L(0)$ and the
+        associated \emph{norming constants} $w_k(0)=u_1^{(k)}(0)^2>0$,
+        where $u^{(k)}$ is the $k$-th normalised eigenvector.
+  \item \textbf{Time evolution.}  The eigenvalues are time-independent;
+        the norming constants evolve as
+        \begin{equation}\label{eq:w_evolve}
+          w_k(t) \;=\; \frac{e^{2\lambda_k t}\,w_k(0)}
+                             {\displaystyle\sum_{j=1}^N e^{2\lambda_j t}\,w_j(0)}.
+        \end{equation}
+  \item \textbf{Inverse scattering.}  Recover $a_k(t),b_k(t)$ from the
+        discrete measure
+        $d\mu_t = \sum_{k=1}^N w_k(t)\,\delta(\lambda - \lambda_k)$
+        via the continued-fraction expansion of the Stieltjes transform
+        \begin{equation}\label{eq:ContFrac}
+          m(z,t) \;=\; \sum_{k=1}^N \frac{w_k(t)}{z-\lambda_k}
+          \;=\; \cfrac{1}{z-b_1(t)-\cfrac{a_1(t)^2}{z-b_2(t)-\cdots
+          -\cfrac{a_{N-1}(t)^2}{z-b_N(t)}}}.
+        \end{equation}
+\end{enumerate}
+\end{theorem}
+
+\begin{remark}
+The continued-fraction~\eqref{eq:ContFrac} is the Jacobi (J-fraction)
+expansion of the Stieltjes transform, and its coefficients are exactly the
+Flaschka variables $a_k(t),b_k(t)$.  Recovering them from the spectral
+data is equivalent to the Gram--Schmidt orthogonalisation procedure for
+the polynomials orthogonal with respect to $d\mu_t$ --- see
+Section~\ref{sec:OPs} below.
+\end{remark}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{The Jacobi Operator, Orthogonal Polynomials, and the Lax Pair}
+\label{sec:OPs}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{The Jacobi operator as Lax matrix}
+
+The Flaschka variables $a_n(t)>0$ and $b_n(t)\in\R$ assemble into a
+\emph{symmetric tridiagonal (Jacobi) operator} on $\ell^2(\Z_{\geq 0})$:
+
+\begin{equation}\label{eq:Jacobi}
+  J \;=\; \begin{pmatrix}
+    b_0 & a_1 & 0   & \cdots \\
+    a_1 & b_1 & a_2 & \cdots \\
+    0   & a_2 & b_2 & \ddots \\
+    \vdots & & \ddots & \ddots
+  \end{pmatrix}.
+\end{equation}
+
+The Toda equations are equivalent to the Lax equation $J' = [J,A]$ where
+
+\begin{equation}\label{eq:Afactor}
+  A \;=\; \tfrac{1}{2}(J_- - J_+)
+\end{equation}
+
+is the skew-symmetric part (lower minus upper triangular) of $J$.
+Because $A$ is skew-symmetric this preserves the spectrum of $J$: the
+flow is an \emph{isospectral deformation}~\cite{Flaschka1974,Miller2018}.
+
+\subsection{Orthogonal polynomials as Lax eigenfunctions}
+
+Consider the Lax eigenvalue problem $J\mathbf{p} = \lambda\mathbf{p}$
+with $\mathbf{p}=(p_0(\lambda),p_1(\lambda),\ldots)^T$.  Reading off the
+$n$-th row yields the \emph{three-term recurrence relation}
+
+\begin{equation}\label{eq:3term}
+  \lambda\,p_n(\lambda)
+  \;=\; a_{n+1}\,p_{n+1}(\lambda) + b_n\,p_n(\lambda) + a_n\,p_{n-1}(\lambda),
+  \qquad p_0=1,\quad p_{-1}=0.
+\end{equation}
+
+\begin{theorem}[Favard's theorem / spectral theorem for Jacobi operators]
+A sequence $\{p_n\}_{n\geq 0}$ satisfies a recurrence of
+the form~\eqref{eq:3term} with $a_n>0$ and $b_n\in\R$ if and only if it
+is the sequence of orthonormal polynomials with respect to a unique
+positive Borel measure $\mu$ on $\R$:
+\begin{equation}\label{eq:ortho}
+  \int_{\R} p_m(\lambda)\,p_n(\lambda)\,d\mu(\lambda) \;=\; \delta_{mn}.
+\end{equation}
+The coefficients $a_n,b_n$ are the \emph{Jacobi (recurrence) coefficients}
+of the orthogonal polynomial system associated to $\mu$.
+\end{theorem}
+
+The other half of the Lax pair, the time-evolution equation
+$\partial_t \mathbf{p} = A\mathbf{p}$, implies
+
+\begin{equation}\label{eq:timeOP}
+  \frac{d}{dt}P_n(\lambda,t) \;=\; -a_n^2(t)\,P_{n-1}(\lambda,t),
+\end{equation}
+
+where $P_n$ are monic orthogonal polynomials.
+
+\begin{theorem}[Compatibility and Toda equations~\cite{Miller2018,Zhedanov2022}]
+The Toda equations~\eqref{eq:TodaFlaschka} are precisely the compatibility
+conditions ($\partial_t$ of the recurrence \eqref{eq:3term} is consistent
+with the time-flow~\eqref{eq:timeOP}): one may differentiate the three-term
+recurrence with respect to $t$ and substitute the time-flow without
+contradiction if and only if $a_n,b_n$ satisfy the Toda equations.
+\end{theorem}
+
+\subsection{Exponential deformation of the measure}
+
+\begin{theorem}[Toda flow as measure deformation~\cite{Flaschka1974,Zhedanov2022}]
+\label{thm:expmeasure}
+Suppose $a_n(0),b_n(0)$ are the recurrence coefficients of the measure
+$\mu$.  Then the Toda-evolved coefficients $a_n(t),b_n(t)$ are those of
+the \emph{exponentially deformed (tilted) measure}
+\begin{equation}\label{eq:expdmu}
+  d\mu_t(\lambda) \;=\; \frac{e^{\lambda t}\,d\mu(\lambda)}
+                              {\displaystyle\int e^{\lambda t}\,d\mu(\lambda)}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+The time-dependent inner product $\langle f,g\rangle_t = \int fg\,d\mu_t$
+satisfies $\tfrac{d}{dt}\langle f,g\rangle_t = \langle \lambda f,g\rangle_t$,
+which is exactly the infinitesimal action of the Lax flow on the measure.
+Uniqueness of Jacobi coefficients then gives the result.
+\end{proof}
+
+\begin{corollary}[Toda hierarchy]
+The $k$-th Toda hierarchy flow corresponds to the deformation
+$d\mu_t \propto e^{\lambda^k t}\,d\mu(\lambda)$.  In particular the $k=2$
+flow (with a symmetric measure) gives the \emph{Langmuir lattice}
+(Kac--van Moerbeke lattice):
+\[
+  (a_n^2)' \;=\; a_n^2\bigl(a_{n+1}^2 - a_{n-1}^2\bigr).
+\]
+\end{corollary}
+
+\subsection{The spectral map and its inverse}
+
+\begin{theorem}[Spectral map for the finite lattice~\cite{Teschl2000}]
+For the finite $N$-particle Toda lattice the Jacobi matrix $J$ has $N$
+distinct real eigenvalues $\lambda_1 < \cdots < \lambda_N$ with strictly
+positive norming constants $w_k = u_{1}^{(k)}{}^2 > 0$.  The \emph{spectral map}
+\[
+  \mathcal{S}\colon (a_k,b_k) \;\longmapsto\; (\lambda_k, w_k),
+  \quad \sum_{k=1}^N w_k = 1,
+\]
+is a real-analytic diffeomorphism onto its image.
+Under the Toda flow the eigenvalues are constant and the weights evolve
+as~\eqref{eq:w_evolve}.
+\end{theorem}
+
+\begin{theorem}[Inverse spectral map via orthogonal polynomials]
+The inverse of the spectral map is given by Gram--Schmidt
+orthogonalisation: the polynomials $p_n(\lambda)$ orthonormal with respect
+to the discrete measure $d\mu = \sum_{k=1}^N w_k\,\delta(\lambda-\lambda_k)$
+are determined uniquely, and their three-term recurrence
+recovers $J(t)$ from $(\lambda_k, w_k(t))$.  Equivalently, the
+coefficients are read off from the J-fraction~\eqref{eq:ContFrac}.
+\end{theorem}
+
+\subsection{Solution algorithm via QR factorisation (Moser's formula)}
+
+\begin{theorem}[Moser / Symes~\cite{Symes1982,Deift1983}]\label{thm:QR}
+Consider the unique QR factorisation
+\begin{equation}\label{eq:QR}
+  e^{t L(0)} \;=\; Q(t)\,R(t),
+  \quad Q(t)\text{ orthogonal},\quad R(t)\text{ upper triangular, positive diagonal.}
+\end{equation}
+Then the solution of the Toda lattice is
+\begin{equation}\label{eq:Mosersol}
+  L(t) \;=\; Q(t)^{T} L(0)\, Q(t).
+\end{equation}
+As $t\to+\infty$, $L(t)\to\diag(\lambda_{\sigma(1)},\ldots,\lambda_{\sigma(N)})$
+with eigenvalues sorted in \emph{descending} order.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+Differentiate~\eqref{eq:QR} to show $\dot{Q}Q^T$ is skew-symmetric and
+equals $-(R\dot{R}^{-1})_{\mathrm{skew}}$; a direct computation then
+shows $\dot{L}=[L, (R\dot{R}^{-1})_{\mathrm{skew}}]$, which is the Lax
+equation with $P=(R\dot{R}^{-1})_{\mathrm{skew}}$.  The asymptotic
+sorting follows from the dominance of the eigenmode $e^{\lambda_{\max} t}$.
+\end{proof}
+
+\begin{remark}[Connection to the QR algorithm in numerical linear algebra]
+Theorem~\ref{thm:QR} shows that the standard \emph{QR iteration}
+(applying QR factorisations repeatedly to a symmetric tridiagonal matrix)
+is the \emph{time-one map} of the Toda flow.  This provides a complete
+theoretical explanation for the convergence of the QR algorithm: the Toda
+solitons ``sort'' the eigenvalues as $t\to\infty$~\cite{Symes1982}.
+\end{remark}
+
+\subsection{The Riemann--Hilbert formulation of orthogonal polynomials}
+
+The following encodes the orthogonal polynomials in a $2\times 2$
+matrix Riemann--Hilbert problem~\cite{FokasItsKitaev1992}.
+
+\begin{theorem}[Fokas--Its--Kitaev RHP for OPs~\cite{FokasItsKitaev1992,Miller2018}]
+Given spectral data $\{\lambda_k,w_k\}_{k=1}^N$, define the
+$2\times 2$ matrix-valued function $\mathbf{P}(\lambda;n)$ by the
+following conditions:
+\begin{enumerate}[label=(\roman*)]
+  \item $\mathbf{P}(\,\cdot\,;n)$ is analytic on $\C\setminus\{\lambda_1,\ldots,\lambda_N\}$.
+  \item Normalisation: $\mathbf{P}(\lambda;n)\,\diag(\lambda^{-n},\lambda^{n})\to I$
+        as $\lambda\to\infty$.
+  \item Residue conditions at each pole:
+        \[
+          \Res_{\lambda=\lambda_k}\mathbf{P}(\lambda;n)
+          \;=\; \lim_{\lambda\to\lambda_k}\mathbf{P}(\lambda;n)
+                \begin{pmatrix}0 & w_k \\ 0 & 0\end{pmatrix}.
+        \]
+\end{enumerate}
+The unique solution is
+\begin{equation}\label{eq:FIK}
+  \mathbf{P}(\lambda;n) \;=\;
+  \begin{pmatrix}
+    \pi_n(\lambda) &
+    \displaystyle\sum_k \frac{w_k\,\pi_n(\lambda_k)}{\lambda-\lambda_k}\\[8pt]
+    \gamma_{n-1}\,p_{n-1}(\lambda) &
+    \displaystyle\sum_k \frac{w_k\,\gamma_{n-1}\,p_{n-1}(\lambda_k)}{\lambda-\lambda_k}
+  \end{pmatrix},
+\end{equation}
+where $\pi_n$ is the monic orthogonal polynomial of degree $n$ and
+$\gamma_{n-1}$ is the leading coefficient of $p_{n-1}$.
+The Jacobi coefficients $a_n,b_n$ are read from the large-$\lambda$
+expansion of $\mathbf{P}(\lambda;n)$ without matrix multiplications.
+\end{theorem}
+
+\begin{remark}
+This formulation connects directly to the Riemann--Hilbert approach used
+in the long-time asymptotic analysis of the Toda lattice (Deift--Zhou
+nonlinear steepest descent,  Section~\ref{sec:LTA}).
+\end{remark}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{The Periodic Toda Lattice}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{definition}[Periodic lattice]
+The \emph{periodic Toda lattice} of period $N$ imposes
+$a_{n+N}=a_n$, $b_{n+N}=b_n$ for all $n$.
+\end{definition}
+
+The integration of the periodic lattice requires algebro-geometric
+methods~\cite{Teschl2000,Toda1989}:
+
+\begin{theorem}[Integration of the periodic Toda lattice]
+\begin{enumerate}[label=(\roman*)]
+  \item Introduce the \emph{periodic Jacobi matrices} $L^\pm$ with corner
+        entries $(\pm 1)\cdot a_N$ and $a_0$ respectively.
+  \item The \emph{spectral curve} is the hyperelliptic Riemann surface
+        \[
+          \mathcal{S} \;=\;
+          \Bigl\{(w,\lambda)\in\C^2 \;\Big|\;
+          w^2 = \prod_{j=1}^{N}\bigl(\lambda-\lambda_j^+\bigr)
+                \bigl(\lambda-\lambda_j^-\bigr)\Bigr\}
+        \]
+        of genus $N-1$.
+  \item The \emph{Dirichlet spectrum} (interlacing eigenvalues
+        $\mu_1,\ldots,\mu_{N-1}$) constitutes action variables and evolves
+        \emph{linearly} on the Jacobian $\operatorname{Jac}(\mathcal{S})$.
+  \item Solutions are expressed in terms of \emph{Riemann theta functions}
+        associated to $\mathcal{S}$.
+\end{enumerate}
+\end{theorem}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Long-Time Asymptotics via Riemann--Hilbert Methods}
+\label{sec:LTA}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{theorem}[Long-time asymptotics, Deift--Zhou~\cite{DeiftZhou1993,Teschl2000,EgorovaRHP}]
+Let $(a_n(t),b_n(t))$ be the solution with rapidly decaying initial data.
+Then as $t\to\infty$ with $\xi = n/t$ fixed, the following space-time
+regions are distinguished:
+\begin{enumerate}[label=(\roman*)]
+  \item \textbf{Outside the light cone} ($|\xi|>1$): solution is
+        exponentially close to the free (zero) background.
+  \item \textbf{Inside the light cone} ($|\xi|<1$): solution decays as
+        $O(t^{-1/2})$ with modulated oscillations described by a genus-0
+        modulated wave.
+  \item \textbf{Soliton region}: each eigenvalue $\lambda_k$ of $L(0)$
+        gives rise to a soliton travelling at velocity
+        $v_k = \cosh^{-1}(\lambda_k/2)\cdot\sinh(\cosh^{-1}(\lambda_k/2))$
+        up to appropriate parameterisation.
+\end{enumerate}
+The precise leading-order asymptotics in each region are obtained via the
+\emph{Deift--Zhou nonlinear steepest descent method} applied to the
+Riemann--Hilbert problem encoding the Toda IST.
+\end{theorem}
+
+\begin{remark}[Toda shock problem]
+When the initial data consists of two different constant backgrounds
+(``shock data''), the long-time behaviour exhibits a five-region structure.
+The middle sector is governed by a slowly modulated genus-1
+algebraic-geometric (two-band) solution, with precise asymptotics
+derived via a two-phase Riemann--Hilbert analysis~\cite{EgorovaRHP}.
+\end{remark}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Orthogonal Polynomials, Painlev\'e Equations, and the Toda Hierarchy}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Semiclassical weights and discrete Painlev\'e}
+
+\begin{theorem}[Recurrence coefficients and Painlev\'e
+  equations~\cite{Zhedanov2022}]
+When the orthogonality measure has a \emph{semiclassical weight}
+$w(x)=e^{-V(x)}$ with $V'$ rational, the recurrence coefficients
+$a_n(t), b_n(t)$:
+\begin{enumerate}[label=(\roman*)]
+  \item Satisfy \emph{discrete Painlev\'e equations} in $n$ (from the
+        compatibility of the three-term recurrence and the differential
+        relations for $p_n$ with respect to $\lambda$).
+  \item Combined with the Toda time-flow, satisfy \emph{continuous Painlev\'e
+        equations} (I--VI) in the continuous variable $t$.
+\end{enumerate}
+\end{theorem}
+
+\begin{example}[Painlev\'e IV and Painlev\'e V]
+\begin{itemize}
+  \item Weight $w(x)=e^{-x^4+tx^2}$ on $\R$: recurrence coefficients of
+        the associated OPs satisfy \emph{Painlev\'e IV}.
+  \item Jacobi--Toda weight $(1-x)^\alpha(1+x)^\beta e^{-tx}$ on $[-1,1]$:
+        recurrence coefficients satisfy \emph{Painlev\'e V}.
+\end{itemize}
+\end{example}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Generalizations}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The Toda lattice is the centre of a rich web of integrable systems.
+
+\medskip
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{>{\bfseries}p{4.5cm} p{9.5cm}}
+\toprule
+Generalization & Description \\
+\midrule
+Periodic Toda &
+  Closed chain; theta-function solutions; spectral curve of genus $N-1$
+  \cite{Teschl2000}. \\
+2D Toda field equation &
+  $\partial_x\partial_t\phi_n = e^{\phi_{n-1}-\phi_n}-e^{\phi_n-\phi_{n+1}}$;
+  connection to KP/Toda hierarchies \cite{Toda1989}. \\
+Toda hierarchy &
+  Infinite sequence of commuting flows $\partial_{t_k}L=[A_k,L]$;
+  generating functions for integrable structures. \\
+Relativistic Toda &
+  Poincar\'e-invariant generalisation; arises from the relativistic
+  Calogero--Moser system \cite{Ruijsenaars1990}. \\
+Ruijsenaars--Schneider &
+  Poles of solutions of 2D Toda hierarchy are
+  Ruijsenaars--Schneider particles \cite{RS1986}. \\
+Affine Lie algebra Toda &
+  Toda systems associated to arbitrary root systems, including affine;
+  Bogoyavlensky generalisation. \\
+Quantum Toda lattice &
+  Quantum-mechanical quantisation; eigenfunctions given by
+  Givental-type integral representations; Baxter $Q$-operators
+  \cite{Givental1997}. \\
+Ultra-discrete Toda &
+  Tropical/max-plus limit; related to combinatorics and soliton cellular
+  automata. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Symplectic Geometry Perspective}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{theorem}[Coadjoint orbit structure~\cite{Deift1983}]
+In Flaschka coordinates the Toda flow lives on a \emph{coadjoint orbit of
+the upper triangular Borel subgroup} of $GL(N,\R)$, equivalently on the
+isospectral manifold of Jacobi matrices.  The symplectic leaves are
+isospectral sets, and the complete integrability is the statement that
+these leaves are foliated by $N$-dimensional Liouville tori.
+\end{theorem}
+
+\begin{remark}[Flag variety structure]
+The compactified isospectral manifold is homeomorphic to a \emph{real flag
+variety}, and the moment map of the torus action gives a polytope whose
+faces correspond to degenerate Jacobi matrices.  The integral cohomology
+connects to Schubert calculus on flag varieties.
+\end{remark}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Summary Table}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{>{\bfseries}p{5.2cm} p{8.8cm}}
+\toprule
+Toda / Jacobi side & Orthogonal polynomial side \\
+\midrule
+Lax matrix $J$ &
+  Jacobi matrix of the OP family for $\mu$ \\
+Toda flow at time $t$ &
+  Deformation $d\mu_t = e^{\lambda t}\,d\mu$ (normalised) \\
+Isospectral deformation &
+  Support of the discrete measure $\mu$ is fixed \\
+Flaschka variables $a_n,b_n$ &
+  Recurrence coefficients of the OPs \\
+Eigenvector first components $w_k$ &
+  Christoffel numbers (quadrature weights) of $\mu$ \\
+Inversion of spectral map &
+  Direct problem: given $\mu$, find $a_n,b_n$ via Gram--Schmidt \\
+Toda initial value problem &
+  Inverse problem: given $a_n(0),b_n(0)$, find $\mu$,
+  then time-evolve $\mu$ \\
+RHP for $\mathbf{P}(\lambda;n)$ &
+  Encodes the OPs; large-$\lambda$ expansion gives $a_n,b_n$ directly \\
+Higher Toda flows $(t_k)$ &
+  Multi-time deformation $e^{\sum_k t_k\lambda^k}\,d\mu$;
+  Toda hierarchy \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Bibliography
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{thebibliography}{99}
+
+\bibitem{Toda1967}
+M.~Toda,
+\newblock Vibration of a chain with nonlinear interaction,
+\newblock \emph{J.\ Phys.\ Soc.\ Japan} \textbf{22} (1967), 431--436.
+
+\bibitem{Toda1989}
+M.~Toda,
+\newblock \emph{Theory of Nonlinear Lattices}, 2nd ed.,
+\newblock Springer-Verlag, Berlin, 1989.
+
+\bibitem{Flaschka1974}
+H.~Flaschka,
+\newblock The Toda lattice. I. Existence of integrals,
+\newblock \emph{Phys.\ Rev.\ B} \textbf{9} (1974), 1924--1925.
+
+\bibitem{Manakov1974}
+S.~V.~Manakov,
+\newblock Complete integrability and stochastization of discrete dynamical
+  systems,
+\newblock \emph{Zh.\ Eksp.\ Teor.\ Fiz.} \textbf{67} (1974), 543--555.
+
+\bibitem{Hirota1973}
+R.~Hirota,
+\newblock Exact $N$-soliton solution of a nonlinear lumped network equation,
+\newblock \emph{J.\ Phys.\ Soc.\ Japan} \textbf{35} (1973), 289--294.
+
+\bibitem{Teschl2000}
+G.~Teschl,
+\newblock \emph{Jacobi Operators and Completely Integrable Nonlinear Lattices},
+\newblock Mathematical Surveys and Monographs Vol.\ 72,
+\newblock Amer.\ Math.\ Soc., Providence, RI, 2000.
+
+\bibitem{Symes1982}
+W.~W.~Symes,
+\newblock The QR algorithm and scattering for the finite nonperiodic Toda
+  lattice,
+\newblock \emph{Phys.\ D} \textbf{4} (1982), 275--280.
+
+\bibitem{Deift1983}
+P.~Deift, F.~Lund, and E.~Trubowitz,
+\newblock Nonlinear wave equations and constrained harmonic motion,
+\newblock \emph{Comm.\ Math.\ Phys.} \textbf{74} (1980), 141--188.
+\newblock See also: P.~Deift,
+\newblock \emph{Orthogonal Polynomials and Random Matrices: a Riemann--Hilbert
+  Approach},
+\newblock Courant Lecture Notes, AMS, 1999.
+
+\bibitem{DeiftZhou1993}
+P.~Deift and X.~Zhou,
+\newblock A steepest descent method for oscillatory Riemann--Hilbert problems,
+\newblock \emph{Ann.\ of Math.} \textbf{137} (1993), 295--368.
+
+\bibitem{EgorovaRHP}
+I.~Egorova, J.~Michor, and G.~Teschl,
+\newblock Long-time asymptotics for the Toda shock problem: the step
+  initial condition,
+\newblock Preprint, \url{https://ilt.kharkov.ua/bvi/structure/depart_e/iryna_egorova/articles/TodaStepRHP.pdf}.
+
+\bibitem{FokasItsKitaev1992}
+A.~S.~Fokas, A.~R.~Its, and A.~V.~Kitaev,
+\newblock The isomonodromy approach to matrix models in 2D quantum gravity,
+\newblock \emph{Comm.\ Math.\ Phys.} \textbf{147} (1992), 395--430.
+
+\bibitem{Zhedanov2022}
+A.~Zhedanov et al.,
+\newblock Orthogonal polynomials, Toda lattices and Painlev\'e equations,
+\newblock \emph{arXiv:2202.11017} (2022).
+
+\bibitem{Miller2018}
+P.~D.~Miller,
+\newblock Topic 4: The Toda lattice (lecture notes),
+\newblock University of Michigan, Winter 2018.
+\newblock \url{https://websites.umich.edu/~millerpd/docs/651_Winter18/Topic04-651-W18.pdf}
+
+\bibitem{Ruijsenaars1990}
+S.~N.~M.~Ruijsenaars,
+\newblock Relativistic Toda systems,
+\newblock \emph{Comm.\ Math.\ Phys.} \textbf{133} (1990), 217--247.
+
+\bibitem{RS1986}
+S.~N.~M.~Ruijsenaars and H.~Schneider,
+\newblock A new class of integrable systems and its relation to solitons,
+\newblock \emph{Ann.\ Phys.} \textbf{170} (1986), 370--405.
+
+\bibitem{Givental1997}
+A.~Givental,
+\newblock Stationary phase integrals, quantum Toda lattices, flag manifolds
+  and the mirror conjecture,
+\newblock \emph{Topics in Singularity Theory}, AMS Transl.\ (2) \textbf{180}
+  (1997), 103--115.
+
+\end{thebibliography}
+
+\end{document} 
