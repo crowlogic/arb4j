@@ -1,9 +1,11 @@
 package arb.functions.polynomials.orthogonal.complex;
 
 import arb.ComplexPolynomial;
+import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.Context;
+import arb.functions.complex.ComplexPolynomialNullaryFunction;
+import arb.functions.complex.RiccatiMuntzPadeFunctional;
 import arb.functions.integer.ComplexPolynomialSequence;
 import arb.functions.integer.Sequence;
 
@@ -11,40 +13,38 @@ import arb.functions.integer.Sequence;
  * OPS of the moment functional
  *
  * <pre>
- *   𝓛_Riccati[xᵏ; u] := a(k+1, u)
+ *   𝓛_Riccati[xᵏ; v] := a(k+1, v)
  * </pre>
  *
- * where a(k, u) are the Müntz–Tau coefficients of the constant-coefficient
+ * where a(k, v) are the Müntz–Tau coefficients of the constant-coefficient
  * fractional Riccati equation
  *
  * <pre>
- *   D^μ y(t,u) = P(u) + Q(u) · y(t,u) + R(u) · y(t,u)²,
- *   I^{1−μ} y(0,u) = 0,
+ *   D^μ y(t, v) = P(v) + Q(v) · y(t, v) + R(v) · y(t, v)²,
+ *   I^{1−μ} y(0, v) = 0,
  * </pre>
  *
- * with P(u), Q(u), R(u) ∈ ℂ[u] and μ ∈ (0, 1].
+ * with P(v), Q(v), R(v) ∈ ℂ[v] and μ ∈ (0, 1]. (v is the Fourier / Riccati
+ * parameter; in the methodology document this is the variable called u.)
  *
  * <p>
- * The Müntz–Tau ansatz y(t, u) = Σ_{k≥1} a(k, u) · t^{kμ} gives the Gamma-ratio
- * convolution recurrence
- *
- * <pre>
- *   a(1, u)   = P(u) / Γ(μ + 1)
- *   a(k+1, u) = Γ(kμ + 1) / Γ((k+1)μ + 1)
- *               · ( Q(u) · a(k, u)
- *                   + R(u) · Σ_{j=1..k-1} a(j, u) · a(k-j, u) )
- * </pre>
- *
- * Setting m(k, u) := a(k+1, u) makes this the moment sequence of a quasi-
- * definite (signed, never positive-definite) functional over ℂ[u]. The OPS
+ * Setting m(k, v) := a(k+1, v) makes this the moment sequence of a quasi-
+ * definite (signed, never positive-definite) functional over ℂ[v]. The OPS
  * produced is, after reciprocal-polynomial flip, the diagonal [M/M] Padé
- * denominator of the generating series g(z, u) = Σ_{k≥1} a(k, u) · zᵏ.
+ * denominator of the generating series g(z, v) = Σ_{k≥1} a(k, v) · zᵏ.
  *
  * <p>
- * The functional is never positive-definite at any u ∈ ℝ for which the §9.5
+ * The Müntz–Tau coefficient sequence is delegated to the existing
+ * {@link RiccatiMuntzPadeFunctional}; its {@code muntzBasis()} produces the
+ * sequence k ↦ a(k, v) of polynomials in v, which this class shifts by one
+ * to obtain m(k, v) = a(k+1, v).
+ *
+ * <p>
+ * The functional is never positive-definite at any v ∈ ℝ for which the §9.5
  * contraction hypotheses hold (Volterra contraction → no real poles of
- * g(·, u)), so OPS zeros are complex; their reciprocals are the poles of
- * g(·, u), condensing on the Stahl compact Δ_g(u) ⊂ ℂ \ ℝ as M → ∞.
+ * g(·, v)), so OPS zeros are complex; their reciprocals are the poles of
+ * g(·, v), condensing on the Stahl compact Δ_g(v) ⊂ ℂ \ ℝ as the OPS degree
+ * grows.
  *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
@@ -53,49 +53,51 @@ public class OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequence exten
                                                                           OrthogonalPolynomialMomentFunctionalSequence
 {
 
-  public ComplexPolynomial μ;
-  public ComplexPolynomial P;
-  public ComplexPolynomial Q;
-  public ComplexPolynomial R;
+  /** Holder of μ, P, Q, R and the Müntz–Tau coefficient sequence. */
+  public RiccatiMuntzPadeFunctional muntz;
 
+  /**
+   * Construct from a fresh {@link RiccatiMuntzPadeFunctional} built from (μ, P,
+   * Q, R).
+   */
   public OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequence(int bits,
-                                                                       ComplexPolynomial μ,
-                                                                       ComplexPolynomial P,
-                                                                       ComplexPolynomial Q,
-                                                                       ComplexPolynomial R)
+                                                                       Real μ,
+                                                                       ComplexPolynomialNullaryFunction P,
+                                                                       ComplexPolynomialNullaryFunction Q,
+                                                                       ComplexPolynomialNullaryFunction R)
   {
-    super(bits, riccatiMomentSequence(μ, P, Q, R));
-    this.μ = μ;
-    this.P = P;
-    this.Q = Q;
-    this.R = R;
-    // Make μ, P, Q, R visible on the parent's context too, so downstream
-    // diagnostics (e.g. printing α(n)(u)) can resolve them.
-    context.registerVariable(μ);
-    context.registerVariable(P);
-    context.registerVariable(Q);
-    context.registerVariable(R);
+    this(bits, new RiccatiMuntzPadeFunctional(μ, P, Q, R));
+  }
+
+  /** Convenience: build from string expressions for P, Q, R. */
+  public OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequence(int bits,
+                                                                       Real μ,
+                                                                       String P,
+                                                                       String Q,
+                                                                       String R)
+  {
+    this(bits, new RiccatiMuntzPadeFunctional(μ, P, Q, R));
   }
 
   /**
-   * Müntz–Tau moment sequence m(k, u) = a(k+1, u) of the constant-coefficient
-   * fractional Riccati equation. Direct transcription of Lemma 2.1.
+   * Construct from an existing {@link RiccatiMuntzPadeFunctional}, sharing its
+   * Müntz–Tau coefficient sequence between this OPS path and any other
+   * consumer.
    */
-  private static Sequence<ComplexPolynomial> riccatiMomentSequence(ComplexPolynomial μ,
-                                                                   ComplexPolynomial P,
-                                                                   ComplexPolynomial Q,
-                                                                   ComplexPolynomial R)
+  public OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequence(int bits,
+                                                                       RiccatiMuntzPadeFunctional muntz)
   {
-    Context ctx = new Context();
-    ctx.registerVariable(μ.setName("μ"));
-    ctx.registerVariable(P.setName("P"));
-    ctx.registerVariable(Q.setName("Q"));
-    ctx.registerVariable(R.setName("R"));
-    return ComplexPolynomialSequence.express("m",
-                                             "k ➔ when(k = 0, P / Γ(μ + 1),"
-                                                 + "       else,  Γ(k·μ + 1) / Γ((k+1)·μ + 1)"
-                                                 + "              · ( Q · m(k-1)"
-                                                 + "                  + R · sum(j ➔ m(j) · m(k-2-j) {j=0..k-2}) ))",
-                                             ctx);
+    super(bits, riccatiMomentSequence(muntz));
+    this.muntz = muntz;
+  }
+
+  /**
+   * Müntz–Tau moment sequence m(k, v) = a(k+1, v). Shifts the Müntz coefficient
+   * sequence by one — m(0) = a(1), m(1) = a(2), and so on.
+   */
+  private static Sequence<ComplexPolynomial> riccatiMomentSequence(RiccatiMuntzPadeFunctional muntz)
+  {
+    ComplexPolynomialSequence a = muntz.muntzBasis();
+    return ComplexPolynomialSequence.express("m", "k ➔ a(k + 1)", muntz.context);
   }
 }
