@@ -194,6 +194,8 @@ polynomial communities (May 2026) shows:
   applications.
 
 The methodology above is therefore a state-of-the-art universal solution
-mechanism for the entire two-parameter family of constant-coefficient
-fractional Riccati equations, with the rough Heston characteristic function
-as one direct application.
+mechanism for the entire four-parameter family of constant-coefficient
+fractional Riccati equations — three polynomial parameters
+`(P(u), Q(u), R(u)) ∈ ℝ[u]³` (or `ℂ[u]³`) and one fractional order
+`μ ∈ (0, 1]` — with the rough Heston characteristic function as one direct
+application.
