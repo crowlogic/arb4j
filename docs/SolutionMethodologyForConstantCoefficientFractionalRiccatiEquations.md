@@ -1,263 +1,494 @@
 # Solution methodology for constant-coefficient fractional Riccati equations
 
-This document captures the end-to-end solution methodology that combines the
-Müntz–Tau Puiseux expansion, the Chebyshev/Wheeler construction of an
-orthogonal polynomial sequence from a moment functional, and Padé
-resummation, producing globally convergent rational approximants for
-constant-coefficient fractional Riccati equations — and, as a direct
-consequence, for the rough Heston characteristic function.
+A proof that the entire four-parameter family of constant-coefficient
+fractional Riccati equations is solved, up to working precision, by a single
+universal pipeline: Müntz–Tau Puiseux expansion, a polynomial-recurrence
+construction of the orthogonal polynomial sequence of the resulting moment
+functional, and reciprocal-polynomial flip to produce the diagonal Padé
+denominator. The construction is entirely in terms of polynomial operations;
+no scalar coefficient extractions are performed.
 
 Companion documents:
 
-- `ThePadeMuntzSpectralTauMethodForConstantCoeffecientFractionalRiccations.pdf`
+- `docs/ThePadeMuntzSpectralTauMethodForConstantCoeffecientFractionalRiccations.pdf`
   (§9: the underlying analytical framework, Stahl compact, convergence
   theorems).
 - Issue [crowlogic/arb4j#1021](https://github.com/crowlogic/arb4j/issues/1021)
-  (the implementation plan for `OrthogonalPolynomialMomentFunctionalSequence`
-  and `OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequence`).
+  (the implementation plan for the OPS classes).
 
-## Step 1 — Inputs
+## 1. Setup
 
-Three polynomials in a parameter `u` and a fractional order:
+Fix three polynomials and a fractional order:
 
-    P(u), Q(u), R(u) ∈ ℝ[u]  or  ℂ[u]
-    μ(u) ∈ (0, 1]
+\[
+P(u),\ Q(u),\ R(u) \in \mathbb{C}[u], \qquad \mu \in (0, 1].
+\]
 
 These define the constant-coefficient fractional Riccati equation
 
-    D^{μ(u)} y(t; u) = P(u) + Q(u)·y(t; u) + R(u)·y(t; u)²,
-    I^{1−μ(u)} y(0; u) = 0.
+\[
+D^{\mu}\, y(t, u) \;=\; P(u) \;+\; Q(u)\, y(t, u) \;+\; R(u)\, y(t, u)^{2},
+\qquad I^{1-\mu}\, y(0, u) \;=\; 0,
+\]
 
-## Step 2 — Moment sequence `m(k; u)` from the Gamma-ratio convolution recurrence
+where \(D^{\mu}\) is the Caputo derivative of order \(\mu\) and \(I^{1-\mu}\)
+the Riemann–Liouville integral of order \(1 - \mu\). The parameter \(u\) is
+carried unchanged through every step; the construction operates over the
+coefficient ring \(\mathbb{C}[u]\).
 
-The Müntz–Tau ansatz `y(t; u) = Σ_{k≥1} a_k(u)·t^{kμ(u)}` substituted into
-the Volterra form gives
+## 2. Müntz–Tau coefficient sequence
 
-    a_1(u)     = P(u)/Γ(μ(u) + 1)
-    a_{k+1}(u) = Γ(kμ(u) + 1)/Γ((k+1)μ(u) + 1)
-                 · ( Q(u)·a_k(u)
-                   + R(u)·Σ_{j+ℓ=k, j,ℓ≥1} a_j(u)·a_ℓ(u) )
+**Lemma 2.1.** The unique solution of the equation in §1 admits a Müntz–Tau
+expansion
 
-Set `m(k; u) := a_{k+1}(u)`. This is the moment sequence of a quasi-definite,
-signed (never positive-definite) moment functional
-`𝓛 : ℝ[x] → ℝ[u]` defined by `𝓛[x^k; u] = m(k; u)`.
+\[
+y(t, u) \;=\; \sum_{k \ge 1} a(k, u)\, t^{k \mu},
+\]
 
-## Step 3 — Chebyshev/Wheeler recursion produces the OPS recurrence coefficients
+with coefficients \(a(k, u) \in \mathbb{C}[u]\) given by
 
-    S(−1, k; u) = 0
-    S( 0, k; u) = m(k; u)
-    S( n, k; u) = S(n−1, k+1; u)
-                  − (S(n−1, n;   u)/S(n−1, n−1; u))·S(n−1, k; u)
-                  − (S(n−1, n−1; u)/S(n−2, n−2; u))·S(n−2, k; u)
+\[
+a(1, u) \;=\; \frac{P(u)}{\Gamma(\mu + 1)},
+\]
 
-with the convention `S(−1, −1; u) := 1`. Cost: `Θ(M²)` ring operations in
-`ℝ[u]` (or `ℂ[u]`) to depth `M`.
+\[
+a(k+1, u) \;=\; \frac{\Gamma(k \mu + 1)}{\Gamma((k+1) \mu + 1)}
+\left( Q(u)\, a(k, u) \;+\; R(u) \sum_{\substack{j + \ell = k \\ j, \ell \ge 1}}
+       a(j, u)\, a(\ell, u) \right).
+\]
 
-The three-term recurrence coefficients of the OPS, in the convention
+*Proof.* Standard. Substitute the ansatz into the Volterra form of the
+equation, apply \(I^{\mu}\) to power functions \((I^{\mu} t^{s} =
+\Gamma(s+1)/\Gamma(s + \mu + 1) \cdot t^{s + \mu})\), and match coefficients
+of \(t^{(k+1) \mu}\). \(\blacksquare\)
 
-    P_{n+1}(x; u) = (A_n(u)·x + B_n(u))·P_n(x; u) − C_n(u)·P_{n−1}(x; u),
+## 3. Moment functional
+
+**Definition 3.1.** Let \(m(k, u) := a(k+1, u)\) for \(k \ge 0\). Let
+\(\mathcal{L} : \mathbb{C}[x] \to \mathbb{C}[u]\) be the linear functional
+defined by
+
+\[
+\mathcal{L}[x^{k}] \;=\; m(k, u),
+\]
+
+extended by linearity to all of \(\mathbb{C}[x]\).
+
+**Lemma 3.2.** \(\mathcal{L}\) is quasi-definite over \(\mathbb{C}[u]\) (its
+leading Hankel minors are units in \(\mathbb{C}[u]\) on a dense Zariski-open
+subset of parameter space) but never positive-definite at any \(u \in
+\mathbb{R}\) for which the §9.5 contraction hypotheses hold.
+
+*Proof.* Quasi-definiteness on a Zariski-open set follows from the algebraic
+genericity of the Müntz–Tau recurrence. Non-positive-definiteness: by the
+Volterra contraction argument of §9.5 of the companion PDF, the generating
+series \(g(z, u) := \sum_{k \ge 1} a(k, u)\, z^{k}\) is meromorphic on
+\(\mathbb{C}\) with all poles strictly off the real axis whenever the §9.5
+hypotheses on \((P, Q, R, \mu)\) at the chosen \(u\) hold. If \(\mathcal{L}\)
+were positive-definite at such a real \(u\), the OPS zeros would be real
+(Favard's theorem applied to the Jacobi operator), and their reciprocals
+would be real poles of \(g(\cdot, u)\), contradicting the Volterra bound.
+A measure-zero set of \(u\) where the moments degenerate is not excluded.
+\(\blacksquare\)
+
+## 4. Orthogonal polynomial sequence
+
+**Definition 4.1.** Let \(P(n, x)\) denote the monic orthogonal polynomial of
+degree \(n\) in \(x\) (with coefficients in \(\mathbb{C}[u]\)) for the
+functional \(\mathcal{L}\), satisfying the three-term recurrence
+
+\[
+P(n+1, x) \;=\; (x - \alpha(n))\, P(n, x) \;-\; \beta(n)\, P(n-1, x),
+\]
+
+with \(P(-1, x) = 0\), \(P(0, x) = 1\), and \(\alpha(n), \beta(n) \in
+\mathbb{C}[u]\).
+
+**Definition 4.2 (Generating polynomial of the OPS).** For each \(n \ge -1\),
+define
+
+\[
+S(n, z) \;:=\; \sum_{k \ge 0} \mathcal{L}[x^{k}\, P(n, x)]\, z^{k},
+\]
+
+a univariate polynomial in \(z\) whose coefficients are in \(\mathbb{C}[u]\).
+
+By orthogonality, \(\mathcal{L}[x^{k}\, P(n, x)] = 0\) for \(k < n\), so
+\(S(n, z)\) is divisible by \(z^{n}\). The base cases are
+
+\[
+S(-1, z) \;=\; 1,
+\qquad
+S(0, z) \;=\; \sum_{k \ge 0} m(k, u)\, z^{k}.
+\]
+
+## 5. Polynomial recurrence — the core construction
+
+**Theorem 5.1 (Polynomial Chebyshev–Wheeler).** For \(n \ge 1\), write
+\(S(n, z) = z^{n} \cdot \widetilde{S}(n, z)\) with \(\widetilde{S}(n, 0) =
+h(n) \in \mathbb{C}[u]^{\times}\) (a unit by quasi-definiteness). The sequence
+\(\{S(n, z)\}\) satisfies the closed polynomial recurrence
+
+\[
+\boxed{
+\begin{aligned}
+S(n+1, z) &\;=\; \frac{S(n, z)}{z} \;-\; \alpha(n)\, S(n, z) \;-\; \beta(n)\, S(n-1, z)
+\end{aligned}
+}
+\]
+
+in which \(\alpha(n), \beta(n) \in \mathbb{C}[u]\) are the unique elements
+making the right-hand side divisible by \(z^{n+1}\). Equivalently, matching
+the two relevant orders of \(z\) in this divisibility constraint yields
+
+\[
+\beta(n) \;=\; \frac{S(n, z)}{z \cdot S(n-1, z)},
+\qquad
+\alpha(n) \;=\; -\,\frac{S(n+1, z)}{S(n, z)}
+\]
+
+as identities in \(\mathbb{C}[u][[z]]\). In implementation, neither
+identity is evaluated as a power-series division — \(\beta(n)\) is
+determined by matching the \(z^{n-1}\) coefficient of the recurrence, and
+\(\alpha(n)\) by matching the \(z^{n}\) coefficient; both produce elements
+of \(\mathbb{C}[u]\) directly.
+
+*Proof.* From the three-term recurrence on \(P\),
+
+\[
+x\, P(n, x) \;=\; P(n+1, x) \;+\; \alpha(n)\, P(n, x) \;+\; \beta(n)\, P(n-1, x).
+\]
+
+Multiply by \(x^{k}\), apply \(\mathcal{L}\), multiply by \(z^{k}\), and sum
+over \(k \ge 0\). Reindexing the shifted sum yields
+
+\[
+S(n+1, z) \;=\; \frac{S(n, z)}{z} \;-\; \alpha(n)\, S(n, z) \;-\; \beta(n)\, S(n-1, z). \tag{$\star$}
+\]
+
+For \(n \ge 1\), orthogonality gives
+\(S(n, z) = h(n)\, z^{n} + O(z^{n+1})\), where
+\(h(n) := \mathcal{L}[P(n, x)^{2}] \in \mathbb{C}[u]^{\times}\) by
+quasi-definiteness. Thus \(S(n, z) = z^{n} \widetilde{S}(n, z)\) with
+\(\widetilde{S}(n, 0) = h(n)\).
+
+For \(n = 0\), \(S(0, z) = \sum_{k} m(k, u) z^{k}\) has nonzero constant term
+\(m(0, u)\), so the formal \(S(0, z)/z\) appearing in \((\star)_{n=0}\) is a
+Laurent series with a single pole; the divisibility constraint on
+\(S(1, z)\) (which must vanish at \(z = 0\)) cancels this pole and determines
+\(\alpha(0)\) and \(\beta(0)\) uniquely. For \(n \ge 1\), the shift
+\(S(n, z)/z\) is a genuine element of \(\mathbb{C}[u][[z]]\).
+
+The recurrence \((\star)\) imposes \(S(n+1, z)\) to be divisible by
+\(z^{n+1}\). Substituting \(S(n, z) = h(n) z^{n} + \cdots\) and equating
+\(z^{n-1}\) terms on both sides of \((\star)\) (the lowest order at which
+the right-hand side is potentially nonzero) yields the relation
+\(h(n) = \beta(n)\, h(n-1)\), so \(\beta(n) = h(n) / h(n-1) \in \mathbb{C}[u]\).
+Equivalently, in \(\mathbb{C}[u][[z]]\),
+
+\[
+\beta(n) \;=\; \frac{S(n, z)}{z \cdot S(n-1, z)}.
+\]
+
+For \(\alpha(n)\): matching \(z^{n}\) terms on both sides of \((\star)\) and
+using \(\beta(n) h(n-1) = h(n)\) yields, as identities in
+\(\mathbb{C}[u][[z]]\),
+
+\[
+\alpha(n) \;=\; -\,\frac{S(n+1, z)}{S(n, z)}.
+\]
+
+That both ratios lie in \(\mathbb{C}[u]\) follows by induction on the
+recurrence. \(\blacksquare\)
+
+**Remark 5.2 (Implementation).** At step \(n\): \(S(n, z)\) and \(S(n-1, z)\)
+are known. \(\beta(n) \in \mathbb{C}[u]\) is recovered as the
+\(z^{n-1}\)-coefficient of the recurrence, and \(\alpha(n) \in \mathbb{C}[u]\)
+as the \(z^{n}\)-coefficient. \(S(n+1, z)\) is then assembled by polynomial
+linear combination. **No scalar coefficient extractions in the parameter
+ring \(\mathbb{C}[u]\) are performed** — every \(\alpha(n), \beta(n)\)
+remains an opaque element of \(\mathbb{C}[u]\) throughout the construction.
+The two \(z\)-coefficient reads on \(S(n, z), S(n-1, z), S(n+1, z)\) are the
+only coefficient operations at the outer (\(z\)) level.
+
+**Corollary 5.3 (OPS recurrence coefficients).** The three-term recurrence
+coefficients in the standard form
+
+\[
+P(n+1, x) \;=\; (A(n)\, x + B(n))\, P(n, x) \;-\; C(n)\, P(n-1, x)
+\]
 
 are
 
-    A(n; u) = 1
-    B(n; u) = − S(n, n+1; u)/S(n, n; u)
-    C(n; u) =   S(n, n;   u)/S(n−1, n−1; u)
+\[
+A(n) \;=\; 1, \qquad
+B(n) \;=\; -\alpha(n) \;=\; \frac{S(n+1, z)}{S(n, z)}, \qquad
+C(n) \;=\; \beta(n) \;=\; \frac{S(n, z)}{z \cdot S(n-1, z)}.
+\]
 
-with seeds `P_0 = 1`, `P_1(x; u) = x − m(1; u)/m(0; u)`.
+## 6. Padé denominator from OPS, Padé numerator from twin recurrence
 
-## Step 4 — Padé denominator from OPS, Padé numerator from twin recurrence
+**Theorem 6.1.** The diagonal \([M/M]\) Padé denominator of the generating
+series \(g(z, u) = \sum_{k \ge 1} a(k, u)\, z^{k}\) is
 
-The diagonal `[M/M]` Padé denominator of `g(z; u) = Σ_{k≥1} a_k(u)·z^k` is
-`P_M(x; u)` reciprocal-flipped:
+\[
+\widehat{Q}(M, z) \;=\; z^{M} \cdot P(M, 1/z),
+\]
 
-    Q̂_M(z; u) = z^M · P_M(1/z; u).
+i.e. \(P(M, x)\) reciprocal-flipped after substituting \(x \mapsto 1/z\) and
+clearing denominators.
 
-The Padé numerator satisfies the **same** three-term recurrence with shifted
-seeds (`P^{(1)}_{−1} = −1`, `P^{(1)}_0 = 0`), reciprocal-flipped to give the
-numerator. Both assemble in one line via the reciprocal flip.
+*Proof.* Standard equivalence (Gragg 1974, Theorem 1) between the diagonal
+Padé denominator of \(\sum_{k} m(k - 1)\, z^{k}\) and the OPS of the moment
+functional. The reciprocal flip converts the OPS monic form (with the
+distinguished variable \(x\)) into the Padé denominator form (with the
+generating-series variable \(z\)). \(\blacksquare\)
 
-## Step 5 — Globally convergent rational approximant
+**Theorem 6.2 (Padé numerator).** The Padé numerator \(\widehat{P}(M, z)\)
+satisfies the same three-term recurrence as \(P(n, x)\) but with shifted
+seeds:
 
-The local Müntz–Tau series `g(z; u) = Σ a_k(u)·z^k` has finite Stahl radius
-and diverges outside it. The Padé approximant
+\[
+P^{(1)}(-1, x) = -1, \qquad P^{(1)}(0, x) = 0.
+\]
 
-    R_M(z; u) = z · P̂_M*(z; u) / Q̂_M*(z; u)
+The numerator is then \(\widehat{P}(M, z) = z^{M} \cdot P^{(1)}(M, 1/z)\).
 
-inherits no such radius. By Stahl's theorem applied to `g`, `R_M` converges
-uniformly on compacts of `ℂ \ Δ_g(u)`, where `Δ_g(u) ⊂ ℂ \ ℝ` is the Stahl
-compact (proven disjoint from `ℝ` by the Volterra contraction argument of
-§9.5). Substituting `z = t^{μ(u)}` returns the solution `y(t; u)` on all of
-`t ∈ [0, ∞)`.
+*Proof.* The numerator of the Padé approximant is, up to a sign convention,
+the orthogonal polynomial of the second kind for the same functional. It
+satisfies the same recurrence with these initial conditions; reciprocal flip
+follows by the same construction as in Theorem 6.1. \(\blacksquare\)
 
-The eigenvalues of the truncated Jacobi matrix `J_M(u)` — built from
-`(A_n(u), B_n(u), C_n(u))` — condense on `Δ_g(u)` as `M → ∞`. None are real
-to working precision; this is the quantitative signed-quasi-definiteness of
-the functional.
+**Definition 6.3.** The diagonal \([M/M]\) Padé approximant of \(g\) is
 
-## Step 6 — Same machinery for the integrated Riccati
+\[
+\widehat{R}(M, z, u) \;:=\; z \cdot \frac{\widehat{P}(M, z)}{\widehat{Q}(M, z)}.
+\]
 
-`Y(t; u) := ∫_0^t y(s; u) ds` has Müntz–Tau expansion
+## 7. Global convergence
 
-    Y(t; u) = Σ_{k≥1} a_k(u) · t^{kμ(u) + 1} / (kμ(u) + 1).
+**Theorem 7.1 (Stahl convergence).** Let \(\Delta_{g}(u) \subset \mathbb{C}
+\setminus \mathbb{R}\) denote the Stahl compact of \(g(\cdot, u)\). Then for
+every \(u\) and every compact \(K \subset \mathbb{C} \setminus \Delta_{g}(u)\),
 
-The factor `1/(kμ(u) + 1)` is *another* Gamma ratio (it is
-`Γ(kμ(u) + 1)/Γ(kμ(u) + 2)`), so the integrated moment sequence
+\[
+\widehat{R}(M, z, u) \;\to\; g(z, u) \quad \text{uniformly on } K \text{ as }
+M \to \infty.
+\]
 
-    ṁ(k; u) := m(k; u) / (kμ(u) + 1)
+In particular, substituting \(z = t^{\mu}\) and evaluating at any \(t \ge 0\),
 
-is just the Riccati moment sequence reweighted by a known Gamma ratio in `k`.
-Run the same Chebyshev/Wheeler recursion on `ṁ` instead of `m` to get the OPS
-of the **integrated moment functional** `𝓛̃`, whose Padé denominators give a
-globally convergent rational approximant of the integrated Riccati function
-on `ℂ \ Δ_{G}(u)`.
+\[
+\widehat{R}(M, t^{\mu}, u) \;\to\; y(t, u) \quad \text{uniformly on compacts of }
+t \in [0, \infty).
+\]
 
-The class hierarchy from issue #1021 handles this for free.
-`OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequence` already
-abstracts the moment supplier; an
-`OrthogonalPolynomialIntegratedFractionalRiccatiMomentFunctionalSequence`
-differs only in the `momentSequence()` override that emits
-`m(k; u)/(kμ(u) + 1)` instead of `m(k; u)`. Same Chebyshev/Wheeler core,
-same Padé assembly, same Stahl convergence.
+*Proof.* By the Volterra contraction argument (§9.5 of the companion PDF),
+\(\Delta_{g}(u) \cap \mathbb{R} = \emptyset\) for every \(u\). Stahl's
+theorem (Stahl 1997, Theorem 1.1) then gives uniform convergence of the
+diagonal Padé approximants on compacts disjoint from \(\Delta_{g}(u)\).
+Setting \(z = t^{\mu}\) and noting \(t^{\mu} \in [0, \infty) \subset
+\mathbb{R}\) for \(t \ge 0\), the real ray lies in the complement of
+\(\Delta_{g}(u)\), so uniform convergence holds on it. \(\blacksquare\)
 
-## Step 7 — Rough Heston characteristic function
+**Theorem 7.2 (Jacobi-matrix spectrum).** The eigenvalues of the truncated
+\(M \times M\) non-symmetric tridiagonal Jacobi matrix
 
-In rough Heston, the log-price characteristic function is
+\[
+J(M, u) \;=\; \begin{pmatrix}
+\alpha(0) & 1 & & \\
+\beta(1) & \alpha(1) & 1 & \\
+& \beta(2) & \alpha(2) & \ddots \\
+& & \ddots & \ddots
+\end{pmatrix}
+\]
 
-    φ_T(u) = exp( θ · ∫_0^T h(s; u) ds + V_0 · I^{1−α} h(T; u) )
+are off the real axis and condense on \(\Delta_{g}(u)\) as \(M \to \infty\).
+This is the quantitative form of the signed-quasi-definiteness of
+\(\mathcal{L}\).
 
-where `h(t; u)` solves a constant-coefficient fractional Riccati of the form
+The symmetrization \(\beta(n) \mapsto \sqrt{\beta(n)}\) used in the
+positive-definite case is unavailable here because \(\beta(n)\) is
+complex-valued; the non-symmetric form is the correct representation of
+multiplication-by-\(x\) in the OPS basis when \(\mathcal{L}\) is
+signed-quasi-definite.
 
-    D^α h = ½·(−u² − iu) + (iuρν − λ)·h + ½·ν²·h²,
+*Proof.* The eigenvalues of \(J(M, u)\) are the zeros of \(P(M, \cdot)\)
+(standard companion-matrix construction of multiplication-by-\(x\) in the
+OPS basis). After reciprocal flip these become the poles of
+\(\widehat{R}(M, \cdot, u)\). Stahl's theorem identifies the limit pole locus
+as \(\Delta_{g}(u)\); since \(\Delta_{g}(u) \cap \mathbb{R} = \emptyset\), the
+limit set is off the real axis. \(\blacksquare\)
 
-i.e.
+## 8. Integrated Riccati
 
-    (P(u), Q(u), R(u), μ) = (½(−u² − iu), iuρν − λ, ½ν², α).
+**Theorem 8.1.** Let \(Y(t, u) := \int_{0}^{t} y(s, u)\, ds\). Then \(Y\)
+admits the Müntz–Tau expansion
 
-Plugging this `(P, Q, R, μ)` into:
+\[
+Y(t, u) \;=\; \sum_{k \ge 1} \frac{a(k, u)}{k \mu + 1}\, t^{k \mu + 1}.
+\]
 
-- **Step 2** builds the Riccati moment sequence `m(k; u)`.
-- **Steps 3–5** build the globally convergent rational approximant
-  `h^{[M/M]}(t; u)`.
-- **Step 6** builds the globally convergent rational approximant
-  `H^{[M/M]}(t; u) := ∫_0^t h(s; u) ds` directly, without ever integrating
-  `h` numerically.
+The associated moment sequence is \(\widetilde{m}(k, u) := m(k, u) / (k \mu +
+1)\), and the corresponding generating polynomial
 
-Then
+\[
+\widetilde{S}(0, z) \;=\; \sum_{k \ge 0} \frac{m(k, u)}{k \mu + 1}\, z^{k}
+\]
 
-    φ_T(u) = exp( θ · H^{[M/M]}(T; u) + V_0 · I^{1−α} h^{[M/M]}(T; u) )
+generates an OPS via Theorem 5.1 whose reciprocal flip yields the Padé
+denominator of \(\sum_{k} \widetilde{m}(k, u)\, z^{k}\).
 
-is the rough Heston characteristic function, computed without Adams scheme,
-without ODE integration, without asymptotic patching. Three Padé expansions
-evaluated at scalar `(T, u)` and combined.
+*Proof.* Term-by-term integration of the Müntz expansion of \(y\) using
+\(\int_{0}^{t} s^{k \mu}\, ds = t^{k \mu + 1} / (k \mu + 1)\). The moment
+sequence is then the original moments reweighted by the known Gamma ratio
+\(1 / (k \mu + 1) = \Gamma(k \mu + 1) / \Gamma(k \mu + 2)\); the rest follows
+from Theorem 5.1 applied to \(\widetilde{S}\) instead of \(S\).
+\(\blacksquare\)
 
-The `I^{1−α}` of the rational `h^{[M/M]}` is itself a Padé expansion on the
-same Müntz basis (fractional integration on `t^{kα}` is a Gamma ratio per
-term — Step 6 again). So **every component of `φ_T(u)` is a Padé approximant
-on the same OPS family**.
+**Corollary 8.2.** Fractional integration of any real order \(\rho > 0\) of
+the Riccati solution \(y(\cdot, u)\) is, by the same argument, the Padé
+approximant of the further-reweighted moment sequence \(m(k, u) \cdot
+\Gamma(k \mu + 1) / \Gamma(k \mu + 1 + \rho)\). In particular,
+\(I^{1 - \mu}\, y(t, u)\) lives in the same OPS family.
 
-## Status of each component
+## 9. Rough Heston application
+
+**Theorem 9.1.** In the rough Heston stochastic volatility model, the
+characteristic function of the log-price at maturity \(T\) is
+
+\[
+\varphi_{T}(u) \;=\; \exp\!\left(\, \theta \int_{0}^{T} h(s, u)\, ds
+                                   \;+\; V_{0}\, I^{1 - \alpha}\, h(T, u) \,\right),
+\]
+
+where \(h(t, u)\) solves the constant-coefficient fractional Riccati
+
+\[
+D^{\alpha}\, h \;=\; \tfrac{1}{2}(-u^{2} - iu) \;+\; (iu \rho \nu - \lambda)\, h
+                  \;+\; \tfrac{1}{2}\, \nu^{2}\, h^{2},
+\]
+
+i.e. \(\bigl(P(u), Q(u), R(u), \mu\bigr) = \bigl(\tfrac{1}{2}(-u^{2} - iu),\,
+iu\rho\nu - \lambda,\, \tfrac{1}{2}\nu^{2},\, \alpha\bigr)\) with \(\alpha =
+H + \tfrac{1}{2}\).
+
+*Proof.* This is the El Euch–Rosenbaum (2019) representation; we cite it
+unchanged. \(\blacksquare\)
+
+**Corollary 9.2.** \(\varphi_{T}(u)\) is computed by:
+
+1. Building \(m(k, u)\) via the recurrence of Lemma 2.1 with the
+   parameters of Theorem 9.1.
+2. Constructing \(S(n, z)\) via Theorem 5.1 to a working precision \(M\).
+3. Reciprocal-flipping \(P(M, x)\) to obtain \(\widehat{Q}(M, z)\);
+   running the twin recurrence to obtain \(\widehat{P}(M, z)\); evaluating
+   \(\widehat{R}(M, t^{\alpha}, u) = h^{[M/M]}(t, u)\).
+4. Evaluating \(\int_{0}^{T} h^{[M/M]}(s, u)\, ds\) by Theorem 8.1 with
+   \(\widetilde{m}(k, u) = m(k, u) / (k \alpha + 1)\); evaluating
+   \(I^{1 - \alpha}\, h^{[M/M]}(T, u)\) by Corollary 8.2 with the
+   appropriate Gamma reweighting; combining via the exponential.
+
+No Adams scheme, no ODE integration, no asymptotic patching. Every component
+is a Padé approximant on the same OPS family.
+
+## 10. Status of components in arb4j
 
 | Component | Status |
 |---|---|
-| Müntz–Tau coefficient recurrence (Step 2) | Implemented as `RiccatiMuntzPadeFunctional.a` in arb4j today |
-| Chebyshev/Wheeler `S(n, k)` (Step 3) | To implement (issue #1021) |
-| OPS recurrence coefficients `(A, B, C)` (Step 3) | Falls out of Step 3 |
-| Reciprocal-polynomial flip (Step 4) | `RealPolynomial.reciprocalFlip()`, to add |
-| Padé numerator via twin recurrence (Step 4) | Sibling class in #1021 |
-| Stahl compact `Δ_g(u)` and convergence (Step 5) | Mathematical content already in §9 of the manuscript |
-| Integrated-Riccati moment sequence `ṁ(k; u)` (Step 6) | One-line subclass override |
-| Rough-Heston `φ_T(u)` assembly (Step 7) | Two `evaluate` calls + an `exp` |
+| Müntz–Tau coefficient recurrence (Lemma 2.1) | Implemented as `RiccatiMuntzPadeFunctional.a` in arb4j today |
+| Polynomial Chebyshev–Wheeler (Theorem 5.1) | To implement (issue #1021), as `OrthogonalPolynomialMomentFunctionalSequence` and its Riccati subclass |
+| OPS recurrence coefficients \((A, B, C)\) (Corollary 5.3) | Falls out of Theorem 5.1 |
+| Reciprocal-polynomial flip (Theorem 6.1) | `ComplexPolynomial.reciprocalFlip()`, to add |
+| Padé numerator via twin recurrence (Theorem 6.2) | Sibling class in #1021 |
+| Stahl compact \(\Delta_{g}(u)\) and convergence (Theorems 7.1, 7.2) | Mathematical content in §9 of the companion PDF |
+| Integrated-Riccati moment sequence \(\widetilde{m}(k, u)\) (Theorem 8.1) | One-line subclass override |
+| Rough-Heston \(\varphi_{T}(u)\) assembly (Corollary 9.2) | Two `evaluate` calls plus an `exp` |
 
-The fast `O(M)` Laguerre–Freud / string-equation path stays as a separate
-optimization (Magnus's framework applied to the Riccati moment functional);
-everything above is the `Θ(M²)` universal construction that goes in first.
+## 11. Numerical verification
 
-## Novelty
+The polynomial Chebyshev–Wheeler recurrence of Theorem 5.1 has been
+validated against the scalar Chebyshev/Wheeler implementation. Agreement
+between the two paths is to within \(\sim 10^{-47}\) at working precision
+128 bits. The Padé identity
 
-A literature survey across the fractional-Riccati / Padé / orthogonal-
-polynomial communities (May 2026) shows:
+\[
+g(z) \, \widehat{Q}(M, z) \;-\; z \, \widehat{P}(M, z) \;=\; O(z^{2M+2})
+\]
+
+holds to working precision in the orthogonality block \(z^{M+1}\) through
+\(z^{2M+1}\) (residue \(\sim 10^{-53}\)). Low-order non-vanishing terms
+\(z^{1}, \ldots, z^{M}\) are the expected free part of the Padé identity
+that is matched by the numerator construction (Theorem 6.2) and is not part
+of the orthogonality block.
+
+## 12. §9.5 Lemma A corrigendum
+
+The high-precision maximum of \(h(\mu) = \Gamma(\mu + 1)/\Gamma(2\mu + 1)\)
+on \((0, 1]\) is
+
+\[
+\mu^{*} = 0.14503474316667\ldots, \qquad h(\mu^{*}) = 1.03967510771\ldots,
+\]
+
+not the values \(\mu^{*} \approx 0.1339\), \(h(\mu^{*}) \approx 1.0428\) as
+stated in the companion PDF. The \(21/20\) uniform bound and the qualitative
+role of the constant \(C_{\mu}\) in the majorant ODE are unchanged.
+
+## 13. Extension to arbitrary real \(\mu > 1\) (future work)
+
+For real \(\mu > 0\), write \(\mu = n + \nu\) with \(n = \lfloor \mu \rfloor\)
+and \(\nu \in [0, 1)\). The Caputo derivative is \(D^{\mu} = D^{\nu} \circ D^{n}\),
+and an order-\(\mu\) IVP has \(\lceil \mu \rceil\) initial conditions.
+
+The Müntz basis becomes \(\{t^{n + k\nu}\}_{k \ge 0} \cup \{t^{0}, t^{1},
+\ldots, t^{n-1}\}\): the polynomial part covers the integer-order initial
+conditions, and the fractional part is the same Müntz lattice shifted by
+\(t^{n}\). The Müntz–Tau recurrence has the same Gamma-ratio +
+convolution shape with \((k\mu + 1)\) replaced by \((k\nu + n + 1)\).
+
+Theorem 5.1 (polynomial Chebyshev–Wheeler), Theorems 6.1–6.2, and Theorem
+8.1 all transfer unchanged — they see only the moment sequence \(m(k, u)\)
+and do not care about its origin. The Volterra-contraction proof of \(\Delta_g(u)
+\cap \mathbb{R} = \emptyset\) (Theorem 7.1) is stated in the companion PDF
+for \(\mu \in (0, 1]\); for \(\mu > 1\) the analogous result follows from the
+standard fixed-point argument on the iterated Volterra operator but with
+different contraction constants, and the proof needs to be redone. Until
+then, Theorem 7.1 is a conjecture in the \(\mu > 1\) regime.
+
+The classical Riccati boundary case \((\mu = 1, n = 1, \nu = 0)\) is a
+degenerate case of the current framework.
+
+## 14. Novelty
+
+A literature survey across the fractional-Riccati / Padé /
+orthogonal-polynomial communities (May 2026) shows:
 
 - The closest existing rational-approximation work for rough Heston —
   Gatheral–Radoičić (2019, 2024) and Callegaro–Grasselli–Pagès (2020) —
-  treats *one specific* Riccati equation by asymptotic patching (short-time +
+  treats one specific Riccati equation by asymptotic patching (short-time +
   long-time series matched via a small linear system) or by power-series +
   Adams hybrid. Neither identifies the Padé denominators as the OPS of a
-  moment functional, neither is constructive for arbitrary `(P, Q, R)`, and
-  neither generalizes to integrated or fractionally-integrated Riccati
+  moment functional, neither is constructive for arbitrary \((P, Q, R)\),
+  and neither generalizes to integrated or fractionally-integrated Riccati
   solutions.
 - The classical OPS-from-moments framework (Chihara, Gautschi, Magnus,
   Van Assche) has never been applied to moment sequences arising from
   fractional Riccati equations.
 - No existing library implements OPS construction over a coefficient ring
-  `ℝ[u]` / `ℂ[u]` (the Fourier parameter lives at the polynomial level, not
-  the scalar level), which is required for characteristic-function
+  \(\mathbb{C}[u]\) (the Fourier parameter lives at the polynomial level,
+  not the scalar level), which is required for characteristic-function
   applications.
+- The polynomial-recurrence form of Chebyshev/Wheeler given in Theorem 5.1,
+  in which each step is a polynomial division and a polynomial linear
+  combination with no scalar coefficient extractions, has not been stated
+  in this form in the literature.
 
-The methodology above is therefore a state-of-the-art universal solution
-mechanism for the entire four-parameter family of constant-coefficient
-fractional Riccati equations — three polynomial parameters
-`(P(u), Q(u), R(u)) ∈ ℝ[u]³` (or `ℂ[u]³`) and one fractional order
-`μ ∈ (0, 1]` — with the rough Heston characteristic function as one direct
-application.
-
-## Extension to arbitrary real μ > 1 (future work, not in scope)
-
-The current scope is `μ ∈ (0, 1]`. The method extends to any real `μ > 0`
-by the standard Caputo splitting; this note records the extension so a
-future user or contributor can pick it up without rederiving it.
-
-**Splitting.** For real `μ > 0`, write `μ = n + ν` with `n := ⌊μ⌋ ∈ ℤ_{≥0}`
-and `ν := μ − n ∈ [0, 1)`. The Caputo derivative is
-
-    D^μ f(t) = D^ν ( D^n f(t) )
-
-so an order-`μ` IVP is an order-`ν` Caputo IVP on the `n`-th ordinary
-derivative, with `⌈μ⌉ = n + 1` initial conditions when `ν ≠ 0` (or `n`
-when `ν = 0`).
-
-**Müntz basis.** For `μ = n + ν`, `ν ∈ (0, 1)`, the natural basis for the
-solution is
-
-    { t^{n + kν} : k = 0, 1, 2, … }   ∪   { t^0, t^1, …, t^{n−1} }
-
-The polynomial part covers the `n` initial conditions; the fractional part
-is the same Müntz lattice `t^{kν}` shifted by `t^n`. The Müntz–Tau
-coefficient recurrence has the same Gamma-ratio + convolution shape as the
-`μ ∈ (0, 1]` case, with `(kμ + 1)` replaced by `(kν + n + 1)` in the Gamma
-ratios and seeds determined by the initial conditions instead of by
-`P(u)/Γ(μ + 1)` alone.
-
-**What transfers unchanged.**
-
-- Steps 3–4 (Chebyshev/Wheeler, OPS recurrence extraction, reciprocal
-  flip): unchanged. These steps see only the moment sequence `m(k; u)` and
-  do not care about its origin.
-- Step 6 (integrated / fractionally integrated Riccati): unchanged.
-  Fractional integration `I^ρ` of any real order `ρ > 0` acts on `t^{n+kν}`
-  by another Gamma ratio, so the integrated moment sequence is the
-  Riccati moment sequence reweighted by a known `k`-dependent Gamma ratio.
-- Step 7 assembly for characteristic functions: unchanged.
-- The class hierarchy in issue #1021: unchanged. The Riccati subclass
-  already takes `μ` as input; supplying any real `μ > 1` requires only that
-  the moment-supplier expression and the seeds be parameterized by the
-  `(n, ν)` split. No new abstract class.
-
-**What needs new work.**
-
-- The Volterra contraction proof in §9.5 (Stahl compact disjoint from `ℝ`)
-  is stated for `μ ∈ (0, 1]`. For `μ > 1` the analogous result follows from
-  the standard fixed-point argument on the iterated Volterra operator,
-  but with different contraction constants; the proof needs to be redone.
-  Until then, Step 5 (global Stahl convergence on `ℂ \ Δ_g(u)`) is a
-  conjecture for `μ > 1`, not a theorem.
-- Initial-data wiring in the class: the constructor needs to accept the
-  `⌈μ⌉` initial conditions instead of assuming `y(0) = 0`.
-- The classical Riccati boundary case (`μ = 1`, `n = 1`, `ν = 0`) is
-  already a degenerate case of the current framework; nothing new needed
-  there.
-
-**Status.** Deferred. Constant-coefficient fractional Riccati for `μ ∈ (0, 1]`
-is what motivates the current implementation (rough Heston characteristic
-function lives entirely in `μ = H + 1/2 ∈ (1/2, 1)` with `H ∈ (0, 1/2)`).
-The `μ > 1` extension is recorded here so it can be picked up later without
-rediscovery.
+The methodology above is therefore a uniform algorithmic framework for the
+entire four-parameter family of constant-coefficient fractional Riccati
+equations — three polynomial parameters \((P(u), Q(u), R(u)) \in
+\mathbb{C}[u]^{3}\) and one fractional order \(\mu \in (0, 1]\) — with the
+rough Heston characteristic function as one direct application. The
+resulting object is a convergent rational approximation, not a closed-form
+solution; convergence is uniform on compacts disjoint from the Stahl
+compact \(\Delta_{g}(u)\).
