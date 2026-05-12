@@ -5,6 +5,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.algebra.Ring;
 import arb.functions.Function;
+import arb.functions.ReifiedFunction;
 import arb.functions.integer.IntegerPolynomialNullaryFunction;
 import arb.expressions.Context;
 
@@ -14,7 +15,7 @@ import arb.expressions.Context;
  */
 %}
 %typemap(javafinalize) fmpz_poly_struct ""
-%typemap(javainterfaces) fmpz_poly_struct "Named,AutoCloseable,Ring<IntegerPolynomial>,Function<Integer,Integer>"
+%typemap(javainterfaces) fmpz_poly_struct "Named,AutoCloseable,Ring<IntegerPolynomial>,Function<Integer,Integer>,ReifiedFunction"
 
 %typemap(javacode) fmpz_poly_struct %{
   static { System.loadLibrary( "arblib" ); }

@@ -16,6 +16,7 @@ import arb.exceptions.ArbException;
 import arb.exceptions.DivisionByZeroException;
 import arb.expressions.Context;
 import arb.expressions.Parser;
+import arb.functions.ReifiedFunction;
 import arb.functions.polynomials.RealPolynomialNullaryFunction;
 import arb.functions.real.RealFunction;
 
@@ -68,7 +69,7 @@ import arb.functions.real.RealFunction;
  *      {@link TheArb4jLibrary}
  */
 
-public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real,RealPolynomial>,RealFunction {
+public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real,RealPolynomial>,RealFunction,ReifiedFunction {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 

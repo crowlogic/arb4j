@@ -18,6 +18,7 @@ import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.DivisionByZeroException;
 import arb.expressions.Context;
 import arb.expressions.Parser;
+import arb.functions.ReifiedFunction;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
 
@@ -28,7 +29,8 @@ import arb.functions.complex.ComplexPolynomialNullaryFunction;
  */
 public class ComplexPolynomial implements
                                Polynomial<Complex, ComplexPolynomial>,
-                               ComplexFunction
+                               ComplexFunction,
+                               ReifiedFunction
 {
   protected long    swigCPtr;
   protected boolean swigCMemOwn;

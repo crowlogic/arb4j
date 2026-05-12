@@ -12,6 +12,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.algebra.Ring;
 import arb.functions.Function;
+import arb.functions.ReifiedFunction;
 import arb.functions.integer.IntegerPolynomialNullaryFunction;
 import arb.expressions.Context;
 
@@ -20,7 +21,7 @@ import arb.expressions.Context;
  *      {@link TheArb4jLibrary}
  */
 
-public class IntegerPolynomial implements Named,AutoCloseable,Ring<IntegerPolynomial>,Function<Integer,Integer> {
+public class IntegerPolynomial implements Named,AutoCloseable,Ring<IntegerPolynomial>,Function<Integer,Integer>,ReifiedFunction {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 

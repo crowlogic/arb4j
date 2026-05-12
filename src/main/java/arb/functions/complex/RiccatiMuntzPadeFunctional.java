@@ -133,8 +133,12 @@ public class RiccatiMuntzPadeFunctional extends
     // Declare the Müntz coefficient sequence
     ComplexFunctionSequence.declare("a", context);
 
-    // Compile the full recurrence
-    a = ComplexPolynomialSequence.express("a:k➔v➔when(k=1,p/Γ(μ+1),else,(Γ((k-1)*μ+1)/Γ(k*μ+1))*(q*a(k-1)(v)+r*∑j➔a(j)(v)*a(k-1-j)(v){j=1..k-2}))",
+    // Compile the full recurrence. p(v), q(v), r(v) use the
+    // variable-as-function call bridge: p, q, r are ComplexPolynomial
+    // variables registered in context whose runtime class implements
+    // ComplexFunction, so `p(v)` resolves to p.evaluate(v, ...), uniform
+    // with the existing a(k)(v) call form.
+    a = ComplexPolynomialSequence.express("a:k➔v➔when(k=1,p(v)/Γ(μ+1),else,(Γ((k-1)*μ+1)/Γ(k*μ+1))*(q(v)*a(k-1)(v)+r(v)*∑j➔a(j)(v)*a(k-1-j)(v){j=1..k-2}))",
                                           context);
 
     // Issue #1014/#1015: prime the polynomial coefficient variables p, q, r

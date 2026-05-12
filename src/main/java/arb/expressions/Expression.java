@@ -5276,6 +5276,59 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return new SineIntegralJetNode<>(this);
     default:
 
+      // Issue #1018: bridge `name(arg)` to a registered context variable
+      // whose runtime class is a ReifiedFunction (a concrete function-valued
+      // object that carries its own indeterminate name) — e.g. a
+      // ComplexPolynomial registered as `p`.
+      //
+      // Two cases by the argument's identity:
+      //
+      // 1. The argument is a variable node whose name equals the
+      //    ReifiedFunction's getIndependentVariableName(): the call is
+      //    symbolic identity — p(v) means "p whose indeterminate is v" —
+      //    so resolve to the polynomial itself, no evaluation. The
+      //    surrounding expression then operates on the polynomial as it
+      //    would on a bare `p`.
+      //
+      // 2. Otherwise the argument is a different point: build a
+      //    FunctionalEvaluationNode which emits evaluate(arg, ...) at
+      //    codegen, exactly as the postfix-`(` path does for chained
+      //    calls like a(k)(v).
+      if (context != null)
+      {
+        Named existingVariable = context.variables.get(reference.name);
+        if (existingVariable != null
+            && arb.functions.ReifiedFunction.class.isAssignableFrom(existingVariable.getClass()))
+        {
+          Node<D, C, F> argumentNode = resolve();
+          require(')');
+
+          // The ReifiedFunction's runtime indeterminate name is whatever
+          // gets injected via setIndependentVariableName(...) at evaluate
+          // time — issue #1014. At parse time the binding source is the
+          // enclosing reified-functional expression's placeholderVariable.
+          // If the call's argument names that same placeholder, the call
+          // is symbolic identity: p(v) means "p whose indeterminate is v"
+          // when the enclosing arrow declared v as the placeholder, so
+          // resolve to the polynomial itself, no evaluation.
+          String placeholderName = placeholderVariable != null
+              ? placeholderVariable.reference.name
+              : null;
+
+          if (placeholderName != null
+              && argumentNode.isVariable()
+              && placeholderName.equals(argumentNode.asVariable().reference.name))
+          {
+            // Identity in the polynomial sense: return `p` directly.
+            return newVariableNode(reference);
+          }
+
+          return new FunctionalEvaluationNode<>(this,
+                                                newVariableNode(reference),
+                                                argumentNode);
+        }
+      }
+
       // Regular function call with parentheses
       return new FunctionNode<>(reference.name,
                                 resolve(),

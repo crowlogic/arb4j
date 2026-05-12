@@ -13,12 +13,13 @@ import arb.exceptions.ArbException;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.Function;
+import arb.functions.ReifiedFunction;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.rational.RationalNullaryFunction;
 import arb.functions.real.RealFunction;
 import arb.utensils.Utensils;
 
-public class RationalFunction implements RealFunction,NamedField<RationalFunction>,Verifiable,AutoCloseableAssignable<RationalFunction> {
+public class RationalFunction implements RealFunction,NamedField<RationalFunction>,Verifiable,AutoCloseableAssignable<RationalFunction>,ReifiedFunction {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 

@@ -1,4 +1,4 @@
-%typemap(javainterfaces) fmpz_poly_q_struct "RealFunction,NamedField<RationalFunction>,Verifiable,AutoCloseableAssignable<RationalFunction>"
+%typemap(javainterfaces) fmpz_poly_q_struct "RealFunction,NamedField<RationalFunction>,Verifiable,AutoCloseableAssignable<RationalFunction>,ReifiedFunction"
 %typemap(javafinalize) fmpz_poly_q_struct ""
 %typemap(javaimports) fmpz_poly_q_struct %{
 import java.util.stream.Stream;
@@ -6,6 +6,7 @@ import arb.exceptions.ArbException;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.Function;
+import arb.functions.ReifiedFunction;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.rational.RationalNullaryFunction;
 import arb.functions.real.RealFunction;

@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import arb.expressions.*;
 import arb.functions.Function;
+import arb.functions.ReifiedFunction;
 import arb.functions.rational.ComplexRationalNullaryFunction;
 
 /**
@@ -15,7 +16,8 @@ public class ComplexRationalFunction implements
                                      AutoCloseable,
                                      NamedField<ComplexRationalFunction>,
                                      Function<ComplexFraction, ComplexFraction>,
-                                     Verifiable
+                                     Verifiable,
+                                     ReifiedFunction
 {
   public static final int               DEFAULT_BITS  = 128;
 

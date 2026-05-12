@@ -9,6 +9,7 @@
 	import arb.exceptions.DivisionByZeroException;
 	import arb.expressions.Context;
 	import arb.expressions.Parser;
+	import arb.functions.ReifiedFunction;
 	import arb.functions.complex.ComplexFunction;
 	import arb.functions.complex.ComplexPolynomialNullaryFunction;
 /**
@@ -17,7 +18,7 @@
  *      {@link TheArb4jLibrary}
  */%}
 %typemap(javafinalize) acb_poly_struct ""
-%typemap(javainterfaces) acb_poly_struct "Polynomial<Complex,ComplexPolynomial>,ComplexFunction"
+%typemap(javainterfaces) acb_poly_struct "Polynomial<Complex,ComplexPolynomial>,ComplexFunction,ReifiedFunction"
 
 %typemap(javacode) acb_poly_struct %{
 
