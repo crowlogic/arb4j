@@ -1,8 +1,8 @@
 package arb.functions.polynomials.orthogonal.complex;
 
+import arb.ComplexPolynomial;
 import arb.Real;
 import arb.Integer;
-import arb.functions.complex.ComplexFunction;
 import junit.framework.TestCase;
 
 /**
@@ -45,35 +45,26 @@ public class OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequenceTest e
 
       Integer n = new Integer();
 
-      // First sanity-check the underlying Muntz coefficient sequence a(k) directly:
-      // a(1) = p/Γ(μ+1), a(2) and a(3) computed via the recurrence.
-      var a = ops.muntz.muntzBasis();
-      System.out.println("muntz.p = " + ops.muntz.p);
-      System.out.println("muntz.q = " + ops.muntz.q);
-      System.out.println("muntz.r = " + ops.muntz.r);
-      try { var pField = a.getClass().getField("p"); System.out.println("a.p = " + pField.get(a)); } catch (Exception e) { System.out.println("a.p access: " + e); }
-      try { var qField = a.getClass().getField("q"); System.out.println("a.q = " + qField.get(a)); } catch (Exception e) { System.out.println("a.q access: " + e); }
-      try { var rField = a.getClass().getField("r"); System.out.println("a.r = " + rField.get(a)); } catch (Exception e) { System.out.println("a.r access: " + e); }
-      for (int k = 1; k <= 3; k++)
-      {
-        n.set(k);
-        ComplexFunction ak = a.evaluate(n, 1, bits, null);
-        System.out.println("a(" + k + ") = " + ak);
-      }
-
-      // Each m(k) is a ComplexPolynomial in u; same for S(i).
+      // Evaluate m(0..2) and S(0..2) at the chosen μ/P/Q/R and assert that
+      // every result is a non-empty ComplexPolynomial — i.e. the Wheeler
+      // recurrence's upstream Muntz moments are actually populated.
+      // Empty (length 0) polynomials would indicate the previous
+      // ComplexPolynomial.set(Fraction) stub bug or another silent zero
+      // propagation path.
       for (int k = 0; k <= 2; k++)
       {
         n.set(k);
-        ComplexFunction mk = ops.m.evaluate(n, 1, bits, null);
-        System.out.println("m(" + k + ") = " + mk);
+        ComplexPolynomial mk = ops.m.evaluate(n, 1, bits, null);
+        assertNotNull("m(" + k + ") must not be null", mk);
+        assertTrue("m(" + k + ") must be a non-empty polynomial (got length " + mk.getLength() + ")", mk.getLength() > 0);
       }
 
       for (int i = 0; i <= 2; i++)
       {
         n.set(i);
-        ComplexFunction Si = ops.S.evaluate(n, 1, bits, null);
-        System.out.println("S(" + i + ") = " + Si);
+        ComplexPolynomial Si = ops.S.evaluate(n, 1, bits, null);
+        assertNotNull("S(" + i + ") must not be null", Si);
+        assertTrue("S(" + i + ") must be a non-empty polynomial (got length " + Si.getLength() + ")", Si.getLength() > 0);
       }
     }
     finally
