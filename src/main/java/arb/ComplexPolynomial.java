@@ -305,14 +305,26 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
     
   public ComplexPolynomial div(ComplexPolynomial divisor, int prec, ComplexPolynomial resultingQuotient)
   {
-    ComplexPolynomial remainder = new ComplexPolynomial();
+    // acb_poly_divrem(Q, R, A, B, prec) requires that Q does NOT alias A or
+    // B, and that Q does not alias R. When the caller passes
+    // resultingQuotient == this (the div(divisor, prec) shortcut below) or
+    // resultingQuotient == divisor, route through a temporary and copy the
+    // quotient back at the end so the aliasing contract is honoured.
+    boolean           aliased         = (resultingQuotient == this) || (resultingQuotient == divisor);
+    ComplexPolynomial quotientBuffer  = aliased ? new ComplexPolynomial() : resultingQuotient;
+    ComplexPolynomial remainder       = new ComplexPolynomial();
 
     // Performs polynomial division with remainder, computing a quotient and a
     // remainder such that . this = divisor * resultingQuotient + remainder
 
-    if (arblib.acb_poly_divrem(resultingQuotient, remainder, this, divisor, prec) == 0)
+    if (arblib.acb_poly_divrem(quotientBuffer, remainder, this, divisor, prec) == 0)
     {
       throw new DivisionByZeroException("division by zero: dividend=" + divisor);
+    }
+    if (aliased)
+    {
+      resultingQuotient.set(quotientBuffer);
+      quotientBuffer.close();
     }
     if (remainder.getLength() > 0)
     {

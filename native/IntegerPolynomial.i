@@ -256,6 +256,17 @@ import arb.expressions.Context;
   @Override
   public IntegerPolynomial div(IntegerPolynomial operand, int prec, IntegerPolynomial result)
   {
+    // fmpz_poly_div(Q, A, B) requires that Q does NOT alias A or B. Route
+    // aliased calls through a temporary and copy the quotient back.
+    if (result == this || result == operand)
+    {
+      try (IntegerPolynomial quotientBuffer = new IntegerPolynomial())
+      {
+        arblib.fmpz_poly_div(quotientBuffer, this, operand);
+        result.set(quotientBuffer);
+      }
+      return result;
+    }
     arblib.fmpz_poly_div(result, this, operand);
     return result;
   }  
