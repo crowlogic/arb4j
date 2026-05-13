@@ -630,6 +630,17 @@
     {
       throw new UnsupportedOperationException("derivatives beyond the first are not yet implemented for polynomial composition");
     }
+    // acb_poly_compose(res, poly1, poly2, prec) requires that res does NOT
+    // alias poly1 or poly2. Route aliased calls through a temporary buffer.
+    if (result == this || result == inner)
+    {
+      try (ComplexPolynomial composeBuffer = new ComplexPolynomial())
+      {
+        arblib.acb_poly_compose(composeBuffer, this, inner, prec);
+        result.set(composeBuffer);
+      }
+      return result;
+    }
     arblib.acb_poly_compose(result, this, inner, prec);
     return result;
   }
