@@ -307,9 +307,9 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
   {
     // acb_poly_divrem(Q, R, A, B, prec) requires that Q does NOT alias A or
     // B, and that Q does not alias R. When the caller passes
-    // resultingQuotient == this (the div(divisor, prec) shortcut below) or
-    // resultingQuotient == divisor, route through a temporary and copy the
-    // quotient back at the end so the aliasing contract is honoured.
+    // resultingQuotient == this or resultingQuotient == divisor, route
+    // through a temporary and copy the quotient back so the aliasing
+    // contract is honoured.
     boolean           aliased         = (resultingQuotient == this) || (resultingQuotient == divisor);
     ComplexPolynomial quotientBuffer  = aliased ? new ComplexPolynomial() : resultingQuotient;
     ComplexPolynomial remainder       = new ComplexPolynomial();
