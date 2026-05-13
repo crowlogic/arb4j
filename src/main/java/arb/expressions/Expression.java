@@ -3550,41 +3550,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         continue;
       }
 
-      // Reflectively wire the dependent instance onto the parent. The
-      // bytecode in parent.initialize() guards this assignment with
-      // `if (this.<g> == null)`, so populating it here pre-empts the
-      // would-be `new g()` allocation that has no v/μ injected.
-      try
-      {
-        java.lang.reflect.Field parentField = parentClass.getField(referencedFunctionName);
-        if (parentField.get(parentInstance) == null)
-        {
-          parentField.set(parentInstance, referencedInstance);
-        }
-      }
-      catch (NoSuchFieldException nsfe)
-      {
-        // Parent class doesn't have a field for this referenced function —
-        // it appears in the registry but isn't actually used by this
-        // expression's bytecode. Nothing to wire.
-        if (trace)
-        {
-          log.debug("instantiateAndInjectReferencedFunctions: parent {} has no field {}", parentClass.getName(), referencedFunctionName);
-        }
-      }
-      catch (IllegalAccessException iae)
-      {
-        Utensils.wrapOrThrow("failed to set parent field " + referencedFunctionName + " on " + parentClass.getName(), iae);
-      }
-
-      // Inject Context variables (v, μ, ...) into the dependent instance's
-      // own fields. This is the v/μ-propagation that the bytecode emitted
-      // for mappings registered via parseCompileAndRegister fails to do.
-      @SuppressWarnings(
-      { "unchecked", "rawtypes" })
-      Function<?, ?> referencedFunction = (Function) referencedInstance;
-      context.injectVariableReferences(referencedFunction);
-      context.injectFunctionReferences(referencedFunction);
     }
   }
 
