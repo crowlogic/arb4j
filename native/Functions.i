@@ -1449,6 +1449,10 @@ void acb_poly_compose(acb_poly_t res, const acb_poly_t poly1, const acb_poly_t p
 
 void acb_poly_compose_series(acb_poly_t res, const acb_poly_t poly1, const acb_poly_t poly2, slong n, slong prec);
 
+void arb_poly_compose(arb_poly_t res, const arb_poly_t poly1, const arb_poly_t poly2, slong prec);
+
+void arb_poly_compose_series(arb_poly_t res, const arb_poly_t poly1, const arb_poly_t poly2, slong n, slong prec);
+
 void flint_free(void * ptr);
                             
 void arb_mat_init(arb_mat_t mat, slong r, slong c);

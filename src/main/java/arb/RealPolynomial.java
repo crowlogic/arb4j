@@ -918,6 +918,32 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
       throw new UnsupportedOperationException("derivatives beyond the first are not yet implemented");
     }
   }
+
+  /**
+   * Polynomial composition: substitute the polynomial {@code inner} for this
+   * polynomial's variable, returning the composite polynomial in {@code result}.
+   * Backed by {@code arb_poly_compose}.
+   */
+  public RealPolynomial evaluate(RealPolynomial inner, int order, int prec, RealPolynomial result)
+  {
+    if (order != 1)
+    {
+      throw new UnsupportedOperationException("derivatives beyond the first are not yet implemented for polynomial composition");
+    }
+    // arb_poly_compose(res, poly1, poly2, prec) requires that res does NOT
+    // alias poly1 or poly2. Route aliased calls through a temporary buffer.
+    if (result == this || result == inner)
+    {
+      try (RealPolynomial composeBuffer = new RealPolynomial())
+      {
+        arblib.arb_poly_compose(composeBuffer, this, inner, prec);
+        result.set(composeBuffer);
+      }
+      return result;
+    }
+    arblib.arb_poly_compose(result, this, inner, prec);
+    return result;
+  }
   
   public double eval(double d)
   {
