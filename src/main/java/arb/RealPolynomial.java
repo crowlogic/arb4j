@@ -154,6 +154,17 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
 	{
 	  throw new ArbException("(arb_poly_revert_series): Input must have nonzero linear coefficient but instead had " + get(1) );
 	}
+    // arb_poly_revert_series(Qinv, Q, n, prec) requires that Qinv does NOT
+    // alias Q. Route aliased calls through a temporary.
+    if (result == this)
+    {
+      try (RealPolynomial buffer = new RealPolynomial())
+      {
+        arblib.arb_poly_revert_series(buffer, this, order, bits);
+        result.set(buffer);
+      }
+      return result;
+    }
     arblib.arb_poly_revert_series(result, this, order, bits);
     return result;
   }

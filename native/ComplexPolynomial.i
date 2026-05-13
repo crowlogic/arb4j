@@ -694,6 +694,17 @@
       throw new arb.exceptions.ArbException(
           "(acb_poly_revert_series): Input must have nonzero linear coefficient but instead had " + get(1));
     }
+    // acb_poly_revert_series(h, f, n, prec) requires that h does NOT alias f.
+    // Route aliased calls through a temporary.
+    if (result == this)
+    {
+      try (ComplexPolynomial buffer = new ComplexPolynomial())
+      {
+        arblib.acb_poly_revert_series(buffer, this, order, bits);
+        result.set(buffer);
+      }
+      return result;
+    }
     arblib.acb_poly_revert_series(result, this, order, bits);
     return result;
   }
