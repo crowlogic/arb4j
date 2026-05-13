@@ -48,6 +48,12 @@ public class OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequenceTest e
       // First sanity-check the underlying Muntz coefficient sequence a(k) directly:
       // a(1) = p/Γ(μ+1), a(2) and a(3) computed via the recurrence.
       var a = ops.muntz.muntzBasis();
+      System.out.println("muntz.p = " + ops.muntz.p);
+      System.out.println("muntz.q = " + ops.muntz.q);
+      System.out.println("muntz.r = " + ops.muntz.r);
+      try { var pField = a.getClass().getField("p"); System.out.println("a.p = " + pField.get(a)); } catch (Exception e) { System.out.println("a.p access: " + e); }
+      try { var qField = a.getClass().getField("q"); System.out.println("a.q = " + qField.get(a)); } catch (Exception e) { System.out.println("a.q access: " + e); }
+      try { var rField = a.getClass().getField("r"); System.out.println("a.r = " + rField.get(a)); } catch (Exception e) { System.out.println("a.r access: " + e); }
       for (int k = 1; k <= 3; k++)
       {
         n.set(k);
