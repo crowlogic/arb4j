@@ -5542,18 +5542,42 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       FunctionalEvaluationNode.promoteDomainToScalarOfReifiedFunctional(this, node);
       Node<D, C, F> arg = resolve();
-      node = new FunctionalEvaluationNode<>(this,
-                                            node,
-                                            arg);
+      node = buildPostfixCall(node, arg);
       while (nextCharacterIs(','))
       {
-        node = new FunctionalEvaluationNode<>(this,
-                                              node,
-                                              resolve());
+        node = buildPostfixCall(node, resolve());
       }
       require(')');
     }
     return node;
+  }
+
+  /**
+   * Build a postfix function-call node, folding identity-substitution when the
+   * receiver is a {@link arb.functions.ReifiedFunction} (e.g. a polynomial) and
+   * the argument names this enclosing expression's placeholder variable. In
+   * that case the call is symbolic identity — {@code p(v)} where {@code v} is
+   * {@code p}'s indeterminate means {@code p} itself — so the receiver is
+   * returned directly without wrapping in a {@link FunctionalEvaluationNode}.
+   *
+   * <p>
+   * This complements the prefix-call identity fold at the
+   * {@code context.variables.get(reference.name)} path above; that fold
+   * handles bare-name calls like {@code p(v)}, while this fold handles
+   * chained / sequence-element calls like {@code a(k-1)(v)}.
+   */
+  private Node<D, C, F> buildPostfixCall(Node<D, C, F> receiver, Node<D, C, F> arg)
+  {
+    Class<?> receiverType = receiver.type();
+    if (receiverType != null
+        && arb.functions.ReifiedFunction.class.isAssignableFrom(receiverType)
+        && placeholderVariable != null
+        && arg.isVariable()
+        && placeholderVariable.reference.name.equals(arg.asVariable().reference.name))
+    {
+      return receiver;
+    }
+    return new FunctionalEvaluationNode<>(this, receiver, arg);
   }
 
   protected Node<D, C, F> resolveSquareBracketedIndex()
