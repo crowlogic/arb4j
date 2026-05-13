@@ -46,7 +46,13 @@ public class Integer implements
   @Override
   public Integer ceil(int bits, Integer ceil)
   {
-    return this;
+    // ceil(integer) = integer mathematically, but the contract is to write
+    // the result into the supplied out-buffer and return it. Previously
+    // this returned {@code this} without touching {@code ceil}, so any
+    // caller passing a fresh Integer as out-buffer got an unrelated
+    // (uninitialized) value back unless it happened to be aliased to
+    // {@code this}.
+    return ceil.set(this);
   }
 
   public Real rgamma(int bits, Real result)
