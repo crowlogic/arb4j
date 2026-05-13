@@ -5,6 +5,7 @@ import arb.ComplexPolynomial;
 import arb.Domain;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.Context;
 import arb.functions.polynomials.orthogonal.RecurrentlyGeneratedOrthogonalPolynomialSequence;
 
 /**
@@ -37,6 +38,13 @@ public abstract class ComplexPolynomialCoefficientRecurrentlyGeneratedOrthogonal
   {
     super(bits,
           ComplexPolynomial.class);
+  }
+
+  public ComplexPolynomialCoefficientRecurrentlyGeneratedOrthogonalPolynomialSequence(int bits, Context sharedContext)
+  {
+    super(bits,
+          ComplexPolynomial.class,
+          sharedContext);
   }
 
   /**

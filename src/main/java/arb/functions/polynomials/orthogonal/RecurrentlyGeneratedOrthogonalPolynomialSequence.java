@@ -77,12 +77,37 @@ public abstract class RecurrentlyGeneratedOrthogonalPolynomialSequence<R, V, E e
 
   public RecurrentlyGeneratedOrthogonalPolynomialSequence(int bits, Class<E> elementType)
   {
+    this(bits, elementType, null);
+  }
+
+  /**
+   * Construct sharing an externally-supplied {@link Context}. When {@code
+   * sharedContext} is non-null, the OPS registers p0 and p1 into the supplied
+   * context and reuses it instead of creating a fresh one. This is required
+   * when the OPS needs to reference function mappings that live in the
+   * caller's context (e.g. the Riccati moment functional's {@code m} sequence,
+   * whose expression depends on {@code a}, {@code p}, {@code q}, {@code r},
+   * {@code μ} all registered in the caller's context). A fresh context would
+   * lose those mappings, so the inner self-instance of the recursive S
+   * sequence would have no way to resolve {@code m} on lazy initialize.
+   */
+  public RecurrentlyGeneratedOrthogonalPolynomialSequence(int bits, Class<E> elementType, Context sharedContext)
+  {
     this.bits        = bits;
     this.elementType = elementType;
     p0               = newElement().setName("p0");
     p1               = newElement().setName("p1");
-    context          = new Context(p0,
-                                   p1);
+    if (sharedContext != null)
+    {
+      sharedContext.registerVariable(p0);
+      sharedContext.registerVariable(p1);
+      context = sharedContext;
+    }
+    else
+    {
+      context = new Context(p0,
+                            p1);
+    }
   }
 
   public E newElement()

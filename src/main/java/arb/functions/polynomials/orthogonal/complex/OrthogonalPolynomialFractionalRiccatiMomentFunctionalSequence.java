@@ -86,7 +86,7 @@ public class OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequence exten
   public OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequence(int bits,
                                                                        RiccatiMuntzPadeFunctional muntz)
   {
-    super(bits, riccatiMomentSequence(muntz));
+    super(bits, muntz.context, riccatiMomentSequence(muntz));
     this.muntz = muntz;
   }
 

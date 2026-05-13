@@ -3,6 +3,7 @@ package arb.functions.polynomials.orthogonal.complex;
 import arb.ComplexPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.Context;
 import arb.functions.integer.ComplexPolynomialSequence;
 import arb.functions.integer.Sequence;
 
@@ -69,13 +70,28 @@ public abstract class OrthogonalPolynomialMomentFunctionalSequence extends
   public ComplexPolynomialSequence T;
   public ComplexPolynomialSequence α;
 
-  public OrthogonalPolynomialMomentFunctionalSequence(int bits, ComplexPolynomialSequence m)
+  /**
+   * Construct sharing the supplied {@link Context} so that {@code m}'s full
+   * mapping (expression + instance + the chain of upstream dependencies
+   * {@code a}, {@code p}, {@code q}, {@code r}, {@code μ} it references) is
+   * visible to the OPS recurrence. {@code m} must already be registered in
+   * {@code sharedContext} — typically by its caller's prior
+   * {@code express("m:...", sharedContext)} call. Passing a fresh context
+   * here would strip {@code m} of its upstream dependencies and the inner
+   * self-instance of the recursive S sequence would have no way to resolve
+   * {@code m}'s expression on lazy initialize.
+   */
+  public OrthogonalPolynomialMomentFunctionalSequence(int bits, Context sharedContext, ComplexPolynomialSequence m)
   {
-    super(bits);
+    super(bits, sharedContext);
 
     this.m = m;
 
-    context.registerFunction("m", m);
+    // m is already registered in sharedContext by the caller; do not
+    // re-register here because that would drop m's expression and produce a
+    // mapping with {instance=m, expression=null} — exactly the failure mode
+    // that breaks the inner self-instance's lazy initialize when it tries
+    // to resolve m via the function-mapping registry.
 
     // Forward-declare the four mutually-recursive sequences; compile the
     // three auxiliaries; express the driver S last. Mirrors the pattern in
@@ -89,9 +105,12 @@ public abstract class OrthogonalPolynomialMomentFunctionalSequence extends
     ComplexPolynomialSequence.compile("T:n ➔ u ➔ m(n+1)(u) − β(n)(u) · m(n)(u)", context);
     ComplexPolynomialSequence.compile("α:n ➔ u ➔ T(n)(u) / S(n)(u)", context);
 
-    // S(n)(u): for n = 0, equal to m(0)(u); for n ≥ 1, follows the recurrence
-    //   S(n)(u) = T(n-1)(u) − α(n-1)(u) · S(n-1)(u).
+    // S(n)(u): for n ∈ {0,1}, equal to m(n)(u); for n ≥ 2, follows the
+    // Wheeler recurrence S(n)(u) = T(n-1)(u) − α(n-1)(u) · S(n-1)(u).
+    // Two base cases are required so that β(1) = S(1)/S(0) is well-defined
+    // without forcing an S(-1) convention or division-by-zero special case.
     S = ComplexPolynomialSequence.express("S:n ➔ u ➔ when(n = 0,  m(0)(u),"
+                                              + "                n = 1,  m(1)(u),"
                                               + "                else,   T(n-1)(u) − α(n-1)(u) · S(n-1)(u))",
                                           context);
 
