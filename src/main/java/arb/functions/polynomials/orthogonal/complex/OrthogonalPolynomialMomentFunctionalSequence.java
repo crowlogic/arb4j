@@ -51,7 +51,7 @@ import arb.functions.integer.Sequence;
  * returning a ComplexPolynomial in u; or one of the four ring operations
  * (+, −, ·, /) on ComplexPolynomial in u. The dependency on u is carried
  * explicitly through every site as the variable of the ComplexPolynomial
- * values; never elided, never abstracted away.
+ * values.
  *
  * <p>
  * Subclasses supply the moment sequence m : ℤ_{≥0} → ℂ[u].
@@ -63,13 +63,13 @@ public abstract class OrthogonalPolynomialMomentFunctionalSequence extends
                                                                    ComplexPolynomialCoefficientRecurrentlyGeneratedOrthogonalPolynomialSequence
 {
 
-  /** The moment sequence k ↦ m(k)(u), each term a polynomial in u. */
-  public Sequence<ComplexPolynomial> m;
+  public ComplexPolynomialSequence m;
+  public ComplexPolynomialSequence S;
+  public ComplexPolynomialSequence β;
+  public ComplexPolynomialSequence T;
+  public ComplexPolynomialSequence α;
 
-  /** S(n)(u), valued in ℂ[u]. */
-  public ComplexPolynomialSequence   S;
-
-  public OrthogonalPolynomialMomentFunctionalSequence(int bits, Sequence<ComplexPolynomial> m)
+  public OrthogonalPolynomialMomentFunctionalSequence(int bits, ComplexPolynomialSequence m)
   {
     super(bits);
 
@@ -79,24 +79,15 @@ public abstract class OrthogonalPolynomialMomentFunctionalSequence extends
 
     // Forward-declare the four mutually-recursive sequences; compile the
     // three auxiliaries; express the driver S last. Mirrors the pattern in
-    // RiccatiMuntzPadeFunctional.partialDerivativeWithRespectToV (line 173+).
+    // RiccatiMuntzPadeFunctional.partialDerivativeWithRespectToV.
     ComplexPolynomialSequence.declare("S", context);
     ComplexPolynomialSequence.declare("β", context);
     ComplexPolynomialSequence.declare("T", context);
     ComplexPolynomialSequence.declare("α", context);
 
-    // Compile (not express) the auxiliaries so their bytecode is registered
-    // without forcing class load; the driver express(S) below finalizes the
-    // recursive cluster.
-    Sequence.compile("β", ComplexPolynomial.class,
-                     "β:n ➔ u ➔ S(n)(u) / S(n-1)(u)",
-                     ComplexPolynomialSequence.class, context);
-    Sequence.compile("T", ComplexPolynomial.class,
-                     "T:n ➔ u ➔ m(n+1)(u) − β(n)(u) · m(n)(u)",
-                     ComplexPolynomialSequence.class, context);
-    Sequence.compile("α", ComplexPolynomial.class,
-                     "α:n ➔ u ➔ T(n)(u) / S(n)(u)",
-                     ComplexPolynomialSequence.class, context);
+    ComplexPolynomialSequence.compile("β:n ➔ u ➔ S(n)(u) / S(n-1)(u)", context);
+    ComplexPolynomialSequence.compile("T:n ➔ u ➔ m(n+1)(u) − β(n)(u) · m(n)(u)", context);
+    ComplexPolynomialSequence.compile("α:n ➔ u ➔ T(n)(u) / S(n)(u)", context);
 
     // S(n)(u): for n = 0, equal to m(0)(u); for n ≥ 1, follows the recurrence
     //   S(n)(u) = T(n-1)(u) − α(n-1)(u) · S(n-1)(u).
@@ -108,23 +99,24 @@ public abstract class OrthogonalPolynomialMomentFunctionalSequence extends
     p1.one().shiftLeft(1);
   }
 
+  /** A(n) = 1. */
+  @Override
+  public Sequence<ComplexPolynomial> A()
+  {
+    return ComplexPolynomialSequence.express("A", "1", context);
+  }
+
   /** B(n) = −α(n). */
   @Override
   public Sequence<ComplexPolynomial> B()
   {
-    return ComplexPolynomialSequence.express("B:n ➔ u ➔ −α(n)(u)", context);
+    return (n, order, bits, res) -> α.evaluate(n, order, bits, res).neg(res);
   }
 
   /** C(n) = β(n). */
   @Override
   public Sequence<ComplexPolynomial> C()
   {
-    return ComplexPolynomialSequence.express("C:n ➔ u ➔ β(n)(u)", context);
-  }
-
-  @Override
-  public Sequence<ComplexPolynomial> A()
-  {
-    return ComplexPolynomialSequence.express("A", "1", context);
+    return β;
   }
 }
