@@ -123,6 +123,17 @@
   @Override
   public ComplexPolynomial set(Fraction val)
   {
+    // Set this polynomial to the constant value {@code val}: a degree-0
+    // polynomial whose coefficient[0] is the Fraction converted to a
+    // Complex (real part = val, imaginary part = 0). Previously this was
+    // an unimplemented stub that silently returned {@code this} unchanged,
+    // so any callsite emitted by the expression compiler for a Fraction
+    // literal (e.g. Q(v) = -1/2 in the Riccati Müntz recurrence) left
+    // {@code this} as an empty polynomial and the entire downstream
+    // recurrence collapsed to ∅.
+    setLength(1);
+    fitLength(1);
+    get(0).set(val);
     return this;
   }
   
