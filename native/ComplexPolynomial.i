@@ -596,6 +596,21 @@
 
   }
 
+  /**
+   * Polynomial composition: substitute the polynomial {@code inner} for this
+   * polynomial's variable, returning the composite polynomial in {@code result}.
+   * Backed by {@code acb_poly_compose}.
+   */
+  public ComplexPolynomial evaluate(ComplexPolynomial inner, int order, int prec, ComplexPolynomial result)
+  {
+    if (order != 1)
+    {
+      throw new UnsupportedOperationException("derivatives beyond the first are not yet implemented for polynomial composition");
+    }
+    arblib.acb_poly_compose(result, this, inner, prec);
+    return result;
+  }
+
   public void setCoeffs(Complex value)
   {
     setCoeffsNative(value);
