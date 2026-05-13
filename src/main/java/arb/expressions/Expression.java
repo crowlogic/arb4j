@@ -4649,17 +4649,36 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       log.debug(String.format("Expression(#%s).propagateContextVariablesByReference(function=%s)\n", System.identityHashCode(this), function));
     }
+    // Only propagate context variables the target function actually declared as
+    // fields. When the parent's context contains variables that the target
+    // never referenced (common when a shared context is threaded through
+    // multiple sibling functions — e.g. the muntz context's p, q, r, μ are
+    // present in the context but T's expression only references m, β), pushing
+    // PUTFIELD for a non-existent field on the target's class produces a
+    // runtime NoSuchFieldError at first execution.
+    //
+    // Mirrors the filtering pattern in generateFunctionInitializer (line
+    // 2360-2362): if the nested expression has finished declareVariables,
+    // trust its own declared-variables set; otherwise fall back to the
+    // parent's set on the prediction that sibling Expressions sharing a
+    // Context declare the same context fields.
     for (var entry : context.variableEntries())
     {
       var   fieldName = entry.getKey();
       Named val       = entry.getValue();
-      // assert val != null : "entry is null " + entry;
-      if (val != null)
+      if (val == null)
       {
-        var fieldType = val.getClass();
-        loadThisAndFieldOntoStack(duplicateTopOfTheStack(mv), fieldName, fieldType);
-        putField(mv, function.className, fieldName, fieldType);
+        continue;
       }
+      boolean targetDeclares = function.variablesDeclared ? function.hasDeclaredVariable(fieldName)
+                                                          : hasDeclaredVariable(fieldName);
+      if (!targetDeclares)
+      {
+        continue;
+      }
+      var fieldType = val.getClass();
+      loadThisAndFieldOntoStack(duplicateTopOfTheStack(mv), fieldName, fieldType);
+      putField(mv, function.className, fieldName, fieldType);
     }
   }
 
