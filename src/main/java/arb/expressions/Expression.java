@@ -2337,25 +2337,27 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (haveLiveInstance || haveRegisteredExpression)
     {
       var    nestedExpression        = nestedFunction.expression;
-      // Force the nested expression to declare its fields if it hasn't yet.
-      // For mappings registered via parseCompileAndRegister, declareVariables
-      // has not run, so declaredVariables is still empty — querying it
-      // would yield an empty filter and no v/μ-injection block would be
-      // emitted. Compiling here populates declaredVariables (line 1305) and
-      // generates the bytecode for the nested class, breaking the
-      // chicken-and-egg with the parent's own compile by going through the
-      // shared ExpressionClassLoader.
-      // For two expressions sharing the same Context, the set of context
-      // variables declared as fields is identical (both iterate
-      // context.variableEntryStream() in declareVariables). When the nested
-      // expression has not yet reached declareVariables — which happens
-      // every time it sits on a mutual-recursion cycle with the parent
-      // (a ↔ S in the fractional Riccati Müntz recurrence, issue #982) —
-      // substitute the parent's own filter, predicting that the sibling
-      // will declare the same context fields. ASM GETFIELD/PUTFIELD
-      // resolve field references by string at first execution, by which
-      // point the entire cycle has finished compile() and declared its
-      // fields.
+      // Propagate context variables based on whether the nested class
+      // declares them as fields.
+      //
+      // {@code variablesDeclared=true} means declareVariables has already
+      // run on the nested expression — its field set is frozen and
+      // declaredVariables tells us exactly which fields exist. Honour that
+      // set strictly. Pre-existing nested classes may have been compiled
+      // when the context was smaller (e.g. m and a in OPS-on-muntz: the
+      // muntz coefficient sequence was compiled while context held only
+      // p, q, r, μ; OPS later adds p0, p1, but m's class still has no
+      // fields for them — attempting PUTFIELD on a non-existent field
+      // produces NoSuchFieldError at runtime).
+      //
+      // {@code variablesDeclared=false} means declareVariables has not
+      // yet run — it will eventually emit a field for every entry in
+      // context.variableEntries() at the time it runs. We cannot safely
+      // narrow without forcing declareVariables (which itself needs a
+      // ClassVisitor, unavailable here), so trust the parent's
+      // hasDeclaredVariable: sibling cyclic peers in the same Context
+      // declare the same field set, which has been the working invariant
+      // for every mutually-recursive cluster prior to the OPS case.
       var    variableStream          = context.variableClassStream();
       var    declaredVariableStream  =
                                     nestedExpression.variablesDeclared ? variableStream.filter(variable -> nestedExpression.hasDeclaredVariable(variable.getLeft()))
@@ -3658,6 +3660,37 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     Class<?> variableType     = variable.getRight();
     String   variableTypeDesc = variableType.descriptorString();
     String   nestedClassName  = functionMapping.functionName;
+
+    // Per-emission guard: skip propagation when the target class does not
+    // declare a field for this variable. A context can grow between
+    // sibling compiles — a target compiled when the context held a
+    // smaller variable set has its field set frozen at that subset, and
+    // emitting PUTFIELD for a variable added to the context later throws
+    // NoSuchFieldError at first execution.
+    //
+    // Three sources of truth, in order of preference:
+    //  1. Target's compiled Class object — reflectively enumerated fields.
+    //  2. Target Expression's declaredVariables — the set declareVariables
+    //     emitted as fields.
+    //  3. Otherwise: assume the field will exist (the caller's predicate
+    //     already filtered by either nested.hasDeclaredVariable or
+    //     parent.hasDeclaredVariable upstream).
+    if (functionMapping.instance != null)
+    {
+      try
+      {
+        functionMapping.instance.getClass().getField(variableName);
+      }
+      catch (NoSuchFieldException nsfe)
+      {
+        return;
+      }
+    }
+    else if (functionMapping.expression != null && functionMapping.expression.variablesDeclared
+             && !functionMapping.expression.hasDeclaredVariable(variableName))
+    {
+      return;
+    }
 
     Label    labelElse        = new Label();
     Label    labelEnd         = new Label();

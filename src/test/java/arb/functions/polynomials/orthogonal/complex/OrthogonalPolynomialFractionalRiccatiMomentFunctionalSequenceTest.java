@@ -45,6 +45,16 @@ public class OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequenceTest e
 
       Integer n = new Integer();
 
+      // First sanity-check the underlying Muntz coefficient sequence a(k) directly:
+      // a(1) = p/Γ(μ+1), a(2) and a(3) computed via the recurrence.
+      var a = ops.muntz.muntzBasis();
+      for (int k = 1; k <= 3; k++)
+      {
+        n.set(k);
+        ComplexFunction ak = a.evaluate(n, 1, bits, null);
+        System.out.println("a(" + k + ") = " + ak);
+      }
+
       // Each m(k) is a ComplexPolynomial in u; same for S(i).
       for (int k = 0; k <= 2; k++)
       {
