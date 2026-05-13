@@ -8,6 +8,7 @@ import java.util.function.Consumer;
 
 import org.objectweb.asm.*;
 
+import arb.ComplexPolynomial;
 import arb.Polynomial;
 import arb.RealPolynomial;
 import arb.expressions.Compiler;
@@ -128,11 +129,63 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     Class<?> functionType = functionNode.type();
+    Class<?> argType      = arg.type();
 
     if (Expression.trace)
     {
-      logger.debug("generate(resultType={}) functionNode={} arg={} functionType={}", resultType, functionNode, arg, functionType);
+      logger.debug("generate(resultType={}) functionNode={} arg={} functionType={} argType={}",
+                   resultType, functionNode, arg, functionType, argType);
     }
+
+    // Polynomial composition: when both the function and its argument are the
+    // same polynomial type (RealPolynomial(RealPolynomial) or
+    // ComplexPolynomial(ComplexPolynomial)), the operation is composition
+    // p ∘ q = p evaluated with q substituted for p's variable. The native
+    // backings are arb_poly_compose / acb_poly_compose, exposed as the typed
+    // overload evaluate(<PolyType>, int, int, <PolyType>) on each polynomial
+    // class. Emit a directly-typed INVOKEVIRTUAL against that overload so the
+    // call bypasses the erased Function.evaluate(Object,int,int,Object)
+    // bridge (which casts to the scalar codomain and would ClassCast).
+    //
+    // Multivariate guard: this code path assumes both polynomials live in the
+    // same single-variable ring or are linked by a single inner-vs-outer
+    // composition. If a future expression mixes more than two distinct
+    // independent variables, native acb_poly_compose still produces a valid
+    // single-variable composition along the argument's variable; mixing
+    // genuinely multivariate operands here is out of scope and should be
+    // detected at a higher level once multivariate polynomial support exists.
+    // Only fire the compose path when ALL THREE of (receiver, argument,
+    // result) agree on the polynomial type. If the surrounding expression
+    // expects a scalar (e.g. p(v) where v is the polynomial's own variable),
+    // resultType will be the scalar type and we must NOT emit compose —
+    // fall through to the scalar evaluate path.
+    if (Polynomial.class.isAssignableFrom(functionType) && functionType.equals(argType)
+        && functionType.equals(resultType) && hasTypedComposeOverload(functionType))
+    {
+      functionNode.generate(mv, functionType);
+      arg.generate(mv, argType);
+      loadOrderParameter(mv);
+      loadBitsParameterOntoStack(mv);
+      loadOutputVariableOntoStack(mv, resultType);
+
+      String composeDescriptor = Type.getMethodDescriptor(Type.getType(functionType),
+                                                          Type.getType(argType),
+                                                          Type.INT_TYPE,
+                                                          Type.INT_TYPE,
+                                                          Type.getType(functionType));
+      mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                         Type.getInternalName(functionType),
+                         "evaluate",
+                         composeDescriptor,
+                         false);
+
+      if (!resultType.equals(functionType) && !resultType.equals(Object.class))
+      {
+        cast(mv, resultType);
+      }
+      return mv;
+    }
+
     functionNode.generate(mv, functionType);
     arg.generate(mv, resultType);
 
@@ -153,6 +206,27 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
     }
 
     return mv;
+  }
+
+  /**
+   * Whether {@code polyType} declares the typed composition overload
+   * {@code evaluate(<polyType>, int, int, <polyType>)} that the
+   * polynomial-on-polynomial code path emits an {@code INVOKEVIRTUAL}
+   * against. Currently true for {@link ComplexPolynomial}; other polynomial
+   * types fall through to the scalar dispatch until they expose the same
+   * overload (backed by {@code arb_poly_compose} etc.).
+   */
+  private static boolean hasTypedComposeOverload(Class<?> polyType)
+  {
+    try
+    {
+      polyType.getMethod("evaluate", polyType, int.class, int.class, polyType);
+      return true;
+    }
+    catch (NoSuchMethodException nsme)
+    {
+      return false;
+    }
   }
 
   /**

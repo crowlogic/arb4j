@@ -41,29 +41,30 @@ public class OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequenceTest e
                                                                                      "3/10"))
     {
       assertNotNull("moment sequence m must be compiled", ops.m);
-      assertNotNull("generating polynomial sequence S must be compiled", ops.S);
-      assertNotNull("β must be compiled", ops.β);
-      assertNotNull("α must be compiled", ops.α);
+      assertNotNull("sequence S must be compiled", ops.S);
 
       Integer n = new Integer();
 
-      // m(0), m(1): basic Müntz coefficients
-      ComplexPolynomial m0 = new ComplexPolynomial();
-      ComplexPolynomial m1 = new ComplexPolynomial();
-      n.set(0);
-      ops.m.evaluate(n, 1, bits, m0);
-      n.set(1);
-      ops.m.evaluate(n, 1, bits, m1);
-      System.out.println("m(0) = " + m0);
-      System.out.println("m(1) = " + m1);
-
-      // S(-1, z), S(0, z), S(1, z)
-      for (int i = -1; i <= 2; i++)
+      // Evaluate m(0..2) and S(0..2) at the chosen μ/P/Q/R and assert that
+      // every result is a non-empty ComplexPolynomial — i.e. the Wheeler
+      // recurrence's upstream Muntz moments are actually populated.
+      // Empty (length 0) polynomials would indicate the previous
+      // ComplexPolynomial.set(Fraction) stub bug or another silent zero
+      // propagation path.
+      for (int k = 0; k <= 2; k++)
       {
-        ComplexPolynomial Si = new ComplexPolynomial();
+        n.set(k);
+        ComplexPolynomial mk = ops.m.evaluate(n, 1, bits, null);
+        assertNotNull("m(" + k + ") must not be null", mk);
+        assertTrue("m(" + k + ") must be a non-empty polynomial (got length " + mk.getLength() + ")", mk.getLength() > 0);
+      }
+
+      for (int i = 0; i <= 2; i++)
+      {
         n.set(i);
-        ops.S.evaluate(n, 1, bits, Si);
-        System.out.println("S(" + i + ", z) = " + Si);
+        ComplexPolynomial Si = ops.S.evaluate(n, 1, bits, null);
+        assertNotNull("S(" + i + ") must not be null", Si);
+        assertTrue("S(" + i + ") must be a non-empty polynomial (got length " + Si.getLength() + ")", Si.getLength() > 0);
       }
     }
     finally

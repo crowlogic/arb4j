@@ -62,4 +62,9 @@ public interface ComplexPolynomialSequence extends
     return Function.express(Integer.class, ComplexPolynomial.class, ComplexPolynomialSequence.class, name, expression, context);
   }
 
+  public static Expression<Integer, ComplexPolynomial, ComplexPolynomialSequence> compile(String string, Context context)
+  {
+    return Sequence.compile(ComplexPolynomial.class, string, ComplexPolynomialSequence.class, context);
+  }
+
 }

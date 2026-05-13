@@ -1445,6 +1445,10 @@ void acb_poly_evaluate(acb_t y, const acb_poly_t f, const acb_t x, slong prec);
  
 void acb_poly_evaluate2(acb_t y, acb_t z, const acb_poly_t f, const acb_t x, slong prec);
 
+void acb_poly_compose(acb_poly_t res, const acb_poly_t poly1, const acb_poly_t poly2, slong prec);
+
+void acb_poly_compose_series(acb_poly_t res, const acb_poly_t poly1, const acb_poly_t poly2, slong n, slong prec);
+
 void flint_free(void * ptr);
                             
 void arb_mat_init(arb_mat_t mat, slong r, slong c);

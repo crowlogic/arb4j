@@ -2337,25 +2337,27 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (haveLiveInstance || haveRegisteredExpression)
     {
       var    nestedExpression        = nestedFunction.expression;
-      // Force the nested expression to declare its fields if it hasn't yet.
-      // For mappings registered via parseCompileAndRegister, declareVariables
-      // has not run, so declaredVariables is still empty — querying it
-      // would yield an empty filter and no v/μ-injection block would be
-      // emitted. Compiling here populates declaredVariables (line 1305) and
-      // generates the bytecode for the nested class, breaking the
-      // chicken-and-egg with the parent's own compile by going through the
-      // shared ExpressionClassLoader.
-      // For two expressions sharing the same Context, the set of context
-      // variables declared as fields is identical (both iterate
-      // context.variableEntryStream() in declareVariables). When the nested
-      // expression has not yet reached declareVariables — which happens
-      // every time it sits on a mutual-recursion cycle with the parent
-      // (a ↔ S in the fractional Riccati Müntz recurrence, issue #982) —
-      // substitute the parent's own filter, predicting that the sibling
-      // will declare the same context fields. ASM GETFIELD/PUTFIELD
-      // resolve field references by string at first execution, by which
-      // point the entire cycle has finished compile() and declared its
-      // fields.
+      // Propagate context variables based on whether the nested class
+      // declares them as fields.
+      //
+      // {@code variablesDeclared=true} means declareVariables has already
+      // run on the nested expression — its field set is frozen and
+      // declaredVariables tells us exactly which fields exist. Honour that
+      // set strictly. Pre-existing nested classes may have been compiled
+      // when the context was smaller (e.g. m and a in OPS-on-muntz: the
+      // muntz coefficient sequence was compiled while context held only
+      // p, q, r, μ; OPS later adds p0, p1, but m's class still has no
+      // fields for them — attempting PUTFIELD on a non-existent field
+      // produces NoSuchFieldError at runtime).
+      //
+      // {@code variablesDeclared=false} means declareVariables has not
+      // yet run — it will eventually emit a field for every entry in
+      // context.variableEntries() at the time it runs. We cannot safely
+      // narrow without forcing declareVariables (which itself needs a
+      // ClassVisitor, unavailable here), so trust the parent's
+      // hasDeclaredVariable: sibling cyclic peers in the same Context
+      // declare the same field set, which has been the working invariant
+      // for every mutually-recursive cluster prior to the OPS case.
       var    variableStream          = context.variableClassStream();
       var    declaredVariableStream  =
                                     nestedExpression.variablesDeclared ? variableStream.filter(variable -> nestedExpression.hasDeclaredVariable(variable.getLeft()))
@@ -3659,6 +3661,37 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     String   variableTypeDesc = variableType.descriptorString();
     String   nestedClassName  = functionMapping.functionName;
 
+    // Per-emission guard: skip propagation when the target class does not
+    // declare a field for this variable. A context can grow between
+    // sibling compiles — a target compiled when the context held a
+    // smaller variable set has its field set frozen at that subset, and
+    // emitting PUTFIELD for a variable added to the context later throws
+    // NoSuchFieldError at first execution.
+    //
+    // Three sources of truth, in order of preference:
+    //  1. Target's compiled Class object — reflectively enumerated fields.
+    //  2. Target Expression's declaredVariables — the set declareVariables
+    //     emitted as fields.
+    //  3. Otherwise: assume the field will exist (the caller's predicate
+    //     already filtered by either nested.hasDeclaredVariable or
+    //     parent.hasDeclaredVariable upstream).
+    if (functionMapping.instance != null)
+    {
+      try
+      {
+        functionMapping.instance.getClass().getField(variableName);
+      }
+      catch (NoSuchFieldException nsfe)
+      {
+        return;
+      }
+    }
+    else if (functionMapping.expression != null && functionMapping.expression.variablesDeclared
+             && !functionMapping.expression.hasDeclaredVariable(variableName))
+    {
+      return;
+    }
+
     Label    labelElse        = new Label();
     Label    labelEnd         = new Label();
 
@@ -4649,17 +4682,36 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       log.debug(String.format("Expression(#%s).propagateContextVariablesByReference(function=%s)\n", System.identityHashCode(this), function));
     }
+    // Only propagate context variables the target function actually declared as
+    // fields. When the parent's context contains variables that the target
+    // never referenced (common when a shared context is threaded through
+    // multiple sibling functions — e.g. the muntz context's p, q, r, μ are
+    // present in the context but T's expression only references m, β), pushing
+    // PUTFIELD for a non-existent field on the target's class produces a
+    // runtime NoSuchFieldError at first execution.
+    //
+    // Mirrors the filtering pattern in generateFunctionInitializer (line
+    // 2360-2362): if the nested expression has finished declareVariables,
+    // trust its own declared-variables set; otherwise fall back to the
+    // parent's set on the prediction that sibling Expressions sharing a
+    // Context declare the same context fields.
     for (var entry : context.variableEntries())
     {
       var   fieldName = entry.getKey();
       Named val       = entry.getValue();
-      // assert val != null : "entry is null " + entry;
-      if (val != null)
+      if (val == null)
       {
-        var fieldType = val.getClass();
-        loadThisAndFieldOntoStack(duplicateTopOfTheStack(mv), fieldName, fieldType);
-        putField(mv, function.className, fieldName, fieldType);
+        continue;
       }
+      boolean targetDeclares = function.variablesDeclared ? function.hasDeclaredVariable(fieldName)
+                                                          : hasDeclaredVariable(fieldName);
+      if (!targetDeclares)
+      {
+        continue;
+      }
+      var fieldType = val.getClass();
+      loadThisAndFieldOntoStack(duplicateTopOfTheStack(mv), fieldName, fieldType);
+      putField(mv, function.className, fieldName, fieldType);
     }
   }
 
@@ -5542,18 +5594,42 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       FunctionalEvaluationNode.promoteDomainToScalarOfReifiedFunctional(this, node);
       Node<D, C, F> arg = resolve();
-      node = new FunctionalEvaluationNode<>(this,
-                                            node,
-                                            arg);
+      node = buildPostfixCall(node, arg);
       while (nextCharacterIs(','))
       {
-        node = new FunctionalEvaluationNode<>(this,
-                                              node,
-                                              resolve());
+        node = buildPostfixCall(node, resolve());
       }
       require(')');
     }
     return node;
+  }
+
+  /**
+   * Build a postfix function-call node, folding identity-substitution when the
+   * receiver is a {@link arb.functions.ReifiedFunction} (e.g. a polynomial) and
+   * the argument names this enclosing expression's placeholder variable. In
+   * that case the call is symbolic identity — {@code p(v)} where {@code v} is
+   * {@code p}'s indeterminate means {@code p} itself — so the receiver is
+   * returned directly without wrapping in a {@link FunctionalEvaluationNode}.
+   *
+   * <p>
+   * This complements the prefix-call identity fold at the
+   * {@code context.variables.get(reference.name)} path above; that fold
+   * handles bare-name calls like {@code p(v)}, while this fold handles
+   * chained / sequence-element calls like {@code a(k-1)(v)}.
+   */
+  private Node<D, C, F> buildPostfixCall(Node<D, C, F> receiver, Node<D, C, F> arg)
+  {
+    Class<?> receiverType = receiver.type();
+    if (receiverType != null
+        && arb.functions.ReifiedFunction.class.isAssignableFrom(receiverType)
+        && placeholderVariable != null
+        && arg.isVariable()
+        && placeholderVariable.reference.name.equals(arg.asVariable().reference.name))
+    {
+      return receiver;
+    }
+    return new FunctionalEvaluationNode<>(this, receiver, arg);
   }
 
   protected Node<D, C, F> resolveSquareBracketedIndex()

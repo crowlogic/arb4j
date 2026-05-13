@@ -173,6 +173,39 @@ public interface Function<D, CO> extends
     return result;
   }
 
+  /**
+   * Pointwise negation: returns a new {@link Function} whose value at every t
+   * is −this(t). The wrapper writes into the caller's {@code res} buffer — the
+   * underlying function evaluates into {@code res}, and the codomain's fluent
+   * {@code neg(res)} then negates that same buffer in place. No new codomain
+   * instance is allocated by the wrapper.
+   *
+   * <p>
+   * Available for any {@code CO} that exposes {@code neg(CO result)} — i.e.
+   * any {@link arb.Field} or {@link arb.Polynomial}.
+   */
+  public default Function<D, CO> neg()
+  {
+    Function<D, CO> self = this;
+    return (t, order, bits, res) ->
+    {
+      self.evaluate(t, order, bits, res);
+      try
+      {
+        @SuppressWarnings({ "unchecked", "rawtypes" })
+        java.lang.reflect.Method m = res.getClass().getMethod("neg", res.getClass());
+        m.invoke(res, res);
+        return res;
+      }
+      catch (ReflectiveOperationException e)
+      {
+        throw new UnsupportedOperationException("codomain " + res.getClass()
+                                                + " does not implement neg(result)",
+                                                e);
+      }
+    };
+  }
+
   public default <F extends Function<D, CO>> F  integral()
   {
     assert false : "TODO: " + getClass() + " should implement this";

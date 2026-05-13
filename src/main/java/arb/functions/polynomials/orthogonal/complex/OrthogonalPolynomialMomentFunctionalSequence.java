@@ -3,67 +3,56 @@ package arb.functions.polynomials.orthogonal.complex;
 import arb.ComplexPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.Context;
 import arb.functions.integer.ComplexPolynomialSequence;
 import arb.functions.integer.Sequence;
 
 /**
  * The orthogonal polynomial sequence of a quasi-definite moment functional 𝓛
- * over ℂ[u], constructed from its moment sequence m(k, u) via the polynomial
- * Chebyshev/Wheeler recurrence of Theorem 5.1 of
- * {@code docs/SolutionMethodologyForConstantCoefficientFractionalRiccatiEquations.md}.
+ * over ℂ[u], constructed from its moment sequence m(k)(u) via the Wheeler
+ * recurrence.
  *
  * <p>
- * <b>The tower.</b> The construction lives in ℂ[u][[z]] — the ring of formal
- * power series in z whose coefficients are polynomials in the Fourier
- * parameter u. Every object is a sum
- *
- * <pre>
- *   S(n, z) := Σ_{k ≥ 0} c(n, k, u) · zᵏ ∈ ℂ[u][z]
- * </pre>
- *
- * where z is the outer time-series variable (z = t^μ after the Müntz
- * substitution) and each coefficient c(n, k, u) ∈ ℂ[u]. At the arb4j level
- * this is realized as a ComplexPolynomial-in-z whose coefficients are
- * themselves ComplexPolynomial-in-u — that is, the parent class is generic
- * over the recurrence-coefficient ring R = ComplexPolynomial.
+ * <b>Setup.</b> m : ℤ_{≥0} → ℂ[u], with m(k)(u) := a(k+1, u), produced by the
+ * existing Müntz machinery. Four sequences S, T, α, β : ℤ_{≥0} → ℂ[u]. Each
+ * value S(n)(u), T(n)(u), α(n)(u), β(n)(u) is a {@link ComplexPolynomial} in
+ * the Fourier parameter u.
  *
  * <p>
- * <b>Theorem 5.1 (Polynomial Chebyshev–Wheeler).</b> The sequence {S(n, z)}
- * satisfies the closed polynomial recurrence
+ * <b>The recurrence.</b> For n ≥ 0,
  *
  * <pre>
- *   S(n+1, z) = S(n, z)/z − α(n, z) · S(n, z) − β(n, z) · S(n−1, z)
+ *   S(n)(u) := m(n)(u).
  * </pre>
  *
- * with α(n, z), β(n, z) ∈ ℂ[u][[z]] determined as identities by
+ * For n ≥ 1,
  *
  * <pre>
- *   β(n, z) = S(n, z) / (z · S(n−1, z)),
- *   α(n, z) = T(n, z) / S(n, z),     where T(n, z) := S(n, z)/z − β(n, z) · S(n−1, z).
- * </pre>
- *
- * Theorem 5.1 guarantees both quotients are z-constant — their image in
- * ℂ[u][[z]] is a constant polynomial in z whose constant term is the desired
- * element of ℂ[u]. The implementation performs the ring operations and trusts
- * that guarantee; no coefficient is read.
- *
- * <p>
- * The three-term recurrence coefficients in the standard form
- * P(n+1, x) = (A(n)·x + B(n))·P(n, x) − C(n)·P(n−1, x) are
- *
- * <pre>
- *   A(n) = 1,
- *   B(n) = −α(n, z),
- *   C(n) =  β(n, z).
+ *   β(n)(u)   := S(n)(u) / S(n-1)(u),
+ *   T(n)(u)   := m(n+1)(u) − β(n)(u) · m(n)(u),
+ *   α(n)(u)   := T(n)(u) / S(n)(u),
+ *   S(n+1)(u) := T(n)(u) − α(n)(u) · S(n)(u).
  * </pre>
  *
  * <p>
- * Every operation is a ring or field operation at the outer-z level —
- * multiplication and division by z, polynomial multiplication, addition,
- * subtraction, and formal power-series division. The inner u-level is carried
- * automatically by the existing ComplexPolynomial ring operations on those
- * coefficients. No scalar coefficient extractions in the parameter ring ℂ[u]
- * are performed.
+ * <b>Theorem.</b> α(n)(u) and β(n)(u) are the three-term recurrence
+ * coefficients of the monic OPS for the moment functional 𝓛_u with moments
+ * m(k)(u). The OPS {P(n, x; u)} satisfies
+ *
+ * <pre>
+ *   P(n+1, x; u) = (x − α(n)(u)) · P(n, x; u) − β(n)(u) · P(n-1, x; u),
+ *   P(-1, x; u)  = 0,
+ *   P( 0, x; u)  = 1,
+ * </pre>
+ *
+ * and its reciprocal flip is the diagonal Padé denominator of g(·, u).
+ *
+ * <p>
+ * Every operation is one of: evaluation of a sequence at an integer index,
+ * returning a ComplexPolynomial in u; or one of the four ring operations
+ * (+, −, ·, /) on ComplexPolynomial in u. The dependency on u is carried
+ * explicitly through every site as the variable of the ComplexPolynomial
+ * values.
  *
  * <p>
  * Subclasses supply the moment sequence m : ℤ_{≥0} → ℂ[u].
@@ -75,98 +64,78 @@ public abstract class OrthogonalPolynomialMomentFunctionalSequence extends
                                                                    ComplexPolynomialCoefficientRecurrentlyGeneratedOrthogonalPolynomialSequence
 {
 
-  /** The moment sequence k ↦ m(k, u), each term a polynomial in u. */
-  public Sequence<ComplexPolynomial> m;
-
-  /** S(n, z), the generating polynomial of the OPS, valued in ℂ[u][z]. */
-  public ComplexPolynomialSequence   S;
-
-  /**
-   * β(n, z) = S(n, z) / (z · S(n-1, z)) — formally in ℂ[u][[z]]; z-constant
-   * by Theorem 5.1.
-   */
-  public ComplexPolynomialSequence   β;
-
-  /** T(n, z) := S(n, z)/z − β(n, z) · S(n-1, z) ∈ ℂ[u][z]. */
-  public ComplexPolynomialSequence   T;
+  public ComplexPolynomialSequence m;
+  public ComplexPolynomialSequence S;
+  public ComplexPolynomialSequence β;
+  public ComplexPolynomialSequence T;
+  public ComplexPolynomialSequence α;
 
   /**
-   * α(n, z) = T(n, z) / S(n, z) — formally in ℂ[u][[z]]; z-constant by
-   * Theorem 5.1.
+   * Construct sharing the supplied {@link Context} so that {@code m}'s full
+   * mapping (expression + instance + the chain of upstream dependencies
+   * {@code a}, {@code p}, {@code q}, {@code r}, {@code μ} it references) is
+   * visible to the OPS recurrence. {@code m} must already be registered in
+   * {@code sharedContext} — typically by its caller's prior
+   * {@code express("m:...", sharedContext)} call. Passing a fresh context
+   * here would strip {@code m} of its upstream dependencies and the inner
+   * self-instance of the recursive S sequence would have no way to resolve
+   * {@code m}'s expression on lazy initialize.
    */
-  public ComplexPolynomialSequence   α;
-
-  public OrthogonalPolynomialMomentFunctionalSequence(int bits, Sequence<ComplexPolynomial> m)
+  public OrthogonalPolynomialMomentFunctionalSequence(int bits, Context sharedContext, ComplexPolynomialSequence m)
   {
-    super(bits);
+    super(bits, sharedContext);
 
     this.m = m;
 
-    // Bind m as a function in the context so the parser resolves m(k) as a
-    // sequence call returning a ComplexPolynomial in u. Declare the four
-    // mutually-recursive sequences S, β, T, α so their cross-references
-    // resolve at compile time. Each is curried n ➔ z ➔ ... — outer integer
-    // index n, inner polynomial variable z; the body produces a polynomial
-    // in u at each z-sample, and arb4j packages the result as a polynomial
-    // in z whose coefficients are polynomials in u (the tower).
-    context.registerFunction("m", m);
+    // m is already registered in sharedContext by the caller; do not
+    // re-register here because that would drop m's expression and produce a
+    // mapping with {instance=m, expression=null} — exactly the failure mode
+    // that breaks the inner self-instance's lazy initialize when it tries
+    // to resolve m via the function-mapping registry.
+
+    // Forward-declare the four mutually-recursive sequences; compile the
+    // three auxiliaries; express the driver S last. Mirrors the pattern in
+    // RiccatiMuntzPadeFunctional.partialDerivativeWithRespectToV.
     ComplexPolynomialSequence.declare("S", context);
     ComplexPolynomialSequence.declare("β", context);
     ComplexPolynomialSequence.declare("T", context);
     ComplexPolynomialSequence.declare("α", context);
 
-    // S has two base cases (n=0 and n=1) so the n=-1 boundary never enters the
-    // runtime sequence. The proof's n=0 step (which uses S(-1,z)=1,
-    // α(0)=m(1)/m(0), β(0)=m(0)) is inlined into the closed form for S(1, z):
-    //   S(1, z) = S(0, z)/z − (m(1)/m(0)) · S(0, z) − m(0)
-    // For n≥2 the general recurrence applies: S(n) needs S(n-1) and S(n-2),
-    // via T(n-1) and α(n-1).
-    S = ComplexPolynomialSequence.express("S:n ➔ z ➔ when(n = 0,  sum(j ➔ m(j)(z) · z^j {j=0..2*n+2}),"
-                                              + "                n = 1,  S(0)(z) / z − (m(1)(z) / m(0)(z)) · S(0)(z) − m(0)(z),"
-                                              + "                else,   T(n-1)(z) − α(n-1)(z) · S(n-1)(z))",
+    ComplexPolynomialSequence.compile("β:n ➔ u ➔ S(n)(u) / S(n-1)(u)", context);
+    ComplexPolynomialSequence.compile("T:n ➔ u ➔ m(n+1)(u) − β(n)(u) · m(n)(u)", context);
+    ComplexPolynomialSequence.compile("α:n ➔ u ➔ T(n)(u) / S(n)(u)", context);
+
+    // S(n)(u): for n ∈ {0,1}, equal to m(n)(u); for n ≥ 2, follows the
+    // Wheeler recurrence S(n)(u) = T(n-1)(u) − α(n-1)(u) · S(n-1)(u).
+    // Two base cases are required so that β(1) = S(1)/S(0) is well-defined
+    // without forcing an S(-1) convention or division-by-zero special case.
+    S = ComplexPolynomialSequence.express("S:n ➔ u ➔ when(n = 0,  m(0)(u),"
+                                              + "                n = 1,  m(1)(u),"
+                                              + "                else,   T(n-1)(u) − α(n-1)(u) · S(n-1)(u))",
                                           context);
 
-    β = ComplexPolynomialSequence.express("β:n ➔ z ➔ S(n)(z) / (z · S(n-1)(z))",
-                                          context);
-
-    T = ComplexPolynomialSequence.express("T:n ➔ z ➔ S(n)(z) / z − β(n)(z) · S(n-1)(z)",
-                                          context);
-
-    α = ComplexPolynomialSequence.express("α:n ➔ z ➔ T(n)(z) / S(n)(z)",
-                                          context);
-
-    // p0 = 1, p1 = x − m(1)/m(0).
     p0.one();
     p1.one().shiftLeft(1);
   }
 
-  /**
-   * Subclasses may override to expose the parameters they registered when
-   * building their moment sequence. Default: no extra parameters.
-   */
-  protected Sequence<ComplexPolynomial> momentSequence()
-  {
-    return m;
-  }
-
+  /** A(n) = 1. */
   @Override
   public Sequence<ComplexPolynomial> A()
   {
     return ComplexPolynomialSequence.express("A", "1", context);
   }
 
-  /** B(n) = −α(n, z). */
+  /** B(n) = −α(n). */
   @Override
   public Sequence<ComplexPolynomial> B()
   {
-    return ComplexPolynomialSequence.express("B:n ➔ z ➔ −α(n)(z)", context);
+    return (n, order, bits, res) -> α.evaluate(n, order, bits, res).neg(res);
   }
 
-  /** C(n) = β(n, z). */
+  /** C(n) = β(n). */
   @Override
   public Sequence<ComplexPolynomial> C()
   {
-    return ComplexPolynomialSequence.express("C:n ➔ z ➔ β(n)(z)", context);
+    return β;
   }
-
 }

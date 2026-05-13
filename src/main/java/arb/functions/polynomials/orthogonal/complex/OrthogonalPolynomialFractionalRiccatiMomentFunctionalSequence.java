@@ -7,7 +7,6 @@ import arb.documentation.TheArb4jLibrary;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
 import arb.functions.complex.RiccatiMuntzPadeFunctional;
 import arb.functions.integer.ComplexPolynomialSequence;
-import arb.functions.integer.Sequence;
 
 /**
  * OPS of the moment functional
@@ -87,7 +86,7 @@ public class OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequence exten
   public OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequence(int bits,
                                                                        RiccatiMuntzPadeFunctional muntz)
   {
-    super(bits, riccatiMomentSequence(muntz));
+    super(bits, muntz.context, riccatiMomentSequence(muntz));
     this.muntz = muntz;
   }
 
@@ -95,9 +94,10 @@ public class OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequence exten
    * Müntz–Tau moment sequence m(k, v) = a(k+1, v). Shifts the Müntz coefficient
    * sequence by one — m(0) = a(1), m(1) = a(2), and so on.
    */
-  private static Sequence<ComplexPolynomial> riccatiMomentSequence(RiccatiMuntzPadeFunctional muntz)
+  private static ComplexPolynomialSequence riccatiMomentSequence(RiccatiMuntzPadeFunctional muntz)
   {
-    ComplexPolynomialSequence a = muntz.muntzBasis();
-    return ComplexPolynomialSequence.express("m", "k ➔ a(k + 1)", muntz.context);
+    // m(k)(u) := a(k+1)(u). Carry u through the call so the moment sequence's
+    // polynomial-in-u structure is preserved.
+    return ComplexPolynomialSequence.express("m:k ➔ u ➔ a(k + 1)(u)", muntz.context);
   }
 }
