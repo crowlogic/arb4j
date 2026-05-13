@@ -3390,7 +3390,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     var    functionMapping = context.functions.get(functionFieldName);
     String typeDesc        = functionMapping.functionFieldDescriptor(false);
 
-    variables.forEach(variable -> linkSharedVariableToReferencedFunction(mv,
+    // Only propagate variables that the nested function's compiled class
+    // actually declares as fields. The parent's context may carry variables
+    // (e.g. p0, p1 from RecurrentlyGeneratedOrthogonalPolynomialSequence) that
+    // a given nested expression never references; the compiler does not emit
+    // a field for those on the nested class, and trying to GETFIELD them at
+    // runtime throws NoSuchFieldError.
+    //
+    // The nested expression's referencedVariables is the authoritative set of
+    // names that have fields on its compiled class.
+    Expression<?, ?, ?> nestedExpr = functionMapping.expression;
+    variables.filter(variable -> nestedExpr == null
+                                 || nestedExpr.referencedVariables.containsKey(variable.getLeft()))
+             .forEach(variable -> linkSharedVariableToReferencedFunction(mv,
                                                                          functionMapping,
                                                                          generatedFunctionClassInternalName,
                                                                          fieldType,
