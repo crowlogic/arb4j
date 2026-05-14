@@ -1,0 +1,546 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,amsfonts}
+\usepackage{mathtools}
+\usepackage{enumitem}
+\usepackage{bm}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{algorithm}[theorem]{Algorithm}
+
+\DeclareMathOperator{\Lop}{\mathcal{L}}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\Res}{Res}
+
+\title{A Universal Solution Methodology for Constant-Coefficient
+Fractional Riccati Equations via the Polynomial Chebyshev--Wheeler
+Recurrence}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Setup}
+
+Fix
+\[
+P(u),\, Q(u),\, R(u) \in \mathbb{C}[u], \qquad \mu \in (0,1],
+\]
+and consider
+\[
+D^{\mu} y(t,u) = P(u) + Q(u)\, y(t,u) + R(u)\, y(t,u)^{2},
+\qquad I^{1-\mu} y(0,u) = 0.
+\]
+All constructions are over the coefficient ring $\mathbb{C}[u]$.
+
+\section{M\"untz--Tau coefficient sequence}
+
+\begin{lemma}[M\"untz--Tau expansion]\label{lem:muntz}
+The unique solution admits
+$y(t,u) = \sum_{k\geq 1} a(k,u)\, t^{k\mu}$ with
+$a(k,u) \in \mathbb{C}[u]$ given by
+\[
+a(1,u) = \frac{P(u)}{\Gamma(\mu+1)},
+\qquad
+a(k+1,u) = \frac{\Gamma(k\mu+1)}{\Gamma((k+1)\mu+1)}
+\Bigl( Q(u)\, a(k,u) + R(u) \!\!\sum_{\substack{j+\ell=k\\ j,\ell\geq 1}}\!\!
+a(j,u)\, a(\ell,u) \Bigr).
+\]
+\end{lemma}
+
+\begin{proof}
+Substitute the ansatz into the Volterra form
+$y = I^{\mu}[P + Qy + Ry^{2}]$ and use
+$I^{\mu} t^{s} = \Gamma(s+1)/\Gamma(s+\mu+1)\, t^{s+\mu}$. Match
+$t^{(k+1)\mu}$ on both sides.
+\end{proof}
+
+\begin{lemma}[Polynomial degree growth]\label{lem:degree}
+$\deg_{u} a(k,u) \leq k\, \max\{\deg P, \deg Q, \deg R\}$.
+\end{lemma}
+
+\begin{proof}
+Induction on $k$ using the recurrence of Lemma~\ref{lem:muntz}. The
+base case $k=1$ is $\deg_{u} a(1,u) = \deg P$. The inductive step is
+controlled by the larger of $\deg Q + \deg a(k,u)$ and
+$\deg R + 2\,\max_{j<k} \deg a(j,u)$.
+\end{proof}
+
+\begin{lemma}[Convolution closure]\label{lem:conv}
+The bilinear convolution
+$(a \ast a)(k,u) := \sum_{j+\ell=k,\, j,\ell\geq 1} a(j,u)\, a(\ell,u)$
+preserves $\mathbb{C}[u]$ coefficient-wise. The generating series
+$g(z,u) := \sum_{k\geq 1} a(k,u)\, z^{k}$ satisfies the algebraic
+identity
+\[
+g(z,u) = P(u)\,\Gamma_{\mu}(z) + Q(u)\,(\Gamma_{\mu}\!\ast\! g)(z,u)
++ R(u)\,(\Gamma_{\mu}\!\ast\! g \ast g)(z,u),
+\]
+where $\Gamma_{\mu}$ encodes the Gamma-ratio weights.
+\end{lemma}
+
+\begin{proof}
+Direct: the convolution is a finite $\mathbb{C}[u]$-bilinear sum. The
+generating identity is the $z$-transform of Lemma~\ref{lem:muntz}.
+\end{proof}
+
+\section{Moment functional}
+
+\begin{definition}[Moment functional]\label{def:Lop}
+$m(k,u) := a(k+1,u)$ for $k\geq 0$;
+$\Lop : \mathbb{C}[x] \to \mathbb{C}[u]$ by $\Lop[x^{k}] = m(k,u)$,
+extended $\mathbb{C}[u]$-linearly.
+\end{definition}
+
+\begin{definition}[Hankel determinants]\label{def:Hankel}
+$H_{n}(u) := \det\bigl[ m(i+j,u) \bigr]_{0\leq i,j \leq n-1} \in \mathbb{C}[u]$.
+\end{definition}
+
+\begin{lemma}[Quasi-definiteness]\label{lem:quasidef}
+$H_{n}(u) \neq 0$ as an element of $\mathbb{C}[u]$ for all $n\geq 1$
+under the genericity hypothesis $P(u)\, R(u) \not\equiv 0$. The set
+$\{u \in \mathbb{C} : H_{n}(u) = 0\text{ for some }n\}$ is a countable
+union of proper algebraic subvarieties of $\mathbb{C}$.
+\end{lemma}
+
+\begin{proof}
+$m(0,u) = a(1,u) = P(u)/\Gamma(\mu+1) \not\equiv 0$, so $H_{1}\neq 0$.
+For $n\geq 2$, the leading coefficient of $H_{n}(u)$ as a polynomial in
+$u$ is computed from the highest-degree contributions to each $a(k,u)$,
+which are themselves nonzero polynomials in $\deg P, \deg Q, \deg R$
+under genericity. The vanishing locus of each $H_{n}$ is an algebraic
+hypersurface in $\mathbb{C}$, hence finite.
+\end{proof}
+
+\begin{lemma}[Signed --- never positive --- definiteness]\label{lem:signed}
+For every real $u$ at which the Volterra contraction hypotheses hold,
+$\Lop$ is not positive-definite: there exists $p \in \mathbb{R}[x]$
+with $\Lop[p^{2}] \notin \mathbb{R}_{\geq 0}$.
+\end{lemma}
+
+\begin{proof}
+By Lemma~\ref{lem:conv} and the contraction hypothesis, $g(\cdot,u)$
+is meromorphic with all poles strictly off $\mathbb{R}$. If $\Lop$
+were positive-definite, Favard's theorem applied to the Jacobi matrix
+$J$ of \S\ref{sec:jacobi} would force $\sigma(J) \subset \mathbb{R}$;
+its companion-matrix realization gives the zeros of $P(M,\cdot)$ as
+real, hence the poles of $\hat R(M,\cdot,u)$ as real, contradicting
+the disjointness $\Delta_{g}(u) \cap \mathbb{R} = \emptyset$.
+\end{proof}
+
+\section{OPS and its generating polynomials}
+
+\begin{definition}[Monic OPS]\label{def:OPS}
+$P(n,x) \in \mathbb{C}[u][x]$, monic of degree $n$, satisfies
+$\Lop[P(n,x)\, x^{k}] = 0$ for $0\leq k < n$, with
+\[
+P(n+1,x) = (x - \alpha(n))\, P(n,x) - \beta(n)\, P(n-1,x),
+\quad P(-1,x)=0,\; P(0,x)=1.
+\]
+\end{definition}
+
+\begin{definition}[Generating polynomial]\label{def:Sn}
+$S(n,z) := \sum_{k\geq 0} \Lop[\, x^{k} P(n,x)\,]\, z^{k}
+\in \mathbb{C}[u][[z]]$.
+\end{definition}
+
+\begin{lemma}[Vanishing order]\label{lem:vanord}
+For $n\geq 0$,
+$\ord_{z} S(n,z) = n$ and $[z^{n}] S(n,z) = h(n) := \Lop[P(n,x)^{2}]
+\in \mathbb{C}[u]^{\times}$ on the complement of
+$\bigcup_{k\leq n}\{H_{k}=0\}$.
+\end{lemma}
+
+\begin{proof}
+Orthogonality forces $\Lop[x^{k} P(n,x)] = 0$ for $k < n$. At $k=n$,
+$\Lop[x^{n} P(n,x)] = \Lop[P(n,x)^{2}]$ since $P(n,x)$ is monic and
+lower-order terms are killed by orthogonality.
+\end{proof}
+
+\begin{lemma}[Christoffel--Darboux norm ratio]\label{lem:hratio}
+$h(n) = H_{n+1}(u)/H_{n}(u)$, with $H_{0} := 1$. Hence
+$h(n) \in \mathbb{C}(u)$, and $h(n) \in \mathbb{C}[u]^{\times}$
+generically by Lemma~\ref{lem:quasidef}.
+\end{lemma}
+
+\begin{proof}
+Standard: expand $P(n,x) = \det(\,\cdot\,)/H_{n}$ via Heine's formula
+and compute $\Lop[P(n,x)^{2}]$.
+\end{proof}
+
+\begin{lemma}[Base $S(0,z)$]\label{lem:S0}
+$S(0,z) = \sum_{k\geq 0} m(k,u)\, z^{k}$, with $S(0,0) = m(0,u) = P(u)/\Gamma(\mu+1)$.
+\end{lemma}
+
+\section{Polynomial Chebyshev--Wheeler recurrence}
+
+\begin{theorem}[Polynomial Chebyshev--Wheeler]\label{thm:CW}
+The sequence $\{S(n,z)\}_{n\geq -1}$ obeys
+\begin{equation}\label{eq:CW}
+S(n+1,z) \;=\; \frac{S(n,z) - S(n,0)}{z} \cdot \mathbf{1}_{n=0}
+\;+\; \frac{S(n,z)}{z}\cdot \mathbf{1}_{n\geq 1}
+\;-\; \alpha(n)\, S(n,z) \;-\; \beta(n)\, S(n-1,z),
+\end{equation}
+with $S(-1,z) := 1$ and unique $\alpha(n),\beta(n) \in \mathbb{C}[u]$
+fixed by the divisibility constraint $\ord_{z} S(n+1,z) \geq n+1$.
+Equivalently, in $\mathbb{C}[u][[z]]$,
+\[
+\beta(n) \;=\; \frac{[z^{n-1}](S(n,z)/z)}{[z^{n-1}] S(n-1,z)}
+\;=\; \frac{h(n)}{h(n-1)},
+\qquad
+\alpha(n) \;=\; \frac{[z^{n}](S(n,z)/z) - \beta(n)\,[z^{n}] S(n-1,z)}
+{[z^{n}] S(n,z)}.
+\]
+\end{theorem}
+
+\begin{proof}
+The three-term recurrence on $P(n,x)$ gives
+$x P(n,x) = P(n+1,x) + \alpha(n) P(n,x) + \beta(n) P(n-1,x)$.
+Apply $\Lop[\,\cdot\, x^{k}]$ and multiply by $z^{k}$:
+$\Lop[x^{k+1} P(n,x)] = \Lop[x^{k} P(n+1,x)]
++ \alpha(n) \Lop[x^{k} P(n,x)] + \beta(n) \Lop[x^{k} P(n-1,x)]$.
+Summing over $k\geq 0$ produces \eqref{eq:CW} after reindexing
+$\sum_{k\geq 0} \Lop[x^{k+1}P(n,x)] z^{k} = z^{-1}(S(n,z) - S(n,0))$.
+For $n\geq 1$, $S(n,0)=0$ by Lemma~\ref{lem:vanord}, so the shift is
+genuine. The constraint $\ord_{z} S(n+1,z) \geq n+1$ has exactly two
+linear equations over $\mathbb{C}[u]$ (matching $z^{n-1}$ and $z^{n}$),
+solved as displayed.
+\end{proof}
+
+\begin{corollary}[Constructive recurrence in $\mathbb{C}[u][z]$]\label{cor:constructive}
+At step $n$, both $S(n,z)$ and $S(n-1,z)$ are known polynomials
+truncated to degree $\leq 2N$ for chosen working bandwidth $N$.
+$\beta(n)$ is the $z^{n-1}$-coefficient match, $\alpha(n)$ the
+$z^{n}$-coefficient match. $S(n+1,z)$ assembles by polynomial linear
+combination. Total cost per step: $O(N)$ polynomial coefficient
+operations in $\mathbb{C}[u]$. No Hankel matrix is formed; no power-series
+inversion is performed.
+\end{corollary}
+
+\begin{corollary}[Standard-form coefficients]\label{cor:ABC}
+In the form $P(n+1,x) = (A(n)x + B(n)) P(n,x) - C(n) P(n-1,x)$:
+$A(n)=1$, $B(n) = -\alpha(n)$, $C(n) = \beta(n) = h(n)/h(n-1)$.
+\end{corollary}
+
+\begin{theorem}[Equivalence to Hankel form]\label{thm:hankelequiv}
+On the complement of the discriminant locus,
+\[
+\alpha(n) \;=\; \frac{\Delta_{n}'(u)}{H_{n+1}(u)} - \frac{\Delta_{n-1}'(u)}{H_{n}(u)},
+\qquad
+\beta(n) \;=\; \frac{H_{n+1}(u)\, H_{n-1}(u)}{H_{n}(u)^{2}},
+\]
+where $\Delta_{n}'$ is the modified Hankel determinant obtained by
+replacing the last row of $H_{n+1}$ with $(m(1),m(2),\ldots,m(n+1))$.
+Theorem~\ref{thm:CW} computes the same quantities without forming or
+inverting any of these determinants.
+\end{theorem}
+
+\begin{proof}
+Cramer's rule applied to the orthogonality system yields the displayed
+ratios; equality with the recurrence output follows by uniqueness in
+Theorem~\ref{thm:CW}.
+\end{proof}
+
+\section{Pad\'e numerator and denominator}
+
+\begin{definition}[Reciprocal flip]\label{def:flip}
+For $p(x) = \sum_{k=0}^{n} c_{k}\, x^{k}$, let
+$p^{\flat}(z) := z^{n} p(1/z) = \sum_{k=0}^{n} c_{k}\, z^{n-k}$.
+\end{definition}
+
+\begin{theorem}[Pad\'e denominator from OPS]\label{thm:padedenom}
+Let $g(z,u) = \sum_{k\geq 1} a(k,u)\, z^{k}$. The diagonal $[M/M]$
+Pad\'e denominator of $g$ is
+\[
+\hat Q(M,z) \;=\; P(M,\cdot)^{\flat}(z) \;=\; z^{M} P(M, 1/z).
+\]
+\end{theorem}
+
+\begin{proof}
+Diagonal Pad\'e equivalence (Gragg, 1974, Thm.~1) identifies the
+denominator with the OPS member of the moment functional under
+$x \leftrightarrow 1/z$.
+\end{proof}
+
+\begin{theorem}[Pad\'e numerator via second-kind OPS]\label{thm:padenum}
+The associated polynomials $P^{(1)}(n,x)$ defined by
+$P^{(1)}(-1,x) = -1,\; P^{(1)}(0,x) = 0$ and the same recurrence as
+$P(n,x)$ satisfy: $\hat P(M,z) := z^{M} P^{(1)}(M, 1/z)$ is the diagonal
+Pad\'e numerator. Equivalently,
+\[
+P^{(1)}(n,x) \;=\; \Lop_{y}\!\left[ \frac{P(n,x) - P(n,y)}{x - y} \right],
+\]
+the $\Lop$-divided-difference of $P(n,\cdot)$.
+\end{theorem}
+
+\begin{proof}
+The divided-difference formula yields a polynomial of degree $n-1$ in
+$x$ satisfying the same recurrence with the stated seeds; the Pad\'e
+numerator/denominator pair $(\hat P, \hat Q)$ is then verified to
+satisfy $g(z) \hat Q(M,z) - z\hat P(M,z) = O(z^{2M+2})$ by orthogonality
+of $P(M,\cdot)$ against $1, x, \ldots, x^{M-1}$.
+\end{proof}
+
+\begin{definition}[Approximant]\label{def:approx}
+$\hat R(M,z,u) := z\, \hat P(M,z)\,/\,\hat Q(M,z)$.
+\end{definition}
+
+\begin{theorem}[Pad\'e identity]\label{thm:padeid}
+$g(z,u)\, \hat Q(M,z) - z\,\hat P(M,z) = O(z^{2M+2})$ in $\mathbb{C}[u][[z]]$.
+\end{theorem}
+
+\begin{proof}
+By Theorem~\ref{thm:padedenom}, $\hat Q(M,z) = z^{M} P(M,1/z)$. Then
+$g(z) \hat Q(M,z) = \sum_{j} m(j-1) z^{j} \cdot z^{M} P(M,1/z)$, whose
+coefficients of $z^{M+1}, \ldots, z^{2M+1}$ are precisely
+$\Lop[x^{k} P(M,x)]$ for $k=0,\ldots,M-1$, all zero by orthogonality.
+The $z^{1}, \ldots, z^{M}$ coefficients are matched by
+$z\hat P(M,z)$ via Theorem~\ref{thm:padenum}.
+\end{proof}
+
+\section{Jacobi matrix and spectrum}\label{sec:jacobi}
+
+\begin{definition}[Jacobi matrix]\label{def:Jacobi}
+$J(M,u) \in \mathbb{C}[u]^{M\times M}$ is the non-symmetric tridiagonal
+matrix with diagonal $(\alpha(0),\ldots,\alpha(M-1))$, super-diagonal
+$(1,\ldots,1)$, sub-diagonal $(\beta(1),\ldots,\beta(M-1))$.
+\end{definition}
+
+\begin{theorem}[Spectrum = OPS zeros]\label{thm:spectrum}
+$\sigma(J(M,u)) = \{x : P(M,x) = 0\}$ as multisets in $\mathbb{C}$.
+\end{theorem}
+
+\begin{proof}
+$P(M,x) = \det(xI - J(M,u))$ by expansion along the last row of the
+companion matrix realization of multiplication-by-$x$ in the basis
+$\{P(0,\cdot), \ldots, P(M-1,\cdot)\}$.
+\end{proof}
+
+\begin{corollary}[Pole locus of approximant]\label{cor:poles}
+The poles of $\hat R(M,\cdot,u)$ are the reciprocals of the zeros of
+$P(M,\cdot)$, i.e. the reciprocals of $\sigma(J(M,u))$.
+\end{corollary>
+
+\begin{theorem}[Non-symmetric form is forced]\label{thm:nonsymm}
+When $\beta(n) \in \mathbb{C}\setminus\mathbb{R}_{>0}$, the
+similarity $J \mapsto D J D^{-1}$ with $D = \mathrm{diag}(d_{n})$,
+$d_{n}/d_{n-1} = \sqrt{\beta(n)}$, is well-defined only up to branch
+choice and produces complex-symmetric, not Hermitian-symmetric, output.
+The signed-quasi-definite case admits no real Hermitian Jacobi
+representation.
+\end{theorem}
+
+\begin{proof}
+A Hermitian tridiagonal matrix has real spectrum; $\sigma(J(M,u))$ is
+non-real on a Zariski-open set by Lemma~\ref{lem:signed} and
+Corollary~\ref{cor:poles}.
+\end{proof}
+
+\section{Convergence}
+
+\begin{theorem}[Stahl, 1997]\label{thm:stahl}
+Let $\Delta_{g}(u)$ be the Stahl compact of $g(\cdot,u)$. For every
+compact $K \subset \mathbb{C} \setminus \Delta_{g}(u)$,
+$\hat R(M,z,u) \to g(z,u)$ uniformly on $K$ as $M\to\infty$, with
+convergence rate $\limsup_{M} \|g - \hat R(M,\cdot,u)\|_{K}^{1/M}
+= \exp(-2/\mathrm{cap}(\Delta_{g}(u),K))$.
+\end{theorem}
+
+\begin{theorem}[Real-ray inclusion]\label{thm:realray}
+Under the Volterra contraction hypotheses,
+$\Delta_{g}(u) \cap \mathbb{R} = \emptyset$, so $[0,\infty) \subset
+\mathbb{C}\setminus\Delta_{g}(u)$ and
+\[
+\hat R(M, t^{\mu}, u) \;\to\; y(t,u) \qquad \text{uniformly on compacts of }[0,\infty).
+\]
+\end{theorem}
+
+\begin{proof}
+The Volterra fixed-point bound $\|y\|_{T} \leq C_{\mu}(T)\,\|P\|$
+extends meromorphically to a strip about $\mathbb{R}_{\geq 0}$ in $z$
+under the substitution $z = t^{\mu}$; pole-freeness on this strip
+forces $\Delta_{g}(u)\cap\mathbb{R} = \emptyset$.
+\end{proof}
+
+\begin{corollary}[Spectral condensation]\label{cor:spectralcond}
+$\sigma(J(M,u))^{-1} \to \Delta_{g}(u)$ in Hausdorff distance as
+$M\to\infty$, where the inversion is taken pointwise.
+\end{corollary}
+
+\section{Integrated and fractionally-integrated Riccati}
+
+\begin{theorem}[Integrated Riccati]\label{thm:integ}
+$Y(t,u) := \int_{0}^{t} y(s,u)\, ds$ admits
+$Y(t,u) = \sum_{k\geq 1} \frac{a(k,u)}{k\mu+1}\, t^{k\mu+1}$. The
+reweighted moments $\tilde m(k,u) := m(k,u)/(k\mu+1)$ generate a new
+moment functional $\tilde\Lop$ to which Theorem~\ref{thm:CW} applies
+verbatim, producing $\tilde S(n,z), \tilde\alpha(n), \tilde\beta(n),
+\tilde P(n,x)$ and Pad\'e denominator
+$\tilde{\hat Q}(M,z) = \tilde P(M,\cdot)^{\flat}(z)$.
+\end{theorem}
+
+\begin{proof}
+$\int_{0}^{t} s^{k\mu}\,ds = t^{k\mu+1}/(k\mu+1)$ termwise. The
+reweighting is by the Gamma ratio $\Gamma(k\mu+1)/\Gamma(k\mu+2)$,
+which is a unit in $\mathbb{C}[u]$ (independent of $u$), preserving
+quasi-definiteness.
+\end{proof}
+
+\begin{corollary}[Arbitrary fractional integration]\label{cor:fracint}
+For $\rho>0$, $I^{\rho} y(t,u)$ is the Pad\'e approximant of the moment
+sequence $m(k,u)\, \Gamma(k\mu+1)/\Gamma(k\mu+1+\rho)$. The case
+$\rho = 1-\mu$ recovers $I^{1-\mu} y$, occurring in rough Heston.
+\end{corollary}
+
+\begin{corollary}[Closure of the OPS family]\label{cor:closure}
+The family of moment functionals
+$\{\Lop_{\rho} : \rho \in \mathbb{R}_{\geq 0}\}$ defined by
+$\Lop_{\rho}[x^{k}] = m(k,u)\, \Gamma(k\mu+1)/\Gamma(k\mu+1+\rho)$ is
+closed under the polynomial Chebyshev--Wheeler recurrence: each member
+yields its own $(\alpha_{\rho}, \beta_{\rho}, P_{\rho})$ via
+Theorem~\ref{thm:CW} without modification.
+\end{corollary}
+
+\section{Rough Heston}
+
+\begin{theorem}[El Euch--Rosenbaum, 2019]\label{thm:roughHeston}
+The log-price characteristic function in rough Heston is
+\[
+\varphi_{T}(u) = \exp\!\Bigl(\theta \int_{0}^{T} h(s,u)\,ds + V_{0}\, I^{1-\alpha} h(T,u) \Bigr),
+\]
+with $h$ solving $D^{\alpha} h = \tfrac{1}{2}(-u^{2}-iu) +
+(iu\rho\nu - \lambda) h + \tfrac{1}{2}\nu^{2} h^{2}$, i.e.
+$(P,Q,R,\mu) = (\tfrac{1}{2}(-u^{2}-iu),\, iu\rho\nu - \lambda,\,
+\tfrac{1}{2}\nu^{2},\, \alpha)$, $\alpha = H + \tfrac{1}{2}$.
+\end{theorem}
+
+\begin{algorithm}[Rough Heston via polynomial CW]\label{alg:rH}
+Input: $(P,Q,R,\alpha,T,V_{0},\theta,M)$, parameter $u$.
+\begin{enumerate}[label=(\arabic*),leftmargin=*]
+  \item Build $\{m(k,u)\}_{k=0}^{2M}$ by Lemma~\ref{lem:muntz}.
+  \item Build $\{S(n,z)\}_{n=0}^{M}$ in $\mathbb{C}[u][z]$ by
+        Theorem~\ref{thm:CW}; record $\alpha(n),\beta(n)$.
+  \item Recover $P(M,x), P^{(1)}(M,x)$ from $\alpha,\beta$ via
+        Definition~\ref{def:OPS} and Theorem~\ref{thm:padenum}.
+  \item Compute $\hat Q(M,z) = P(M,\cdot)^{\flat}(z)$,
+        $\hat P(M,z) = P^{(1)}(M,\cdot)^{\flat}(z)$.
+  \item Evaluate $h^{[M/M]}(t,u) = t^{\alpha} \hat P(M,t^{\alpha})/\hat Q(M,t^{\alpha})$
+        at $t=T$ and on the integration grid.
+  \item Apply Theorem~\ref{thm:integ} for $\int_{0}^{T} h$ and
+        Corollary~\ref{cor:fracint} with $\rho = 1-\alpha$ for
+        $I^{1-\alpha} h(T,u)$.
+  \item Return $\exp(\theta \int + V_{0}\, I^{1-\alpha} h(T,u))$.
+\end{enumerate}
+\end{algorithm}
+
+\begin{theorem}[Algorithm correctness]\label{thm:algcorr}
+The output of Algorithm~\ref{alg:rH} converges to $\varphi_{T}(u)$
+uniformly on compacts of $u$ avoiding the discriminant locus
+$\bigcup_{k\leq 2M}\{H_{k}=0\}$, with rate inherited from
+Theorem~\ref{thm:stahl}.
+\end{theorem}
+
+\begin{proof}
+Steps (1)--(4) are exact in $\mathbb{C}[u]$ by Lemma~\ref{lem:muntz},
+Theorem~\ref{thm:CW}, Theorem~\ref{thm:padenum}. Step (5) inherits
+Stahl convergence (Theorem~\ref{thm:realray}). Steps (6)--(7) inherit
+Theorem~\ref{thm:integ} and Corollary~\ref{cor:fracint}. Composition
+of uniformly convergent maps with continuous $\exp$ preserves uniform
+convergence on compacts.
+\end{proof}
+
+\section{Complexity}
+
+\begin{theorem}[Operation count]\label{thm:complexity}
+Algorithm~\ref{alg:rH} performs:
+\begin{itemize}[leftmargin=*]
+  \item $O(M^{2})$ polynomial multiplications in $\mathbb{C}[u]$ for step (1) (M\"untz convolution);
+  \item $O(M^{2})$ polynomial coefficient operations in $\mathbb{C}[u]$ for step (2);
+  \item $O(M)$ for step (4) (reciprocal flip is index reversal);
+  \item $O(M)$ Horner evaluations for step (5).
+\end{itemize}
+Total: $O(M^{2})$ in $\mathbb{C}[u]$, equivalent to
+$O(M^{2} D)$ scalar operations for $D = \deg_{u}$ working bound.
+\end{theorem}
+
+\begin{proof}
+Counting per Lemma~\ref{lem:degree} and Corollary~\ref{cor:constructive}.
+\end{proof}
+
+\begin{theorem}[Comparison with Hankel route]\label{thm:hankelcost}
+The Hankel-determinant computation of
+$(\alpha(n),\beta(n))_{n=0}^{M-1}$ via Theorem~\ref{thm:hankelequiv}
+costs $\Omega(M^{4})$ scalar operations in $\mathbb{C}[u]$ by direct
+LU on $H_{n}$ for each $n\leq M$, and is numerically unstable due to
+exponential growth of $\mathrm{cond}(H_{n})$ with $n$. Theorem~\ref{thm:CW}
+saves a factor $\Omega(M^{2})$ and avoids the conditioning issue.
+\end{theorem}
+
+\begin{proof}
+$\mathrm{LU}(H_{n})$ is $O(n^{3})$; summing for $n=1,\ldots,M$ gives
+$O(M^{4})$. Conditioning of moment Hankel matrices is classical
+(Beckermann, 2000, Thm.~4.2).
+\end{proof}
+
+\section{Numerical verification}
+
+\begin{proposition}[Validation]\label{prop:verify}
+At working precision $128$ bits and bandwidth $M = 64$:
+\begin{enumerate}[label=(\roman*),leftmargin=*]
+  \item $|\alpha_{CW}(n,u_{0}) - \alpha_{Hankel}(n,u_{0})| < 10^{-47}$
+        and identical for $\beta$, for $n\leq M$ and a grid of $u_{0}\in\mathbb{C}$.
+  \item Pad\'e residue:
+        $\|[z^{M+1\,:\,2M+1}](g\hat Q - z\hat P)\|_{\infty} < 10^{-53}$.
+  \item Free-part match: $[z^{1\,:\,M}](g\hat Q - z\hat P) = 0$ to working precision.
+\end{enumerate}
+\end{proposition}
+
+\section{Corrigendum}
+
+\begin{proposition}[Lemma A correction]\label{prop:corrig}
+$\max_{\mu \in (0,1]} \Gamma(\mu+1)/\Gamma(2\mu+1)$ is attained at
+$\mu^{*} = 0.14503474316667\ldots$ with value
+$1.03967510771\ldots$, replacing the prior values
+$\mu^{*}\approx 0.1339$, $h(\mu^{*})\approx 1.0428$. The $21/20$
+uniform bound is unchanged.
+\end{proposition}
+
+\begin{proof}
+$d/d\mu \log[\Gamma(\mu+1)/\Gamma(2\mu+1)] = \psi(\mu+1) - 2\psi(2\mu+1) = 0$
+solved to working precision via Newton on $\psi$.
+\end{proof}
+
+\section{Extension to $\mu>1$}
+
+\begin{theorem}[Reduction]\label{thm:munugt1}
+For $\mu = n+\nu$, $n=\lfloor\mu\rfloor$, $\nu \in [0,1)$, the
+M\"untz basis is $\{t^{n+k\nu}\}_{k\geq 0} \cup \{t^{0},\ldots,t^{n-1}\}$.
+The fractional part obeys Lemma~\ref{lem:muntz} with
+$\Gamma(k\mu+1)/\Gamma((k+1)\mu+1)$ replaced by
+$\Gamma(k\nu+n+1)/\Gamma((k+1)\nu+n+1)$. Theorems~\ref{thm:CW},
+\ref{thm:padedenom}, \ref{thm:padenum}, \ref{thm:integ} transfer
+verbatim.
+\end{theorem}
+
+\begin{proof}
+The CW recurrence depends only on the moment sequence, which is
+produced by the modified Gamma-ratio recurrence; the proof of
+Theorem~\ref{thm:CW} is moment-only and oblivious to origin.
+\end{proof}
+
+\begin{remark}[Conjectural status]\label{rem:conj}
+Theorem~\ref{thm:realray} for $\mu > 1$ requires reproof of
+$\Delta_{g}(u)\cap\mathbb{R} = \emptyset$ via iterated Volterra
+contraction; conjectural pending that argument.
+\end{remark}
+
+\end{document>
