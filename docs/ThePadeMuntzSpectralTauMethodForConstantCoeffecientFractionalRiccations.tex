@@ -8,6 +8,7 @@
 \newcommand{\tmem}[1]{{\em #1\/}}
 \newcommand{\tmmathbf}[1]{\ensuremath{\boldsymbol{#1}}}
 \newcommand{\tmscript}[1]{\text{\scriptsize{$#1$}}}
+\newcommand{\tmxspace}{\hspace{1em}}
 \newenvironment{enumeratenumeric}{\begin{enumerate}[1.] }{\end{enumerate}}
 \newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
 \newtheorem{definition}{Definition}
@@ -93,8 +94,10 @@ Riccati Equations}
   \end{equation}
   The fundamental relations are
   \begin{equation}
-    \label{eq:caputo_RL} I^{\mu} D^{\mu} f (t) = f (t) - f (0), \qquad D^{\mu}
-    I^{\mu} f (t) = f (t)
+    \label{eq:caputo_RL} I^{\mu} D^{\mu} f (t) = f (t) - f (0)
+  \end{equation}
+  \begin{equation}
+    D^{\mu} I^{\mu} f (t) = f (t)
   \end{equation}
 \end{definition}
 
@@ -124,12 +127,21 @@ Riccati Equations}
 \end{proposition}
 
 \begin{proof}
-  For \eqref{eq:Ir_power}, $I^r t^s = \frac{1}{\Gamma (r)}  \int_0^t (t -
-  u)^{r - 1} u^s \hspace{0.17em} \dd u$. The substitution $u = tx$ gives
-  \[ I^r t^s = \frac{t^{s + r}}{\Gamma (r)}  \int_0^1 (1 - x)^{r - 1} x^s
-     \hspace{0.17em} \dd x = \frac{t^{s + r}}{\Gamma (r)} \cdot \frac{\Gamma
-     (s + 1)  \hspace{0.17em} \Gamma (r)}{\Gamma (s + r + 1)} = \frac{\Gamma
-     (s + 1)}{\Gamma (s + r + 1)}  \hspace{0.17em} t^{s + r} . \]
+  For \eqref{eq:Ir_power},
+  \begin{equation}
+    I^r t^s = \frac{1}{\Gamma (r)}  \int_0^t (t - u)^{r - 1} u^s
+    \hspace{0.17em} \dd u
+  \end{equation}
+  The substitution $u = tx$ gives
+  \begin{equation}
+    \begin{array}{ll}
+      I^r t^s & = \frac{t^{s + r}}{\Gamma (r)}  \int_0^1 (1 - x)^{r - 1} x^s
+      \hspace{0.17em} \dd x\\
+      & = \frac{t^{s + r}}{\Gamma (r)} \cdot \frac{\Gamma (s + 1) 
+      \hspace{0.17em} \Gamma (r)}{\Gamma (s + r + 1)} = \frac{\Gamma (s +
+      1)}{\Gamma (s + r + 1)}  \hspace{0.17em} t^{s + r}
+    \end{array}
+  \end{equation}
   For \eqref{eq:Dmu_power}: since $s > 0$, $\lim_{t \to 0^+} t^s = 0$; the
   Caputo correction term $- f (0)  \hspace{0.17em} t^{- \mu} / \Gamma (1 -
   \mu)$ in \eqref{eq:caputo} therefore vanishes, and $D^{\mu} t^s =
@@ -157,7 +169,9 @@ Fix $\mu \in (0, 1)$ and $T > 0$.
 \begin{definition}
   [M{\"u}ntz system]\label{def:muntz} For $k \in \N$, define $e_k (t) \assign
   t^{k \mu}$ on $[0, T]$. The span of $\{1, e_k : k \ge 1\}$ is denoted
-  \[ \mathcal{M} \assign \mathrm{span} \{1, t^{\mu}, t^{2 \mu}, \ldots\} . \]
+  \begin{equation}
+    \mathcal{M} \assign \mathrm{span} \{1, t^{\mu}, t^{2 \mu}, \ldots\}
+  \end{equation}
 \end{definition}
 
 \begin{remark}
@@ -204,14 +218,17 @@ Equation}\label{sec:riccati}
 Let $\mu \in (0, 1)$ and $c_0, c_1, c_2 \in \C$. Consider
 \begin{equation}
   \label{eq:frac_riccati} D^{\mu} y (t) = c_0 + c_1  \hspace{0.17em} y (t) +
-  c_2  \hspace{0.17em} y (t)^2, \qquad I^{1 - \mu} y (0) = 0.
+  c_2  \hspace{0.17em} y (t)^2
+\end{equation}
+\begin{equation}
+  I^{1 - \mu} y (0) = 0
 \end{equation}
 Applying $I^{\mu}$ and using \eqref{eq:caputo_RL} (and $y (0) = 0$ from 
 Remark~\ref{rem:correction}) gives the equivalent Volterra integral equation
 \begin{equation}
-  \label{eq:frac_riccati_V} y (t) = \frac{1}{\Gamma (\mu)}  \int_0^t (t -
-  s)^{\mu - 1}  \hspace{-0.17em} \left( c_0 + c_1  \hspace{0.17em} y (s) + c_2
-  \hspace{0.17em} y (s)^2 \right) \dd s.
+  \label{eq:frac_riccati_V} y (\lambda, t) = \frac{1}{\Gamma (\mu)}  \int_0^t
+  (t - s)^{\mu - 1}  \hspace{-0.17em} \left( c_0 (\lambda) + c_1 (\lambda)
+  \hspace{0.17em} y (s) + c_2 (\lambda) y (s)^2 \right) \dd s
 \end{equation}
 \begin{remark}
   [H{\"o}lder regularity at the origin]\label{rem:regularity} Evaluating
@@ -283,15 +300,19 @@ into \eqref{eq:frac_riccati_V} and splitting the integral,
 \end{equation}
 The first integral equals $t^{\mu} / \Gamma (\mu + 1)$. For the others,
 \eqref{eq:Ir_power} with $s = k \mu$ and $r = \mu$ gives
-\[ \int_0^t (t - s)^{\mu - 1} s^{k \mu} \dd s = \Gamma (\mu) \hspace{0.17em}
-   \frac{\Gamma (k \mu + 1)}{\Gamma ((k + 1) \mu + 1)}  \hspace{0.17em} t^{(k
-   + 1) \mu} \]
+\begin{equation}
+  \int_0^t (t - s)^{\mu - 1} s^{k \mu} \dd s = \Gamma (\mu) \hspace{0.17em}
+  \frac{\Gamma (k \mu + 1)}{\Gamma ((k + 1) \mu + 1)}  \hspace{0.17em} t^{(k +
+  1) \mu}
+\end{equation}
 Reindexing with $n = k + 1$ and $n = m + 1$ and matching the coefficient of
 $t^{n \mu}$ for each $n \ge 1$ yields \eqref{eq:a1_const} for $n = 1$ and
-\[ a_n = c_1  \hspace{0.17em} a_{n - 1}  \hspace{0.17em} \frac{\Gamma ((n - 1)
-   \mu + 1)}{\Gamma (n \mu + 1)} + c_2  \hspace{0.17em} b_{n - 1} 
-   \hspace{0.17em} \frac{\Gamma ((n - 1) \mu + 1)}{\Gamma (n \mu + 1)}, \qquad
-   n \ge 2, \]
+\begin{equation}
+  a_n = c_1  \hspace{0.17em} a_{n - 1}  \hspace{0.17em} \frac{\Gamma ((n - 1)
+  \mu + 1)}{\Gamma (n \mu + 1)} + c_2  \hspace{0.17em} b_{n - 1} 
+  \hspace{0.17em} \frac{\Gamma ((n - 1) \mu + 1)}{\Gamma (n \mu + 1)}, \qquad
+  n \ge 2
+\end{equation}
 which is \eqref{eq:ak_const} after renaming $n \mapsto k + 1$.
 
 \begin{theorem}
@@ -320,10 +341,10 @@ which is \eqref{eq:ak_const} after renaming $n \mapsto k + 1$.
       \label{eq:cauchy_bound} |a_k | \hspace{0.27em} \le \hspace{0.27em}
       \frac{M (r)}{r^k} \qquad \forall k \ge 1
     \end{equation}
-    \item {\tmem{Generic finiteness, $R < \infty$.}} For generic parameters
-    with $c_2 \ne 0$, $R < \infty$: the complexified Riccati flow develops
-    movable singularities at finite distance from the origin in the complex
-    $z$-plane.
+    \item {\tmem{Generic finiteness, $R < |c_0 + c_1 y (t) + c_2 y (t)^2 | \le
+    |c_0 | + |c_1 | + |c_2 | \infty$.}} For generic parameters with $c_2 \ne
+    0$, $R < \infty$: the complexified Riccati flow develops movable
+    singularities at finite distance from the origin in the complex $z$-plane.
   \end{enumerate}
 \end{theorem}
 
@@ -332,13 +353,19 @@ which is \eqref{eq:ak_const} after renaming $n \mapsto k + 1$.
     \item Let $B_1 \assign \{y \in C [0, T_0] : \|y\|_{\infty} \le 1\}$ with
     the supremum norm, and define
     \begin{equation}
-      \Phi (y) (t) \hspace{0.27em} \assign \hspace{0.27em} \frac{1}{\Gamma
-      (\mu)}  \int_0^t (t - s)^{\mu - 1}  \left( c_0 + c_1  \hspace{0.17em} y
-      (s) + c_2  \hspace{0.17em} y (s)^2 \right) \dd s \hspace{0.27em} =
-      \hspace{0.27em} I^{\mu}  (c_0 + c_1 y + c_2 y^2) (t)
+      \begin{array}{l}
+        \assign \hspace{0.27em} \frac{1}{\Gamma (\mu)}  \int_0^t (t - s)^{\mu
+        - 1}  \left( c_0 + c_1  \hspace{0.17em} y (s) + c_2  \hspace{0.17em} y
+        (s)^2 \right) \dd s\\
+        = \hspace{0.27em} I^{\mu}  (c_0 + c_1 y + c_2 y^2) (t)\\
+        
+      \end{array}
     \end{equation}
-    For $y \in B_1$ and $t \in [0, T_0]$, $|c_0 + c_1 y (t) + c_2 y (t)^2 |
-    \le |c_0 | + |c_1 | + |c_2 |$, so by \eqref{eq:Ir_power},
+    For $y \in B_1$ and $t \in [0, T_0]$,
+    \begin{equation}
+      |c_0 + c_1 y (t) + c_2 y (t)^2 | \le |c_0 | + |c_1 | + |c_2 |
+    \end{equation}
+    so by \eqref{eq:Ir_power},
     \begin{equation}
       | \Phi (y) (t) | \hspace{0.27em} \le \hspace{0.27em} (|c_0 | + |c_1 | +
       |c_2 |)  \frac{t^{\mu}}{\Gamma (\mu + 1)} \hspace{0.27em} \le
@@ -350,12 +377,14 @@ which is \eqref{eq:ak_const} after renaming $n \mapsto k + 1$.
       \frac{T_0^{\mu}  (|c_0 | + |c_1 | + |c_2 |)}{\Gamma (\mu + 1)} \le
       \frac{|c_0 | + |c_1 | + |c_2 |}{|c_0 | + |c_1 | + |c_2 | + 1} < 1
     \end{equation}
-    ; hence $\Phi (B_1) \subset B_1$. For $y_1, y_2 \in B_1$,
+    hence $\Phi (B_1) \subset B_1$. For $y_1, y_2 \in B_1$,
     \begin{equation}
-      | c_1 (y_1 - y_2) + c_2 (y_1^2 - y_2^2) | \hspace{0.27em} =
-      \hspace{0.27em} | c_1 + c_2 (y_1 + y_2) |  \hspace{0.17em} |y_1 - y_2 |
-      \hspace{0.27em} \le \hspace{0.27em} (|c_1 | + 2| c_2 |)  \hspace{0.17em}
-      \|y_1 - y_2 \|_{\infty}
+      \begin{array}{ll}
+        | c_1 (y_1 - y_2) + c_2 (y_1^2 - y_2^2) | & = \hspace{0.27em} | c_1 +
+        c_2 (y_1 + y_2) |  \hspace{0.17em} |y_1 - y_2 | \hspace{0.27em}\\
+        & \le \hspace{0.27em} (|c_1 | + 2| c_2 |)  \hspace{0.17em} \|y_1 -
+        y_2 \|_{\infty}
+      \end{array}
     \end{equation}
     so
     \begin{equation}
@@ -363,14 +392,17 @@ which is \eqref{eq:ak_const} after renaming $n \mapsto k + 1$.
       \hspace{0.27em} \frac{T_0^{\mu}}{\Gamma (\mu + 1)} (|c_1 | + 2| c_2 |) 
       \hspace{0.17em} \|y_1 - y_2 \|_{\infty}
     \end{equation}
-    By the second term in \eqref{eq:T0_choice}, $T_0^{\mu} (|c_1 | + 2| c_2 |)
-    / \Gamma (\mu + 1) \le (|c_1 | + 2| c_2 |) / [2 (|c_1 | + 2| c_2 | + 1)] <
-    \tfrac{1}{2}$; hence $\Phi$ is a strict contraction on $B_1$. The Banach
-    fixed-point theorem provides a unique $y^{\ast} \in B_1$ with $\Phi
-    (y^{\ast}) = y^{\ast}$, which solves \eqref{eq:frac_riccati_V}. The formal
-    Puiseux series defined by \eqref{eq:a1_const}--\eqref{eq:ak_const} solves
-    the same Volterra equation order-by-order; by uniqueness, the series
-    equals $y^{\ast}$ on $[0, T_0]$, and hence converges for $|t^{\mu} | <
+    By the second term in \eqref{eq:T0_choice},
+    \begin{equation}
+      \frac{T_0^{\mu} (|c_1 | + 2| c_2 |)}{\Gamma (\mu + 1)} \le \frac{|c_1 |
+      + 2| c_2 |}{[2 (|c_1 | + 2| c_2 | + 1)]} < \tfrac{1}{2}
+    \end{equation}
+    hence $\Phi$ is a strict contraction on $B_1$. The Banach fixed-point
+    theorem provides a unique $y^{\ast} \in B_1$ with $\Phi (y^{\ast}) =
+    y^{\ast}$, which solves \eqref{eq:frac_riccati_V}. The formal Puiseux
+    series defined by \eqref{eq:a1_const}--\eqref{eq:ak_const} solves the same
+    Volterra equation order-by-order; by uniqueness, the series equals
+    $y^{\ast}$ on $[0, T_0]$, and hence converges for $|t^{\mu} | <
     T_0^{\mu}$, proving $R \ge T_0^{\mu} > 0$.
     
     \item By item~(i), $g (z) = y (z^{1 / \mu}) = \sum_{k \ge 1} a_k z^k$ is
@@ -395,6 +427,7 @@ which is \eqref{eq:ak_const} after renaming $n \mapsto k + 1$.
     limit of the diagonal Pad{\'e} poles, see  Section~\ref{sec:pade}). Hence
     $R < \infty$ for generic parameters with $c_2 \ne 0$
   \end{enumeratenumeric}
+  
 \end{proof}
 
 \begin{remark}
@@ -436,29 +469,35 @@ satisfying the Pad{\'e} matching condition
   $z^n$ for $0 \le n \le 2 M$ gives $p_0 = 0$,
   
   \begin{align}
-    p_n & = a_n + \sum_{j = 1}^{\min (n, M)} q_j  \hspace{0.17em} a_{n - j},
-    \qquad 1 \le n \le M  \label{eq:Pade1}\\
-    0 & = a_n + \sum_{j = 1}^M q_j  \hspace{0.17em} a_{n - j}, \qquad M + 1
-    \le n \le 2 M  \label{eq:Pade2}
+    p_n & = a_n + \sum_{j = 1}^{\min (n, M)} q_j  \hspace{0.17em} a_{n - j}
+    \quad \forall 1 \le n \le M  \label{eq:Pade1}\\
+    0 & = a_n + \sum_{j = 1}^M q_j  \hspace{0.17em} a_{n - j} \tmxspace
+    \forall M + 1 \le n \le 2 M  \label{eq:Pade2}
   \end{align}
   
   The denominator system \eqref{eq:Pade2} is the Hankel linear system
   \begin{equation}
-    \label{eq:hankel_system} H_M  \hspace{0.17em} \tmmathbf{q}= -\tmmathbf{b},
-    \qquad H_M = \left(\begin{array}{cccc}
+    \label{eq:hankel_system} H_M  \hspace{0.17em} \tmmathbf{q}= -\tmmathbf{b}
+  \end{equation}
+  where
+  \begin{equation}
+    H_M = \left(\begin{array}{cccc}
       a_M & a_{M - 1} & \cdots & a_1\\
       a_{M + 1} & a_M & \cdots & a_2\\
       \vdots & \vdots & \ddots & \vdots\\
       a_{2 M - 1} & a_{2 M - 2} & \cdots & a_M
-    \end{array}\right), \quad \tmmathbf{q}= \left(\begin{array}{c}
+    \end{array}\right)
+  \end{equation}
+  \begin{equation}
+    \tmmathbf{q}= \left(\begin{array}{c}
       q_1\\
       \vdots\\
       q_M
-    \end{array}\right), \quad \tmmathbf{b}= \left(\begin{array}{c}
+    \end{array}\right)  \quad \tmmathbf{b}= \left(\begin{array}{c}
       a_{M + 1}\\
       \vdots\\
       a_{2 M}
-    \end{array}\right) .
+    \end{array}\right)
   \end{equation}
 \end{lemma}
 
@@ -656,8 +695,8 @@ Given $(c_0, c_1, c_2, \mu)$ and Pad{\'e} order $M$:
   
   \item Recover the numerator coefficients via \eqref{eq:Pade1}.
   
-  \item Evaluate $y_M (t) = P_M (t^{\mu}) / Q_M (t^{\mu})$ at any $t \ge 0$.
-  Cost: $\mathcal{O} (M)$ per query.
+  \item Evaluate $y_M (t) = \frac{P_M (t^{\mu})}{Q_M (t^{\mu})}$ at any $t \ge
+  0$. Cost: $\mathcal{O} (M)$ per query
 \end{enumerate}
 Steps 1--4 are independent of $t$; the entire family $\{y_M (t) : t \ge 0\}$
 is encoded in a single rational function in $z = t^{\mu}$. There is no grid,

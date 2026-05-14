@@ -10,4 +10,9 @@ public interface RealFunctional extends
   {
     return Functional.express(Real.class, RealFunction.class, RealFunctional.class, expression);
   }
+
+  public default RealFunction eval(double x)
+  {
+    return evaluate(Real.valueOf(x), 64);
+  }
 }

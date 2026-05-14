@@ -97,7 +97,6 @@ public class RiccatiMuntzPadeFunctional extends
 
   private ComplexPolynomialNullaryFunction discriminant;
 
-  private ComplexPolynomial                d;
 
   /**
    * Construct with nullary polynomial factory functions.
@@ -136,8 +135,7 @@ public class RiccatiMuntzPadeFunctional extends
     // Compile the full recurrence. p(v), q(v), r(v) use the
     // variable-as-function call bridge: p, q, r are ComplexPolynomial
     // variables registered in context whose runtime class implements
-    // ComplexFunction, so `p(v)` resolves to p.evaluate(v, ...), uniform
-    // with the existing a(k)(v) call form.
+    // ComplexFunction
     a = ComplexPolynomialSequence.express("a:k➔v➔when(k=1,p(v)/Γ(μ+1),else,(Γ((k-1)*μ+1)/Γ(k*μ+1))*(q(v)*a(k-1)(v)+r(v)*∑j➔a(j)(v)*a(k-1-j)(v){j=1..k-2}))",
                                           context);
 
@@ -256,8 +254,7 @@ public class RiccatiMuntzPadeFunctional extends
   {
     P.evaluate(bits, p);
     Q.evaluate(bits, q);
-    R.evaluate(bits, r);
-    // discriminant(bits, d); // skipped — not needed for first-coefficient eval; d is null at construction time
+    R.evaluate(bits, r);   
   }
 
   int bits = 128;
