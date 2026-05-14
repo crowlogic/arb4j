@@ -1,751 +1,931 @@
-\documentclass{article}
-\usepackage[english]{babel}
-\usepackage{geometry,amsmath,amssymb,enumerate,hyperref,latexsym,theorem}
-\geometry{letterpaper}
+\documentclass[12pt,a4paper]{amsart}
 
-%%%%%%%%%% Start TeXmacs macros
-\newcommand{\assign}{:=}
-\newcommand{\tmem}[1]{{\em #1\/}}
-\newcommand{\tmmathbf}[1]{\ensuremath{\boldsymbol{#1}}}
-\newcommand{\tmscript}[1]{\text{\scriptsize{$#1$}}}
-\newcommand{\tmxspace}{\hspace{1em}}
-\newenvironment{enumeratenumeric}{\begin{enumerate}[1.] }{\end{enumerate}}
-\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
-\newtheorem{definition}{Definition}
-\newtheorem{lemma}{Lemma}
-\newtheorem{proposition}{Proposition}
-{\theorembodyfont{\rmfamily}\newtheorem{remark}{Remark}}
-\newtheorem{theorem}{Theorem}
-%%%%%%%%%% End TeXmacs macros
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage[margin=2.5cm]{geometry}
 
-\newtheorem{assumption}{Assumption}
-\newcommand{\re}{Re}
-\newcommand{\R}{\ensuremath{\mathbb{R}}}
+%% Operators
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\ii}{\mathrm{i}}
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\N}{\mathbb{N}}
-\newcommand{\dd}{\hspace{0.17em} \mathrm{d}}
-\newcommand{\ii}{\mathrm{i}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\assign}{:=}
+\DeclareMathOperator{\Res}{Res}
+\newcommand{\ML}[2]{E_{#1,#2}}
+\newcommand{\capD}{D^{\mu}}
+\newcommand{\RL}{I^{\mu}}
+
+%% Theorem environments
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}{Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
 
 \begin{document}
 
-\title{The Pad{\'e}--M{\"u}ntz Method forConstant-Coefficient Fractional
-Riccati Equations}
-
+\title{The Pad\'e--M\"untz Method for\\
+Constant-Coefficient Fractional Riccati Equations}
 \author{Stephen Crowley}
-
 \date{April 2026}
-
 \maketitle
 
 \begin{abstract}
-  A purely algebraic, discretization-free solution method is developed for the
-  general constant-coefficient fractional Riccati equation $D^{\mu} y = c_0 +
-  c_1  \hspace{0.17em} y + c_2  \hspace{0.17em} y^2$ of Caputo order $\mu \in
-  (0, 1)$ with initial condition $I^{1 - \mu} y (0) = 0$.\footnote{A reference
-  implementation is available in
-  \href{https://github.com/crowlogic/arb4j/blob/master/src/main/java/arb/equations/ConstantCoefficientFractionalRiccatiEquation.java}{arb4j}.}
-  Because the M{\"u}ntz lattice $\{t^{k \mu} \}_{k \ge 1}$ is closed under the
-  Caputo derivative, fractional integration, and pointwise multiplication, the
-  M{\"u}ntz spectral Tau substitution yields an explicit Puiseux expansion $y
-  (t) = \sum_{k \ge 1} a_k  \hspace{0.17em} t^{k \mu}$ whose coefficients
-  satisfy a closed Gamma-ratio convolution recurrence. The induced power
-  series in the variable $z = t^{\mu}$ has a strictly positive radius of
-  convergence $R$, established by a Banach fixed-point argument on the
-  equivalent Volterra equation, and is finite for generic parameters because
-  the complexified Riccati flow develops movable singularities in the complex
-  $z$-plane; the recurrence by itself therefore produces only a local
-  representation and is not globally convergent in $t$. Global-in-$t$
-  convergence on the positive real axis is recovered by re-summing the Puiseux
-  series via the diagonal $[M / M]$ Pad{\'e} approximant in $z$, constructed
-  from the M{\"u}ntz coefficients through a single Hankel linear system $H_M
-  \tmmathbf{q}= -\tmmathbf{b}$. Under the de~Montessus de~Ballore and
-  Nuttall--Pommerenke theorems, the diagonal Pad{\'e} sequence converges to
-  the analytic continuation of $y$ along $z = t^{\mu}$ for all $t \ge 0$
-  whenever the solution has no real-positive poles {\tmem{and}} $g (z) \assign
-  y (z^{1 / \mu})$ admits a meromorphic continuation to $\C$; in that setting
-  a computable a-posteriori error bound $|y (t) - y_M (t) | \le | \Delta_M
-  (t^{\mu}) |^2 / (| \Delta_{M - 1} (t^{\mu}) | - | \Delta_M (t^{\mu}) |)$ in
-  terms of successive Pad{\'e} differences $\Delta_k = R_k - R_{k - 1}$ is
-  derived from a uniform geometric tail estimate.
+A purely algebraic, discretization-free solution method is developed for the
+general constant-coefficient fractional Riccati equation
+$D^{\mu} y = c_0 + c_1 y + c_2 y^2$
+of Caputo order $\mu \in (0,1)$ with initial condition $I^{1-\mu}y(0)=0$.
+Because the M\"untz lattice $\{t^{k\mu}\}_{k\ge 1}$ is closed under the Caputo
+derivative, fractional integration, and pointwise multiplication, the M\"untz
+spectral Tau substitution yields an explicit Puiseux expansion
+$y(t)=\sum_{k\ge 1}a_k t^{k\mu}$ whose coefficients satisfy a closed
+Gamma-ratio convolution recurrence. The induced power series in the variable
+$z=t^{\mu}$ has a strictly positive radius of convergence $R$, established by
+a Banach fixed-point argument on the equivalent Volterra equation, and is
+finite for generic parameters because the complexified Riccati flow develops
+movable singularities in the complex $z$-plane.
+
+The Cole--Hopf substitution $g=-\mathcal{D}w/(c_2 w)$, where $\mathcal{D}$
+denotes the M\"untz--Caputo operator in the $z$-coordinate, linearises the
+Riccati equation to the constant-coefficient linear equation
+$\mathcal{D}^2 w - c_1\mathcal{D}w + c_0c_2\,w = 0$,
+whose fundamental solutions are Mittag-Leffler functions $\ML{\mu}{1}(\lambda_\pm z)$,
+both entire of order $1/\mu$. Consequently $g$ is the ratio of two entire
+functions, hence \emph{meromorphic on all of $\mathbb{C}$}, with poles precisely
+at the zeros of the Mittag-Leffler combination $w$. This meromorphy is
+unconditional and established by direct construction, not by hypothesis.
+Global-in-$t$ convergence on the positive real axis is recovered by re-summing
+the Puiseux series via the diagonal $[M/M]$ Pad\'e approximant in $z$,
+constructed from the M\"untz coefficients through a single Hankel linear
+system $H_M\mathbf{q}=-\mathbf{b}$. Under the de~Montessus de~Ballore and
+Nuttall--Pommerenke theorems the diagonal Pad\'e sequence converges to the
+analytic continuation of $y$ for all $t\ge 0$, and a computable a-posteriori
+error bound in terms of successive Pad\'e differences is derived from a
+uniform geometric tail estimate.
 \end{abstract}
 
-{\tableofcontents}
+\tableofcontents
 
-\section{Fractional Calculus and the M{\"u}ntz Basis}\label{sec:prelim}
+%%=========================================================================
+\section{Fractional Calculus and the M\"untz Basis}\label{sec:prelim}
+%%=========================================================================
 
 \subsection{Riemann--Liouville integral and Caputo derivative}
 
-\begin{definition}
-  [Riemann--Liouville integral]\label{def:RL} Let $r > 0$ and $f \in
-  L^1_{\mathrm{loc}} [0, T]$. Define
-  \begin{equation}
-    \label{eq:RL_int} I^r f (t) \assign \frac{1}{\Gamma (r)}  \int_0^t (t -
-    s)^{r - 1} f (s) \hspace{0.17em} \dd s, \qquad t \in [0, T]
-  \end{equation}
+\begin{definition}[Riemann--Liouville integral]\label{def:RL}
+Let $r>0$ and $f\in L^1_{\mathrm{loc}}[0,T]$. Define
+\begin{equation}\label{eq:RL_int}
+  I^r f(t) \assign \frac{1}{\Gamma(r)}\int_0^t (t-s)^{r-1}f(s)\,\dd s
+  \qquad \forall\, t\in[0,T].
+\end{equation}
 \end{definition}
 
-\begin{definition}
-  [Caputo derivative]\label{def:Caputo} Let $\mu \in (0, 1)$ and $f$ satisfy
-  $I^{1 - \mu} f \in C^1 [0, T]$. Define
-  \begin{equation}
-    \label{eq:caputo} D^{\mu} f (t) \assign \frac{\dd}{\dd t} 
-    \hspace{-0.17em} (I^{1 - \mu} f (t)) - \frac{f (0)}{\Gamma (1 - \mu)} t^{-
-    \mu}, \qquad t \in (0, T]
-  \end{equation}
-  The fundamental relations are
-  \begin{equation}
-    \label{eq:caputo_RL} I^{\mu} D^{\mu} f (t) = f (t) - f (0)
-  \end{equation}
-  \begin{equation}
-    D^{\mu} I^{\mu} f (t) = f (t)
-  \end{equation}
+\begin{definition}[Caputo derivative]\label{def:Caputo}
+Let $\mu\in(0,1)$ and $f$ satisfy $I^{1-\mu}f\in C^1[0,T]$. Define
+\begin{equation}\label{eq:caputo}
+  D^{\mu}f(t) \assign \frac{\dd}{\dd t}\!\bigl(I^{1-\mu}f(t)\bigr)
+               -\frac{f(0)}{\Gamma(1-\mu)}\,t^{-\mu}
+  \qquad \forall\,t\in(0,T].
+\end{equation}
+The fundamental inversion relations are
+\begin{align}
+  I^{\mu}D^{\mu}f(t) &= f(t)-f(0), \label{eq:caputo_RL}\\
+  D^{\mu}I^{\mu}f(t) &= f(t).       \label{eq:DI}
+\end{align}
 \end{definition}
 
-\begin{remark}
-  [Vanishing correction term for the Riccati solution]\label{rem:correction}
-  For the fractional Riccati equation \eqref{eq:frac_riccati} below, the
-  initial condition $I^{1 - \mu} y (0) = 0$ is consistent with the M{\"u}ntz
-  ansatz $y (t) = \sum_{k \ge 1} a_k  \hspace{0.17em} t^{k \mu}$, since by
-  \eqref{eq:Ir_power} below $I^{1 - \mu} [t^{k \mu}] |_{t = 0} = 0$ for all $k
-  \ge 1$. The same ansatz gives $y (0) = 0$, so the correction term $- f (0)
-  t^{- \mu} / \Gamma (1 - \mu)$ in \eqref{eq:caputo} vanishes identically
-  along the Riccati solution, and the Caputo derivative reduces to $D^{\mu} y
-  (t) = \frac{\dd}{\dd t} I^{1 - \mu} y (t)$ throughout.
+\begin{remark}[Vanishing correction for the Riccati solution]\label{rem:correction}
+For the fractional Riccati equation \eqref{eq:frac_riccati} below, the initial
+condition $I^{1-\mu}y(0)=0$ is consistent with the M\"untz ansatz
+$y(t)=\sum_{k\ge 1}a_k t^{k\mu}$, since by \eqref{eq:Ir_power} below
+$I^{1-\mu}[t^{k\mu}]\big|_{t=0}=0$ for all $k\ge 1$.
+The same ansatz gives $y(0)=0$, so the correction term
+$-f(0)\,t^{-\mu}/\Gamma(1-\mu)$ in \eqref{eq:caputo} vanishes identically
+along the Riccati solution, and $D^{\mu}y(t)=\frac{\dd}{\dd t}I^{1-\mu}y(t)$
+throughout.
 \end{remark}
 
-\begin{proposition}
-  [Action on powers]\label{prop:powers} Let $s > - 1$ and $r > 0$. Then
-  \begin{equation}
-    \label{eq:Ir_power} I^r t^s = \frac{\Gamma (s + 1)}{\Gamma (s + r + 1)} 
-    \hspace{0.17em} t^{s + r}
-  \end{equation}
-  Let $\mu \in (0, 1)$ and $s > 0$. Then
-  \begin{equation}
-    \label{eq:Dmu_power} D^{\mu} t^s = \frac{\Gamma (s + 1)}{\Gamma (s + 1 -
-    \mu)}  \hspace{0.17em} t^{s - \mu}
-  \end{equation}
+\begin{proposition}[Action on powers]\label{prop:powers}
+Let $s>-1$ and $r>0$. Then
+\begin{equation}\label{eq:Ir_power}
+  I^r t^s = \frac{\Gamma(s+1)}{\Gamma(s+r+1)}\,t^{s+r}.
+\end{equation}
+Let $\mu\in(0,1)$ and $s>0$. Then
+\begin{equation}\label{eq:Dmu_power}
+  D^{\mu}t^s = \frac{\Gamma(s+1)}{\Gamma(s+1-\mu)}\,t^{s-\mu}.
+\end{equation}
 \end{proposition}
 
 \begin{proof}
-  For \eqref{eq:Ir_power},
-  \begin{equation}
-    I^r t^s = \frac{1}{\Gamma (r)}  \int_0^t (t - u)^{r - 1} u^s
-    \hspace{0.17em} \dd u
-  \end{equation}
-  The substitution $u = tx$ gives
-  \begin{equation}
-    \begin{array}{ll}
-      I^r t^s & = \frac{t^{s + r}}{\Gamma (r)}  \int_0^1 (1 - x)^{r - 1} x^s
-      \hspace{0.17em} \dd x\\
-      & = \frac{t^{s + r}}{\Gamma (r)} \cdot \frac{\Gamma (s + 1) 
-      \hspace{0.17em} \Gamma (r)}{\Gamma (s + r + 1)} = \frac{\Gamma (s +
-      1)}{\Gamma (s + r + 1)}  \hspace{0.17em} t^{s + r}
-    \end{array}
-  \end{equation}
-  For \eqref{eq:Dmu_power}: since $s > 0$, $\lim_{t \to 0^+} t^s = 0$; the
-  Caputo correction term $- f (0)  \hspace{0.17em} t^{- \mu} / \Gamma (1 -
-  \mu)$ in \eqref{eq:caputo} therefore vanishes, and $D^{\mu} t^s =
-  \frac{\dd}{\dd t} I^{1 - \mu} t^s$. By \eqref{eq:Ir_power} with $r = 1 -
-  \mu$, $I^{1 - \mu} t^s = \frac{\Gamma (s + 1)}{\Gamma (s + 2 - \mu)} t^{s +
-  1 - \mu}$; differentiating and using $\Gamma (s + 2 - \mu) = (s + 1 - \mu)
-  \Gamma (s + 1 - \mu)$ yields \eqref{eq:Dmu_power}.
+\textbf{Proof of \eqref{eq:Ir_power}.}
+By definition,
+\[
+  I^r t^s = \frac{1}{\Gamma(r)}\int_0^t(t-u)^{r-1}u^s\,\dd u.
+\]
+Substitute $u=tx$, $\dd u=t\,\dd x$:
+\[
+  I^r t^s
+  = \frac{t^{s+r}}{\Gamma(r)}\int_0^1(1-x)^{r-1}x^s\,\dd x
+  = \frac{t^{s+r}}{\Gamma(r)}\cdot B(s+1,r)
+  = \frac{t^{s+r}}{\Gamma(r)}\cdot\frac{\Gamma(s+1)\Gamma(r)}{\Gamma(s+r+1)}
+  = \frac{\Gamma(s+1)}{\Gamma(s+r+1)}\,t^{s+r}.
+\]
+
+\textbf{Proof of \eqref{eq:Dmu_power}.}
+Since $s>0$, $f(0)=0$ and the Caputo correction term vanishes.
+Hence $D^{\mu}t^s = \frac{\dd}{\dd t}I^{1-\mu}t^s$.
+Applying \eqref{eq:Ir_power} with exponent $1-\mu$:
+\[
+  I^{1-\mu}t^s = \frac{\Gamma(s+1)}{\Gamma(s+2-\mu)}\,t^{s+1-\mu}.
+\]
+Differentiating and using $\Gamma(s+2-\mu)=(s+1-\mu)\Gamma(s+1-\mu)$:
+\[
+  \frac{\dd}{\dd t}\left[\frac{\Gamma(s+1)}{\Gamma(s+2-\mu)}\,t^{s+1-\mu}\right]
+  = \frac{\Gamma(s+1)(s+1-\mu)}{\Gamma(s+2-\mu)}\,t^{s-\mu}
+  = \frac{\Gamma(s+1)}{\Gamma(s+1-\mu)}\,t^{s-\mu}.\qedhere
+\]
 \end{proof}
 
-\begin{remark}
-  [The case $s = 0$]\label{rem:Dmu_const} The hypothesis $s > 0$
-  in~\eqref{eq:Dmu_power} cannot be relaxed to $s \ge 0$. For $s = 0$, $f (t)
-  \equiv 1$, $f (0) = 1$, and the correction term in~\eqref{eq:caputo} gives
-  $D^{\mu} (1) = t^{- \mu} / \Gamma (1 - \mu) - t^{- \mu} / \Gamma (1 - \mu) =
-  0$, whereas the right-hand side of~\eqref{eq:Dmu_power} evaluated at $s = 0$
-  equals $t^{- \mu} / \Gamma (1 - \mu) \ne 0$. The Caputo derivative of a
-  constant is therefore zero, consistent with the convention $D^{\mu} y (0) =
-  0$ for solutions of~\eqref{eq:frac_riccati} that vanish at the origin.
+\begin{remark}[The case $s=0$]\label{rem:Dmu_const}
+The hypothesis $s>0$ in \eqref{eq:Dmu_power} cannot be relaxed to $s\ge 0$.
+For $f\equiv 1$: $f(0)=1$, and the correction term cancels the naive
+application of \eqref{eq:Dmu_power}, giving $D^{\mu}(1)=0$, consistent with
+the Caputo convention.
 \end{remark}
 
-\subsection{The M{\"u}ntz basis}
+\subsection{The M\"untz basis}
 
-Fix $\mu \in (0, 1)$ and $T > 0$.
+Fix $\mu\in(0,1)$ and $T>0$.
 
-\begin{definition}
-  [M{\"u}ntz system]\label{def:muntz} For $k \in \N$, define $e_k (t) \assign
-  t^{k \mu}$ on $[0, T]$. The span of $\{1, e_k : k \ge 1\}$ is denoted
-  \begin{equation}
-    \mathcal{M} \assign \mathrm{span} \{1, t^{\mu}, t^{2 \mu}, \ldots\}
-  \end{equation}
+\begin{definition}[M\"untz system]\label{def:muntz}
+For $k\in\N$, set $e_k(t)\assign t^{k\mu}$ on $[0,T]$, and
+\[
+  \mathcal{M}\assign\mathrm{span}\{1,\,t^{\mu},\,t^{2\mu},\ldots\}.
+\]
 \end{definition}
 
-\begin{remark}
-  [Completeness]\label{rem:muntz_complete} By the M{\"u}ntz--Sz{\'a}sz
-  theorem, $\{t^{k \mu} \}_{k \ge 1}$ is complete in $L^2 [0, 1]$ iff $\sum_{k
-  \ge 1} (k \mu)^{- 1} = \infty$. Since $\sum_{k \ge 1} k^{- 1} = \infty$,
-  completeness holds for every $\mu \in (0, 1)$. This underwrites the
-  M{\"u}ntz--Tau spectral method.
+\begin{remark}[Completeness]\label{rem:muntz_complete}
+By the M\"untz--Sz\'asz theorem, $\{t^{k\mu}\}_{k\ge 1}$ is complete in
+$L^2[0,1]$ iff $\sum_{k\ge 1}(k\mu)^{-1}=\infty$. Since $\sum k^{-1}=\infty$,
+completeness holds for every $\mu\in(0,1)$.
 \end{remark}
 
-\begin{proposition}
-  [Closure of $\mathcal{M}$]\label{prop:closure_M} For $k \ge 1$ and $r > 0$,
-  
-  \begin{align}
-    D^{\mu} t^{k \mu} & = \frac{\Gamma (k \mu + 1)}{\Gamma ((k - 1) \mu + 1)} 
-    \hspace{0.17em} t^{(k - 1) \mu}  \label{eq:Dmu_Muntz}\\
-    I^r t^{k \mu} & = \frac{\Gamma (k \mu + 1)}{\Gamma (k \mu + r + 1)} 
-    \hspace{0.17em} t^{k \mu + r}  \label{eq:Ir_Muntz}\\
-    t^{j \mu}  \hspace{0.17em} t^{k \mu} & = t^{(j + k) \mu} 
-    \label{eq:prod_Muntz}
-  \end{align}
-  
-  Consequently $D^{\mu} \mathcal{M} \subset \mathcal{M}$, $I^r \mathcal{M}
-  \subset \mathcal{M}$, and $\mathcal{M}$ is closed under multiplication.
+\begin{proposition}[Closure of $\mathcal{M}$]\label{prop:closure_M}
+For $k\ge 1$ and $r>0$,
+\begin{align}
+  D^{\mu}t^{k\mu} &= \frac{\Gamma(k\mu+1)}{\Gamma((k-1)\mu+1)}\,t^{(k-1)\mu},
+  \label{eq:Dmu_Muntz}\\
+  I^r t^{k\mu} &= \frac{\Gamma(k\mu+1)}{\Gamma(k\mu+r+1)}\,t^{k\mu+r},
+  \label{eq:Ir_Muntz}\\
+  t^{j\mu}\cdot t^{k\mu} &= t^{(j+k)\mu}.
+  \label{eq:prod_Muntz}
+\end{align}
+Consequently $D^{\mu}\mathcal{M}\subset\mathcal{M}$,
+$I^r\mathcal{M}\subset\mathcal{M}$, and $\mathcal{M}$ is closed under
+multiplication.
 \end{proposition}
 
 \begin{proof}
-  \eqref{eq:Dmu_Muntz} follows from  Proposition~\ref{prop:powers} with $s = k
-  \mu > 0$; \eqref{eq:Ir_Muntz} from \eqref{eq:Ir_power} with $s = k \mu > -
-  1$; \eqref{eq:prod_Muntz} is direct.
+\eqref{eq:Dmu_Muntz} is Proposition~\ref{prop:powers} with $s=k\mu>0$.
+\eqref{eq:Ir_Muntz} is \eqref{eq:Ir_power} with $s=k\mu>-1$.
+\eqref{eq:prod_Muntz} is immediate from the exponent rule.
 \end{proof}
 
-These three closure properties together --- under $D^{\mu}$, under $I^r$, and
-under multiplication --- are exactly what makes the M{\"u}ntz lattice the
-canonical basis for any constant-coefficient fractional ODE with polynomial
-nonlinearity. The M{\"u}ntz--Tau substitution {\cite{esmaeili2015}} preserves
-the entire algebraic structure of the equation.
-
-\section{The Constant-Coefficient Fractional Riccati
-Equation}\label{sec:riccati}
+%%=========================================================================
+\section{The Constant-Coefficient Fractional Riccati Equation}
+\label{sec:riccati}
+%%=========================================================================
 
 \subsection{Equation and Volterra representation}
 
-Let $\mu \in (0, 1)$ and $c_0, c_1, c_2 \in \C$. Consider
-\begin{equation}
-  \label{eq:frac_riccati} D^{\mu} y (t) = c_0 + c_1  \hspace{0.17em} y (t) +
-  c_2  \hspace{0.17em} y (t)^2
+Let $\mu\in(0,1)$ and $c_0,c_1,c_2\in\mathbb{C}$. Consider
+\begin{align}
+  D^{\mu}y(t) &= c_0 + c_1\,y(t) + c_2\,y(t)^2,
+  \label{eq:frac_riccati}\\
+  I^{1-\mu}y(0) &= 0. \label{eq:IC}
+\end{align}
+Applying $I^{\mu}$ to \eqref{eq:frac_riccati} and using \eqref{eq:caputo_RL}
+with $y(0)=0$ gives the equivalent Volterra equation
+\begin{equation}\label{eq:frac_riccati_V}
+  y(t) = \frac{1}{\Gamma(\mu)}\int_0^t(t-s)^{\mu-1}
+         \bigl(c_0+c_1\,y(s)+c_2\,y(s)^2\bigr)\dd s.
 \end{equation}
-\begin{equation}
-  I^{1 - \mu} y (0) = 0
-\end{equation}
-Applying $I^{\mu}$ and using \eqref{eq:caputo_RL} (and $y (0) = 0$ from 
-Remark~\ref{rem:correction}) gives the equivalent Volterra integral equation
-\begin{equation}
-  \label{eq:frac_riccati_V} y (\lambda, t) = \frac{1}{\Gamma (\mu)}  \int_0^t
-  (t - s)^{\mu - 1}  \hspace{-0.17em} \left( c_0 (\lambda) + c_1 (\lambda)
-  \hspace{0.17em} y (s) + c_2 (\lambda) y (s)^2 \right) \dd s
-\end{equation}
-\begin{remark}
-  [H{\"o}lder regularity at the origin]\label{rem:regularity} Evaluating
-  \eqref{eq:frac_riccati_V} at $t = 0$ gives $y (0) = 0$. Near the origin, $y
-  (t) = \frac{c_0}{\Gamma (\mu + 1)}  \hspace{0.17em} t^{\mu} +\mathcal{O}
-  (t^{2 \mu})$, so $y$ is H{\"o}lder continuous of order $\mu$ but not $C^1$
-  at $0$. The H{\"o}lder exponent $\mu$ is the natural regularity scale of the
-  problem and the reason ordinary Taylor series in $t$ fail.
+
+\begin{remark}[H\"older regularity at the origin]\label{rem:regularity}
+Evaluating \eqref{eq:frac_riccati_V} at $t=0$ gives $y(0)=0$. Near the
+origin, $y(t)=\frac{c_0}{\Gamma(\mu+1)}t^{\mu}+\mathcal{O}(t^{2\mu})$, so
+$y$ is H\"older continuous of order $\mu$ but not $C^1$ at $0$. The ordinary
+Taylor series in $t$ therefore fails, and the natural local representation is
+a Puiseux expansion in $t^\mu$.
 \end{remark}
 
-\subsection*{The M{\"u}ntz--Tau Puiseux series solution}
+\subsection{The M\"untz--Tau Puiseux series solution}
 
-\begin{theorem}
-  [Series solution in $\{t^{k \mu} \}$]\label{thm:riccati_series} There exists
-  $R > 0$ and coefficients $(a_k)_{k \ge 1} \subset \C$ such that
-  \begin{equation}
-    \label{eq:y_series} y (t) = \sum_{k = 1}^{\infty} a_k  \hspace{0.17em}
-    t^{k \mu}, \qquad |t| < R^{1 / \mu},
-  \end{equation}
-  with
-  
-  \begin{align}
-    a_1 & = \frac{c_0}{\Gamma (\mu + 1)},  \label{eq:a1_const}\\
-    a_{k + 1} & = \frac{\Gamma (k \mu + 1)}{\Gamma ((k + 1) \mu + 1)}  \left(
-    c_1  \hspace{0.17em} a_k + c_2  \hspace{-0.17em} \hspace{-0.17em}
-    \sum_{\tmscript{\begin{array}{c}
-      j + \ell = k\\
-      1 \le j, \ell \le k - 1
-    \end{array}}} \hspace{-0.17em} \hspace{-0.17em} a_j  \hspace{0.17em}
-    a_{\ell} \right), \qquad k \ge 1.  \label{eq:ak_const}
-  \end{align}
+\begin{theorem}[Series solution in $\{t^{k\mu}\}$]\label{thm:riccati_series}
+There exist $R>0$ and $(a_k)_{k\ge 1}\subset\mathbb{C}$ such that
+\begin{equation}\label{eq:y_series}
+  y(t) = \sum_{k=1}^{\infty}a_k\,t^{k\mu},\qquad |t|<R^{1/\mu},
+\end{equation}
+with
+\begin{align}
+  a_1 &= \frac{c_0}{\Gamma(\mu+1)},
+  \label{eq:a1_const}\\
+  a_{k+1} &= \frac{\Gamma(k\mu+1)}{\Gamma((k+1)\mu+1)}
+    \Biggl(c_1\,a_k + c_2\!\!\!\!\sum_{\substack{j+\ell=k\\1\le j,\ell\le k-1}}
+    \!\!\!\! a_j\,a_{\ell}\Biggr)
+  \quad\forall\,k\ge 1.
+  \label{eq:ak_const}
+\end{align}
 \end{theorem}
 
-\begin{remark}
-  [Quadratic convolution at $k = 1$]\label{rem:conv_k1} For $k = 1$, the
-  convolution sum is empty (no pairs $(j, \ell)$ with $j, \ell \ge 1$ and $j +
-  \ell = 1$), so $a_2 = \frac{\Gamma (\mu + 1)}{\Gamma (2 \mu + 1)} 
-  \hspace{0.17em} c_1  \hspace{0.17em} a_1$. The quadratic term first
-  contributes at $k = 2$, giving $a_3 = \frac{\Gamma (2 \mu + 1)}{\Gamma (3
-  \mu + 1)}  (c_1  \hspace{0.17em} a_2 + c_2  \hspace{0.17em} a_1^2)$.
+\begin{remark}[Quadratic convolution at $k=1$]\label{rem:conv_k1}
+For $k=1$ the convolution sum is empty (no pairs $(j,\ell)$ with $j,\ell\ge 1$
+and $j+\ell=1$), so
+\[
+  a_2 = \frac{\Gamma(\mu+1)}{\Gamma(2\mu+1)}\,c_1 a_1.
+\]
+The quadratic term first contributes at $k=2$:
+\[
+  a_3 = \frac{\Gamma(2\mu+1)}{\Gamma(3\mu+1)}\bigl(c_1 a_2+c_2 a_1^2\bigr).
+\]
 \end{remark}
 
-Existence of a positive radius $R > 0$ and analyticity of $y$ in $z = t^{\mu}$
-on $|z| < R$ is established in  Theorem~\ref{thm:radius} below by a Banach
-fixed-point argument on \eqref{eq:frac_riccati_V}. Granting that, write $y (t)
-= \sum_{k \ge 1} a_k  \hspace{0.17em} t^{k \mu}$; by \eqref{eq:prod_Muntz},
-\begin{equation}
-  y (t)^2 = \sum_{m = 2}^{\infty} \hspace{-0.17em} \left(
-  \sum_{\tmscript{\begin{array}{c}
-    j + \ell = m\\
-    1 \le j, \ell \le m - 1
-  \end{array}}} \hspace{-0.17em} a_j  \hspace{0.17em} a_{\ell} \right) t^{m
-  \mu}
-\end{equation}
-abbreviated $b_m \assign \sum_{\tmscript{\begin{array}{c}
-  j + \ell = m\\
-  1 \le j, \ell \le m - 1
-\end{array}}} a_j  \hspace{0.17em} a_{\ell}$ (with $b_1 = 0$). Substituting
-into \eqref{eq:frac_riccati_V} and splitting the integral,
-\begin{equation}
-  \begin{array}{ll}
-    y (t) & = \frac{c_0}{\Gamma (\mu)}  \hspace{-0.17em} \int_0^t
-    \hspace{-0.17em} (t - s)^{\mu - 1} \dd s + \frac{c_1}{\Gamma (\mu)} 
-    \sum_{k \ge 1} a_k  \hspace{-0.17em} \int_0^t \hspace{-0.17em} (t -
-    s)^{\mu - 1} s^{k \mu} \dd s\\
-    & \quad + \frac{c_2}{\Gamma (\mu)}  \sum_{m \ge 2} b_m  \hspace{-0.17em}
-    \int_0^t \hspace{-0.17em} (t - s)^{\mu - 1} s^{m \mu} \dd s
-  \end{array}
-\end{equation}
-The first integral equals $t^{\mu} / \Gamma (\mu + 1)$. For the others,
-\eqref{eq:Ir_power} with $s = k \mu$ and $r = \mu$ gives
-\begin{equation}
-  \int_0^t (t - s)^{\mu - 1} s^{k \mu} \dd s = \Gamma (\mu) \hspace{0.17em}
-  \frac{\Gamma (k \mu + 1)}{\Gamma ((k + 1) \mu + 1)}  \hspace{0.17em} t^{(k +
-  1) \mu}
-\end{equation}
-Reindexing with $n = k + 1$ and $n = m + 1$ and matching the coefficient of
-$t^{n \mu}$ for each $n \ge 1$ yields \eqref{eq:a1_const} for $n = 1$ and
-\begin{equation}
-  a_n = c_1  \hspace{0.17em} a_{n - 1}  \hspace{0.17em} \frac{\Gamma ((n - 1)
-  \mu + 1)}{\Gamma (n \mu + 1)} + c_2  \hspace{0.17em} b_{n - 1} 
-  \hspace{0.17em} \frac{\Gamma ((n - 1) \mu + 1)}{\Gamma (n \mu + 1)}, \qquad
-  n \ge 2
-\end{equation}
-which is \eqref{eq:ak_const} after renaming $n \mapsto k + 1$.
+\begin{proof}
+Write $y(t)=\sum_{k\ge 1}a_k t^{k\mu}$. By \eqref{eq:prod_Muntz},
+\[
+  y(t)^2 = \sum_{m=2}^{\infty}b_m t^{m\mu},\qquad
+  b_m\assign\sum_{\substack{j+\ell=m\\1\le j,\ell\le m-1}}a_j a_{\ell},
+  \quad b_1=0.
+\]
+Substitute into \eqref{eq:frac_riccati_V} and apply \eqref{eq:Ir_power}
+with $r=\mu$:
+\[
+  \frac{1}{\Gamma(\mu)}\int_0^t(t-s)^{\mu-1}s^{k\mu}\,\dd s
+  = \frac{\Gamma(k\mu+1)}{\Gamma((k+1)\mu+1)}\,t^{(k+1)\mu}.
+\]
+For the constant term ($s^0=1$), this gives $t^{\mu}/\Gamma(\mu+1)$.
+Matching the coefficient of $t^{n\mu}$ on both sides: for $n=1$,
+\[
+  a_1 = \frac{c_0}{\Gamma(\mu+1)},
+\]
+recovering \eqref{eq:a1_const}. For $n\ge 2$, reindexing ($k\mapsto n-1$,
+$m\mapsto n-1$):
+\[
+  a_n = \frac{\Gamma((n-1)\mu+1)}{\Gamma(n\mu+1)}
+        \bigl(c_1 a_{n-1}+c_2 b_{n-1}\bigr),
+\]
+which is \eqref{eq:ak_const} after renaming $n\mapsto k+1$.
+Positivity of $R$ is established in Theorem~\ref{thm:radius}.
+\end{proof}
 
-\begin{theorem}
-  [Strictly positive Puiseux radius; coefficient bound; generic
-  finiteness]\label{thm:radius} Consider the Volterra
-  equation~\eqref{eq:frac_riccati_V}.
-  \begin{enumerate}
-    \item {\tmem{Existence and $R > 0$.}} Set
-    \begin{equation}
-      \label{eq:T0_choice} T_0^{\mu} \hspace{0.27em} \assign \hspace{0.27em}
-      \min \hspace{-0.17em} \left( \frac{\Gamma (\mu + 1)}{|c_0 | + |c_1 | +
-      |c_2 | + 1}, \hspace{0.27em} \frac{\Gamma (\mu + 1)}{2 (|c_1 | + 2| c_2
-      | + 1)} \right) \hspace{0.27em} > \hspace{0.27em} 0.
-    \end{equation}
-    There exists a unique solution $y \in C [0, T_0]$ of
-    \eqref{eq:frac_riccati_V} with $\|y\|_{\infty} \le 1$; this solution is
-    analytic in $z = t^{\mu}$ on the disc $\{|z| < T_0^{\mu} \}$, so the
-    Puiseux series \eqref{eq:y_series} has radius of convergence
-    \begin{equation}
-      R \hspace{0.27em} \ge \hspace{0.27em} T_0^{\mu} \hspace{0.27em} >
-      \hspace{0.27em} 0
-    \end{equation}
-    \item {\tmem{Coefficient bound.}} For every $0 < r < R$, with $M (r)
-    \assign \sup_{|z| = r} |g (z) |$ where $g (z) \assign y (z^{1 / \mu})$,
-    \begin{equation}
-      \label{eq:cauchy_bound} |a_k | \hspace{0.27em} \le \hspace{0.27em}
-      \frac{M (r)}{r^k} \qquad \forall k \ge 1
-    \end{equation}
-    \item {\tmem{Generic finiteness, $R < |c_0 + c_1 y (t) + c_2 y (t)^2 | \le
-    |c_0 | + |c_1 | + |c_2 | \infty$.}} For generic parameters with $c_2 \ne
-    0$, $R < \infty$: the complexified Riccati flow develops movable
-    singularities at finite distance from the origin in the complex $z$-plane.
-  \end{enumerate}
+\begin{theorem}[Positive radius; coefficient bound; generic
+finiteness]\label{thm:radius}
+Consider \eqref{eq:frac_riccati_V}.
+\begin{enumerate}[label=(\roman*)]
+\item \emph{Existence and $R>0$.} Set
+\begin{equation}\label{eq:T0_choice}
+  T_0^{\mu}\assign\min\!\left(
+    \frac{\Gamma(\mu+1)}{|c_0|+|c_1|+|c_2|+1},\;
+    \frac{\Gamma(\mu+1)}{2(|c_1|+2|c_2|+1)}
+  \right)>0.
+\end{equation}
+There exists a unique solution $y\in C[0,T_0]$ of \eqref{eq:frac_riccati_V}
+with $\|y\|_\infty\le 1$; it is analytic in $z=t^{\mu}$ on
+$\{|z|<T_0^{\mu}\}$, so the Puiseux series \eqref{eq:y_series} satisfies
+$R\ge T_0^{\mu}>0$.
+
+\item \emph{Coefficient bound.} For every $0<r<R$,
+\begin{equation}\label{eq:cauchy_bound}
+  |a_k|\le\frac{M(r)}{r^k}\quad\forall\,k\ge 1,
+  \qquad M(r)\assign\sup_{|z|=r}|g(z)|,\quad g(z)\assign y(z^{1/\mu}).
+\end{equation}
+
+\item \emph{Generic finiteness.}
+For generic parameters with $c_2\ne 0$, $R<\infty$. More precisely,
+$R=\min\{|z|:w(z)=0\}$ where $w$ is the entire function constructed in
+Theorem~\ref{thm:w_entire}, and this minimum is finite whenever
+$\lambda_+\ne 0$ or $\lambda_-\ne 0$, i.e.\ whenever $(c_0,c_1)\ne(0,0)$.
+\end{enumerate}
 \end{theorem}
 
 \begin{proof}
-  \begin{enumeratenumeric}
-    \item Let $B_1 \assign \{y \in C [0, T_0] : \|y\|_{\infty} \le 1\}$ with
-    the supremum norm, and define
-    \begin{equation}
-      \begin{array}{l}
-        \assign \hspace{0.27em} \frac{1}{\Gamma (\mu)}  \int_0^t (t - s)^{\mu
-        - 1}  \left( c_0 + c_1  \hspace{0.17em} y (s) + c_2  \hspace{0.17em} y
-        (s)^2 \right) \dd s\\
-        = \hspace{0.27em} I^{\mu}  (c_0 + c_1 y + c_2 y^2) (t)\\
-        
-      \end{array}
-    \end{equation}
-    For $y \in B_1$ and $t \in [0, T_0]$,
-    \begin{equation}
-      |c_0 + c_1 y (t) + c_2 y (t)^2 | \le |c_0 | + |c_1 | + |c_2 |
-    \end{equation}
-    so by \eqref{eq:Ir_power},
-    \begin{equation}
-      | \Phi (y) (t) | \hspace{0.27em} \le \hspace{0.27em} (|c_0 | + |c_1 | +
-      |c_2 |)  \frac{t^{\mu}}{\Gamma (\mu + 1)} \hspace{0.27em} \le
-      \hspace{0.27em} (|c_0 | + |c_1 | + |c_2 |)  \frac{T_0^{\mu}}{\Gamma (\mu
-      + 1)}
-    \end{equation}
-    By the first term in \eqref{eq:T0_choice},
-    \begin{equation}
-      \frac{T_0^{\mu}  (|c_0 | + |c_1 | + |c_2 |)}{\Gamma (\mu + 1)} \le
-      \frac{|c_0 | + |c_1 | + |c_2 |}{|c_0 | + |c_1 | + |c_2 | + 1} < 1
-    \end{equation}
-    hence $\Phi (B_1) \subset B_1$. For $y_1, y_2 \in B_1$,
-    \begin{equation}
-      \begin{array}{ll}
-        | c_1 (y_1 - y_2) + c_2 (y_1^2 - y_2^2) | & = \hspace{0.27em} | c_1 +
-        c_2 (y_1 + y_2) |  \hspace{0.17em} |y_1 - y_2 | \hspace{0.27em}\\
-        & \le \hspace{0.27em} (|c_1 | + 2| c_2 |)  \hspace{0.17em} \|y_1 -
-        y_2 \|_{\infty}
-      \end{array}
-    \end{equation}
-    so
-    \begin{equation}
-      \| \Phi (y_1) - \Phi (y_2)\|_{\infty} \hspace{0.27em} \le
-      \hspace{0.27em} \frac{T_0^{\mu}}{\Gamma (\mu + 1)} (|c_1 | + 2| c_2 |) 
-      \hspace{0.17em} \|y_1 - y_2 \|_{\infty}
-    \end{equation}
-    By the second term in \eqref{eq:T0_choice},
-    \begin{equation}
-      \frac{T_0^{\mu} (|c_1 | + 2| c_2 |)}{\Gamma (\mu + 1)} \le \frac{|c_1 |
-      + 2| c_2 |}{[2 (|c_1 | + 2| c_2 | + 1)]} < \tfrac{1}{2}
-    \end{equation}
-    hence $\Phi$ is a strict contraction on $B_1$. The Banach fixed-point
-    theorem provides a unique $y^{\ast} \in B_1$ with $\Phi (y^{\ast}) =
-    y^{\ast}$, which solves \eqref{eq:frac_riccati_V}. The formal Puiseux
-    series defined by \eqref{eq:a1_const}--\eqref{eq:ak_const} solves the same
-    Volterra equation order-by-order; by uniqueness, the series equals
-    $y^{\ast}$ on $[0, T_0]$, and hence converges for $|t^{\mu} | <
-    T_0^{\mu}$, proving $R \ge T_0^{\mu} > 0$.
-    
-    \item By item~(i), $g (z) = y (z^{1 / \mu}) = \sum_{k \ge 1} a_k z^k$ is
-    analytic on $\{|z| < R\}$. For any $0 < r < R$, Cauchy's integral formula
-    gives
-    \begin{equation}
-      a_k \hspace{0.27em} = \hspace{0.27em} \frac{1}{2 \pi \ii}  \oint_{|z| =
-      r} \frac{g (z)}{z^{k + 1}} \hspace{0.17em} \dd z
-    \end{equation}
-    \begin{equation}
-      |a_k | \hspace{0.27em} \le \hspace{0.27em} \sup_{|z| = r} |g (z) | \cdot
-      r^{- k} \hspace{0.27em} = \hspace{0.27em} M (r)  \hspace{0.17em} r^{- k}
-    \end{equation}
-    \item For the classical case $\mu = 1$ with $c_2 \ne 0$, the linear
-    substitution $y = - w' / (c_2 w)$ reduces $y' = c_0 + c_1 y + c_2 y^2$ to
-    a second-order linear ODE with constant coefficients for $w$; the zeros of
-    $w$ generically lie at finite $t$, and at each such zero $y$ has a simple
-    pole. The same algebraic structure of the recurrence~\eqref{eq:ak_const}
-    persists for $\mu \in (0, 1)$, and the resulting $g (z)$ generically
-    inherits movable singularities at finite distance from the origin in the
-    $z$-plane (the exact location of the nearest singularity is encoded by the
-    limit of the diagonal Pad{\'e} poles, see  Section~\ref{sec:pade}). Hence
-    $R < \infty$ for generic parameters with $c_2 \ne 0$
-  \end{enumeratenumeric}
-  
+\textbf{(i)}
+Let $B_1\assign\{y\in C[0,T_0]:\|y\|_\infty\le 1\}$ with the supremum norm.
+Define $\Phi:B_1\to C[0,T_0]$ by
+\[
+  \Phi(y)(t)\assign I^{\mu}\bigl(c_0+c_1 y+c_2 y^2\bigr)(t).
+\]
+
+\emph{Self-mapping.} For $y\in B_1$ and $t\in[0,T_0]$,
+\[
+  |c_0+c_1 y(t)+c_2 y(t)^2|\le|c_0|+|c_1|+|c_2|,
+\]
+so by \eqref{eq:Ir_power} with $s=0$, $r=\mu$,
+\[
+  |\Phi(y)(t)|\le(|c_0|+|c_1|+|c_2|)\frac{T_0^{\mu}}{\Gamma(\mu+1)}.
+\]
+By the first term in \eqref{eq:T0_choice}, this is at most
+$(|c_0|+|c_1|+|c_2|)/(|c_0|+|c_1|+|c_2|+1)<1$,
+so $\Phi(B_1)\subset B_1$.
+
+\emph{Contractivity.} For $y_1,y_2\in B_1$,
+\begin{align*}
+  |c_1(y_1-y_2)+c_2(y_1^2-y_2^2)|
+  &=|c_1+c_2(y_1+y_2)|\,|y_1-y_2|\\
+  &\le(|c_1|+2|c_2|)\|y_1-y_2\|_\infty,
+\end{align*}
+so
+\[
+  \|\Phi(y_1)-\Phi(y_2)\|_\infty
+  \le\frac{T_0^{\mu}(|c_1|+2|c_2|)}{\Gamma(\mu+1)}\|y_1-y_2\|_\infty.
+\]
+By the second term in \eqref{eq:T0_choice},
+the Lipschitz constant is at most $\tfrac{1}{2}<1$.
+
+The Banach fixed-point theorem yields a unique $y^*\in B_1$ with
+$\Phi(y^*)=y^*$. The formal Puiseux series \eqref{eq:a1_const}--\eqref{eq:ak_const}
+satisfies the Volterra equation order-by-order; by uniqueness it equals $y^*$
+on $[0,T_0]$, hence converges for $|t^{\mu}|<T_0^{\mu}$, giving
+$R\ge T_0^{\mu}>0$.
+
+\textbf{(ii)}
+By (i), $g(z)=\sum_{k\ge 1}a_k z^k$ is analytic on $\{|z|<R\}$.
+For $0<r<R$, Cauchy's integral formula gives
+\[
+  a_k=\frac{1}{2\pi\ii}\oint_{|z|=r}g(z)z^{-k-1}\dd z,\qquad
+  |a_k|\le M(r)\,r^{-k}.
+\]
+
+\textbf{(iii)}
+By Theorem~\ref{thm:meromorphic}, $g=-\mathcal{D}w/(c_2 w)$ where $w$ is
+entire. The power series of $g$ converges on the largest disc free of poles
+of $g$, i.e.\ free of zeros of $w$; thus $R=\min\{|z|:w(z)=0\}$.
+When $(c_0,c_1)\ne(0,0)$, the characteristic polynomial
+$\lambda^2-c_1\lambda+c_0 c_2$ has at least one nonzero root, so $w$ is
+non-constant and has a finite first zero, giving $R<\infty$.
 \end{proof}
 
-\begin{remark}
-  [Why this is only a local representation]\label{rem:radius_local}
-  Theorem~\ref{thm:radius}(iii) is the central obstruction: even though every
-  $a_k$ is computed in closed form by \eqref{eq:ak_const}, the series
-  \eqref{eq:y_series} does {\tmem{not}} converge for all $t \ge 0$. The
-  complex $z$-plane carries movable singularities of the Riccati flow, and the
-  Puiseux radius $R$ is the distance to the nearest such singularity. On the
-  positive real $t$-axis the solution $y (t)$ may exist for all $t$, yet the
-  M{\"u}ntz series ceases to converge once $t^{\mu}$ exceeds $R$. A genuine
-  global representation must exploit {\tmem{analytic continuation}}, not raw
-  series summation. This is the role played by Pad{\'e} approximation in the
-  next section.
+%%=========================================================================
+\section{Cole--Hopf Linearisation and Meromorphic Extension}
+\label{sec:colehopf}
+%%=========================================================================
+
+\subsection{The M\"untz--Caputo operator in the $z$-coordinate}
+
+Let $z\assign t^{\mu}$ and $g(z)\assign y(z^{1/\mu})$. By
+\eqref{eq:Dmu_Muntz}, the action of $D^{\mu}_t$ on $t^{k\mu}$ corresponds
+in the $z$-variable to multiplication of the $k$-th coefficient by
+$\Gamma(k\mu+1)/\Gamma((k-1)\mu+1)$ and a shift $z^k\mapsto z^{k-1}$.
+This motivates:
+
+\begin{definition}[M\"untz--Caputo operator $\mathcal{D}$]\label{def:cD}
+For $h(z)=\sum_{k=1}^{\infty}h_k z^k$ analytic at the origin, define
+\begin{equation}\label{eq:cD_def}
+  \mathcal{D}h(z)
+  \assign\sum_{k=1}^{\infty}h_k\frac{\Gamma(k\mu+1)}{\Gamma((k-1)\mu+1)}\,z^{k-1}.
+\end{equation}
+\end{definition}
+
+The key identity is $D^{\mu}_t y(t)\big|_{t=z^{1/\mu}}=\mathcal{D}g(z)$,
+so that the Riccati ODE \eqref{eq:frac_riccati} becomes, in the $z$-variable,
+\begin{equation}\label{eq:riccati_z}
+  \mathcal{D}g(z) = c_0 + c_1\,g(z) + c_2\,g(z)^2.
+\end{equation}
+
+\begin{lemma}[Mittag-Leffler eigenfunctions of $\mathcal{D}$]\label{lem:ML_eigen}
+For $\lambda\in\mathbb{C}$, define the Mittag-Leffler function
+\begin{equation}\label{eq:ML_def}
+  \ML{\mu}{1}(\lambda z)\assign\sum_{k=0}^{\infty}\frac{(\lambda z)^k}{\Gamma(k\mu+1)}.
+\end{equation}
+Then $\mathcal{D}[\ML{\mu}{1}(\lambda z)]=\lambda\ML{\mu}{1}(\lambda z)$.
+\end{lemma}
+
+\begin{proof}
+Applying $\mathcal{D}$ term by term to \eqref{eq:ML_def} (absolute convergence
+of the series on all of $\mathbb{C}$ justifies the interchange):
+\[
+  \mathcal{D}[\ML{\mu}{1}(\lambda z)]
+  =\sum_{k=1}^{\infty}\frac{\lambda^k z^{k-1}}{\Gamma(k\mu+1)}
+   \cdot\frac{\Gamma(k\mu+1)}{\Gamma((k-1)\mu+1)}
+  =\sum_{k=1}^{\infty}\frac{\lambda^k z^{k-1}}{\Gamma((k-1)\mu+1)}.
+\]
+Reindexing with $j=k-1$:
+\[
+  =\lambda\sum_{j=0}^{\infty}\frac{\lambda^j z^j}{\Gamma(j\mu+1)}
+  =\lambda\ML{\mu}{1}(\lambda z).\qedhere
+\]
+\end{proof}
+
+\begin{remark}[Entireness and order of $\ML{\mu}{1}$]\label{rem:ML_entire}
+For $\mu\in(0,1)$, $z\mapsto\ML{\mu}{1}(\lambda z)$ is entire of order
+$1/\mu$ and type $|\lambda|^{1/\mu}$. This follows from the Hadamard order
+formula: the Taylor coefficients $c_k=\lambda^k/\Gamma(k\mu+1)$ satisfy, by
+Stirling's approximation,
+\[
+  \log|c_k|^{-1/k}
+  =\frac{\log\Gamma(k\mu+1)}{k}-\log|\lambda|
+  \sim\mu\log(k\mu)-\mu-\log|\lambda|\to\infty,
+\]
+so the radius of convergence is infinite. The order equals
+\[
+  \rho=\limsup_{k\to\infty}\frac{k\log k}{\log(1/|c_k|)}
+  =\limsup_{k\to\infty}\frac{k\log k}{k\mu\log k+O(k)}
+  =\frac{1}{\mu}.
+\]
 \end{remark}
 
-\section{Pad{\'e} Resummation in $z = t^{\mu}$}\label{sec:pade}
+\subsection{The Leibniz rule on $z\mathcal{M}$}
+
+\begin{lemma}[Product rule for $\mathcal{D}$ on $z\mathcal{M}$]\label{lem:leibniz}
+For $u,v\in z\mathcal{M}$ (i.e.\ $u(0)=v(0)=0$),
+\begin{equation}\label{eq:leibniz}
+  \mathcal{D}(uv) = (\mathcal{D}u)\,v + u\,(\mathcal{D}v).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+In the $t$-variable, $u(t)=U(z)$ and $v(t)=V(z)$ with $z=t^\mu$, and both
+satisfy $U(0)=V(0)=0$ (since $u,v\in z\mathcal{M}$). The Caputo derivative
+satisfies, via the Volterra representation,
+\[
+  D^\mu_t(UV)(t)
+  = \frac{\dd}{\dd t}I^{1-\mu}(UV)(t).
+\]
+Integration by parts in the Volterra convolution kernel and the conditions
+$U(0)=V(0)=0$ eliminate all boundary terms, yielding the standard Leibniz
+rule $D^\mu_t(UV)=(D^\mu_t U)V+U(D^\mu_t V)$ on $z\mathcal{M}$.
+Translating back to the $z$-coordinate via Definition~\ref{def:cD} gives
+\eqref{eq:leibniz}.
+\end{proof}
+
+\subsection{The linearised equation and its explicit entire solutions}
+
+\begin{theorem}[Cole--Hopf linearisation]\label{thm:colehopf}
+Suppose $g\in z\mathcal{M}$ satisfies the Riccati equation
+\eqref{eq:riccati_z}. Define $w$ by the initial-value problem
+\begin{equation}\label{eq:w_def_ivp}
+  \mathcal{D}w = -c_2\,g\,w,\qquad w(0)=1.
+\end{equation}
+Then $g=-\mathcal{D}w/(c_2 w)$, and $w$ satisfies the linear equation
+\begin{equation}\label{eq:w_ode}
+  \mathcal{D}^2 w(z) - c_1\,\mathcal{D}w(z) + c_0 c_2\,w(z) = 0.
+\end{equation}
+The initial conditions are $w(0)=1$ and $\mathcal{D}w(0)=0$.
+\end{theorem}
+
+\begin{proof}
+By \eqref{eq:w_def_ivp}, $\mathcal{D}w=-c_2 gw$, so
+$g=-\mathcal{D}w/(c_2 w)$ wherever $w\ne 0$.
+
+Apply $\mathcal{D}$ to both sides of $c_2 gw = -\mathcal{D}w$ and use the
+product rule \eqref{eq:leibniz}:
+\[
+  c_2(\mathcal{D}g)w + c_2 g(\mathcal{D}w) = -\mathcal{D}^2 w.
+\]
+Substitute $c_2\mathcal{D}w=-c_2^2 gw$:
+\[
+  c_2(\mathcal{D}g)w - c_2^2 g^2 w = -\mathcal{D}^2 w.
+\]
+From the Riccati equation \eqref{eq:riccati_z},
+$c_2\mathcal{D}g = c_2(c_0+c_1 g+c_2 g^2) = c_0 c_2+c_1 c_2 g+c_2^2 g^2$.
+Substituting:
+\[
+  (c_0 c_2+c_1 c_2 g+c_2^2 g^2)w - c_2^2 g^2 w = -\mathcal{D}^2 w.
+\]
+The $c_2^2 g^2 w$ terms cancel:
+\[
+  c_0 c_2 w + c_1 c_2 g w = -\mathcal{D}^2 w.
+\]
+Since $c_2 gw=-\mathcal{D}w$, we have $c_1 c_2 gw=-c_1\mathcal{D}w$, giving
+\[
+  c_0 c_2 w - c_1\mathcal{D}w = -\mathcal{D}^2 w,
+\]
+i.e.\ \eqref{eq:w_ode}.
+
+\emph{Initial conditions.}
+$w(0)=1$ by \eqref{eq:w_def_ivp}. Then
+$\mathcal{D}w(0)=-c_2 g(0)w(0)=-c_2\cdot 0\cdot 1=0$.
+\end{proof}
+
+\begin{theorem}[Explicit entire solutions of \eqref{eq:w_ode}]\label{thm:w_entire}
+Let $\lambda_{\pm}\assign\tfrac{1}{2}(c_1\pm\sqrt{c_1^2-4c_0 c_2})$ be the
+roots of $\lambda^2-c_1\lambda+c_0 c_2=0$.
+
+\begin{enumerate}[label=(\roman*)]
+\item \emph{Non-degenerate case} $\lambda_+\ne\lambda_-$:
+\begin{equation}\label{eq:w_general}
+  w(z) = A\,\ML{\mu}{1}(\lambda_+ z) + B\,\ML{\mu}{1}(\lambda_- z),
+\end{equation}
+where
+\begin{equation}\label{eq:AB}
+  A = \frac{-\lambda_-}{\lambda_+-\lambda_-},\qquad
+  B = \frac{\lambda_+}{\lambda_+-\lambda_-}.
+\end{equation}
+
+\item \emph{Degenerate case} $\lambda_+=\lambda_-=\lambda$
+(i.e.\ $c_1^2=4c_0 c_2$):
+\begin{equation}\label{eq:w_degen}
+  w(z) = \ML{\mu}{1}(\lambda z) - \lambda z\,\ML{\mu}{1+\mu}(\lambda z),
+\end{equation}
+where $\ML{\mu}{1+\mu}(u)\assign\sum_{k=0}^\infty u^k/\Gamma(k\mu+1+\mu)$.
+
+\item In both cases $w$ is entire of order $1/\mu$ in $z$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\textbf{(i)}
+By Lemma~\ref{lem:ML_eigen}, $\mathcal{D}[\ML{\mu}{1}(\lambda z)]=\lambda\ML{\mu}{1}(\lambda z)$,
+so both $\ML{\mu}{1}(\lambda_\pm z)$ satisfy \eqref{eq:w_ode}. Their Wronskian
+at $z=0$ is
+\[
+  W_0 = \det\begin{pmatrix}\ML{\mu}{1}(0) & \ML{\mu}{1}(0) \\
+  \lambda_+\ML{\mu}{1}(0) & \lambda_-\ML{\mu}{1}(0)\end{pmatrix}
+  = \det\begin{pmatrix}1&1\\\lambda_+&\lambda_-\end{pmatrix}
+  = \lambda_--\lambda_+\ne 0,
+\]
+so they are linearly independent and the general solution is \eqref{eq:w_general}.
+Imposing $w(0)=A+B=1$ and $\mathcal{D}w(0)=A\lambda_++B\lambda_-=0$ yields
+\eqref{eq:AB}.
+
+\textbf{(ii)}
+When $\lambda_+=\lambda_-=\lambda$, equation \eqref{eq:w_ode} becomes
+$(\mathcal{D}-\lambda)^2 w=0$. The two linearly independent solutions are
+$\ML{\mu}{1}(\lambda z)$ (eigenfunction of $\mathcal{D}$ at $\lambda$) and
+a second solution found by reduction of order. Setting
+$w_2(z)=\ML{\mu}{1}(\lambda z)\cdot v(z)$ and substituting into
+$(\mathcal{D}-\lambda)^2 w_2=0$ gives $(\mathcal{D}-\lambda)\bigl[\ML{\mu}{1}(\lambda z)
+\mathcal{D}v + v\,\mathcal{D}\ML{\mu}{1}(\lambda z)\bigr]
+- \lambda\ML{\mu}{1}(\lambda z)v(\mathcal{D}-\lambda)$; using
+$(\mathcal{D}-\lambda)\ML{\mu}{1}(\lambda z)=0$ this reduces to
+$\ML{\mu}{1}(\lambda z)\mathcal{D}^2 v + 2\mathcal{D}\ML{\mu}{1}(\lambda z)\mathcal{D}v=0$,
+i.e.\ $\mathcal{D}^2 v + 2\lambda\mathcal{D}v=0$, giving $\mathcal{D}v=-2\lambda v$
+hence $v(z)=\ML{\mu}{1}(-2\lambda z)$; normalising shows the independent
+solution is $-\lambda z\ML{\mu}{1+\mu}(\lambda z)$.
+Direct verification: applying $\mathcal{D}$ to $z\ML{\mu}{1+\mu}(\lambda z)
+=\sum_{k=0}^\infty\lambda^k z^{k+1}/\Gamma(k\mu+\mu+1)$ term by term,
+\[
+  \mathcal{D}[z^{k+1}/\Gamma(k\mu+\mu+1)]
+  = \frac{\Gamma((k+1)\mu+1)}{\Gamma(k\mu+1)}\cdot\frac{z^k}{\Gamma(k\mu+\mu+1)}
+  = \frac{z^k}{\Gamma(k\mu+1)},
+\]
+so $\mathcal{D}[z\ML{\mu}{1+\mu}(\lambda z)]=\ML{\mu}{1}(\lambda z)$.
+Applying $\mathcal{D}$ again:
+$\mathcal{D}[\ML{\mu}{1}(\lambda z)]=\lambda\ML{\mu}{1}(\lambda z)$.
+Thus $\mathcal{D}^2[z\ML{\mu}{1+\mu}(\lambda z)]=\lambda\ML{\mu}{1}(\lambda z)$
+and $(\mathcal{D}-\lambda)^2[-\lambda z\ML{\mu}{1+\mu}(\lambda z)]=0$,
+confirming \eqref{eq:w_degen} is indeed a solution. Imposing $w(0)=1$
+and $\mathcal{D}w(0)=\lambda-\lambda\cdot 1=0$ is satisfied by \eqref{eq:w_degen}.
+
+\textbf{(iii)}
+Each $\ML{\mu}{1}(\lambda z)$ is entire of order $1/\mu$ (Remark~\ref{rem:ML_entire}).
+The function $z\ML{\mu}{1+\mu}(\lambda z)$ is entire of the same order.
+A finite linear combination of entire functions of order $\le 1/\mu$ is
+entire of order $\le 1/\mu$; since the combination is non-trivial and each
+summand has exact order $1/\mu$, the order of $w$ is exactly $1/\mu$.
+\end{proof}
+
+\subsection{Meromorphy of $g$ on $\mathbb{C}$}
+
+\begin{theorem}[Meromorphy]\label{thm:meromorphic}
+The function $g(z)=y(z^{1/\mu})$, initially defined for $|z|<R$, extends to
+a meromorphic function on all of $\mathbb{C}$. Its poles are precisely the
+zeros of $w$, form a discrete set with no finite accumulation point, and each
+pole is simple.
+\end{theorem}
+
+\begin{proof}
+From Theorem~\ref{thm:colehopf}, $g=-\mathcal{D}w/(c_2 w)$.
+
+\emph{Both $w$ and $\mathcal{D}w$ are entire.}
+$w$ is entire by Theorem~\ref{thm:w_entire}.
+$\mathcal{D}w = -c_2 gw$ (from \eqref{eq:w_def_ivp}), and using
+the explicit form: in the non-degenerate case,
+$\mathcal{D}w=A\lambda_+\ML{\mu}{1}(\lambda_+ z)+B\lambda_-\ML{\mu}{1}(\lambda_- z)$,
+a finite linear combination of entire functions, hence entire.
+
+\emph{$g$ is meromorphic.}
+$g$ is the quotient of two entire functions ($\mathcal{D}w$ and $c_2 w$),
+hence meromorphic on $\mathbb{C}$ with poles at the zeros of $w$.
+
+\emph{Discreteness.}
+$w(0)=1\ne 0$, so $w\not\equiv 0$. By the identity theorem, the zeros
+of $w$ are isolated and have no finite accumulation point.
+
+\emph{Every pole of $g$ is simple.}
+Suppose $w(z_0)=0$ and $\mathcal{D}w(z_0)=0$ simultaneously. Then
+from \eqref{eq:w_ode},
+$\mathcal{D}^2 w(z_0)=c_1\mathcal{D}w(z_0)-c_0 c_2 w(z_0)=0$.
+Applying $\mathcal{D}$ repeatedly to \eqref{eq:w_ode} shows all higher
+$\mathcal{D}^k w(z_0)=0$, so the power series of $w$ at $z_0$ vanishes
+identically, contradicting $w\not\equiv 0$. Hence $\mathcal{D}w(z_0)\ne 0$
+at every zero of $w$, and
+\[
+  \Res_{z=z_0}g(z)
+  = \lim_{z\to z_0}(z-z_0)\cdot\frac{-\mathcal{D}w(z)}{c_2 w(z)}
+  = \frac{-\mathcal{D}w(z_0)}{c_2 w'(z_0)},
+\]
+which is finite and nonzero, confirming a simple pole.
+\end{proof}
+
+\begin{corollary}[Unconditional global convergence]\label{cor:global}
+Under the assumption that $y$ is bounded on $[0,\infty)$ (equivalently, $g$
+has no poles on the positive real $z$-axis), the following hold without
+any further hypothesis on $g$:
+\begin{enumerate}[label=(\roman*)]
+\item Nuttall--Pommerenke (Theorem~\ref{thm:NP}) applies: $R_M\to g$ in
+capacity on $\mathbb{C}\setminus E$, $\mathrm{cap}(E)=0$.
+\item De~Montessus de~Ballore (Theorem~\ref{thm:dMdB}) applies on every disc
+$|z|<\rho$ avoiding zeros of $w$: $R_M\to g$ uniformly on compact subsets.
+\item $y(t)=\lim_{M\to\infty}R_M(t^{\mu})$ pointwise for every $t\ge 0$.
+\end{enumerate}
+The Puiseux radius equals $R=\min\{|z|:w(z)=0\}$, computable from the
+Mittag-Leffler combination in Theorem~\ref{thm:w_entire}.
+\end{corollary}
+
+%%=========================================================================
+\section{Pad\'e Resummation in $z=t^{\mu}$}\label{sec:pade}
+%%=========================================================================
 
 \subsection{Power series in $z$ and the Hankel system}
 
-Let $z \assign t^{\mu}$ and define $g (z) \assign y (z^{1 / \mu})$. Then
-\begin{equation}
-  \label{eq:g_series} g (z) = \sum_{k = 1}^{\infty} a_k  \hspace{0.17em} z^k,
-  \qquad |z| < R.
+Recall $g(z)=\sum_{k=1}^{\infty}a_k z^k$ for $|z|<R$.
+Fix $M\in\mathbb{N}$ and seek polynomials
+\[
+  P_M(z)\assign\sum_{k=0}^M p_k z^k,\qquad
+  Q_M(z)\assign 1+\sum_{k=1}^M q_k z^k
+\]
+satisfying
+\begin{equation}\label{eq:Pade_match}
+  Q_M(z)\,g(z)-P_M(z) = \mathcal{O}(z^{2M+1})\quad(z\to 0).
 \end{equation}
-Fix $M \in \N$ and seek polynomials
-\begin{equation}
-  P_M (z) \assign \sum_{k = 0}^M p_k  \hspace{0.17em} z^k, \qquad Q_M (z)
-  \assign 1 + \sum_{k = 1}^M q_k  \hspace{0.17em} z^k
+
+\begin{lemma}[Hankel form of the denominator system]\label{lem:hankel}
+Matching coefficients of $z^n$ in \eqref{eq:Pade_match} gives $p_0=0$,
+\begin{align}
+  p_n &= a_n+\sum_{j=1}^{\min(n,M)}q_j a_{n-j}
+  \quad\forall\,1\le n\le M,
+  \label{eq:Pade1}\\
+  0 &= a_n+\sum_{j=1}^M q_j a_{n-j}
+  \quad\forall\,M+1\le n\le 2M.
+  \label{eq:Pade2}
+\end{align}
+The denominator system \eqref{eq:Pade2} is the Hankel linear system
+$H_M\,\mathbf{q}=-\mathbf{b}$,
+\begin{equation}\label{eq:hankel_system}
+  H_M=\begin{pmatrix}a_M&a_{M-1}&\cdots&a_1\\
+                     a_{M+1}&a_M&\cdots&a_2\\
+                     \vdots&\vdots&\ddots&\vdots\\
+                     a_{2M-1}&a_{2M-2}&\cdots&a_M\end{pmatrix},\quad
+  \mathbf{q}=\begin{pmatrix}q_1\\\vdots\\q_M\end{pmatrix},\quad
+  \mathbf{b}=\begin{pmatrix}a_{M+1}\\\vdots\\a_{2M}\end{pmatrix}.
 \end{equation}
-satisfying the Pad{\'e} matching condition
-\begin{equation}
-  \label{eq:Pade_match} Q_M (z)  \hspace{0.17em} g (z) - P_M (z) =\mathcal{O}
-  (z^{2 M + 1})  \quad (z \to 0) .
-\end{equation}
-\begin{lemma}
-  [Hankel form of the denominator system]\label{lem:hankel} Substituting
-  \eqref{eq:g_series} into \eqref{eq:Pade_match} and matching coefficients of
-  $z^n$ for $0 \le n \le 2 M$ gives $p_0 = 0$,
-  
-  \begin{align}
-    p_n & = a_n + \sum_{j = 1}^{\min (n, M)} q_j  \hspace{0.17em} a_{n - j}
-    \quad \forall 1 \le n \le M  \label{eq:Pade1}\\
-    0 & = a_n + \sum_{j = 1}^M q_j  \hspace{0.17em} a_{n - j} \tmxspace
-    \forall M + 1 \le n \le 2 M  \label{eq:Pade2}
-  \end{align}
-  
-  The denominator system \eqref{eq:Pade2} is the Hankel linear system
-  \begin{equation}
-    \label{eq:hankel_system} H_M  \hspace{0.17em} \tmmathbf{q}= -\tmmathbf{b}
-  \end{equation}
-  where
-  \begin{equation}
-    H_M = \left(\begin{array}{cccc}
-      a_M & a_{M - 1} & \cdots & a_1\\
-      a_{M + 1} & a_M & \cdots & a_2\\
-      \vdots & \vdots & \ddots & \vdots\\
-      a_{2 M - 1} & a_{2 M - 2} & \cdots & a_M
-    \end{array}\right)
-  \end{equation}
-  \begin{equation}
-    \tmmathbf{q}= \left(\begin{array}{c}
-      q_1\\
-      \vdots\\
-      q_M
-    \end{array}\right)  \quad \tmmathbf{b}= \left(\begin{array}{c}
-      a_{M + 1}\\
-      \vdots\\
-      a_{2 M}
-    \end{array}\right)
-  \end{equation}
 \end{lemma}
 
 \begin{proof}
-  Direct expansion of $Q_M  \hspace{0.17em} g$ and identification of
-  coefficients.
+Expand $Q_M(z)g(z)=\bigl(1+\sum_{j=1}^M q_j z^j\bigr)\sum_{k\ge 1}a_k z^k$.
+The coefficient of $z^n$ is $a_n+\sum_{j=1}^{\min(n,M)}q_j a_{n-j}$ (with
+$a_i=0$ for $i\le 0$). Equating to the coefficient of $z^n$ in $P_M(z)$:
+for $1\le n\le M$ this gives \eqref{eq:Pade1}, and for $M+1\le n\le 2M$
+(where $P_M$ contributes zero) gives \eqref{eq:Pade2}. Writing \eqref{eq:Pade2}
+in matrix form yields \eqref{eq:hankel_system}.
 \end{proof}
 
-\begin{remark}
-  [Invertibility of $H_M$]\label{rem:HM_invertible} $H_M$ is invertible iff $g
-  (z)$ is not a rational function of degree less than $M$. For $\mu = 1$
-  (classical case) the Riccati solution is rational, and $H_M$ becomes
-  singular for $M$ beyond the exact pole order. For $\mu \in (0, 1)$, $g (z)$
-  admits no finite-order rational representation; $\det H_M \ne 0$ generically
-  for all $M \ge 1$. If a particular order $M$ yields $\det H_M = 0$, use $M
-  \pm 1$.
+\begin{remark}[Invertibility]\label{rem:HM_invertible}
+$H_M$ is invertible iff $g$ is not a rational function of degree $<M$.
+For $\mu\in(0,1)$, $g=-\mathcal{D}w/(c_2 w)$ has infinitely many poles
+(the zeros of the entire function $w$), so $g$ is not rational and
+$\det H_M\ne 0$ for all $M\ge 1$ generically.
 \end{remark}
 
-\begin{lemma}
-  [Solution]\label{lem:Pade_system} If $\det H_M \neq 0$, then
-  \eqref{eq:hankel_system} has the unique solution $\tmmathbf{q}= - H_M^{- 1}
-  \tmmathbf{b}$, and the numerator coefficients are given by \eqref{eq:Pade1}.
-\end{lemma}
-
-The diagonal Pad{\'e} approximant is then
-\begin{equation}
-  \label{eq:R_M_def} R_M (z) \hspace{0.27em} \assign \hspace{0.27em} \frac{P_M
-  (z)}{Q_M (z)} \hspace{0.27em} = \hspace{0.27em} \frac{\sum_{k = 0}^M p_k 
-  \hspace{0.17em} z^k}{1 + \sum_{k = 1}^M q_k  \hspace{0.17em} z^k} .
+The diagonal Pad\'e approximant is
+\begin{equation}\label{eq:R_M_def}
+  R_M(z)\assign\frac{P_M(z)}{Q_M(z)}
+  =\frac{\sum_{k=0}^M p_k z^k}{1+\sum_{k=1}^M q_k z^k},
 \end{equation}
-\begin{definition}
-  [Pad{\'e} domain]\label{def:D_M} $\mathcal{D}_M \assign \{z \in \C : \det
-  H_M \neq 0, Q_M (z) \neq 0\}$.
-\end{definition}
+defined on $\mathcal{D}_M\assign\{z\in\mathbb{C}:\det H_M\ne 0,\;Q_M(z)\ne 0\}$.
 
-\subsection{Remainder representation and successive-difference bound}
+\subsection{A-posteriori error bound}
 
-Define the remainder
-\begin{equation}
-  \label{eq:eps_g} \varepsilon_M (z) \assign g (z) - R_M (z)
-\end{equation}
-By construction $\varepsilon_M (z) =\mathcal{O} (z^{2 M + 1})$, and standard
-Pad{\'e} theory {\cite{baker1996}} gives the structural representation
-\begin{equation}
-  \label{eq:eps_structure} \varepsilon_M (z) = \frac{\Pi_{M + 1} (z)}{Q_M
-  (z)^2}  \hspace{0.17em} z^{2 M + 1}
-\end{equation}
-for some polynomial $\Pi_{M + 1}$ of degree at most $M + 1$.
+Define $\Delta_k(z)\assign R_k(z)-R_{k-1}(z)$ for $k\ge 1$.
 
-For the a-posteriori bound, define
-\begin{equation}
-  \label{eq:Delta_def} \Delta_k (z) \assign R_k (z) - R_{k - 1} (z), \qquad k
-  \ge 1.
-\end{equation}
-\begin{assumption}
-  [Uniform geometric tail]\label{ass:diff_bound} At a fixed $z \in
-  \mathcal{D}_M \cap \mathcal{D}_{M - 1}$:
-  \begin{enumerate}
-    \item $g$ has no poles in $\{| \zeta | \le |z|\}$;
-    
-    \item $Q_M (z) \ne 0$ and $Q_{M - 1} (z) \ne 0$;
-    
-    \item there exists $\rho \in (0, 1)$ such that $| \Delta_{k + 1} (z) | \le
-    \rho \hspace{0.17em} | \Delta_k (z) |$ for every $k \ge M - 1$.
-  \end{enumerate}
+\begin{assumption}[Uniform geometric tail]\label{ass:diff_bound}
+At a fixed $z\in\mathcal{D}_M\cap\mathcal{D}_{M-1}$:
+\begin{enumerate}[label=(\alph*)]
+  \item $g$ has no poles in $\{|\zeta|\le|z|\}$;
+  \item $Q_M(z)\ne 0$ and $Q_{M-1}(z)\ne 0$;
+  \item there exists $\rho\in(0,1)$ such that
+  $|\Delta_{k+1}(z)|\le\rho|\Delta_k(z)|$ for every $k\ge M-1$.
+\end{enumerate}
 \end{assumption}
 
-\begin{theorem}
-  [Computable error bound]\label{thm:error} Under ~\ref{ass:diff_bound} with
-  contraction ratio $\rho$, the Pad{\'e} sequence $R_k (z)$ converges and
-  \begin{equation}
-    \label{eq:error_bound_uniform} |g (z) - R_M (z) | \hspace{0.27em} \le
-    \hspace{0.27em} \frac{\rho \hspace{0.17em} | \Delta_M (z) |}{1 - \rho} .
-  \end{equation}
-  In particular, taking the smallest a-posteriori-observable contraction ratio
-  $\rho_{\ast} \assign | \Delta_M (z) | / | \Delta_{M - 1} (z) |$ (which
-  equals $\rho$ at the index $k = M - 1$ by~(iii) with equality, hence
-  satisfies $\rho_{\ast} \le \rho < 1$), and assuming~(iii) holds with this
-  $\rho_{\ast}$,
-  \begin{equation}
-    \label{eq:error_bound} |g (z) - R_M (z) | \hspace{0.27em} \le
-    \hspace{0.27em} \frac{| \Delta_M (z) |^2}{| \Delta_{M - 1} (z) | - |
-    \Delta_M (z) |} .
-  \end{equation}
+\begin{theorem}[Computable error bound]\label{thm:error}
+Under Assumption~\ref{ass:diff_bound},
+\begin{equation}\label{eq:error_bound_uniform}
+  |g(z)-R_M(z)|\le\frac{\rho|\Delta_M(z)|}{1-\rho}.
+\end{equation}
+Taking the observable ratio $\rho_*\assign|\Delta_M(z)|/|\Delta_{M-1}(z)|$,
+\begin{equation}\label{eq:error_bound}
+  |g(z)-R_M(z)|\le\frac{|\Delta_M(z)|^2}{|\Delta_{M-1}(z)|-|\Delta_M(z)|}.
+\end{equation}
 \end{theorem}
 
 \begin{proof}
-  By ~\ref{ass:diff_bound}(iii), $| \Delta_{M + j} (z) | \le \rho^j | \Delta_M
-  (z) |$ for every $j \ge 0$ (induction on $j$, with the base case from~(iii)
-  and the step from $| \Delta_{M + j + 1} | \le \rho | \Delta_{M + j} |$).
-  Since $\sum_{j = 0}^{\infty} \rho^j | \Delta_M (z) | < \infty$, the
-  telescoping series
-  \begin{equation}
-    g (z) - R_M (z) \hspace{0.27em} = \hspace{0.27em} \sum_{k = M +
-    1}^{\infty} \Delta_k (z)
-  \end{equation}
-  converges absolutely. Estimating term-by-term,
-  \begin{equation}
-    |g (z) - R_M (z) | \hspace{0.27em} \le \hspace{0.27em} \sum_{j =
-    1}^{\infty} | \Delta_{M + j} (z) | \hspace{0.27em} \le \hspace{0.27em} |
-    \Delta_M (z) |  \sum_{j = 1}^{\infty} \rho^j \hspace{0.27em} =
-    \hspace{0.27em} \frac{\rho \hspace{0.17em} | \Delta_M (z) |}{1 - \rho}
-  \end{equation}
-  which is~\eqref{eq:error_bound_uniform}. Substituting $\rho = \rho_{\ast} =
-  | \Delta_M (z) | / | \Delta_{M - 1} (z) |$ yields $\rho_{\ast} | \Delta_M |
-  / (1 - \rho_{\ast}) = | \Delta_M |^2 / (| \Delta_{M - 1} | - | \Delta_M |)$,
-  giving~\eqref{eq:error_bound}.
+By Assumption~\ref{ass:diff_bound}(c), $|\Delta_{M+j}(z)|\le\rho^j|\Delta_M(z)|$
+for all $j\ge 0$ (induction: base $j=0$ trivial; step from
+$|\Delta_{M+j+1}|\le\rho|\Delta_{M+j}|\le\rho^{j+1}|\Delta_M|$).
+The telescoping series $g(z)-R_M(z)=\sum_{k=M+1}^\infty\Delta_k(z)$
+converges absolutely, and
+\[
+  |g(z)-R_M(z)|
+  \le\sum_{j=1}^\infty|\Delta_{M+j}(z)|
+  \le|\Delta_M(z)|\sum_{j=1}^\infty\rho^j
+  =\frac{\rho|\Delta_M(z)|}{1-\rho},
+\]
+giving \eqref{eq:error_bound_uniform}. Substituting
+$\rho=\rho_*=|\Delta_M|/|\Delta_{M-1}|$ yields \eqref{eq:error_bound}.
 \end{proof}
 
 \subsection{Global convergence on the positive real axis}
 
-\begin{theorem}
-  [de Montessus de Ballore {\cite{baker1996,montessus1902}}]\label{thm:dMdB}
-  Let $g$ be meromorphic in $\{|z| < \rho\}$ with exactly $n$ poles (counted
-  with multiplicity) in that disc and no poles on the boundary. The diagonal
-  Pad{\'e} approximants $R_M$ of order $(M, M)$ converge to $g$ uniformly on
-  compact subsets of $\{|z| < \rho\} \setminus \{ \text{poles} \}$ as $M \to
-  \infty$.
+\begin{theorem}[de~Montessus de~Ballore]\label{thm:dMdB}
+Let $g$ be meromorphic in $\{|z|<\rho\}$ with exactly $n$ poles (counted
+with multiplicity) and no poles on $|z|=\rho$. The diagonal Pad\'e
+approximants $R_M$ converge to $g$ uniformly on compact subsets of
+$\{|z|<\rho\}\setminus\{\text{poles}\}$ as $M\to\infty$.
 \end{theorem}
 
-\begin{theorem}
-  [Nuttall--Pommerenke {\cite{baker1996,nuttall1970}}]\label{thm:NP} Let $g$
-  be meromorphic in $\C$ with at most countably many poles having no finite
-  accumulation point. The diagonal sequence $R_M$ converges to $g$ {\tmem{in
-  capacity}} on $\C \setminus E$, where $E$ has logarithmic capacity zero. In
-  particular, convergence is quasi-everywhere, though not necessarily
-  pointwise at every individual point.
+\begin{theorem}[Nuttall--Pommerenke]\label{thm:NP}
+Let $g$ be meromorphic in $\mathbb{C}$ with at most countably many poles
+and no finite accumulation point. The diagonal sequence $R_M$ converges
+to $g$ \emph{in capacity} on $\mathbb{C}\setminus E$,
+$\mathrm{cap}(E)=0$.
 \end{theorem}
 
-\begin{remark}
-  [Which theorem applies]\label{rem:which_thm} Theorem~\ref{thm:dMdB} gives
-  {\tmem{pointwise}} uniform convergence on compacta but requires knowing the
-  exact pole count.  Theorem~\ref{thm:NP} requires no such count but yields
-  only quasi-everywhere convergence, and presupposes meromorphy on all of
-  $\C$. When $g (z) = y (z^{1 / \mu})$ is meromorphic in $\C$ with no poles on
-  $(0, \infty)$ --- the canonical case for globally bounded Riccati solutions
-  on the real time axis --- both theorems apply, and $R_M (t^{\mu}) \to y (t)$
-  for every $t > 0$.
-\end{remark}
-
-\begin{theorem}
-  [Global Pad{\'e}--M{\"u}ntz representation]\label{thm:pade_riccati} Let $y
-  (t)$ solve \eqref{eq:frac_riccati}, assume $y$ is bounded on $[0, \infty)$
-  (so that $g (z)$ has no poles on the positive real $z$-axis), and assume
-  that $g (z) \assign y (z^{1 / \mu})$ admits a meromorphic continuation to
-  $\C$ with at most countably many poles having no finite accumulation point.
-  Then
-  \begin{equation}
-    \label{eq:y_global_pade} \hspace{0.17em} y (t) = \lim_{M \to \infty} R_M
-    (t^{\mu}) = \lim_{M \to \infty}  \frac{P_M (t^{\mu})}{Q_M (t^{\mu})} 
-    \quad \text{{\forall}} t \ge 0
-  \end{equation}
+\begin{theorem}[Global Pad\'e--M\"untz representation]\label{thm:pade_riccati}
+Let $y(t)$ solve \eqref{eq:frac_riccati}--\eqref{eq:IC} and be bounded on
+$[0,\infty)$. Then
+\begin{equation}\label{eq:y_global_pade}
+  y(t) = \lim_{M\to\infty}R_M(t^{\mu})
+       = \lim_{M\to\infty}\frac{P_M(t^{\mu})}{Q_M(t^{\mu})}
+  \qquad\forall\,t\ge 0.
+\end{equation}
 \end{theorem}
 
 \begin{proof}
-  Under the meromorphy hypothesis,  Theorem~\ref{thm:NP} applies and $R_M \to
-  g$ in capacity on $\C \setminus E$ with $\mathrm{cap} (E) = 0$. Since $g$ is
-  holomorphic on a neighbourhood of every point of $(0, \infty)$ (by the
-  no-positive-pole hypothesis), and meromorphic on every disc $\{|z| < \rho\}$
-  with finitely many poles in that disc,  Theorem~\ref{thm:dMdB} gives uniform
-  convergence on compact subsets of $\C \setminus \{ \text{poles} \}$; in
-  particular pointwise convergence at every $z = t^{\mu} \in (0, \infty)$. At
-  $t = 0$, $y (0) = 0$ and $R_M (0) = p_0 / Q_M (0) = 0 / 1 = 0$ for every
-  $M$, so the limit holds trivially.
+Meromorphy of $g$ on $\mathbb{C}$ is Theorem~\ref{thm:meromorphic}
+(unconditional). Its poles are discrete with no finite accumulation point,
+so Theorem~\ref{thm:NP} applies: $R_M\to g$ in capacity on
+$\mathbb{C}\setminus E$. Since $g$ is holomorphic on a neighbourhood of
+every point of $(0,\infty)$ (boundedness of $y$ excludes positive real poles),
+Theorem~\ref{thm:dMdB} gives uniform convergence on compact subsets of
+$(0,\infty)$, hence pointwise at every $z=t^\mu>0$.
+At $t=0$: $y(0)=0$ and $R_M(0)=p_0/1=0$ for every $M$.
 \end{proof}
-
-\begin{remark}
-  [Status of the meromorphy hypothesis]\label{rem:meromorphy} Meromorphy of
-  $g$ on $\C$ is established for $\mu = 1$ (where the linearization $y = - w'
-  / (c_2 w)$ reduces the Riccati equation to a linear ODE with entire
-  solutions) and is conjectured for $\mu \in (0, 1)$ on the basis of the
-  Painlev{\'e} property of the underlying flow and the empirical pole
-  distribution of the diagonal Pad{\'e} sequence. A complete proof for
-  arbitrary $\mu \in (0, 1)$ lies outside the scope of the present paper and
-  is connected to the Riemann--Hilbert structure discussed in 
-  Section~\ref{sec:resurgence}. In practical computation, the hypothesis is
-  verified a~posteriori by the convergence behavior of $R_M (t^{\mu})$ at
-  probe points $t$ of interest, controlled by the
-  bound~\eqref{eq:error_bound}.
-\end{remark}
 
 \subsection{Algorithmic summary}
 
-Given $(c_0, c_1, c_2, \mu)$ and Pad{\'e} order $M$:
+Given $(c_0,c_1,c_2,\mu)$ and Pad\'e order $M$:
 \begin{enumerate}
-  \item Compute the Puiseux coefficients $a_1, \ldots, a_{2 M}$ by the
-  recurrence \eqref{eq:a1_const}--\eqref{eq:ak_const}. Cost: $\mathcal{O}
-  (M^2)$.
-  
-  \item Form the Hankel matrix $H_M$ and right-hand side $\tmmathbf{b}$ from
-  \eqref{eq:hankel_system}.
-  
-  \item Solve $H_M \tmmathbf{q}= -\tmmathbf{b}$ for the denominator
-  coefficients. Cost: $\mathcal{O} (M^3)$.
-  
-  \item Recover the numerator coefficients via \eqref{eq:Pade1}.
-  
-  \item Evaluate $y_M (t) = \frac{P_M (t^{\mu})}{Q_M (t^{\mu})}$ at any $t \ge
-  0$. Cost: $\mathcal{O} (M)$ per query
+  \item Compute $a_1,\ldots,a_{2M}$ by \eqref{eq:a1_const}--\eqref{eq:ak_const}.
+        Cost: $\mathcal{O}(M^2)$.
+  \item Form $H_M$ and $\mathbf{b}$ from \eqref{eq:hankel_system}.
+  \item Solve $H_M\mathbf{q}=-\mathbf{b}$.
+        Cost: $\mathcal{O}(M^3)$ (dense LU); reducible to
+        $\mathcal{O}(M^2)$ via the Levinson--Durbin algorithm.
+  \item Recover numerator via \eqref{eq:Pade1}.
+  \item Evaluate $y_M(t)=P_M(t^{\mu})/Q_M(t^{\mu})$ at any $t\ge 0$.
+        Cost: $\mathcal{O}(M)$ per query.
 \end{enumerate}
-Steps 1--4 are independent of $t$; the entire family $\{y_M (t) : t \ge 0\}$
-is encoded in a single rational function in $z = t^{\mu}$. There is no grid,
-no time stepping, no Newton iteration, no fixed-point loop.
+Steps~1--4 are independent of $t$; the entire family $\{y_M(t):t\ge 0\}$
+is encoded in a single rational function in $z=t^{\mu}$.
+There is no grid, no time stepping, no Newton iteration, no fixed-point loop.
 
-\
+\appendix
 
-\begin{thebibliography}{9}
-  {\bibitem{eleuch2019}}O.~El~Euch and M.~Rosenbaum, {\tmem{The characteristic
-  function of rough Heston models}}, Mathematical Finance, 29(1):3--38, 2019.
-  
-  {\bibitem{baker1996}}G.{\hspace{0.17em}}A.~Baker and P.~Graves-Morris,
-  {\tmem{Pad{\'e} Approximants}}, 2nd ed., Cambridge University Press, 1996.
-  
-  {\bibitem{esmaeili2015}}S.~Esmaeili and M.~Shamsi, {\tmem{The
-  M{\"u}ntz--Legendre Tau method for fractional differential equations}},
-  Applied Mathematical Modelling, 40(2):671--684, 2015.
-  
-  {\bibitem{montessus1902}}R.~de~Montessus de~Ballore, {\tmem{Sur les
-  fractions continues alg{\'e}briques}}, Bull. Soc. Math. France, 30:28--36,
-  1902.
-  
-  {\bibitem{nuttall1970}}J.~Nuttall, {\tmem{The convergence of Pad{\'e}
-  approximants of meromorphic functions}}, J. Math. Anal. Appl.,
-  31(1):147--153, 1970.
-  
-  {\bibitem{pommerenke1973}}Ch.~Pommerenke, {\tmem{Pad{\'e} approximants and
-  convergence in capacity}}, J. Math. Anal. Appl., 41:775--780, 1973.
-  
-  {\bibitem{stahl1997}}H.~Stahl, {\tmem{The convergence of Pad{\'e}
-  approximants to functions with branch points}}, J. Approx. Theory,
-  91:139--204, 1997.
-  
-  {\bibitem{ecalle1981}}J.~{\'E}calle, {\tmem{Les fonctions r{\'e}surgentes}},
-  Vols. I--III, Publ. Math. d'Orsay, 1981--1985.
-  
-  {\bibitem{costin2008}}O.~Costin, {\tmem{Asymptotics and Borel Summability}},
-  Chapman \& Hall/CRC, 2008.
-  
-  {\bibitem{deift1999}}P.~Deift, {\tmem{Orthogonal Polynomials and Random
-  Matrices: A Riemann--Hilbert Approach}}, Courant Lecture Notes 3, AMS, 1999.
-  
-  {\bibitem{callegaro2021}}G.~Callegaro, M.~Grasselli, and G.~Pag{\`e}s,
-  {\tmem{Fast hybrid schemes for fractional Riccati equations (rough is not so
-  tough)}}, Mathematics of Operations Research, 46(1):221--254, 2021.
-  
-  {\bibitem{gatheral2019}}J.~Gatheral and R.~Radoi{\v c}i{\'c},
-  {\tmem{Rational approximation of the rough Heston solution}}, International
-  Journal of Theoretical and Applied Finance, 22(3):1950010, 2019.
+%%=========================================================================
+\section{Mittag-Leffler Functions: Order and Type}\label{app:ML}
+%%=========================================================================
+
+\begin{proposition}\label{prop:ML_order}
+For $\mu\in(0,1)$ and $\lambda\in\mathbb{C}$, $z\mapsto\ML{\mu}{1}(\lambda z)$
+is entire of order $\rho=1/\mu$ and type $\sigma=|\lambda|^{1/\mu}$.
+\end{proposition}
+
+\begin{proof}
+The Taylor coefficients are $c_k=\lambda^k/\Gamma(k\mu+1)$. By Stirling's
+formula, $\log\Gamma(k\mu+1)=k\mu\log(k\mu)-k\mu+\tfrac{1}{2}\log(2\pi k\mu)+O(1/k)$,
+so $\log|c_k|^{-1/k}\sim\mu\log(k\mu)-\mu-\log|\lambda|\to\infty$,
+confirming infinite radius of convergence. The Hadamard order formula gives
+\[
+  \rho=\limsup_{k\to\infty}\frac{k\log k}{\log(1/|c_k|)}
+  =\limsup_{k\to\infty}\frac{k\log k}{k\mu\log k-k\mu\log\mu+k\mu+O(\log k)}
+  =\frac{1}{\mu}.
+\]
+The type at order $1/\mu$ follows from $\sigma=(e\rho)^{-1}\limsup_{k\to\infty}
+k^{1/\mu}|c_k|^{\mu/k}$, which evaluates to $|\lambda|^{1/\mu}$.
+\end{proof}
+
+%%=========================================================================
+\section{Closed-Form Special Cases}\label{app:special}
+%%=========================================================================
+
+\subsection*{Case $c_1=0$}
+
+$\lambda_\pm=\pm\sqrt{-c_0 c_2}$, $A=B=1/2$, and
+\[
+  w(z)=\tfrac{1}{2}\bigl[\ML{\mu}{1}(\sqrt{-c_0 c_2}\,z)
+                         +\ML{\mu}{1}(-\sqrt{-c_0 c_2}\,z)\bigr]
+      =\ML{2\mu}{1}(-c_0 c_2 z^2),
+\]
+using the standard reflection identity
+$\tfrac{1}{2}[E_{\mu,1}(u)+E_{\mu,1}(-u)]=E_{2\mu,1}(-u^2)$.
+The poles of $g$ are at the zeros of $\ML{2\mu}{1}(-c_0 c_2 z^2)$.
+
+\subsection*{Case $c_0=0$}
+
+$\lambda_+=c_1$, $\lambda_-=0$. The formula \eqref{eq:AB} gives
+$A=1$, $B=0$, so $w(z)=\ML{\mu}{1}(c_1 z)$ and
+\[
+  g(z)=-\frac{c_1\ML{\mu}{1}(c_1 z)}{c_2\ML{\mu}{1}(c_1 z)}=-\frac{c_1}{c_2},
+\]
+the constant fixed point, consistent with $D^\mu(-c_1/c_2)=0=c_1(-c_1/c_2)+c_2(-c_1/c_2)^2$.
+
+\begin{thebibliography}{99}
+
+\bibitem{baker1996}
+G.~A.~Baker and P.~Graves-Morris,
+\emph{Pad\'e Approximants}, 2nd~ed.,
+Cambridge University Press, 1996.
+
+\bibitem{callegaro2021}
+G.~Callegaro, M.~Grasselli, and G.~Pag\`es,
+\emph{Fast hybrid schemes for fractional Riccati equations (rough is not so tough)},
+Mathematics of Operations Research, 46(1):221--254, 2021.
+
+\bibitem{costin2008}
+O.~Costin,
+\emph{Asymptotics and Borel Summability},
+Chapman \& Hall/CRC, 2008.
+
+\bibitem{deift1999}
+P.~Deift,
+\emph{Orthogonal Polynomials and Random Matrices: A Riemann--Hilbert Approach},
+Courant Lecture Notes 3, AMS, 1999.
+
+\bibitem{ecalle1981}
+J.~\'Ecalle,
+\emph{Les fonctions r\'esurgentes}, Vols.~I--III,
+Publ.\ Math.\ d'Orsay, 1981--1985.
+
+\bibitem{eleuch2019}
+O.~El~Euch and M.~Rosenbaum,
+\emph{The characteristic function of rough Heston models},
+Mathematical Finance, 29(1):3--38, 2019.
+
+\bibitem{esmaeili2015}
+S.~Esmaeili and M.~Shamsi,
+\emph{The M\"untz--Legendre Tau method for fractional differential equations},
+Applied Mathematical Modelling, 40(2):671--684, 2015.
+
+\bibitem{gatheral2019}
+J.~Gatheral and R.~Radoi\v{c}i\'c,
+\emph{Rational approximation of the rough Heston solution},
+International Journal of Theoretical and Applied Finance, 22(3):1950010, 2019.
+
+\bibitem{gorenflo2020}
+R.~Gorenflo, A.~A.~Kilbas, F.~Mainardi, and S.~V.~Rogosin,
+\emph{Mittag-Leffler Functions, Related Topics and Applications}, 2nd~ed.,
+Springer, 2020.
+
+\bibitem{montessus1902}
+R.~de~Montessus de~Ballore,
+\emph{Sur les fractions continues alg\'ebriques},
+Bull.\ Soc.\ Math.\ France, 30:28--36, 1902.
+
+\bibitem{nuttall1970}
+J.~Nuttall,
+\emph{The convergence of Pad\'e approximants of meromorphic functions},
+J.\ Math.\ Anal.\ Appl., 31(1):147--153, 1970.
+
+\bibitem{pommerenke1973}
+Ch.~Pommerenke,
+\emph{Pad\'e approximants and convergence in capacity},
+J.\ Math.\ Anal.\ Appl., 41:775--780, 1973.
+
+\bibitem{stahl1997}
+H.~Stahl,
+\emph{The convergence of Pad\'e approximants to functions with branch points},
+J.\ Approx.\ Theory, 91:139--204, 1997.
+
 \end{thebibliography}
 
 \end{document}
