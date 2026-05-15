@@ -73,6 +73,16 @@ public class Fraction implements Becomable<Fraction>,AutoCloseable,NamedField<Fr
 
 
 
+	public ComplexPolynomial mul(ComplexPolynomial that, int bits, ComplexPolynomial result)
+	{
+	  return result.set(this).mul(that,bits,result);
+	}
+
+	public ComplexPolynomial mul(Real that, int bits, ComplexPolynomial result)
+	{
+	  return result.set(this).mul(that,bits,result);
+	}
+	
 	public ComplexPolynomial neg( ComplexPolynomial result )
 	{
 	  return result.set(this).neg();

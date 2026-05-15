@@ -45,6 +45,16 @@ import arb.utensils.Utensils;
 %typemap(javacode) fmpq %{
 
 
+	public ComplexPolynomial mul(ComplexPolynomial that, int bits, ComplexPolynomial result)
+	{
+	  return result.set(this).mul(that,bits,result);
+	}
+
+	public ComplexPolynomial mul(Real that, int bits, ComplexPolynomial result)
+	{
+	  return result.set(this).mul(that,bits,result);
+	}
+	
 	public ComplexPolynomial neg( ComplexPolynomial result )
 	{
 	  return result.set(this).neg();
