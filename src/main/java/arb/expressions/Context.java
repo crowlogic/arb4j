@@ -577,7 +577,7 @@ public class Context implements
   {
     if (Expression.trace)
     {
-      log.debug("#{}: registerVariable(var={})", System.identityHashCode(this), var);
+      log.debug("#{}: registerVariable({}={})", System.identityHashCode(this),var.getName(), var);
     }
     return registerVariable(var.getName(), var);
   }
