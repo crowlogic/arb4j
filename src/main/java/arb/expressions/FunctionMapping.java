@@ -172,18 +172,41 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
     return Objects.hash(domain, functionName, coDomain);
   }
 
+  /**
+   * Re-entrance guard for {@link #instantiate()}. The instantiate flow
+   * calls {@code expression.instantiate()} which calls
+   * {@code injectContextFunctionAndVariableReferences} which calls
+   * {@code Class.getFields()} — the JVM may, while resolving field types,
+   * call {@link ExpressionClassLoader#findClass} which can route back to
+   * this same mapping and call {@link #instantiate()} recursively. Without
+   * a guard, this is the ping-pong observed in #1027 between mutually-
+   * referencing generated classes (S ↔ α).
+   */
+  private boolean             instantiateInProgress;
+
   public F instantiate()
   {
     if (instance != null)
     {
       return instance;
     }
-
-    if (expression != null && Function.class.isAssignableFrom(expression.functionClass))
+    if (instantiateInProgress)
     {
-      expression.compile();
+      return instance;
     }
-    return instance = expression.instantiate();
+    instantiateInProgress = true;
+    try
+    {
+      if (expression != null && Function.class.isAssignableFrom(expression.functionClass))
+      {
+        expression.compile();
+      }
+      return instance = expression.instantiate();
+    }
+    finally
+    {
+      instantiateInProgress = false;
+    }
   }
 
   public void declare(ClassVisitor classVisitor, String name)
