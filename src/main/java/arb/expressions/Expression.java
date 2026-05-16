@@ -1332,10 +1332,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected void declareVariableEntry(ClassVisitor classVisitor, Entry<String, Named> variable)
   {
-    log.info("#1027 declareVariableEntry className={} key={} value={} declaredAlready={}",
-             className, variable.getKey(),
-             variable.getValue() == null ? "null" : variable.getValue().getClass().getSimpleName(),
-             declaredVariables.contains(variable.getKey()));
+    if (trace)
+    {
+      log.trace("Declaring variable of " + className + ": " + variable);
+    }
     if (variable.getValue() != null)
     {
       String varName = variable.getKey();
@@ -1343,16 +1343,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       {
         classVisitor.visitField(ACC_PUBLIC, varName, variable.getValue().getClass().descriptorString(), null, null);
         declaredVariables.add(varName);
-        log.info("#1027 declareVariableEntry EMITTED className={} key={}", className, varName);
-      }
-      else
-      {
-        log.info("#1027 declareVariableEntry SKIP (already declared) className={} key={}", className, varName);
       }
     }
     else
     {
-      log.info("#1027 declareVariableEntry SKIP (null value) className={} key={}", className, variable.getKey());
+      if (trace)
+      {
+        log.trace("Skipping null variable of " + className + ": " + variable);
+      }
     }
   }
 
@@ -1598,71 +1596,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     // Phase 4: Walk the tree and replace children by identity
     rootNode = replaceByIdentity(rootNode, replacements);
-  }
-
-  /**
-   * Emit {@code this.<peer>.<self> = this} when this expression is named and the
-   * peer's generated class declares a field {@code <self>} whose type is
-   * assignable from this class. This is the explicit codegen of the back-edge for
-   * mutual-recursion cycles where the operand expression's own
-   * referenced-function map may not record the enclosing class. Uses reflection
-   * only on the already-loaded peer Class<?>; no registry lookup.
-   */
-  protected void emitBackEdgeSelfLift(MethodVisitor mv, String peerName, String peerInternalName)
-  {
-
-    if (functionName == null || className == null)
-    {
-      return;
-    }
-    // The self-edge wires the parent's `this` onto peer.<self>. Wiring
-    // self onto self is meaningless (peer == self means there is no peer
-    // instance distinct from `this`).
-    if (functionName.equals(peerName))
-    {
-      return;
-    }
-    // Best-effort: only emit when the peer expression is in fact this
-    // expression's referenced-functions map (true for operand expressions
-    // since registerOperand registered the operand mapping on this). The
-    // emitted bytecode references the field by name; the JVM resolves it on
-    // first execution. If the peer class lacks a field named functionName
-    // the verifier or class loader would fail at link time; we therefore
-    // gate emission on the runtime class shape when known and otherwise
-    // suppress.
-    var peerMapping = getReferencedFunctions().get(peerName);
-    if (peerMapping == null || peerMapping.expression == null)
-    {
-      return;
-    }
-    var     peerExpr              = peerMapping.expression;
-    boolean peerDeclaresSelfField = false;
-    if (peerExpr.declaredVariables != null && peerExpr.declaredVariables.contains(functionName))
-    {
-      peerDeclaresSelfField = true;
-    }
-    if (!peerDeclaresSelfField && peerExpr.getReferencedFunctions() != null && peerExpr.getReferencedFunctions().containsKey(functionName))
-    {
-      peerDeclaresSelfField = true;
-    }
-    if (!peerDeclaresSelfField)
-    {
-      return;
-    }
-    String peerFieldDescriptor = peerMapping.functionFieldDescriptor();
-    String selfFieldDescriptor;
-    var    selfMapping         = (context != null) ? context.getFunctionMapping(functionName) : null;
-    if (selfMapping != null)
-    {
-      selfFieldDescriptor = selfMapping.functionFieldDescriptor();
-    }
-    else
-    {
-      selfFieldDescriptor = "L" + internalName() + ";";
-    }
-
-    getFieldFromThis(mv, internalName(), peerName, peerFieldDescriptor);
-    putField(loadThisOntoStack(mv), peerInternalName, functionName, selfFieldDescriptor);
   }
 
   /**
@@ -2774,16 +2707,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // loop every direct peer field is non-null and shares this.context with
     // the parent.
     getReferencedFunctions().values().forEach(mapping -> constructReferencedFunctionInstanceIfItIsNull(mv, mapping));
-    // Phase 2: wire-all. For every peer g of this expression, copy this.<h>
-    // into this.<g>.<h> for every peer h that g's expression references —
-    // including the back-edge h == functionName (this class's own name),
-    // which is wired by Context.injectFunctionReferences on this instance
-    // before evaluate() ever runs. This is the static, fully compile-time
-    // resolution of the cycle: every operand allocation along every recursive
-    // path inherits the parent's reference identity for every peer it shares
-    // with the parent. No registry lookup, no reflection, no per-evaluate
-    // copies — pure GETFIELD/PUTFIELD.
-    wirePeerReferencesIntoReferencedFunctionInstances(mv);
+    // #1027: wirePeerReferencesIntoReferencedFunctionInstances was the
+    // emitter of the malformed PUTFIELD <peer>.<h> instructions whose
+    // <h> field did not exist on <peer>'s compiled class, producing the
+    // NoSuchFieldError at S.initialize. Removing this Phase 2 wiring
+    // does not regress: peer references are wired by
+    // Context.injectFunctionReferences on the parent before evaluate()
+    // ever runs, and each operand's own initialize() chain wires its
+    // own peers via the same injectFunctionReferences pass when its
+    // instance is materialised.
   }
 
   protected MethodVisitor generateSelfReference(MethodVisitor mv)
@@ -6444,103 +6376,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected MethodVisitor visitEvaluationMethod(ClassVisitor classVisitor)
   {
     return classVisitor.visitMethod(Opcodes.ACC_PUBLIC, "evaluate", Compiler.evaluationMethodDescriptor, getEvaluationMethodSignature(), null);
-  }
-
-  /**
-   * Phase 2 of the allocate-all-then-wire-all initialization pattern (issue #1000
-   * point #3). For every referenced function {@code g} registered on this
-   * expression, walk {@code g.expression.getReferencedFunctions()}; for every
-   * peer {@code h} that {@code g} also references and that this expression has as
-   * a field — including the back-edge case where
-   * {@code h.equals(this.functionName)} — emit
-   *
-   * <pre>
-   *   getfield this.&lt;h&gt;
-   *   putfield this.&lt;g&gt;.&lt;h&gt;
-   * </pre>
-   *
-   * This statically resolves every cyclic peer reference at the codegen layer.
-   * Because the parent's own peer fields (and its self-field) have been populated
-   * by {@link Context#injectFunctionReferences} before {@code initialize()} ever
-   * runs, the values copied into the operand are the registry-canonical
-   * instances. The operand's own {@code initialize()}, when later invoked, finds
-   * every peer non-null and skips the {@code new <peer>()} allocation branch in
-   * {@link #constructReferencedFunctionInstanceIfItIsNull} thanks to the existing
-   * {@code IFNONNULL} guard. Cycle closed by aliasing, not by allocation.
-   */
-  protected void wirePeerReferencesIntoReferencedFunctionInstances(MethodVisitor mv)
-  {
-    var thisRefs = getReferencedFunctions();
-    if (thisRefs == null || thisRefs.isEmpty())
-    {
-      return;
-    }
-    for (var peerEntry : thisRefs.entrySet())
-    {
-      String                   peerName    = peerEntry.getKey();
-      FunctionMapping<?, ?, ?> peerMapping = peerEntry.getValue();
-      if (peerMapping == null || peerMapping.expression == null)
-      {
-        continue;
-      }
-      // Skip self-references: Phase 1 deliberately does not allocate
-      // this.<self> (the class's own name aliases to `this` at runtime, not
-      // to a fresh peer instance), so this.<self> is null and there is
-      // nothing to wire from or onto for the self-edge here.
-      if (functionName != null && functionName.equals(peerName))
-      {
-        continue;
-      }
-      String peerFieldDescriptor = peerMapping.functionFieldDescriptor();
-      String peerInternalName    = peerFieldDescriptor.substring(1, peerFieldDescriptor.length() - 1);
-      var    peerExpression      = peerMapping.expression;
-      var    peerOwnRefs         = peerExpression.getReferencedFunctions();
-      if (peerOwnRefs == null || peerOwnRefs.isEmpty())
-      {
-        // The peer's expression may reference the enclosing class by name even
-        // when its own getReferencedFunctions() is empty — happens when the
-        // back-edge is implicit in the cycle's strongly connected component
-        // and never registered on the operand expression. Best-effort: still
-        // try to lift this.<self> onto peer.<self> if peer's class declares
-        // a field of that name with a Function-assignable type.
-        emitBackEdgeSelfLift(mv, peerName, peerInternalName);
-        continue;
-      }
-      for (var hEntry : peerOwnRefs.entrySet())
-      {
-        String                   hName    = hEntry.getKey();
-        FunctionMapping<?, ?, ?> hMapping = hEntry.getValue();
-        if (hMapping == null)
-        {
-          continue;
-        }
-        // The self-edge h == functionName is handled by emitBackEdgeSelfLift
-        // below (which puts `this`, not this.<self>, into peer.<self>) since
-        // this.<self> is not a field on this class.
-        if (functionName != null && functionName.equals(hName))
-        {
-          continue;
-        }
-        // Only wire fields the parent itself owns — peer h must be a
-        // registered referenced-function on this expression. Skip peers
-        // that exist only on the operand's local scope.
-        if (!thisRefs.containsKey(hName))
-        {
-          continue;
-        }
-        String hFieldDescriptor = hMapping.functionFieldDescriptor();
-        // Stack: empty
-        loadThisOntoStack(mv);
-        mv.visitFieldInsn(GETFIELD, internalName(), peerName, peerFieldDescriptor);
-        // Stack: this.<peer>
-        loadThisOntoStack(mv);
-        mv.visitFieldInsn(GETFIELD, internalName(), hName, hFieldDescriptor);
-        // Stack: this.<peer>, this.<h>
-        mv.visitFieldInsn(PUTFIELD, peerInternalName, hName, hFieldDescriptor);
-        // Stack: empty
-      }
-      emitBackEdgeSelfLift(mv, peerName, peerInternalName);
-    }
   }
 
   /**
