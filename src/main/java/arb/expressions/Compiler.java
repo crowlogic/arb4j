@@ -579,25 +579,15 @@ public class Compiler
       log.debug("loadFunctionClass(internalName={}) into Context#{}", internalName, System.identityHashCode(context));
     }
 
+    // #1027 fix: define the class directly via defineClass instead of the
+    // prior register-bytecodes-then-loadClass round trip. The old flow let
+    // the JVM-driven findClass call get triggered re-entrantly during field-
+    // type resolution (Class.getFields()), which could fall into the
+    // {@code functionMapping} branch and recompile a class mid-definition.
+    // With the direct defineClass call, the bytecode is installed in one
+    // step; subsequent {@code findClass} lookups hit the cache.
     ExpressionClassLoader loader = context.getClassLoader();
-    // Registry is keyed by the slash-form internal name (matches the name
-    // written into the bytecode by ClassWriter.visit). The JVM, however,
-    // calls loadClass / defineClass with the dotted binary form, so we
-    // pass the dotted form to loadClass and let
-    // ExpressionClassLoader.findClass normalize back to slashes when
-    // consulting pendingBytecodes.
-    loader.registerBytecodes(internalName, bytecodes);
-    String binaryName = internalName.replace('/', '.');
-
-    try
-    {
-      return (Class<F>) loader.loadClass(binaryName);
-    }
-    catch (ClassNotFoundException e)
-    {
-      throw new CompilerException("Failed to load compiled expression class: " + binaryName,
-                                  e);
-    }
+    return (Class<F>) loader.defineClassDirectly(internalName, bytecodes);
   }
 
   /**
