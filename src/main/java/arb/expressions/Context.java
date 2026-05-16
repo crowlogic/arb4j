@@ -159,6 +159,22 @@ public class Context implements
 
   public boolean disableLommelPolynomials;
 
+  /**
+   * Optional package identity for this Context. When non-null, every generated
+   * class produced by an {@link Expression} bound to this Context is emitted
+   * under this dotted package, giving it a bytecode-level identity distinct
+   * from classes in other Contexts. This is the prerequisite for the {@code
+   * mergeFrom} feature described in #1024 — contexts with different package
+   * names can never have a genuine class-identity clash, because
+   * {@code arb.jacobi.P} and {@code arb.riccati.P} are different JVM classes.
+   *
+   * <p>Callers that represent named mathematical objects pass the package at
+   * construction time, e.g. {@code new Context("arb.jacobi")}. Contexts
+   * constructed via the no-arg ctor keep the legacy unpackaged identity for
+   * backwards compatibility.
+   */
+  public String packageName = null;
+
   public ExpressionClassLoader getClassLoader()
   {
     if (classLoader == null)
@@ -173,6 +189,20 @@ public class Context implements
   {
     this.variables = FXCollections.observableHashMap();
     this.functions = new FunctionMappings();
+  }
+
+  /**
+   * Construct a Context with a dotted package identity. Every generated class
+   * produced under this Context will be emitted into {@code packageName} at
+   * the bytecode level. See {@link #packageName} for rationale.
+   *
+   * @param packageName dotted package (e.g. {@code "arb.jacobi"}), or null
+   *                    for the legacy unpackaged behaviour
+   */
+  public Context(String packageName)
+  {
+    this();
+    this.packageName = packageName;
   }
 
   public Context(FunctionMappings funcs)

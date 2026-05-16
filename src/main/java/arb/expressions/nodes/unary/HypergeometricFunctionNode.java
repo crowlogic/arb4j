@@ -268,7 +268,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     argExpression.rootNode            = arg.spliceInto(argExpression);
     argExpression.rootNode.isRootNode = true;
     argExpression.updateStringRepresentation();
-    argExpression.className = expression.className + "Arg" + Parser.transformToAcceptableJavaIdentifier(argExpression.toString());
+    argExpression.setClassName(expression.className() + "Arg" + Parser.transformToAcceptableJavaIdentifier(argExpression.toString()));
 
     argExpression.generate();
 

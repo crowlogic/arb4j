@@ -166,8 +166,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     expression.getContext();
     assignFieldNamesIfNecessary(expression.coDomainType);
     parseOperand();
-    functionClass = expression.className;
-    assert functionClass != null : "functionClass=expression.className shan't be null for operandExpression=" + operandExpression;
+    functionClass = expression.className();
+    assert functionClass != null : "functionClass=expression.className() shan't be null for operandExpression=" + operandExpression;
     generatedType = expression.coDomainType;
     parseOperatorLimitSpecifications();
   }
@@ -192,8 +192,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     this.symbol    = symbol;
     expression.getContext();
     this.operandExpression = operandExpression;
-    functionClass          = expression.className;
-    assert functionClass != null : "functionClass=expression.className shan't be null, expression=" + expression;
+    functionClass          = expression.className();
+    assert functionClass != null : "functionClass=expression.className() shan't be null, expression=" + expression;
     generatedType   = expression.coDomainType;
     this.lowerLimit = lowerLimit;
     this.upperLimit = upperLimit;
@@ -507,7 +507,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     {
       logger.debug(String.format("%s.loadResultvariable( resultVariable= %s, generatedType=%s )\n", getClass().getSimpleName(), fieldName, generatedType));
     }
-    getFieldFromThis(methodVisitor, expression.className, fieldName, generatedType);
+    getFieldFromThis(methodVisitor, expression.className(), fieldName, generatedType);
   }
 
   private void parseUpperLimit()
@@ -548,7 +548,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     operandExpression.upstreamExpression = expression;
     operandExpression.setContext(expression.getContext());
     operandExpression.setIndependentVariable(null);
-    operandExpression.className = operandFunctionFieldName;
+    operandExpression.setClassName(operandFunctionFieldName);
 
     if (arrowVar != null)
     {
@@ -825,7 +825,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                              extraUpper);
     innerLevel.indexVariableFieldName   = extraName;
     innerLevel.operandFunctionFieldName = innerOperandFieldName;
-    innerLevel.functionClass            = currentOperandExpression.className;
+    innerLevel.functionClass            = currentOperandExpression.className();
     innerLevel.assignFieldNamesIfNecessary(innerOperandExpression.coDomainType);
 
     innerLevel.operandMapping = currentOperandExpression.getContext()
@@ -862,7 +862,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     innerOperandExpression.clearIndependentVariable();
     innerOperandExpression.rootNode                = null;
     innerOperandExpression.deferVariableResolution = false;
-    innerOperandExpression.className               = innerOperandFieldName;
+    innerOperandExpression.setClassName(innerOperandFieldName);
 
     VariableNode<Integer, R, Sequence<R>> innerIndexVar = new VariableNode<>(innerOperandExpression,
                                                                              innerOperandExpression.newVariableReference(extraName),
@@ -899,12 +899,12 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       Label    end                      = new Label();
 
       loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, expression.className, operandFunctionFieldName, String.format("L%s;", operandFunctionFieldName));
+      mv.visitFieldInsn(GETFIELD, expression.className(), operandFunctionFieldName, String.format("L%s;", operandFunctionFieldName));
       mv.visitFieldInsn(GETFIELD, operandClassInternalName, fieldName, fieldTypeDescriptor);
       mv.visitJumpInsn(IFNONNULL, notNull);
 
       loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, expression.className, operandFunctionFieldName, String.format("L%s;", operandFunctionFieldName));
+      mv.visitFieldInsn(GETFIELD, expression.className(), operandFunctionFieldName, String.format("L%s;", operandFunctionFieldName));
       Compiler.generateNewObjectInstruction(mv, fieldType);
       Compiler.duplicateTopOfTheStack(mv);
       Compiler.invokeDefaultConstructor(mv, fieldType);
@@ -913,10 +913,10 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       mv.visitLabel(notNull);
 
       loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, expression.className, operandFunctionFieldName, String.format("L%s;", operandFunctionFieldName));
+      mv.visitFieldInsn(GETFIELD, expression.className(), operandFunctionFieldName, String.format("L%s;", operandFunctionFieldName));
       mv.visitFieldInsn(GETFIELD, operandClassInternalName, fieldName, fieldTypeDescriptor);
       loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, expression.className, fieldName, fieldTypeDescriptor);
+      mv.visitFieldInsn(GETFIELD, expression.className(), fieldName, fieldTypeDescriptor);
       Compiler.generateVirtualMethodInvocation(mv, fieldType, "set", fieldType, fieldType);
       mv.visitInsn(Opcodes.POP);
 
@@ -1156,7 +1156,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     nAryOperationNode.indexVariableFieldName          = this.indexVariableFieldName;
     nAryOperationNode.indexVariableGeneratedFieldName = this.indexVariableGeneratedFieldName;
     nAryOperationNode.parsed                          = this.parsed;
-    nAryOperationNode.functionClass                   = newExpression.className;
+    nAryOperationNode.functionClass                   = newExpression.className();
     nAryOperationNode.operandFunctionFieldName        = this.operandFunctionFieldName;
     nAryOperationNode.operandMapping                  = (FunctionMapping<Integer, S, Sequence<S>>) (FunctionMapping<?, ?, ?>) this.operandMapping;
     newExpression.registerReferencedFunction(this.operandFunctionFieldName, this.operandMapping);

@@ -274,7 +274,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
         {
           logger.debug("  superChain[{}]: className={} independentVariable={},expression={}",
                        depth,
-                       dbg.className,
+                       dbg.className(),
                        dbg.getIndependentVariable(),
                        dbg.expression);
         }

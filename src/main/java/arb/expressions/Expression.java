@@ -295,7 +295,78 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public char                                             character                     = 0;
 
-  public String                                           className;
+  /**
+   * The short symbolic name of this Expression's generated class — e.g.
+   * {@code "P"}, {@code "a"}, {@code "β"}. This is what the
+   * {@link Context#functions} map keys on, what
+   * {@link FunctionMapping#functionName} cross-references, and what shows
+   * up in log messages.
+   *
+   * <p><b>Never reference this for bytecode emission.</b> Every ASM site
+   * (every {@link org.objectweb.asm.ClassWriter#visit ClassWriter.visit},
+   * every {@code visitTypeInsn(NEW, ...)},
+   * {@code visitFieldInsn(..., owner, ...)},
+   * {@code visitMethodInsn(..., owner, ...)}, every field descriptor of
+   * the form {@code "L" + ... + ";"}, every
+   * {@code classLoader.registerBytecodes(...)} key) must use
+   * {@link #internalName()} instead, so the bytecode-level identity
+   * incorporates the owning {@link Context#packageName}.
+   *
+   * <p>The field is {@code private} to enforce that rule at compile time —
+   * any new call site that needs the symbolic short name uses
+   * {@link #className()} and any new ASM emit site uses
+   * {@link #internalName()}. There is no third option.
+   */
+  private String                                          className;
+
+  /**
+   * Read-accessor for the short symbolic class name. See {@link #className}
+   * for the rule that distinguishes this from {@link #internalName()}.
+   */
+  public String className()
+  {
+    return className;
+  }
+
+  /**
+   * Setter for the short symbolic class name, used by partial-derivative
+   * construction, functional-expression construction, and reflective
+   * fixups. Setters do not need to participate in bytecode emission.
+   */
+  public void setClassName(String className)
+  {
+    this.className = className;
+  }
+
+  /**
+   * Bytecode-level identity of the generated class. Computed from the
+   * owning {@link Context}'s {@link Context#packageName} (if any) and the
+   * short {@link #className}. Use this for every ASM emit site that
+   * references the class being generated —
+   * {@link org.objectweb.asm.ClassWriter#visit ClassWriter.visit}, every
+   * {@code visitTypeInsn(NEW, ...)}, every
+   * {@code visitFieldInsn(..., owner, ...)}, every
+   * {@code visitMethodInsn(..., owner, ...)}, every field descriptor of the
+   * form {@code "L" + internalName() + ";"}, and every
+   * {@code classLoader.registerBytecodes(...)} key. Symbolic uses
+   * (the {@code functions} map keys, log messages, the
+   * {@link FunctionMapping#functionName} cross-reference) continue to use
+   * the short {@link #className}.
+   *
+   * <p>The returned form uses slashes, matching JVM internal-name
+   * convention (e.g. {@code "arb/jacobi/P"} rather than
+   * {@code "arb.jacobi.P"}).
+   *
+   * @return the slash-delimited internal name for the generated class
+   */
+  public String internalName()
+  {
+    if (context != null && context.packageName != null)
+    {
+      return context.packageName.replace('.', '/') + "/" + className;
+    }
+    return className;
+  }
 
   public Class<? extends C>                               coDomainType;
 
@@ -936,7 +1007,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                              + " superExpression.context="
                              + upstreamExpression.context;
     assert !className.isEmpty() : "className is empty";
-    compiledClass = loadFunctionClass(className, instructions, context);
+    compiledClass = loadFunctionClass(internalName(), instructions, context);
     return this;
   }
 
@@ -955,13 +1026,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       String typeInternalName   = mapping.functionName;
       String fieldDescriptor    = mapping.functionFieldDescriptor();
       var    alreadyInitialized = new Label();
-      loadThisOntoStack(mv).visitFieldInsn(GETFIELD, className, mapping.functionName, fieldDescriptor);
+      loadThisOntoStack(mv).visitFieldInsn(GETFIELD, internalName(), mapping.functionName, fieldDescriptor);
       mv.visitJumpInsn(Opcodes.IFNONNULL, alreadyInitialized);
       loadThisOntoStack(mv);
       generateNewObjectInstruction(mv, typeInternalName);
       duplicateTopOfTheStack(mv);
       invokeDefaultConstructor(mv, typeInternalName);
-      putField(mv, className, mapping.functionName, fieldDescriptor);
+      putField(mv, internalName(), mapping.functionName, fieldDescriptor);
       // Propagate the parent's context field into the new instance's context
       // field so the new instance's own initialize() sees the live, populated
       // Context. Without this, the new instance keeps its field-initializer
@@ -970,9 +1041,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       // remains null at runtime.
       String contextTypeDesc = Type.getDescriptor(Context.class);
       loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, className, mapping.functionName, fieldDescriptor);
+      mv.visitFieldInsn(GETFIELD, internalName(), mapping.functionName, fieldDescriptor);
       loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, className, "context", contextTypeDesc);
+      mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
       mv.visitFieldInsn(PUTFIELD, typeInternalName, "context", contextTypeDesc);
 
       mv.visitLabel(alreadyInitialized);
@@ -1010,19 +1081,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     Label  fieldNotNull    = new Label();
 
     duplicateTopOfTheStack(mv);
-    getField(mv, function.className, fieldName, fieldDescriptor);
+    getField(mv, function.internalName(), fieldName, fieldDescriptor);
     jumpToIfNotNull(mv, fieldNotNull);
 
     duplicateTopOfTheStack(mv);
     generateNewObjectInstruction(mv, domainType);
     duplicateTopOfTheStack(mv);
     invokeDefaultConstructor(mv, domainType);
-    putField(mv, function.className, fieldName, domainType);
+    putField(mv, function.internalName(), fieldName, domainType);
 
     designateLabel(mv, fieldNotNull);
 
     duplicateTopOfTheStack(mv);
-    getField(mv, function.className, fieldName, fieldDescriptor);
+    getField(mv, function.internalName(), fieldName, fieldDescriptor);
     getIndependentVariable().generate(mv, domainType);
     generateVirtualMethodInvocation(mv, domainType, "set", domainType, domainType);
     pop(mv);
@@ -1076,7 +1147,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected MethodVisitor declareEvaluateMethodArguments(MethodVisitor methodVisitor, Label startLabel, Label endLabel)
   {
-    methodVisitor.visitLocalVariable("this", String.format("L%s;", className), null, startLabel, endLabel, 0);
+    methodVisitor.visitLocalVariable("this", String.format("L%s;", internalName()), null, startLabel, endLabel, 0);
     methodVisitor.visitLocalVariable(getIndependentVariable() != null ? getIndependentVariable().getName()
                                                                       : "in",
                                      domainType.descriptorString(),
@@ -1521,10 +1592,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     else
     {
-      selfFieldDescriptor = "L" + className + ";";
+      selfFieldDescriptor = "L" + internalName() + ";";
     }
 
-    getFieldFromThis(mv, className, peerName, peerFieldDescriptor);
+    getFieldFromThis(mv, internalName(), peerName, peerFieldDescriptor);
     putField(loadThisOntoStack(mv), peerInternalName, functionName, selfFieldDescriptor);
   }
 
@@ -1670,7 +1741,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
       optimize();
 
-      generateFunctionInterface(this, className, classVisitor);
+      generateFunctionInterface(this, internalName(), classVisitor);
       generateDomainTypeMethod(classVisitor);
       generateCoDomainTypeMethod(classVisitor);
       generateEvaluationMethod(classVisitor);
@@ -1712,7 +1783,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       duplicateTopOfTheStack(mv);
 
       mv.visitMethodInsn(Opcodes.INVOKESPECIAL, internalName, "<init>", "()V", false);
-      mv.visitFieldInsn(Opcodes.PUTFIELD, className, "cache", Type.getDescriptor(TreeMap.class));
+      mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "cache", Type.getDescriptor(TreeMap.class));
     }
   }
 
@@ -1836,7 +1907,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected MethodVisitor generateCloseFieldCall(MethodVisitor methodVisitor, String fieldName, Class<?> fieldType)
   {
-    getFieldFromThis(methodVisitor, className, fieldName, fieldType);
+    getFieldFromThis(methodVisitor, internalName(), fieldName, fieldType);
     return invokeCloseMethod(methodVisitor, fieldType);
   }
 
@@ -1865,13 +1936,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected void generateCodeToSetIsInitializedToTrue(MethodVisitor methodVisitor)
   {
     loadThisOntoStack(methodVisitor).visitInsn(Opcodes.ICONST_1);
-    methodVisitor.visitFieldInsn(PUTFIELD, className, IS_INITIALIZED, "Z");
+    methodVisitor.visitFieldInsn(PUTFIELD, internalName(), IS_INITIALIZED, "Z");
   }
 
   protected void generateCodeToThrowErrorIfAlreadyInitialized(MethodVisitor mv)
   {
     loadThisOntoStack(mv);
-    mv.visitFieldInsn(GETFIELD, className, IS_INITIALIZED, "Z");
+    mv.visitFieldInsn(GETFIELD, internalName(), IS_INITIALIZED, "Z");
     var alreadyInitializedLabel = new Label();
     mv.visitJumpInsn(IFEQ, alreadyInitializedLabel);
     mv.visitTypeInsn(NEW, JAVA_LANG_ASSERTION_ERROR);
@@ -1889,9 +1960,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected MethodVisitor generateConditionalInitializater(MethodVisitor mv)
   {
     var alreadyInitialized = new Label();
-    getFieldFromThis(mv, className, IS_INITIALIZED, boolean.class);
+    getFieldFromThis(mv, internalName(), IS_INITIALIZED, boolean.class);
     jumpToIfNotEqual(mv, alreadyInitialized);
-    loadThisOntoStack(mv).visitMethodInsn(INVOKEVIRTUAL, className, nameOfInitializerFunction, "()V", false);
+    loadThisOntoStack(mv).visitMethodInsn(INVOKEVIRTUAL, internalName(), nameOfInitializerFunction, "()V", false);
     Compiler.designateLabel(mv, alreadyInitialized);
     return mv;
   }
@@ -1914,7 +1985,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       // unconditionally triggers evaluateStaticSubexpressions()
       loadThisOntoStack(mv);
       mv.visitLdcInsn(-1);
-      mv.visitFieldInsn(Opcodes.PUTFIELD, className.replace('.', '/'), "staticPrecision", "I");
+      mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "staticPrecision", "I");
     }
 
     // Only root expressions create their own Context.
@@ -1943,7 +2014,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     methodVisitor.visitTypeInsn(NEW, contextTypeInternalName);
     methodVisitor.visitInsn(DUP);
     methodVisitor.visitMethodInsn(INVOKESPECIAL, contextTypeInternalName, "<init>", "()V", false);
-    methodVisitor.visitFieldInsn(PUTFIELD, className, "context", Context.class.descriptorString());
+    methodVisitor.visitFieldInsn(PUTFIELD, internalName(), "context", Context.class.descriptorString());
     return methodVisitor;
   }
 
@@ -1994,7 +2065,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                     classVisitor.visitMethod(Opcodes.ACC_PUBLIC | Opcodes.ACC_BRIDGE | Opcodes.ACC_SYNTHETIC, func, functionDescriptor, null, null);
       bridge.visitCode();
       bridge.visitVarInsn(Opcodes.ALOAD, 0);
-      bridge.visitMethodInsn(Opcodes.INVOKEVIRTUAL, className, func, concreteDescriptor, false);
+      bridge.visitMethodInsn(Opcodes.INVOKEVIRTUAL, internalName(), func, concreteDescriptor, false);
       bridge.visitInsn(Opcodes.ARETURN);
       bridge.visitMaxs(0, 0);
       bridge.visitEnd();
@@ -2011,8 +2082,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       log.debug("generateDependencyAssignment: functionName={} functionDescriptor={} assignment={}", functionName, functionDescriptor, assignment);
     }
-    loadThisOntoStack(mv).visitFieldInsn(GETFIELD, className, assignment, otherMapping.functionFieldDescriptor());
-    loadThisOntoStack(mv).visitFieldInsn(GETFIELD, className, functionName, functionDescriptor);
+    loadThisOntoStack(mv).visitFieldInsn(GETFIELD, internalName(), assignment, otherMapping.functionFieldDescriptor());
+    loadThisOntoStack(mv).visitFieldInsn(GETFIELD, internalName(), functionName, functionDescriptor);
     mv.visitFieldInsn(PUTFIELD, assignment, functionName, functionDescriptor);
   }
 
@@ -2047,7 +2118,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitTypeInsn(Opcodes.NEW, arrayListInternal);
     mv.visitInsn(Opcodes.DUP);
     mv.visitMethodInsn(Opcodes.INVOKESPECIAL, arrayListInternal, "<init>", "()V", false);
-    mv.visitFieldInsn(Opcodes.PUTFIELD, className, "derivativeCache", arrayListDescriptor);
+    mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "derivativeCache", arrayListDescriptor);
   }
 
   private ClassVisitor generateDerivativeMethod(ClassVisitor classVisitor)
@@ -2104,10 +2175,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     loadThisOntoStack(mv);
     mv.visitInsn(Opcodes.DUP);
-    mv.visitFieldInsn(Opcodes.GETFIELD, className, "evalStamp", "I");
+    mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "evalStamp", "I");
     mv.visitInsn(Opcodes.ICONST_1);
     mv.visitInsn(Opcodes.IADD);
-    mv.visitFieldInsn(Opcodes.PUTFIELD, className, "evalStamp", "I");
+    mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "evalStamp", "I");
   }
 
   protected ClassVisitor generateEvaluationMethod(ClassVisitor classVisitor) throws CompilerException
@@ -2270,9 +2341,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       functionalDependsOnIndependentVariable = functional.rootNode.dependsOn(functionalIndependentVariable);
     }
 
-    constructNewObject(mv, functional.className);
+    constructNewObject(mv, functional.internalName());
     duplicateTopOfTheStack(mv);
-    invokeDefaultConstructor(mv, functional.className);
+    invokeDefaultConstructor(mv, functional.internalName());
 
     if (functionalDependsOnIndependentVariable)
     {
@@ -2384,7 +2455,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     methodVisitor.visitCode();
     Compiler.annotateWithOverride(methodVisitor);
 
-    Compiler.getFieldFromThis(methodVisitor, className, "context", Context.class);
+    Compiler.getFieldFromThis(methodVisitor, internalName(), "context", Context.class);
 
     Compiler.generateReturnFromMethod(methodVisitor);
     return classVisitor;
@@ -2397,7 +2468,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     methodVisitor.visitCode();
     Compiler.annotateWithOverride(methodVisitor);
 
-    Compiler.getFieldFromThis(methodVisitor, className, "expression", Expression.class);
+    Compiler.getFieldFromThis(methodVisitor, internalName(), "expression", Expression.class);
 
     Compiler.generateReturnFromMethod(methodVisitor);
     return classVisitor;
@@ -2537,7 +2608,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       // this.staticPrecision = -1
       loadThisOntoStack(mv);
       mv.visitInsn(Opcodes.ICONST_M1);
-      mv.visitFieldInsn(Opcodes.PUTFIELD, className.replace('.', '/'), "staticPrecision", "I");
+      mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "staticPrecision", "I");
     }
     if (shouldCache())
     {
@@ -2546,7 +2617,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       // the Müntz a/S recurrence) must drop every entry, otherwise a(k) returns
       // the previous v's value at the same k.
       loadThisOntoStack(mv);
-      mv.visitFieldInsn(Opcodes.GETFIELD, className, "cache", Type.getDescriptor(TreeMap.class));
+      mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "cache", Type.getDescriptor(TreeMap.class));
       mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, Type.getInternalName(TreeMap.class), "clear", "()V", false);
     }
     if (shouldCacheValueBacking())
@@ -2556,7 +2627,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       // every non-null user-supplied input v will fail the IF_ACMPNE check.
       loadThisOntoStack(mv);
       mv.visitInsn(Opcodes.ACONST_NULL);
-      mv.visitFieldInsn(Opcodes.PUTFIELD, className, "lastV", Type.getDescriptor(domainType));
+      mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "lastV", Type.getDescriptor(domainType));
     }
     // for each inlined nested Function field f: if (this.f != null)
     // this.f.invalidateCache(alreadyInvalidated);
@@ -2564,10 +2635,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       var skip = new Label();
       loadThisOntoStack(mv);
-      mv.visitFieldInsn(Opcodes.GETFIELD, className, mapping.functionName, mapping.functionFieldDescriptor());
+      mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), mapping.functionName, mapping.functionFieldDescriptor());
       mv.visitJumpInsn(Opcodes.IFNULL, skip);
       loadThisOntoStack(mv);
-      mv.visitFieldInsn(Opcodes.GETFIELD, className, mapping.functionName, mapping.functionFieldDescriptor());
+      mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), mapping.functionName, mapping.functionFieldDescriptor());
       mv.visitVarInsn(Opcodes.ALOAD, 1);
       mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, functionInternal, "invalidateCache", "(L" + setInternal + ";)V", true);
       mv.visitLabel(skip);
@@ -2587,7 +2658,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     shim.visitInsn(Opcodes.DUP);
     shim.visitMethodInsn(Opcodes.INVOKESPECIAL, idMapInternal, "<init>", "()V", false);
     shim.visitMethodInsn(Opcodes.INVOKESTATIC, collectionsInternal, "newSetFromMap", "(Ljava/util/Map;)Ljava/util/Set;", false);
-    shim.visitMethodInsn(Opcodes.INVOKEVIRTUAL, className, "invalidateCache", "(L" + setInternal + ";)V", false);
+    shim.visitMethodInsn(Opcodes.INVOKEVIRTUAL, internalName(), "invalidateCache", "(L" + setInternal + ";)V", false);
     shim.visitInsn(Opcodes.RETURN);
     shim.visitMaxs(0, 0);
     shim.visitEnd();
@@ -2597,7 +2668,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected void generateInvocationOfDefaultNoArgConstructor(MethodVisitor methodVisitor, boolean object)
   {
     loadThisOntoStack(methodVisitor);
-    methodVisitor.visitMethodInsn(INVOKESPECIAL, object ? Type.getInternalName(Object.class) : className.replace(".", "/"), "<init>", "()V", false);
+    methodVisitor.visitMethodInsn(INVOKESPECIAL, object ? Type.getInternalName(Object.class) : internalName(), "<init>", "()V", false);
   }
 
   protected MethodVisitor generateLiteralConstantInitializers(MethodVisitor methodVisitor)
@@ -2621,7 +2692,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     Compiler.annotateWithOverride(methodVisitor);
 
     methodVisitor.visitVarInsn(ALOAD, 0);
-    methodVisitor.visitMethodInsn(INVOKEVIRTUAL, className, "evaluate", Compiler.getMethodDescriptor(Object.class), false);
+    methodVisitor.visitMethodInsn(INVOKEVIRTUAL, internalName(), "evaluate", Compiler.getMethodDescriptor(Object.class), false);
     methodVisitor.visitTypeInsn(CHECKCAST, Type.getInternalName(coDomainType));
 
     methodVisitor.visitMethodInsn(INVOKEVIRTUAL, Type.getInternalName(coDomainType), operation, Compiler.getMethodDescriptor(coDomainType), false);
@@ -2664,11 +2735,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     assert mapping != null : "no function mapping for " + functionName + " in " + context.toStringExtended();
     String fieldDescriptor = mapping.functionFieldDescriptor();
     var    alreadyAssigned = new Label();
-    loadThisOntoStack(mv).visitFieldInsn(GETFIELD, className, functionName, fieldDescriptor);
+    loadThisOntoStack(mv).visitFieldInsn(GETFIELD, internalName(), functionName, fieldDescriptor);
     mv.visitJumpInsn(IFNONNULL, alreadyAssigned);
     constructNewObject(loadThisOntoStack(mv), functionName);
     invokeDefaultConstructor(duplicateTopOfTheStack(mv), functionName);
-    putField(mv, className, functionName, fieldDescriptor);
+    putField(mv, internalName(), functionName, fieldDescriptor);
     Compiler.jumpTo(mv, alreadyAssigned);
     mv.visitLabel(alreadyAssigned);
     initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv), className, functionName, functionName, context.variableClassStream());
@@ -2709,7 +2780,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       // this.staticPrecision = bits
       loadThisOntoStack(mv);
       Compiler.loadBitsParameterOntoStack(mv);
-      mv.visitFieldInsn(Opcodes.PUTFIELD, className.replace('.', '/'), "staticPrecision", "I");
+      mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "staticPrecision", "I");
     }
     finally
     {
@@ -2804,25 +2875,25 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     // --- Lazy-init derivativeCache if null (when initialize() was not called) ---
     loadThisOntoStack(mv);
-    mv.visitFieldInsn(Opcodes.GETFIELD, className, "derivativeCache", arrayListDescriptor);
+    mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "derivativeCache", arrayListDescriptor);
     Label cacheNotNull = new Label();
     mv.visitJumpInsn(Opcodes.IFNONNULL, cacheNotNull);
     loadThisOntoStack(mv);
     mv.visitTypeInsn(Opcodes.NEW, arrayListInternal);
     mv.visitInsn(Opcodes.DUP);
     mv.visitMethodInsn(Opcodes.INVOKESPECIAL, arrayListInternal, "<init>", "()V", false);
-    mv.visitFieldInsn(Opcodes.PUTFIELD, className, "derivativeCache", arrayListDescriptor);
+    mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "derivativeCache", arrayListDescriptor);
     mv.visitLabel(cacheNotNull);
 
     // --- Ensure derivativeCache[0] = this ---
     // if (derivativeCache.isEmpty()) derivativeCache.add(this)
     loadThisOntoStack(mv);
-    mv.visitFieldInsn(Opcodes.GETFIELD, className, "derivativeCache", arrayListDescriptor);
+    mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "derivativeCache", arrayListDescriptor);
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, arrayListInternal, "size", "()I", false);
     Label cacheNotEmpty = new Label();
     mv.visitJumpInsn(Opcodes.IFNE, cacheNotEmpty);
     loadThisOntoStack(mv);
-    mv.visitFieldInsn(Opcodes.GETFIELD, className, "derivativeCache", arrayListDescriptor);
+    mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "derivativeCache", arrayListDescriptor);
     loadThisOntoStack(mv);
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, arrayListInternal, "add", "(Ljava/lang/Object;)Z", false);
     mv.visitInsn(Opcodes.POP); // discard boolean return
@@ -2866,13 +2937,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     Label growDone  = new Label();
     mv.visitLabel(growCheck);
     loadThisOntoStack(mv);
-    mv.visitFieldInsn(Opcodes.GETFIELD, className, "derivativeCache", arrayListDescriptor);
+    mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "derivativeCache", arrayListDescriptor);
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, arrayListInternal, "size", "()I", false);
     mv.visitVarInsn(Opcodes.ILOAD, kSlot);
     mv.visitJumpInsn(Opcodes.IF_ICMPGT, growDone); // size > k means cache has entry k
     // prev = cache.get(cache.size() - 1)
     loadThisOntoStack(mv);
-    mv.visitFieldInsn(Opcodes.GETFIELD, className, "derivativeCache", arrayListDescriptor);
+    mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "derivativeCache", arrayListDescriptor);
     mv.visitInsn(Opcodes.DUP); // stack: cache, cache
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, arrayListInternal, "size", "()I", false);
     mv.visitInsn(Opcodes.ICONST_1);
@@ -2885,7 +2956,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // need cache ref on stack before the value
     // Reload cache, swap
     loadThisOntoStack(mv);
-    mv.visitFieldInsn(Opcodes.GETFIELD, className, "derivativeCache", arrayListDescriptor);
+    mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "derivativeCache", arrayListDescriptor);
     mv.visitInsn(Opcodes.SWAP); // stack: cache, newDerivative
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, arrayListInternal, "add", "(Ljava/lang/Object;)Z", false);
     mv.visitInsn(Opcodes.POP); // discard boolean
@@ -2894,7 +2965,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     // --- fk = derivativeCache.get(k) ---
     loadThisOntoStack(mv);
-    mv.visitFieldInsn(Opcodes.GETFIELD, className, "derivativeCache", arrayListDescriptor);
+    mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "derivativeCache", arrayListDescriptor);
     mv.visitVarInsn(Opcodes.ILOAD, kSlot);
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, arrayListInternal, "get", "(I)Ljava/lang/Object;", false);
     mv.visitTypeInsn(Opcodes.CHECKCAST, functionInternal);
@@ -3091,17 +3162,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     Label record    = new Label(); // store v into this.lastV (value copy)
     // if (this.lastV == null) goto missEmpty
     loadThisOntoStack(mv);
-    mv.visitFieldInsn(Opcodes.GETFIELD, className, "lastV", Type.getDescriptor(domainType));
+    mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "lastV", Type.getDescriptor(domainType));
     mv.visitJumpInsn(Opcodes.IFNULL, missEmpty);
     // if (!this.lastV.equals(v)) goto missEmpty
     loadThisOntoStack(mv);
-    mv.visitFieldInsn(Opcodes.GETFIELD, className, "lastV", Type.getDescriptor(domainType));
+    mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "lastV", Type.getDescriptor(domainType));
     mv.visitVarInsn(Opcodes.ALOAD, 1);
     Compiler.generateVirtualMethodInvocation(mv, Object.class, "equals", boolean.class, Object.class);
     mv.visitJumpInsn(Opcodes.IFEQ, missEmpty);
     // cached = this.cachedResult; if (cached==null) goto missDup (stack has cached)
     loadThisOntoStack(mv);
-    mv.visitFieldInsn(Opcodes.GETFIELD, className, "cachedResult", Type.getDescriptor(coDomainType));
+    mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "cachedResult", Type.getDescriptor(coDomainType));
     Compiler.duplicateTopOfTheStack(mv);
     mv.visitJumpInsn(Opcodes.IFNULL, missDup);
     // result.set(cached); return result
@@ -3116,17 +3187,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     Compiler.designateLabel(mv, missEmpty);
     // Lazily allocate this.lastV on first miss so we can copy v's value into it.
     loadThisOntoStack(mv);
-    mv.visitFieldInsn(Opcodes.GETFIELD, className, "lastV", Type.getDescriptor(domainType));
+    mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "lastV", Type.getDescriptor(domainType));
     mv.visitJumpInsn(Opcodes.IFNONNULL, record);
     loadThisOntoStack(mv);
     mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(domainType));
     Compiler.duplicateTopOfTheStack(mv);
     mv.visitMethodInsn(Opcodes.INVOKESPECIAL, Type.getInternalName(domainType), "<init>", "()V", false);
-    mv.visitFieldInsn(Opcodes.PUTFIELD, className, "lastV", Type.getDescriptor(domainType));
+    mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "lastV", Type.getDescriptor(domainType));
     Compiler.designateLabel(mv, record);
     // this.lastV.set(v) — value copy, not reference store
     loadThisOntoStack(mv);
-    mv.visitFieldInsn(Opcodes.GETFIELD, className, "lastV", Type.getDescriptor(domainType));
+    mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "lastV", Type.getDescriptor(domainType));
     mv.visitVarInsn(Opcodes.ALOAD, 1);
     mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(domainType));
     Compiler.generateVirtualMethodInvocation(mv, domainType, "set", domainType, domainType);
@@ -3145,17 +3216,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // Lazily allocate this.cachedResult if null
     Label haveSlot = new Label();
     loadThisOntoStack(mv);
-    mv.visitFieldInsn(Opcodes.GETFIELD, className, "cachedResult", Type.getDescriptor(coDomainType));
+    mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "cachedResult", Type.getDescriptor(coDomainType));
     mv.visitJumpInsn(Opcodes.IFNONNULL, haveSlot);
     loadThisOntoStack(mv);
     mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(coDomainType));
     mv.visitInsn(Opcodes.DUP);
     mv.visitMethodInsn(Opcodes.INVOKESPECIAL, Type.getInternalName(coDomainType), "<init>", "()V", false);
-    mv.visitFieldInsn(Opcodes.PUTFIELD, className, "cachedResult", Type.getDescriptor(coDomainType));
+    mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "cachedResult", Type.getDescriptor(coDomainType));
     Compiler.designateLabel(mv, haveSlot);
     // this.cachedResult.set(result)
     loadThisOntoStack(mv);
-    mv.visitFieldInsn(Opcodes.GETFIELD, className, "cachedResult", Type.getDescriptor(coDomainType));
+    mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "cachedResult", Type.getDescriptor(coDomainType));
     mv.visitVarInsn(Opcodes.ALOAD, 4);
     mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
     Compiler.generateVirtualMethodInvocation(mv, coDomainType, "set", coDomainType, coDomainType);
@@ -3556,7 +3627,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected void invokeInitializationMethod(MethodVisitor mv, Expression<Object, Object, Function<?, ?>> function)
   {
     duplicateTopOfTheStack(mv);
-    Compiler.invokeMethod(mv, function.className, "initialize", "()V", false);
+    Compiler.invokeMethod(mv, function.internalName(), "initialize", "()V", false);
   }
 
   /**
@@ -3698,14 +3769,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     assert fieldName != null : "fieldName is null for " + toStringExtended();
     assert fieldType != null : "fieldType is null";
 
-    methodVisitor.visitFieldInsn(GETFIELD, className, fieldName, fieldType.descriptorString());
+    methodVisitor.visitFieldInsn(GETFIELD, internalName(), fieldName, fieldType.descriptorString());
     return methodVisitor;
   }
 
   public MethodVisitor loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, String fieldDescriptor)
   {
 
-    methodVisitor.visitFieldInsn(GETFIELD, className, fieldName, fieldDescriptor);
+    methodVisitor.visitFieldInsn(GETFIELD, internalName(), fieldName, fieldDescriptor);
     return methodVisitor;
   }
 
@@ -4187,7 +4258,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                              + " superExpression.context="
                              + upstreamExpression.context;
     assert !className.isEmpty() : "className is empty";
-    compiledClass = loadFunctionClass(className, instructions, context);
+    compiledClass = loadFunctionClass(internalName(), instructions, context);
   }
 
   public ElseNode<D, C, F> otherwise()
@@ -4615,7 +4686,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (getReferencedFunctions().containsKey(entry.getKey()))
     {
       loadThisAndFieldOntoStack(duplicateTopOfTheStack(mv), fieldName, fieldType);
-      putField(mv, function.className, fieldName, fieldType);
+      putField(mv, function.internalName(), fieldName, fieldType);
     }
   }
 
@@ -4676,7 +4747,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
       var fieldType = val.getClass();
       loadThisAndFieldOntoStack(duplicateTopOfTheStack(mv), fieldName, fieldType);
-      putField(mv, function.className, fieldName, fieldType);
+      putField(mv, function.internalName(), fieldName, fieldType);
     }
   }
 
@@ -4742,7 +4813,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       // Null-check: if funcInst.varName == null, allocate a new instance
       Label  fieldNotNull    = new Label();
       duplicateTopOfTheStack(mv); // funcInst, funcInst
-      getField(mv, functional.className, varName, fieldDescriptor); // funcInst, field|null
+      getField(mv, functional.internalName(), varName, fieldDescriptor); // funcInst, field|null
       mv.visitJumpInsn(IFNONNULL, fieldNotNull); // funcInst
 
       // Null branch: funcInst.varName = new VarType()
@@ -4750,13 +4821,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       generateNewObjectInstruction(mv, varType); // funcInst, funcInst, new
       duplicateTopOfTheStack(mv); // funcInst, funcInst, new, new
       invokeDefaultConstructor(mv, varType); // funcInst, funcInst, new
-      putField(mv, functional.className, varName, varType); // funcInst
+      putField(mv, functional.internalName(), varName, varType); // funcInst
 
       designateLabel(mv, fieldNotNull); // funcInst
 
       // Copy by value: funcInst.varName.set(this.varName)
       duplicateTopOfTheStack(mv); // funcInst, funcInst
-      getField(mv, functional.className, varName, fieldDescriptor); // funcInst, field (non-null)
+      getField(mv, functional.internalName(), varName, fieldDescriptor); // funcInst, field (non-null)
       loadThisAndFieldOntoStack(mv, varName, varType); // funcInst, field, this.var
       generateVirtualMethodInvocation(mv, varType, "set", varType, varType); // funcInst, retVal
       pop(mv); // funcInst
@@ -4808,9 +4879,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         String contextTypeDesc = Context.class.descriptorString();
         // Generate: this.<funcFieldName>.context = this.context
         loadThisOntoStack(mv);
-        mv.visitFieldInsn(GETFIELD, className, funcFieldName, funcTypeDesc);
+        mv.visitFieldInsn(GETFIELD, internalName(), funcFieldName, funcTypeDesc);
         loadThisOntoStack(mv);
-        mv.visitFieldInsn(GETFIELD, className, "context", contextTypeDesc);
+        mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
         mv.visitFieldInsn(PUTFIELD, nestedClassName, "context", contextTypeDesc);
       }
 
@@ -4862,9 +4933,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
           // Generate: this.<funcFieldName>.<varName> = this.<varName>
           loadThisOntoStack(mv);
-          mv.visitFieldInsn(GETFIELD, className, funcFieldName, funcTypeDesc);
+          mv.visitFieldInsn(GETFIELD, internalName(), funcFieldName, funcTypeDesc);
           loadThisOntoStack(mv);
-          mv.visitFieldInsn(GETFIELD, className, varName, varTypeDesc);
+          mv.visitFieldInsn(GETFIELD, internalName(), varName, varTypeDesc);
           mv.visitFieldInsn(PUTFIELD, nestedClassName, varName, varTypeDesc);
         }
       }
@@ -5933,7 +6004,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public MethodVisitor setThisField(MethodVisitor mv, String fieldName, Class<?> fieldType)
   {
-    return putField(mv, className, fieldName, fieldType);
+    return putField(mv, internalName(), fieldName, fieldType);
   }
 
   public boolean shouldCache()
@@ -6372,10 +6443,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         String hFieldDescriptor = hMapping.functionFieldDescriptor();
         // Stack: empty
         loadThisOntoStack(mv);
-        mv.visitFieldInsn(GETFIELD, className, peerName, peerFieldDescriptor);
+        mv.visitFieldInsn(GETFIELD, internalName(), peerName, peerFieldDescriptor);
         // Stack: this.<peer>
         loadThisOntoStack(mv);
-        mv.visitFieldInsn(GETFIELD, className, hName, hFieldDescriptor);
+        mv.visitFieldInsn(GETFIELD, internalName(), hName, hFieldDescriptor);
         // Stack: this.<peer>, this.<h>
         mv.visitFieldInsn(PUTFIELD, peerInternalName, hName, hFieldDescriptor);
         // Stack: empty

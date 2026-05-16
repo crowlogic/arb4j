@@ -101,7 +101,7 @@ public abstract class JetNode<D, C, F extends Function<? extends D, ? extends C>
     final boolean  isComplex  = Complex.class.equals(scalarType);
     final Class<?> polyClass  = isComplex ? ComplexPolynomial.class : RealPolynomial.class;
 
-    String         className  = expression.className;
+    String         className  = expression.className();
 
     // --- Ensure intermediate variables are registered ---
     if (!expression.hasIntermediateVariable(sharedState.jetFieldName))

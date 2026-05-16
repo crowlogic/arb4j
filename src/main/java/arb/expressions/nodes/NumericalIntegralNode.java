@@ -135,7 +135,7 @@ public class NumericalIntegralNode<D, C, F extends Function<? extends D, ? exten
     // Give the integrand sub-expression a unique class name so it does not
     // collide with the enclosing outer expression's class name (the parent
     // IntegralNode does the same trick for its indefinite-integral expression).
-    integrandExpression.className = "nintIntegrand_" + integrandExpression.className;
+    integrandExpression.setClassName("nintIntegrand_" + integrandExpression.className());
     // Bind the integrand to the outer expression's context so its compiled
     // class is loaded by the same ExpressionClassLoader as the outer class.
     // Without this, the integrand goes into a fresh ClassLoader, and the
@@ -297,7 +297,7 @@ public class NumericalIntegralNode<D, C, F extends Function<? extends D, ? exten
   protected void propagateUpstreamVariablesToIntegrand(MethodVisitor mv)
   {
     Expression<?, ?, ?>          integrand           = integrandExpression;
-    String                       integrandClassName  = integrand.className;
+    String                       integrandClassName  = integrand.className();
     String                       integrandFieldDesc  = integrandMapping.functionFieldDescriptor();
     String                       integrandFieldName  = integrandMapping.functionName;
 

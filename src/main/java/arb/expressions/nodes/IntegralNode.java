@@ -248,7 +248,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   protected void compileIndefiniteIntegral()
   {
     indefiniteIntegralExpression           = expression.cloneExpression();
-    indefiniteIntegralExpression.className = "∫" + indefiniteIntegralExpression.className;
+    indefiniteIntegralExpression.setClassName("∫" + indefiniteIntegralExpression.className());
     indefiniteIntegralExpression.rootNode  = indefiniteIntegralNode.spliceInto(indefiniteIntegralExpression);
     indefiniteIntegralExpression.compile();
     expression.registerSubexpression(indefiniteIntegralExpression);

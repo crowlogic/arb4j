@@ -558,7 +558,7 @@ private void generateFamilyFunctionBodyCall(MethodVisitor mv,
 {
   mv.visitVarInsn(ALOAD, 0);
   mv.visitVarInsn(ALOAD, arrSlot);
-  mv.visitFieldInsn(PUTFIELD, operandExpression.className, arrayFieldName, "[I");
+  mv.visitFieldInsn(PUTFIELD, operandExpression.className(), arrayFieldName, "[I");
 
   bodyNode.generate(mv, resultType);
 

@@ -571,24 +571,31 @@ public class Compiler
    * @throws CompilerException if the class cannot be found after registration
    */
   @SuppressWarnings("unchecked")
-  public static <D, R, F extends Function<? extends D, ? extends R>> Class<F> loadFunctionClass(String className, byte[] bytecodes, Context context)
+  public static <D, R, F extends Function<? extends D, ? extends R>> Class<F> loadFunctionClass(String internalName, byte[] bytecodes, Context context)
   {
-    assert className != null;
+    assert internalName != null;
     if (Expression.trace)
     {
-      log.debug("loadFunctionClass(className={}) into Context#{}", className, System.identityHashCode(context));
+      log.debug("loadFunctionClass(internalName={}) into Context#{}", internalName, System.identityHashCode(context));
     }
 
     ExpressionClassLoader loader = context.getClassLoader();
-    loader.registerBytecodes(className, bytecodes);
+    // Registry is keyed by the slash-form internal name (matches the name
+    // written into the bytecode by ClassWriter.visit). The JVM, however,
+    // calls loadClass / defineClass with the dotted binary form, so we
+    // pass the dotted form to loadClass and let
+    // ExpressionClassLoader.findClass normalize back to slashes when
+    // consulting pendingBytecodes.
+    loader.registerBytecodes(internalName, bytecodes);
+    String binaryName = internalName.replace('/', '.');
 
     try
     {
-      return (Class<F>) loader.loadClass(className);
+      return (Class<F>) loader.loadClass(binaryName);
     }
     catch (ClassNotFoundException e)
     {
-      throw new CompilerException("Failed to load compiled expression class: " + className,
+      throw new CompilerException("Failed to load compiled expression class: " + binaryName,
                                   e);
     }
   }

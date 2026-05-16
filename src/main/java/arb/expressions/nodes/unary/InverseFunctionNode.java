@@ -276,7 +276,7 @@ public class InverseFunctionNode<D, R, F extends Function<? extends D, ? extends
       logger.debug("generate(this={}, arg={}, resultType={})", this, arg, resultType);
     }
 
-    String   internalName          = expression.className.replace('.', '/');
+    String   internalName          = expression.className().replace('.', '/');
     Class<?> functionInterfaceType = expression.functionClass;
     String   functionDescriptor    = functionInterfaceType.descriptorString();
     Class<?> domainType            = expression.domainType;

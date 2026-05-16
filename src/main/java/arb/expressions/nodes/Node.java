@@ -139,7 +139,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
     expression.rootNode     = newNode;
     expression.updateStringRepresentation();
-    expression.className = Parser.normalize(expression.getExpression());
+    expression.setClassName(Parser.normalize(expression.getExpression()));
     return expression;
   }
 
@@ -156,7 +156,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     expr.assignInputVariable(expr.newVariableNode(independentVar.getName()));
     expr.rootNode = spliceInto(expr);
     expr.updateStringRepresentation();
-    expr.className = Parser.normalize(expr.getExpression());
+    expr.setClassName(Parser.normalize(expr.getExpression()));
     return expr;
   }
 
@@ -955,7 +955,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public MethodVisitor loadFieldFromThis(MethodVisitor mv, String fieldName, Class<?> type)
   {
-    return getFieldFromThis(mv, expression.className, fieldName, type);
+    return getFieldFromThis(mv, expression.className(), fieldName, type);
   }
 
   public FunctionNode<D, R, F> log()

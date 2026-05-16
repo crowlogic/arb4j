@@ -285,7 +285,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
                                                                          false);
     }
 
-    String internalName       = expression.className.replace('.', '/');
+    String internalName       = expression.className().replace('.', '/');
     String functionDescriptor = Function.class.descriptorString();
 
     Label  alreadyBuilt       = new Label();

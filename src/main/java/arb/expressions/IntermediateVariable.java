@@ -47,7 +47,7 @@ public class IntermediateVariable<D, R, F extends Function<? extends D, ? extend
       methodVisitor.visitTypeInsn(NEW, intermediateTypeInternalName);
       methodVisitor.visitInsn(DUP);
       methodVisitor.visitMethodInsn(INVOKESPECIAL, intermediateTypeInternalName, "<init>", "()V", false);
-      methodVisitor.visitFieldInsn(PUTFIELD, expression.className, name, type.descriptorString());
+      methodVisitor.visitFieldInsn(PUTFIELD, expression.className(), name, type.descriptorString());
     }
     return methodVisitor;
   }

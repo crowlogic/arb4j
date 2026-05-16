@@ -70,7 +70,7 @@ public class SharedNode<D, R, F extends Function<? extends D, ? extends R>> exte
       mv.visitVarInsn(ALOAD, 0);
       mv.visitInsn(SWAP);
       mv.visitFieldInsn(PUTFIELD,
-                        expression.className.replace('.', '/'),
+                        expression.className().replace('.', '/'),
                         fieldName,
                         Type.getDescriptor(fieldType));
 
