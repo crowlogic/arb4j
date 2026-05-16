@@ -3,7 +3,6 @@ package arb.expressions;
 import arb.Real;
 import arb.exceptions.CompilerException;
 import arb.expressions.Context.ConflictPolicy;
-import arb.expressions.Context.MergeReport;
 import junit.framework.TestCase;
 
 /**
@@ -12,16 +11,17 @@ import junit.framework.TestCase;
  *
  * <ul>
  * <li>identical bindings coalesce silently</li>
- * <li>compatible/equivalent bindings under {@link ConflictPolicy#PREFER_THIS} keep
- *     the existing instance; under {@link ConflictPolicy#PREFER_OTHER} adopt the
- *     incoming one</li>
- * <li>clashes under {@link ConflictPolicy#ERROR} throw {@link CompilerException}</li>
+ * <li>{@link ConflictPolicy#PREFER_THIS} keeps the existing instance; under
+ *     {@link ConflictPolicy#PREFER_OTHER} adopts the incoming one</li>
+ * <li>clashes under {@link ConflictPolicy#ERROR} throw
+ *     {@link CompilerException}</li>
  * <li>{@link ConflictPolicy#RENAME_INCOMING} is intentionally not yet implemented
  *     and surfaces {@link UnsupportedOperationException} pointing at the #1024
- *     follow-up</li>
+ *     follow-up. The follow-up must rename through the AST, never by string
+ *     manipulation of expression source.</li>
  * <li>variable-namespace and function-namespace clashes are both handled per
  *     policy</li>
- * <li>null Context is a no-op; the report is empty in every slot</li>
+ * <li>null Context is a no-op</li>
  * </ul>
  *
  * @author Stephen Crowley ©2026
@@ -33,16 +33,12 @@ public class ContextMergeTest extends
 
   public void testNullArgumentIsNoOp()
   {
-    Context     thisCtx = new Context();
-    Real        p       = new Real();
+    Context thisCtx = new Context();
+    Real    p       = new Real();
     p.setName("p");
     thisCtx.registerVariable(p);
 
-    MergeReport report = thisCtx.mergeFrom(null, ConflictPolicy.ERROR);
-    assertTrue("coalesced empty", report.coalesced().isEmpty());
-    assertTrue("renamed empty", report.renamed().isEmpty());
-    assertTrue("imported empty", report.imported().isEmpty());
-    assertTrue("failures empty", report.failures().isEmpty());
+    thisCtx.mergeFrom(null, ConflictPolicy.ERROR);
     assertSame("existing variable untouched", p, thisCtx.getVariable("p"));
   }
 
@@ -54,25 +50,21 @@ public class ContextMergeTest extends
     p.setName("p");
     otherCtx.registerVariable(p);
 
-    MergeReport report = thisCtx.mergeFrom(otherCtx, ConflictPolicy.ERROR);
-    assertEquals("p imported", 1, report.imported().size());
-    assertTrue("p in imported", report.imported().contains("p"));
+    thisCtx.mergeFrom(otherCtx, ConflictPolicy.ERROR);
     assertSame("p now bound in this", p, thisCtx.getVariable("p"));
   }
 
   public void testCoalesceIdenticalVariable()
   {
-    Real    p        = new Real();
+    Real p = new Real();
     p.setName("p");
     Context thisCtx  = new Context();
     Context otherCtx = new Context();
     thisCtx.registerVariable(p);
     otherCtx.registerVariable(p);
 
-    MergeReport report = thisCtx.mergeFrom(otherCtx, ConflictPolicy.ERROR);
-    assertEquals("p coalesced", 1, report.coalesced().size());
-    assertTrue("p in coalesced", report.coalesced().contains("p"));
-    assertTrue("nothing imported", report.imported().isEmpty());
+    thisCtx.mergeFrom(otherCtx, ConflictPolicy.ERROR);
+    assertSame("p still the same instance", p, thisCtx.getVariable("p"));
   }
 
   public void testVariableClashErrorThrows()
@@ -109,8 +101,7 @@ public class ContextMergeTest extends
     thisCtx.registerVariable(pThis);
     otherCtx.registerVariable(pOther);
 
-    MergeReport report = thisCtx.mergeFrom(otherCtx, ConflictPolicy.PREFER_THIS);
-    assertTrue("no error", report.failures().isEmpty());
+    thisCtx.mergeFrom(otherCtx, ConflictPolicy.PREFER_THIS);
     assertSame("this kept its own p", pThis, thisCtx.getVariable("p"));
   }
 
@@ -125,8 +116,7 @@ public class ContextMergeTest extends
     thisCtx.registerVariable(pThis);
     otherCtx.registerVariable(pOther);
 
-    MergeReport report = thisCtx.mergeFrom(otherCtx, ConflictPolicy.PREFER_OTHER);
-    assertTrue("no error", report.failures().isEmpty());
+    thisCtx.mergeFrom(otherCtx, ConflictPolicy.PREFER_OTHER);
     assertSame("this adopted the incoming p", pOther, thisCtx.getVariable("p"));
   }
 

@@ -458,37 +458,6 @@ public class Context implements
   }
 
   /**
-   * A single rename, recorded in {@link MergeReport#renamed()}.
-   */
-  public record Renamed(String oldName, String newName)
-  {
-  }
-
-  /**
-   * A single failure, recorded in {@link MergeReport#failures()} when the policy
-   * is {@link ConflictPolicy#ERROR} or a rename is impossible.
-   */
-  public record MergeFailure(String name, String reason)
-  {
-  }
-
-  /**
-   * Outcome of a {@link #mergeFrom(Context, ConflictPolicy)} call.
-   *
-   * @param coalesced names whose binding matched identically and was reused
-   * @param renamed   names that were renamed-on-import
-   * @param imported  names new to {@code this}
-   * @param failures  non-empty only with {@link ConflictPolicy#ERROR} or an
-   *                  unrenameable clash
-   */
-  public record MergeReport(java.util.Set<String> coalesced,
-                            java.util.List<Renamed> renamed,
-                            java.util.Set<String> imported,
-                            java.util.List<MergeFailure> failures)
-  {
-  }
-
-  /**
    * Merge another Context's variables and function mappings into this one.
    *
    * <p>
@@ -517,11 +486,11 @@ public class Context implements
    * For each entry:
    * </p>
    * <ul>
-   * <li>If {@code this} has no binding under that name, add the incoming entry
-   *     directly (imported).</li>
+   * <li>If {@code this} has no binding under that name, the incoming entry is
+   *     added.</li>
    * <li>If {@code this} has the same instance bound under that name (reference
-   *     equality), do nothing (coalesced).</li>
-   * <li>Otherwise apply {@code policy}:
+   *     equality), nothing happens.</li>
+   * <li>Otherwise the policy is applied:
    *     {@link ConflictPolicy#PREFER_THIS} drops the incoming entry;
    *     {@link ConflictPolicy#PREFER_OTHER} overwrites the existing one;
    *     {@link ConflictPolicy#RENAME_INCOMING} is not yet implemented and
@@ -534,18 +503,18 @@ public class Context implements
    * {@link ConflictPolicy#ERROR}.
    * </p>
    *
-   * @return a {@link MergeReport} describing what happened
+   * <p>
+   * Successful merges return silently. Anything that needs caller attention —
+   * a clash under ERROR, an unrenameable binding under RENAME_INCOMING — is
+   * signalled by an exception, not a return value, so failures cannot be
+   * silently dropped by ignoring a report object.
+   * </p>
    */
-  public MergeReport mergeFrom(Context context, ConflictPolicy policy)
+  public void mergeFrom(Context context, ConflictPolicy policy)
   {
-    java.util.Set<String> coalesced = new java.util.LinkedHashSet<>();
-    java.util.List<Renamed> renamed = new java.util.ArrayList<>();
-    java.util.Set<String> imported = new java.util.LinkedHashSet<>();
-    java.util.List<MergeFailure> failures = new java.util.ArrayList<>();
-
     if (context == null)
     {
-      return new MergeReport(coalesced, renamed, imported, failures);
+      return;
     }
     ConflictPolicy effectivePolicy = policy == null ? ConflictPolicy.ERROR : policy;
 
@@ -558,18 +527,15 @@ public class Context implements
       if (existing == null)
       {
         variables.put(name, incoming);
-        imported.add(name);
         continue;
       }
       if (existing == incoming)
       {
-        coalesced.add(name);
         continue;
       }
       switch (effectivePolicy)
       {
       case PREFER_THIS:
-        // drop incoming silently
         break;
       case PREFER_OTHER:
         variables.put(name, incoming);
@@ -603,12 +569,10 @@ public class Context implements
       if (existing == null)
       {
         functions.put(name, incoming);
-        imported.add(name);
         continue;
       }
       if (existing == incoming)
       {
-        coalesced.add(name);
         continue;
       }
       switch (effectivePolicy)
@@ -635,8 +599,6 @@ public class Context implements
                                            System.identityHashCode(incoming)));
       }
     }
-
-    return new MergeReport(coalesced, renamed, imported, failures);
   }
 
   public void populateFunctionReferenceGraph()
