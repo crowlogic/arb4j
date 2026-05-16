@@ -1322,6 +1322,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    */
   protected void declareVariables(ClassVisitor classVisitor)
   {
+    assert !variablesDeclared : "variables have already been declared!";
+    
     // Declare the parent's independent variable as a field so we can receive it
     if (upstreamExpression != null)
     {
