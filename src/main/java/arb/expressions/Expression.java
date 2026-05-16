@@ -1538,9 +1538,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * classes of non-leaf, input-dependent subexpressions, and wraps them in
    * {@link SharedNode}s — canonical (first occurrence) computes and stores,
    * references (subsequent occurrences) just load.
+   * @return 
    */
   @SuppressWarnings("unchecked")
-  private void eliminateCommonSubexpressions()
+  private Expression<D, C, F> eliminateCommonSubexpressions()
   {
     // Phase 1: Collect all nodes into CongruenceClasses
     List<CongruenceClass<D, C, F>> classes = new ArrayList<>();
@@ -1571,7 +1572,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (redundant.isEmpty())
     {
-      return;
+      return this;
     }
 
     // Phase 3: Build identity map from node instance -> SharedNode replacement
@@ -1596,6 +1597,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     // Phase 4: Walk the tree and replace children by identity
     rootNode = replaceByIdentity(rootNode, replacements);
+    
+    return this;
   }
 
   /**
