@@ -432,6 +432,63 @@ public class Context implements
   }
 
   /**
+   * Conflict-resolution policy for {@link #mergeFrom(Context, ConflictPolicy)}.
+   *
+   * <ul>
+   * <li>{@link #PREFER_THIS}    — keep the existing binding in {@code this};
+   *                                drop the incoming one silently.</li>
+   * <li>{@link #PREFER_OTHER}   — overwrite the existing binding in {@code this}
+   *                                with the incoming one.</li>
+   * <li>{@link #RENAME_INCOMING}— rename the incoming binding (variable or
+   *                                function) and the references to it inside the
+   *                                incoming Context, then add the renamed entry.
+   *                                Full AST-and-source rewrite of the incoming
+   *                                Expressions is not yet implemented — see
+   *                                #1024 follow-up. Today the policy throws
+   *                                {@link UnsupportedOperationException} so
+   *                                callers can detect that they need to land on
+   *                                a non-clashing name before merging.</li>
+   * <li>{@link #ERROR}          — throw a {@link CompilerException} on any
+   *                                conflict (legacy behavior).</li>
+   * </ul>
+   */
+  public enum ConflictPolicy
+  {
+    PREFER_THIS, PREFER_OTHER, RENAME_INCOMING, ERROR
+  }
+
+  /**
+   * A single rename, recorded in {@link MergeReport#renamed()}.
+   */
+  public record Renamed(String oldName, String newName)
+  {
+  }
+
+  /**
+   * A single failure, recorded in {@link MergeReport#failures()} when the policy
+   * is {@link ConflictPolicy#ERROR} or a rename is impossible.
+   */
+  public record MergeFailure(String name, String reason)
+  {
+  }
+
+  /**
+   * Outcome of a {@link #mergeFrom(Context, ConflictPolicy)} call.
+   *
+   * @param coalesced names whose binding matched identically and was reused
+   * @param renamed   names that were renamed-on-import
+   * @param imported  names new to {@code this}
+   * @param failures  non-empty only with {@link ConflictPolicy#ERROR} or an
+   *                  unrenameable clash
+   */
+  public record MergeReport(java.util.Set<String> coalesced,
+                            java.util.List<Renamed> renamed,
+                            java.util.Set<String> imported,
+                            java.util.List<MergeFailure> failures)
+  {
+  }
+
+  /**
    * Merge another Context's variables and function mappings into this one.
    *
    * <p>
@@ -442,23 +499,88 @@ public class Context implements
    * </p>
    *
    * <p>
-   * A null argument is a no-op.
+   * Equivalent to {@code mergeFrom(context, ConflictPolicy.ERROR)} (the legacy
+   * behavior). A null argument is a no-op.
    * </p>
    */
   public void mergeFrom(Context context)
   {
+    mergeFrom(context, ConflictPolicy.ERROR);
+  }
+
+  /**
+   * Merge another Context's variables and function mappings into this one,
+   * resolving conflicts according to {@code policy}.
+   *
+   * <p>
+   * Iterates the incoming Context's variables map, then its functions map.
+   * For each entry:
+   * </p>
+   * <ul>
+   * <li>If {@code this} has no binding under that name, add the incoming entry
+   *     directly (imported).</li>
+   * <li>If {@code this} has the same instance bound under that name (reference
+   *     equality), do nothing (coalesced).</li>
+   * <li>Otherwise apply {@code policy}:
+   *     {@link ConflictPolicy#PREFER_THIS} drops the incoming entry;
+   *     {@link ConflictPolicy#PREFER_OTHER} overwrites the existing one;
+   *     {@link ConflictPolicy#RENAME_INCOMING} is not yet implemented and
+   *     throws {@link UnsupportedOperationException} (see #1024 follow-up);
+   *     {@link ConflictPolicy#ERROR} throws {@link CompilerException}.</li>
+   * </ul>
+   *
+   * <p>
+   * A null {@code context} is a no-op. A null {@code policy} defaults to
+   * {@link ConflictPolicy#ERROR}.
+   * </p>
+   *
+   * @return a {@link MergeReport} describing what happened
+   */
+  public MergeReport mergeFrom(Context context, ConflictPolicy policy)
+  {
+    java.util.Set<String> coalesced = new java.util.LinkedHashSet<>();
+    java.util.List<Renamed> renamed = new java.util.ArrayList<>();
+    java.util.Set<String> imported = new java.util.LinkedHashSet<>();
+    java.util.List<MergeFailure> failures = new java.util.ArrayList<>();
+
     if (context == null)
     {
-      return;
+      return new MergeReport(coalesced, renamed, imported, failures);
     }
+    ConflictPolicy effectivePolicy = policy == null ? ConflictPolicy.ERROR : policy;
 
+    // Variables
     for (var entry : context.variables.entrySet())
     {
       String name     = entry.getKey();
       Named  incoming = entry.getValue();
       Named  existing = variables.get(name);
-      if (existing != null && existing != incoming)
+      if (existing == null)
       {
+        variables.put(name, incoming);
+        imported.add(name);
+        continue;
+      }
+      if (existing == incoming)
+      {
+        coalesced.add(name);
+        continue;
+      }
+      switch (effectivePolicy)
+      {
+      case PREFER_THIS:
+        // drop incoming silently
+        break;
+      case PREFER_OTHER:
+        variables.put(name, incoming);
+        break;
+      case RENAME_INCOMING:
+        throw new UnsupportedOperationException(format("RENAME_INCOMING is not yet implemented for variable '%s'. "
+                                                       + "Full AST/source rewrite of the incoming Expressions is a follow-up to #1024. "
+                                                       + "Use PREFER_THIS or PREFER_OTHER, or rename on the call site before merging.",
+                                                       name));
+      case ERROR:
+      default:
         throw new CompilerException(format("Cannot merge: variable '%s' is already bound in this Context to a different instance.\n"
                                            + "  existing: %s @%d (type %s)\n"
                                            + "  incoming: %s @%d (type %s)\n",
@@ -470,19 +592,39 @@ public class Context implements
                                            System.identityHashCode(incoming),
                                            incoming.getClass().getName()));
       }
-      if (existing == null)
-      {
-        variables.put(name, incoming);
-      }
     }
 
+    // Functions
     for (var entry : context.functions.entrySet())
     {
       String                   name     = entry.getKey();
       FunctionMapping<?, ?, ?> incoming = entry.getValue();
       FunctionMapping<?, ?, ?> existing = functions.get(name);
-      if (existing != null && existing != incoming)
+      if (existing == null)
       {
+        functions.put(name, incoming);
+        imported.add(name);
+        continue;
+      }
+      if (existing == incoming)
+      {
+        coalesced.add(name);
+        continue;
+      }
+      switch (effectivePolicy)
+      {
+      case PREFER_THIS:
+        break;
+      case PREFER_OTHER:
+        functions.put(name, incoming);
+        break;
+      case RENAME_INCOMING:
+        throw new UnsupportedOperationException(format("RENAME_INCOMING is not yet implemented for function '%s'. "
+                                                       + "Full AST/source rewrite of the incoming Expressions is a follow-up to #1024. "
+                                                       + "Use PREFER_THIS or PREFER_OTHER, or rename on the call site before merging.",
+                                                       name));
+      case ERROR:
+      default:
         throw new CompilerException(format("Cannot merge: function '%s' is already bound in this Context to a different mapping.\n"
                                            + "  existing: %s @%d\n"
                                            + "  incoming: %s @%d\n",
@@ -492,11 +634,9 @@ public class Context implements
                                            incoming,
                                            System.identityHashCode(incoming)));
       }
-      if (existing == null)
-      {
-        functions.put(name, incoming);
-      }
     }
+
+    return new MergeReport(coalesced, renamed, imported, failures);
   }
 
   public void populateFunctionReferenceGraph()
