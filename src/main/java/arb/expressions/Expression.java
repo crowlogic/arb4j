@@ -1332,10 +1332,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected void declareVariableEntry(ClassVisitor classVisitor, Entry<String, Named> variable)
   {
-    if (trace)
-    {
-      log.trace("Declaring variable of " + className + ": " + variable);
-    }
+    log.info("#1027 declareVariableEntry className={} key={} value={} declaredAlready={}",
+             className, variable.getKey(),
+             variable.getValue() == null ? "null" : variable.getValue().getClass().getSimpleName(),
+             declaredVariables.contains(variable.getKey()));
     if (variable.getValue() != null)
     {
       String varName = variable.getKey();
@@ -1343,14 +1343,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       {
         classVisitor.visitField(ACC_PUBLIC, varName, variable.getValue().getClass().descriptorString(), null, null);
         declaredVariables.add(varName);
+        log.info("#1027 declareVariableEntry EMITTED className={} key={}", className, varName);
+      }
+      else
+      {
+        log.info("#1027 declareVariableEntry SKIP (already declared) className={} key={}", className, varName);
       }
     }
     else
     {
-      if (trace)
-      {
-        log.trace("Skipping null variable of " + className + ": " + variable);
-      }
+      log.info("#1027 declareVariableEntry SKIP (null value) className={} key={}", className, variable.getKey());
     }
   }
 
