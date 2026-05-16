@@ -1365,7 +1365,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    */
   protected void declareVariables(ClassVisitor classVisitor)
   {
-    assert !variablesDeclared : "variables have already been declared!";
+    // #1027: declareVariables can be called more than once on the same
+    // Expression instance — the lazy on-demand compile path in
+    // ExpressionClassLoader.findClass can re-enter compile() via
+    // FunctionMapping.instantiate() before the outer compile has assigned
+    // compiledClass. Each re-entry produces a fresh ClassVisitor and a
+    // valid bytecode for the class; only the first one's output reaches
+    // defineClassDirectly because that helper no-ops on already-defined
+    // names. Short-circuit subsequent calls so we don't re-emit fields
+    // onto a stale ClassVisitor.
+    if (variablesDeclared)
+    {
+      return;
+    }
     // Declare the parent's independent variable as a field so we can receive it
     if (upstreamExpression != null)
     {
@@ -1455,11 +1467,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       define(true);
     }
     Expression<D, C, F> copy = cloneExpression();
-    copy.rootNode      = rootNode.spliceInto(copy);
-    copy.compiledClass = null;
-    copy.instructions  = null;
-    copy.optimized     = false;
-    copy.instance      = null;
+    copy.rootNode          = rootNode.spliceInto(copy);
+    copy.compiledClass     = null;
+    copy.instructions      = null;
+    copy.optimized         = false;
+    copy.instance          = null;
+    // #1027 fix: deepCloneExpression resets every state flag that the
+    // clone-of-a-compiled-Expression would otherwise carry over from the
+    // source. variablesDeclared was missing from this list, which meant a
+    // freshly-cloned Expression about to be compiled for the first time
+    // would assert in declareVariables because the flag inherited true
+    // from the original.
+    copy.variablesDeclared = false;
+    copy.compileInProgress = false;
     return copy;
   }
 
