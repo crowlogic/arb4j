@@ -66,6 +66,49 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
 
   private String              declaredAs;
 
+  /**
+   * Cached {@link Class#getFields()} array for this mapping's instantiated
+   * generated class. Lazily populated by {@link #getInstanceFields()}.
+   *
+   * <p>
+   * The reflective field-by-name lookup performed in
+   * {@link arb.expressions.Context#injectVariableReferences} previously
+   * called {@code instance.getClass().getFields()} once per variable, which
+   * is both O(N²) in (variables × fields) and — worse — triggers a
+   * JVM-driven class-loading recursion for every field type, each of which
+   * can re-enter {@link ExpressionClassLoader#findClass} and recompile
+   * already-being-compiled classes mid-flight (issue #1027). Caching the
+   * fields array once per mapping avoids both costs.
+   */
+  private transient java.lang.reflect.Field[] instanceFields;
+
+  /**
+   * Returns the public {@link java.lang.reflect.Field}s of
+   * {@link #instance}'s class, computed once and cached on this mapping.
+   * Throws if {@link #instance} is null — callers may only ask for fields
+   * after the mapping has been instantiated.
+   */
+  public java.lang.reflect.Field[] getInstanceFields()
+  {
+    assert instance != null : "FunctionMapping(" + functionName + ").getInstanceFields() called before instantiate()";
+    if (instanceFields == null)
+    {
+      instanceFields = instance.getClass().getFields();
+    }
+    return instanceFields;
+  }
+
+  /**
+   * Invalidates the cached fields array. Call after {@link #instance} is
+   * reassigned (e.g. recompile after
+   * {@link Context#resetClassLoader()}) so the next
+   * {@link #getInstanceFields()} call recomputes from the new instance.
+   */
+  public void invalidateInstanceFields()
+  {
+    instanceFields = null;
+  }
+
   public MethodVisitor call(MethodVisitor mv, Class<?> type)
   {
     boolean isInterface = functionClass != null && functionClass.isInterface();

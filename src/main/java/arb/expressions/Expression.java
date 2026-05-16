@@ -4308,22 +4308,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     replaceConstantNodes();
     eliminateCommonSubexpressions();
 
-    // #1027 / #1021 fix: force VariableNode.resolveReference() on every
-    // upstream-input VariableNode known to this Expression, plus every
-    // VariableNode in the root subtree, before generate() runs declareFields.
-    // Without this, upstream-input variable nodes (the p, p0, p1, q, r, μ
-    // captured from the enclosing expression's scope) can have a null
-    // reference.type at the moment declareFieldsForUpstreamInputPropagation
-    // iterates referencedVariables and calls varNode.type() on each one. A
-    // null type causes the field to be silently skipped from the generated
-    // class. Previously this was masked by a side effect of
-    // BinaryOperationNode.generate()'s traceNodes-gated debug path which
-    // happened to call left.type()/right.type() and incidentally primed the
-    // upstream-input variable types. With traceNodes=false (the default,
-    // what Eclipse's JUnit3 single-method runner and mvn test -Dtest=…
-    // produce) the side effect did not fire and the generated class
-    // β/T was emitted without fields p/p0/p1/q/r/μ — surfacing at
-    // runtime as NoSuchFieldError on PUTFIELD at S.initialize.
+    // #1027 / #1021: force every VariableNode in the rootNode subtree to
+    // resolve its reference, and every upstream-input VariableNode in
+    // referencedVariables to do the same, before generate() emits the
+    // class. Without this, type resolution previously rode on the side
+    // effect of BinaryOperationNode.generate()'s traceNodes-gated debug
+    // path which called left.type()/right.type() and incidentally primed
+    // each VariableNode.reference.type. With traceNodes=false the side
+    // effect didn't fire, and downstream field-declaration could miss
+    // upstream-input variables.
     if (rootNode != null)
     {
       rootNode.resolveVariables();

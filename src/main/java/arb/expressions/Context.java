@@ -324,7 +324,18 @@ public class Context implements
    */
   protected static java.lang.reflect.Field findAssignableField(Class<?> clazz, String name, Class<?> valueClass)
   {
-    for (java.lang.reflect.Field field : clazz.getFields())
+    return findAssignableField(clazz.getFields(), name, valueClass);
+  }
+
+  /**
+   * Variant of {@link #findAssignableField(Class, String, Class)} that takes a
+   * pre-fetched array of fields, so the caller can amortize the
+   * {@link Class#getFields()} call across many variable lookups for the
+   * same class.
+   */
+  protected static java.lang.reflect.Field findAssignableField(java.lang.reflect.Field[] fields, String name, Class<?> valueClass)
+  {
+    for (java.lang.reflect.Field field : fields)
     {
       if (field.getName().equals(name) && field.getType().isAssignableFrom(valueClass))
       {
@@ -342,6 +353,36 @@ public class Context implements
       log.debug(String.format("Context(#%s).injectVariableReferences(f=%s) variables={}", System.identityHashCode(this), f.getClass().getName(), variables));
     }
     Class<?> compiledClass = f.getClass();
+    // Locate the owning FunctionMapping to use its cached getFields()
+    // array. injectVariableReferences runs during instantiate(), BEFORE
+    // express() assigns the new instance to mapping.instance, so identity
+    // lookup by {@code mapping.instance == f} may miss; fall back to
+    // class-identity match in that case (the just-instantiated f is the
+    // first instance of that compiled class).
+    java.lang.reflect.Field[] resolvedFields = null;
+    for (FunctionMapping<?, ?, ?> mapping : functions.values())
+    {
+      if (mapping.instance == f || (mapping.instance != null && mapping.instance.getClass() == compiledClass))
+      {
+        // Prime the cache via the mapping if we can; the cache is keyed
+        // on the mapping's eventual instance class, which is what we just
+        // matched on.
+        try
+        {
+          resolvedFields = mapping.instance == null ? compiledClass.getFields() : mapping.getInstanceFields();
+        }
+        catch (Throwable t)
+        {
+          resolvedFields = compiledClass.getFields();
+        }
+        break;
+      }
+    }
+    if (resolvedFields == null)
+    {
+      resolvedFields = compiledClass.getFields();
+    }
+    final java.lang.reflect.Field[] fields = resolvedFields;
 
     variableMap().entrySet().forEach(entry ->
     {
@@ -359,7 +400,7 @@ public class Context implements
       // class. {@link Class#getField} returns an arbitrary one — instead
       // enumerate all public fields and pick the one whose declared
       // type accepts this variable's runtime value.
-      java.lang.reflect.Field field = findAssignableField(compiledClass, variableName, value.getClass());
+      java.lang.reflect.Field field = findAssignableField(fields, variableName, value.getClass());
       if (field == null)
       {
         return; // expression body never references this variable in its variable-namespace role
