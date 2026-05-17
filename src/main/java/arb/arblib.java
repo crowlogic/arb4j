@@ -9,6 +9,14 @@
 package arb;
 
 public class arblib {
+  public static int acb_poly_degree(ComplexPolynomial poly) {
+    return arblibJNI.acb_poly_degree(ComplexPolynomial.getCPtr(poly), poly);
+  }
+
+  public static int arb_poly_degree(RealPolynomial poly) {
+    return arblibJNI.arb_poly_degree(RealPolynomial.getCPtr(poly), poly);
+  }
+
   public static void acb_rgamma(Complex y, Complex x, int prec) {
     arblibJNI.acb_rgamma(Complex.getCPtr(y), y, Complex.getCPtr(x), x, prec);
   }

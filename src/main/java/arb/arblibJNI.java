@@ -9,6 +9,8 @@
 package arb;
 
 public class arblibJNI {
+  public final static native int acb_poly_degree(long jarg1, ComplexPolynomial jarg1_);
+  public final static native int arb_poly_degree(long jarg1, RealPolynomial jarg1_);
   public final static native void acb_rgamma(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
   public final static native void acb_lgamma(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
   public final static native void arb_lgamma(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);

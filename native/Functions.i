@@ -18,6 +18,16 @@
 #include <unistd.h>
 #include <wchar.h>
 
+slong acb_poly_degree(const acb_poly_t poly)
+{
+    return poly->length - 1;
+}
+
+slong arb_poly_degree(const arb_poly_t poly)
+{
+    return poly->length - 1;
+}
+
 void acb_rgamma(acb_t y, const acb_t x, slong prec);
 void acb_lgamma(acb_t y, const acb_t x, slong prec);
 

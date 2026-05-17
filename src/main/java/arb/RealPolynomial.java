@@ -93,6 +93,11 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
   }
 
 
+	public int degree()
+	  {
+	    return arblib.arb_poly_degree(this);
+	  }
+	  
   public String name;
 
   public RealPolynomial add(Fraction a, int bits, RealPolynomial res)

@@ -22,6 +22,12 @@
 
 %typemap(javacode) acb_poly_struct %{
 
+	public int degree()
+	  {
+	    return arblib.acb_poly_degree(this);
+	  }
+	  
+	  
 	public ComplexPolynomial div(Real s, int prec, ComplexPolynomial res)
 	{
 	  try ( var blip = new Complex())
