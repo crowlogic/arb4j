@@ -6282,6 +6282,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (str == null || "null".equals(str))
     {
       updateStringRepresentation();
+      str = expression;
     }
     return str;
   }

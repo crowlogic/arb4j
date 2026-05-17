@@ -1,5 +1,7 @@
 package arb.functions.integer;
 
+import javax.annotation.Nullable;
+
 import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -34,14 +36,14 @@ public interface ComplexSequenceSequence extends
     return Sequence.express(null, ComplexSequence.class, expression, ComplexSequenceSequence.class, context);
   }
 
-  public static Expression<Integer, ComplexSequence, ComplexSequenceSequence> compile(String string, String string2, Context context)
+  public static Expression<Integer, ComplexSequence, ComplexSequenceSequence> compile(@Nullable String name, String string2, Context context)
   {
-    return Sequence.compile(ComplexSequence.class, string, ComplexSequenceSequence.class, context);
+    return Sequence.compile(ComplexSequence.class, name, ComplexSequenceSequence.class, context);
   }
 
-  public static Expression<Integer, ComplexSequence, ComplexSequenceSequence> compile(String string, Context context)
+  public static Expression<Integer, ComplexSequence, ComplexSequenceSequence> compile(String name, Context context)
   {
-    return compile(null, string, context);
+    return compile(null, name, context);
   }
 
 }

@@ -1,6 +1,6 @@
 %typemap(javafinalize) arb_struct ""
 
-%typemap(javainterfaces) arb_struct "Becomable<Real>,Domain<Real>,Serializable,Comparable<Real>,Iterable<Real>,NamedField<Real>,Lockable<Real>,IntFunction<Real>,Assignable<Real>"
+%typemap(javainterfaces) arb_struct "Cloneable,Becomable<Real>,Domain<Real>,Serializable,Comparable<Real>,Iterable<Real>,NamedField<Real>,Lockable<Real>,IntFunction<Real>,Assignable<Real>"
 
 %typemap(javaimports) arb_struct %{
 import static arb.IntegerConstants.*;
@@ -46,6 +46,12 @@ import arb.utensils.Utensils;
 	  return a.mul(this, bits, res);
 	}
 
+	@Override
+	public int hashCode()
+	{    
+	  int hashCode = (int) swigCPtr ;
+	  return hashCode;
+	}
 		
 	public Complex rgamma(int bits, Complex result)
 	{

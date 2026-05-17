@@ -34,7 +34,7 @@ import arb.utensils.Utensils;
  *      {@link TheArb4jLibrary}
  */
 
-public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparable<Real>,Iterable<Real>,NamedField<Real>,Lockable<Real>,IntFunction<Real>,Assignable<Real> {
+public class Real implements Cloneable,Becomable<Real>,Domain<Real>,Serializable,Comparable<Real>,Iterable<Real>,NamedField<Real>,Lockable<Real>,IntFunction<Real>,Assignable<Real> {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
@@ -73,6 +73,12 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
 	  return a.mul(this, bits, res);
 	}
 
+	@Override
+	public int hashCode()
+	{    
+	  int hashCode = (int) swigCPtr ;
+	  return hashCode;
+	}
 		
 	public Complex rgamma(int bits, Complex result)
 	{

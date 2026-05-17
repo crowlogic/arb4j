@@ -616,7 +616,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     var typeChoice = choiceDialog.showAndWait();
     if (typeChoice.isEmpty())
     {
-      return null;
+      return Optional.empty();
     }
     return typeChoice;
   }
