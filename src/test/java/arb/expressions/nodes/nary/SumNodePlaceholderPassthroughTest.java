@@ -49,22 +49,14 @@ public class SumNodePlaceholderPassthroughTest extends
          ComplexPolynomial p   = new ComplexPolynomial();
          ComplexPolynomial q   = new ComplexPolynomial();
          ComplexPolynomial r   = new ComplexPolynomial();
-         Real              sigma = new Real();
-         Complex           one   = new Complex();
-         Complex           zero  = new Complex())
+         Real              sigma = new Real())
     {
-      // p(v) = v  : coefficient[0]=0, coefficient[1]=1
-      one.one(128);
-      zero.zero();
-      p.fit(2);
-      p.get(0).set(zero);
-      p.get(1).set(one);
+      // p(v) = v  :  [0, 1]  via identity()
+      p.identity();
 
       // q(v) = 1, r(v) = 1  (constant polynomials)
-      q.fit(1);
-      q.get(0).set(one);
-      r.fit(1);
-      r.get(0).set(one);
+      q.one();
+      r.one();
 
       sigma.set(1, 128);
 
