@@ -597,8 +597,12 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
     arblib.acb_poly_set(this, a);
     if (coeffs != null)
     {
-     coeffs.close();
-     coeffs = a.coeffs;
+      coeffs.close();
+      // acb_poly_set deep-copied native storage into this.swigCPtr.
+      // Aliasing a.coeffs here leaves a dangling Java wrapper into a's
+      // (potentially freed) array — double-free on next getCoeffs() call.
+      // Null the cache; getCoeffs() will lazily re-fetch from our own storage.
+      coeffs = null;
     }
     return this;
   }
