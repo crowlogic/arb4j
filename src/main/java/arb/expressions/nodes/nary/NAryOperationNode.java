@@ -681,7 +681,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
    *
    * <p>
    * The function {@code name} is backed by a generated class (a
-   * {@link IntegerFunction}) whose {@code evaluate(Integer familyIndex, …)}
+   * {@link IntegerFunction}) whose {@code evaluate(Integer familyIndex, …)}</p>
    * method returns the value of the family member at {@code familyIndex} for the
    * current partition point. The partition enumeration is done by a
    * weighted-partition enumerator that is wired into the codegen of this Σ/Π node
@@ -1073,9 +1073,20 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   }
 
   /**
-   * Returns the scalar element type for a given codomain type. For sequence
-   * types, returns the element type (e.g., RealSequence → Real). For non-sequence
-   * types, returns the type as-is.
+   * Returns the scalar element type for a given codomain type.
+   *
+   * <p>
+   * For sequence/function interfaces that are not directly instantiable, returns
+   * the concrete element type that can be used as an operand codomain. For
+   * polynomial sequence interfaces ({@link ComplexPolynomialSequence},
+   * {@link RealPolynomialSequence}), returns the corresponding polynomial element
+   * type so that the operand expression accumulates polynomial values rather than
+   * being demoted to a scalar. For scalar sequence/function types, returns the
+   * scalar element type. For all other types, returns the type unchanged.
+   *
+   * <p>
+   * <b>Critical invariant:</b> the returned type must be a concrete, instantiable
+   * class — never an interface — because ASM will emit {@code NEW} against it.
    */
   public static Class<?> scalarCoDomain(Class<?> type)
   {
@@ -1091,11 +1102,15 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     {
       return Integer.class;
     }
-    if (RealPolynomial.class.equals(type))
+    if (ComplexPolynomialSequence.class.equals(type))
     {
-      return Real.class;
+      return ComplexPolynomial.class;
     }
-    if (ComplexFunction.class.equals(type) || ComplexPolynomial.class.equals(type))
+    if (RealPolynomialSequence.class.equals(type))
+    {
+      return RealPolynomial.class;
+    }
+    if (ComplexFunction.class.equals(type))
     {
       return Complex.class;
     }
