@@ -597,10 +597,6 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
     arblib.acb_poly_set(this, a);
     if (coeffs != null)
     {
-      coeffs.close();
-      // Null the cache: acb_poly_set deep-copied the native storage into
-      // this.swigCPtr, so a.coeffs would be a dangling alias into a's
-      // (potentially freed) array. Force lazy re-fetch from our own storage.
       coeffs = null;
     }
     return this;
