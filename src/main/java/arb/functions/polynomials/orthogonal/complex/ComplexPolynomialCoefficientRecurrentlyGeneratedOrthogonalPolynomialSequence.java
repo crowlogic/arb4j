@@ -42,8 +42,7 @@ public abstract class ComplexPolynomialCoefficientRecurrentlyGeneratedOrthogonal
 
   public ComplexPolynomialCoefficientRecurrentlyGeneratedOrthogonalPolynomialSequence(int bits, Context sharedContext)
   {
-    super(bits,
-          ComplexPolynomial.class,
+    super(ComplexPolynomial.class,
           sharedContext);
   }
 

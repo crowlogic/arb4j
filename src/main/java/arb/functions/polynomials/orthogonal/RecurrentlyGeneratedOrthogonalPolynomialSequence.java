@@ -52,10 +52,9 @@ public abstract class RecurrentlyGeneratedOrthogonalPolynomialSequence<R, V, E e
   @Override
   public String toString()
   {
-    return String.format("%s[bits=%s, context=%s, initialized=%s, A=%s, B=%s, C=%s, P=%s]", getClass().getSimpleName(), bits, context, initialized, A, B, C, P);
+    return String.format("%s[context=%s, initialized=%s, A=%s, B=%s, C=%s, P=%s]", getClass().getSimpleName(), context, initialized, A, B, C, P);
   }
 
-  public int                      bits = 128;
 
   public Class<E>                 elementType;
 
@@ -77,7 +76,7 @@ public abstract class RecurrentlyGeneratedOrthogonalPolynomialSequence<R, V, E e
 
   public RecurrentlyGeneratedOrthogonalPolynomialSequence(int bits, Class<E> elementType)
   {
-    this(bits, elementType, null);
+    this(elementType, null);
   }
 
   /**
@@ -91,9 +90,8 @@ public abstract class RecurrentlyGeneratedOrthogonalPolynomialSequence<R, V, E e
    * lose those mappings, so the inner self-instance of the recursive S
    * sequence would have no way to resolve {@code m} on lazy initialize.
    */
-  public RecurrentlyGeneratedOrthogonalPolynomialSequence(int bits, Class<E> elementType, Context sharedContext)
+  public RecurrentlyGeneratedOrthogonalPolynomialSequence(Class<E> elementType, Context sharedContext)
   {
-    this.bits        = bits;
     this.elementType = elementType;
     p0               = newElement().setName("p0");
     p1               = newElement().setName("p1");
