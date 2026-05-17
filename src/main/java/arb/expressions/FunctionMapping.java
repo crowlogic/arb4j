@@ -163,7 +163,8 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
     {
       return declaredAs;
     }
-    return declaredAs = String.format("L%s;", functionName);
+    assert expression != null : "expression must not be null when computing field descriptor for functionName=" + functionName;
+    return declaredAs = String.format("L%s;", expression.internalName);
   }
 
   @Override
