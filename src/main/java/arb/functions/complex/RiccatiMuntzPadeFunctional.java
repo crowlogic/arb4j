@@ -97,7 +97,6 @@ public class RiccatiMuntzPadeFunctional extends
 
   private ComplexPolynomialNullaryFunction discriminant;
 
-
   /**
    * Construct with nullary polynomial factory functions.
    *
@@ -126,23 +125,11 @@ public class RiccatiMuntzPadeFunctional extends
     // or r bound (e.g. a ComplexPolynomial registered upstream), we reuse the
     // existing instance rather than throwing CompilerException on re-registration.
     // refreshPolynomials will immediately overwrite the content in either case.
-    p = context.getVariable("p");
-    if (p == null)
-    {
-      context.registerVariable(p = ComplexPolynomial.named("p"));
-    }
+    context.registerVariable(p = ComplexPolynomial.named("p"));
 
-    q = context.getVariable("q");
-    if (q == null)
-    {
-      context.registerVariable(q = ComplexPolynomial.named("q"));
-    }
+    context.registerVariable(q = ComplexPolynomial.named("q"));
 
-    r = context.getVariable("r");
-    if (r == null)
-    {
-      context.registerVariable(r = ComplexPolynomial.named("r"));
-    }
+    context.registerVariable(r = ComplexPolynomial.named("r"));
 
     // Discriminant: q(v)² − 4·p(v)·r(v)
     discriminant = ComplexPolynomialNullaryFunction.express("D:Q()² − 4·P()·R()", context);
@@ -272,7 +259,7 @@ public class RiccatiMuntzPadeFunctional extends
   {
     P.evaluate(bits, p);
     Q.evaluate(bits, q);
-    R.evaluate(bits, r);   
+    R.evaluate(bits, r);
   }
 
   int bits = 128;
