@@ -299,7 +299,21 @@ public class Utensils
     Class<?> classB = (Class<?>) b;
     return classA.getSimpleName().compareTo(classB.getSimpleName());
   };
-
+  public static <T extends AutoCloseable> void close(T... closeables)
+  {
+    for ( T closeable : closeables )
+    {
+      try
+      {
+        closeable.close();
+      }
+      catch (Exception e)
+      {
+       Utensils.wrapOrThrow(e);
+      }
+    }
+  }
+  
   public static <T extends AutoCloseable> T close(T closeable)
   {
     if (closeable != null)
