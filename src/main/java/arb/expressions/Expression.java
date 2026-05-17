@@ -289,39 +289,38 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     throw new UnsupportedOperationException("cannot resolve child domain for " + parentCoDomainType);
   }
 
-  private int                                             cacheArrayListSlot            = -1;
+  private int    cacheArrayListSlot = -1;
 
-  private int                                             cacheIndexSlot                = -1;
+  private int    cacheIndexSlot     = -1;
 
-  public char                                             character                     = 0;
+  public char    character          = 0;
 
   /**
    * The short symbolic name of this Expression's generated class — e.g.
    * {@code "P"}, {@code "a"}, {@code "β"}. This is what the
    * {@link Context#functions} map keys on, what
-   * {@link FunctionMapping#functionName} cross-references, and what shows
-   * up in log messages.
+   * {@link FunctionMapping#functionName} cross-references, and what shows up in
+   * log messages.
    *
-   * <p><b>Never reference this for bytecode emission.</b> Every ASM site
-   * (every {@link org.objectweb.asm.ClassWriter#visit ClassWriter.visit},
-   * every {@code visitTypeInsn(NEW, ...)},
-   * {@code visitFieldInsn(..., owner, ...)},
-   * {@code visitMethodInsn(..., owner, ...)}, every field descriptor of
-   * the form {@code "L" + ... + ";"}, every
-   * {@code classLoader.registerBytecodes(...)} key) must use
-   * {@link #internalName()} instead, so the bytecode-level identity
+   * <p>
+   * <b>Never reference this for bytecode emission.</b> Every ASM site (every
+   * {@link org.objectweb.asm.ClassWriter#visit ClassWriter.visit}, every
+   * {@code visitTypeInsn(NEW, ...)}, {@code visitFieldInsn(..., owner, ...)},
+   * {@code visitMethodInsn(..., owner, ...)}, every field descriptor of the form
+   * {@code "L" + ... + ";"}, every {@code classLoader.registerBytecodes(...)}
+   * key) must use {@link #internalName()} instead, so the bytecode-level identity
    * incorporates the owning {@link Context#packageName}.
    *
-   * <p>The field is {@code private} to enforce that rule at compile time —
-   * any new call site that needs the symbolic short name uses
-   * {@link #className()} and any new ASM emit site uses
-   * {@link #internalName()}. There is no third option.
+   * <p>
+   * The field is {@code private} to enforce that rule at compile time — any new
+   * call site that needs the symbolic short name uses {@link #className()} and
+   * any new ASM emit site uses {@link #internalName()}. There is no third option.
    */
-  private String                                          className;
+  private String className;
 
   /**
-   * Read-accessor for the short symbolic class name. See {@link #className}
-   * for the rule that distinguishes this from {@link #internalName()}.
+   * Read-accessor for the short symbolic class name. See {@link #className} for
+   * the rule that distinguishes this from {@link #internalName()}.
    */
   public String className()
   {
@@ -330,8 +329,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   /**
    * Setter for the short symbolic class name, used by partial-derivative
-   * construction, functional-expression construction, and reflective
-   * fixups. Setters do not need to participate in bytecode emission.
+   * construction, functional-expression construction, and reflective fixups.
+   * Setters do not need to participate in bytecode emission.
    */
   public void setClassName(String className)
   {
@@ -339,23 +338,22 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * Bytecode-level identity of the generated class. Computed from the
-   * owning {@link Context}'s {@link Context#packageName} (if any) and the
-   * short {@link #className}. Use this for every ASM emit site that
-   * references the class being generated —
-   * {@link org.objectweb.asm.ClassWriter#visit ClassWriter.visit}, every
-   * {@code visitTypeInsn(NEW, ...)}, every
+   * Bytecode-level identity of the generated class. Computed from the owning
+   * {@link Context}'s {@link Context#packageName} (if any) and the short
+   * {@link #className}. Use this for every ASM emit site that references the
+   * class being generated — {@link org.objectweb.asm.ClassWriter#visit
+   * ClassWriter.visit}, every {@code visitTypeInsn(NEW, ...)}, every
    * {@code visitFieldInsn(..., owner, ...)}, every
-   * {@code visitMethodInsn(..., owner, ...)}, every field descriptor of the
-   * form {@code "L" + internalName() + ";"}, and every
-   * {@code classLoader.registerBytecodes(...)} key. Symbolic uses
-   * (the {@code functions} map keys, log messages, the
-   * {@link FunctionMapping#functionName} cross-reference) continue to use
-   * the short {@link #className}.
+   * {@code visitMethodInsn(..., owner, ...)}, every field descriptor of the form
+   * {@code "L" + internalName() + ";"}, and every
+   * {@code classLoader.registerBytecodes(...)} key. Symbolic uses (the
+   * {@code functions} map keys, log messages, the
+   * {@link FunctionMapping#functionName} cross-reference) continue to use the
+   * short {@link #className}.
    *
-   * <p>The returned form uses slashes, matching JVM internal-name
-   * convention (e.g. {@code "arb/jacobi/P"} rather than
-   * {@code "arb.jacobi.P"}).
+   * <p>
+   * The returned form uses slashes, matching JVM internal-name convention (e.g.
+   * {@code "arb/jacobi/P"} rather than {@code "arb.jacobi.P"}).
    *
    * @return the slash-delimited internal name for the generated class
    */
@@ -537,13 +535,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public boolean                                          variablesDeclared             = false;
 
   /**
-   * Re-entrant guard for {@link #compile()}. While a compile() invocation
-   * is mid-flight (after entering optimizeAndGenerate but before the
-   * compiledClass assignment that latches the early-return guard), a
-   * second compile() invocation triggered via the
-   * ExpressionClassLoader/FunctionMapping recursion is short-circuited
-   * here so it doesn't re-run declareVariables on this Expression. See
-   * the comment in {@link #compile()} for the full recursion path.
+   * Re-entrant guard for {@link #compile()}. While a compile() invocation is
+   * mid-flight (after entering optimizeAndGenerate but before the compiledClass
+   * assignment that latches the early-return guard), a second compile()
+   * invocation triggered via the ExpressionClassLoader/FunctionMapping recursion
+   * is short-circuited here so it doesn't re-run declareVariables on this
+   * Expression. See the comment in {@link #compile()} for the full recursion
+   * path.
    */
   boolean                                                 compileInProgress             = false;
 
@@ -1018,35 +1016,35 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     compileInProgress = true;
     try
     {
-    if (context == null)
-    {
-      context = new Context();
-    }
+      if (context == null)
+      {
+        context = new Context();
+      }
 
-    if (trace)
-    {
-      log.debug(String.format("#%s: compile(expression=%s, className=%s, context=%s)\n", System.identityHashCode(this), getExpression(), className, context));
-    }
-    if (instructions == null)
-    {
-      optimizeAndGenerate();
-    }
-    assert context != null : "context is null for "
-                             + this
-                             + " and superExpression="
-                             + upstreamExpression
-                             + " superExpression.context="
-                             + upstreamExpression.context;
-    assert !className.isEmpty() : "className is empty";
-    // #1027 fix: only call loadFunctionClass here if optimizeAndGenerate did
-    // not already set compiledClass. optimizeAndGenerate's path sets it via
-    // its own loadFunctionClass at ~line 4327; without this guard, the
-    // generated bytecode was being defined twice per class.
-    if (compiledClass == null)
-    {
-      compiledClass = loadFunctionClass(internalName(), instructions, context);
-    }
-    return this;
+      if (trace)
+      {
+        log.debug(String.format("#%s: compile(expression=%s, className=%s, context=%s)\n", System.identityHashCode(this), getExpression(), className, context));
+      }
+      if (instructions == null)
+      {
+        optimizeAndGenerate();
+      }
+      assert context != null : "context is null for "
+                               + this
+                               + " and superExpression="
+                               + upstreamExpression
+                               + " superExpression.context="
+                               + upstreamExpression.context;
+      assert !className.isEmpty() : "className is empty";
+      // #1027 fix: only call loadFunctionClass here if optimizeAndGenerate did
+      // not already set compiledClass. optimizeAndGenerate's path sets it via
+      // its own loadFunctionClass at ~line 4327; without this guard, the
+      // generated bytecode was being defined twice per class.
+      if (compiledClass == null)
+      {
+        compiledClass = loadFunctionClass(internalName(), instructions, context);
+      }
+      return this;
     }
     finally
     {
@@ -1538,7 +1536,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * classes of non-leaf, input-dependent subexpressions, and wraps them in
    * {@link SharedNode}s — canonical (first occurrence) computes and stores,
    * references (subsequent occurrences) just load.
-   * @return 
+   * 
+   * @return
    */
   @SuppressWarnings("unchecked")
   private Expression<D, C, F> eliminateCommonSubexpressions()
@@ -1597,7 +1596,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     // Phase 4: Walk the tree and replace children by identity
     rootNode = replaceByIdentity(rootNode, replacements);
-    
+
     return this;
   }
 
@@ -1722,8 +1721,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * Generate the implementation of the function after this{@link #define(boolean)}
-   * has been invoked
+   * Generate the implementation of the function after
+   * this{@link #define(boolean)} has been invoked
    * 
    * @return this
    * @throws CompilerException
@@ -1910,7 +1909,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected MethodVisitor generateCloseFieldCall(MethodVisitor methodVisitor, String fieldName, Class<?> fieldType)
   {
     getFieldFromThis(methodVisitor, internalName(), fieldName, fieldType);
-    return invokeCloseMethod(methodVisitor, fieldType);
+    methodVisitor.visitVarInsn(ALOAD, 0);
+    Label skip = new Label();
+    methodVisitor.visitJumpInsn(IF_ACMPEQ, skip);
+    getFieldFromThis(methodVisitor, internalName(), fieldName, fieldType);
+    invokeCloseMethod(methodVisitor, fieldType);
+    methodVisitor.visitLabel(skip);
+    return methodVisitor;
   }
 
   protected ClassVisitor generateCloseMethod(ClassVisitor classVisitor)
@@ -1921,9 +1926,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (!coDomainType.isInterface())
     {
-      getSortedLiteralConstantNodes().forEach(constant -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
-                                                                                 constant.fieldName,
-                                                                                 constant.type()));
+      getSortedLiteralConstantNodes().forEach(constant -> generateCloseFieldCall(loadThisOntoStack(methodVisitor), constant.fieldName, constant.type()));
 
       sortedIntermediateVariables().forEach(intermediateVariable -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
                                                                                            intermediateVariable.name,
@@ -1931,14 +1934,24 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
       getReferencedFunctions().forEach((name, mapping) ->
       {
-        // BUGFIX: use functionFieldDescriptor() for GETFIELD so the descriptor
-        // matches exactly what FunctionMapping.declare() used when the field was
-        // declared (the concrete generated-class descriptor). mapping.type()
-        // returns the interface type, which diverges from that descriptor and
-        // causes java.lang.NoSuchFieldError at runtime when the generated
-        // close() method executes GETFIELD on the concrete class.
-        getFieldFromThis(loadThisOntoStack(methodVisitor), internalName(), name, mapping.functionFieldDescriptor());
-        invokeCloseMethod(methodVisitor, mapping.type());
+        String fieldDesc = mapping.functionFieldDescriptor();
+        loadThisOntoStack(methodVisitor);
+        methodVisitor.visitFieldInsn(GETFIELD, internalName(), name, fieldDesc);
+        Label skip = new Label();
+        methodVisitor.visitJumpInsn(IFNULL, skip);
+        loadThisOntoStack(methodVisitor);
+        methodVisitor.visitFieldInsn(GETFIELD, internalName(), name, fieldDesc);
+        methodVisitor.visitTypeInsn(CHECKCAST, Type.getInternalName(AutoCloseable.class));
+        // null the field first, THEN close — breaks the cycle
+        loadThisOntoStack(methodVisitor);
+        methodVisitor.visitInsn(ACONST_NULL);
+        methodVisitor.visitFieldInsn(PUTFIELD, internalName(), name, fieldDesc);
+        methodVisitor.visitMethodInsn(INVOKEINTERFACE,
+                                      Type.getInternalName(AutoCloseable.class),
+                                      "close",
+                                      "()V",
+                                      true);
+        methodVisitor.visitLabel(skip);
       });
     }
 
@@ -3718,12 +3731,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // NoSuchFieldError at first execution.
     //
     // Three sources of truth, in order of preference:
-    //  1. Target's compiled Class object — reflectively enumerated fields.
-    //  2. Target Expression's declaredVariables — the set declareVariables
-    //     emitted as fields.
-    //  3. Otherwise: assume the field will exist (the caller's predicate
-    //     already filtered by either nested.hasDeclaredVariable or
-    //     parent.hasDeclaredVariable upstream).
+    // 1. Target's compiled Class object — reflectively enumerated fields.
+    // 2. Target Expression's declaredVariables — the set declareVariables
+    // emitted as fields.
+    // 3. Otherwise: assume the field will exist (the caller's predicate
+    // already filtered by either nested.hasDeclaredVariable or
+    // parent.hasDeclaredVariable upstream).
     if (functionMapping.instance != null)
     {
       try
@@ -3736,13 +3749,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
     }
     else if (functionMapping.expression != null && functionMapping.expression.variablesDeclared
-             && !functionMapping.expression.hasDeclaredVariable(variableName))
+                  && !functionMapping.expression.hasDeclaredVariable(variableName))
     {
       return;
     }
 
-    Label    labelElse        = new Label();
-    Label    labelEnd         = new Label();
+    Label labelElse = new Label();
+    Label labelEnd  = new Label();
 
     // ── if (this.func.var == null) ──────────────────────────────
     Compiler.getFieldFromThis(mv, generatedFunctionClassInternalName, functionFieldName, typeDesc);
@@ -4774,8 +4787,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       {
         continue;
       }
-      boolean targetDeclares = function.variablesDeclared ? function.hasDeclaredVariable(fieldName)
-                                                          : hasDeclaredVariable(fieldName);
+      boolean targetDeclares = function.variablesDeclared ? function.hasDeclaredVariable(fieldName) : hasDeclaredVariable(fieldName);
       if (!targetDeclares)
       {
         continue;
@@ -5413,21 +5425,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       // Two cases by the argument's identity:
       //
       // 1. The argument is a variable node whose name equals the
-      //    ReifiedFunction's getIndependentVariableName(): the call is
-      //    symbolic identity — p(v) means "p whose indeterminate is v" —
-      //    so resolve to the polynomial itself, no evaluation. The
-      //    surrounding expression then operates on the polynomial as it
-      //    would on a bare `p`.
+      // ReifiedFunction's getIndependentVariableName(): the call is
+      // symbolic identity — p(v) means "p whose indeterminate is v" —
+      // so resolve to the polynomial itself, no evaluation. The
+      // surrounding expression then operates on the polynomial as it
+      // would on a bare `p`.
       //
       // 2. Otherwise the argument is a different point: build a
-      //    FunctionalEvaluationNode which emits evaluate(arg, ...) at
-      //    codegen, exactly as the postfix-`(` path does for chained
-      //    calls like a(k)(v).
+      // FunctionalEvaluationNode which emits evaluate(arg, ...) at
+      // codegen, exactly as the postfix-`(` path does for chained
+      // calls like a(k)(v).
       if (context != null)
       {
         Named existingVariable = context.variables.get(reference.name);
-        if (existingVariable != null
-            && arb.functions.ReifiedFunction.class.isAssignableFrom(existingVariable.getClass()))
+        if (existingVariable != null && arb.functions.ReifiedFunction.class.isAssignableFrom(existingVariable.getClass()))
         {
           Node<D, C, F> argumentNode = resolve();
           require(')');
@@ -5440,13 +5451,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
           // is symbolic identity: p(v) means "p whose indeterminate is v"
           // when the enclosing arrow declared v as the placeholder, so
           // resolve to the polynomial itself, no evaluation.
-          String placeholderName = placeholderVariable != null
-              ? placeholderVariable.reference.name
-              : null;
+          String placeholderName = placeholderVariable != null ? placeholderVariable.reference.name : null;
 
-          if (placeholderName != null
-              && argumentNode.isVariable()
-              && placeholderName.equals(argumentNode.asVariable().reference.name))
+          if (placeholderName != null && argumentNode.isVariable() && placeholderName.equals(argumentNode.asVariable().reference.name))
           {
             // Identity in the polynomial sense: return `p` directly.
             return newVariableNode(reference);
@@ -5678,29 +5685,28 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   /**
    * Build a postfix function-call node, folding identity-substitution when the
    * receiver is a {@link arb.functions.ReifiedFunction} (e.g. a polynomial) and
-   * the argument names this enclosing expression's placeholder variable. In
-   * that case the call is symbolic identity — {@code p(v)} where {@code v} is
+   * the argument names this enclosing expression's placeholder variable. In that
+   * case the call is symbolic identity — {@code p(v)} where {@code v} is
    * {@code p}'s indeterminate means {@code p} itself — so the receiver is
    * returned directly without wrapping in a {@link FunctionalEvaluationNode}.
    *
    * <p>
    * This complements the prefix-call identity fold at the
-   * {@code context.variables.get(reference.name)} path above; that fold
-   * handles bare-name calls like {@code p(v)}, while this fold handles
-   * chained / sequence-element calls like {@code a(k-1)(v)}.
+   * {@code context.variables.get(reference.name)} path above; that fold handles
+   * bare-name calls like {@code p(v)}, while this fold handles chained /
+   * sequence-element calls like {@code a(k-1)(v)}.
    */
   private Node<D, C, F> buildPostfixCall(Node<D, C, F> receiver, Node<D, C, F> arg)
   {
     Class<?> receiverType = receiver.type();
-    if (receiverType != null
-        && arb.functions.ReifiedFunction.class.isAssignableFrom(receiverType)
-        && placeholderVariable != null
-        && arg.isVariable()
-        && placeholderVariable.reference.name.equals(arg.asVariable().reference.name))
+    if (receiverType != null && arb.functions.ReifiedFunction.class.isAssignableFrom(receiverType) && placeholderVariable != null && arg.isVariable()
+                  && placeholderVariable.reference.name.equals(arg.asVariable().reference.name))
     {
       return receiver;
     }
-    return new FunctionalEvaluationNode<>(this, receiver, arg);
+    return new FunctionalEvaluationNode<>(this,
+                                          receiver,
+                                          arg);
   }
 
   protected Node<D, C, F> resolveSquareBracketedIndex()

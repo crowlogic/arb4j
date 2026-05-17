@@ -423,6 +423,12 @@ public class Compiler
                        false);
   }
 
+  public static MethodVisitor invokeCloseMethod(MethodVisitor methodVisitor, String internalName)
+  {
+    methodVisitor.visitMethodInsn(INVOKEVIRTUAL, internalName, "close", "()V", false);
+    return methodVisitor;
+  }
+
   public static MethodVisitor invokeCloseMethod(MethodVisitor methodVisitor, Class<?> type)
   {
     methodVisitor.visitMethodInsn(INVOKEVIRTUAL, Type.getInternalName(type), "close", "()V", false);
@@ -766,7 +772,7 @@ public class Compiler
     String functionDescriptor = bitless ? getMethodDescriptor(coDomainType, coDomainType) : getMethodDescriptor(coDomainType, int.class, coDomainType);
     return functionDescriptor;
   }
-  
+
   public static MethodVisitor jumpToIfNull(MethodVisitor mv, Label fieldNotNull)
   {
     mv.visitJumpInsn(IFNULL, fieldNotNull);
