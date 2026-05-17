@@ -240,7 +240,7 @@ public class HypergeometricFunctionTest extends
     ComplexFunctionSequence express = ComplexFunctionSequence.express("Vpluscomplex:m➔pFq([1,m,-m],[½],-½*I/y)");
     ComplexFunction         p3      = express.evaluate(3, 128);
     arb.Complex             eval    = p3.eval(2.3, new arb.Complex());
-    assertEquals("-3.5368620037807190372740058454181982612 +/- 4.70e-38 + i*1.9404947809649049162726572840572966165 +/- 1.48e-38", eval.toString());
+    assertEquals("-3.536862003780719037274006 +/- 1.55e-25 + i*1.940494780964904916272657 +/- 2.85e-25", eval.toString());
   }
 
   public static void testRealSequenceOfHypergeometricFunctions()

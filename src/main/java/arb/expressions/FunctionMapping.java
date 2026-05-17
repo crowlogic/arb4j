@@ -46,25 +46,25 @@ import arb.functions.Function;
  */
 public final class FunctionMapping<D, R, F extends Function<? extends D, ? extends R>>
 {
-  private static final Logger log = LoggerFactory.getLogger(FunctionMapping.class);
+  private static final Logger                 log = LoggerFactory.getLogger(FunctionMapping.class);
 
-  public Class<?>             domain;
+  public Class<?>                             domain;
 
-  public Expression<D, R, F>  expression;
+  public Expression<D, R, F>                  expression;
 
-  public String               expressionString;
+  public String                               expressionString;
 
-  public Class<?>             functionClass;
+  public Class<?>                             functionClass;
 
-  public F                    instance;
+  public F                                    instance;
 
-  public String               functionName;
+  public String                               functionName;
 
-  public Class<?>             coDomain;
+  public Class<?>                             coDomain;
 
-  private String              functionFieldDescriptor;
+  private String                              functionFieldDescriptor;
 
-  private String              declaredAs;
+  private String                              declaredAs;
 
   /**
    * Cached {@link Class#getFields()} array for this mapping's instantiated
@@ -72,21 +72,21 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
    *
    * <p>
    * The reflective field-by-name lookup performed in
-   * {@link arb.expressions.Context#injectVariableReferences} previously
-   * called {@code instance.getClass().getFields()} once per variable, which
-   * is both O(N²) in (variables × fields) and — worse — triggers a
-   * JVM-driven class-loading recursion for every field type, each of which
-   * can re-enter {@link ExpressionClassLoader#findClass} and recompile
-   * already-being-compiled classes mid-flight (issue #1027). Caching the
-   * fields array once per mapping avoids both costs.
+   * {@link arb.expressions.Context#injectVariableReferences} previously called
+   * {@code instance.getClass().getFields()} once per variable, which is both
+   * O(N²) in (variables × fields) and — worse — triggers a JVM-driven
+   * class-loading recursion for every field type, each of which can re-enter
+   * {@link ExpressionClassLoader#findClass} and recompile already-being-compiled
+   * classes mid-flight (issue #1027). Caching the fields array once per mapping
+   * avoids both costs.
    */
   private transient java.lang.reflect.Field[] instanceFields;
 
   /**
-   * Returns the public {@link java.lang.reflect.Field}s of
-   * {@link #instance}'s class, computed once and cached on this mapping.
-   * Throws if {@link #instance} is null — callers may only ask for fields
-   * after the mapping has been instantiated.
+   * Returns the public {@link java.lang.reflect.Field}s of {@link #instance}'s
+   * class, computed once and cached on this mapping. Throws if {@link #instance}
+   * is null — callers may only ask for fields after the mapping has been
+   * instantiated.
    */
   public java.lang.reflect.Field[] getInstanceFields()
   {
@@ -100,9 +100,8 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
 
   /**
    * Invalidates the cached fields array. Call after {@link #instance} is
-   * reassigned (e.g. recompile after
-   * {@link Context#resetClassLoader()}) so the next
-   * {@link #getInstanceFields()} call recomputes from the new instance.
+   * reassigned (e.g. recompile after {@link Context#resetClassLoader()}) so the
+   * next {@link #getInstanceFields()} call recomputes from the new instance.
    */
   public void invalidateInstanceFields()
   {
@@ -135,12 +134,12 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
 
   /**
    * Clears the cached {@link #functionFieldDescriptor} and {@link #declaredAs}
-   * strings so the next {@link #functionFieldDescriptor()} call recomputes
-   * them from the current {@link #functionClass}. Needed when a mapping is
-   * overwritten with a newly-compiled operand class (e.g. after
-   * {@link Context#resetClassLoader()} and a recompile) so downstream
-   * consumers don't keep using the stale descriptor from the previous
-   * ClassLoader generation.
+   * strings so the next {@link #functionFieldDescriptor()} call recomputes them
+   * from the current {@link #functionClass}. Needed when a mapping is overwritten
+   * with a newly-compiled operand class (e.g. after
+   * {@link Context#resetClassLoader()} and a recompile) so downstream consumers
+   * don't keep using the stale descriptor from the previous ClassLoader
+   * generation.
    */
   public void invalidateDescriptorCache()
   {
@@ -164,7 +163,7 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
       return declaredAs;
     }
     assert expression != null : "expression must not be null when computing field descriptor for functionName=" + functionName;
-    return declaredAs = String.format("L%s;", expression.internalName);
+    return declaredAs = String.format("L%s;", expression.internalName());
   }
 
   @Override
@@ -174,16 +173,16 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
   }
 
   /**
-   * Re-entrance guard for {@link #instantiate()}. The instantiate flow
-   * calls {@code expression.instantiate()} which calls
+   * Re-entrance guard for {@link #instantiate()}. The instantiate flow calls
+   * {@code expression.instantiate()} which calls
    * {@code injectContextFunctionAndVariableReferences} which calls
-   * {@code Class.getFields()} — the JVM may, while resolving field types,
-   * call {@link ExpressionClassLoader#findClass} which can route back to
-   * this same mapping and call {@link #instantiate()} recursively. Without
-   * a guard, this is the ping-pong observed in #1027 between mutually-
-   * referencing generated classes (S ↔ α).
+   * {@code Class.getFields()} — the JVM may, while resolving field types, call
+   * {@link ExpressionClassLoader#findClass} which can route back to this same
+   * mapping and call {@link #instantiate()} recursively. Without a guard, this is
+   * the ping-pong observed in #1027 between mutually- referencing generated
+   * classes (S ↔ α).
    */
-  private boolean             instantiateInProgress;
+  private boolean instantiateInProgress;
 
   public F instantiate()
   {

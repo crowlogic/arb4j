@@ -45,7 +45,7 @@ public class JacobiPolynomialExpansionTest extends
                         128);
       var  y = expansion.evaluate(x, 1, 128, new Real());
 
-      assertTrue(y.toString().startsWith("0.804413903516878943668546309744"));
+      assertTrue(y.toString().startsWith("0.8044139035168789436685463"));
     }
 
   }

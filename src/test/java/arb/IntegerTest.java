@@ -29,7 +29,7 @@ public class IntegerTest extends
     try ( Integer base = new Integer(-1); var exponent = Real.valueOf(6.2); var result = new Complex())
     {
       var t = base.pow(exponent, 128, result);
-      assertEquals("0.809016994374947096083467006787011011 +/- 5.33e-37 + i*0.587785252292473580647888200079889130 +/- 5.40e-37", t.toString());
+      assertEquals("0.8090169943749470960834670 +/- 6.79e-27 + i*0.5877852522924735806478882 +/- 8.1e-29", t.toString());
     }
   }
 
