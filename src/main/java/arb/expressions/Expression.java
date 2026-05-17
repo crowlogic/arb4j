@@ -1921,13 +1921,25 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (!coDomainType.isInterface())
     {
-      getSortedLiteralConstantNodes().forEach(constant -> generateCloseFieldCall(loadThisOntoStack(methodVisitor), constant.fieldName, constant.type()));
+      getSortedLiteralConstantNodes().forEach(constant -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
+                                                                                 constant.fieldName,
+                                                                                 constant.type()));
 
       sortedIntermediateVariables().forEach(intermediateVariable -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
                                                                                            intermediateVariable.name,
                                                                                            intermediateVariable.type));
 
-      getReferencedFunctions().forEach((name, mapping) -> generateCloseFieldCall(loadThisOntoStack(methodVisitor), name, mapping.type()));
+      getReferencedFunctions().forEach((name, mapping) ->
+      {
+        // BUGFIX: use functionFieldDescriptor() for GETFIELD so the descriptor
+        // matches exactly what FunctionMapping.declare() used when the field was
+        // declared (the concrete generated-class descriptor). mapping.type()
+        // returns the interface type, which diverges from that descriptor and
+        // causes java.lang.NoSuchFieldError at runtime when the generated
+        // close() method executes GETFIELD on the concrete class.
+        getFieldFromThis(loadThisOntoStack(methodVisitor), internalName(), name, mapping.functionFieldDescriptor());
+        invokeCloseMethod(methodVisitor, mapping.type());
+      });
     }
 
     Compiler.generateReturnFromVoidMethod(methodVisitor);
