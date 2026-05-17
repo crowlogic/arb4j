@@ -121,10 +121,28 @@ public class RiccatiMuntzPadeFunctional extends
 
     initializeFractionalExponent(context, α);
 
-    // Allocate polynomial variables once, register in context
-    context.registerVariable(p = ComplexPolynomial.named("p"));
-    context.registerVariable(q = ComplexPolynomial.named("q"));
-    context.registerVariable(r = ComplexPolynomial.named("r"));
+    // Allocate polynomial variables once, register in context.
+    // Guard with getVariable so that if the caller's context already has p, q,
+    // or r bound (e.g. a ComplexPolynomial registered upstream), we reuse the
+    // existing instance rather than throwing CompilerException on re-registration.
+    // refreshPolynomials will immediately overwrite the content in either case.
+    p = context.getVariable("p");
+    if (p == null)
+    {
+      context.registerVariable(p = ComplexPolynomial.named("p"));
+    }
+
+    q = context.getVariable("q");
+    if (q == null)
+    {
+      context.registerVariable(q = ComplexPolynomial.named("q"));
+    }
+
+    r = context.getVariable("r");
+    if (r == null)
+    {
+      context.registerVariable(r = ComplexPolynomial.named("r"));
+    }
 
     // Discriminant: q(v)² − 4·p(v)·r(v)
     discriminant = ComplexPolynomialNullaryFunction.express("D:Q()² − 4·P()·R()", context);
