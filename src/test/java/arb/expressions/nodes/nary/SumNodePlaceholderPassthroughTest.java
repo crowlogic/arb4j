@@ -1,6 +1,5 @@
 package arb.expressions.nodes.nary;
 
-import arb.Complex;
 import arb.ComplexPolynomial;
 import arb.Integer;
 import arb.Real;
@@ -13,14 +12,13 @@ import junit.framework.TestCase;
  * enclosing sequence has codomain {@link ComplexPolynomial}, calling
  * {@code a(j,v)} must accumulate {@link ComplexPolynomial} values (pass-through
  * of the placeholder {@code v}), NOT evaluate each {@code a(j)} as a scalar
- * {@link Complex} at {@code v}.
+ * {@link arb.Complex} at {@code v}.
  *
  * <p>
  * The bug manifests because the operand {@link arb.expressions.Expression} is
  * constructed fresh and its {@code coDomainType} is downgraded to
- * {@link Complex} by
- * {@link NAryOperationNode#scalarCoDomain}, causing each summand to be
- * accumulated as a {@link Complex} scalar rather than as a
+ * {@link arb.Complex} by {@link NAryOperationNode#scalarCoDomain}, causing each
+ * summand to be accumulated as a scalar rather than as a
  * {@link ComplexPolynomial}. Consequently {@code a(2)} comes out as a degree-0
  * polynomial instead of the expected degree-1 polynomial.
  */
@@ -35,13 +33,13 @@ public class SumNodePlaceholderPassthroughTest extends
    *                else, (Γ(k)/Γ(k+1)) * (q(v)*a(k-1,v) + r(v)*Σj➔a(j,v)*a(k-1-j,v){j=1..k-2}))
    * </pre>
    *
-   * With p(v)=v (degree-1 polynomial), q=1, r=1 and σ=1:
+   * With p(v)=v, q=1, r=1, σ=1:
    * <ul>
    *   <li>a(1) = v/Γ(2) = v &nbsp;&nbsp;(degree 1)</li>
    *   <li>a(2) = (1/2)*a(1,v) = v/2 &nbsp;&nbsp;(degree 1; the Σ is empty)</li>
    * </ul>
-   * Before the fix a(2).degree()==0 because the sum operand accumulated
-   * {@link Complex} scalars and the outer multiply lost the polynomial type.
+   * Before the fix a(2).degree()==0 because the sum operand accumulated scalars
+   * and the outer multiply lost the polynomial type.
    */
   public void testPolynomialSumOperandPreservesPolynomialType()
   {
@@ -51,14 +49,10 @@ public class SumNodePlaceholderPassthroughTest extends
          ComplexPolynomial r   = new ComplexPolynomial();
          Real              sigma = new Real())
     {
-      // p(v) = v  :  [0, 1]  via identity()
-      p.identity();
-
-      // q(v) = 1, r(v) = 1  (constant polynomials)
-      q.one();
-      r.one();
-
-      sigma.set(1, 128);
+      p.identity();           // p(v) = v  :  [0, 1]
+      q.one();                // q(v) = 1
+      r.one();                // r(v) = 1
+      sigma.set("1", 128);   // σ = 1  (string overload avoids double-varargs ambiguity)
 
       ctx.registerVariable("p", p);
       ctx.registerVariable("q", q);
@@ -83,7 +77,7 @@ public class SumNodePlaceholderPassthroughTest extends
 
         k2.set(2);
         a.evaluate(k2, 128, a2);
-        // Before fix: degree==0 (sum accumulated Complex scalars, polynomial lost).
+        // Before fix: degree==0 (sum operand downgraded codomain to Complex scalar).
         // After  fix: degree==1.
         assertEquals("a(2) should be degree 1 — sum operand must stay polynomial",
                      1,
