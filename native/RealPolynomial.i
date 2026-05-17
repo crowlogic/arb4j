@@ -835,6 +835,7 @@ import arb.functions.real.RealFunction;
     if ( swigCMemOwn )
     {
       arb_poly_clear(this);
+	  swigCMemOwn = false;
     }
     return this;
   }

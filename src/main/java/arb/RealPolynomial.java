@@ -862,6 +862,7 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
     if ( swigCMemOwn )
     {
       arb_poly_clear(this);
+	  swigCMemOwn = false;
     }
     return this;
   }

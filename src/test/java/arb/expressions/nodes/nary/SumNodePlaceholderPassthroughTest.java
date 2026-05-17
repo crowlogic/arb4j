@@ -35,41 +35,35 @@ public class SumNodePlaceholderPassthroughTest extends
    *
    * With p(v)=v, q=1, r=1, σ=1:
    * <ul>
-   *   <li>a(1) = v/Γ(2) = v &nbsp;&nbsp;(degree 1)</li>
-   *   <li>a(2) = (1/2)*a(1,v) = v/2 &nbsp;&nbsp;(degree 1; the Σ is empty)</li>
+   * <li>a(1) = v/Γ(2) = v &nbsp;&nbsp;(degree 1)</li>
+   * <li>a(2) = (1/2)*a(1,v) = v/2 &nbsp;&nbsp;(degree 1; the Σ is empty)</li>
    * </ul>
    * Before the fix a(2).degree()==0 because the sum operand accumulated scalars
    * and the outer multiply lost the polynomial type.
    */
   public void testPolynomialSumOperandPreservesPolynomialType()
   {
-    try (Context         ctx   = new Context();
-         ComplexPolynomial p   = new ComplexPolynomial();
-         ComplexPolynomial q   = new ComplexPolynomial();
-         ComplexPolynomial r   = new ComplexPolynomial();
-         Real              sigma = new Real())
+    try ( Context ctx = new Context(); ComplexPolynomial p = new ComplexPolynomial(); ComplexPolynomial q = new ComplexPolynomial();
+          ComplexPolynomial r = new ComplexPolynomial(); Real sigma = new Real())
     {
-      p.identity();           // p(v) = v  :  [0, 1]
-      q.one();                // q(v) = 1
-      r.one();                // r(v) = 1
-      sigma.set("1", 128);   // σ = 1  (string overload avoids double-varargs ambiguity)
+      p.identity(); // p(v) = v : [0, 1]
+      q.one(); // q(v) = 1
+      r.one(); // r(v) = 1
+      sigma.set("1", 128); // σ = 1 (string overload avoids double-varargs ambiguity)
 
       ctx.registerVariable("p", p);
       ctx.registerVariable("q", q);
       ctx.registerVariable("r", r);
       ctx.registerVariable("σ", sigma);
 
-      var a = ComplexPolynomialSequence.express(
-                "k,v->when(k=1,p(v)/Γ(1+σ),else,(Γ(k)/Γ(k+1))*(q(v)*a(k-1,v)+r(v)*Σj➔a(j,v)*a(k-1-j,v){j=1..k-2}))",
-                "a",
-                ctx);
+      var a = ComplexPolynomialSequence.express("a",
+                                                "k->v->when(k=1,p(v)/Γ(1+σ),else,Γ(k)/Γ(k+1)*q(v)*a(k-1)(v)+r(v)*Σj➔a(j)(v)*a(k-1-j)(v){j=1..k-2})",
+                                                ctx);
 
       assertNotNull("sequence compiled to null", a);
 
-      try (ComplexPolynomial a1 = new ComplexPolynomial();
-           ComplexPolynomial a2 = new ComplexPolynomial();
-           Integer            k1 = new Integer();
-           Integer            k2 = new Integer())
+      try ( ComplexPolynomial a1 = new ComplexPolynomial(); ComplexPolynomial a2 = new ComplexPolynomial(); Integer k1 = new Integer();
+            Integer k2 = new Integer())
       {
         k1.set(1);
         a.evaluate(k1, 128, a1);
@@ -78,10 +72,8 @@ public class SumNodePlaceholderPassthroughTest extends
         k2.set(2);
         a.evaluate(k2, 128, a2);
         // Before fix: degree==0 (sum operand downgraded codomain to Complex scalar).
-        // After  fix: degree==1.
-        assertEquals("a(2) should be degree 1 — sum operand must stay polynomial",
-                     1,
-                     a2.degree());
+        // After fix: degree==1.
+        assertEquals("a(2) should be degree 1 — sum operand must stay polynomial", 1, a2.degree());
       }
     }
   }

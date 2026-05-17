@@ -588,6 +588,8 @@
     if ( swigCMemOwn )
     {
       acb_poly_clear(this);
+	  swigCMemOwn = false;
+
     }
     return this;
   }
