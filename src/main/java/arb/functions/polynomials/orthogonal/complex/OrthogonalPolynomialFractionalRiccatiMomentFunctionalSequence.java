@@ -59,23 +59,21 @@ public class OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequence exten
    * Construct from a fresh {@link RiccatiMuntzPadeFunctional} built from (μ, P,
    * Q, R).
    */
-  public OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequence(int bits,
-                                                                       Real μ,
+  public OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequence(Real μ,
                                                                        ComplexPolynomialNullaryFunction P,
                                                                        ComplexPolynomialNullaryFunction Q,
                                                                        ComplexPolynomialNullaryFunction R)
   {
-    this(bits, new RiccatiMuntzPadeFunctional(μ, P, Q, R));
+    this(new RiccatiMuntzPadeFunctional(μ, P, Q, R));
   }
 
   /** Convenience: build from string expressions for P, Q, R. */
-  public OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequence(int bits,
-                                                                       Real μ,
+  public OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequence(Real μ,
                                                                        String P,
                                                                        String Q,
                                                                        String R)
   {
-    this(bits, new RiccatiMuntzPadeFunctional(μ, P, Q, R));
+    this(new RiccatiMuntzPadeFunctional(μ, P, Q, R));
   }
 
   /**
@@ -83,10 +81,9 @@ public class OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequence exten
    * Müntz–Tau coefficient sequence between this OPS path and any other
    * consumer.
    */
-  public OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequence(int bits,
-                                                                       RiccatiMuntzPadeFunctional muntz)
+  public OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequence(RiccatiMuntzPadeFunctional muntz)
   {
-    super(bits, muntz.context, riccatiMomentSequence(muntz));
+    super(muntz.context, riccatiMomentSequence(muntz));
     this.muntz = muntz;
   }
 

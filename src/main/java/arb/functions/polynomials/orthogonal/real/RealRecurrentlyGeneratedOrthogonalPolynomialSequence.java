@@ -23,8 +23,7 @@ public abstract class RealRecurrentlyGeneratedOrthogonalPolynomialSequence exten
 
   public RealRecurrentlyGeneratedOrthogonalPolynomialSequence(int bits)
   {
-    super(bits,
-          RealPolynomial.class);
+    super(RealPolynomial.class);
     p0.set(1);
   }
 

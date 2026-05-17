@@ -34,8 +34,7 @@ public class OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequenceTest e
     μ.set("0.6", bits);
     μ.setBounds(0, false, 1, true);
 
-    try (var ops = new OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequence(bits,
-                                                                                     μ,
+    try (var ops = new OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequence(μ,
                                                                                      "1",
                                                                                      "-1/2",
                                                                                      "3/10"))

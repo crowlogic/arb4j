@@ -74,7 +74,7 @@ public abstract class RecurrentlyGeneratedOrthogonalPolynomialSequence<R, V, E e
 
   public PolynomialSequence<R, E> P;
 
-  public RecurrentlyGeneratedOrthogonalPolynomialSequence(int bits, Class<E> elementType)
+  public RecurrentlyGeneratedOrthogonalPolynomialSequence(Class<E> elementType)
   {
     this(elementType, null);
   }

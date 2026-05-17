@@ -81,9 +81,9 @@ public abstract class OrthogonalPolynomialMomentFunctionalSequence extends
    * self-instance of the recursive S sequence would have no way to resolve
    * {@code m}'s expression on lazy initialize.
    */
-  public OrthogonalPolynomialMomentFunctionalSequence(int bits, Context sharedContext, ComplexPolynomialSequence m)
+  public OrthogonalPolynomialMomentFunctionalSequence(Context sharedContext, ComplexPolynomialSequence m)
   {
-    super(bits, sharedContext);
+    super(sharedContext);
 
     this.m = m;
 

@@ -34,13 +34,12 @@ public abstract class ComplexPolynomialCoefficientRecurrentlyGeneratedOrthogonal
     return ComplexPolynomial.class;
   }
 
-  public ComplexPolynomialCoefficientRecurrentlyGeneratedOrthogonalPolynomialSequence(int bits)
+  public ComplexPolynomialCoefficientRecurrentlyGeneratedOrthogonalPolynomialSequence()
   {
-    super(bits,
-          ComplexPolynomial.class);
+    super(ComplexPolynomial.class);
   }
 
-  public ComplexPolynomialCoefficientRecurrentlyGeneratedOrthogonalPolynomialSequence(int bits, Context sharedContext)
+  public ComplexPolynomialCoefficientRecurrentlyGeneratedOrthogonalPolynomialSequence(Context sharedContext)
   {
     super(ComplexPolynomial.class,
           sharedContext);

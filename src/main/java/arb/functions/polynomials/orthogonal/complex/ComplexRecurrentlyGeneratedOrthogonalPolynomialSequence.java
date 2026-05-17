@@ -21,8 +21,7 @@ public abstract class ComplexRecurrentlyGeneratedOrthogonalPolynomialSequence ex
 
   public ComplexRecurrentlyGeneratedOrthogonalPolynomialSequence(int bits)
   {
-    super(bits,
-          ComplexPolynomial.class);
+    super(ComplexPolynomial.class);
   }
 
   /**
