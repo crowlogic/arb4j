@@ -2413,7 +2413,7 @@ import arb.utensils.Utensils;
       
   public int digits()
   {
-    return (int) (bits / 3.3219280948873623478703194294893901758648313930246);
+    return Math.min( 25, (int) (bits / 3.3219280948873623478703194294893901758648313930246));
   }
   
   public boolean  printPrecision = true;
