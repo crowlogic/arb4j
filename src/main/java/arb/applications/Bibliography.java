@@ -18,6 +18,73 @@ import arb.documentation.references.*;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Book    samkoKilbasMarichevFractionalIntegralsDerivatives                =
+                                                                          new Book("Fractional Integrals and Derivatives: Theory and Applications",
+                                                                                   "S. G. Samko and A. A. Kilbas and O. I. Marichev",
+                                                                                   "1993").setPublisher("Gordon and Breach").setAddress("Yverdon, Switzerland");
+
+  public static Article stahlExtremalDomainsAssociatedWithAnAnalyticFunctionI            =
+                                                                              new Article("Extremal domains associated with an analytic function. I",
+                                                                                          "Herbert Stahl",
+                                                                                          "1985",
+                                                                                          "Constructive Approximation",
+                                                                                          "1",
+                                                                                          "89-110").setNumber("1").setPublisher("Springer");
+
+  public static Article stahlExtremalDomainsAssociatedWithAnAnalyticFunctionII           =
+                                                                               new Article("Extremal domains associated with an analytic function. II",
+                                                                                           "Herbert Stahl",
+                                                                                           "1985",
+                                                                                           "Constructive Approximation",
+                                                                                           "1",
+                                                                                           "111-137").setNumber("1").setPublisher("Springer");
+
+  public static Article stahlConvergenceOfPadeApproximantsBranchPointsPreliminary        =
+                                                                                  new Article("Convergence of Padé approximants to functions with branch points (preliminary)",
+                                                                                              "Herbert Stahl",
+                                                                                              "1988",
+                                                                                              "Constructive Approximation",
+                                                                                              "4",
+                                                                                              "631-642").setNumber("1").setPublisher("Springer");
+
+  public static Article stahlConvergenceOfPadeApproximantsBranchPoints                   =
+                                                                       new Article("The convergence of Padé approximants to functions with branch points",
+                                                                                   "Herbert Stahl",
+                                                                                   "1997",
+                                                                                   "Journal of Approximation Theory",
+                                                                                   "91",
+                                                                                   "139-204").setNumber("2").setPublisher("Elsevier");
+
+  public static Article wheelerModifiedMomentsGaussianQuadratures                        = new Article("Modified moments and Gaussian quadratures",
+                                                                                                       "J. C. Wheeler",
+                                                                                                       "1974",
+                                                                                                       "Rocky Mountain Journal of Mathematics",
+                                                                                                       "4",
+                                                                                                       "287-296").setNumber("2")
+                                                                                                                 .setPublisher("Rocky Mountain Mathematics Consortium");
+
+  public static Article graggThePadeTableAndItsRelationToCertainAlgorithms               =
+                                                                           new Article("The Padé Table and its Relation to Certain Algorithms of Numerical Analysis",
+                                                                                       "W. B. Gragg",
+                                                                                       "1972",
+                                                                                       "SIAM Review",
+                                                                                       "14",
+                                                                                       "1-62").setNumber("1")
+                                                                                              .setPublisher("Society for Industrial and Applied Mathematics");
+
+  public static Book    hardyRamanujanTwelveLectures                                     =
+                                                     new Book("Ramanujan: Twelve Lectures on Subjects Suggested by His Life and Work",
+                                                              "G. H. Hardy",
+                                                              "1940").setPublisher("Cambridge University Press")
+                                                                     .setAddress("Cambridge")
+                                                                     .setEdition("reprinted Chelsea, New York, 1959");
+
+  public static Book    ransfordPotentialTheoryInTheComplexPlane                         = new Book("Potential Theory in the Complex Plane",
+                                                                                                    "Thomas Ransford",
+                                                                                                    "1995").setPublisher("Cambridge University Press")
+                                                                                                           .setSeries("London Mathematical Society Student Texts")
+                                                                                                           .setVolume("28")
+                                                                                                           .setIsbn("9780521466547");
 
   public static Article bochnerSomePropertiesOfModularRelations                          = new Article("Some properties of modular relations",
                                                                                                        "S. Bochner",
@@ -25,7 +92,7 @@ public class Bibliography extends
                                                                                                        "Annals of Mathematics",
                                                                                                        "53",
                                                                                                        "332–363").setNumber("2");
-  
+
   public static InBook  lachaudSpectralAnalysisRiemannHypothesis                         = new InBook("Spectral Analysis and the Riemann Hypothesis",
                                                                                                       "Gilles Lachaud",
                                                                                                       "2004",
