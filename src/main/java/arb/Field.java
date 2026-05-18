@@ -178,6 +178,11 @@ public interface Field<X extends Field<X>> extends
    */
   public X div(X j, int prec, X result);
 
+  public default <E> E get(Integer i)
+  {
+    return get(i.getSignedValue());
+  }
+
   public <E> E get(int i);
 
   @Override

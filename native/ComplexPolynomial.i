@@ -324,6 +324,11 @@
     return this;
   }
   
+  public Complex get(Integer i)
+  {
+    return get(i.getSignedValue());
+  }
+    
   public ComplexPolynomial sub(ComplexPolynomial that, int prec, ComplexPolynomial result)
   {
     arblib.acb_poly_sub(result, this, that, prec);

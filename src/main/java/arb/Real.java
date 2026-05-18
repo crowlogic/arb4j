@@ -26,7 +26,7 @@ import java.util.stream.StreamSupport;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.Domain;
-import arb.utensils.Utensils;
+import arb.utensils.Utensils; 
 
 /**
  *
@@ -34,38 +34,22 @@ import arb.utensils.Utensils;
  *      {@link TheArb4jLibrary}
  */
 
-public class Real implements
-                  Cloneable,
-                  Becomable<Real>,
-                  Domain<Real>,
-                  Serializable,
-                  Comparable<Real>,
-                  Iterable<Real>,
-                  NamedField<Real>,
-                  Lockable<Real>,
-                  IntFunction<Real>,
-                  Assignable<Real>
-{
-  protected long    swigCPtr;
+public class Real implements Cloneable,Becomable<Real>,Domain<Real>,Serializable,Comparable<Real>,Iterable<Real>,NamedField<Real>,Lockable<Real>,IntFunction<Real>,Assignable<Real> {
+  protected long swigCPtr;
   protected boolean swigCMemOwn;
 
-  public Real(long cPtr, boolean cMemoryOwn)
-  {
+  public Real(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr    = cPtr;
+    swigCPtr = cPtr;
   }
 
-  public static long getCPtr(Real obj)
-  {
+  public static long getCPtr(Real obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete()
-  {
-    if (swigCPtr != 0)
-    {
-      if (swigCMemOwn)
-      {
+  public synchronized void delete() {
+    if (swigCPtr != 0) {
+      if (swigCMemOwn) {
         swigCMemOwn = false;
         arblibJNI.delete_Real(swigCPtr);
       }
@@ -73,123 +57,123 @@ public class Real implements
     }
   }
 
-  private static final ThreadLocal<Real[]> autocorrelationScratch = ThreadLocal.withInitial(() -> new Real[]
-  { new Real(), new Real() });
 
-  public RealPolynomial add(Real z, int bits, RealPolynomial result)
-  {
-    return result.set(this).add(z, bits, result);
-  }
+	private static final ThreadLocal<Real[]> autocorrelationScratch =
+	  ThreadLocal.withInitial(() -> new Real[] { new Real(), new Real() });
 
-  public ComplexPolynomial mul(ComplexPolynomial a, int bits, ComplexPolynomial res)
-  {
-    return a.mul(this, bits, res);
-  }
 
-  @Override
-  public int hashCode()
-  {
-    int hashCode = (int) swigCPtr;
-    return hashCode;
-  }
 
-  public Complex rgamma(int bits, Complex result)
-  {
-    return result.set(this).rgamma(bits);
-  }
+	public RealPolynomial add( Real z, int bits, RealPolynomial result )
+	{
+	  return result.set(this).add(z,bits,result);
+	} 
 
-  public Real rgamma(int bits, Real result)
-  {
-    arblib.arb_rgamma(result, this, bits);
-    return result;
-  }
+	public ComplexPolynomial mul(ComplexPolynomial a, int bits, ComplexPolynomial res)
+	{
+	  return a.mul(this, bits, res);
+	}
 
-  public Complex div(Real that, int prec, Complex res)
-  {
-    div(that, prec, res.re());
-    res.im().zero();
-    return res;
-  }
+	@Override
+	public int hashCode()
+	{    
+	  int hashCode = (int) swigCPtr ;
+	  return hashCode;
+	}
+		
+	public Complex rgamma(int bits, Complex result)
+	{
+	  return result.set(this).rgamma(bits);
+	}
+	
+	public Real rgamma(int bits, Real result)
+	{
+	    arblib.arb_rgamma(result, this, bits);
+	    return result;
+	}
 
-  public Complex pow(Real div, int bits, Complex res)
-  {
-    return res.set(this).pow(div, bits, res);
-  }
+	public Complex div(Real that, int prec, Complex res)
+	{
+	  div(that,prec,res.re());
+	  res.im().zero();
+	  return res;
+	}
+	
+	public Complex pow(Real div, int bits, Complex res)
+	{
+	  return res.set(this).pow(div,bits,res);
+	}	
+	
+	public Real rgamma(int bits)
+	{
+	  return rgamma(bits,this);
+	}
+	
+	private Real      lowerBound;
+	private Real      upperBound;
+	private boolean   lowerBoundInclusive;
+	private boolean   upperBoundInclusive;
 
-  public Real rgamma(int bits)
-  {
-    return rgamma(bits, this);
-  }
+	public Real setBounds(Real lower, boolean lowerInclusive, Real upper, boolean upperInclusive)
+	{
+	  this.lowerBound          = lower;
+	  this.lowerBoundInclusive = lowerInclusive;
+	  this.upperBound          = upper;
+	  this.upperBoundInclusive = upperInclusive;
+	  return this;
+	}
 
-  private Real    lowerBound;
-  private Real    upperBound;
-  private boolean lowerBoundInclusive;
-  private boolean upperBoundInclusive;
+	public Real setBounds(int lower, boolean lowerInclusive, int upper, boolean upperInclusive)
+	{
+	  return setBounds(Real.valueOf(lower), lowerInclusive, Real.valueOf(upper), upperInclusive);
+	}
 
-  public Real setBounds(Real lower, boolean lowerInclusive, Real upper, boolean upperInclusive)
-  {
-    this.lowerBound          = lower;
-    this.lowerBoundInclusive = lowerInclusive;
-    this.upperBound          = upper;
-    this.upperBoundInclusive = upperInclusive;
-    return this;
-  }
+	@Override
+	public Real lowerBound()
+	{
+	  return lowerBound;
+	}
 
-  public Real setBounds(int lower, boolean lowerInclusive, int upper, boolean upperInclusive)
-  {
-    return setBounds(Real.valueOf(lower), lowerInclusive, Real.valueOf(upper), upperInclusive);
-  }
+	@Override
+	public Real upperBound()
+	{
+	  return upperBound;
+	}
 
-  @Override
-  public Real lowerBound()
-  {
-    return lowerBound;
-  }
+	@Override
+	public boolean lowerBoundInclusive()
+	{
+	  return lowerBoundInclusive;
+	}
 
-  @Override
-  public Real upperBound()
-  {
-    return upperBound;
-  }
-
-  @Override
-  public boolean lowerBoundInclusive()
-  {
-    return lowerBoundInclusive;
-  }
-
-  @Override
-  public boolean upperBoundInclusive()
-  {
-    return upperBoundInclusive;
-  }
-
+	@Override
+	public boolean upperBoundInclusive()
+	{
+	  return upperBoundInclusive;
+	}
+		
   private static final long serialVersionUID = 1L;
 
   public Complex cot(int prec, Complex result)
   {
-    cot(prec, result.re());
+    cot(prec, result.re());   
     result.im().zero();
     return result;
   }
 
-  public Real cot(int prec, Real result)
+  public Real cot(int prec, Real result )
   {
-    arblib.arb_cot(result, this, prec);
+    arblib.arb_cot(result, this, prec );
     return result;
   }
-
+    
   public RealPolynomial mul(Real that, int prec, RealPolynomial res)
   {
     return res.set(this).mul(that, prec, res);
   }
+  
+  static { System.loadLibrary( "arblib" ); }
 
-  static
-  {
-    System.loadLibrary("arblib");
-  }
-
-  public Real θ(int bits, Real result)
+  public Real θ( int bits, Real result )
   {
     return isNonNegative() ? one() : zero();
   }
@@ -198,12 +182,12 @@ public class Real implements
   {
     return arblib.arb_is_nonnegative(this) != 0;
   }
-
+  
   // Two-list pooling implementation
   private final Queue<Real> available = new ArrayDeque<>();
-  private final Set<Real>   reserved  = new HashSet<>();
+  private final Set<Real>   reserved = new HashSet<>();
 
-  Real                      home      = null;
+  Real                      home = null;
 
   public Integer ceil(int prec, Integer res)
   {
@@ -213,7 +197,7 @@ public class Real implements
       assert blip.isInteger() : "ceil " + blip + " isn't an integer?!";
       return blip.getInteger(res);
     }
-  }
+ }
 
   public Real borrowVariable()
   {
@@ -240,7 +224,10 @@ public class Real implements
   {
     synchronized (this)
     {
-      assert object.home == this : String.format("%s is owned by %s not %s", object, object.home, this);
+      assert object.home == this : String.format("%s is owned by %s not %s",
+                                                      object,
+                                                      object.home,
+                                                      this);
       reserved.remove(object); // Remove from reserved
       available.add(object); // Add to available
     }
@@ -289,14 +276,14 @@ public class Real implements
 
   public Complex pow(Fraction div, int bits, Complex res)
   {
-    return res.set(this).pow(div, bits, res);
+    return res.set(this).pow(div,bits,res);
   }
-
+  
   public double[] doubleValues()
   {
     return stream().mapToDouble(Real::doubleValue).toArray();
   }
-
+  
   public Fraction mul(Fraction that, int prec, Fraction res)
   {
     try ( Real blip = borrowVariable())
@@ -304,22 +291,24 @@ public class Real implements
       return res.set(mul(res.set(that), prec, blip));
     }
   }
-
+  
   public Complex pow(Integer div, int bits, Complex res)
   {
-    return res.set(this).pow(div, bits, res);
+    return res.set(this).pow(div,bits,res);
   }
 
+  
   public RationalFunction sub(Real that, int prec, RationalFunction res)
   {
-    return res.set(this).sub(that, prec, res);
+    return res.set(this).sub(that,prec,res);
   }
 
   public Complex pow(Complex div, int bits, Complex res)
   {
-    return res.set(this).pow(div, bits, res);
+    return res.set(this).pow(div,bits,res);
   }
-
+  
+  
   public Fraction add(Real element, int prec, Fraction result)
   {
     return result.set(this).add(element, prec, result);
@@ -330,18 +319,18 @@ public class Real implements
     arblib.arb_exp(res.zero().re(), this, prec);
     return res;
   }
-
+  
   public Real set(AlgebraicNumber x)
   {
-    return set(x, bits());
+   return set(x,bits());
   }
-
+    
   public Real(Arena arena)
   {
     this(arena.allocate(Real.BYTES).address(),
          false);
   }
-
+  
   public Fraction mul(Real that, int prec, Fraction res)
   {
     try ( Real blip = borrowVariable())
@@ -350,17 +339,17 @@ public class Real implements
     }
   }
 
-  public Real arctan(int prec, Real result)
+  public Real arctan(int prec, Real result )
   {
-    arblib.arb_atan(result, this, prec);
+    arblib.arb_atan(result, this, prec );
     return result;
   }
-
+  
   public Complex sub(Real that, int prec, Complex res)
   {
-    return res.set(this).sub(that, prec, res);
+    return res.set(this).sub(that,prec,res);
   }
-
+    
   public Real digamma(int bits)
   {
     return digamma(bits, this);
@@ -369,20 +358,20 @@ public class Real implements
   public Complex sub(Integer x, int prec, Complex res)
   {
     arblib.arb_sub_fmpz(res.zero().re(), this, x.swigCPtr, prec);
-    return res;
+    return res;    
   }
-
+    
   public Real digamma(int bits, Real result)
   {
     arblib.arb_digamma(result, this, bits);
     result.bits = bits;
-    return result;
+    return result;  
   }
-
-  public RationalFunction add(Real z, int bits, RationalFunction result)
+    
+  public RationalFunction add( Real z, int bits, RationalFunction result )
   {
-    return result.set(this).add(z, bits, result);
-  }
+    return result.set(this).add(z,bits,result);
+  }  
 
   public Quaternion sqrt(int prec, Quaternion res)
   {
@@ -391,7 +380,7 @@ public class Real implements
     return res;
   }
 
-  public Real set(AlgebraicNumber a, int bits)
+  public Real set(AlgebraicNumber a, int bits )
   {
     arblib.qqbar_get_arb(this, a, bits);
     return this;
@@ -399,19 +388,19 @@ public class Real implements
 
   public Real mul(AlgebraicNumber a, int bits, Real res)
   {
-    return res.set(a, bits).mul(this, bits, res);
+    return res.set(a,bits).mul(this, bits, res);
   }
-
+  
   public Real div(AlgebraicNumber a, int bits, Real res)
   {
-    return res.set(a, bits).div(this, bits, res);
+    return res.set(a,bits).div(this, bits, res);
   }
 
   public Real add(AlgebraicNumber a, int prec, Real res)
   {
-    return res.set(a, bits).add(this, bits, res);
+    return res.set(a,bits).add(this, bits, res);
   }
-
+  
   public Real sub(AlgebraicNumber a, int prec, Real res)
   {
     try ( var blip = res.borrowVariable())
@@ -419,23 +408,23 @@ public class Real implements
       return sub(blip.set(a), prec, res);
     }
   }
-
-  public RationalFunction add(Integer z, int bits, RationalFunction result)
+  
+  public RationalFunction add( Integer z, int bits, RationalFunction result )
   {
-    return result.set(this).add(z, bits, result);
+    return result.set(this).add(z,bits,result);
   }
 
   public Real(Integer val)
   {
     this();
-    set(val);
+    set(val);    
   }
-
+    
   public Real pow(Fraction div, int bits, Real res)
   {
-    return pow(res.set(div), bits, res);
+    return pow(res.set(div),bits,res);
   }
-
+      
   /**
    * Construct a new {@link Real} and call {@link Real#setName(String)} with the
    * given name
@@ -451,36 +440,36 @@ public class Real implements
 
   public RationalFunction add(RationalFunction a, int bits, RationalFunction res)
   {
-    return a.add(this, bits, res);
+    return a.add(this,bits,res);
   }
 
   public ComplexRationalFunction add(ComplexRationalFunction a, int bits, ComplexRationalFunction res)
   {
-    return a.add(this, bits, res);
+    return a.add(this,bits,res);
   }
 
   public Complex mul(Real that, int prec, Complex res)
   {
     return res.set(this).mul(that, prec, res);
   }
-
+  
   public Fraction sub(Real that, int prec, Fraction res)
   {
-    return res.set(this).sub(that, prec, res);
+    return res.set(this).sub(that,prec,res);
   }
-
-  public Real sign(Real result)
+  
+  public Real sign( Real result )
   {
     arblib.arb_sgn(result, this);
     return result;
-  }
-
+  }  
+  
   @SuppressWarnings("resource")
   public static Real valueOf(String string, int i)
   {
-    return new Real().set(string, i);
-  }
-
+    return new Real().set(string,i);
+  }  
+    
   public Fraction neg(Fraction value)
   {
     return value.set(this).neg();
@@ -492,23 +481,24 @@ public class Real implements
     return toString(digits());
   }
 
+    
   public Real mul(Fraction that, int prec, Real res)
   {
-    return mul(res.set(that), prec, res);
+    return mul(res.set(that),prec,res);
   }
 
   public Real mul(Fraction that, int prec)
   {
-    return mul(that, prec, this);
+    return mul(that,prec,this);
   }
-
+    
   public ComplexFraction sub(Integer n, int bits2, ComplexFraction res)
   {
     res.realPart.set(this).sub(n, bits2);
     res.imaginaryPart.zero();
     return res;
   }
-
+  
   public RationalFunction mul(RationalFunction that, int prec, RationalFunction res)
   {
     return res.set(this).mul(that, prec, res);
@@ -518,20 +508,20 @@ public class Real implements
   {
     return res.set(this).sqrt(prec);
   }
-
+    
   public Fraction sub(Fraction subtrahend, int bits, Fraction res)
   {
-    return sub(res.set(subtrahend), bits, res);
+    return sub(res.set(subtrahend),bits,res);
   }
 
-  public Real δ(int bits, Real res)
+  public Real δ(int bits, Real res )
   {
     return isZeroUpTo(bits) ? res.posInf() : res.zero();
   }
 
   public Complex cos(int prec, Complex result)
   {
-    cos(prec, result.re());
+    cos(prec, result.re());   
     result.im().zero();
     return result;
   }
@@ -546,39 +536,41 @@ public class Real implements
     arblib.arb_hypgeom_si(result, this, bits);
     return result;
   }
-
   public Complex sin(int prec, Complex result)
   {
     sin(prec, result.re());
     result.im().zero();
     return result;
   }
-
+  
   /**
    * @return this{@link #lnΓ(int, Real)}
    */
-  public Real logΓ(int bits, Real value)
+  public Real
+         logΓ(int bits,
+              Real value)
   {
     return lnΓ(bits, value);
   }
 
   public Fraction sub(Integer a, int bits, Fraction res)
   {
-    return res.set(this).sub(a, bits, res);
+    return res.set(this).sub(a,bits,res);
   }
-
+  
+  
   public Real sub(Fraction a, int bits, Real res)
   {
     if (res == this)
     {
-      try ( Real tmp = new Real())
+      try (Real tmp = new Real())
       {
         return sub(tmp.set(a), bits, res);
       }
     }
     return sub(res.set(a), bits, res);
   }
-
+      
   /**
    * Calculate the ascending factorial this_(power)
    * 
@@ -601,7 +593,7 @@ public class Real implements
   {
     return newVector(dim);
   }
-
+ 
   public Real one()
   {
     arblib.arb_one(this);
@@ -612,7 +604,7 @@ public class Real implements
   {
     return res.set(this).log(prec);
   }
-
+      
   /**
    * 
    * @param mag
@@ -624,6 +616,7 @@ public class Real implements
     return mag;
   }
 
+  
   /**
    * <pre>
    * Calls this{@link #close()} and then replaces this{@link #elements},
@@ -665,7 +658,7 @@ public class Real implements
     that.swigCMemOwn = false;
     return this;
   }
-
+    
   /**
    * NOTICE: this is 1-indexed, not 0 indexed like this{@link #get(int)} !!!
    * 
@@ -681,10 +674,11 @@ public class Real implements
   {
     return res.set(this).div(a, bits, res);
   }
-
+  
   public static Predicate<Real> isNegativeInteger       = α -> α.isInteger() && α.isNegative();
 
-  public static Predicate<Real> isNegativeIntegerOrZero = isNegativeInteger.or(α -> α.isInteger() && (α.isNegative() || α.isZero()));
+  public static Predicate<Real> isNegativeIntegerOrZero = isNegativeInteger.or(α -> α.isInteger()
+                && (α.isNegative() || α.isZero()));
 
   public RealPolynomial mul(RealPolynomial a, int bits, RealPolynomial res)
   {
@@ -700,15 +694,15 @@ public class Real implements
   {
     return result.set(this).sub(that, prec);
   }
-
+  
   public ComplexPolynomial sub(ComplexPolynomial that, int prec, ComplexPolynomial result)
   {
     return result.set(this).sub(that, prec);
-  }
-
+  }  
+        
   public Real factorial(int bits, Real result)
   {
-    assert isInteger() : this + " is not an integer";
+    assert isInteger() : this + " is not an integer";  
     try ( Integer intVal = integerValue(new Integer()))
     {
       return intVal.factorial(bits, result);
@@ -727,7 +721,7 @@ public class Real implements
   {
     return Γ(bits, this);
   }
-
+    
   public Real Γ(int bits)
   {
     return Γ(bits, this);
@@ -746,8 +740,8 @@ public class Real implements
     vec.setName(name);
     vec.set(vals);
     return vec;
-  }
-
+  }  
+  
   /**
    * Calculate the ascending factorial this_(power)
    * 
@@ -759,7 +753,7 @@ public class Real implements
   public Real ascendingFactorial(long power, int bits, Real result)
   {
     arblib.arb_hypgeom_rising_ui(result, this, power, bits);
-    result.bits = bits;
+    result.bits = bits;    
     return result;
   }
 
@@ -795,14 +789,14 @@ public class Real implements
       return result.set(tmp);
     }
   }
-
-  public RationalFunction div(RationalFunction unit, int bits, RationalFunction result)
+  
+  public RationalFunction div(RationalFunction unit, int bits, RationalFunction result )
   {
     assert bits > 0;
     result.set(this);
     return result.div(unit, bits);
   }
-
+    
   /**
    * Calculate the ascending factorial this_(power)
    * 
@@ -816,17 +810,18 @@ public class Real implements
     assert result != null : "result shan't be null, but it is";
     arblib.arb_hypgeom_rising(result, this, power, bits);
     result.bits = bits;
-    return result;
+    return result; 
   }
-
-  public ComplexRationalFunction mul(ComplexRationalFunction that, int prec, ComplexRationalFunction result)
+  
+ public ComplexRationalFunction
+         mul(ComplexRationalFunction that, int prec, ComplexRationalFunction result)
   {
     return result.set(this).mul(that, prec, result);
   }
-
+  
   public RealPolynomial ascendingFactorial(Integer n, int bits, RealPolynomial result)
   {
-    assert result != null : "result shan't be null, but it is";
+    assert result != null : "result shan't be null, but it is";  
     result.set(1);
     ascendingFactorial(n, bits, result.get(0));
     result.bits = bits;
@@ -835,15 +830,17 @@ public class Real implements
 
   public Real sub(Fraction element, int prec)
   {
-    return sub(element, prec, this);
+    return sub(element, prec,this);
   }
-
+    
   public RealPolynomial div(Real divisor, int bits, RealPolynomial result)
   {
     result.bits = bits;
-    return result.set(this).div(divisor, bits);
+    return result.set(this).div(divisor,bits);
   }
-
+  
+  
+  
   public boolean isInteger()
   {
     return arblib.arb_is_int(this) != 0;
@@ -854,6 +851,7 @@ public class Real implements
     arblib.arb_get_unique_fmpz(result.swigCPtr, this);
     return result;
   }
+
 
   @Override
   public Real additiveIdentity()
@@ -866,18 +864,19 @@ public class Real implements
   {
     return set(RealConstants.one);
   }
-
+  
   public Real div(Integer operand, int prec)
   {
-    return div(operand, prec, this);
+     return div(operand,prec,this);
   }
-
+    
   public Real div(Integer operand, int prec, Real result)
   {
-    arblib.arb_div_fmpz(result, this, operand.swigCPtr, prec);
+    arblib.arb_div_fmpz(result, this, operand.swigCPtr, prec );
     result.bits = prec;
     return result;
   }
+
 
   public RealPolynomial div(Integer operand, int prec, RealPolynomial result)
   {
@@ -898,6 +897,7 @@ public class Real implements
   {
     return result.set(this).mul(operand, prec, result);
   }
+
 
   public RealPolynomial add(Integer operand, int prec, RealPolynomial result)
   {
@@ -924,7 +924,7 @@ public class Real implements
     this.bits = bits;
     return tanh(bits, this);
   }
-
+  
   public RealPolynomial add(RealPolynomial a, int bits, RealPolynomial res)
   {
     assert a != null;
@@ -955,62 +955,67 @@ public class Real implements
     arblib.arb_atanh(result, this, prec);
     return result;
   }
-
+  
   public RealPolynomial mul(AlgebraicNumber x, int bits, RealPolynomial result)
   {
     return result.set(x).mul(this, bits, result);
   }
-
+  
   public static Real of(String string, int bits)
   {
-    return new Real(string,
-                    bits);
+    return new Real(string,bits);
   }
 
-  public Real set(Fraction fraction, int bits)
+  public Real
+         set(Fraction fraction,
+             int bits)
   {
-    assert dim == fraction.dim : String.format("this,dim = %d != fraction.dim = %d", this, fraction);
-    if (dim == 1)
+    assert dim == fraction.dim : String.format("this,dim = %d != fraction.dim = %d",
+                                               this,
+                                               fraction);
+    if ( dim == 1 )
     {
-      arblib.arb_set_fmpq(this, fraction, bits);
+    arblib.arb_set_fmpq(this,
+                        fraction,
+                        bits);
     }
     else
     {
-      for (int i = 0; i < dim; i++)
+      for ( int i = 0; i < dim; i++ )
       {
         get(i).set(fraction.get(i));
       }
     }
     return this;
   }
-
+  
   public Real set(Fraction fraction)
   {
-    return set(fraction, bits);
+    return set(fraction,bits);
   }
-
+  
   public RationalFunction sub(RationalFunction operand, int bits, RationalFunction result)
   {
-    return result.set(this).sub(operand, bits, result);
+    return result.set(this).sub(operand,bits,result);
   }
-
+  
   public RealPolynomial sub(Real a, int bits, RealPolynomial res)
   {
     res.set(a);
-    res.getCoeffs().get(0).sub(this, bits);
+    res.getCoeffs().get(0).sub(this,bits);
     return res;
   }
-
+ 
   public Real add(Integer i, int bits, Real result)
   {
     assert i != null : "exponent is null";
     assert result != null : "result is null";
     assert i.swigCPtr != 0 : "exponent's pointer is null";
     assert result.swigCPtr != 0 : "result's pointer is null";
-    return i.add(this, bits, result);
+    return i.add(this,bits,result);
   }
-
-  public Real pow(Integer i, int bits, Real result)
+  
+  public Real pow( Integer i, int bits, Real result )
   {
     assert i != null : "exponent is null";
     assert result != null : "result is null";
@@ -1019,7 +1024,7 @@ public class Real implements
     arblib.arb_pow_fmpz(result, this, i.swigCPtr, bits);
     return result;
   }
-
+  
   @Override
   public Real apply(int value)
   {
@@ -1036,33 +1041,33 @@ public class Real implements
     arblib.arb_mul_fmpz(result, this, operand.swigCPtr, prec);
     return result;
   }
-
-  /**
+ 
+ /**
    * @see arblib#arb_asin(Real, Real, int)
    * @param prec
    * @param result
    * @return
    */
-  public Real arcsin(int prec, Real result)
+  public Real arcsin(int prec, Real result )
   {
-    arblib.arb_asin(result, this, prec);
+    arblib.arb_asin(result, this, prec );
     return result;
   }
-
+  
   public Real pow(Integer operand, int prec)
   {
-    return pow(operand, prec, this);
+    return pow(operand,prec,this);
   }
 
   public Real add(Integer operand, int prec)
   {
     return add(operand, prec, this);
   }
-
+  
   /**
    * @see arblib#acb_dirichlet_hardy_z(Complex, Complex, DirichletGroup,
    *      DirichletCharacter, int, int)
-   * 
+   *      
    * @param bits
    * @param result
    * @return
@@ -1076,24 +1081,24 @@ public class Real implements
       return result.set(z.re());
     }
   }
-
+  
   public Real set(Integer integer)
   {
     arblib.arb_set_fmpz(this, integer.swigCPtr);
     return this;
   }
-
-  public Real sub(Integer z, int bits, Real result)
+    
+  public Real sub( Integer z, int bits, Real result )
   {
     arblib.arb_sub_fmpz(result, this, z.swigCPtr, bits);
     return result;
   }
-
+  
   public Real sub(Integer operand, int prec)
   {
-    return sub(operand, prec, this);
-  }
-
+    return sub(operand,prec,this);  
+  }  
+  
   /**
    * 
    * @return {@link arb#arb_is_exact(Real)} != 0
@@ -1102,9 +1107,9 @@ public class Real implements
   {
     return arblib.arb_is_exact(this) != 0;
   }
-
+  
   /**
-   * Binomial coefficient.
+   * Binomial coefficient. 
    * 
    * The number of ways of choosing k out of this items in no particular order
    * 
@@ -1112,13 +1117,13 @@ public class Real implements
    * @param bits
    * @return this
    */
-  public Real C(int k, int bits)
+  public Real C( int k, int bits )
   {
-    return C(k, bits, this);
+    return C(k,bits,this);
   }
-
+  
   /**
-   * Binomial coefficient.
+   * Binomial coefficient. 
    * 
    * this choose k
    * 
@@ -1127,12 +1132,12 @@ public class Real implements
    * @param result
    * @return
    */
-  public Real C(int k, int bits, Real result)
+  public Real C( int k, int bits, Real result )
   {
     arblib.arb_bin_ui(result, this, k, bits);
     return result;
   }
-
+    
   /**
    * Bessel function of the first kind
    * 
@@ -1163,13 +1168,13 @@ public class Real implements
   {
     return BesselJ(zero, bits, result);
   }
-
+  
   public Real W0(int bits, Real result)
   {
     arblib.arb_lambertw(result, this, 0, bits);
     return result;
-  }
-
+  }  
+    
   public Real gammaVariance(int n, int prec, Real result)
   {
     if (n == 0)
@@ -1177,7 +1182,8 @@ public class Real implements
       return result.zero();
     }
 
-    try ( Real unshiftedSlice = slice(0, dim - n); Real shiftedSlice = shift(n); Real y = unshiftedSlice.sub(shiftedSlice, prec, Real.newVector(dim - n)))
+    try ( Real unshiftedSlice = slice(0, dim-n); Real shiftedSlice = shift(n);
+          Real y = unshiftedSlice.sub(shiftedSlice, prec, Real.newVector(dim - n)))
     {
       Real pow = y.pow(2, prec);
       Real sum = pow.sum(prec, result);
@@ -1185,15 +1191,14 @@ public class Real implements
       return div;
     }
   }
-
-  /**
-   * Calculate the empirical (variance) structure function, also known as a
-   * variogram:
+  
+ /**
+   * Calculate the empirical (variance) structure function, also known as a variogram:
    *
    * <|Z(i+n)-Z(i)|^2>
    *
-   * @param n      number of shifts to calculate
-   * 
+   * @param n number of shifts to calculate
+   
    * @param bits
    * @param Result
    * @return a vector of n {@link Real} γ-variances calculated via
@@ -1205,7 +1210,7 @@ public class Real implements
     IntStream.range(0, n).parallel().forEach(i -> gammaVariance(i, bits, result.get(i)));
     return result;
   }
-
+  
   /**
    * Shortcut for this{@link #structure(int, int)} which allocates a new
    * {@link Real} vector with {@link Real#newVector(int)}
@@ -1220,16 +1225,15 @@ public class Real implements
   }
 
   /**
-   * Empirical autocorrelation ρ(k) = (1/(N−k))·Σᵢ Z[i]·Z[i+k] / ⟨Z²⟩ for lags k =
-   * 0..maxLagSteps−1, with ρ(0) defined as 1. Direct arb-typed port of
-   * Statistics.autocorr(double[], int).
+   * Empirical autocorrelation ρ(k) = (1/(N−k))·Σᵢ Z[i]·Z[i+k] / ⟨Z²⟩ for
+   * lags k = 0..maxLagSteps−1, with ρ(0) defined as 1. Direct arb-typed
+   * port of Statistics.autocorr(double[], int).
    *
-   * <p>
-   * This is the variance-normalized autocorrelation: every value is divided by
-   * ⟨Z²⟩ and ρ(0) is therefore unity by construction. The actual second-order
-   * statistic — the autocovariance, whose lag-0 value is ⟨Z²⟩ itself and which
-   * preserves the amplitude of the underlying signal — is provided by
-   * {@link #autocovariance(int, int, Real)}.
+   * <p>This is the variance-normalized autocorrelation: every value is
+   * divided by ⟨Z²⟩ and ρ(0) is therefore unity by construction. The
+   * actual second-order statistic — the autocovariance, whose lag-0
+   * value is ⟨Z²⟩ itself and which preserves the amplitude of the
+   * underlying signal — is provided by {@link #autocovariance(int, int, Real)}.
    */
   public Real autocorrelation(int maxLagSteps, int bits, Real result)
   {
@@ -1255,18 +1259,19 @@ public class Real implements
   }
 
   /**
-   * Raw empirical autocovariance C(k) = (1/(N−k))·Σᵢ Z[i]·Z[i+k] for lags k =
-   * 0..maxLagSteps−1, computed entirely in arb-typed arithmetic at the requested
-   * precision. The mean is <em>not</em> subtracted; the lag-0 value C(0) = ⟨Z²⟩
-   * is the uncentered second moment, retaining the amplitude of the underlying
-   * signal — no centering, no division by variance, no rescaling to a unit peak.
-   * Equivalent to {@link #autocovariance(int, int, boolean, Real)} with
+   * Raw empirical autocovariance C(k) = (1/(N−k))·Σᵢ Z[i]·Z[i+k] for
+   * lags k = 0..maxLagSteps−1, computed entirely in arb-typed arithmetic
+   * at the requested precision. The mean is <em>not</em> subtracted; the
+   * lag-0 value C(0) = ⟨Z²⟩ is the uncentered second moment, retaining
+   * the amplitude of the underlying signal — no centering, no division
+   * by variance, no rescaling to a unit peak. Equivalent to
+   * {@link #autocovariance(int, int, boolean, Real)} with
    * {@code subtractMean = false}.
    *
-   * <p>
-   * If a caller wants the centered statistic (1/(N−k))·Σᵢ (Z[i]−Z̄)·(Z[i+k]−Z̄)
-   * they can either subtract the mean from the input vector beforehand, or invoke
-   * the four-argument overload with {@code subtractMean = true}.
+   * <p>If a caller wants the centered statistic
+   * (1/(N−k))·Σᵢ (Z[i]−Z̄)·(Z[i+k]−Z̄) they can either subtract the mean
+   * from the input vector beforehand, or invoke the four-argument
+   * overload with {@code subtractMean = true}.
    *
    * @param maxLagSteps total lag count, including lag 0
    * @param bits        arithmetic precision
@@ -1282,38 +1287,37 @@ public class Real implements
    * Empirical autocovariance C(k) for lags k = 0..maxLagSteps−1, computed
    * entirely in arb-typed arithmetic at the requested precision.
    *
-   * <p>
-   * If {@code subtractMean} is {@code false} the raw uncentered statistic \[ C(k)
-   * = \frac{1}{N-k} \sum_{i=0}^{N-k-1} Z_i \, Z_{i+k} \] is returned, so C(0) =
-   * ⟨Z²⟩.
+   * <p>If {@code subtractMean} is {@code false} the raw uncentered
+   * statistic
+   * \[ C(k) = \frac{1}{N-k} \sum_{i=0}^{N-k-1} Z_i \, Z_{i+k} \]
+   * is returned, so C(0) = ⟨Z²⟩.
    *
-   * <p>
-   * If {@code subtractMean} is {@code true} the centered statistic \[ C(k) =
-   * \frac{1}{N-k} \sum_{i=0}^{N-k-1} (Z_i - \bar Z)(Z_{i+k} - \bar Z) \] is
-   * returned, so C(0) is the sample variance.
+   * <p>If {@code subtractMean} is {@code true} the centered statistic
+   * \[ C(k) = \frac{1}{N-k} \sum_{i=0}^{N-k-1} (Z_i - \bar Z)(Z_{i+k} - \bar Z) \]
+   * is returned, so C(0) is the sample variance.
    *
-   * <p>
-   * The inner per-lag accumulation reuses the same per-thread scratch pair as
-   * {@link #autocorrelation(int, int, Real)}, so an O(N²) lag sweep performs no
-   * Real allocation beyond the output vector and the already-cached two-Real
-   * scratch per worker. The k = 1..maxLagSteps−1 lags run in a parallel stream;
-   * lag 0 is computed serially and written into result.get(0). When
-   * {@code subtractMean = true} the mean Z̄ is computed once serially up front
-   * and captured by the parallel workers via a final local; the per-lag inner
-   * loop then fuses the centering with the product accumulation so still no extra
-   * allocation occurs inside the parallel section.
+   * <p>The inner per-lag accumulation reuses the same per-thread scratch
+   * pair as {@link #autocorrelation(int, int, Real)}, so an O(N²) lag
+   * sweep performs no Real allocation beyond the output vector and the
+   * already-cached two-Real scratch per worker. The k = 1..maxLagSteps−1
+   * lags run in a parallel stream; lag 0 is computed serially and
+   * written into result.get(0). When {@code subtractMean = true} the
+   * mean Z̄ is computed once serially up front and captured by the
+   * parallel workers via a final local; the per-lag inner loop then
+   * fuses the centering with the product accumulation so still no
+   * extra allocation occurs inside the parallel section.
    *
    * @param maxLagSteps  total lag count, including lag 0
    * @param bits         arithmetic precision
-   * @param subtractMean if {@code true}, subtract Z̄ from each sample before
-   *                     forming products
+   * @param subtractMean if {@code true}, subtract Z̄ from each sample
+   *                     before forming products
    * @param result       length-maxLagSteps Real vector that receives C(k)
    * @return result
    */
   public Real autocovariance(int maxLagSteps, int bits, boolean subtractMean, Real result)
   {
-    int  n        = this.dim;
-    Real source   = this;
+    int n = this.dim;
+    Real source = this;
     Real centered = null;
     try
     {
@@ -1364,9 +1368,9 @@ public class Real implements
    */
   public Real shift(int n)
   {
-    return slice(n, dim);
+    return slice(n, dim );
   }
-
+  
   /**
    * Sets u to an upper bound for the absolute value of x via
    * {@link arb#arb_get_mag(Magnitude, Real)}
@@ -1380,7 +1384,7 @@ public class Real implements
     arblib.arb_get_mag(upperBound, this);
     return upperBound;
   }
-
+  
   /**
    * 
    * @return a clone of this
@@ -1412,21 +1416,22 @@ public class Real implements
     }
     return this;
   }
-
+  
   @Override
   public Real clone()
   {
     return copy();
   }
-
-  public static Real newVector(int dim, String vecName)
+ 
+  public static Real newVector( int dim, String vecName  )
   {
-    Real array = arblib._arb_vec_init(dim);
-    array.swigCMemOwn = true;
-    array.elements    = new Real[array.dim = dim];
-    array.name        = vecName;
+    Real array = arblib._arb_vec_init(dim);    
+    array.swigCMemOwn = true;    
+    array.elements = new Real[array.dim = dim];
+    array.name = vecName;
     return array;
   }
+
 
   public static Real valueOf(int d)
   {
@@ -1434,14 +1439,16 @@ public class Real implements
     real.set(d);
     return real;
   }
-
+  
   public static Real valueOf(double d)
   {
     Real real = new Real();
     real.set(d);
     return real;
   }
+  
 
+    
   /**
    * Swap the two elements
    * 
@@ -1454,17 +1461,17 @@ public class Real implements
     return get(i).swap(get(j));
   }
 
+  
   /**
    * multiply this by the imaginary unit
-   * 
-   * @param bits
+   * @param bits 
    * @param result
    * 
    * @return this*i where i=√(-1)
    */
   public Complex muli(int bits, Complex result)
   {
-    return ComplexConstants.ⅈ.mul(this, bits, result);
+    return ComplexConstants.ⅈ.mul(this, bits, result );
   }
 
   public Real(Collection<Real> elements)
@@ -1482,15 +1489,15 @@ public class Real implements
 
   public Real(Stream<Real> elements)
   {
-    List<Real> list = elements.toList();
+    List<Real> list  = elements.toList();
     become(Real.newVector(list.size()));
     assert dim == list.size();
-    for (int i = 0; i < dim; i++)
+    for ( int i = 0; i < dim; i++ )
     {
-      set(i, list.get(i));
+      set(i,list.get(i));
     }
   }
-
+  
   public Real(Stream<Real> elements, int N)
   {
     become(Real.newVector(N));
@@ -1498,13 +1505,13 @@ public class Real implements
     var idx = new AtomicInteger();
     elements.forEachOrdered(element -> get(idx.getAndIncrement()).set(element));
   }
-
+  
   public Real(Iterable<Real> elements, int N)
   {
     this(StreamSupport.stream(Spliterators.spliterator(elements.iterator(), N, 0), false),
          N);
   }
-
+    
   public Real(Real _z)
   {
     this();
@@ -1516,19 +1523,19 @@ public class Real implements
     arblib.arb_sinh(result, this, prec);
     return result;
   }
-
+  
   public Real cosh(int prec, Real result)
   {
     arblib.arb_cosh(result, this, prec);
     return result;
 
   }
-
+  
   public Real mul2e(int i)
   {
     return mul2e(i, this);
   }
-
+  
   public Real set(Real... newElements)
   {
     clear();
@@ -1548,14 +1555,14 @@ public class Real implements
   {
     return ascendingFactorial(power, bits2, this);
   }
-
-  public ComplexRationalFunction div(ComplexRationalFunction unit, int bits, ComplexRationalFunction result)
+  
+  public ComplexRationalFunction div(ComplexRationalFunction unit, int bits, ComplexRationalFunction result )
   {
     assert bits > 0;
     result.set(this);
     return result.div(unit, bits);
   }
-
+  
   @SuppressWarnings("resource")
   public boolean assertContiguity()
   {
@@ -1564,7 +1571,9 @@ public class Real implements
     {
       if (swigCPtr != get(0).swigCPtr)
       {
-        assert false : String.format("swigCPtr = %d != element[0].swigCptr=%s", swigCPtr, get(0).swigCPtr);
+        assert false : String.format("swigCPtr = %d != element[0].swigCptr=%s",
+                                     swigCPtr,
+                                     get(0).swigCPtr);
         return false;
       }
     }
@@ -1583,12 +1592,12 @@ public class Real implements
     }
     return true;
   }
-
-  public boolean equals(int i)
+  
+  public boolean equals( int i )
   {
     return arblib.arb_equal_si(this, i) != 0;
   }
-
+  
   /**
    * Subtract a scalar from each element of this vector
    * 
@@ -1614,13 +1623,12 @@ public class Real implements
     arblib._arb_vec_neg(res, this, dim);
     return res;
   }
-
+    
   /**
    * Calls {@link arblibJNI#mprotect(long, long, int)} with
    * {@link Protections#PROT_READ} only so that the contents become immutable. Any
    * code that attmpets to change the variable will trigger a segfault
-   * 
-   * @return
+   * @return 
    */
   @Override
   public Real lock()
@@ -1634,26 +1642,28 @@ public class Real implements
 
   /**
    * Calls {@link arblibJNI#mprotect(long, long, int)} with
-   * {@link Protections#PROT_READ} and {@link Protections#PROT_WRITE} so that the
-   * contents become mutable again
+   * {@link Protections#PROT_READ} and {@link Protections#PROT_WRITE} so that the contents 
+   * become mutable again
    */
   @Override
   public Real unlock()
   {
-    int status = arblibJNI.mprotect(swigCPtr, BYTES * dim, Protections.PROT_READ.bitfield | Protections.PROT_WRITE.bitfield);
+    int status = arblibJNI.mprotect(swigCPtr,
+                                 BYTES * dim,
+                                 Protections.PROT_READ.bitfield | Protections.PROT_WRITE.bitfield);
     assert status == 0 : "mprotect call failed. errno=" + arblib.errorNumber();
     locked = false;
     return this;
   }
 
   boolean locked = false;
-
+  
   @Override
   public boolean locked()
   {
     return locked;
   }
-
+  
   /**
    * @see {@link Real#log(int, Real)}
    * 
@@ -1664,22 +1674,22 @@ public class Real implements
   {
     return log(prec, this);
   }
-
+  
   public Real add(Fraction addend, int bits)
   {
-    return add(addend, bits, this);
+    return add(addend,bits,this);
   }
-
-  public Real add(Fraction addend, int bits, Real result)
+    
+  public Real add( Fraction addend, int bits, Real result )
   {
-    return addend.add(this, bits, result);
-  }
-
+    return addend.add(this,bits,result);
+  }  
+  
   public Real add(Real addend, int prec)
   {
     return add(addend, prec, this);
-  }
-
+  }  
+    
   /**
    * Self-referencing this{@link #add(int, int, Real)}
    * 
@@ -1711,37 +1721,39 @@ public class Real implements
     arblib.arb_add_si(res, this, x, prec);
     return res;
   }
-
+  
   public Real sub(int i, int prec)
   {
-    return sub(i, prec, this);
+    return sub(i,prec,this);
   }
-
+ 
+  
   @Override
   public int dim()
   {
-    return dim;
+    return dim;    
   }
 
   public Stream<Real> stream()
   {
-    return StreamSupport.stream(Spliterators.spliterator(iterator(), dim, Spliterator.SIZED | Spliterator.ORDERED), false);
+    return StreamSupport.stream(Spliterators.spliterator(iterator(), dim, Spliterator.SIZED | Spliterator.ORDERED),
+                                false);
   }
-
+  
   public Real abs()
   {
     return abs(this);
   }
-
+  
   @Override
   public RealIterator iterator()
   {
     return new RealIterator(this);
   }
-
+  
   /**
-   * Copy constructor
-   */
+    * Copy constructor
+    */
   public Real(Float div, Magnitude mag)
   {
     this();
@@ -1751,7 +1763,7 @@ public class Real implements
 
   public Real pow(int i, int prec)
   {
-    return pow(i, prec, this);
+    return pow(i,prec,this);
   }
 
   public int bits = 128;
@@ -1762,26 +1774,26 @@ public class Real implements
     set(string, prec);
     bits = prec;
   }
-
+  
   public Real log(int prec, Real res)
   {
     arblib.arb_log(res, this, prec);
     res.bits = prec;
-    return res;
+    return res;    
   }
-
-  public Real mul2e(int e, Real res)
+  
+  public Real mul2e( int e, Real res )
   {
     arb_mul_2exp_si(res, this, e);
     return res;
   }
 
+  
   /**
-   * Directly sets the i-th element of the elements, that is, replaces the
-   * references rather than setting the value to the Real currently referenced at
-   * the specified index
+   * Directly sets the i-th element of the elements, that is, replaces the references
+   * rather than setting the value to the Real currently referenced at the specified index
    */
-  public Real set(int index, Real element)
+  public Real set(int index, Real element )
   {
     assert index < dim : String.format("index = %d >= dim = %d", index, dim);
     if (index == 0 && dim == 1)
@@ -1789,8 +1801,8 @@ public class Real implements
       return set(element);
     }
     return elements[index] = element;
-  }
-
+  }  
+   
   /**
    * Sets the dimension of this as an array (a contiguous array of pointers to
    * {@link Real}s, copying the contents as well since almost always the newly
@@ -1802,8 +1814,7 @@ public class Real implements
   public Real resize(int alloc)
   {
     if (alloc == dim)
-    {
-      return this;
+    {      return this;
     }
     Real newLocation = Real.newVector(alloc).setName(name);
     int  nd          = Math.min(size(), newLocation.size());
@@ -1832,10 +1843,10 @@ public class Real implements
         result.get(i).set(accumulator.add(get(i), bits));
       }
     }
-    result.setName("∫" + getName());
+    result.setName("∫" + getName() );
     return result;
   }
-
+    
   /**
    * Computes the (Normal Gaussian) error function using an automatic algorithm
    * choice. If z is too small to use the asymptotic expansion, a working
@@ -1855,10 +1866,8 @@ public class Real implements
   }
 
   /**
-   * Computes the complementary (Normal Gaussian) error function
-   * 1-this{@link #erf(int, Real)} whilst avoiding the catastrophic cancellation
-   * for large positive z.
-   * 
+   * Computes the complementary (Normal Gaussian) error function  1-this{@link #erf(int, Real)}
+   * whilst avoiding the catastrophic cancellation for large positive z.
    * @param prec
    * @param res
    * @return {@link arb#arb_hypgeom_erf(Real, Real, int)}
@@ -1869,8 +1878,8 @@ public class Real implements
     bits = prec;
     return res;
   }
-
-  /**
+    
+ /**
    * The inverse of this{@link #erf(int, Real)}
    * 
    * @param prec
@@ -1897,33 +1906,33 @@ public class Real implements
     bits = prec;
     return res;
   }
-
+      
   public Complex div(Complex divisor, int prec, Complex w)
-  {
-    return mul(divisor.inv(prec, w), prec, w);
+  {  
+    return mul( divisor.inv(prec, w), prec, w );   
   }
-
+  
   public Real sech(int prec, Real w)
   {
     arblib.arb_sech(w, this, prec);
     return w;
   }
-
+  
   public Complex sub(Complex subtrahend, int prec, Complex res)
   {
     assert subtrahend != null : "subtrahend is null";
     return res.set(this).sub(subtrahend, prec);
   }
-
+  
   public Complex add(Complex addend, int prec, Complex res)
   {
-    assert addend != null : "addend is null";
+  	assert addend != null : "addend is null";
     arblib.acb_add_arb(res, addend, this, prec);
     return res;
   }
-
+  
   /**
-   * Adds the magnitude to the radius of this
+   * Adds the magnitude to the radius of this 
    * 
    * @param err
    * @return
@@ -1933,20 +1942,20 @@ public class Real implements
     arblib.arb_add_error_mag(this, err);
     return this;
   }
-
+  
   public Real clear()
   {
-    if (swigCMemOwn)
+    if ( swigCMemOwn )
     {
-      swigCMemOwn = false;
-      for (int i = 0; i < dim; i++)
+      swigCMemOwn = false;    
+      for ( int i = 0; i < dim; i++ )
       {
         get(i).clear();
       }
     }
     return this;
   }
-
+    
   /**
    * Compares the midpoint of this to another Real, disregarding the uncertainty
    * radius if they are not equal. If they are equal, then compare the radius
@@ -1955,17 +1964,16 @@ public class Real implements
   public int compareTo(Real o)
   {
     int cmp = getMid().compareTo(o.getMid());
-    if (cmp == 0)
+    if ( cmp == 0 )
     {
       cmp = getRad().compareTo(o.getRad());
     }
     return cmp;
   }
-
+  
   public Real set(int i)
   {
-    arblib.arb_set_si(this, i);
-    ;
+    arblib.arb_set_si(this, i);;
     return this;
   }
 
@@ -1978,25 +1986,25 @@ public class Real implements
   @Override
   public boolean equals(Object obj)
   {
-    if (!(obj instanceof Real))
+    if ( !(obj instanceof Real))
     {
       return false;
     }
-    Real that = (Real) obj;
-    if (dim != that.dim)
+    Real that = (Real)obj;
+    if ( dim != that.dim )
     {
       return false;
     }
-    for (int i = 0; i < dim; i++)
+    for ( int i = 0; i < dim; i++ )
     {
-      if (arblib.arb_equal(get(i), that.get(i)) == 0)
+      if ( arblib.arb_equal(get(i), that.get(i)) == 0 )
       {
         return false;
       }
     }
     return true;
   }
-
+  
   /**
    * 
    * @param prec
@@ -2010,9 +2018,9 @@ public class Real implements
   }
 
   /**
-   * 
+   *  
    * @return -this
-   */
+   */  
   public Real neg()
   {
     return neg(this);
@@ -2026,7 +2034,7 @@ public class Real implements
   {
     return !isFinite();
   }
-
+  
   /**
    * 
    * @param value variable to be assigned the resulting value
@@ -2037,12 +2045,12 @@ public class Real implements
     arblib.arb_neg(value, this);
     return value;
   }
-
-  public Real sqrt(int prec)
+    
+  public Real sqrt( int prec )  
   {
-    return sqrt(prec, this);
+    return sqrt(prec,this);
   }
-
+  
   public Real sqrt(int prec, Real res)
   {
     arblib.arb_sqrt(res, this, prec);
@@ -2064,7 +2072,7 @@ public class Real implements
     result.bits = prec;
     return result;
   }
-
+  
   public boolean isFinite()
   {
     return arblib.arb_is_finite(this) != 0;
@@ -2080,21 +2088,21 @@ public class Real implements
       return res;
     }
   }
-
-  public Real floor(int prec, Real res)
+  
+  public Real floor( int prec, Real res )
   {
-    arblib.arb_floor(res, this, prec);
+    arblib.arb_floor( res, this, prec );
     res.bits = prec;
     return res;
   }
 
-  public Real ceil(int prec, Real res)
+  public Real ceil( int prec, Real res )
   {
-    arblib.arb_ceil(res, this, prec);
+    arblib.arb_ceil( res, this, prec );
     res.bits = prec;
     return res;
   }
-
+ 
   /**
    * @return this after calling arb#arb_indeterminate(Real)
    */
@@ -2103,33 +2111,34 @@ public class Real implements
     arb_indeterminate(this);
     return this;
   }
-
+ 
   public Real frac(int prec, Real res)
   {
-    try ( Real f = borrowVariable())
+    try (Real f = borrowVariable() )
     {
       return sub(floor(prec, f), prec, res);
     }
   }
-
-  public int dim = 1;
+ 
+   public int dim = 1;
 
   /**
-   * Cached element-array view of the radii of this {@link Real} vector. For a
-   * scalar (dim == 1) {@link #rad()} returns {@link #getRad()} directly and this
-   * field is never used.
+   * Cached element-array view of the radii of this {@link Real} vector.
+   * For a scalar (dim == 1) {@link #rad()} returns {@link #getRad()}
+   * directly and this field is never used.
    */
-  Magnitude  radView;
+  Magnitude radView;
 
   /**
-   * Strided {@link Magnitude} view over the radii of this {@link Real} vector.
-   * For dim == 1 returns the cell's own {@link #getRad()}. For dim &gt; 1 returns
-   * an element-array {@link Magnitude} whose {@code get(i)} aliases
-   * {@code this.get(i).getRad()}; no copy. Lazily constructed and cached.
+   * Strided {@link Magnitude} view over the radii of this {@link Real}
+   * vector. For dim == 1 returns the cell's own {@link #getRad()}. For
+   * dim &gt; 1 returns an element-array {@link Magnitude} whose
+   * {@code get(i)} aliases {@code this.get(i).getRad()}; no copy. Lazily
+   * constructed and cached.
    *
-   * <p>
-   * Contiguity in arb storage is irrelevant: no FLINT vector op is called on
-   * {@link Magnitude} vectors in arb4j, so the element-array view is sufficient.
+   * <p>Contiguity in arb storage is irrelevant: no FLINT vector op is
+   * called on {@link Magnitude} vectors in arb4j, so the element-array
+   * view is sufficient.
    */
   public Magnitude rad()
   {
@@ -2139,8 +2148,7 @@ public class Real implements
     }
     if (radView == null || radView.dim != dim)
     {
-      Magnitude v = new Magnitude(0,
-                                  false);
+      Magnitude v = new Magnitude(0, false);
       v.dim = dim;
       for (int i = 0; i < dim; i++)
       {
@@ -2155,19 +2163,21 @@ public class Real implements
   {
     return dim;
   }
-
+ 
   public Real slice(int startInclusive, int endExclusive)
   {
     int sliceDim = endExclusive - startInclusive;
     assert startInclusive <= dim && startInclusive <= endExclusive
-                  && endExclusive <= dim : String.format("startInclusive=%d < endExclusive=%d\n", startInclusive, endExclusive);
+                  && endExclusive <= dim : String.format("startInclusive=%d < endExclusive=%d\n",
+                                                         startInclusive,
+                                                         endExclusive);
 
     Real array = new Real(swigCPtr + startInclusive * BYTES,
                           false);
     array.elements = new Real[array.dim = sliceDim];
     return array;
   }
-
+     
   public static Real newAlignedVectorViaAllocativeNative(int size)
   {
 
@@ -2185,14 +2195,14 @@ public class Real implements
     }
     return x;
   }
-
+  
   public static Arena  arena = Arena.ofAuto();
   public MemorySegment nativeSegment;
-
+         
   /**
    * Construct a new {@link Real} aligned on a page boundary so that this can be
    * this{@link #lock()}ed by invoking the
-   * {@link arblibJNI#mprotect(long, long, int)} method.
+   * {@link arblibJNI#mprotect(long, long, int)} method. 
    * 
    * TODO: use
    * {@link MemorySegment#allocateNative(java.lang.foreign.MemoryLayout, java.lang.foreign.MemorySession)}
@@ -2223,28 +2233,28 @@ public class Real implements
     }
     return x;
   }
-
-  public static Real newVector(int dim)
+       
+  public static Real newVector( int dim )
   {
-    Real array = arblib._arb_vec_init(dim);
-    array.swigCMemOwn = true;
-    array.dim         = dim;
-    array.elements    = new Real[array.dim = dim];
+    Real array = arblib._arb_vec_init(dim);    
+    array.swigCMemOwn = true;    
+    array.dim = dim;
+    array.elements = new Real[array.dim = dim];
     return array;
   }
-
-  public Real cos(int prec, Real result)
+ 
+  public Real cos(int prec, Real result )
   {
-    arblib.arb_cos(result, this, prec);
+    arblib.arb_cos(result, this, prec );
     return result;
   }
 
-  public Real sin(int prec, Real result)
+  public Real sin(int prec, Real result )
   {
-    arblib.arb_sin(result, this, prec);
+    arblib.arb_sin(result, this, prec );
     return result;
   }
-
+ 
   @Override
   public Real mul(int i, int prec, Real res)
   {
@@ -2261,19 +2271,19 @@ public class Real implements
     }
     return res;
   }
-
+ 
   public Complex mul(Complex exp, int prec, Complex r)
   {
-    arblib.acb_mul_arb(r, exp, this, prec);
+    arblib.acb_mul_arb(r, exp, this, prec );
     return r;
   }
-
-  public Real tanh(int prec, Real result)
-  {
-    arblib.arb_tanh(result, this, prec);
+  
+  public Real tanh(int prec, Real result )
+  {   
+    arblib.arb_tanh(result, this, prec );
     return result;
   }
-
+  
   public Real swap(Real u)
   {
     arblib.arb_swap(this, u);
@@ -2306,7 +2316,7 @@ public class Real implements
     }
     return res;
   }
-
+  
   /**
    * Calls this{@link #div(int, int)} with bits=this{@link #bits()}
    * 
@@ -2317,22 +2327,23 @@ public class Real implements
   {
     return div(i, bits);
   }
+    
 
   public int relAccuracyBits()
   {
-    return arblib.arb_rel_accuracy_bits(this);
+   return arblib.arb_rel_accuracy_bits(this);
   }
 
   public Real sub(Real that, int prec, Real res)
   {
     assert dim == that.dim;
-    if (dim != res.dim)
+    if ( dim != res.dim )
     {
-      res.become(Real.newVector(dim));
+      res.become( Real.newVector(dim) );
     }
     for (int i = 0; i < dim; i++)
     {
-      arblib.arb_sub(res.get(i), this.get(i), that.get(i), prec);
+      arblib.arb_sub(res.get(i), this.get(i), that.get(i), prec );
     }
     bits = prec;
     return res;
@@ -2340,26 +2351,26 @@ public class Real implements
 
   public static final int BYTES = Float.BYTES + Magnitude.BYTES;
 
-  public Real setIntervalMagnitude(Magnitude a, Magnitude b, int prec)
+  public Real setIntervalMagnitude( Magnitude a, Magnitude b, int prec )
   {
     arblib.arb_set_interval_mag(this, a, b, prec);
     bits = prec;
     return this;
   }
-
-  public Real π(int prec)
+    
+  public Real π( int prec )
   {
     arblib.arb_const_pi(this, prec);
     bits = prec;
     return this;
   }
-
+  
   public Real init()
   {
     arblib.arb_init(this);
     return this;
   }
-
+  
   public Real add(Real that, int prec, Real res)
   {
     assert dim == that.dim;
@@ -2374,9 +2385,9 @@ public class Real implements
     bits = prec;
     return res;
   }
-
+  
   public Real[] elements;
-
+  
   public Real get(int index)
   {
     assert index < dim : String.format("index = %d >= dim = %d", index, dim);
@@ -2384,7 +2395,7 @@ public class Real implements
     {
       return this;
     }
-    if (elements == null)
+    if ( elements == null )
     {
       elements = new Real[dim];
     }
@@ -2403,18 +2414,18 @@ public class Real implements
     sb.append("[");
     for (int i = 0; i < dim; i++)
     {
-      if (i > 0)
+      if ( i > 0 )
       {
-        if (dim > 3)
+        if ( dim > 3 )
         {
           sb.append(",\n ");
         }
         else
         {
-          sb.append(", ");
+          sb.append(", ");          
         }
       }
-      sb.append(String.format("%010.010f", get(i).doubleValue()));
+      sb.append(String.format("%010.010f", get(i).doubleValue() ) );
     }
     sb.append("]");
     return sb.toString();
@@ -2426,14 +2437,14 @@ public class Real implements
   {
     return ascendingFactorial(set, bits, this);
   }
-
+      
   public int digits()
   {
-    return Math.min(25, (int) (bits / 3.3219280948873623478703194294893901758648313930246));
+    return (int) (bits / 3.3219280948873623478703194294893901758648313930246);
   }
-
-  public boolean printPrecision = true;
-
+  
+  public boolean  printPrecision = true;
+    
   public String toString(int digits)
   {
     return toString(digits, printPrecision);
@@ -2483,7 +2494,9 @@ public class Real implements
   {
     if (dim == 1 && elements == null)
     {
-      var str = arblib.arb_get_str(this, digits, (printPrecision || precise) ? 0 : 2).replace("[", "").replace("]", "");
+      var str = arblib.arb_get_str(this, digits, (printPrecision || precise) ? 0 : 2)
+                      .replace("[", "")
+                      .replace("]", "");
       if (!str.contains("+/-"))
       {
         return Utensils.removeTrailingZeros(str);
@@ -2522,13 +2535,13 @@ public class Real implements
       return sb.toString();
     }
   }
-
-  public Real abs(Real res)
+  
+  public Real abs(Real res)  
   {
     arblib.arb_abs(res, this);
     return res;
   }
-
+        
   public Real set(Real real)
   {
     assert dim == real.dim : String.format("this.dim = %d != real.dim = %d", this.dim, real.dim);
@@ -2538,7 +2551,7 @@ public class Real implements
     }
     else
     {
-      for (int i = 0; i < dim; i++)
+      for ( int i = 0; i < dim; i ++ )
       {
         get(i).set(real.get(i));
       }
@@ -2546,10 +2559,10 @@ public class Real implements
     bits = real.bits;
     return this;
   }
-
+    
   public int bits()
   {
-    return Math.max(128, arblib.arb_bits(this));
+    return Math.max( 128, arblib.arb_bits(this) );
   }
 
   public Real posInf()
@@ -2557,13 +2570,13 @@ public class Real implements
     arblib.arb_pos_inf(this);
     return this;
   }
-
+  
   public Real negInf()
   {
     arblib.arb_neg_inf(this);
     return this;
   }
-
+  
   public Real zero()
   {
     arblib.arb_zero(this);
@@ -2576,31 +2589,32 @@ public class Real implements
     arblib.arb_one(this);
     return this;
   }
-
+         
   public Real set(String string, int prec)
   {
     arblib.arb_set_str(this, string.replaceAll("±", "+/-"), prec);
     bits = prec;
     return this;
   }
-
-  public boolean overlaps(Real interval)
+  
+  
+  public boolean overlaps( Real interval )
   {
     return arblib.arb_overlaps(this, interval) != 0;
   }
-
-  @Override
-  public boolean contains(Real interval)
+  
+  @Override  
+  public boolean contains( Real interval )
   {
     return arblib.arb_contains(this, interval) != 0;
   }
-
+    
   public Real set(double d)
   {
     arblib.arb_set_d(this, d);
     return this;
   }
-
+  
   @Override
   public Real div(int k, int prec, Real res)
   {
@@ -2608,7 +2622,7 @@ public class Real implements
     bits = prec;
     return res;
   }
-
+  
   public double doubleValue()
   {
     return get(0).getMid().doubleValue();
@@ -2618,7 +2632,7 @@ public class Real implements
   {
     return get(0).getMid().doubleValue(rm);
   }
-
+  
   /**
    * @return arb#arb_sgn_nonzero(Real)
    */
@@ -2636,19 +2650,19 @@ public class Real implements
   {
     return arblib.arb_is_negative(this) != 0;
   }
-
+  
   public boolean containsZero()
   {
     return arblib.arb_contains_zero(this) != 0;
   }
-
+  
   public Real set(FloatInterval interval, int prec)
   {
     Float a = interval.getA();
     Float b = interval.getB();
     bits = prec;
     /* [-inf, -inf] or [+inf, +inf] */
-    if (a.isInfinite() && a.equals(b))
+    if (a.isInfinite() && a.equals(b) )
     {
       setMid(a);
       getRad().zero();
@@ -2656,7 +2670,7 @@ public class Real implements
     }
 
     /* any nan -> [nan +/- inf] */
-    if (a.isNotANumber() || b.isNotANumber())
+    if (a.isNotANumber() || b.isNotANumber() )
     {
       arb_indeterminate(this);
       return this;
@@ -2699,9 +2713,9 @@ public class Real implements
    * 
    * @param prec
    * @param r
-   * @return the multiplicative inverse of r
+   * @return the multiplicative inverse of r 
    */
-  public Real inv(int prec, Real r)
+  public Real inv( int prec, Real r )
   {
     arblib.arb_inv(r, this, prec);
     bits = prec;
@@ -2720,8 +2734,8 @@ public class Real implements
     arblib.arb_sec(r, this, prec);
     bits = prec;
     return r;
-  }
-
+  }  
+  
   /**
    * Sets this real number to its reciprocal, also known as its multiplicative
    * inverse
@@ -2730,11 +2744,11 @@ public class Real implements
    * @return this=1/this
    */
   public Real recip(int prec)
-  {
+  {    
     return inv(prec, this);
   }
 
-  @SuppressWarnings("resource")
+  @SuppressWarnings("resource")    
   public Real pow(int power, int prec, Real r)
   {
     if (dim == 1)
@@ -2743,12 +2757,12 @@ public class Real implements
     }
     else
     {
-      IntStream.range(0, dim).forEach(i -> get(i).pow(power, prec, r.get(i)));
+      IntStream.range(0, dim).forEach(i -> get(i).pow(power, prec, r.get(i) ) );
     }
     r.bits = prec;
     return r;
   }
-
+  
   /**
    * Sets this real number to its reciprocal, also known as its multiplicative
    * inverse
@@ -2759,16 +2773,16 @@ public class Real implements
    */
   public Real recip(int prec, Real result)
   {
-    return inv(prec, result);
+    return inv(prec,result);
   }
-
+    
   public Real tan(int prec, Real r)
   {
     arblib.arb_tan(r, this, prec);
-    bits = prec;
+    bits= prec;
     return r;
   }
-
+  
   /**
    * @see arblib#arb_is_one(Real)
    * @return
@@ -2789,8 +2803,7 @@ public class Real implements
 
   /**
    * Calls this{@link #setMid(Float)} and zeros out the radius
-   * 
-   * @param u value to set the midpoint of this real number ball to
+   * @param u value to set the midpoint of this real number ball to 
    * @return this
    */
   public Real set(Float u)
@@ -2798,8 +2811,8 @@ public class Real implements
     setMid(u);
     getRad().zero();
     return this;
-  }
-
+  }  
+  
   @Override
   public Real mul(Real that, int prec, Real res)
   {
@@ -2829,9 +2842,8 @@ public class Real implements
 
   public Real dotProduct(Real other, int prec, Real res)
   {
-    // TODO: replace this with arblib.arb_dot(res, res, prec, other, prec, res,
-    // prec, prec, prec);
-
+    // TODO: replace this with arblib.arb_dot(res, res, prec, other, prec, res, prec, prec, prec);
+  
     assert dim == other.dim;
     res.zero();
     try ( Real x = borrowVariable();)
@@ -2873,12 +2885,13 @@ public class Real implements
     return pow(y, prec, this);
   }
 
+
   public Real exp(int prec)
   {
-    return exp(prec, this);
+    return exp(prec,this);
   }
-
-  /**
+  
+ /**
    * log-Γ
    * 
    * @see arb#arb_lgamma(Real, Real, int)
@@ -2892,7 +2905,7 @@ public class Real implements
     value.bits = bits;
     return value;
   }
-
+  
   /**
    * @see arb#arb_gamma(Real, Real, int)
    * @param bits
@@ -2905,7 +2918,7 @@ public class Real implements
     value.bits = bits;
     return value;
   }
-
+    
   /**
    * Like this{@link #equals(Object)} but declares equality to be true if is true
    * up to a specified precision
@@ -2918,20 +2931,21 @@ public class Real implements
   {
     try ( Real residual = borrowVariable())
     {
-      return approximatelyEquals(that, prec, residual);
+      return approximatelyEquals(that,prec,residual);
     }
   }
 
-  /**
+  
+ /**
    * 
    * @param bits
-   * @return true if this{@link #approximatelyEquals(Real, int)}
-   *         {@link RealConstants#zero} up to bits precision
+   * @return true if this{@link #approximatelyEquals(Real, int)} {@link RealConstants#zero} up to bits precision
    */
   public boolean isZeroUpTo(int bits)
   {
     return approximatelyEquals(RealConstants.zero, bits);
   }
+
 
   /**
    * Like this{@link #equals(Object)} but declares equality to be true if is true
@@ -2946,13 +2960,13 @@ public class Real implements
   {
     return sub(that, prec, res).containsZero();
   }
-
+    
   public Real(double w)
   {
     this();
     set(w);
   }
-
+  
   /**
    * Perform a linear regression where this=x is the independent variable
    * 
@@ -2974,8 +2988,9 @@ public class Real implements
     Real      slope     = result.get(1);
     Real      intercept = result.get(0);
 
-    try ( Real sumX = x.sum(bits, borrowVariable()); Real sumY = y.sum(bits, borrowVariable()); Real sumXY = x.dotProduct(y, bits, borrowVariable());
-          Real sumXX = x.dotProduct(x, bits, borrowVariable()); Real pivot = borrowVariable();)
+    try ( Real sumX = x.sum(bits, borrowVariable()); Real sumY = y.sum(bits, borrowVariable());
+          Real sumXY = x.dotProduct(y, bits, borrowVariable()); Real sumXX = x.dotProduct(x, bits, borrowVariable());
+          Real pivot = borrowVariable();)
     {
       // m = (N*Σ(xy) - Σx*Σy) / (N*Σ(x^2) - (Σx)^2)
       sumXY.mul(n, bits); // N*Σ(xy)
@@ -2993,6 +3008,7 @@ public class Real implements
     return result;
   }
 
+  
   /**
    * Calculate the sum of the elements
    * 
@@ -3008,61 +3024,52 @@ public class Real implements
       result.add(val, bits);
     }
     return result;
-  }
-
+  }  
+  
   @SuppressWarnings("unchecked")
   public Real setName(String name)
   {
     this.name = name;
     return this;
   }
-
+  
   @Override
   public String getName()
   {
     return name;
-  }
-
+  }  
+  
   public void complexForward(double[] complexSignal)
   {
-    assert false : "TODO: temporarily emulate the crappy jtransform api";
+    assert false : "TODO: temporarily emulate the crappy jtransform api";    
   }
 
   public void complexInverse(double[] complexSignal, boolean b)
   {
-    assert false : "TODO: temporarily emulate the crappy jtransform api";
-  }
+    assert false : "TODO: temporarily emulate the crappy jtransform api";        
+  }  
 
-  public void setMid(Float value)
-  {
+
+  public void setMid(Float value) {
     arblibJNI.Real_mid_set(swigCPtr, this, Float.getCPtr(value), value);
   }
 
-  public Float getMid()
-  {
+  public Float getMid() {
     long cPtr = arblibJNI.Real_mid_get(swigCPtr, this);
-    return (cPtr == 0) ? null
-                       : new Float(cPtr,
-                                   false);
+    return (cPtr == 0) ? null : new Float(cPtr, false);
   }
 
-  public void setRad(Magnitude value)
-  {
+  public void setRad(Magnitude value) {
     arblibJNI.Real_rad_set(swigCPtr, this, Magnitude.getCPtr(value), value);
   }
 
-  public Magnitude getRad()
-  {
+  public Magnitude getRad() {
     long cPtr = arblibJNI.Real_rad_get(swigCPtr, this);
-    return (cPtr == 0) ? null
-                       : new Magnitude(cPtr,
-                                       false);
+    return (cPtr == 0) ? null : new Magnitude(cPtr, false);
   }
 
-  public Real()
-  {
-    this(arblibJNI.new_Real(),
-         true);
+  public Real() {
+    this(arblibJNI.new_Real(), true);
   }
 
 }
