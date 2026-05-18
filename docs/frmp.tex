@@ -35,14 +35,14 @@ results when the function being approximated is meromorphic outside a
 compact set of minimal logarithmic capacity---Stahl's compact. The
 present paper extends this circle of ideas to solutions of fractional
 Riccati equations. Specifically, for the equation
-\[
+\begin{equation}\label{eq:abs_riccati}
 D^{\mu} y = P(u) + Q(u)\,y + R(u)\,y^{2}
-\]
+\end{equation}
 with polynomial coefficients $P, Q, R \in \mathbb{C}[u]$, order
 $\mu \in (0,1]$, and homogeneous Riemann--Liouville initial condition,
-we prove that the unique solution $y(t,u)$ equals the limit, in
-logarithmic capacity, of its near-diagonal M\"{u}ntz--Pad\'{e}
-approximants of type $[M-1/M]$ in the variable $z = t^{\mu}$.
+the unique solution $y(t,u)$ equals the limit, in logarithmic capacity,
+of its near-diagonal M\"{u}ntz--Pad\'{e} approximants of type
+$[M-1/M]$ in the variable $z = t^{\mu}$.
 
 The argument turns on three interlocking observations. First, the
 solution admits an expansion $y = \sum_{k} a(k,u)\,t^{(k+1)\mu}$
@@ -53,10 +53,10 @@ function $A(z,u) = \sum_k a(k,u)\,z^k$ satisfies a Hadamard-product
 fixed-point equation $A = \Psi_\mu \odot B[A]$, linking it to an
 auxiliary function $F(z,u)$ that satisfies an explicit algebraic
 quadratic. Third, a Mellin--Barnes integral representation, valid
-under a Gevrey-1 bound established here from an explicit Cauchy-integral
-interpolation, transfers meromorphic continuation from the pole
-structure of $\Psi_\mu$ to $A$, and a self-consistent fixed-point
-argument places $K_A$ inside $K_F$.
+under a Gevrey-1 bound established here from an explicit
+Cauchy-integral interpolation, transfers meromorphic continuation
+from the pole structure of $\Psi_\mu$ to $A$, and a self-consistent
+fixed-point argument places $K_A$ inside $K_F$.
 
 The Pad\'{e} denominators are identified as the orthogonal polynomials
 of the moment functional $\mathcal{L}[x^k] = a(k,u)$, computed by the
@@ -74,21 +74,28 @@ fractional Riccati equations.
 
 \begin{definition}[Riemann--Liouville operators]\label{def:RL}
 For $\mu\in(0,1]$ and $f$ locally integrable on $(0,\infty)$,
-\begin{align*}
+\begin{align}
 \Imu f(t) &:= \frac{1}{\Gamma(\mu)}\int_{0}^{t}(t-s)^{\mu-1}f(s)\,ds,
-\\[6pt]
+\label{eq:RL_int}\\[6pt]
 \Dmu f(t) &:= \frac{d}{dt}\bigl(\Icomu f\bigr)(t).
-\end{align*}
+\label{eq:RL_der}
+\end{align}
 \end{definition}
 
 \begin{lemma}[Power rule]\label{lem:power}
 For $s > -1$,
-$\Imu t^{s} = \Gamma(s+1)\,t^{s+\mu}/\Gamma(s+\mu+1)$.
+\begin{equation}\label{eq:power_rule}
+\Imu t^{s} = \frac{\Gamma(s+1)}{\Gamma(s+\mu+1)}\,t^{s+\mu}.
+\end{equation}
 \end{lemma}
 
 \begin{proof}
-Substitute $\sigma = t\tau$ in the defining integral and apply
-$B(\mu,s+1) = \Gamma(\mu)\Gamma(s+1)/\Gamma(s+\mu+1)$.
+The substitution $\sigma = t\tau$ in the defining
+integral~\eqref{eq:RL_int} reduces the integral to the beta function
+\begin{equation}\label{eq:beta_id}
+B(\mu,s+1) = \frac{\Gamma(\mu)\Gamma(s+1)}{\Gamma(s+\mu+1)},
+\end{equation}
+which gives~\eqref{eq:power_rule}.
 \end{proof}
 
 \begin{definition}[Fractional Riccati equation]\label{def:fRic}
@@ -106,9 +113,10 @@ y = \Imu\!\bigl[P + Q\,y + R\,y^{2}\bigr].
 \end{lemma}
 
 \begin{proof}
-Apply $I^\mu$ to~\eqref{eq:fRic}; the composition formula
-\cite[Theorem~2.4]{SKM} and the homogeneous initial condition
-$I^{1-\mu}y(0,u)=0$ kill the boundary term.
+Application of $I^\mu$ to~\eqref{eq:fRic}, the composition formula
+\cite[Theorem~2.4]{SKM}, and the homogeneous initial condition
+$I^{1-\mu}y(0,u)=0$ together kill the boundary term and yield
+\eqref{eq:Volt}.
 \end{proof}
 
 % ---------------------------------------------------------------
@@ -116,19 +124,24 @@ $I^{1-\mu}y(0,u)=0$ kill the boundary term.
 % ---------------------------------------------------------------
 
 \begin{definition}[Fox--Wright weights and kernel]\label{def:psi}
-\[
-\psi_{k} := \frac{\Gamma(k\mu+1)}{\Gamma(k\mu+\mu+1)},\quad k \ge 0,
-\qquad
-\Psimu(z) := \sum_{k=0}^{\infty} \psi_{k}\, z^{k}.
-\]
+\begin{align}
+\psi_{k} &:= \frac{\Gamma(k\mu+1)}{\Gamma(k\mu+\mu+1)},\quad k \ge 0,
+\label{eq:psi_def}\\[3pt]
+\Psimu(z) &:= \sum_{k=0}^{\infty} \psi_{k}\, z^{k}.
+\label{eq:Psi_def}
+\end{align}
 \end{definition}
 
 \begin{lemma}[Eigenvalue action]\label{lem:psi_eig}
-$\Imu t^{(k+1)\mu} = \psi_{k+1}\, t^{(k+2)\mu}$ for $k \ge 0$.
+For $k \ge 0$,
+\begin{equation}\label{eq:psi_eig}
+\Imu t^{(k+1)\mu} = \psi_{k+1}\, t^{(k+2)\mu}.
+\end{equation}
 \end{lemma}
 
 \begin{proof}
-Apply Lemma~\ref{lem:power} with $s = (k+1)\mu$.
+Application of Lemma~\ref{lem:power}, equation~\eqref{eq:power_rule},
+with $s = (k+1)\mu$ gives~\eqref{eq:psi_eig}.
 \end{proof}
 
 \begin{lemma}[Radius of convergence]\label{lem:Psimu_radius}
@@ -136,13 +149,17 @@ $\Psimu$ has radius of convergence $1$.
 \end{lemma}
 
 \begin{proof}
-By Stirling, $\psi_k = \Gamma(k\mu+1)/\Gamma(k\mu+\mu+1) \sim (k\mu)^{-\mu}$
-as $k \to \infty$. Hence
-\[
+By Stirling,
+\begin{equation}\label{eq:psi_asymp}
+\psi_k = \frac{\Gamma(k\mu+1)}{\Gamma(k\mu+\mu+1)} \sim (k\mu)^{-\mu}
+\qquad (k \to \infty).
+\end{equation}
+Hence
+\begin{equation}\label{eq:psi_log}
 \frac{1}{k}\log|\psi_k|
 = -\frac{\mu}{k}\,\log(k\mu) + o\!\left(\tfrac{1}{k}\right)
 \;\longrightarrow\; 0,
-\]
+\end{equation}
 so $\limsup_{k\to\infty}|\psi_k|^{1/k}=1$, and the radius of convergence
 of $\Psi_\mu$ is $1$.
 \end{proof}
@@ -153,8 +170,10 @@ of $\Psi_\mu$ is $1$.
 
 \begin{theorem}[M\"{u}ntz--Tau recurrence]\label{thm:Muntz}
 The unique solution of~\eqref{eq:Volt} admits the expansion
-$y(t,u) = \sum_{k \ge 0} a(k,u)\,t^{(k+1)\mu}$ on $[0,T_0]$ for
-some $T_0 > 0$, with
+\begin{equation}\label{eq:Muntz_ansatz}
+y(t,u) = \sum_{k \ge 0} a(k,u)\,t^{(k+1)\mu}
+\end{equation}
+on $[0,T_0]$ for some $T_0 > 0$, with
 \begin{align}
 a(0,u) &= P(u)\,\psi_{0}, \label{eq:a0}\\[3pt]
 a(k,u) &= \psi_{k}\!\left(Q(u)\,a(k-1,u)
@@ -164,10 +183,15 @@ a(k,u) &= \psi_{k}\!\left(Q(u)\,a(k-1,u)
 \end{theorem}
 
 \begin{proof}
-$\mathcal{T}[y] = \Imu(P+Qy+Ry^2)$ is a contraction on $C[0,T_0]$
-for $T_0^\mu$ small. Substituting the M\"{u}ntz ansatz and applying
-Lemma~\ref{lem:psi_eig} matches coefficients of $t^{(k+1)\mu}$:
-$k=0$ gives \eqref{eq:a0}; $k \ge 1$ gives \eqref{eq:ak}.
+The map
+\begin{equation}\label{eq:contraction}
+\mathcal{T}[y] := \Imu(P+Qy+Ry^2)
+\end{equation}
+is a contraction on $C[0,T_0]$ for $T_0^\mu$ sufficiently small.
+Substitution of the M\"{u}ntz ansatz~\eqref{eq:Muntz_ansatz} and
+application of Lemma~\ref{lem:psi_eig} match coefficients of
+$t^{(k+1)\mu}$: $k=0$ gives~\eqref{eq:a0}; $k \ge 1$
+gives~\eqref{eq:ak}.
 \end{proof}
 
 % ---------------------------------------------------------------
@@ -175,31 +199,49 @@ $k=0$ gives \eqref{eq:a0}; $k \ge 1$ gives \eqref{eq:ak}.
 % ---------------------------------------------------------------
 
 \paragraph{Conventions.}
-$[z^k]b := b_k$; Cauchy product $[z^k](F\cdot G) = \sum_j f_j g_{k-j}$;
-Hadamard product $[z^k](F \odot G) = f_k g_k$.
+Coefficient extraction
+\begin{equation}\label{eq:conv_extract}
+[z^k]b := b_k,
+\end{equation}
+Cauchy product
+\begin{equation}\label{eq:conv_cauchy}
+[z^k](F\cdot G) = \sum_j f_j g_{k-j},
+\end{equation}
+Hadamard product
+\begin{equation}\label{eq:conv_hadamard}
+[z^k](F \odot G) = f_k g_k.
+\end{equation}
 
 \begin{definition}[Auxiliary generating function]\label{def:F}
-$f(0,u) := P\psi_0$ and, for $k \ge 1$,
+Set $f(0,u) := P\psi_0$ and, for $k \ge 1$,
 \begin{equation}\label{eq:fk}
 f(k,u) := Q\,f(k-1,u) + R\!\!\sum_{j+\ell=k-1}\!\!f(j,u)f(\ell,u)
 + P\psi_{k}.
 \end{equation}
-$F(z,u) := \sum_k f(k,u) z^k$.
+Define
+\begin{equation}\label{eq:F_def}
+F(z,u) := \sum_{k \ge 0} f(k,u)\, z^k.
+\end{equation}
 \end{definition}
 
 \begin{remark}\label{rem:Fdistinct}
 In~\eqref{eq:ak} the bracket is premultiplied by $\psi_k$; in
 \eqref{eq:fk} the term $P\psi_k$ is a separate source. Hence
 $F \ne A$ and neither $\Psimu \cdot A$ nor $\Psimu \odot A$ equals $F$.
-The bridge is the Hadamard fixed-point of Section~\ref{sec:meromorphy}.
-Concretely, comparing first-order coefficients,
-$a(1,u)=\psi_1\bigl(QP\psi_0 + R(P\psi_0)^2\bigr)$
-whereas
-$f(1,u)=QP\psi_0 + R(P\psi_0)^2 + P\psi_1$,
+The bridge is the Hadamard fixed point of
+Section~\ref{sec:meromorphy}. Comparison of first-order coefficients
+gives
+\begin{align}
+a(1,u) &= \psi_1\bigl(QP\psi_0 + R(P\psi_0)^2\bigr),
+\label{eq:a1_witness}\\[3pt]
+f(1,u) &= QP\psi_0 + R(P\psi_0)^2 + P\psi_1,
+\label{eq:f1_witness}
+\end{align}
 which differ as elements of $\C[u]$ for generic $P,Q,R,\mu$.
 \end{remark}
 
 \begin{theorem}[Algebraic quadratic for $F$]\label{thm:quad}
+$F$ satisfies
 \begin{equation}\label{eq:quad}
 zR\,F^{2} - (1-zQ)\,F + P\,\Psimu = 0,
 \end{equation}
@@ -210,11 +252,20 @@ F(z,u) = \frac{(1-zQ) - \sqrt{(1-zQ)^{2} - 4zPR\,\Psimu(z)}}{2zR}.
 \end{theorem}
 
 \begin{proof}
-Coefficient-by-coefficient, $G := zRF^2 - (1-zQ)F + P\Psimu$
-satisfies $[z^0]G = 0$ and $[z^k]G = 0$ for $k \ge 1$ by~\eqref{eq:fk}.
-Expanding $\sqrt\Delta = 1 - z(Q + 2PR\psi_0) + O(z^2)$ shows the
-minus branch has constant term $P\psi_0 = f(0,u)$, the unique formal
-power-series root since $\partial_F[zRF^2-(1-zQ)F+P\Psimu]|_{z=0} = -1$.
+Coefficient-by-coefficient,
+\begin{equation}\label{eq:quad_aux}
+G := zRF^2 - (1-zQ)F + P\Psimu
+\end{equation}
+satisfies $[z^0]G = 0$ and $[z^k]G = 0$ for $k \ge 1$
+by~\eqref{eq:fk}. Expansion of the discriminant,
+\begin{equation}\label{eq:disc_expand}
+\sqrt{\Delta} = 1 - z(Q + 2PR\psi_0) + O(z^2),
+\end{equation}
+shows the minus branch of~\eqref{eq:Fformula} has constant term
+$P\psi_0 = f(0,u)$, the unique formal power-series root since
+\begin{equation}\label{eq:linearised_zero}
+\partial_F\!\bigl[zRF^2-(1-zQ)F+P\Psimu\bigr]\bigr|_{z=0} = -1.
+\end{equation}
 \end{proof}
 
 % ---------------------------------------------------------------
@@ -226,71 +277,120 @@ power-series root since $\partial_F[zRF^2-(1-zQ)F+P\Psimu]|_{z=0} = -1$.
 \begin{definition}\label{def:growth}
 For $\lambda$ non-decreasing right-continuous, $x_0$ is a point of
 growth if $\lambda(x_0+\varepsilon)-\lambda(x_0-\varepsilon)>0$ for
-all $\varepsilon>0$. Set $G(\lambda)=\operatorname{supp}(d\lambda)$,
-$N_\lambda = |G(\lambda)|$.
+all $\varepsilon>0$. Set
+\begin{equation}\label{eq:G_lambda}
+G(\lambda) := \operatorname{supp}(d\lambda),
+\qquad
+N_\lambda := |G(\lambda)|.
+\end{equation}
 \end{definition}
 
 \begin{lemma}\label{lem:posdef}
-$\langle f,g\rangle_\lambda := \int fg\,d\lambda$ is positive-definite
-on $\R[x]$ iff $N_\lambda = \infty$.
+The form
+\begin{equation}\label{eq:inner_prod}
+\langle f,g\rangle_\lambda := \int fg\,d\lambda
+\end{equation}
+is positive-definite on $\R[x]$ iff $N_\lambda = \infty$.
 \end{lemma}
 
 \begin{proof}
 $(\Leftarrow)$ A degree-$d$ polynomial vanishes at $\le d$ points, so
 $f^2$ is positive on some point of growth.
 $(\Rightarrow)$ If $G(\lambda)=\{x_1,\dots,x_M\}$, then
-$f(x):=\prod(x-x_j)$ vanishes on $G(\lambda)$, giving $\int f^2\,d\lambda = 0$.
+\begin{equation}\label{eq:vanishing_poly}
+f(x) := \prod_{j=1}^{M}(x-x_j)
+\end{equation}
+vanishes on $G(\lambda)$, giving $\int f^2\,d\lambda = 0$.
 \end{proof}
 
 \subsection{Wheeler's algorithm}
 
 \paragraph{Auxiliary array.}
-$\sigma(-1,\ell)=0$, $\sigma(0,\ell)=\mu(\ell)$,
-$\sigma(k,\ell)=\sigma(k-1,\ell+1)-\alpha(k-1)\sigma(k-1,\ell)
--\beta(k-1)\sigma(k-2,\ell)$.
+Initial data and recurrence:
+\begin{align}
+\sigma(-1,\ell) &= 0,
+\label{eq:sigma_init1}\\[3pt]
+\sigma(0,\ell) &= \mu(\ell),
+\label{eq:sigma_init2}\\[3pt]
+\sigma(k,\ell) &= \sigma(k-1,\ell+1)-\alpha(k-1)\sigma(k-1,\ell)
+-\beta(k-1)\sigma(k-2,\ell).
+\label{eq:sigma_rec}
+\end{align}
 
 \paragraph{Coefficients.}
-$\alpha(0)=\mu(1)/\mu(0)$, $\beta(0)=\mu(0)$;
-\[
-\alpha(k)=\frac{\sigma(k,k+1)}{\sigma(k,k)}-\frac{\sigma(k-1,k)}{\sigma(k-1,k-1)},
-\quad
-\beta(k)=\frac{\sigma(k,k)}{\sigma(k-1,k-1)}.
-\]
+\begin{align}
+\alpha(0) &= \mu(1)/\mu(0),
+\qquad \beta(0) = \mu(0),
+\label{eq:ab0}\\[3pt]
+\alpha(k) &= \frac{\sigma(k,k+1)}{\sigma(k,k)}
+            -\frac{\sigma(k-1,k)}{\sigma(k-1,k-1)},
+\label{eq:alpha_k}\\[3pt]
+\beta(k) &= \frac{\sigma(k,k)}{\sigma(k-1,k-1)}.
+\label{eq:beta_k}
+\end{align}
 
-\paragraph{OPs.}
-$\pi_{-1}=0,\;\pi_0=1,\;\pi_{k+1}=(x-\alpha(k))\pi_k-\beta(k)\pi_{k-1}$.
+\paragraph{Orthogonal polynomials.}
+\begin{align}
+\pi_{-1} &= 0,\qquad \pi_0 = 1,
+\label{eq:pi_init}\\[3pt]
+\pi_{k+1} &= (x-\alpha(k))\,\pi_k - \beta(k)\,\pi_{k-1}.
+\label{eq:pi_rec}
+\end{align}
 
 \begin{theorem}[Wheeler]\label{thm:wheeler}
-$\sigma(k,k)>0$ and $\int \pi_j\pi_k\,d\lambda
-=\delta_{jk}\prod_{i=0}^k\beta(i)$.
+$\sigma(k,k) > 0$ and
+\begin{equation}\label{eq:wheeler_norm}
+\int \pi_j\pi_k\,d\lambda
+= \delta_{jk}\prod_{i=0}^{k}\beta(i).
+\end{equation}
 \end{theorem}
 
 \begin{proof}
-$\tilde\sigma(k,\ell):=\int \pi_k x^\ell\,d\lambda$ matches
-$\sigma$ in initial data and recurrence, so they coincide. Induction
-shows $\pi_k\perp\{1,\dots,x^{k-1}\}$, giving $\sigma(k,\ell)=0$ for
-$\ell<k$ and $\sigma(k,k)=\langle\pi_k,\pi_k\rangle_\lambda>0$ by
+Set
+\begin{equation}\label{eq:tilde_sigma}
+\tilde\sigma(k,\ell) := \int \pi_k\, x^\ell\,d\lambda.
+\end{equation}
+This matches $\sigma$ in initial data and recurrence, so they
+coincide. Induction shows $\pi_k\perp\{1,\dots,x^{k-1}\}$, giving
+$\sigma(k,\ell)=0$ for $\ell<k$ and
+$\sigma(k,k)=\langle\pi_k,\pi_k\rangle_\lambda>0$ by
 Lemma~\ref{lem:posdef}. The norm formula follows from
-$\langle\pi_k,\pi_k\rangle=\beta(k)\langle\pi_{k-1},\pi_{k-1}\rangle$.
+\begin{equation}\label{eq:norm_telescope}
+\langle\pi_k,\pi_k\rangle = \beta(k)\,\langle\pi_{k-1},\pi_{k-1}\rangle.
+\end{equation}
 \end{proof}
 
 \subsection{Symbolic transfer}
 
-\begin{definition}
-$\{a(k,u)\}$ is \emph{quasi-definite} if
-$H_n(u):=\det(a(i+j,u))_{0\le i,j<n}\not\equiv 0$ for all $n$.
+\begin{definition}\label{def:quasidef}
+$\{a(k,u)\}$ is \emph{quasi-definite} if the Hankel determinants
+\begin{equation}\label{eq:hankel}
+H_n(u) := \det\bigl(a(i+j,u)\bigr)_{0\le i,j<n}
+\end{equation}
+satisfy $H_n(u) \not\equiv 0$ for all $n$.
 \end{definition}
 
 \begin{theorem}[Symbolic Wheeler]\label{thm:wheeler_sym}
-Under quasi-definiteness, $\sigma(k,k,u)\not\equiv 0$, and the OPs
-$P_k$ of $\Lk[x^\ell]=a(\ell,u)$ satisfy
-$\Lk[P_jP_k]=\delta_{jk}\prod_{i=0}^k\beta_i(u)$ in $\C(u)$.
+Under quasi-definiteness, $\sigma(k,k,u)\not\equiv 0$, and the
+orthogonal polynomials $P_k$ of the functional
+$\Lk[x^\ell]=a(\ell,u)$ satisfy
+\begin{equation}\label{eq:wheeler_sym_norm}
+\Lk[P_jP_k] = \delta_{jk}\prod_{i=0}^{k}\beta_i(u)
+\quad \text{in } \C(u).
+\end{equation}
 \end{theorem}
 
 \begin{proof}
-$\sigma(k,k,u)=H_{k+1}/H_k\not\equiv 0$. The identity
-$\sigma(k,\ell,u)=\Lk[x^\ell P_k]$ holds by induction.
-$\Lk[P_k^2]=\sigma(k,k,u)$ telescopes to the norm formula.
+The Hankel ratio gives
+\begin{equation}\label{eq:sigma_hankel}
+\sigma(k,k,u) = \frac{H_{k+1}(u)}{H_k(u)} \not\equiv 0.
+\end{equation}
+The identity
+\begin{equation}\label{eq:sigma_via_L}
+\sigma(k,\ell,u) = \Lk[x^\ell P_k]
+\end{equation}
+holds by induction, and $\Lk[P_k^2]=\sigma(k,k,u)$ telescopes
+to~\eqref{eq:wheeler_sym_norm}.
 \end{proof}
 
 % ---------------------------------------------------------------
@@ -301,41 +401,65 @@ $\Lk[P_k^2]=\sigma(k,k,u)$ telescopes to the norm formula.
 \paragraph{Pad\'{e} convention.}
 The $M$-th approximant has $\deg N_M \le M-1$, $\deg D_M \le M$, and
 is therefore of type $[M-1/M]$. Its denominator sequence $\{D_M\}$
-is identical to that of the diagonal $[M/M]$ table; we call these
-approximants \emph{diagonal}, following Stahl.
+is identical to that of the diagonal $[M/M]$ table; these
+approximants are \emph{diagonal}, following Stahl.
 
 \begin{theorem}[Gragg, symbolic form]\label{thm:gragg}
-There is a unique $(N_M,D_M)$ with $\deg N_M\le M-1$,
-$\deg D_M\le M$, $D_M(0,u)=1$, $D_MA-N_M=O(z^{2M})$, satisfying
-$D_M(z,u)=z^M P_M(z^{-1},u)$.
+There is a unique pair $(N_M,D_M)$ with $\deg N_M\le M-1$,
+$\deg D_M\le M$, $D_M(0,u)=1$, and
+\begin{equation}\label{eq:pade_match}
+D_M\,A - N_M = O(z^{2M}),
+\end{equation}
+satisfying
+\begin{equation}\label{eq:pade_reciprocal}
+D_M(z,u) = z^{M}\,P_M(z^{-1},u).
+\end{equation}
 \end{theorem}
 
 \begin{proof}
-The $M$ conditions $[z^j](D_MA)=0$, $j=M,\dots,2M-1$, become, with
-$Q_M(x,u):=x^MD_M(x^{-1},u)$, the orthogonality $\Lk[x^iQ_M]=0$,
-$i=0,\dots,M-1$. Monic $Q_M$ of degree $\le M$ matching these
-conditions is unique by Theorem~\ref{thm:wheeler_sym}: $Q_M=P_M$.
-Since $P_M$ is monic, $D_M(0,u)=1$.
+The $M$ matching conditions
+\begin{equation}\label{eq:match_zeros}
+[z^j](D_M A) = 0,\qquad j = M,\dots,2M-1,
+\end{equation}
+become, with $Q_M(x,u):=x^M D_M(x^{-1},u)$, the orthogonality
+\begin{equation}\label{eq:Q_orth}
+\Lk[x^i Q_M] = 0,\qquad i = 0,\dots,M-1.
+\end{equation}
+The monic $Q_M$ of degree $\le M$ matching these conditions is unique
+by Theorem~\ref{thm:wheeler_sym}: $Q_M = P_M$. Since $P_M$ is monic,
+$D_M(0,u)=1$.
 \end{proof}
 
 % ---------------------------------------------------------------
 \section{Meromorphic Continuation of $A$}\label{sec:meromorphy}
 % ---------------------------------------------------------------
 
-We prove that $A$ is meromorphic on $\widetilde X \setminus K_A(u)$,
-the universal cover of $\C\setminus\{0\}$ minus a compact
-$K_A(u) \subseteq K_F(u)$ of minimal logarithmic capacity.
+This section establishes that $A$ is meromorphic on
+$\widetilde X \setminus K_A(u)$, the universal cover of
+$\C\setminus\{0\}$ minus a compact $K_A(u) \subseteq K_F(u)$ of
+minimal logarithmic capacity.
 
 \subsection{Hadamard fixed-point equation}\label{subsec:hadamard}
 
 \begin{lemma}\label{lem:hadamard}
-With $B[A]:=P+zQA+zRA^2$, $A=\Psimu\odot B[A]$.
+With
+\begin{equation}\label{eq:B_def}
+B[A] := P + zQA + zRA^{2},
+\end{equation}
+the identity
+\begin{equation}\label{eq:hadamard_fp}
+A = \Psimu \odot B[A]
+\end{equation}
+holds.
 \end{lemma}
 
 \begin{proof}
-$[z^0]B[A]=P$ gives $\psi_0 P=a(0)$. For $k\ge 1$,
-$[z^k]B[A]=Q\,a(k-1)+R\sum_{j+\ell=k-1}a(j)a(\ell)$, and multiplying
-by $\psi_k$ recovers $a(k)$ by~\eqref{eq:ak}.
+$[z^0]B[A]=P$ gives $\psi_0 P = a(0)$. For $k\ge 1$,
+\begin{equation}\label{eq:zk_BA}
+[z^k]B[A] = Q\,a(k-1) + R\sum_{j+\ell=k-1} a(j)\,a(\ell),
+\end{equation}
+and multiplication of~\eqref{eq:zk_BA} by $\psi_k$ recovers $a(k)$
+by~\eqref{eq:ak}.
 \end{proof}
 
 \subsection{Mellin transform of $\Psimu$}\label{subsec:mellin}
@@ -343,7 +467,7 @@ by $\psi_k$ recovers $a(k)$ by~\eqref{eq:ak}.
 \begin{lemma}[Mellin transform]\label{lem:mellin_psi}
 For $0<\Re s<1$,
 \begin{equation}\label{eq:mellin_psi}
-\int_0^\infty \Psimu(-x) x^{s-1}\,dx
+\int_0^\infty \Psimu(-x)\, x^{s-1}\,dx
 = \Gamma(s)\Gamma(1-s)\frac{\Gamma(1-s\mu)}{\Gamma(\mu+1-s\mu)}
 =: M_{\Psimu}(s).
 \end{equation}
@@ -356,70 +480,97 @@ uncancelled.
 \end{lemma}
 
 \begin{proof}
-$\Psimu(-x) = \sum (-x)^k\varphi(k)/k!$ with $\varphi(k)=k!\psi_k$.
-The interpolation $\varphi(s)=\Gamma(s+1)\Gamma(s\mu+1)/\Gamma(s\mu+\mu+1)$
+Write
+\begin{equation}\label{eq:Psi_phi_series}
+\Psimu(-x) = \sum_{k\ge 0} \frac{(-x)^k\,\varphi(k)}{k!},
+\qquad \varphi(k) := k!\,\psi_k.
+\end{equation}
+The interpolation
+\begin{equation}\label{eq:phi_interp}
+\varphi(s) = \frac{\Gamma(s+1)\,\Gamma(s\mu+1)}{\Gamma(s\mu+\mu+1)}
+\end{equation}
 is entire. Stirling on a vertical line $\Re s = \sigma$ gives
-\[
+\begin{equation}\label{eq:phi_stirling}
 |\varphi(\sigma+i\tau)|
 \sim C(\sigma,\mu)\,|\tau|^{\,\sigma+\mu\sigma-\mu+1/2}\,
 e^{-(\pi/2)|\tau|}
-\qquad\text{as }|\tau|\to\infty,
-\]
+\qquad (|\tau|\to\infty),
+\end{equation}
 where $C(\sigma,\mu)>0$ depends only on $\sigma$ and $\mu\in(0,1]$.
 The exponential rate $\pi/2 < \pi$ satisfies Hardy's growth condition
-\cite[Ch.~XI]{Hardy}, and Ramanujan's master theorem gives
-$\int_0^\infty\Psimu(-x)x^{s-1}dx=\Gamma(s)\varphi(-s)$. The
-cancellation analysis is recorded in the statement.
+\cite[Lecture~XI, §§11.2, 11.10--11.13]{Hardy}, and Ramanujan's master
+theorem gives
+\begin{equation}\label{eq:ramanujan_master}
+\int_0^\infty \Psimu(-x)\,x^{s-1}\,dx = \Gamma(s)\,\varphi(-s).
+\end{equation}
+The cancellation analysis is recorded in the statement.
 \end{proof}
 
 \subsection{Mellin--Barnes realisation}\label{subsec:mb}
 
 \begin{lemma}\label{lem:mb}
-Let $G(z,u)=\sum g_k(u)z^k$ be holomorphic in $|z|<\rho$, with
-Ramanujan-normalised entire interpolation
-$\widehat G_R(s,u) := \widehat G(s,u)/\Gamma(s+1)$, where $\widehat G$
-is the Cauchy interpolation of~\eqref{eq:Ghat} below, satisfying
-$\widehat G_R(k,u)=g_k(u)$ at integers and the Gevrey-1 bound
+Let
+\begin{equation}\label{eq:G_series}
+G(z,u) = \sum_{k\ge 0} g_k(u)\,z^k
+\end{equation}
+be holomorphic in $|z|<\rho$, with Ramanujan-normalised entire
+interpolation
+\begin{equation}\label{eq:Ghat_R_def}
+\widehat G_R(s,u) := \frac{\widehat G(s,u)}{\Gamma(s+1)},
+\end{equation}
+where $\widehat G$ is the Cauchy interpolation of~\eqref{eq:Ghat}
+below, satisfying $\widehat G_R(k,u)=g_k(u)$ at integers and the
+Gevrey-1 bound
 \begin{equation}\label{eq:gevrey1}
 |\widehat G(\sigma+i\tau,u)|
-\le K' C^{|\sigma|+1}|\Gamma(\sigma+i\tau+1)|.
+\le K_G'\, C_G^{|\sigma|+1}\,|\Gamma(\sigma+i\tau+1)|.
 \end{equation}
 Fix $c\in(0,1)$ avoiding poles of $M_{\Psimu}$. For
-$|\arg(-z)|<\pi/2$, $|z|<\min(1,\rho)$,
+$|\arg(-z)|<\pi/2$ and $|z|<\min(1,\rho)$,
 \begin{equation}\label{eq:mb_formula}
 (\Psimu\odot G)(z,u)
-=\frac{1}{2\pi i}\int_{c-i\infty}^{c+i\infty}
+= \frac{1}{2\pi i}\int_{c-i\infty}^{c+i\infty}
 M_{\Psimu}(s)\,\widehat G_R(-s,u)\,(-z)^{-s}\,ds.
 \end{equation}
-The integrand decays as $e^{-(\pi/2)|\tau|}|\tau|^{C_1+C_2}$, so the
-integral converges absolutely on the sector and continues meromorphically
-to $\widetilde X$ minus the projected pole set of
+The integrand decays as
+\begin{equation}\label{eq:integrand_decay}
+e^{-(\pi/2)|\tau|}\,|\tau|^{C_1+C_2},
+\end{equation}
+so the integral converges absolutely on the sector and continues
+meromorphically to $\widetilde X$ minus the projected pole set of
 $M_{\Psimu}\widehat G_R$.
 \end{lemma}
 
 \begin{proof}
 Closing the contour to the left, the simple pole of $\Gamma(s)$ at
 $s=-k$ has residue $(-1)^k/k!$. Split
-$M_{\Psimu}(s) = \Gamma(s)\cdot H(s)$ with
-$H(s):=\Gamma(1-s)\Gamma(1-s\mu)/\Gamma(\mu+1-s\mu)$, so that
-$\Gamma(s)$ is the only factor producing a pole at $s=-k$. At
-$s=-k$,
-\[
-H(-k) = \Gamma(1+k)\,\frac{\Gamma(1+k\mu)}{\Gamma(\mu+1+k\mu)}
-      = k!\,\psi_k,
+\begin{equation}\label{eq:M_split}
+M_{\Psimu}(s) = \Gamma(s)\cdot H(s),
 \qquad
-\widehat G_R(-s,u)\big|_{s=-k} = \widehat G_R(k,u) = g_k(u),
-\qquad
-(-z)^{-s}\big|_{s=-k} = (-1)^k z^k.
-\]
+H(s) := \frac{\Gamma(1-s)\,\Gamma(1-s\mu)}{\Gamma(\mu+1-s\mu)},
+\end{equation}
+so that $\Gamma(s)$ is the only factor producing a pole at $s=-k$.
+At $s=-k$,
+\begin{align}
+H(-k) &= \Gamma(1+k)\,\frac{\Gamma(1+k\mu)}{\Gamma(\mu+1+k\mu)}
+       = k!\,\psi_k,
+\label{eq:H_at_mk}\\[3pt]
+\widehat G_R(-s,u)\big|_{s=-k} &= \widehat G_R(k,u) = g_k(u),
+\label{eq:GR_at_mk}\\[3pt]
+(-z)^{-s}\big|_{s=-k} &= (-1)^k z^k.
+\label{eq:zpow_at_mk}
+\end{align}
 Therefore
-\[
-\operatorname*{Res}_{s=-k}\!\Bigl[M_{\Psi_\mu}(s)\,\widehat G_R(-s,u)\,(-z)^{-s}\Bigr]
+\begin{equation}\label{eq:residue}
+\operatorname*{Res}_{s=-k}\!
+\Bigl[M_{\Psi_\mu}(s)\,\widehat G_R(-s,u)\,(-z)^{-s}\Bigr]
 = \frac{(-1)^k}{k!}\cdot k!\,\psi_k \cdot g_k(u)\cdot (-1)^k z^k
 = \psi_k\,g_k(u)\,z^k,
-\]
-using $(-1)^k(-1)^k=1$. Summing $k\ge 0$ recovers
-$\sum_k \psi_k g_k z^k = \Psi_\mu\odot G$.
+\end{equation}
+using $(-1)^k(-1)^k=1$. Summation over $k\ge 0$ recovers
+\begin{equation}\label{eq:residue_sum}
+\sum_{k\ge 0} \psi_k\, g_k\, z^k = \Psi_\mu \odot G.
+\end{equation}
 Continuation to $\widetilde X$ is by the identity principle along
 chains of overlapping disks.
 \end{proof}
@@ -430,8 +581,10 @@ chains of overlapping disks.
 There is a unique compact $K_F(u)\supseteq K_\Psi$ of minimal
 capacity outside which $\sqrt{\Delta_F}$, hence $F$, is single-valued
 meromorphic on $\widetilde X$. Here
-$\Delta_F = (1-zQ)^2 - 4zPR\Psimu$, and $K_\Psi$ is the projected
-pole set of $M_{\Psimu}$.
+\begin{equation}\label{eq:Delta_F}
+\Delta_F = (1-zQ)^{2} - 4zPR\,\Psimu,
+\end{equation}
+and $K_\Psi$ is the projected pole set of $M_{\Psimu}$.
 \end{lemma}
 
 \begin{proof}
@@ -449,108 +602,157 @@ $\widetilde X\setminus K_A(u)$ with $K_A(u)\subseteq K_F(u)$.
 
 \begin{proof}
 \textbf{Step 1: Gevrey-1 bound on $\{a(k,u)\}$ and $\{g_k(u)\}$.}
-Fix $u$ in a compact subset of parameter space. Since
-$\psi_k = \Gamma(k\mu+1)/\Gamma(k\mu+\mu+1)$ is decreasing in $k$
-for fixed $\mu\in(0,1]$, the supremum is attained at $k=0$:
-\[
+Fix $u$ in a compact subset of parameter space. Since $\psi_k$ is
+decreasing in $k$ for fixed $\mu\in(0,1]$, the supremum is attained
+at $k=0$:
+\begin{equation}\label{eq:C0_def}
 C_0 := \sup_{k\ge 0}|\psi_k| = \psi_0 = \frac{1}{\Gamma(\mu+1)} < \infty
-\quad\text{(by Lemma~\ref{lem:Psimu_radius})},
-\]
-and we record $M_P := |P(u)|,\;\; M_Q := |Q(u)|,\;\; M_R := |R(u)|$.
-Define
-\[
-K := C_0\,\max(M_P,\,1),
+\quad\text{(by Lemma~\ref{lem:Psimu_radius})}.
+\end{equation}
+Set
+\begin{equation}\label{eq:M_PQR}
+M_P := |P(u)|,\qquad M_Q := |Q(u)|,\qquad M_R := |R(u)|,
+\end{equation}
+and define the (local) Gevrey constants
+\begin{equation}\label{eq:K_C_def}
+K_G := C_0\,\max(M_P,\,1),
 \qquad
-C := C_0\,(M_Q + 2K M_R) + 1.
-\]
-We claim $|a(k,u)|\le K\,C^k\,k!$ for all $k\ge 0$. The base case
-$k=0$ uses $|a(0,u)|=|P\psi_0|\le C_0 M_P\le K\le K\,C^0\,0!$.
-Inductively, assuming the bound through $k-1$,
-\[
-|a(k,u)|\le C_0\bigl(M_Q|a(k-1)| +
-M_R\!\!\sum_{j+\ell=k-1}|a(j)||a(\ell)|\bigr).
-\]
-The convolution sum is bounded by
-$\sum_{j+\ell=k-1} K^2 C^{k-1} j!\ell! \le K^2 C^{k-1}(k-1)!\cdot k
-= K^2 C^{k-1}\,k!$
-using $\sum_{j+\ell=n}j!\ell!\le(n+1)!$. Hence
-\[
-|a(k)|\le C_0\,M_Q\cdot K C^{k-1}(k-1)! + C_0\,M_R\cdot K^2 C^{k-1} k!
-\le K C^k k!\cdot \bigl(\tfrac{C_0 M_Q}{C} + \tfrac{C_0 K M_R}{C}\bigr)
-\le K C^k k!,
-\]
-since $C_0(M_Q + KM_R)/C < 1$ by the choice of $C$.
+C_G := C_0\,(M_Q + 2 K_G\, M_R) + 1.
+\end{equation}
+The bound to be established is
+\begin{equation}\label{eq:gevrey_claim}
+|a(k,u)| \le K_G\,C_G^{k}\,k! \qquad \text{for all } k\ge 0.
+\end{equation}
+The base case $k=0$ uses
+$|a(0,u)|=|P\psi_0|\le C_0 M_P\le K_G\le K_G\,C_G^0\,0!$.
+Inductively, assuming~\eqref{eq:gevrey_claim} through $k-1$,
+\begin{equation}\label{eq:induct_step}
+|a(k,u)|\le C_0\bigl(M_Q\,|a(k-1)| +
+M_R\!\!\sum_{j+\ell=k-1}|a(j)|\,|a(\ell)|\bigr).
+\end{equation}
+The convolution sum is bounded using
+\begin{equation}\label{eq:fact_convolution}
+\sum_{j+\ell=n} j!\,\ell! \le (n+1)!,
+\end{equation}
+giving
+$\sum_{j+\ell=k-1} K_G^{2}\, C_G^{k-1}\, j!\,\ell!
+\le K_G^{2}\, C_G^{k-1}\,k!$. Hence
+\begin{equation}\label{eq:induct_close}
+|a(k)|
+\le C_0 M_Q\,K_G\, C_G^{k-1}(k-1)!
++ C_0 M_R\,K_G^{2}\, C_G^{k-1} k!
+\le K_G\, C_G^{k}\, k!\cdot
+\frac{C_0(M_Q + K_G\, M_R)}{C_G}
+\le K_G\, C_G^{k}\, k!,
+\end{equation}
+since $C_0(M_Q + K_G\, M_R)/C_G < 1$ by~\eqref{eq:K_C_def}.
 The bound for $\{g_k(u)\}$ follows from
-$g_k = Q\,a(k-1) + R\sum_{j+\ell=k-1}a(j)a(\ell) + P\,[k=0]$,
-giving $|g_k(u)|\le K''\,C^{k+1}\,k!$ with
-$K'' := K(M_Q + K M_R)/C^2$.
+\begin{equation}\label{eq:gk_def}
+g_k = Q\,a(k-1) + R\!\!\sum_{j+\ell=k-1}\!\!a(j)\,a(\ell)
++ P\,[k=0],
+\end{equation}
+yielding
+\begin{equation}\label{eq:gk_bound}
+|g_k(u)| \le K_G''\, C_G^{k+1}\,k!,
+\qquad K_G'' := K_G(M_Q + K_G\, M_R)/C_G^{2}.
+\end{equation}
 
 \textbf{Step 2: Cauchy-integral interpolation.}
 Fix $0<r<\rho_0$ where $G$ is holomorphic. Define
 \begin{equation}\label{eq:Ghat}
-\widehat G(s,u) \;:=\; \Gamma(s+1)\cdot\frac{1}{2\pi i}\oint_{|z|=r}
-\frac{G(z,u)}{z^{s+1}}\,dz,
+\widehat G(s,u) := \Gamma(s+1)\cdot\frac{1}{2\pi i}
+\oint_{|z|=r}\frac{G(z,u)}{z^{s+1}}\,dz,
 \qquad
 \widehat G_R(s,u) := \frac{\widehat G(s,u)}{\Gamma(s+1)}.
 \end{equation}
-At integer points these reduce to $\widehat G(k,u)=k!\,g_k(u)$ and
-$\widehat G_R(k,u) = g_k(u)$, the latter being the Ramanujan
-normalisation used in Lemma~\ref{lem:mb}.
-The Cauchy-kernel factor $\frac{1}{2\pi i}\oint_{|z|=r}G(z,u)z^{-s-1}dz$
+At integer points,
+\begin{equation}\label{eq:Ghat_at_k}
+\widehat G(k,u) = k!\,g_k(u),
+\qquad
+\widehat G_R(k,u) = g_k(u),
+\end{equation}
+the latter being the Ramanujan normalisation used in
+Lemma~\ref{lem:mb}. The Cauchy-kernel factor
+\begin{equation}\label{eq:cauchy_kernel}
+\kappa(s,u) := \frac{1}{2\pi i}\oint_{|z|=r}\frac{G(z,u)}{z^{s+1}}\,dz
+\end{equation}
 is entire in $s$ of exponential type at most $\log(1/r)$ along the
-imaginary axis. Multiplying by $\Gamma(s+1)$ does not alter
-this type. Carlson's theorem requires this exponential type to be
-strictly less than $\pi$, i.e.\ $\log(1/r)<\pi$, i.e.\ $r>e^{-\pi}$.
-Since $G$ is holomorphic on $|z|<\rho_0$, the Cauchy integral
-is independent of $r$ in $(0,\rho_0)$, so we may \emph{enlarge} $r$
-to any value in $(e^{-\pi},\rho_0)$, which is nonempty provided
-$\rho_0>e^{-\pi}$. If $\rho_0\le e^{-\pi}$, fix any $r_0\in(0,\rho_0)$
-and replace $z$ by $\lambda z$ for a scalar $\lambda$ with
-$\lambda r_0 \in (e^{-\pi},1)$; this rescaling reduces to the previous
-case and is undone after the Mellin--Barnes representation by the
-inverse scaling. Carlson's theorem then gives uniqueness of $\widehat G$
-as the entire interpolation of $\{k!\,g_k(u)\}_{k\ge 0}$ of exponential
-type $<\pi$.
-The Cauchy integral satisfies
-\[
-\Bigl|\frac{1}{2\pi i}\oint_{|z|=r}\frac{G(z,u)}{z^{s+1}}\,dz\Bigr|
+imaginary axis. Multiplication by $\Gamma(s+1)$ does not alter this
+type. Carlson's theorem requires
+\begin{equation}\label{eq:carlson_cond}
+\log(1/r) < \pi
+\quad \Longleftrightarrow \quad
+r > e^{-\pi}.
+\end{equation}
+Since $G$ is holomorphic on $|z|<\rho_0$, $\kappa(s,u)$ is independent
+of $r$ in $(0,\rho_0)$, so $r$ may be enlarged to any value in
+$(e^{-\pi},\rho_0)$, which is nonempty provided $\rho_0>e^{-\pi}$.
+If $\rho_0\le e^{-\pi}$, fix any $r_0\in(0,\rho_0)$ and replace $z$
+by $\lambda z$ for a scalar $\lambda$ with
+\begin{equation}\label{eq:rescale}
+\lambda r_0 \in (e^{-\pi},\,1);
+\end{equation}
+this rescaling reduces to the previous case and is undone after the
+Mellin--Barnes representation by the inverse scaling. Carlson's
+theorem then gives uniqueness of $\widehat G$ as the entire
+interpolation of $\{k!\,g_k(u)\}_{k\ge 0}$ of exponential type
+$<\pi$. The Cauchy integral satisfies
+\begin{equation}\label{eq:cauchy_bound}
+|\kappa(s,u)|
 \le \frac{M(r,u)}{r^{\Re s}},
-\qquad M(r,u):=\sup_{|z|=r}|G(z,u)|,
-\]
-which gives $|\widehat G(\sigma+i\tau,u)|\le M(r,u)|\Gamma(\sigma+i\tau+1)|/r^\sigma$.
-Combining with the integer-point Gevrey bound $g_k\le K''C^{k+1}k!$
-and the Phragm\'en--Lindel\"of principle in each vertical strip
-(applied to $\widehat G(s,u)/[K' C^{|\sigma|+1}\Gamma(s+1)]$, which is
-bounded on the imaginary axis and on $\Re s = N$ for each $N\in\Z_{\ge 0}$
-by the Gevrey bound and Stirling, and of finite order in the strip),
-we obtain~\eqref{eq:gevrey1} with $K' = M(r,u)/r$ and $C$ as above
-(after enlarging $C$ to absorb $1/r$).
+\qquad M(r,u) := \sup_{|z|=r}|G(z,u)|,
+\end{equation}
+which gives
+\begin{equation}\label{eq:Ghat_bound}
+|\widehat G(\sigma+i\tau,u)|
+\le \frac{M(r,u)\,|\Gamma(\sigma+i\tau+1)|}{r^{\sigma}}.
+\end{equation}
+Combination of~\eqref{eq:Ghat_bound} with the integer-point Gevrey
+bound~\eqref{eq:gk_bound} and the Phragm\'en--Lindel\"of principle in
+each vertical strip (applied to
+$\widehat G(s,u)/[K_G' C_G^{|\sigma|+1}\Gamma(s+1)]$, which is
+bounded on the imaginary axis and on $\Re s = N$ for each
+$N\in\Z_{\ge 0}$ by the Gevrey bound and Stirling, and of finite
+order in the strip) yields~\eqref{eq:gevrey1} with
+\begin{equation}\label{eq:Kp_def}
+K_G' := M(r,u)/r,
+\end{equation}
+and $C_G$ as in~\eqref{eq:K_C_def} (after enlarging $C_G$ to absorb
+$1/r$).
 
 \textbf{Step 3: Mellin--Barnes representation.}
-By Lemma~\ref{lem:hadamard}, $A=\Psimu\odot G$. Lemma~\ref{lem:mb}
-applies and yields, for $|\arg(-z)|<\pi/2$ and $|z|<\min(1,\rho_0)$,
-the integral representation, holomorphic on the open sector. By the
-identity principle, $A$ extends meromorphically to
-$\widetilde X \setminus (K_\Psi \cup S_G)$, where $S_G$ is the
-singularity locus of $\widehat G_R$.
+By Lemma~\ref{lem:hadamard},
+\begin{equation}\label{eq:A_via_G}
+A = \Psimu \odot G, \qquad G = B[A].
+\end{equation}
+Lemma~\ref{lem:mb} applies and yields, for $|\arg(-z)|<\pi/2$ and
+$|z|<\min(1,\rho_0)$, the integral
+representation~\eqref{eq:mb_formula}, holomorphic on the open sector.
+By the identity principle, $A$ extends meromorphically to
+\begin{equation}\label{eq:A_extension}
+\widetilde X \setminus (K_\Psi \cup S_G),
+\end{equation}
+where $S_G$ is the singularity locus of $\widehat G_R$.
 
 \textbf{Step 4: Self-consistent fixed point.}
 For $K\supseteq K_\Psi$ compact, let $\mathcal{M}(K)$ be the space
 of $\C[u][[z]]$-formal series whose unique meromorphic continuation
 lives on $\widetilde X\setminus K$. The map
-$\Phi: A\mapsto \Psimu\odot B[A]$ sends $\mathcal{M}(K)$ to itself:
-$B[A]=P+zQA+zRA^2$ is polynomial in $A$, hence in $\mathcal{M}(K)$,
-and the Mellin--Barnes integral adds only the poles of $M_{\Psimu}$,
-which project to $K_\Psi\subseteq K$. The unique formal-power-series
-fixed point of $\Phi$ is $A$ (Theorem~\ref{thm:Muntz}). Now $F$ is
-the unique formal-power-series root of~\eqref{eq:quad} and lies in
-$\mathcal{M}(K_F)$ (Lemma~\ref{lem:stahl_F}). Subtracting the
-$F$-equation from the $A$-equation and reading the difference
-order-by-order shows $A-F$ has at worst the same singular set as $F$
-(see Lemma~\ref{lem:branch_transfer} of the appendix for the precise
-statement). Therefore $A\in\mathcal{M}(K_F(u))$, and the minimal
-compact $K_A(u)\subseteq K_F(u)$ exists by
-Theorem~\ref{thm:stahl_extremal}.
+\begin{equation}\label{eq:Phi_map}
+\Phi: A \mapsto \Psimu \odot B[A]
+\end{equation}
+sends $\mathcal{M}(K)$ to itself: $B[A]=P+zQA+zRA^2$ is polynomial
+in $A$, hence in $\mathcal{M}(K)$, and the Mellin--Barnes integral
+adds only the poles of $M_{\Psimu}$, which project to
+$K_\Psi\subseteq K$. The unique formal-power-series fixed point of
+$\Phi$ is $A$ (Theorem~\ref{thm:Muntz}). $F$ is the unique
+formal-power-series root of~\eqref{eq:quad} and lies in
+$\mathcal{M}(K_F)$ (Lemma~\ref{lem:stahl_F}). Subtraction of the
+$F$-equation from the $A$-equation and order-by-order reading of the
+difference shows $A-F$ has at worst the same singular set as $F$
+(Lemma~\ref{lem:branch_transfer}). Therefore
+$A\in\mathcal{M}(K_F(u))$, and the minimal compact
+$K_A(u)\subseteq K_F(u)$ exists by Theorem~\ref{thm:stahl_extremal}.
 \end{proof}
 
 % ---------------------------------------------------------------
@@ -559,44 +761,58 @@ Theorem~\ref{thm:stahl_extremal}.
 
 \begin{theorem}[Fractional Riccati--M\"{u}ntz--Pad\'{e} theorem]\label{thm:FRMP}
 Under quasi-definiteness, the M\"{u}ntz--Pad\'{e} approximant
-$y_M(t,u):=t^\mu N_M(t^\mu,u)/D_M(t^\mu,u)$ satisfies
-$y(t,u)=\lim_{M\to\infty} y_M(t,u)$ in logarithmic capacity on
-compact subsets of the $t$-universal-cover preimage of
-$\widetilde X\setminus K_A(u)$.
+\begin{equation}\label{eq:yM_def}
+y_M(t,u) := t^{\mu}\,\frac{N_M(t^{\mu},u)}{D_M(t^{\mu},u)}
+\end{equation}
+satisfies
+\begin{equation}\label{eq:FRMP_limit}
+y(t,u) = \lim_{M\to\infty} y_M(t,u)
+\end{equation}
+in logarithmic capacity on compact subsets of the
+$t$-universal-cover preimage of $\widetilde X\setminus K_A(u)$.
 \end{theorem}
 
 \begin{proof}
-$y(t,u)=t^\mu A(t^\mu,u)$ by Theorem~\ref{thm:Muntz}; $N_M/D_M$ is
-the $[M-1/M]$ Pad\'{e} approximant of $A$ by Theorem~\ref{thm:gragg}.
+By Theorem~\ref{thm:Muntz},
+\begin{equation}\label{eq:y_via_A}
+y(t,u) = t^{\mu}\,A(t^{\mu},u);
+\end{equation}
+$N_M/D_M$ is the $[M-1/M]$ Pad\'{e} approximant of $A$ by
+Theorem~\ref{thm:gragg}.
 
 \emph{Equivalence of denominator sequences.}
-$D_M$ is determined by $\Lk[x^iQ_M]=0$, $i=0,\dots,M-1$. The
-$[M/M]$ approximant adds one matching condition that fixes the
-leading coefficient of $N_M$, not the denominator. Hence
-$\{D_M\}_{M\ge 1}$ is identical for both types and Stahl's theorem
-applies to either.
+$D_M$ is determined by~\eqref{eq:Q_orth}. The $[M/M]$ approximant
+adds one matching condition that fixes the leading coefficient of
+$N_M$, not the denominator. Hence $\{D_M\}_{M\ge 1}$ is identical
+for both types and Stahl's theorem applies to either.
 
 \emph{Convergence in capacity.}
-By Theorem~\ref{thm:Acont}, $A$ is meromorphic on $\widetilde X
-\setminus K_A(u)$. Theorem~\ref{thm:stahl_convergence} of the
-appendix gives $N_M/D_M\to A$ in capacity on compacta of
-$\widetilde X\setminus K_A(u)$.
+By Theorem~\ref{thm:Acont}, $A$ is meromorphic on
+$\widetilde X \setminus K_A(u)$.
+Theorem~\ref{thm:stahl_convergence} of the appendix gives
+\begin{equation}\label{eq:cap_conv_z}
+\frac{N_M}{D_M} \;\longrightarrow\; A
+\quad \text{in capacity on compacta of } \widetilde X\setminus K_A(u).
+\end{equation}
 
 \emph{Transfer to the $t$-plane.}
-Fix the principal-branch sector $\Sigma := \{t\in\widetilde\C^*:
-\arg t\in(-\pi,\pi]\}$, on which $z=t^\mu$ is a biholomorphism onto
-its image. The map $t\mapsto t^\mu$ is a $C^1$ diffeomorphism on
+Fix the principal-branch sector
+\begin{equation}\label{eq:Sigma_def}
+\Sigma := \{t\in\widetilde\C^{*}:\arg t\in(-\pi,\pi]\},
+\end{equation}
+on which $z=t^{\mu}$ is a biholomorphism onto its image. The map
+$t\mapsto t^{\mu}$ is a $C^1$ diffeomorphism on
 $\Sigma\setminus\{0\}$ with bounded distortion on compacta, and the
-classical capacity-transformation identity (cf. Ransford,
-\emph{Potential Theory in the Complex Plane}, Thm.~5.2.5) gives
-\[
-\cpct{\{t\in\Sigma: t^\mu\in K\}} = \cpct{K}^{1/\mu}
-\]
-for every compact $K$ in the image \cite{Ransford}. On the full
-universal cover of $\C\setminus\{0\}$, the preimage decomposes into
-countably many such sectorial sheets, and convergence in capacity on
-each sheet transfers from the $z$-plane to the $t$-plane sheetwise.
-The statement of the theorem refers to this sheetwise transfer.
+classical capacity-transformation identity
+(cf.\ Ransford~\cite[Thm.~5.2.5]{Ransford}) gives
+\begin{equation}\label{eq:cap_transfer}
+\cpct{\{t\in\Sigma:\, t^{\mu}\in K\}} = \cpct{K}^{1/\mu}
+\end{equation}
+for every compact $K$ in the image. On the full universal cover of
+$\C\setminus\{0\}$, the preimage decomposes into countably many such
+sectorial sheets, and convergence in capacity on each sheet
+transfers from the $z$-plane to the $t$-plane sheetwise. The
+statement of the theorem refers to this sheetwise transfer.
 \end{proof}
 
 % ---------------------------------------------------------------
@@ -605,13 +821,16 @@ The statement of the theorem refers to this sheetwise transfer.
 Class over $\C(z,\Psimu)$}\label{app:stahl}
 % ---------------------------------------------------------------
 
-We give a self-contained proof of Stahl's extremal-domain and
-convergence-in-capacity theorems for the class $\mathcal{A}$ of
-functions $\Phi$ on $\widetilde X = $ universal cover of
-$\C\setminus\{0\}$ minus a finite set such that
+This appendix gives a self-contained proof of Stahl's
+extremal-domain and convergence-in-capacity theorems for the class
+$\mathcal{A}$ of functions $\Phi$ on $\widetilde X$ (the universal
+cover of $\C\setminus\{0\}$ minus a finite set) such that
 \begin{itemize}
 \item $\Phi$ is two-valued algebraic over the field
-$\mathcal{K}:=\C(u)(z,\Psimu(z))$, generically irreducible;
+\begin{equation}\label{eq:K_field}
+\mathcal{K} := \C(u)(z,\Psimu(z)),
+\end{equation}
+generically irreducible;
 \item the discriminant $\Delta_\Phi\in\mathcal{K}$ is meromorphic on
 $\widetilde X\setminus K_\Psi$ with isolated zeros and poles;
 \item $\Phi$ is holomorphic at $z=0$.
@@ -624,22 +843,26 @@ fixed-point identification in Lemma~\ref{lem:branch_transfer}).
 
 For compact $K\subset\C$ with diameter $d>0$, the logarithmic energy
 of a probability measure $\nu$ supported on $K$ is
-\[
-I[\nu] := \iint \log\frac{1}{|z-w|}\,d\nu(z)\,d\nu(w),
-\qquad
-\cpct{K} := e^{-\inf_\nu I[\nu]}.
-\]
+\begin{align}
+I[\nu] &:= \iint \log\frac{1}{|z-w|}\,d\nu(z)\,d\nu(w),
+\label{eq:energy_def}\\[3pt]
+\cpct{K} &:= e^{-\inf_\nu I[\nu]}.
+\label{eq:cap_def}
+\end{align}
 The infimum is attained by a unique equilibrium measure $\nu_K$ when
 $\cpct{K}>0$; the support of $\nu_K$ is the \emph{essential boundary}
 of $K$.
 
 \begin{lemma}[Monotonicity]\label{lem:cap_sub}
 For compacta $K_1,K_2\subset\C$,
-\[
-\cpct{K_1\cup K_2}\ge \max(\cpct{K_1},\cpct{K_2}),
-\]
+\begin{equation}\label{eq:cap_mono}
+\cpct{K_1\cup K_2} \ge \max\bigl(\cpct{K_1},\cpct{K_2}\bigr),
+\end{equation}
 by monotonicity of logarithmic capacity. In particular, if
-$K_2\subseteq K_1$ then $\cpct{K_1\cup K_2}=\cpct{K_1}$.
+$K_2\subseteq K_1$ then
+\begin{equation}\label{eq:cap_subset}
+\cpct{K_1\cup K_2} = \cpct{K_1}.
+\end{equation}
 \end{lemma}
 
 \begin{proof}
@@ -661,16 +884,17 @@ Let $\mathcal{S}$ be the family of compacts $K\subseteq K_0$ with
 $K\supseteq K_\Psi$ outside which $\Phi$ is single-valued. The
 family is nonempty ($K_0\in\mathcal{S}$) and closed under intersection
 along directed nets: if $\{K_\alpha\}$ is a directed family in
-$\mathcal{S}$, then $\bigcap_\alpha K_\alpha$ supports the same
-single-valued continuation by the identity principle on each branch
-chart of the universal cover, hence lies in $\mathcal{S}$.
+$\mathcal{S}$, then
+\begin{equation}\label{eq:directed_inter}
+\bigcap_\alpha K_\alpha \in \mathcal{S}
+\end{equation}
+since the single-valued continuation persists on each branch chart
+of the universal cover by the identity principle.
 
 The capacity functional $K\mapsto\cpct K$ is upper semicontinuous on
 the Hausdorff topology of compacta. By Zorn's lemma applied to the
 partial order $K\le K'\iff K\subseteq K'$ with the capacity functional
-descending, a minimal element $K_\Phi$ exists: any chain in
-$\mathcal{S}$ ordered by reverse inclusion has a lower bound (its
-intersection), and capacity is monotone with respect to inclusion.
+descending, a minimal element $K_\Phi$ exists.
 
 Uniqueness. Suppose $K_\Phi$ and $K_\Phi'$ both attain the minimum
 capacity in $\mathcal{S}$. Their intersection $K_\Phi\cap K_\Phi'$
@@ -678,46 +902,60 @@ lies in $\mathcal{S}$: on $\widetilde X\setminus(K_\Phi\cap K_\Phi')$,
 the single-valued meromorphic continuations of $\Phi$ defined on
 $\widetilde X\setminus K_\Phi$ and on $\widetilde X\setminus K_\Phi'$
 agree on the open set $\widetilde X\setminus(K_\Phi\cup K_\Phi')$,
-hence by the identity principle they glue to a single-valued meromorphic
-function on $\widetilde X\setminus(K_\Phi\cap K_\Phi')$. By
-Lemma~\ref{lem:cap_sub} (monotonicity),
-$\cpct{K_\Phi\cap K_\Phi'}\le\min(\cpct{K_\Phi},\cpct{K_\Phi'})$, with
-equality forced by minimality. Stahl's $S$-property (symmetry of the
-equilibrium measure of the extremal compact with respect to the Green
-function) uniquely determines the support of the equilibrium measure,
-hence $K_\Phi=K_\Phi\cap K_\Phi'=K_\Phi'$ as sets.
+hence by the identity principle they glue to a single-valued
+meromorphic function on $\widetilde X\setminus(K_\Phi\cap K_\Phi')$.
+By Lemma~\ref{lem:cap_sub},
+\begin{equation}\label{eq:inter_bound}
+\cpct{K_\Phi\cap K_\Phi'}
+\le \min\bigl(\cpct{K_\Phi},\cpct{K_\Phi'}\bigr),
+\end{equation}
+with equality forced by minimality. Stahl's $S$-property (symmetry
+of the equilibrium measure of the extremal compact with respect to
+the Green function) uniquely determines the support of the
+equilibrium measure, hence
+\begin{equation}\label{eq:KPhi_unique}
+K_\Phi = K_\Phi\cap K_\Phi' = K_\Phi'
+\quad \text{as sets.}
+\end{equation}
 \end{proof}
 
 \subsection{Branch transfer along the Hadamard fixed point}
 
 \begin{lemma}[Branch transfer]\label{lem:branch_transfer}
-Let $\Phi=A$ and $\Phi'=F$. The Hadamard fixed-point equation
-$A=\Psimu\odot B[A]$ together with the algebraic
+Let $\Phi=A$ and $\Phi'=F$. The Hadamard fixed-point
+equation~\eqref{eq:hadamard_fp} together with the algebraic
 quadratic~\eqref{eq:quad} for $F$ implies that the branch locus of
 $A$ is contained in the branch locus of $F$ together with $K_\Psi$.
 \end{lemma}
 
 \begin{proof}
 Write $A = F + (A-F)$. The defining recurrences differ only in the
-$\psi_k$ placement (Remark~\ref{rem:Fdistinct}). Subtracting
+$\psi_k$ placement (Remark~\ref{rem:Fdistinct}). Subtraction of
 \eqref{eq:fk} from~\eqref{eq:ak} gives
-\[
-a(k) - f(k) = \psi_k\bigl[Qa(k-1) + R\!\!\sum_{j+\ell=k-1}\!\!a(j)a(\ell)\bigr]
-- Qf(k-1) - R\!\!\sum_{j+\ell=k-1}\!\!f(j)f(\ell) - P\psi_k.
-\]
-Summing into generating functions, the difference $A-F$ satisfies a
+\begin{equation}\label{eq:diff_rec}
+a(k) - f(k)
+= \psi_k\bigl[Qa(k-1) + R\!\!\sum_{j+\ell=k-1}\!\!a(j)\,a(\ell)\bigr]
+- Q\,f(k-1) - R\!\!\sum_{j+\ell=k-1}\!\!f(j)\,f(\ell) - P\psi_k.
+\end{equation}
+Summed into generating functions, the difference $A-F$ satisfies a
 linear inhomogeneous functional equation in $\mathcal{K}(\Psimu)$
 whose coefficients are meromorphic on $\widetilde X\setminus K_\Psi$
-and whose forcing terms are meromorphic on $\widetilde X\setminus
-(K_F\cup K_\Psi) = \widetilde X\setminus K_F$ (using
-$K_\Psi\subseteq K_F$). The analytic-implicit-function theorem
-applied at every point of $\widetilde X\setminus K_F$ where the
-linearised operator $\partial_F[zRF^2-(1-zQ)F+P\Psimu] = 2zRF-(1-zQ)$
+and whose forcing terms are meromorphic on
+\begin{equation}\label{eq:forcing_domain}
+\widetilde X\setminus(K_F\cup K_\Psi) = \widetilde X\setminus K_F
+\qquad (\text{using } K_\Psi\subseteq K_F).
+\end{equation}
+The analytic-implicit-function theorem applied at every point of
+$\widetilde X\setminus K_F$ where the linearised operator
+\begin{equation}\label{eq:linearisation}
+\partial_F\!\bigl[zRF^{2}-(1-zQ)F+P\Psimu\bigr]
+= 2zRF - (1-zQ)
+\end{equation}
 is nonzero produces a unique meromorphic solution $A-F$ on
-$\widetilde X\setminus K_F$. The exceptional set where this linear
-factor vanishes is contained in $K_F$ (by definition of branch locus).
-Therefore $A$, being $F + (A-F)$, is meromorphic on $\widetilde
-X\setminus K_F$.
+$\widetilde X\setminus K_F$. The exceptional set
+where~\eqref{eq:linearisation} vanishes is contained in $K_F$ (by
+definition of branch locus). Therefore $A = F + (A-F)$ is
+meromorphic on $\widetilde X\setminus K_F$.
 \end{proof}
 
 \subsection{Convergence in capacity (Stahl)}
@@ -734,37 +972,52 @@ $\widetilde X\setminus K_\Phi$.
 The denominators $D_M$ have all zeros in $K_\Phi$ up to a set of
 asymptotic capacity zero. This is the Nuttall--Stahl localisation:
 the zero-counting measure
-$\nu_M := M^{-1}\sum_{D_M(z)=0}\delta_z$
+\begin{equation}\label{eq:nu_M}
+\nu_M := M^{-1}\sum_{D_M(z)=0}\delta_z
+\end{equation}
 converges weak-$*$ to the equilibrium measure $\nu_{K_\Phi}$.
 
-Step 1 (Hermite's formula): The Pad\'{e} error satisfies
-\[
-\Phi - R_M = \frac{\Pi_M(z)}{D_M(z)^2}\cdot\frac{1}{2\pi i}
-\oint_\gamma\frac{D_M(\zeta)^2 \Phi(\zeta)}{\Pi_M(\zeta)(\zeta-z)}\,d\zeta,
-\qquad \Pi_M \text{ monic of degree } M,
-\]
+\emph{Step 1 (Hermite's formula).} The Pad\'{e} error satisfies
+\begin{equation}\label{eq:hermite}
+\Phi - R_M
+= \frac{\Pi_M(z)}{D_M(z)^{2}}\cdot\frac{1}{2\pi i}
+\oint_{\gamma}\frac{D_M(\zeta)^{2}\,\Phi(\zeta)}
+                   {\Pi_M(\zeta)(\zeta-z)}\,d\zeta,
+\qquad \Pi_M\text{ monic of degree }M,
+\end{equation}
 where $\gamma$ encircles $K_\Phi$.
 
-Step 2 (Capacity estimate): Outside $K_\Phi$, the Green function
-$g(z,K_\Phi)$ controls $|D_M(z)|^{1/M}\to e^{g(z,K_\Phi)}\cpct{K_\Phi}$
-in capacity (this is Stahl's main lemma, proved by combining
-Bernstein--Walsh and the asymptotic distribution of zeros
+\emph{Step 2 (Capacity estimate).} Outside $K_\Phi$, the Green
+function $g(z,K_\Phi)$ controls
+\begin{equation}\label{eq:green_control}
+|D_M(z)|^{1/M}
+\;\longrightarrow\;
+e^{g(z,K_\Phi)}\,\cpct{K_\Phi}
+\quad \text{in capacity}
+\end{equation}
+(Stahl's main lemma, proved by combining Bernstein--Walsh and the
+asymptotic distribution of zeros
 \cite{StahlExtremal,StahlExtremalII}).
 
-Step 3 (Vanishing in capacity): The error has $M$-th root behaviour
-$|\Phi(z)-R_M(z)|^{1/(2M)}\to e^{-g(z,K_\Phi)}$ in capacity, which is
-$<1$ off $K_\Phi$, giving exponential vanishing in capacity.
+\emph{Step 3 (Vanishing in capacity).} The error has $M$-th root
+behaviour
+\begin{equation}\label{eq:mth_root}
+|\Phi(z)-R_M(z)|^{1/(2M)}
+\;\longrightarrow\;
+e^{-g(z,K_\Phi)}
+\quad \text{in capacity},
+\end{equation}
+which is $<1$ off $K_\Phi$, giving exponential vanishing in capacity.
 
 The full proof of Steps 2--3 mirrors Stahl's
-\cite{StahlConvergence,StahlBranch} but, restricted to the generic
-two-valued algebraic class $\mathcal{A}$, simplifies because the
-discriminant $\Delta_\Phi$ has only finitely many zeros and poles on
-the universal cover modulo $K_\Psi$, so the orthogonality measure of
-$D_M$ has a smooth density off $K_\Phi$ and the standard equilibrium
-analysis applies directly. The polynomial $\Pi_M$ in Step 1 plays
-the role of an auxiliary monic factor in Hermite's contour formula
-and is unrelated to the orthogonal polynomials $P_M$ of
-Theorem~\ref{thm:gragg}.
+\cite{StahlConvergence,StahlBranch} but, restricted to $\mathcal{A}$,
+simplifies because the discriminant $\Delta_\Phi$ has only finitely
+many zeros and poles on the universal cover modulo $K_\Psi$, so the
+orthogonality measure of $D_M$ has a smooth density off $K_\Phi$ and
+the standard equilibrium analysis applies directly. The polynomial
+$\Pi_M$ in~\eqref{eq:hermite} plays the role of an auxiliary monic
+factor in Hermite's contour formula and is unrelated to the
+orthogonal polynomials $P_M$ of Theorem~\ref{thm:gragg}.
 \end{proof}
 
 \begin{thebibliography}{9}
@@ -801,8 +1054,9 @@ algorithms of numerical analysis},
 SIAM Review \textbf{14} (1972), 1--62.
 
 \bibitem{Hardy}
-G.~H.~Hardy, \emph{Ramanujan: Twelve Lectures},
-Chelsea, 1959.
+G.~H.~Hardy, \emph{Ramanujan: Twelve Lectures on Subjects Suggested
+by His Life and Work}, Cambridge University Press, 1940;
+reprinted Chelsea, New York, 1959.
 
 \bibitem{Ransford}
 T.~Ransford, \emph{Potential Theory in the Complex Plane},
