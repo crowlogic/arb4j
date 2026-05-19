@@ -1,0 +1,5 @@
+var p = ComplexPolynomialNullaryFunction.express("P:3*x^2+x").evaluate().setName("p");
+var context = new Context( p );
+var p0 = ComplexNullaryFunction.express("p[0]",context).evaluate().setName("p0");
+var p1 = ComplexNullaryFunction.express("p[1]",context).evaluate().setName("p1");
+var p2 = ComplexNullaryFunction.express("p[2]",context).evaluate().setName("p2");
