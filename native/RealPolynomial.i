@@ -73,6 +73,11 @@ import arb.functions.real.RealFunction;
 	  
   public String name;
 
+  public Real get(Integer i)
+  {
+    return get(i.getSignedValue());
+  }
+  
   public RealPolynomial add(Fraction a, int bits, RealPolynomial res)
   {
     return add(res.set(a),bits,res);

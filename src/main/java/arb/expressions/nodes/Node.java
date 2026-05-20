@@ -937,7 +937,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public boolean isZero()
   {
-    assert false : "TODO: " + getClass() + " needs to implement this";
     return false;
   }
 

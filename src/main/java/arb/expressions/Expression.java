@@ -1946,11 +1946,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         loadThisOntoStack(methodVisitor);
         methodVisitor.visitInsn(ACONST_NULL);
         methodVisitor.visitFieldInsn(PUTFIELD, internalName(), name, fieldDesc);
-        methodVisitor.visitMethodInsn(INVOKEINTERFACE,
-                                      Type.getInternalName(AutoCloseable.class),
-                                      "close",
-                                      "()V",
-                                      true);
+        methodVisitor.visitMethodInsn(INVOKEINTERFACE, Type.getInternalName(AutoCloseable.class), "close", "()V", true);
         methodVisitor.visitLabel(skip);
       });
     }
@@ -3546,7 +3542,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public F instantiate()
   {
-
     instance = newInstance();
 
     instantiateAndInjectReferencedFunctions(instance);
@@ -5678,6 +5673,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         node = buildPostfixCall(node, resolve());
       }
       require(')');
+    }
+    var indexNode = resolveIndex();
+    if (indexNode != null)
+    {
+      node = new IndexAccessNode<>(this,
+                                   node,
+                                   indexNode);
     }
     return node;
   }

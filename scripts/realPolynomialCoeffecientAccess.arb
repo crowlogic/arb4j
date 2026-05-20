@@ -1,0 +1,5 @@
+var p = RealPolynomialNullaryFunction.express("P:3*x^2+x-pi").evaluate().setName("p");
+var context = new Context( p );
+var p0 = RealNullaryFunction.express("p[0]",context).evaluate().setName("p0");
+var p1 = RealNullaryFunction.express("p[1]",context).evaluate().setName("p1");
+var p2 = RealNullaryFunction.express("p[2]",context).evaluate().setName("p2");

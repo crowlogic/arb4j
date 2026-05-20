@@ -44,6 +44,11 @@ import arb.utensils.Utensils;
 
 %typemap(javacode) fmpq %{
 
+	public Real tanh( int bits, Real result )
+	{
+	  return result.set(this).tanh(bits);
+	}
+
 
 	public ComplexPolynomial mul(ComplexPolynomial that, int bits, ComplexPolynomial result)
 	{

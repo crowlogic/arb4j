@@ -116,13 +116,6 @@ public final class MuntzPadeApproximant implements
 
     context.registerVariable("z", z);
 
-    ComplexSequence aScalars = (k, order, abits, result) ->
-    {
-      int               idx = k.getSignedValue();
-      ComplexPolynomial pIn = this.a.apply(idx);
-      return pIn.evaluate(this.v, 1, abits, result);
-    };
-    context.registerSequence("a", aScalars);
 
     // qSeq(M): reverse-coefficient form of monic Q_M.
     //   qSeq(M)[k] = Q_M.get(M-1-k)   for k = 0 .. M-1

@@ -1,7 +1,6 @@
 package arb.functions.complex;
 
-import arb.Complex;
-import arb.Real;
+import arb.*;
 import arb.functions.real.RealNullaryFunction;
 import junit.framework.TestCase;
 
@@ -15,10 +14,12 @@ import junit.framework.TestCase;
  *
  * <p>
  * The functional is a two-level curried object:
+ * 
  * <pre>
  *   functional.evaluate(v, ...) → MuntzPadeApproximant  (curried on v)
  *   approximant.evaluate(t, ...) → Complex               (value at t)
  * </pre>
+ * 
  * Because P, Q, R are all constant in v, the parameter v is a dummy zero here.
  *
  * @author Stephen Crowley ©2024-2026
@@ -27,19 +28,21 @@ import junit.framework.TestCase;
 public class HyperbolicTangentTest extends
                                    TestCase
 {
-  private static final int BITS = 128;
+  private static final int     BITS   = 128;
 
   /** Dummy v=0 used when currying the functional (constants in v). */
   private static final Complex ZERO_V = new Complex();
 
   /**
-   * Build the FRMP functional for y' = 1 − y², y(0) = 0  →  y(t) = tanh(t).
+   * Build the FRMP functional for y' = 1 − y², y(0) = 0 → y(t) = tanh(t).
    */
   private static RiccatiMuntzPadeFunctional makeTanhFunctional()
   {
-    Real μ = new Real();
-    μ.set("1", BITS);
-    return new RiccatiMuntzPadeFunctional(μ, "1", "0", "-1");
+
+    return new RiccatiMuntzPadeFunctional(RealConstants.zero,
+                                          "1",
+                                          "0",
+                                          "-1");
   }
 
   /**
@@ -49,14 +52,14 @@ public class HyperbolicTangentTest extends
   private static double evalAt(RiccatiMuntzPadeFunctional eq, String tStr)
   {
     ComplexFunction approximant = eq.evaluate(ZERO_V, 1, BITS, null);
-    Complex t = new Complex();
+    Complex         t           = new Complex();
     t.set(tStr, BITS);
     Complex result = new Complex();
     approximant.evaluate(t, 1, BITS, result);
     return result.getReal().doubleValue();
   }
 
-  /** tanh(0) = 0  — the initial condition must be satisfied exactly. */
+  /** tanh(0) = 0 — the initial condition must be satisfied exactly. */
   public void testTanhAtZero()
   {
     try ( RiccatiMuntzPadeFunctional eq = makeTanhFunctional())
@@ -101,18 +104,15 @@ public class HyperbolicTangentTest extends
     try ( RiccatiMuntzPadeFunctional eq = makeTanhFunctional())
     {
       ComplexFunction approx = eq.evaluate(ZERO_V, 1, BITS, null);
-      Complex tPos = new Complex();
-      Complex tNeg = new Complex();
+      Complex         tPos   = new Complex();
+      Complex         tNeg   = new Complex();
       tPos.set("0.7", BITS);
       tNeg.set("-0.7", BITS);
       Complex yPos = new Complex();
       Complex yNeg = new Complex();
       approx.evaluate(tPos, 1, BITS, yPos);
       approx.evaluate(tNeg, 1, BITS, yNeg);
-      assertEquals("tanh is odd: y(t) = -y(-t)",
-                   yPos.getReal().doubleValue(),
-                   -yNeg.getReal().doubleValue(),
-                   1e-12);
+      assertEquals("tanh is odd: y(t) = -y(-t)", yPos.getReal().doubleValue(), -yNeg.getReal().doubleValue(), 1e-12);
     }
   }
 }

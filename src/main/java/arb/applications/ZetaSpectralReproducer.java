@@ -90,12 +90,12 @@ public class ZetaSpectralReproducer extends
   //static final Real   T0_DEFAULT     = Real.valueOf("1000", 128);
   
   //static final Real   TMAX_DEFAULT   = Real.valueOf("1000.0", 128);
-  static final Real   TMAX_DEFAULT   = Real.valueOf("4000.0", 128);
+  static final Real   TMAX_DEFAULT   = Real.valueOf("1000.0", 128);
   
   static final double OMEGA_MIN      = -2.0;
   static final double OMEGA_MAX      = 0;
-  static final int    NT_DEFAULT     = 40000;                            // smoke run; use 80000 for parity
-  static final int    NOMEGA_DEFAULT = 4096;                            // smoke run; use 2560 for parity
+  static final int    NT_DEFAULT     = 10000;
+  static final int    NOMEGA_DEFAULT = 1024; 
   static final int    BITS_DEFAULT   = 64;
 
   static int          NT;

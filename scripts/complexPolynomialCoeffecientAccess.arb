@@ -1,0 +1,9 @@
+var contex = new Context();
+var P = ComplexPolynomialNullaryFunction.express("P:3*x^2+x",context);
+var p = P.evaluate().setName("p");
+context.registerVariable(p);
+var p0 = ComplexNullaryFunction.express("p[0]",context).evaluate().setName("p0");
+var p1 = ComplexNullaryFunction.express("p[1]",context).evaluate().setName("p1");
+var p2 = ComplexNullaryFunction.express("p[2]",context).evaluate().setName("p2");
+// this will fail until https://github.com/crowlogic/arb4j/issues/1029
+var P2 = ComplexNullaryFunction.express("P()[2]",context);

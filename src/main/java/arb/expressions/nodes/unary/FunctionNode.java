@@ -941,7 +941,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public Class<?> getArgType()
   {
-    return arg.type();
+    return arg == null ? Object.class : arg.type();
   }
 
   @Override

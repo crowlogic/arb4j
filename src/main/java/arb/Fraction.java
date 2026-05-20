@@ -72,6 +72,11 @@ public class Fraction implements Becomable<Fraction>,AutoCloseable,NamedField<Fr
   }
 
 
+	public Real tanh( int bits, Real result )
+	{
+	  return result.set(this).tanh(bits);
+	}
+
 
 	public ComplexPolynomial mul(ComplexPolynomial that, int bits, ComplexPolynomial result)
 	{
