@@ -100,7 +100,7 @@ public class HyperbolicTangentTest extends
 
   /** Odd symmetry: tanh(-t) = -tanh(t). */
   public void testTanhOddSymmetry()
-  {
+  { 
     try ( RiccatiMuntzPadeFunctional eq = makeTanhFunctional())
     {
       ComplexFunction approx = eq.evaluate(ZERO_V, 1, BITS, null);
