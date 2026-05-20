@@ -5674,7 +5674,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
       require(')');
     }
-    var indexNode = resolveIndex();
+    var indexNode = resolveSquareBracketedIndex();
     if (indexNode != null)
     {
       node = new IndexAccessNode<>(this,

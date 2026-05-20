@@ -72,33 +72,19 @@ public class IndexAccessNode<D, R, F extends Function<? extends D, ? extends R>>
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    // 1. Generate base
-    base.generate(mv, base.type());
-
-    // 2. Generate index
     Class<?> indexType = index.type();
-    index.generate(mv, indexType);
-
-    // 3. Virtual get(index) — mirror VariableNode.generateIndexAccess
-    if (Integer.class.equals(indexType))
-    {
-      Class<?> elementType = resolveIndexedElementType(base.type(), indexType);
-      Compiler.generateVirtualMethodInvocation(mv, base.type(), "get", elementType, indexType);
-      resolvedElementType = elementType;
-    }
-    else
+    if (!Integer.class.equals(indexType))
     {
       throw new CompilerException("IndexAccessNode: unhandled index type " + indexType);
     }
 
-    if (generatedType == null)
-    {
-      generatedType = resolvedElementType;
-    }
+    base.generate(mv, base.type());
+    index.generate(mv, indexType);
+    Compiler.generateVirtualMethodInvocation(mv, base.type(), "get", type(), indexType);
 
     if (isRootNode)
     {
-      expression.generateSetResultInvocation(mv, generatedType);
+      expression.generateSetResultInvocation(mv, resultType != null ? resultType : type());
     }
 
     return mv;
