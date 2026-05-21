@@ -101,7 +101,7 @@ public abstract class JetNode<D, C, F extends Function<? extends D, ? extends C>
     final boolean  isComplex  = Complex.class.equals(scalarType);
     final Class<?> polyClass  = isComplex ? ComplexPolynomial.class : RealPolynomial.class;
 
-    String         className  = expression.className();
+    String         internalName  = expression.internalName();
 
     // --- Ensure intermediate variables are registered ---
     if (!expression.hasIntermediateVariable(sharedState.jetFieldName))
@@ -119,21 +119,21 @@ public abstract class JetNode<D, C, F extends Function<? extends D, ? extends C>
 
     // Load this.jetStamp_X
     loadThisOntoStack(mv);
-    mv.visitFieldInsn(Opcodes.GETFIELD, className, sharedState.stampFieldName, "I");
+    mv.visitFieldInsn(Opcodes.GETFIELD, internalName, sharedState.stampFieldName, "I");
 
     // Load this.evalStamp
-    Compiler.getFieldFromThis(mv, className, "evalStamp", "I");
+    Compiler.getFieldFromThis(mv, internalName, "evalStamp", "I");
 
     // If equal, skip computation
     Compiler.jumpToIfEqual(mv, skipCompute);
     
     // --- Compute jet ---
-    emitJetComputation(mv, scalarType, isComplex, polyClass, className);
+    emitJetComputation(mv, scalarType, isComplex, polyClass, internalName);
 
     // Update stamp: this.jetStamp_X = this.evalStamp
     loadThisOntoStack(mv);
-    Compiler.getFieldFromThis(mv, className, "evalStamp", "I" );
-    Compiler.putField(mv, className, sharedState.stampFieldName, "I" );
+    Compiler.getFieldFromThis(mv, internalName, "evalStamp", "I" );
+    Compiler.putField(mv, internalName, sharedState.stampFieldName, "I" );
    
     Compiler.designateLabel(mv, skipCompute);
 
@@ -142,7 +142,7 @@ public abstract class JetNode<D, C, F extends Function<? extends D, ? extends C>
       // Series mode: copy all `order` coefficients from the jet polynomial
       // into the result vector, matching the series contract.
       // for (int i = 0; i < order; i++) result.get(i).set(jetPoly.get(i))
-      emitSeriesCopyLoop(mv, scalarType, polyClass, className);
+      emitSeriesCopyLoop(mv, scalarType, polyClass, internalName);
     }
     else
     {
@@ -174,7 +174,7 @@ public abstract class JetNode<D, C, F extends Function<? extends D, ? extends C>
    * </ol>
    */
   private void emitJetComputation(MethodVisitor mv, Class<?> scalarType, boolean isComplex, Class<?> polyClass,
-                                  String className)
+                                  String internalName)
   {
     int maxCoeff = sharedState.getMaxCoefficientNeeded();
     // Minimum series length is 2: index 0 for the constant term (the point
@@ -268,7 +268,7 @@ public abstract class JetNode<D, C, F extends Function<? extends D, ? extends C>
    * This matches the series contract needed by callers like
    * {@code HardyThetaInversion.buildTaylorSeries}.
    */
-  private void emitSeriesCopyLoop(MethodVisitor mv, Class<?> scalarType, Class<?> polyClass, String className)
+  private void emitSeriesCopyLoop(MethodVisitor mv, Class<?> scalarType, Class<?> polyClass, String internalName)
   {
     int iSlot = expression.allocateLocalVariableSlot();
 

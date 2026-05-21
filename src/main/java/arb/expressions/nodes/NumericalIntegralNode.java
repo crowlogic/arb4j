@@ -296,10 +296,10 @@ public class NumericalIntegralNode<D, C, F extends Function<? extends D, ? exten
    */
   protected void propagateUpstreamVariablesToIntegrand(MethodVisitor mv)
   {
-    Expression<?, ?, ?>          integrand           = integrandExpression;
-    String                       integrandClassName  = integrand.className();
-    String                       integrandFieldDesc  = integrandMapping.functionFieldDescriptor();
-    String                       integrandFieldName  = integrandMapping.functionName;
+    Expression<?, ?, ?>          integrand              = integrandExpression;
+    String                       integrandInternalName  = integrand.internalName();
+    String                       integrandFieldDesc     = integrandMapping.functionFieldDescriptor();
+    String                       integrandFieldName     = integrandMapping.functionName;
 
     var                          outerIndependent    = expression.getIndependentVariable();
     String                       outerIndependentName =
@@ -337,7 +337,7 @@ public class NumericalIntegralNode<D, C, F extends Function<? extends D, ? exten
       Label fieldNotNull = new Label();
       expression.loadThisAndFieldOntoStack(mv, integrandFieldName, integrandFieldDesc);
       // Stack: integrand
-      mv.visitFieldInsn(Opcodes.GETFIELD, integrandClassName, varName, varDesc);
+      mv.visitFieldInsn(Opcodes.GETFIELD, integrandInternalName, varName, varDesc);
       // Stack: integrand.<varName>|null
       mv.visitJumpInsn(Opcodes.IFNONNULL, fieldNotNull);
 
@@ -346,14 +346,14 @@ public class NumericalIntegralNode<D, C, F extends Function<? extends D, ? exten
       Compiler.generateNewObjectInstruction(mv, varType);
       Compiler.duplicateTopOfTheStack(mv);
       Compiler.invokeDefaultConstructor(mv, varType);
-      mv.visitFieldInsn(Opcodes.PUTFIELD, integrandClassName, varName, varDesc);
+      mv.visitFieldInsn(Opcodes.PUTFIELD, integrandInternalName, varName, varDesc);
 
       mv.visitLabel(fieldNotNull);
 
       // ── Copy by value: integrand.<varName>.set(<source>) ──
       // Load destination: integrand.<varName>
       expression.loadThisAndFieldOntoStack(mv, integrandFieldName, integrandFieldDesc);
-      mv.visitFieldInsn(Opcodes.GETFIELD, integrandClassName, varName, varDesc);
+      mv.visitFieldInsn(Opcodes.GETFIELD, integrandInternalName, varName, varDesc);
 
       // Load source — either the evaluate() input parameter (if this is
       // the outer's independent variable) or a field on the outer class.

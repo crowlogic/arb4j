@@ -697,7 +697,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (fieldClass != null)
     {
-      addNullCheckForField(mv, className, varName, fieldClass.descriptorString());
+      addNullCheckForField(mv, internalName(), varName, fieldClass.descriptorString());
     }
   }
 
@@ -2509,9 +2509,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       var    declaredVariableStream  =
                                     nestedExpression.variablesDeclared ? variableStream.filter(variable -> nestedExpression.hasDeclaredVariable(variable.getLeft()))
                                                                        : variableStream.filter(variable -> hasDeclaredVariable(variable.getLeft()));
-      String nestedClassInternalName = haveLiveInstance ? Type.getInternalName(nestedFunction.type()) : nestedFunction.expression.className;
+      String nestedClassInternalName = haveLiveInstance ? Type.getInternalName(nestedFunction.type()) : nestedFunction.expression.internalName();
       initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv),
-                                                     className,
+                                                     internalName(),
                                                      nestedClassInternalName,
                                                      nestedFunction.functionName,
                                                      declaredVariableStream);
@@ -2817,7 +2817,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     putField(mv, internalName(), functionName, fieldDescriptor);
     Compiler.jumpTo(mv, alreadyAssigned);
     mv.visitLabel(alreadyAssigned);
-    initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv), className, functionName, functionName, context.variableClassStream());
+    initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv), internalName(), functionName, functionName, context.variableClassStream());
     return mv;
   }
 
@@ -2875,7 +2875,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    */
   protected void generateStaticPrecisionCheck(MethodVisitor mv)
   {
-    String internalName = className.replace('.', '/');
+    String internalName = internalName();
     Label  skipLabel    = new Label();
 
     // if (this.staticPrecision >= bits) goto skipLabel
@@ -2910,7 +2910,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   { "rawtypes", "unchecked" })
   protected void generateStaticSubexpressionComputations(MethodVisitor mv)
   {
-    String internalName = className.replace('.', '/');
+    String internalName = internalName();
     rootNode.nodeStream().filter(node -> node instanceof StaticNode).map(node -> (StaticNode) node).forEach(staticNode ->
     {
       boolean wasRootNode = staticNode.delegate.isRootNode;
