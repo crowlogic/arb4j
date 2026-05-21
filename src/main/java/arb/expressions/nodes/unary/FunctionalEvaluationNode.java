@@ -40,6 +40,22 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
     return String.format("%s(%s)", functionNode, arg);
   }
 
+  /**
+   * UnaryOperationNode.equals only compares {@code arg}. For a function
+   * application {@code f(x)} we must also distinguish on which function is
+   * being applied, otherwise downstream simplifications (notably
+   * DivisionNode's {@code left.equals(right) → 1} fold) collapse
+   * {@code p1(M)(z) / p2(M)(z)} to a literal {@code 1}.
+   */
+  @Override
+  public boolean equals(Object obj)
+  {
+    if (this == obj) return true;
+    if (!(obj instanceof FunctionalEvaluationNode<?, ?, ?> other)) return false;
+    return java.util.Objects.equals(functionNode, other.functionNode)
+        && java.util.Objects.equals(arg, other.arg);
+  }
+
   private Node<D, C, F> functionNode;
 
   public Node<D, C, F> getFunctionNode()

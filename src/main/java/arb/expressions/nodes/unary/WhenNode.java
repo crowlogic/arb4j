@@ -533,9 +533,14 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     for (int j = 0; j < labels.length; j++)
     {
       Compiler.designateLabel(mv, labels[j]);
-      var jthBranch     = branches.get(j);
-      var jthBranchType = jthBranch.type();
-      jthBranch.generate(mv, jthBranchType);
+      var jthBranch = branches.get(j);
+      // Generate the branch targeting the WhenNode's resultType, not the
+      // branch's own type. Otherwise a branch whose natural type is narrower
+      // than the WhenNode's result (e.g. a Complex literal `h(0)` in a
+      // ComplexPolynomial-typed when) produces a Complex temp where the
+      // surrounding code expects ComplexPolynomial — the if-chain emitter
+      // below already passes resultType for this reason (line ~568).
+      jthBranch.generate(mv, resultType);
       Compiler.jumpTo(mv, endSwitch);
     }
     Compiler.designateLabel(mv, defaultLabel);
