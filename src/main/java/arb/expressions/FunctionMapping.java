@@ -162,7 +162,16 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
     {
       return declaredAs;
     }
-    assert expression != null : "expression must not be null when computing field descriptor for functionName=" + functionName;
+    if (expression == null)
+    {
+      // Forward-declared mapping (created by Context.declare): no Expression
+      // yet. functionClass is the declared interface; emit its descriptor and
+      // let the concrete class — defined later by ExpressionClassLoader — be
+      // assigned through standard JVM interface polymorphism.
+      assert functionClass != null
+          : "forward-declared mapping must have functionClass set, name=" + functionName;
+      return declaredAs = functionClass.descriptorString();
+    }
     return declaredAs = String.format("L%s;", expression.internalName());
   }
 
