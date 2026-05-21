@@ -3598,9 +3598,35 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     instance = newInstance();
 
-    instantiateAndInjectReferencedFunctions(instance);
-    injectContextFunctionAndVariableReferences(instance);
-    populateSourceExpressionBackPointer(instance);
+    // issue #1032: instantiateAndInjectReferencedFunctions may walk a
+    // sub-expression (e.g. Σ's operand body) that references the owning
+    // sequence by name. Without a re-entrancy signal that path would call
+    // FunctionMapping.instantiate() on this same mapping, which in turn
+    // would call expression.instantiate() recursively, overwrite the
+    // `instance` field with a ghost, and leave the outer continuing with
+    // a different Java object than the one it allocated. Mark the mapping
+    // as mid-instantiate so the recursive FunctionMapping.instantiate()
+    // short-circuits through its existing instantiateInProgress guard and
+    // returns null instead of allocating a ghost.
+    boolean clearMidInstantiate = false;
+    if (functionMapping != null && !functionMapping.instantiateInProgress)
+    {
+      functionMapping.instantiateInProgress = true;
+      clearMidInstantiate = true;
+    }
+    try
+    {
+      instantiateAndInjectReferencedFunctions(instance);
+      injectContextFunctionAndVariableReferences(instance);
+      populateSourceExpressionBackPointer(instance);
+    }
+    finally
+    {
+      if (clearMidInstantiate)
+      {
+        functionMapping.instantiateInProgress = false;
+      }
+    }
 
     return instance;
   }

@@ -191,7 +191,18 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
    * the ping-pong observed in #1027 between mutually- referencing generated
    * classes (S ↔ α).
    */
-  private boolean instantiateInProgress;
+  /**
+   * Re-entrance guard for both {@link #instantiate()} (the mapping's own
+   * compile-then-instantiate path) and {@link Expression#instantiate()} when
+   * called directly via {@link arb.functions.Function#express}. Setting this
+   * before descending into {@code instantiateAndInjectReferencedFunctions}
+   * is what stops sub-expressions whose body references the owning
+   * sequence (e.g. {@code Σj➔a(j)*a(k-1-j)} inside the body of {@code a})
+   * from looping back through {@link FunctionMapping#instantiate()} and
+   * allocating a ghost instance that overwrites
+   * {@link Expression#instance}. See issue #1032.
+   */
+  boolean instantiateInProgress;
 
   public F instantiate()
   {

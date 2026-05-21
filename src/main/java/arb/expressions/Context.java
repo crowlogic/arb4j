@@ -295,6 +295,20 @@ public class Context implements
       {
         return; // expression body never references this function in its function-namespace role
       }
+      // Skip self-injection. issue #1032: for a self-recursive sequence
+      // whose own mapping has already been published with instance == f,
+      // setting this.<self> = self collapses the outer/recursive
+      // invocations onto the same Java object so every "recursive call"
+      // shares the outer's per-instance scratch state (intermediate
+      // variable fields, evaluation buffers, cache). Leaving the field
+      // null lets the bytecode emitted by generateSelfReference fall
+      // through to its `if (this.<self> == null) this.<self> = new <self>()`
+      // branch and produce a separate instance — matching what every
+      // non-self-recursive case (e.g. Chebyshev T) already does.
+      if (functionMapping.instance == f)
+      {
+        return;
+      }
       try
       {
         field.set(f, functionMapping.instance);
