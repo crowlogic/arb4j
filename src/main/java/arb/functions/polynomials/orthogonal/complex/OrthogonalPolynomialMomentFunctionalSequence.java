@@ -131,11 +131,17 @@ public abstract class OrthogonalPolynomialMomentFunctionalSequence extends
     return ComplexPolynomialSequence.express("A", "1", context);
   }
 
-  /** B(n) = −α(n). */
+  /**
+   * B(n) = −α(n). Must be an expression-compiled sequence (not a lambda) so
+   * the parent's {@code P} expression body — which registers {@code B} as a
+   * function reference in {@link Context} — passes the {@code isHidden} guard
+   * on {@link Context#registerFunctionMapping}. The {@code Bops} name avoids
+   * any collision with a caller-supplied {@code "B"}.
+   */
   @Override
   public Sequence<ComplexPolynomial> B()
   {
-    return (n, order, bits, res) -> α.evaluate(n, order, bits, res).neg(res);
+    return ComplexPolynomialSequence.express("Bops", "Bops:n➔-α(n)", context);
   }
 
   /** C(n) = β(n). */

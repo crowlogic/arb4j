@@ -142,10 +142,21 @@ public abstract class RecurrentlyGeneratedOrthogonalPolynomialSequence<R, V, E e
   public void initialize()
   {
     assert !initialized : "already initialized";
-    A           = A();
-    B           = B();
-    C           = C();
-    P           = PolynomialSequence.express("P", "n➔when(n=0,p0,n=1,p1,else,(A(n-1)*x+B(n-1))*P(n-1)-C(n-1)*P(n-2))", context, coDomainType());
+    A = A();
+    B = B();
+    C = C();
+    // The recurrence body references A, B, C by literal name. Wire each
+    // implementation-returned sequence into the Context under those exact
+    // names so the compiler can resolve them. (Each instance of this class
+    // needs its own Context — sharing one Context across two
+    // RecurrentlyGenerated* siblings would clobber A/B/C/P names.)
+    context.registerSequence("A", A);
+    context.registerSequence("B", B);
+    context.registerSequence("C", C);
+    P           = PolynomialSequence.express("P",
+                                             "n➔when(n=0,p0,n=1,p1,else,(A(n-1)*x+B(n-1))*P(n-1)-C(n-1)*P(n-2))",
+                                             context,
+                                             coDomainType());
     initialized = true;
   }
 

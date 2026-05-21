@@ -6,6 +6,22 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 arb4j is a Java API wrapping the C library [arblib](http://arblib.org)/FLINT (arbitrary precision real and complex ball arithmetic) via a SWIG-generated JNI bridge, plus an expression compiler that turns Unicode-rich mathematical notation directly into JVM bytecode via ASM. See `README.md` for the full feature tour and the recursive-cluster compilation protocol.
 
+## Cardinal rule: NEVER manipulate expression strings programmatically
+
+Expression strings (the bodies passed to `*.express(...)`, `*.compile(...)`, `*.declare(...)`) are LITERAL source code that the compiler parses into AST → bytecode. They must always be **string literals** at the call site.
+
+The following are all forbidden, without exception:
+
+- Concatenation with `+` to splice in a runtime value: `"P:n➔" + name + "(n-1)"` ❌
+- `String.format(...)` or `printf`-style templating to build an expression body ❌
+- `String.replace(...)` / `replaceAll` on an expression to substitute a name ❌
+- Building an expression body via `StringBuilder` or any character-by-character assembly ❌
+- Any kind of name renaming inside a generated expression body ❌
+
+If a naming collision in a shared `Context` is forcing the temptation to do any of the above — **rethink the architecture instead**. Possible answers: a per-instance `Context`, sharing pre-compiled `Sequence` instances through Java fields rather than context names, a parent-class refactor to admit two siblings cleanly, or a new compiler feature (e.g. a fixed `self` keyword inside recurrence bodies). String manipulation of expressions is never the answer.
+
+This rule applies even when the alternative seems clumsy. The expression compiler is the authoritative tool; programmatic source-code construction is what we're trying to eliminate, not perform.
+
 ## Build environment (non-obvious requirements)
 
 - **Java 26** is required (`--enable-preview` is used by the launchers). Set `JAVA_HOME=/usr/lib/jvm/java-26-openjdk-amd64`.

@@ -35,11 +35,12 @@ public class HyperbolicTangentTest extends
 
   /**
    * Build the FRMP functional for y' = 1 − y², y(0) = 0 → y(t) = tanh(t).
+   * Fractional exponent μ = 1 (the classical, non-fractional Riccati).
    */
   private static RiccatiMuntzPadeFunctional makeTanhFunctional()
   {
 
-    return new RiccatiMuntzPadeFunctional(RealConstants.zero,
+    return new RiccatiMuntzPadeFunctional(new Real().set("1", BITS),
                                           "1",
                                           "0",
                                           "-1");

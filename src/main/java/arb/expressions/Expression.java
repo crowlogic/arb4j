@@ -1076,9 +1076,41 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       // compile chain has defined every class in the recursive cluster.
       String typeInternalName   = mapping.functionName;
       String fieldDescriptor    = mapping.functionFieldDescriptor();
+      String contextTypeDesc    = Type.getDescriptor(Context.class);
       var    alreadyInitialized = new Label();
+      var    needsAllocation    = new Label();
+
+      // 1. if (this.<field> != null) skip → field already populated, done.
       loadThisOntoStack(mv).visitFieldInsn(GETFIELD, internalName(), mapping.functionName, fieldDescriptor);
       mv.visitJumpInsn(Opcodes.IFNONNULL, alreadyInitialized);
+
+      // 2. Try the context's canonical instance:
+      //      Function f = this.context.lookupFunctionInstance("<name>");
+      //      if (f != null) { this.<field> = (FieldType) f; goto done; }
+      // This avoids allocating a second instance whose own field-injection
+      // never runs (e.g. σfunc creating a fresh `new m()` whose `a` field
+      // stays null because σ has no `a` field of its own to propagate from).
+      loadThisOntoStack(mv);
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
+      mv.visitLdcInsn(mapping.functionName);
+      mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                         Type.getInternalName(Context.class),
+                         "lookupFunctionInstance",
+                         "(Ljava/lang/String;)Larb/functions/Function;",
+                         false);
+      duplicateTopOfTheStack(mv);
+      mv.visitJumpInsn(Opcodes.IFNULL, needsAllocation);
+      // Stack: this, function. Cast and store.
+      mv.visitTypeInsn(Opcodes.CHECKCAST, typeInternalName);
+      putField(mv, internalName(), mapping.functionName, fieldDescriptor);
+      mv.visitJumpInsn(Opcodes.GOTO, alreadyInitialized);
+
+      // 3. Fallback: context has no instance yet (mutual-recursion mid-bootstrap).
+      //    Allocate a fresh one, propagate context, run context-level injection.
+      mv.visitLabel(needsAllocation);
+      mv.visitInsn(Opcodes.POP); // discard the dup'd null
+      mv.visitInsn(Opcodes.POP); // discard the `this` we loaded for the eventual PUTFIELD
       loadThisOntoStack(mv);
       generateNewObjectInstruction(mv, typeInternalName);
       duplicateTopOfTheStack(mv);
@@ -1090,7 +1122,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       // default (an empty `new Context()`), which has no functions or
       // variables registered, and every nested function reference (e.g. He)
       // remains null at runtime.
-      String contextTypeDesc = Type.getDescriptor(Context.class);
       loadThisOntoStack(mv);
       mv.visitFieldInsn(GETFIELD, internalName(), mapping.functionName, fieldDescriptor);
       loadThisOntoStack(mv);
@@ -2392,6 +2423,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (context != null)
     {
       propagateContext(mv, functional);
+      // Also propagate the `context` field itself so the functional's own
+      // initialize() — and any subsequent runtime lookups it performs via
+      // {@link Context#lookupFunctionInstance} — see the same live, populated
+      // Context. Without this, the freshly-allocated functional keeps its
+      // field-initializer default (`new Context()`) which has no functions
+      // registered, so transitive references like `m → a` resolve to null.
+      // Stack on entry: [..., funcRef]   →   exit: [..., funcRef]
+      String contextTypeDesc = Type.getDescriptor(Context.class);
+      duplicateTopOfTheStack(mv);                                                  // [..., funcRef, funcRef]
+      loadThisOntoStack(mv);                                                       // [..., funcRef, funcRef, this]
+      mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);     // [..., funcRef, funcRef, ctx]
+      mv.visitFieldInsn(PUTFIELD, functional.internalName(), "context", contextTypeDesc); // [..., funcRef]
     }
 
     invokeInitializationMethod(mv, functional);
