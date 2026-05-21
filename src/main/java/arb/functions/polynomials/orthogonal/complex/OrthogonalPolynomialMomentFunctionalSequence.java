@@ -11,8 +11,8 @@ import arb.functions.integer.Sequence;
 
 /**
  * The monic orthogonal polynomial sequence of a quasi-definite moment
- * functional 𝓛 over ℂ[u], constructed from the moment sequence m(k)(u) via
- * the polynomial Chebyshev/Wheeler σ-table (Stieltjes form).
+ * functional 𝓛 over ℂ[u], constructed from the moment sequence m(k)(u) via the
+ * polynomial Chebyshev/Wheeler σ-table (Stieltjes form).
  *
  * <p>
  * <b>Definitions.</b> Given moments m : ℤ_{≥0} → ℂ[u], introduce the auxiliary
@@ -41,8 +41,8 @@ import arb.functions.integer.Sequence;
  * (convention σ(-1, k) := 0 keeps the β(0)·σ(-1, …) term degenerate at j = 1).
  *
  * <p>
- * <b>OPS.</b> α(n), β(n) are the Jacobi-matrix entries of the monic OPS for
- * 𝓛; the polynomials satisfy
+ * <b>OPS.</b> α(n), β(n) are the Jacobi-matrix entries of the monic OPS for 𝓛;
+ * the polynomials satisfy
  *
  * <pre>
  *   P(-1, x) := 0,   P(0, x) := 1
@@ -86,38 +86,35 @@ public abstract class OrthogonalPolynomialMomentFunctionalSequence extends
 
     // Forward-declare the mutually recursive cluster {σ, h, α, β}.
     ComplexPolynomialSequenceSequence.declare("σ", context);
-    ComplexPolynomialSequence        .declare("h", context);
-    ComplexPolynomialSequence        .declare("α", context);
-    ComplexPolynomialSequence        .declare("β", context);
+    ComplexPolynomialSequence.declare("h", context);
+    ComplexPolynomialSequence.declare("α", context);
+    ComplexPolynomialSequence.declare("β", context);
 
     // Compile non-leaf bodies (class defined, instance deferred).
     ComplexPolynomialSequenceSequence.compile("σ",
-        "σ:j ➔ k ➔ when(j = 0, m(k),"
-      +              " j = 1, σ(0)(k+1) − α(0)·σ(0)(k),"
-      +              " else,   σ(j-1)(k+1) − α(j-1)·σ(j-1)(k) − β(j-1)·σ(j-2)(k))",
-        context);
-    ComplexPolynomialSequence.compile("h:j ➔ σ(j)(j)",               context);
-    ComplexPolynomialSequence.compile("α:j ➔ σ(j)(j+1) / h(j)",      context);
+                                              "σ:j ➔ k ➔ when(j = 0, m(k),"
+                                                   + " j = 1, σ(0)(k+1) − α(0)·σ(0)(k),"
+                                                   + " else,   σ(j-1)(k+1) − α(j-1)·σ(j-1)(k) − β(j-1)·σ(j-2)(k))",
+                                              context);
+    ComplexPolynomialSequence.compile("h:j ➔ σ(j)(j)", context);
+    ComplexPolynomialSequence.compile("α:j ➔ σ(j)(j+1) / h(j)", context);
 
     // Express the leaf β; instantiating β cascades through h → σ → α.
-    this.β = ComplexPolynomialSequence.express("β",
-        "β:j ➔ when(j = 0, 0, else, h(j) / h(j-1))",
-        context);
+    this.β = ComplexPolynomialSequence.express("β", "β:j ➔ when(j = 0, 0, else, h(j) / h(j-1))", context);
 
     // After the cascade, pull the other cluster members out of the context.
-    this.σ = (ComplexPolynomialSequenceSequence) context.getFunctionMapping("σ").instantiate();
-    this.h = (ComplexPolynomialSequence)         context.getFunctionMapping("h").instantiate();
-    this.α = (ComplexPolynomialSequence)         context.getFunctionMapping("α").instantiate();
+    this.σ = context.getFunctionMapping("σ").instantiate();
+    this.h = context.getFunctionMapping("h").instantiate();
+    this.α = context.getFunctionMapping("α").instantiate();
 
-    p0.one();                               // P(0, x) = 1; p1 set lazily in initialize()
+    p0.one(); // P(0, x) = 1; p1 set lazily in initialize()
   }
 
   /** Set p1 = x − α(0), then delegate to the parent. */
   @Override
   public void initialize()
   {
-    try (Integer zero = new Integer().set(0);
-         ComplexPolynomial alpha0 = α.evaluate(zero, 1, bits(), new ComplexPolynomial()))
+    try ( Integer zero = new Integer().set(0); ComplexPolynomial alpha0 = α.evaluate(zero, 1, bits(), new ComplexPolynomial()))
     {
       p1.one().shiftLeft(1, p1).sub(alpha0, bits(), p1);
     }
@@ -132,11 +129,11 @@ public abstract class OrthogonalPolynomialMomentFunctionalSequence extends
   }
 
   /**
-   * B(n) = −α(n). Must be an expression-compiled sequence (not a lambda) so
-   * the parent's {@code P} expression body — which registers {@code B} as a
-   * function reference in {@link Context} — passes the {@code isHidden} guard
-   * on {@link Context#registerFunctionMapping}. The {@code Bops} name avoids
-   * any collision with a caller-supplied {@code "B"}.
+   * B(n) = −α(n). Must be an expression-compiled sequence (not a lambda) so the
+   * parent's {@code P} expression body — which registers {@code B} as a function
+   * reference in {@link Context} — passes the {@code isHidden} guard on
+   * {@link Context#registerFunctionMapping}. The {@code Bops} name avoids any
+   * collision with a caller-supplied {@code "B"}.
    */
   @Override
   public Sequence<ComplexPolynomial> B()

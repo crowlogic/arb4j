@@ -204,15 +204,15 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
    */
   boolean instantiateInProgress;
 
-  public F instantiate()
+  public <E extends F> E instantiate()
   {
     if (instance != null)
     {
-      return instance;
+      return (E) instance;
     }
     if (instantiateInProgress)
     {
-      return instance;
+      return (E) instance;
     }
     instantiateInProgress = true;
     try
@@ -221,7 +221,7 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
       {
         expression.compile();
       }
-      return instance = expression.instantiate();
+      return (E) (instance = expression.instantiate());
     }
     finally
     {

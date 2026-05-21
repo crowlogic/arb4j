@@ -17,9 +17,10 @@ import arb.functions.polynomials.orthogonal.RecurrentlyGeneratedOrthogonalPolyno
  * polynomial-in-u coefficients.
  *
  * <p>
- * Distinct from {@link ComplexRecurrentlyGeneratedOrthogonalPolynomialSequence},
- * which fixes the recurrence-coefficient ring to {@link Complex} scalars; here
- * it is {@link ComplexPolynomial}.
+ * Distinct from
+ * {@link ComplexRecurrentlyGeneratedOrthogonalPolynomialSequence}, which fixes
+ * the recurrence-coefficient ring to {@link Complex} scalars; here it is
+ * {@link ComplexPolynomial}.
  *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}

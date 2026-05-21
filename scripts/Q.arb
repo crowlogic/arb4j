@@ -1,0 +1,32 @@
+int bits = 128;
+Real μ = Real.named("μ").set("1", bits);
+var context = new Context(μ).disableLommelPolynomials();
+var pin = ComplexPolynomialNullaryFunction.express("pin:v→1", context);
+var qin = ComplexPolynomialNullaryFunction.express("qin:v→0", context);
+var rin = ComplexPolynomialNullaryFunction.express("rin:v→-1", context);
+var p = ComplexPolynomial.named("p"); context.registerVariable(p); pin.evaluate(bits, p);
+var q = ComplexPolynomial.named("q"); context.registerVariable(q); qin.evaluate(bits, q);
+var r = ComplexPolynomial.named("r"); context.registerVariable(r); rin.evaluate(bits, r);
+var v = new Complex().setName("v"); context.registerVariable(v);
+ComplexFunctionSequence.declare("a", context);
+var a = ComplexPolynomialSequence.express(null,
+    "a:k➔v➔when(k=1, p(v)/Γ(μ+1), else, (Γ((k-1)*μ+1)/Γ(k*μ+1))*(q(v)*a(k-1)(v)+r(v)*sum(j➔a(j)(v)*a(k-1-j)(v){j=1..k-2})))",
+    context);
+context.declare("h", Integer.class, Complex.class, ComplexSequence.class);
+context.declare("s", Integer.class, Complex.class, ComplexSequence.class);
+context.declare("α", Integer.class, Complex.class, ComplexSequence.class);
+context.declare("β", Integer.class, Complex.class, ComplexSequence.class);
+ComplexPolynomialSequence.declare("Q", context);
+Sequence.compile("h", Complex.class, "h:n➔sum(i➔sum(j➔Q(n)[i]*Q(n)[j]*a(i+j+1)(v){j=0..n}){i=0..n})", ComplexSequence.class, context);
+Sequence.compile("s", Complex.class, "s:n➔sum(i➔sum(j➔Q(n)[i]*Q(n)[j]*a(i+j+2)(v){j=0..n}){i=0..n})", ComplexSequence.class, context);
+Sequence.compile("α", Complex.class, "α:n➔s(n)/h(n)",   ComplexSequence.class, context);
+Sequence.compile("β", Complex.class, "β:n➔h(n)/h(n-1)", ComplexSequence.class, context);
+var Q = ComplexPolynomialSequence.express("Q",
+    "Q:n➔when(n=0, 1, n=1, z-α(0), else, (z-α(n-1))*Q(n-1)-β(n-1)*Q(n-2))",
+    context);
+Integer n = Integer.named("n");
+for (int nv : new int[]{0,1,2,3,4,5,6}) {
+  n.set(nv);
+  ComplexPolynomial qn = Q.evaluate(n, 1, bits, new ComplexPolynomial());
+  out.printf("Q(%d) = %s%n", nv, qn);
+}
