@@ -72,13 +72,12 @@ public final class MuntzPadeApproximant implements
         context);
 
     ComplexPolynomialSequence.express("Φden:M➔sum(j➔Q(M)[M-j]*z^j{j=1..M})+1", context);
-    // Φnum(M) is the Padé numerator of degree M-1. Pn(M) already has degree
-    // M-1 (Pn(1)=hv(0), recurrence (z-αv(n-1))*Pn(n-1)-βv(n-1)*Pn(n-2)
-    // bumps degree by 1 per level). Multiplying by z gives degree M, which
-    // makes Φ(M)(z) = z²/(...) at M=2 and approaches 0 near z=0 rather
-    // than tracking tanh(z)≈z near 0. The construction here is Φ(M)=Pn/Φden;
-    // no extra z factor.
-    ComplexPolynomialSequence.express("Φnum:M➔Pn(M)",                           context);
+    // Φnum mirrors Φden's reverse-coefficient form: coefficient j of Pn(M)
+    // multiplies z^(M-j), so summing in that order gives the Müntz-Padé
+    // numerator with the correct leading-order behaviour. The standard
+    // [3/2] Padé of tanh comes out as (z + z³/15)/(1 + 2z²/5) at M=3
+    // straight from this assembly.
+    ComplexPolynomialSequence.express("Φnum:M➔sum(j➔Pn(M)[M-j]*z^j{j=1..M})",   context);
     this.Φ = ComplexFunctionSequence.express("Φ:M➔z➔Φnum(M)(z)/Φden(M)(z)", context);
   }
 
@@ -89,8 +88,10 @@ public final class MuntzPadeApproximant implements
     t.pow(α, bits, z);
     try ( Real    threshold = new Real();
           Real    diffMag   = new Real();
+          Real    bestMag   = new Real();
           Complex prev      = new Complex();
           Complex curr      = new Complex();
+          Complex best      = new Complex();
           Complex diff      = new Complex();
           Integer M         = new Integer() )
     {
@@ -100,8 +101,10 @@ public final class MuntzPadeApproximant implements
       // the noise floor while leaving headroom before the OPS recurrence
       // hits its h-zero failure mode.
       threshold.one().mul2e(-bits / 2, threshold);
+      bestMag.posInf();
       M.set(2);
       Φ.evaluate(M, 1, bits, null).evaluate(z, 1, bits, prev);
+      best.set(prev);
       for (int m = 3; m < 1024; m++)
       {
         M.set(m);
@@ -113,16 +116,23 @@ public final class MuntzPadeApproximant implements
         {
           // The OPS h(j) sequence shrinks past the working bit precision —
           // α(j) = σ(j)(j+1)/h(j) fails when arb classifies the divisor as
-          // exactly zero. Past that M, the moment functional has no further
-          // useful information at this precision; the best Padé approximant
-          // we can produce is what convergence has already yielded. Return
-          // the last successfully computed iterate.
-          return result.set(prev);
+          // exactly zero. Past that M the moment functional has no further
+          // useful information at this precision; return the best iterate
+          // observed so far (smallest neighbour-diff = closest to the limit
+          // before precision loss inverts convergence).
+          return result.set(best);
         }
         curr.sub(prev, bits, diff).abs(bits, diffMag);
         if (diffMag.compareTo(threshold) <= 0)
         {
           return result.set(curr);
+        }
+        // Track the iterate whose neighbour-diff is smallest — that's the
+        // best estimate before precision loss inverts convergence.
+        if (diffMag.compareTo(bestMag) < 0)
+        {
+          bestMag.set(diffMag);
+          best.set(curr);
         }
         prev.set(curr);
       }

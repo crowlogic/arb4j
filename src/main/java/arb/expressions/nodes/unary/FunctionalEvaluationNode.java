@@ -254,7 +254,20 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
     {
       // Stack: [..., callResult]. Promote via resultBuffer.set(callResult).
       cast(mv, callCoDomain);
-      String resultBuf = expression.allocateIntermediateVariable(mv, resultType);
+      // For a root-positioned call whose surrounding expression's result slot
+      // is of resultType, promote directly into `result` instead of allocating
+      // a fresh intermediate. Otherwise the case body of a WhenNode (e.g. Pn
+      // for n=1 returning `hv(0)`) writes the promoted polynomial into a temp
+      // and the outer `result` slot stays at its incoming (zero) value.
+      if (isRootNode && resultType.isAssignableFrom(expression.coDomainType))
+      {
+        loadResultParameter(mv);
+        cast(mv, resultType);
+      }
+      else
+      {
+        expression.allocateIntermediateVariable(mv, resultType);
+      }
       // Stack: [..., callResult, resultBuf]. swap, invoke resultBuf.set(callResult).
       mv.visitInsn(Opcodes.SWAP);
       Compiler.generateVirtualMethodInvocation(mv, resultType, "set", resultType, callCoDomain);
