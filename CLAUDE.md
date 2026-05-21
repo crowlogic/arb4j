@@ -6,6 +6,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 arb4j is a Java API wrapping the C library [arblib](http://arblib.org)/FLINT (arbitrary precision real and complex ball arithmetic) via a SWIG-generated JNI bridge, plus an expression compiler that turns Unicode-rich mathematical notation directly into JVM bytecode via ASM. See `README.md` for the full feature tour and the recursive-cluster compilation protocol.
 
+## Cardinal rule: NEVER GUESS
+
+When debugging or diagnosing a problem, do not speculate. This applies to every artifact the user receives — final output, intermediate thinking, commit messages, issue bodies, comments, reasoning. There is always a deterministic path to the answer: generated source/bytecode (`-Darb4j.saveClasses=true -Darb4j.decompileClasses=true`, then read `compiled/<name>.java`/`.class`), raw bytecode (`javap -p -c compiled/<name>.class`), `arb4j.trace`/`traceNodes` logging, isolated reproducers with print statements, a debugger. Use them.
+
+Words like "suspicion", "I bet", "probably", "my guess is", "likely", "might be", "could be" are banned from any token stream the user sees, including reasoning. If a step in a causal chain isn't directly verified, verify it before claiming it. State only what evidence supports. The cost of guessing in a JVM-bytecode + native-arb stack is wasted hours chasing the wrong cause — a tool gives the answer in seconds.
+
 ## Cardinal rule: NEVER manipulate expression strings programmatically
 
 Expression strings (the bodies passed to `*.express(...)`, `*.compile(...)`, `*.declare(...)`) are LITERAL source code that the compiler parses into AST → bytecode. They must always be **string literals** at the call site.
