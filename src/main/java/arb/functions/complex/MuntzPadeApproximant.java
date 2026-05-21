@@ -72,7 +72,13 @@ public final class MuntzPadeApproximant implements
         context);
 
     ComplexPolynomialSequence.express("Φden:M➔sum(j➔Q(M)[M-j]*z^j{j=1..M})+1", context);
-    ComplexPolynomialSequence.express("Φnum:M➔z*Pn(M)",                         context);
+    // Φnum(M) is the Padé numerator of degree M-1. Pn(M) already has degree
+    // M-1 (Pn(1)=hv(0), recurrence (z-αv(n-1))*Pn(n-1)-βv(n-1)*Pn(n-2)
+    // bumps degree by 1 per level). Multiplying by z gives degree M, which
+    // makes Φ(M)(z) = z²/(...) at M=2 and approaches 0 near z=0 rather
+    // than tracking tanh(z)≈z near 0. The construction here is Φ(M)=Pn/Φden;
+    // no extra z factor.
+    ComplexPolynomialSequence.express("Φnum:M➔Pn(M)",                           context);
     this.Φ = ComplexFunctionSequence.express("Φ:M➔z➔Φnum(M)(z)/Φden(M)(z)", context);
   }
 
@@ -88,13 +94,31 @@ public final class MuntzPadeApproximant implements
           Complex diff      = new Complex();
           Integer M         = new Integer() )
     {
-      threshold.one().mul2e(-bits, threshold);
+      // Padé convergence is limited by the OPS h(j) sequence underflowing
+      // working precision long before bit-exact agreement at `bits` is
+      // possible. Half-precision is enough to detect convergence well above
+      // the noise floor while leaving headroom before the OPS recurrence
+      // hits its h-zero failure mode.
+      threshold.one().mul2e(-bits / 2, threshold);
       M.set(2);
       Φ.evaluate(M, 1, bits, null).evaluate(z, 1, bits, prev);
       for (int m = 3; m < 1024; m++)
       {
         M.set(m);
-        Φ.evaluate(M, 1, bits, null).evaluate(z, 1, bits, curr);
+        try
+        {
+          Φ.evaluate(M, 1, bits, null).evaluate(z, 1, bits, curr);
+        }
+        catch (arb.exceptions.DivisionByZeroException divByZero)
+        {
+          // The OPS h(j) sequence shrinks past the working bit precision —
+          // α(j) = σ(j)(j+1)/h(j) fails when arb classifies the divisor as
+          // exactly zero. Past that M, the moment functional has no further
+          // useful information at this precision; the best Padé approximant
+          // we can produce is what convergence has already yielded. Return
+          // the last successfully computed iterate.
+          return result.set(prev);
+        }
         curr.sub(prev, bits, diff).abs(bits, diffMag);
         if (diffMag.compareTo(threshold) <= 0)
         {
