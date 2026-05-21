@@ -260,12 +260,6 @@ public class Context implements
   public Function<?, ?> lookupFunctionInstance(String functionName)
   {
     FunctionMapping<?, ?, ?> mapping = functions.get(functionName);
-    if ("m".equals(functionName) || "a".equals(functionName))
-    {
-      System.err.println("[trace] lookupFunctionInstance(\"" + functionName + "\") on ctx #" + System.identityHashCode(this)
-                        + " → mapping=" + (mapping == null ? "NULL" : "found")
-                        + " instance=" + (mapping == null || mapping.instance == null ? "NULL" : mapping.instance.getClass().getSimpleName() + "@" + System.identityHashCode(mapping.instance)));
-    }
     return mapping == null ? null : mapping.instance;
   }
 
