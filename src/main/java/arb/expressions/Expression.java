@@ -1200,7 +1200,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (shouldCache())
     {
       String signature = "L" + Type.getInternalName(TreeMap.class) + "<" + Type.getDescriptor(arb.Integer.class) + Type.getDescriptor(coDomainType) + ">;";
-      cw.visitField(Opcodes.ACC_PRIVATE | Opcodes.ACC_FINAL, "cache", Type.getDescriptor(TreeMap.class), signature, null);
+      // issue #1032: not final, so that generateSelfReference can propagate
+      // the parent's cache TreeMap into the freshly-allocated separate
+      // self-instance — every instance in a self-recursive chain shares the
+      // same memoization map. Without this share, depth-N recursion through
+      // the chain re-computes from scratch at every level instead of hitting
+      // the cache populated by the outer level.
+      cw.visitField(Opcodes.ACC_PRIVATE, "cache", Type.getDescriptor(TreeMap.class), signature, null);
     }
     if (shouldCacheValueBacking())
     {
@@ -2581,6 +2587,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                 getReferencedFunctions().keySet());
     }
     addChecksForNullVariableReferences(mv);
+    // issue #1032: emit the self-ref allocation BEFORE wiring up referenced
+    // functions. The wiring step propagates this.<self> into referenced
+    // functions (e.g. operandF0001.a = this.a), so this.<self> must already
+    // hold the freshly-allocated separate instance by that point. Without
+    // the reorder, those propagations spread null and the operand instances
+    // end up unable to call back into the self-recursive sequence.
+    if (recursive)
+    {
+      generateSelfReference(mv);
+    }
     generateReferencedFunctionInstances(mv);
     propagateUpstreamInputVariablesToNestedFunctions(mv);
     if (dependencies != null)
@@ -2595,10 +2611,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     finally
     {
       generationContext = GenerationContext.Evaluation;
-    }
-    if (recursive)
-    {
-      generateSelfReference(mv);
     }
     generateCodeToSetIsInitializedToTrue(mv);
     return mv;
@@ -2808,15 +2820,39 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       mapping = context.getFunctionMapping(functionName);
     }
     assert mapping != null : "no function mapping for " + functionName + " in " + context.toStringExtended();
-    String fieldDescriptor          = mapping.functionFieldDescriptor();
+    String fieldDescriptor            = mapping.functionFieldDescriptor();
     String nestedFunctionInternalName = mapping.functionInternalName();
-    var    alreadyAssigned           = new Label();
+    String contextTypeDesc            = Type.getDescriptor(Context.class);
+    Label  alreadyAssigned            = new Label();
+
+    // if (this.<self> != null) goto alreadyAssigned;
     loadThisOntoStack(mv).visitFieldInsn(GETFIELD, internalName(), functionName, fieldDescriptor);
     mv.visitJumpInsn(IFNONNULL, alreadyAssigned);
-    constructNewObject(loadThisOntoStack(mv), nestedFunctionInternalName);
+    // this.<self> = new <Self>();
+    loadThisOntoStack(mv);
+    constructNewObject(mv, nestedFunctionInternalName);
     invokeDefaultConstructor(duplicateTopOfTheStack(mv), nestedFunctionInternalName);
     putField(mv, internalName(), functionName, fieldDescriptor);
-    Compiler.jumpTo(mv, alreadyAssigned);
+    // this.<self>.context = this.context;  — share the parent's context so
+    // the new instance's initialize() sees the live, populated Context.
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(GETFIELD, internalName(), functionName, fieldDescriptor);
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
+    mv.visitFieldInsn(PUTFIELD, nestedFunctionInternalName, "context", contextTypeDesc);
+    // this.<self>.cache = this.cache;  — share the memoization map so the
+    // chain of separate instances collapses recursion depth past the first
+    // pass. Without this, every level of the chain has its own empty cache
+    // and a single deep call goes O(N) deep on the stack, blowing it for
+    // any non-trivial recurrence.
+    if (shouldCache())
+    {
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(GETFIELD, internalName(), functionName, fieldDescriptor);
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(GETFIELD, internalName(), "cache", Type.getDescriptor(TreeMap.class));
+      mv.visitFieldInsn(PUTFIELD, nestedFunctionInternalName, "cache", Type.getDescriptor(TreeMap.class));
+    }
     mv.visitLabel(alreadyAssigned);
     initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv), internalName(), functionName, functionName, context.variableClassStream());
     return mv;

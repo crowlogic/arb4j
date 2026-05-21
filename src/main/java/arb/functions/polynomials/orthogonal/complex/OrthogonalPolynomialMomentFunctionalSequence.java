@@ -60,7 +60,7 @@ import arb.functions.integer.Sequence;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public abstract class OrthogonalPolynomialMomentFunctionalSequence extends
+public class OrthogonalPolynomialMomentFunctionalSequence extends
                                                                    ComplexPolynomialCoefficientRecurrentlyGeneratedOrthogonalPolynomialSequence
 {
 

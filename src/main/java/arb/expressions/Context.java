@@ -143,7 +143,12 @@ public class Context implements
     System.loadLibrary("arblib");
   }
 
-  public ExpressionClassLoader                classLoader                  = new ExpressionClassLoader(this);
+  // issue #1032: lazy-init so that throwaway Contexts allocated by generated
+  // <init> on inner-recursion instances (which immediately have their context
+  // overwritten by `this.<self>.context = this.context` from the parent's
+  // initialize) don't pay for an ExpressionClassLoader allocation they
+  // never use. Access via getClassLoader().
+  public ExpressionClassLoader                classLoader                  = null;
 
   public Map<String, Dependency>              functionReferenceGraph       = new HashMap<String, Dependency>();
 
@@ -151,7 +156,9 @@ public class Context implements
 
   public final HashMap<String, AtomicInteger> intermediateVariableCounters = new HashMap<>();
 
-  private final Logger                        log                          = LoggerFactory.getLogger(Context.class);
+  // issue #1032: static so a chain of N self-recursive instance Contexts
+  // doesn't pay N LoggerFactory.getLogger lookups at construction time.
+  private static final Logger                 log                          = LoggerFactory.getLogger(Context.class);
 
   public boolean                              saveClasses                  = false;
 
@@ -301,16 +308,13 @@ public class Context implements
       {
         return; // expression body never references this function in its function-namespace role
       }
-      // Skip self-injection. issue #1032: for a self-recursive sequence
-      // whose own mapping has already been published with instance == f,
-      // setting this.<self> = self collapses the outer/recursive
-      // invocations onto the same Java object so every "recursive call"
-      // shares the outer's per-instance scratch state (intermediate
-      // variable fields, evaluation buffers, cache). Leaving the field
-      // null lets the bytecode emitted by generateSelfReference fall
-      // through to its `if (this.<self> == null) this.<self> = new <self>()`
-      // branch and produce a separate instance — matching what every
-      // non-self-recursive case (e.g. Chebyshev T) already does.
+      // issue #1032: NEVER alias f.<name> = f. A function class A's own field
+      // of type A is the recursive-call receiver, and the call graph must
+      // not re-enter the same Java object — its scratch fields are not
+      // re-entrant. Leaving the field null lets the bytecode emitted by
+      // generateSelfReference allocate a separate instance with its own
+      // scratch, which is the only correct way to support recursion on a
+      // sequence with instance-field scratch state.
       if (functionMapping.instance == f)
       {
         return;

@@ -920,49 +920,11 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     var functionMapping = getFunctionMapping();
     checkForUndefinedReferenced(functionMapping);
     loadFunctionReferenceOntoStack(mv, functionMapping);
-    emitSelfAliasGuard(mv, functionMapping);
     generateArgument(mv, functionMapping);
     loadOrderParameter(mv);
     loadBitsParameterOntoStack(mv);
     loadOutputVariableOntoStack(mv, generatedType);
     return functionMapping.call(mv, generatedType);
-  }
-
-  /**
-   * For a recursive call ({@code this.<self>.evaluate(...)} where the function
-   * being called has the same name as the enclosing expression's own
-   * function), emit a runtime check that the receiver is not the enclosing
-   * {@code this}. Aliasing {@code this.<self>} to {@code this} would mean the
-   * recursive frame shares every instance field with the outer frame and
-   * field-writes in the inner clobber the outer's data. Throw a clear
-   * AssertionError instead of silently producing wrong results.
-   *
-   * <p>
-   * Stack on entry: {@code [..., receiver]}. Stack on exit (success path):
-   * {@code [..., receiver]} — the receiver is left on the stack for the
-   * subsequent argument-loading and invokeinterface to consume.
-   */
-  private void emitSelfAliasGuard(MethodVisitor mv, FunctionMapping<D, R, F> functionMapping)
-  {
-    if (functionMapping == null
-        || functionMapping.functionName == null
-        || expression.functionName == null
-        || !functionMapping.functionName.equals(expression.functionName))
-    {
-      return;
-    }
-    org.objectweb.asm.Label notSelfAlias = new org.objectweb.asm.Label();
-    mv.visitInsn(Opcodes.DUP);
-    loadThisOntoStack(mv);
-    mv.visitJumpInsn(Opcodes.IF_ACMPNE, notSelfAlias);
-    mv.visitTypeInsn(Opcodes.NEW, "java/lang/AssertionError");
-    mv.visitInsn(Opcodes.DUP);
-    mv.visitLdcInsn("self-alias: this."
-                    + functionMapping.functionName
-                    + " == this — quit aliasing shit when it fucking shouldn't, god dammit!");
-    mv.visitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/AssertionError", "<init>", "(Ljava/lang/Object;)V", false);
-    mv.visitInsn(Opcodes.ATHROW);
-    mv.visitLabel(notSelfAlias);
   }
 
   private void generateParameter(MethodVisitor mv, Class<? extends R> argType, boolean isNullaryFunction)

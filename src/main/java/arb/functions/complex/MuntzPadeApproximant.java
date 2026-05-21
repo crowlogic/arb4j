@@ -53,7 +53,7 @@ public final class MuntzPadeApproximant implements
 
     // OPS owns σ, h, α, β, the recurrence-coefficient sequences A/B/C, and the
     // orthogonal-polynomial Q (its parent's P field, accessed via ops.evaluate).
-    this.ops = new OrthogonalPolynomialMomentFunctionalSequence(context, m) {};
+    this.ops = new OrthogonalPolynomialMomentFunctionalSequence(context, m);
 
     // Scalar versions of α, β, h evaluated at v — these are what the Padé
     // assembly needs (poly-in-z with Complex coefficients, not poly-in-u).
