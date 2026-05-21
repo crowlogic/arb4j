@@ -1,0 +1,73 @@
+// scripts/muntzPadeTanh.arb
+//
+// Müntz–Padé approximant built entirely from the expression compiler.
+// No procedural recurrence, no FunctionMapping lambdas, no forward
+// declarations — every named expression is single-self-recursive (or
+// non-recursive) so the compiler can produce each class in one shot.
+//
+// Recurrence is Stieltjes (inner products against the moment functional a):
+//   ⟨f, g⟩ ≔ Σᵢ Σⱼ fᵢ·gⱼ·a(i+j+1)(v)        (1-indexed moments)
+//   αₙ₋₁ = ⟨z·Q_{n-1}, Q_{n-1}⟩ / ⟨Q_{n-1}, Q_{n-1}⟩
+//   βₙ₋₁ = ⟨Q_{n-1}, Q_{n-1}⟩ / ⟨Q_{n-2}, Q_{n-2}⟩
+//   Q_n  = (z − αₙ₋₁)·Q_{n-1} − βₙ₋₁·Q_{n-2},   Q_0=1, Q_1=z − a(2)(v)/a(1)(v)
+//   P_n  = (z − αₙ₋₁)·P_{n-1} − βₙ₋₁·P_{n-2},   P_0=0, P_1=a(1)(v)
+//
+// Edit the PROBLEM PARAMETER block to drop in other scenarios. The tanh
+// case (y' = 1 − y², y(0) = 0) is μ=1, pin=1, qin=0, rin=-1.
+//
+// Run with:   arb scripts/muntzPadeTanh.arb
+
+int bits = 128;
+int M    = 30;            // truncation order — bump if convergence is loose
+
+// ── PROBLEM PARAMETERS ─────────────────────────────────────────────────────
+Real μ = Real.named("μ").set("1", bits);
+String pExpr = "pin:v→1";
+String qExpr = "qin:v→0";
+String rExpr = "rin:v→-1";
+// ───────────────────────────────────────────────────────────────────────────
+
+var context = new Context(μ).disableLommelPolynomials();
+
+var pin = ComplexPolynomialNullaryFunction.express(pExpr, context);
+var qin = ComplexPolynomialNullaryFunction.express(qExpr, context);
+var rin = ComplexPolynomialNullaryFunction.express(rExpr, context);
+var p = ComplexPolynomial.named("p"); context.registerVariable(p); pin.evaluate(bits, p);
+var q = ComplexPolynomial.named("q"); context.registerVariable(q); qin.evaluate(bits, q);
+var r = ComplexPolynomial.named("r"); context.registerVariable(r); rin.evaluate(bits, r);
+
+var v = new Complex().setName("v"); context.registerVariable(v);
+var z = new Complex().setName("z"); context.registerVariable(z);
+
+// Müntz coefficient sequence  a(k)(v)  — Riccati closed-form recurrence
+ComplexFunctionSequence.declare("a", context);
+var a = ComplexPolynomialSequence.express(null,
+  "a:k➔v➔when(k=1,p(v)/Γ(μ+1),else,(Γ((k-1)*μ+1)/Γ(k*μ+1))*(q(v)*a(k-1)(v)+r(v)*sum(j➔a(j)(v)*a(k-1-j)(v){j=1..k-2})))",
+  context);
+
+// Monic orthogonal denominator polynomial  Q_n  (Stieltjes, inlined)
+var Q = ComplexPolynomialSequence.express(
+  "Q:n➔when(n=0,1,n=1,z-a(2)(v)/a(1)(v),else,(z-sum(i➔sum(j➔Q(n-1)[i]*Q(n-1)[j]*a(i+j+2)(v){j=0..n-1}){i=0..n-1})/sum(i➔sum(j➔Q(n-1)[i]*Q(n-1)[j]*a(i+j+1)(v){j=0..n-1}){i=0..n-1}))*Q(n-1)-(sum(i➔sum(j➔Q(n-1)[i]*Q(n-1)[j]*a(i+j+1)(v){j=0..n-1}){i=0..n-1})/sum(i➔sum(j➔Q(n-2)[i]*Q(n-2)[j]*a(i+j+1)(v){j=0..n-2}){i=0..n-2}))*Q(n-2))",
+  context);
+
+// Numerator polynomial  P_n  — same α, β coefficients
+var P = ComplexPolynomialSequence.express(
+  "P:n➔when(n=0,0,n=1,a(1)(v),else,(z-sum(i➔sum(j➔Q(n-1)[i]*Q(n-1)[j]*a(i+j+2)(v){j=0..n-1}){i=0..n-1})/sum(i➔sum(j➔Q(n-1)[i]*Q(n-1)[j]*a(i+j+1)(v){j=0..n-1}){i=0..n-1}))*P(n-1)-(sum(i➔sum(j➔Q(n-1)[i]*Q(n-1)[j]*a(i+j+1)(v){j=0..n-1}){i=0..n-1})/sum(i➔sum(j➔Q(n-2)[i]*Q(n-2)[j]*a(i+j+1)(v){j=0..n-2}){i=0..n-2}))*P(n-2))",
+  context);
+
+// Padé halves and approximant
+var Φden = ComplexPolynomialSequence.express("Φden:M➔sum(j➔Q(M)[M-j]*z^j{j=1..M})+1", context);
+var Φnum = ComplexPolynomialSequence.express("Φnum:M➔z*P(M)",                          context);
+var Φ    = ComplexFunctionSequence  .express("Φ:M➔z➔Φnum(M)(z)/Φden(M)(z)",             context);
+
+// ── Evaluation at fixed M against the tanh oracle ──────────────────────────
+Integer Mfix = Integer.named("Mfix"); Mfix.set(M);
+for (double tval : new double[]{0.0, 0.5, 1.0, 2.0}) {
+  Complex tC = new Complex(); tC.set(String.valueOf(tval), bits);
+  Complex zz = new Complex(); tC.pow(μ, bits, zz);
+  z.set(zz);
+  Complex y = Φ.evaluate(Mfix, 1, bits, null).evaluate(zz, 1, bits, new Complex());
+  out.printf("t=%4.1f  approx=%+.15f  tanh=%+.15f  Δ=%.2e%n",
+             tval, y.getReal().doubleValue(), Math.tanh(tval),
+             y.getReal().doubleValue() - Math.tanh(tval));
+}
