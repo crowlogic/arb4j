@@ -187,7 +187,22 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
     }
 
     functionNode.generate(mv, functionType);
-    arg.generate(mv, resultType);
+    // Arg target type = function's declared domain, NOT the surrounding
+    // resultType. For curried sequences whose domain and codomain differ
+    // (e.g. ComplexPolynomialSequence: Integer → ComplexPolynomial), routing
+    // arg through resultType allocates a ComplexPolynomial temp for what
+    // should be Integer and the codegen emits Integer.add(Integer, int,
+    // ComplexPolynomial) which doesn't exist.
+    Class<?> argTargetType;
+    try
+    {
+      argTargetType = Expression.resolveChildDomain(functionType);
+    }
+    catch (UnsupportedOperationException uoe)
+    {
+      argTargetType = resultType;
+    }
+    arg.generate(mv, argTargetType);
 
     loadOrderParameter(mv);
     loadBitsParameterOntoStack(mv);

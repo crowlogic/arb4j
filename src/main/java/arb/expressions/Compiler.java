@@ -126,6 +126,9 @@ public class Compiler
     typePrefixes.put(RealToComplexFunction.class, "Fℝℂ");
     typePrefixes.put(NumericalRealFunctionIntegral.class, "∫Fℝ");
     typePrefixes.put(NumericalComplexFunctionIntegral.class, "∫Fℂ");
+    typePrefixes.put(ComplexPolynomialSequence.class, "SXℂ");
+    typePrefixes.put(RealPolynomialSequence.class, "SXℝ");
+    typePrefixes.put(ComplexPolynomialSequenceSequence.class, "SSXℂ");
   }
 
   public static void addNullCheckForField(MethodVisitor mv, String className, String fieldName, String fieldDesc)
@@ -680,7 +683,23 @@ public class Compiler
 
   public static Class<?> scalarType(Class<?> resultType)
   {
-    if (realScalarTypes.contains(resultType))
+    // Sequence-valued containers: the "scalar" is the element type of the
+    // sequence, not the underlying numeric scalar. Required so that e.g.
+    // FunctionalEvaluationNode treats ComplexPolynomialSequence.evaluate(j)
+    // as returning ComplexPolynomial rather than Complex.
+    if (ComplexPolynomialSequence.class.equals(resultType))
+    {
+      return ComplexPolynomial.class;
+    }
+    else if (RealPolynomialSequence.class.equals(resultType))
+    {
+      return RealPolynomial.class;
+    }
+    else if (ComplexPolynomialSequenceSequence.class.equals(resultType))
+    {
+      return ComplexPolynomialSequence.class;
+    }
+    else if (realScalarTypes.contains(resultType))
     {
       return Real.class;
     }

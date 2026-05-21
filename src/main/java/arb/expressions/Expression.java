@@ -246,7 +246,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return node instanceof MultiplicationNode<?, ?, ?> || node instanceof DivisionNode<?, ?, ?>;
   }
 
-  static Class<?> resolveChildCoDomain(Class<?> parentCoDomainType)
+  public static Class<?> resolveChildCoDomain(Class<?> parentCoDomainType)
   {
     if (RealFunction.class.equals(parentCoDomainType) || RealSequence.class.equals(parentCoDomainType))
     {
@@ -268,10 +268,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       return Complex.class;
     }
+    if (ComplexPolynomialSequence.class.equals(parentCoDomainType))
+    {
+      return ComplexPolynomial.class;
+    }
+    if (RealPolynomialSequence.class.equals(parentCoDomainType))
+    {
+      return RealPolynomial.class;
+    }
     throw new UnsupportedOperationException("cannot resolve child codomain for " + parentCoDomainType);
   }
 
-  static Class<?> resolveChildDomain(Class<?> parentCoDomainType)
+  public static Class<?> resolveChildDomain(Class<?> parentCoDomainType)
   {
     if (RealFunction.class.equals(parentCoDomainType) || RealFunctional.class.equals(parentCoDomainType)
                   || RealToComplexFunction.class.equals(parentCoDomainType))
@@ -282,7 +290,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       return Complex.class;
     }
-    if (RealSequence.class.equals(parentCoDomainType) || ComplexSequence.class.equals(parentCoDomainType))
+    if (RealSequence.class.equals(parentCoDomainType) || ComplexSequence.class.equals(parentCoDomainType)
+                  || ComplexPolynomialSequence.class.equals(parentCoDomainType)
+                  || RealPolynomialSequence.class.equals(parentCoDomainType))
     {
       return Integer.class;
     }
@@ -4032,6 +4042,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       funcDomain   = Integer.class;
       funcCoDomain = Complex.class;
       funcClass    = ComplexSequence.class;
+    }
+    else if (ComplexPolynomialSequence.class.equals(coDomainType))
+    {
+      funcDomain   = Integer.class;
+      funcCoDomain = ComplexPolynomial.class;
+      funcClass    = ComplexPolynomialSequence.class;
+    }
+    else if (RealPolynomialSequence.class.equals(coDomainType))
+    {
+      funcDomain   = Integer.class;
+      funcCoDomain = RealPolynomial.class;
+      funcClass    = RealPolynomialSequence.class;
     }
     else
     {

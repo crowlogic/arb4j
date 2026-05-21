@@ -1,61 +1,61 @@
 package arb.functions.polynomials.orthogonal.complex;
 
 import arb.ComplexPolynomial;
+import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.functions.integer.ComplexPolynomialSequence;
+import arb.functions.integer.ComplexPolynomialSequenceSequence;
 import arb.functions.integer.Sequence;
 
 /**
- * The orthogonal polynomial sequence of a quasi-definite moment functional 𝓛
- * over ℂ[u], constructed from its moment sequence m(k)(u) via the Wheeler
- * recurrence.
+ * The monic orthogonal polynomial sequence of a quasi-definite moment
+ * functional 𝓛 over ℂ[u], constructed from the moment sequence m(k)(u) via
+ * the polynomial Chebyshev/Wheeler σ-table (Stieltjes form).
  *
  * <p>
- * <b>Setup.</b> m : ℤ_{≥0} → ℂ[u], with m(k)(u) := a(k+1, u), produced by the
- * existing Müntz machinery. Four sequences S, T, α, β : ℤ_{≥0} → ℂ[u]. Each
- * value S(n)(u), T(n)(u), α(n)(u), β(n)(u) is a {@link ComplexPolynomial} in
- * the Fourier parameter u.
- *
- * <p>
- * <b>The recurrence.</b> For n ≥ 0,
+ * <b>Definitions.</b> Given moments m : ℤ_{≥0} → ℂ[u], introduce the auxiliary
+ * doubly-indexed table
  *
  * <pre>
- *   S(n)(u) := m(n)(u).
+ *   σ(j, k) := 𝓛[xᵏ · P(j, x)] ∈ ℂ[u]
  * </pre>
  *
- * For n ≥ 1,
+ * and the scalar (in j) sequences
  *
  * <pre>
- *   β(n)(u)   := S(n)(u) / S(n-1)(u),
- *   T(n)(u)   := m(n+1)(u) − β(n)(u) · m(n)(u),
- *   α(n)(u)   := T(n)(u) / S(n)(u),
- *   S(n+1)(u) := T(n)(u) − α(n)(u) · S(n)(u).
+ *   h(j) := σ(j, j) = ⟨P_j, P_j⟩
+ *   α(j) := σ(j, j+1) / h(j)
+ *   β(j) := h(j) / h(j-1)            with β(0) := 0
  * </pre>
  *
  * <p>
- * <b>Theorem.</b> α(n)(u) and β(n)(u) are the three-term recurrence
- * coefficients of the monic OPS for the moment functional 𝓛_u with moments
- * m(k)(u). The OPS {P(n, x; u)} satisfies
+ * <b>Recurrence.</b> σ is built from m by
  *
  * <pre>
- *   P(n+1, x; u) = (x − α(n)(u)) · P(n, x; u) − β(n)(u) · P(n-1, x; u),
- *   P(-1, x; u)  = 0,
- *   P( 0, x; u)  = 1,
+ *   σ(0, k) := m(k)
+ *   σ(j, k) := σ(j-1, k+1) − α(j-1)·σ(j-1, k) − β(j-1)·σ(j-2, k)    j ≥ 1
  * </pre>
  *
- * and its reciprocal flip is the diagonal Padé denominator of g(·, u).
+ * (convention σ(-1, k) := 0 keeps the β(0)·σ(-1, …) term degenerate at j = 1).
  *
  * <p>
- * Every operation is one of: evaluation of a sequence at an integer index,
- * returning a ComplexPolynomial in u; or one of the four ring operations
- * (+, −, ·, /) on ComplexPolynomial in u. The dependency on u is carried
- * explicitly through every site as the variable of the ComplexPolynomial
- * values.
+ * <b>OPS.</b> α(n), β(n) are the Jacobi-matrix entries of the monic OPS for
+ * 𝓛; the polynomials satisfy
+ *
+ * <pre>
+ *   P(-1, x) := 0,   P(0, x) := 1
+ *   P(n+1, x) := (x − α(n))·P(n, x) − β(n)·P(n-1, x)
+ * </pre>
+ *
+ * — wired into the parent driver via A(n)=1, B(n)=−α(n), C(n)=β(n).
  *
  * <p>
- * Subclasses supply the moment sequence m : ℤ_{≥0} → ℂ[u].
+ * Subclasses supply m : ℤ_{≥0} → ℂ[u].
+ *
+ * <p>
+ * See issue #1031 / #1021 for the spec this implementation realizes.
  *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
@@ -64,22 +64,19 @@ public abstract class OrthogonalPolynomialMomentFunctionalSequence extends
                                                                    ComplexPolynomialCoefficientRecurrentlyGeneratedOrthogonalPolynomialSequence
 {
 
-  public ComplexPolynomialSequence m;
-  public ComplexPolynomialSequence S;
-  public ComplexPolynomialSequence β;
-  public ComplexPolynomialSequence T;
-  public ComplexPolynomialSequence α;
+  public ComplexPolynomialSequence         m;
+  public ComplexPolynomialSequenceSequence σ;
+  public ComplexPolynomialSequence         h;
+  public ComplexPolynomialSequence         α;
+  public ComplexPolynomialSequence         β;
 
   /**
    * Construct sharing the supplied {@link Context} so that {@code m}'s full
    * mapping (expression + instance + the chain of upstream dependencies
    * {@code a}, {@code p}, {@code q}, {@code r}, {@code μ} it references) is
-   * visible to the OPS recurrence. {@code m} must already be registered in
-   * {@code sharedContext} — typically by its caller's prior
-   * {@code express("m:...", sharedContext)} call. Passing a fresh context
-   * here would strip {@code m} of its upstream dependencies and the inner
-   * self-instance of the recursive S sequence would have no way to resolve
-   * {@code m}'s expression on lazy initialize.
+   * visible to the σ-table recurrence. {@code m} must already be registered in
+   * {@code sharedContext} — typically by the caller's prior
+   * {@code express("m:...", sharedContext)}.
    */
   public OrthogonalPolynomialMomentFunctionalSequence(Context sharedContext, ComplexPolynomialSequence m)
   {
@@ -87,35 +84,44 @@ public abstract class OrthogonalPolynomialMomentFunctionalSequence extends
 
     this.m = m;
 
-    // m is already registered in sharedContext by the caller; do not
-    // re-register here because that would drop m's expression and produce a
-    // mapping with {instance=m, expression=null} — exactly the failure mode
-    // that breaks the inner self-instance's lazy initialize when it tries
-    // to resolve m via the function-mapping registry.
+    // Forward-declare the mutually recursive cluster {σ, h, α, β}.
+    ComplexPolynomialSequenceSequence.declare("σ", context);
+    ComplexPolynomialSequence        .declare("h", context);
+    ComplexPolynomialSequence        .declare("α", context);
+    ComplexPolynomialSequence        .declare("β", context);
 
-    // Forward-declare the four mutually-recursive sequences; compile the
-    // three auxiliaries; express the driver S last. Mirrors the pattern in
-    // RiccatiMuntzPadeFunctional.partialDerivativeWithRespectToV.
-    ComplexPolynomialSequence.declare("S", context);
-    ComplexPolynomialSequence.declare("β", context);
-    ComplexPolynomialSequence.declare("T", context);
-    ComplexPolynomialSequence.declare("α", context);
+    // Compile non-leaf bodies (class defined, instance deferred).
+    ComplexPolynomialSequenceSequence.compile("σ",
+        "σ:j ➔ k ➔ when(j = 0, m(k),"
+      +              " j = 1, σ(0)(k+1) − α(0)·σ(0)(k),"
+      +              " else,   σ(j-1)(k+1) − α(j-1)·σ(j-1)(k) − β(j-1)·σ(j-2)(k))",
+        context);
+    ComplexPolynomialSequence.compile("h:j ➔ σ(j)(j)",               context);
+    ComplexPolynomialSequence.compile("α:j ➔ σ(j)(j+1) / h(j)",      context);
 
-    ComplexPolynomialSequence.compile("β:n ➔ u ➔ S(n)(u) / S(n-1)(u)", context);
-    ComplexPolynomialSequence.compile("T:n ➔ u ➔ m(n+1)(u) − β(n)(u) · m(n)(u)", context);
-    ComplexPolynomialSequence.compile("α:n ➔ u ➔ T(n)(u) / S(n)(u)", context);
+    // Express the leaf β; instantiating β cascades through h → σ → α.
+    this.β = ComplexPolynomialSequence.express("β",
+        "β:j ➔ when(j = 0, 0, else, h(j) / h(j-1))",
+        context);
 
-    // S(n)(u): for n ∈ {0,1}, equal to m(n)(u); for n ≥ 2, follows the
-    // Wheeler recurrence S(n)(u) = T(n-1)(u) − α(n-1)(u) · S(n-1)(u).
-    // Two base cases are required so that β(1) = S(1)/S(0) is well-defined
-    // without forcing an S(-1) convention or division-by-zero special case.
-    S = ComplexPolynomialSequence.express("S:n ➔ u ➔ when(n = 0,  m(0)(u),"
-                                              + "                n = 1,  m(1)(u),"
-                                              + "                else,   T(n-1)(u) − α(n-1)(u) · S(n-1)(u))",
-                                          context);
+    // After the cascade, pull the other cluster members out of the context.
+    this.σ = (ComplexPolynomialSequenceSequence) context.getFunctionMapping("σ").instantiate();
+    this.h = (ComplexPolynomialSequence)         context.getFunctionMapping("h").instantiate();
+    this.α = (ComplexPolynomialSequence)         context.getFunctionMapping("α").instantiate();
 
-    p0.one();
-    p1.one().shiftLeft(1);
+    p0.one();                               // P(0, x) = 1; p1 set lazily in initialize()
+  }
+
+  /** Set p1 = x − α(0), then delegate to the parent. */
+  @Override
+  public void initialize()
+  {
+    try (Integer zero = new Integer().set(0);
+         ComplexPolynomial alpha0 = α.evaluate(zero, 1, bits(), new ComplexPolynomial()))
+    {
+      p1.one().shiftLeft(1, p1).sub(alpha0, bits(), p1);
+    }
+    super.initialize();
   }
 
   /** A(n) = 1. */

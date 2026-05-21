@@ -40,16 +40,18 @@ public class OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequenceTest e
                                                                                      "3/10"))
     {
       assertNotNull("moment sequence m must be compiled", ops.m);
-      assertNotNull("sequence S must be compiled", ops.S);
+      assertNotNull("σ-table must be compiled", ops.σ);
+      assertNotNull("h (squared norms) must be compiled", ops.h);
+      assertNotNull("α (Jacobi diagonal) must be compiled", ops.α);
+      assertNotNull("β (Jacobi off-diagonal²) must be compiled", ops.β);
 
       Integer n = new Integer();
 
-      // Evaluate m(0..2) and S(0..2) at the chosen μ/P/Q/R and assert that
-      // every result is a non-empty ComplexPolynomial — i.e. the Wheeler
-      // recurrence's upstream Muntz moments are actually populated.
-      // Empty (length 0) polynomials would indicate the previous
-      // ComplexPolynomial.set(Fraction) stub bug or another silent zero
-      // propagation path.
+      // Evaluate m(0..2) and h(0..2) at the chosen μ/P/Q/R and assert that
+      // every result is a non-empty ComplexPolynomial — i.e. the σ-table
+      // recurrence's upstream Müntz moments are actually populated. Empty
+      // (length 0) polynomials would indicate a silent zero-propagation
+      // path through Complex→ComplexPolynomial promotions.
       for (int k = 0; k <= 2; k++)
       {
         n.set(k);
@@ -61,9 +63,9 @@ public class OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequenceTest e
       for (int i = 0; i <= 2; i++)
       {
         n.set(i);
-        ComplexPolynomial Si = ops.S.evaluate(n, 1, bits, null);
-        assertNotNull("S(" + i + ") must not be null", Si);
-        assertTrue("S(" + i + ") must be a non-empty polynomial (got length " + Si.getLength() + ")", Si.getLength() > 0);
+        ComplexPolynomial hi = ops.h.evaluate(n, 1, bits, null);
+        assertNotNull("h(" + i + ") must not be null", hi);
+        assertTrue("h(" + i + ") must be a non-empty polynomial (got length " + hi.getLength() + ")", hi.getLength() > 0);
       }
     }
     finally

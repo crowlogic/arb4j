@@ -534,15 +534,17 @@ import arb.functions.complex.ComplexNullaryFunction;
   public ComplexPolynomial sub(ComplexPolynomial a, int bits, ComplexPolynomial res)
   {
     res.set(a);
+    if (res.getLength() == 0) { res.fitLength(1); res.setLength(1); }
     Complex x = res.getCoeffs().get(0);
     x.sub(this, bits);
     x.bits = bits;
     return res;
   }
-  
+
   public ComplexPolynomial add(ComplexPolynomial a, int bits, ComplexPolynomial res)
   {
     res.set(a);
+    if (res.getLength() == 0) { res.fitLength(1); res.setLength(1); }
     Complex x = res.getCoeffs().get(0);
     x.add(this, bits);
     x.bits = bits;

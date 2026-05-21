@@ -46,22 +46,26 @@ var a = ComplexPolynomialSequence.express(null,
     "a:k➔v➔when(k=1, p(v)/Γ(μ+1), else, (Γ((k-1)*μ+1)/Γ(k*μ+1))*(q(v)*a(k-1)(v)+r(v)*sum(j➔a(j)(v)*a(k-1-j)(v){j=1..k-2})))",
     context);
 
-// ── Recurrence cluster: forward-declare, then express in any order. ──────
-//   h, s, α, β are integer-domain ComplexSequences  → framework caches them.
-//   Q is integer-domain ComplexPolynomialSequence    → ditto.
+// ── Recurrence cluster: forward-declare, compile the non-leaves, express
+//   the leaf last so its instantiation cascades through the others.
+//   h, s, α, β are integer-domain ComplexSequences → framework caches them.
+//   Q is integer-domain ComplexPolynomialSequence  → ditto.
 context.declare("h", Integer.class, Complex.class, ComplexSequence.class);
 context.declare("s", Integer.class, Complex.class, ComplexSequence.class);
 context.declare("α", Integer.class, Complex.class, ComplexSequence.class);
 context.declare("β", Integer.class, Complex.class, ComplexSequence.class);
 ComplexPolynomialSequence.declare("Q", context);
 
-var h = ComplexSequence.express("h",
-    "h:n➔sum(i➔sum(j➔Q(n)[i]*Q(n)[j]*a(i+j+1)(v){j=0..n}){i=0..n})", context);
-var s = ComplexSequence.express("s",
-    "s:n➔sum(i➔sum(j➔Q(n)[i]*Q(n)[j]*a(i+j+2)(v){j=0..n}){i=0..n})", context);
-var α = ComplexSequence.express("α", "α:n➔s(n)/h(n)",     context);
-var β = ComplexSequence.express("β", "β:n➔h(n)/h(n-1)",   context);
+Sequence.compile("h", Complex.class,
+    "h:n➔sum(i➔sum(j➔Q(n)[i]*Q(n)[j]*a(i+j+1)(v){j=0..n}){i=0..n})",
+    ComplexSequence.class, context);
+Sequence.compile("s", Complex.class,
+    "s:n➔sum(i➔sum(j➔Q(n)[i]*Q(n)[j]*a(i+j+2)(v){j=0..n}){i=0..n})",
+    ComplexSequence.class, context);
+Sequence.compile("α", Complex.class, "α:n➔s(n)/h(n)",   ComplexSequence.class, context);
+Sequence.compile("β", Complex.class, "β:n➔h(n)/h(n-1)", ComplexSequence.class, context);
 
+// Leaf of the cluster: expressing Q cascades instantiation through h, s, α, β.
 var Q = ComplexPolynomialSequence.express("Q",
     "Q:n➔when(n=0, 1, n=1, z-α(0), else, (z-α(n-1))*Q(n-1)-β(n-1)*Q(n-2))",
     context);
