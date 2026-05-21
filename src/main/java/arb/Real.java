@@ -2035,6 +2035,11 @@ public class Real implements Cloneable,Becomable<Real>,Domain<Real>,Serializable
     return !isFinite();
   }
   
+  public Complex neg(Complex value)
+  {
+    return value.set(this).neg();
+  }
+  
   /**
    * 
    * @param value variable to be assigned the resulting value

@@ -31,6 +31,12 @@ import arb.utensils.Utensils;
 %}
 %typemap(javacode) arb_struct %{
 
+	public Complex neg(Complex value)
+	{
+	  return value.set(this).neg();
+	}
+
+	
 	private static final ThreadLocal<Real[]> autocorrelationScratch =
 	  ThreadLocal.withInitial(() -> new Real[] { new Real(), new Real() });
 
