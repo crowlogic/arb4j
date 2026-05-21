@@ -1074,7 +1074,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       // Riccati Müntz recurrence, issue #982). The class is resolved lazily
       // by the JVM when the opcode first executes — by which point the outer
       // compile chain has defined every class in the recursive cluster.
-      String typeInternalName   = mapping.functionName;
+      String typeInternalName   = mapping.functionInternalName();
       String fieldDescriptor    = mapping.functionFieldDescriptor();
       String contextTypeDesc    = Type.getDescriptor(Context.class);
       var    alreadyInitialized = new Label();
@@ -2808,12 +2808,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       mapping = context.getFunctionMapping(functionName);
     }
     assert mapping != null : "no function mapping for " + functionName + " in " + context.toStringExtended();
-    String fieldDescriptor = mapping.functionFieldDescriptor();
-    var    alreadyAssigned = new Label();
+    String fieldDescriptor          = mapping.functionFieldDescriptor();
+    String nestedFunctionInternalName = mapping.functionInternalName();
+    var    alreadyAssigned           = new Label();
     loadThisOntoStack(mv).visitFieldInsn(GETFIELD, internalName(), functionName, fieldDescriptor);
     mv.visitJumpInsn(IFNONNULL, alreadyAssigned);
-    constructNewObject(loadThisOntoStack(mv), functionName);
-    invokeDefaultConstructor(duplicateTopOfTheStack(mv), functionName);
+    constructNewObject(loadThisOntoStack(mv), nestedFunctionInternalName);
+    invokeDefaultConstructor(duplicateTopOfTheStack(mv), nestedFunctionInternalName);
     putField(mv, internalName(), functionName, fieldDescriptor);
     Compiler.jumpTo(mv, alreadyAssigned);
     mv.visitLabel(alreadyAssigned);
@@ -3769,7 +3770,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     String   variableName     = variable.getLeft();
     Class<?> variableType     = variable.getRight();
     String   variableTypeDesc = variableType.descriptorString();
-    String   nestedClassName  = functionMapping.functionName;
+    String   nestedClassName  = functionMapping.functionInternalName();
 
     // Per-emission guard: skip propagation when the target class does not
     // declare a field for this variable. A context can grow between
@@ -4978,7 +4979,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
 
       String funcTypeDesc    = funcMapping.functionFieldDescriptor();
-      String nestedClassName = funcMapping.expression != null ? funcMapping.expression.className : funcMapping.functionName;
+      String nestedClassName = funcMapping.functionInternalName();
 
       // Share parent's context with child arg class (#842)
       if (nestedExpr.upstreamExpression != null)

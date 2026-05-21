@@ -230,6 +230,33 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
     declaredAs = functionFieldDescriptor;
   }
 
+  /**
+   * Bytecode-level internal name of the class this mapping resolves to. Used as
+   * the {@code owner} argument for ASM emit sites that reference the mapping's
+   * function — {@code visitTypeInsn(NEW, ...)},
+   * {@code visitFieldInsn(..., owner, ...)},
+   * {@code visitMethodInsn(..., owner, ...)}. Slash-form, package-qualified
+   * when the resolved class is in a non-default package.
+   *
+   * <p>
+   * Resolution preference: a live {@link #instance} wins over a defining
+   * {@link #expression} wins over the bare {@link #functionName} (used as a
+   * fallback for mappings registered without either — e.g. forward declarations
+   * before the defining expression has been parsed).
+   */
+  public String functionInternalName()
+  {
+    if (instance != null)
+    {
+      return Type.getInternalName(instance.getClass());
+    }
+    if (expression != null)
+    {
+      return expression.internalName();
+    }
+    return functionName;
+  }
+
   public void loadReferenceOntoStack(MethodVisitor mv)
   {
     expression.loadFieldOntoStack(loadThisOntoStack(mv), functionName, functionFieldDescriptor());

@@ -1014,27 +1014,28 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   protected void generateCodeToPropagateIndependentVariableToOperand(MethodVisitor mv, VariableNode<D, R, F> independentVariableNode)
   {
-    String   varName      = independentVariableNode.reference.name;
-    Class<?> varType      = independentVariableNode.type();
-    String   varDesc      = varType.descriptorString();
-    String   operandDesc  = String.format("L%s;", operandFunctionFieldName);
+    String   varName                  = independentVariableNode.reference.name;
+    Class<?> varType                  = independentVariableNode.type();
+    String   varDesc                  = varType.descriptorString();
+    String   operandClassInternalName = operandExpression.internalName();
+    String   operandDesc              = String.format("L%s;", operandClassInternalName);
 
-    Label    fieldNotNull = new Label();
+    Label    fieldNotNull             = new Label();
 
     expression.loadFieldOntoStack(loadThisOntoStack(mv), operandFunctionFieldName, operandDesc);
-    mv.visitFieldInsn(GETFIELD, operandFunctionFieldName, varName, varDesc);
+    mv.visitFieldInsn(GETFIELD, operandClassInternalName, varName, varDesc);
     Compiler.jumpToIfNotNull(mv, fieldNotNull);
 
     expression.loadFieldOntoStack(loadThisOntoStack(mv), operandFunctionFieldName, operandDesc);
     generateNewObjectInstruction(mv, varType);
     duplicateTopOfTheStack(mv);
     invokeDefaultConstructor(mv, varType);
-    putField(mv, operandFunctionFieldName, varName, varType);
+    putField(mv, operandClassInternalName, varName, varType);
 
     Compiler.designateLabel(mv, fieldNotNull);
 
     expression.loadThisAndFieldOntoStack(mv, operandFunctionFieldName, operandDesc);
-    mv.visitFieldInsn(GETFIELD, operandFunctionFieldName, varName, varDesc);
+    mv.visitFieldInsn(GETFIELD, operandClassInternalName, varName, varDesc);
     cast(loadInputParameter(mv), varType);
     generateVirtualMethodInvocation(mv, varType, "set", varType, varType);
     Compiler.pop(mv);

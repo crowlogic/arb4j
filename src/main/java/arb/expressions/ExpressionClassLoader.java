@@ -117,7 +117,10 @@ public class ExpressionClassLoader extends
       return already;
     }
 
-    FunctionMapping<Object, Object, Function<? extends Object, ? extends Object>> functionMapping = context.getFunctionMapping(name);
+    int    dot        = name.lastIndexOf('.');
+    String simpleName = dot >= 0 ? name.substring(dot + 1) : name;
+
+    FunctionMapping<Object, Object, Function<? extends Object, ? extends Object>> functionMapping = context.getFunctionMapping(simpleName);
     if (functionMapping != null)
     {
       if (Expression.trace)
@@ -150,7 +153,7 @@ public class ExpressionClassLoader extends
     AtomicReference<Class<?>> mappedClassReference = new AtomicReference<Class<?>>();
     context.functions.values().forEach(mapping ->
     {
-      if (name.equals(mapping.functionName) || name.equals(mapping.functionClass.getName()))
+      if (name.equals(mapping.functionName) || simpleName.equals(mapping.functionName) || name.equals(mapping.functionClass.getName()))
       {
         assert mappedClassReference.get() == null : "mappedClassReference is already mapped to " + mapping;
         mappedClassReference.set(mapping.functionClass);

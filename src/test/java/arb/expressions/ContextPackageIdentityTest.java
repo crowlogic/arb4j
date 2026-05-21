@@ -1,6 +1,7 @@
 package arb.expressions;
 
 import arb.Real;
+import arb.functions.complex.ComplexFunction;
 import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 
@@ -63,5 +64,52 @@ public class ContextPackageIdentityTest extends
     Real yb = fb.evaluate(x, 128, new Real());
     assertEquals("h@jacobi(3) = 3", "3", ya.toString());
     assertEquals("h@riccati(3) = 6", "6", yb.toString());
+  }
+
+  /**
+   * Each subtest below evaluates an expression compiled under a packaged
+   * Context, exercising one of the ASM emit sites that previously read
+   * {@code className()} (which doesn't include the package) instead of
+   * {@code internalName()}. Without those fixes, every subtest below fails
+   * at class-load with {@code NoSuchFieldError} because the emitted GETFIELD/
+   * PUTFIELD owner does not match the actual generated class's internal name.
+   */
+
+  public void testPackagedContextNAryOperationCodegen()
+  {
+    Context      ctx = new Context("arb.test.codegen");
+    RealFunction f   = RealFunction.express("x➔sum(k*x{k=1..10})", ctx);
+    assertEquals("sum(k*2,k=1..10) = 110", 110.0, f.eval(2), 1e-12);
+  }
+
+  public void testPackagedContextDerivativeCodegen()
+  {
+    Context      ctx  = new Context("arb.test.codegen");
+    RealFunction df   = RealFunction.express("t➔diff(sin(t),t)", ctx);
+    assertEquals("cos(0) = 1", 1.0, df.eval(0), 1e-12);
+  }
+
+  public void testPackagedContextNumericalIntegralCodegen()
+  {
+    Context      ctx = new Context("arb.test.codegen");
+    RealFunction f   = RealFunction.express("a➔nint(t➔t*t, t=0…1)", ctx);
+    assertEquals("∫_0^1 t^2 dt = 1/3", 1.0 / 3.0, f.eval(0), 1e-6);
+  }
+
+  public void testPackagedContextSymbolicIntegralCodegen()
+  {
+    Context      ctx = new Context("arb.test.codegen");
+    RealFunction f   = RealFunction.express("x➔∫s➔(1+s)ds∈(0,x)", ctx);
+    assertEquals("∫_0^2 (1+s) ds = 4", 4.0, f.eval(2), 1e-12);
+  }
+
+  public void testPackagedContextComplexExpressionCodegen()
+  {
+    Context         ctx = new Context("arb.test.codegen");
+    ComplexFunction f   = ComplexFunction.express("f:z➔z*z+1", ctx);
+    assertEquals("class name carries the Context package",
+                 "arb.test.codegen.f",
+                 f.getClass().getName());
+    assertNotNull(f.eval(1.0, new arb.Complex()));
   }
 }
