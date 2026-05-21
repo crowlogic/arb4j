@@ -271,6 +271,16 @@ public class Context implements
       {
         return;
       }
+      // NEVER alias f.<name> = f. A function class A's own field of type A
+      // is the recursive-call receiver, and it MUST be a DIFFERENT A
+      // instance from f, otherwise the recursive call shares every field
+      // with the outer frame and field-writes clobber the outer's data.
+      // The bytecode in initialize() will allocate a fresh `new A()` when
+      // this.A is null (which it stays here because we skip the assignment).
+      if (functionMapping.instance == f)
+      {
+        return;
+      }
       // Look up the field by name AND type-compatibility. A name shared
       // between the {@code variables} and {@code functions} namespaces
       // (e.g. a Real {@code r} variable and a {@code r} ComplexFunction)
