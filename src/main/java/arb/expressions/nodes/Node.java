@@ -774,7 +774,16 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public void loadOutputVariableOntoStack(MethodVisitor methodVisitor, Class<?> resultType)
   {
-    if (isRootNode)
+    // The root-node shortcut writes the result directly into the user's
+    // `result` parameter — but only safely when this node's own natural type
+    // matches the surrounding expression's coDomain. If it doesn't (e.g. a
+    // WhenNode whose case body is a Complex-returning hv(0) in a
+    // ComplexPolynomial-typed expression), casting result to the narrower
+    // type and handing that to the callee causes a runtime ClassCastException
+    // when the callee writes through its narrower-typed buffer. Allocate an
+    // intermediate of the call's actual type instead; the caller is then
+    // responsible for promoting back into result.
+    if (isRootNode && expression.coDomainType.equals(resultType))
     {
       cast(loadResultParameter(methodVisitor), resultType);
       fieldName = "result";

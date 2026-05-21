@@ -223,7 +223,26 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
     loadOrderParameter(mv);
     loadBitsParameterOntoStack(mv);
 
-    loadOutputVariableOntoStack(mv, resultType);
+    // Output-buffer target = function's declared codomain, NOT the surrounding
+    // resultType. The called function's evaluate(…, Object result) cast its
+    // 4th arg to the codomain it actually returns; passing a wider buffer
+    // (e.g. ComplexPolynomial when the function returns Complex) trips a
+    // ClassCastException inside the callee. If they differ, allocate a
+    // codomain-typed buffer and promote to resultType after the call.
+    Class<?> callCoDomain;
+    try
+    {
+      callCoDomain = Expression.resolveChildCoDomain(functionType);
+    }
+    catch (UnsupportedOperationException uoe)
+    {
+      callCoDomain = resultType;
+    }
+    boolean needsPromotion = !callCoDomain.equals(resultType)
+                          && !resultType.equals(Object.class)
+                          && !callCoDomain.equals(Object.class);
+
+    loadOutputVariableOntoStack(mv, needsPromotion ? callCoDomain : resultType);
 
     mv.visitMethodInsn(functionType.isInterface() ? Opcodes.INVOKEINTERFACE : Opcodes.INVOKEVIRTUAL,
                        Type.getInternalName(functionType),
@@ -231,7 +250,16 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
                        Compiler.evaluationMethodDescriptor,
                        functionType.isInterface());
 
-    if (!resultType.equals(Object.class))
+    if (needsPromotion)
+    {
+      // Stack: [..., callResult]. Promote via resultBuffer.set(callResult).
+      cast(mv, callCoDomain);
+      String resultBuf = expression.allocateIntermediateVariable(mv, resultType);
+      // Stack: [..., callResult, resultBuf]. swap, invoke resultBuf.set(callResult).
+      mv.visitInsn(Opcodes.SWAP);
+      Compiler.generateVirtualMethodInvocation(mv, resultType, "set", resultType, callCoDomain);
+    }
+    else if (!resultType.equals(Object.class))
     {
       cast(mv, resultType);
     }
