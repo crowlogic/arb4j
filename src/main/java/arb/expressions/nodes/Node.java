@@ -809,7 +809,21 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
       getLogger().debug(String.format("generateCastTo(type=%s) from generatedType=%s\n", type, generatedType));
     }
     cast(methodVisitor, generatedType);
-    expression.allocateIntermediateVariable(methodVisitor, type);
+    // issue #1032 follow-up: when this node is at the root (its converted
+    // value IS the expression's result), write the conversion into the
+    // caller-supplied result parameter rather than into a throwaway
+    // intermediate. Otherwise the converted polynomial sits in
+    // this.vXℂNNNN, `result` is left at whatever empty value the caller
+    // passed in, the cache pokes that empty result, and downstream code
+    // sees ∅ for every type-promoted case-branch of a WhenNode.
+    if (isRootNode && expression.coDomainType.equals(type))
+    {
+      cast(loadResultParameter(methodVisitor), type);
+    }
+    else
+    {
+      expression.allocateIntermediateVariable(methodVisitor, type);
+    }
     swap(methodVisitor);
     invokeSetMethod(methodVisitor, generatedType, type);
     return generatedType = type;

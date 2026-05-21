@@ -1065,7 +1065,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected void constructReferencedFunctionInstanceIfItIsNull(MethodVisitor mv, FunctionMapping<?, ?, ?> mapping)
   {
     assert mapping != null : "mapping shan't be null";
-    if ((mapping.functionName == null || functionName == null || !functionName.equals(mapping.functionName)) && mapping.expression != null)
+    boolean isSelfRef = mapping.functionName != null && functionName != null && functionName.equals(mapping.functionName);
+    // issue #1032 follow-up: also emit the wire-up block for mappings
+    // registered with a live instance but no defining expression (e.g.
+    // Context.registerSequence("B", bopsInstance) in the OPS framework).
+    // Without this, the inner self-recursive instance's `this.B` stays
+    // null at first evaluate(), because only externally-injected outer
+    // instances ever get B set — Function.express's injectFunctionReferences
+    // doesn't run on inner-recursion instances allocated by generateSelfReference.
+    boolean hasSomething = mapping.expression != null || mapping.instance != null;
+    if (!isSelfRef && hasSomething)
     {
       // Bytecode-only path: use the mapping's already-known generated-class
       // internal name. ASM's new/invokespecial accept name strings; resolving
