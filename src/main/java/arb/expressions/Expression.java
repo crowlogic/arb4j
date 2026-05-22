@@ -2268,11 +2268,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       define(true);
     }
 
-    nextLocalVariableSlot = 5;
-
-    Label startLabel  = new Label();
-    Label endLabel    = new Label();
-    Label taylorLabel = new Label();
+    Label startLabel = new Label();
+    Label endLabel = new Label();
     Label guardCheckLabel = new Label();
     Label tryStart = new Label();
     Label tryEnd = new Label();
@@ -2284,9 +2281,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     designateLabel(mv, startLabel);
     Compiler.annotateWithOverride(mv);
 
-    // Re-entrancy guard wrapper with proper try-finally
-
-    // Check if evaluating is true
+    // Re-entrancy guard with try-finally wrapping helper method
     loadThisOntoStack(mv);
     mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "evaluating", "Z");
     mv.visitJumpInsn(Opcodes.IFEQ, guardCheckLabel);
@@ -2298,14 +2293,66 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitInsn(Opcodes.ATHROW);
 
     designateLabel(mv, guardCheckLabel);
-    // Set evaluating to true
     loadThisOntoStack(mv);
     mv.visitInsn(Opcodes.ICONST_1);
     mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "evaluating", "Z");
 
-    // Register exception handler - must be before any code in try block
     mv.visitTryCatchBlock(tryStart, tryEnd, exceptionHandler, null);
     designateLabel(mv, tryStart);
+
+    // Call the helper method that contains actual evaluation logic
+    loadThisOntoStack(mv);
+    loadInputParameterChecked(mv);
+    mv.visitVarInsn(Opcodes.ILOAD, 2); // order
+    mv.visitVarInsn(Opcodes.ILOAD, 3); // bits
+    mv.visitVarInsn(Opcodes.ALOAD, 4); // result
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, internalName(), evaluationBodyMethodName(), evaluationBodyMethodDescriptor(), false);
+
+    designateLabel(mv, tryEnd);
+    loadThisOntoStack(mv);
+    mv.visitInsn(Opcodes.ICONST_0);
+    mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "evaluating", "Z");
+    mv.visitInsn(Opcodes.ARETURN);
+
+    // Exception handler: reset evaluating and rethrow
+    designateLabel(mv, exceptionHandler);
+    loadThisOntoStack(mv);
+    mv.visitInsn(Opcodes.ICONST_0);
+    mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "evaluating", "Z");
+    mv.visitInsn(Opcodes.ATHROW);
+
+    designateLabel(mv, endLabel);
+    declareEvaluateMethodArguments(mv, startLabel, endLabel);
+
+    mv.visitMaxs(0, 0);
+    mv.visitEnd();
+
+    generateEvaluationBodyMethod(classVisitor);
+    return classVisitor;
+  }
+
+  private String evaluationBodyMethodName()
+  {
+    return "evaluate_body";
+  }
+
+  private String evaluationBodyMethodDescriptor()
+  {
+    return Compiler.evaluationMethodDescriptor;
+  }
+
+  protected ClassVisitor generateEvaluationBodyMethod(ClassVisitor classVisitor) throws CompilerException
+  {
+    nextLocalVariableSlot = 5;
+
+    Label startLabel  = new Label();
+    Label endLabel    = new Label();
+    Label taylorLabel = new Label();
+
+    var mv = classVisitor.visitMethod(Opcodes.ACC_PRIVATE, evaluationBodyMethodName(), evaluationBodyMethodDescriptor(), null, null);
+    mv.visitCode();
+
+    designateLabel(mv, startLabel);
 
     // Issue #1014: for reified-functional codomains (ComplexPolynomial,
     // RealPolynomial, RationalFunction, ComplexRationalFunction) the
@@ -2388,12 +2435,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // the result after set()).
     if (isReifiedFunctional() && getPlaceholderVariable() != null)
     {
-      // Stack top is the result reference, possibly typed as Object
-      // (generic evaluate(Object, int, int, Object) signature). DUP it,
-      // CHECKCAST to coDomainType so invokevirtual on the typed method
-      // verifies, push the placeholder name, invoke the setter, pop the
-      // returned (this) reference; the original result reference remains
-      // for ARETURN.
       duplicateTopOfTheStack(mv);
       mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
       mv.visitLdcInsn(getPlaceholderVariable().getName());
@@ -2410,12 +2451,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       generateValueBackingPoke(mv);
     }
 
-    // Reset evaluating flag and mark end of try block
-    loadThisOntoStack(mv);
-    mv.visitInsn(Opcodes.ICONST_0);
-    mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "evaluating", "Z");
-    designateLabel(mv, tryEnd);
-
     designateLabel(mv, endLabel);
     declareEvaluateMethodArguments(mv, startLabel, endLabel);
 
@@ -2426,20 +2461,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     else
     {
       mv.visitInsn(Opcodes.ARETURN);
-
-      // --- Taylor series evaluation for order > 1 ---
       generateTaylorSeriesPath(mv, taylorLabel);
-
-      // Exception handler: reset evaluating and rethrow
-      designateLabel(mv, exceptionHandler);
-      loadThisOntoStack(mv);
-      mv.visitInsn(Opcodes.ICONST_0);
-      mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "evaluating", "Z");
-      mv.visitInsn(Opcodes.ATHROW);
-
       mv.visitMaxs(0, 0);
       mv.visitEnd();
     }
+
     return classVisitor;
   }
 
