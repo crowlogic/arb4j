@@ -1,8 +1,13 @@
 package arb.functions.complex;
 
+import java.util.Collections;
+import java.util.IdentityHashMap;
+import java.util.Set;
+
 import arb.*;
 import arb.Integer;
 import arb.expressions.Context;
+import arb.functions.Function;
 import arb.functions.integer.ComplexFunctionSequence;
 import arb.functions.integer.ComplexPolynomialSequence;
 import arb.functions.integer.ComplexSequence;
@@ -36,6 +41,15 @@ public final class MuntzPadeApproximant implements
   private final ComplexFunctionSequence                      Φ;
 
   private boolean closed;
+
+  /**
+   * Working precision (in bits) at which the memoized σ-table / Jacobi /
+   * Padé sequences currently hold their values. The per-index caches
+   * (Pn(M), Q(M), σ, h, α, β, …) are precision-blind — they store a single
+   * polynomial per index — so a cache entry built at N bits is only good to
+   * N bits. -1 means "nothing cached yet".
+   */
+  private int cachedBits = -1;
 
   public MuntzPadeApproximant(Real α, ComplexPolynomialSequence a, Complex v, int bits)
   {
@@ -85,6 +99,29 @@ public final class MuntzPadeApproximant implements
   public Complex evaluate(Complex t, int order, int bits, Complex result)
   {
     if (closed) throw new IllegalStateException("closed");
+
+    // Precision guard. The σ-table / Jacobi / Padé caches are keyed by
+    // sequence index only, so an entry computed at N bits is accurate to N
+    // bits and no further. Reusing those entries for a request at MORE bits
+    // would silently cap the result at the lower precision. So:
+    //   requested bits >  cachedBits  → the cache is too coarse; clear it and
+    //                                    rebuild at the new precision.
+    //   requested bits <= cachedBits  → the cache is at least as precise as
+    //                                    asked; reuse as-is (and reuse freely
+    //                                    across different t at the same bits).
+    if (bits > cachedBits)
+    {
+      Set<Function<?, ?>> invalidated = Collections.newSetFromMap(new IdentityHashMap<>());
+      for (var mapping : context.functions.values())
+      {
+        if (mapping.instance != null)
+        {
+          mapping.instance.invalidateCache(invalidated);
+        }
+      }
+      cachedBits = bits;
+    }
+
     t.pow(α, bits, z);
     try ( Real    threshold = new Real();
           Real    diffMag   = new Real();
