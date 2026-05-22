@@ -1985,16 +1985,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
       getReferencedFunctions().forEach((name, mapping) ->
       {
-        String fieldDesc = mapping.functionFieldDescriptor();
+        String fieldDesc       = mapping.functionFieldDescriptor();
+        String fieldInternalName = Type.getType(fieldDesc).getInternalName();
+        boolean isInterface    = mapping.functionClass != null && mapping.functionClass.isInterface();
         loadThisOntoStack(methodVisitor);
         methodVisitor.visitFieldInsn(GETFIELD, internalName(), name, fieldDesc);
         Label skip = new Label();
         methodVisitor.visitJumpInsn(IFNULL, skip);
         loadThisOntoStack(methodVisitor);
         methodVisitor.visitFieldInsn(GETFIELD, internalName(), name, fieldDesc);
-        methodVisitor.visitTypeInsn(CHECKCAST, Type.getInternalName(AutoCloseable.class));
-        // null the field first, THEN close — breaks the cycle
-        methodVisitor.visitMethodInsn(INVOKEINTERFACE, Type.getInternalName(AutoCloseable.class), "close", "()V", true);
+        methodVisitor.visitMethodInsn(isInterface ? INVOKEINTERFACE : INVOKEVIRTUAL,
+                                      fieldInternalName, "close", "()V", isInterface);
         methodVisitor.visitLabel(skip);
       });
     }
@@ -2332,6 +2333,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return Compiler.evaluationMethodDescriptor;
   }
 
+  private String evaluationBodyMethodSignature()
+  {
+    return Compiler.getMethodDescriptor(coDomainType, domainType, int.class, int.class, coDomainType);
+  }
+
   protected ClassVisitor generateEvaluationBodyMethod(ClassVisitor classVisitor) throws CompilerException
   {
     nextLocalVariableSlot = 5;
@@ -2340,7 +2346,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     Label endLabel    = new Label();
     Label taylorLabel = new Label();
 
-    var mv = classVisitor.visitMethod(Opcodes.ACC_PRIVATE, evaluationBodyMethodName(), evaluationBodyMethodDescriptor(), null, null);
+    var mv = classVisitor.visitMethod(Opcodes.ACC_PRIVATE, evaluationBodyMethodName(), evaluationBodyMethodDescriptor(), evaluationBodyMethodSignature(), null);
     mv.visitCode();
 
     designateLabel(mv, startLabel);

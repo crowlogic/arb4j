@@ -1,4 +1,4 @@
-package arb.crap;
+package arb.fuckedup;
 
 import arb.ComplexPolynomial;
 import arb.Field;
@@ -13,12 +13,12 @@ import arb.functions.Function;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
 import java.util.ArrayList;
 
-public class P implements ComplexPolynomialNullaryFunction, Typesettable, AutoCloseable, Initializable, Named {
+public class Q implements ComplexPolynomialNullaryFunction, Typesettable, AutoCloseable, Initializable, Named {
    public boolean isInitialized;
    protected Context context = new Context();
    public Expression expression;
    private boolean evaluating;
-   public final Integer cℤ0000 = new Integer("1");
+   public final Integer cℤ0000 = new Integer("0");
    public ArrayList<Function<Object, ComplexPolynomial>> derivativeCache;
 
    @Override
@@ -49,7 +49,7 @@ public class P implements ComplexPolynomialNullaryFunction, Typesettable, AutoCl
       }
    }
 
-   private Object evaluate_body(Object in, int order, int bits, ComplexPolynomial result) {
+   private ComplexPolynomial evaluate_body(Object in, int order, int bits, ComplexPolynomial result) {
       if (result == null) {
          result = new ComplexPolynomial();
       }
@@ -110,14 +110,12 @@ public class P implements ComplexPolynomialNullaryFunction, Typesettable, AutoCl
 
    @Override
    public void close() {
-      if (this.cℤ0000 != this) {
-         this.cℤ0000.close();
-      }
+      this.cℤ0000.close();
    }
 
    @Override
    public String getName() {
-      return "P";
+      return "Q";
    }
 
    @Override
@@ -132,11 +130,11 @@ public class P implements ComplexPolynomialNullaryFunction, Typesettable, AutoCl
 
    @Override
    public String toString() {
-      return "P:1";
+      return "Q:0";
    }
 
    @Override
    public String typeset() {
-      return "1";
+      return "0";
    }
 }

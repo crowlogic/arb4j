@@ -1,4 +1,4 @@
-package arb.crap;
+package arb.fuckedup;
 
 import arb.Complex;
 import arb.ComplexPolynomial;
@@ -62,7 +62,7 @@ public class Φ implements ComplexFunctionSequence, Typesettable, AutoCloseable,
       }
    }
 
-   private Object evaluate_body(Integer M, int order, int bits, ComplexFunction result) {
+   private ComplexFunction evaluate_body(Integer M, int order, int bits, ComplexFunction result) {
       if (!this.isInitialized) {
          this.initialize();
       }

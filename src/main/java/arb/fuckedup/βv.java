@@ -1,4 +1,4 @@
-package arb.crap;
+package arb.fuckedup;
 
 import arb.Complex;
 import arb.ComplexPolynomial;
@@ -61,7 +61,7 @@ public class βv implements ComplexSequence, Typesettable, AutoCloseable, Initia
       }
    }
 
-   private Object evaluate_body(Integer n, int order, int bits, Complex result) {
+   private Complex evaluate_body(Integer n, int order, int bits, Complex result) {
       if (!this.isInitialized) {
          this.initialize();
       }
@@ -190,14 +190,9 @@ public class βv implements ComplexSequence, Typesettable, AutoCloseable, Initia
 
    @Override
    public void close() {
-      if (this.vXℂ0018 != this) {
-         this.vXℂ0018.close();
-      }
-
+      this.vXℂ0018.close();
       if (this.β != null) {
-         AutoCloseable var10001 = (AutoCloseable)this.β;
-         this.β = null;
-         var10001.close();
+         this.β.close();
       }
    }
 

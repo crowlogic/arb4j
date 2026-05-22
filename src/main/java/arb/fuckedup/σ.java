@@ -1,4 +1,4 @@
-package arb.crap;
+package arb.fuckedup;
 
 import arb.Complex;
 import arb.ComplexPolynomial;
@@ -64,7 +64,7 @@ public class σ implements ComplexPolynomialSequenceSequence, Typesettable, Auto
       }
    }
 
-   private Object evaluate_body(Integer j, int order, int bits, ComplexPolynomialSequence result) {
+   private ComplexPolynomialSequence evaluate_body(Integer j, int order, int bits, ComplexPolynomialSequence result) {
       if (!this.isInitialized) {
          this.initialize();
       }

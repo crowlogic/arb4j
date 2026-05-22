@@ -1,6 +1,6 @@
-package arb.crap;
+package arb.fuckedup;
 
-import arb.Complex;
+import arb.ComplexPolynomial;
 import arb.Field;
 import arb.Initializable;
 import arb.Integer;
@@ -10,16 +10,16 @@ import arb.exceptions.CompilerException;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.Function;
-import arb.functions.complex.ComplexNullaryFunction;
+import arb.functions.complex.ComplexPolynomialNullaryFunction;
 import java.util.ArrayList;
 
-public class _1 implements ComplexNullaryFunction, Typesettable, AutoCloseable, Initializable, Named {
+public class P implements ComplexPolynomialNullaryFunction, Typesettable, AutoCloseable, Initializable, Named {
    public boolean isInitialized;
    protected Context context = new Context();
    public Expression expression;
    private boolean evaluating;
    public final Integer cℤ0000 = new Integer("1");
-   public ArrayList<Function<Object, Complex>> derivativeCache;
+   public ArrayList<Function<Object, ComplexPolynomial>> derivativeCache;
 
    @Override
    public Class<Object> domainType() {
@@ -27,12 +27,12 @@ public class _1 implements ComplexNullaryFunction, Typesettable, AutoCloseable, 
    }
 
    @Override
-   public Class<Complex> coDomainType() {
-      return Complex.class;
+   public Class<ComplexPolynomial> coDomainType() {
+      return ComplexPolynomial.class;
    }
 
    @Override
-   public Complex evaluate(Object in, int order, int bits, Complex result) {
+   public ComplexPolynomial evaluate(Object in, int order, int bits, ComplexPolynomial result) {
       if (this.evaluating) {
          throw new CompilerException("re-entrant evaluate() call on same instance");
       } else {
@@ -45,11 +45,15 @@ public class _1 implements ComplexNullaryFunction, Typesettable, AutoCloseable, 
             this.evaluating = false;
          }
 
-         return (Complex)var10000;
+         return (ComplexPolynomial)var10000;
       }
    }
 
-   private Object evaluate_body(Object in, int order, int bits, Complex result) {
+   private ComplexPolynomial evaluate_body(Object in, int order, int bits, ComplexPolynomial result) {
+      if (result == null) {
+         result = new ComplexPolynomial();
+      }
+
       if (order <= 1) {
          return result.set(this.cℤ0000);
       } else {
@@ -85,6 +89,16 @@ public class _1 implements ComplexNullaryFunction, Typesettable, AutoCloseable, 
    }
 
    @Override
+   public Function integral() {
+      return ((ComplexPolynomial)this.evaluate()).integral();
+   }
+
+   @Override
+   public Function derivative() {
+      return ((ComplexPolynomial)this.evaluate()).derivative();
+   }
+
+   @Override
    public void initialize() {
       if (this.isInitialized) {
          throw new AssertionError("Already initialized");
@@ -96,14 +110,12 @@ public class _1 implements ComplexNullaryFunction, Typesettable, AutoCloseable, 
 
    @Override
    public void close() {
-      if (this.cℤ0000 != this) {
-         this.cℤ0000.close();
-      }
+      this.cℤ0000.close();
    }
 
    @Override
    public String getName() {
-      return null;
+      return "P";
    }
 
    @Override
@@ -118,7 +130,7 @@ public class _1 implements ComplexNullaryFunction, Typesettable, AutoCloseable, 
 
    @Override
    public String toString() {
-      return "1";
+      return "P:1";
    }
 
    @Override

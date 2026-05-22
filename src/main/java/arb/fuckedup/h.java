@@ -1,4 +1,4 @@
-package arb.crap;
+package arb.fuckedup;
 
 import arb.Complex;
 import arb.ComplexPolynomial;
@@ -19,24 +19,19 @@ import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.Set;
 
-public class α implements ComplexPolynomialSequence, Typesettable, AutoCloseable, Initializable, Named {
+public class h implements ComplexPolynomialSequence, Typesettable, AutoCloseable, Initializable, Named {
    public boolean isInitialized;
    protected Context context;
    public Expression expression;
    private IndexCache<ComplexPolynomial> cache = new IndexCache();
    private boolean evaluating;
-   public final Integer cℤ0000;
    public σ σ;
-   public h h;
    public ComplexPolynomial p0;
    public ComplexPolynomial p1;
    public Complex v;
    public Real μ;
    public ArrayList<Function<Integer, ComplexPolynomial>> derivativeCache;
-   public ComplexPolynomialSequence vSXℂ0007;
-   public ComplexPolynomial vXℂ0015;
-   public ComplexPolynomial vXℂ0016;
-   public Integer vℤ0010;
+   public ComplexPolynomialSequence vSXℂ0001;
 
    @Override
    public Class<Integer> domainType() {
@@ -66,7 +61,7 @@ public class α implements ComplexPolynomialSequence, Typesettable, AutoCloseabl
       }
    }
 
-   private Object evaluate_body(Integer j, int order, int bits, ComplexPolynomial result) {
+   private ComplexPolynomial evaluate_body(Integer j, int order, int bits, ComplexPolynomial result) {
       if (result == null) {
          result = new ComplexPolynomial();
       }
@@ -83,9 +78,7 @@ public class α implements ComplexPolynomialSequence, Typesettable, AutoCloseabl
          } else {
             IndexCache var9 = this.cache;
             Integer var10 = j;
-            ((ComplexPolynomial)((ComplexPolynomialSequence)this.σ.evaluate(j, order, bits, this.vSXℂ0007))
-                  .evaluate(j.add(this.cℤ0000, bits, this.vℤ0010), order, bits, this.vXℂ0015))
-               .div((ComplexPolynomial)this.h.evaluate(j, order, bits, this.vXℂ0016), bits, result);
+            var11 = (ComplexPolynomial)((ComplexPolynomialSequence)this.σ.evaluate(j, order, bits, this.vSXℂ0001)).evaluate(j, order, bits, result);
             ComplexPolynomial var7 = new ComplexPolynomial();
             var7.set(result);
             Function.poke(var9, var10, var7);
@@ -129,10 +122,6 @@ public class α implements ComplexPolynomialSequence, Typesettable, AutoCloseabl
          if (this.σ != null) {
             this.σ.invalidateCache(var1);
          }
-
-         if (this.h != null) {
-            this.h.invalidateCache(var1);
-         }
       }
    }
 
@@ -153,16 +142,6 @@ public class α implements ComplexPolynomialSequence, Typesettable, AutoCloseabl
             } else {
                this.σ = new σ();
                this.σ.context = this.context;
-            }
-         }
-
-         if (this.h == null) {
-            Function var1 = this.context.lookupFunctionInstance("h");
-            if (var1 != null) {
-               this.h = (h)var1;
-            } else {
-               this.h = new h();
-               this.h.context = this.context;
             }
          }
 
@@ -190,81 +169,25 @@ public class α implements ComplexPolynomialSequence, Typesettable, AutoCloseabl
             this.σ.μ.set(this.μ);
          }
 
-         this.h.σ = this.σ;
-         if (this.h.p0 == null) {
-            this.h.p0 = this.p0;
-         } else {
-            this.h.p0.set(this.p0);
-         }
-
-         if (this.h.p1 == null) {
-            this.h.p1 = this.p1;
-         } else {
-            this.h.p1.set(this.p1);
-         }
-
-         if (this.h.v == null) {
-            this.h.v = this.v;
-         } else {
-            this.h.v.set(this.v);
-         }
-
-         if (this.h.μ == null) {
-            this.h.μ = this.μ;
-         } else {
-            this.h.μ.set(this.μ);
-         }
-
          this.isInitialized = true;
       }
    }
 
-   public α() {
+   public h() {
       this.context = new Context();
-      this.cℤ0000 = new Integer("1");
-      this.vXℂ0015 = new ComplexPolynomial();
-      this.vXℂ0016 = new ComplexPolynomial();
-      this.vℤ0010 = new Integer();
    }
 
    @Override
    public void close() {
-      if (this.cℤ0000 != this) {
-         this.cℤ0000.close();
-      }
-
-      if (this.vSXℂ0007 != this) {
-         this.vSXℂ0007.close();
-      }
-
-      if (this.vXℂ0015 != this) {
-         this.vXℂ0015.close();
-      }
-
-      if (this.vXℂ0016 != this) {
-         this.vXℂ0016.close();
-      }
-
-      if (this.vℤ0010 != this) {
-         this.vℤ0010.close();
-      }
-
+      this.vSXℂ0001.close();
       if (this.σ != null) {
-         AutoCloseable var10005 = (AutoCloseable)this.σ;
-         this.σ = null;
-         var10005.close();
-      }
-
-      if (this.h != null) {
-         AutoCloseable var1 = (AutoCloseable)this.h;
-         this.h = null;
-         var1.close();
+         this.σ.close();
       }
    }
 
    @Override
    public String getName() {
-      return "α";
+      return "h";
    }
 
    @Override
@@ -279,11 +202,11 @@ public class α implements ComplexPolynomialSequence, Typesettable, AutoCloseabl
 
    @Override
    public String toString() {
-      return "α:j➔(σ(j)(j+1))/h(j)";
+      return "h:j➔σ(j)(j)";
    }
 
    @Override
    public String typeset() {
-      return "\\frac{\\σ\\left(j\\right)\\left(\\left(j + 1\\right)\\right)}{\\h\\left(j\\right)}";
+      return "\\σ\\left(j\\right)\\left(j\\right)";
    }
 }

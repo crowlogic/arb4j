@@ -1,4 +1,4 @@
-package arb.crap;
+package arb.fuckedup;
 
 import arb.Complex;
 import arb.ComplexPolynomial;
@@ -66,7 +66,7 @@ public class Φnum implements ComplexPolynomialSequence, Typesettable, AutoClose
       }
    }
 
-   private Object evaluate_body(Integer M, int order, int bits, ComplexPolynomial result) {
+   private ComplexPolynomial evaluate_body(Integer M, int order, int bits, ComplexPolynomial result) {
       if (result == null) {
          result = new ComplexPolynomial();
       }
@@ -264,36 +264,17 @@ public class Φnum implements ComplexPolynomialSequence, Typesettable, AutoClose
 
    @Override
    public void close() {
-      if (this.cℤ0000 != this) {
-         this.cℤ0000.close();
-      }
-
-      if (this.jXℂ0002ℤ0001 != this) {
-         this.jXℂ0002ℤ0001.close();
-      }
-
-      if (this.sumXℂ0002 != this) {
-         this.sumXℂ0002.close();
-      }
-
-      if (this.upperLimitℤ0002 != this) {
-         this.upperLimitℤ0002.close();
-      }
-
-      if (this.valueXℂ0002 != this) {
-         this.valueXℂ0002.close();
-      }
-
+      this.cℤ0000.close();
+      this.jXℂ0002ℤ0001.close();
+      this.sumXℂ0002.close();
+      this.upperLimitℤ0002.close();
+      this.valueXℂ0002.close();
       if (this.operandF0002 != null) {
-         AutoCloseable var10005 = (AutoCloseable)this.operandF0002;
-         this.operandF0002 = null;
-         var10005.close();
+         this.operandF0002.close();
       }
 
       if (this.Pn != null) {
-         AutoCloseable var1 = (AutoCloseable)this.Pn;
-         this.Pn = null;
-         var1.close();
+         this.Pn.close();
       }
    }
 

@@ -1,4 +1,4 @@
-package arb.crap;
+package arb.fuckedup;
 
 import arb.Complex;
 import arb.ComplexPolynomial;
@@ -92,7 +92,7 @@ public class σfunc implements ComplexPolynomialSequence, Typesettable, AutoClos
       }
    }
 
-   private Object evaluate_body(Integer k, int order, int bits, ComplexPolynomial result) {
+   private ComplexPolynomial evaluate_body(Integer k, int order, int bits, ComplexPolynomial result) {
       if (result == null) {
          result = new ComplexPolynomial();
       }
@@ -338,148 +338,50 @@ public class σfunc implements ComplexPolynomialSequence, Typesettable, AutoClos
 
    @Override
    public void close() {
-      if (this.cℤ0000 != this) {
-         this.cℤ0000.close();
-      }
-
-      if (this.cℤ0001 != this) {
-         this.cℤ0001.close();
-      }
-
-      if (this.cℤ0002 != this) {
-         this.cℤ0002.close();
-      }
-
-      if (this.cseℤ0006 != this) {
-         this.cseℤ0006.close();
-      }
-
-      if (this.cseℤ0007 != this) {
-         this.cseℤ0007.close();
-      }
-
-      if (this.cseℤ0008 != this) {
-         this.cseℤ0008.close();
-      }
-
-      if (this.vSXℂ0002 != this) {
-         this.vSXℂ0002.close();
-      }
-
-      if (this.vSXℂ0003 != this) {
-         this.vSXℂ0003.close();
-      }
-
-      if (this.vSXℂ0004 != this) {
-         this.vSXℂ0004.close();
-      }
-
-      if (this.vSXℂ0005 != this) {
-         this.vSXℂ0005.close();
-      }
-
-      if (this.vSXℂ0006 != this) {
-         this.vSXℂ0006.close();
-      }
-
-      if (this.vXℂ0003 != this) {
-         this.vXℂ0003.close();
-      }
-
-      if (this.vXℂ0004 != this) {
-         this.vXℂ0004.close();
-      }
-
-      if (this.vXℂ0005 != this) {
-         this.vXℂ0005.close();
-      }
-
-      if (this.vXℂ0006 != this) {
-         this.vXℂ0006.close();
-      }
-
-      if (this.vXℂ0007 != this) {
-         this.vXℂ0007.close();
-      }
-
-      if (this.vXℂ0008 != this) {
-         this.vXℂ0008.close();
-      }
-
-      if (this.vXℂ0009 != this) {
-         this.vXℂ0009.close();
-      }
-
-      if (this.vXℂ0010 != this) {
-         this.vXℂ0010.close();
-      }
-
-      if (this.vXℂ0011 != this) {
-         this.vXℂ0011.close();
-      }
-
-      if (this.vXℂ0012 != this) {
-         this.vXℂ0012.close();
-      }
-
-      if (this.vXℂ0013 != this) {
-         this.vXℂ0013.close();
-      }
-
-      if (this.vXℂ0014 != this) {
-         this.vXℂ0014.close();
-      }
-
-      if (this.vℤ0003 != this) {
-         this.vℤ0003.close();
-      }
-
-      if (this.vℤ0004 != this) {
-         this.vℤ0004.close();
-      }
-
-      if (this.vℤ0005 != this) {
-         this.vℤ0005.close();
-      }
-
-      if (this.vℤ0006 != this) {
-         this.vℤ0006.close();
-      }
-
-      if (this.vℤ0007 != this) {
-         this.vℤ0007.close();
-      }
-
-      if (this.vℤ0008 != this) {
-         this.vℤ0008.close();
-      }
-
-      if (this.vℤ0009 != this) {
-         this.vℤ0009.close();
-      }
-
+      this.cℤ0000.close();
+      this.cℤ0001.close();
+      this.cℤ0002.close();
+      this.cseℤ0006.close();
+      this.cseℤ0007.close();
+      this.cseℤ0008.close();
+      this.vSXℂ0002.close();
+      this.vSXℂ0003.close();
+      this.vSXℂ0004.close();
+      this.vSXℂ0005.close();
+      this.vSXℂ0006.close();
+      this.vXℂ0003.close();
+      this.vXℂ0004.close();
+      this.vXℂ0005.close();
+      this.vXℂ0006.close();
+      this.vXℂ0007.close();
+      this.vXℂ0008.close();
+      this.vXℂ0009.close();
+      this.vXℂ0010.close();
+      this.vXℂ0011.close();
+      this.vXℂ0012.close();
+      this.vXℂ0013.close();
+      this.vXℂ0014.close();
+      this.vℤ0003.close();
+      this.vℤ0004.close();
+      this.vℤ0005.close();
+      this.vℤ0006.close();
+      this.vℤ0007.close();
+      this.vℤ0008.close();
+      this.vℤ0009.close();
       if (this.α != null) {
-         AutoCloseable var10030 = (AutoCloseable)this.α;
-         this.α = null;
-         var10030.close();
+         this.α.close();
       }
 
       if (this.β != null) {
-         AutoCloseable var1 = (AutoCloseable)this.β;
-         this.β = null;
-         var1.close();
+         this.β.close();
       }
 
       if (this.σ != null) {
-         AutoCloseable var2 = (AutoCloseable)this.σ;
-         this.σ = null;
-         var2.close();
+         this.σ.close();
       }
 
       if (this.m != null) {
-         AutoCloseable var3 = (AutoCloseable)this.m;
-         this.m = null;
-         var3.close();
+         this.m.close();
       }
    }
 

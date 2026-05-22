@@ -1,4 +1,4 @@
-package arb.crap;
+package arb.fuckedup;
 
 import arb.ComplexPolynomial;
 import arb.Field;
@@ -50,7 +50,7 @@ public class R implements ComplexPolynomialNullaryFunction, Typesettable, AutoCl
       }
    }
 
-   private Object evaluate_body(Object in, int order, int bits, ComplexPolynomial result) {
+   private ComplexPolynomial evaluate_body(Object in, int order, int bits, ComplexPolynomial result) {
       if (result == null) {
          result = new ComplexPolynomial();
       }
@@ -111,13 +111,8 @@ public class R implements ComplexPolynomialNullaryFunction, Typesettable, AutoCl
 
    @Override
    public void close() {
-      if (this.cℤ0000 != this) {
-         this.cℤ0000.close();
-      }
-
-      if (this.cℤ0001 != this) {
-         this.cℤ0001.close();
-      }
+      this.cℤ0000.close();
+      this.cℤ0001.close();
    }
 
    @Override

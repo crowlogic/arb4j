@@ -1,4 +1,4 @@
-package arb.crap;
+package arb.fuckedup;
 
 import arb.Complex;
 import arb.ComplexPolynomial;
@@ -12,28 +12,25 @@ import arb.exceptions.CompilerException;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.Function;
-import arb.functions.integer.Sequence;
+import arb.functions.IndexCache;
+import arb.functions.integer.ComplexPolynomialSequence;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.Set;
 
-public class operandF0002 implements Sequence<ComplexPolynomial>, Typesettable, AutoCloseable, Initializable, Named {
+public class m implements ComplexPolynomialSequence, Typesettable, AutoCloseable, Initializable, Named {
    public boolean isInitialized;
    protected Context context;
    public Expression expression;
+   private IndexCache<ComplexPolynomial> cache = new IndexCache();
    private boolean evaluating;
-   public Pn Pn;
-   public Integer M;
-   public ComplexPolynomial p0;
-   public ComplexPolynomial p1;
+   public final Integer cℤ0000;
+   public a a;
    public Complex v;
    public Real μ;
    public ArrayList<Function<Integer, ComplexPolynomial>> derivativeCache;
-   public ComplexPolynomial vXℂ0029 = new ComplexPolynomial();
-   public ComplexPolynomial vXℂ0030 = new ComplexPolynomial();
-   public ComplexPolynomial vXℂ0031 = new ComplexPolynomial();
-   public Integer vℤ0016 = new Integer();
+   public Integer vℤ0001;
 
    @Override
    public Class<Integer> domainType() {
@@ -46,7 +43,7 @@ public class operandF0002 implements Sequence<ComplexPolynomial>, Typesettable, 
    }
 
    @Override
-   public ComplexPolynomial evaluate(Integer j, int order, int bits, ComplexPolynomial result) {
+   public ComplexPolynomial evaluate(Integer k, int order, int bits, ComplexPolynomial result) {
       if (this.evaluating) {
          throw new CompilerException("re-entrant evaluate() call on same instance");
       } else {
@@ -54,7 +51,7 @@ public class operandF0002 implements Sequence<ComplexPolynomial>, Typesettable, 
 
          Object var10000;
          try {
-            var10000 = this.evaluate_body(j, order, bits, result);
+            var10000 = this.evaluate_body(k, order, bits, result);
          } finally {
             this.evaluating = false;
          }
@@ -63,7 +60,7 @@ public class operandF0002 implements Sequence<ComplexPolynomial>, Typesettable, 
       }
    }
 
-   private Object evaluate_body(Integer j, int order, int bits, ComplexPolynomial result) {
+   private ComplexPolynomial evaluate_body(Integer k, int order, int bits, ComplexPolynomial result) {
       if (result == null) {
          result = new ComplexPolynomial();
       }
@@ -73,11 +70,19 @@ public class operandF0002 implements Sequence<ComplexPolynomial>, Typesettable, 
       }
 
       if (order <= 1) {
-         ComplexPolynomial var9 = ((ComplexPolynomial)this.Pn.evaluate(this.M, order, bits, this.vXℂ0029))
-            .get(this.M.sub(j, bits, this.vℤ0016))
-            .mul(this.vXℂ0030.identity().pow(j, bits, this.vXℂ0031), bits, result);
-         var9.setIndependentVariableName("z");
-         return var9;
+         ComplexPolynomial var11 = (ComplexPolynomial)Function.peek(this.cache, k);
+         if (var11 != null) {
+            result.set(var11);
+            return result;
+         } else {
+            IndexCache var9 = this.cache;
+            Integer var10 = k;
+            ((ComplexPolynomial)this.a.evaluate(k.add(this.cℤ0000, bits, this.vℤ0001), order, bits, result)).setIndependentVariableName("u");
+            ComplexPolynomial var7 = new ComplexPolynomial();
+            var7.set(result);
+            Function.poke(var9, var10, var7);
+            return result;
+         }
       } else {
          if (this.derivativeCache == null) {
             this.derivativeCache = new ArrayList<>();
@@ -100,7 +105,7 @@ public class operandF0002 implements Sequence<ComplexPolynomial>, Typesettable, 
 
             Function var10000 = this.derivativeCache.get(var5);
             Object var8 = ((Field)result).get(var5);
-            var10000.evaluate(j, 1, bits, var8);
+            var10000.evaluate(k, 1, bits, var8);
             if (var5 >= 2) {
                ((Field)var8).div((int)var6, bits, (Field)var8);
             }
@@ -112,8 +117,9 @@ public class operandF0002 implements Sequence<ComplexPolynomial>, Typesettable, 
 
    public void invalidateCache(Set<Function<?, ?>> var1) {
       if (var1.add(this)) {
-         if (this.Pn != null) {
-            this.Pn.invalidateCache(var1);
+         this.cache.clear();
+         if (this.a != null) {
+            this.a.invalidateCache(var1);
          }
       }
    }
@@ -128,72 +134,38 @@ public class operandF0002 implements Sequence<ComplexPolynomial>, Typesettable, 
          throw new AssertionError("Already initialized");
       } else {
          this.derivativeCache = new ArrayList<>();
-         if (this.Pn == null) {
-            Function var10001 = this.context.lookupFunctionInstance("Pn");
+         if (this.a == null) {
+            Function var10001 = this.context.lookupFunctionInstance("a");
             if (var10001 != null) {
-               this.Pn = (Pn)var10001;
+               this.a = (a)var10001;
             } else {
-               this.Pn = new Pn();
-               this.Pn.context = this.context;
+               this.a = new a();
+               this.a.context = this.context;
             }
-         }
-
-         if (this.Pn.p0 == null) {
-            this.Pn.p0 = this.p0;
-         } else {
-            this.Pn.p0.set(this.p0);
-         }
-
-         if (this.Pn.p1 == null) {
-            this.Pn.p1 = this.p1;
-         } else {
-            this.Pn.p1.set(this.p1);
-         }
-
-         if (this.Pn.v == null) {
-            this.Pn.v = this.v;
-         } else {
-            this.Pn.v.set(this.v);
-         }
-
-         if (this.Pn.μ == null) {
-            this.Pn.μ = this.μ;
-         } else {
-            this.Pn.μ.set(this.μ);
          }
 
          this.isInitialized = true;
       }
    }
 
+   public m() {
+      this.context = new Context();
+      this.cℤ0000 = new Integer("1");
+      this.vℤ0001 = new Integer();
+   }
+
    @Override
    public void close() {
-      if (this.vXℂ0029 != this) {
-         this.vXℂ0029.close();
-      }
-
-      if (this.vXℂ0030 != this) {
-         this.vXℂ0030.close();
-      }
-
-      if (this.vXℂ0031 != this) {
-         this.vXℂ0031.close();
-      }
-
-      if (this.vℤ0016 != this) {
-         this.vℤ0016.close();
-      }
-
-      if (this.Pn != null) {
-         AutoCloseable var10004 = (AutoCloseable)this.Pn;
-         this.Pn = null;
-         var10004.close();
+      this.cℤ0000.close();
+      this.vℤ0001.close();
+      if (this.a != null) {
+         this.a.close();
       }
    }
 
    @Override
    public String getName() {
-      return null;
+      return "m";
    }
 
    @Override
@@ -208,11 +180,11 @@ public class operandF0002 implements Sequence<ComplexPolynomial>, Typesettable, 
 
    @Override
    public String toString() {
-      return String.format("j➔(Pn(%1$s)[%1$s-j])*(z^j)", String.valueOf(this.M));
+      return "m:k➔a(k+1)";
    }
 
    @Override
    public String typeset() {
-      return "\\left(\\Pn\\left(M\\right)_{\\left(M-j\\right)} \\cdot {z}^{j}\\right)";
+      return "\\a\\left(\\left(k + 1\\right)\\right)";
    }
 }

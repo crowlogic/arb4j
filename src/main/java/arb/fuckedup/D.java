@@ -1,14 +1,21 @@
-package arb.crap;
+package arb.fuckedup;
 
-import java.util.*;
-
-import arb.*;
+import arb.ComplexPolynomial;
+import arb.Field;
+import arb.Initializable;
 import arb.Integer;
+import arb.Named;
+import arb.Real;
+import arb.Typesettable;
 import arb.exceptions.CompilerException;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.Function;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.IdentityHashMap;
+import java.util.Set;
 
 public class D implements ComplexPolynomialNullaryFunction, Typesettable, AutoCloseable, Initializable, Named {
    public boolean isInitialized;
@@ -60,7 +67,7 @@ public class D implements ComplexPolynomialNullaryFunction, Typesettable, AutoCl
       }
    }
 
-   private Object evaluate_body(Object in, int order, int bits, ComplexPolynomial result) {
+   private ComplexPolynomial evaluate_body(Object in, int order, int bits, ComplexPolynomial result) {
       if (result == null) {
          result = new ComplexPolynomial();
       }
@@ -183,54 +190,24 @@ public class D implements ComplexPolynomialNullaryFunction, Typesettable, AutoCl
 
    @Override
    public void close() {
-      if (this.cℤ0000 != this) {
-         this.cℤ0000.close();
-      }
-
-      if (this.cℤ0001 != this) {
-         this.cℤ0001.close();
-      }
-
-      if (this.vXℂ0001 != this) {
-         this.vXℂ0001.close();
-      }
-
-      if (this.vXℂ0002 != this) {
-         this.vXℂ0002.close();
-      }
-
-      if (this.vXℂ0003 != this) {
-         this.vXℂ0003.close();
-      }
-
-      if (this.vXℂ0004 != this) {
-         this.vXℂ0004.close();
-      }
-
-      if (this.vXℂ0005 != this) {
-         this.vXℂ0005.close();
-      }
-
-      if (this.vXℂ0006 != this) {
-         this.vXℂ0006.close();
-      }
-
+      this.cℤ0000.close();
+      this.cℤ0001.close();
+      this.vXℂ0001.close();
+      this.vXℂ0002.close();
+      this.vXℂ0003.close();
+      this.vXℂ0004.close();
+      this.vXℂ0005.close();
+      this.vXℂ0006.close();
       if (this.P != null) {
-         AutoCloseable var10008 = (AutoCloseable)this.P;
-         this.P = null;
-         var10008.close();
+         this.P.close();
       }
 
       if (this.Q != null) {
-         AutoCloseable var1 = (AutoCloseable)this.Q;
-         this.Q = null;
-         var1.close();
+         this.Q.close();
       }
 
       if (this.R != null) {
-         AutoCloseable var2 = (AutoCloseable)this.R;
-         this.R = null;
-         var2.close();
+         this.R.close();
       }
    }
 

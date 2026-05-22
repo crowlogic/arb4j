@@ -1,4 +1,4 @@
-package arb.crap;
+package arb.fuckedup;
 
 import arb.Complex;
 import arb.ComplexPolynomial;
@@ -64,7 +64,7 @@ public class Φfunc implements ComplexFunction, Typesettable, AutoCloseable, Ini
       }
    }
 
-   private Object evaluate_body(Complex z, int order, int bits, Complex result) {
+   private Complex evaluate_body(Complex z, int order, int bits, Complex result) {
       if (!this.isInitialized) {
          this.initialize();
       }
@@ -210,32 +210,16 @@ public class Φfunc implements ComplexFunction, Typesettable, AutoCloseable, Ini
 
    @Override
    public void close() {
-      if (this.vXℂ0032 != this) {
-         this.vXℂ0032.close();
-      }
-
-      if (this.vXℂ0033 != this) {
-         this.vXℂ0033.close();
-      }
-
-      if (this.vℂ0004 != this) {
-         this.vℂ0004.close();
-      }
-
-      if (this.vℂ0005 != this) {
-         this.vℂ0005.close();
-      }
-
+      this.vXℂ0032.close();
+      this.vXℂ0033.close();
+      this.vℂ0004.close();
+      this.vℂ0005.close();
       if (this.Φnum != null) {
-         AutoCloseable var10004 = (AutoCloseable)this.Φnum;
-         this.Φnum = null;
-         var10004.close();
+         this.Φnum.close();
       }
 
       if (this.Φden != null) {
-         AutoCloseable var1 = (AutoCloseable)this.Φden;
-         this.Φden = null;
-         var1.close();
+         this.Φden.close();
       }
    }
 

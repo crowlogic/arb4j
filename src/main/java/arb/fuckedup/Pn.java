@@ -1,15 +1,23 @@
-package arb.crap;
+package arb.fuckedup;
 
-import java.util.*;
-
-import arb.*;
+import arb.Complex;
+import arb.ComplexPolynomial;
+import arb.Field;
+import arb.Initializable;
 import arb.Integer;
+import arb.Named;
+import arb.Real;
+import arb.Typesettable;
 import arb.exceptions.CompilerException;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.Function;
 import arb.functions.IndexCache;
 import arb.functions.integer.ComplexPolynomialSequence;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.IdentityHashMap;
+import java.util.Set;
 
 public class Pn implements
                 ComplexPolynomialSequence,
@@ -90,7 +98,7 @@ public class Pn implements
     }
   }
 
-  private Object evaluate_body(Integer n, int order, int bits, ComplexPolynomial result)
+  private ComplexPolynomial evaluate_body(Integer n, int order, int bits, ComplexPolynomial result)
   {
     if (result == null)
     {
@@ -118,7 +126,7 @@ public class Pn implements
         (switch (n.getSignedValue())
         {
         case 0 -> result.set(this.cℤ0000);
-        case 1 -> result.set((Complex) this.hv.evaluate(this.cℤ0000, order, bits, this.vℂ0001));
+        case 1 -> result.set(this.hv.evaluate(this.cℤ0000, order, bits, this.vℂ0001));
         default -> {
           var11 = this.vXℂ0020.identity().sub((Complex) this.αv.evaluate(n.sub(this.cℤ0001, bits, this.vℤ0011), order, bits, this.vℂ0002), bits, this.vXℂ0021);
           if (this.Pn == this)
@@ -451,132 +459,44 @@ public class Pn implements
   @Override
   public void close()
   {
-    if (this.cℤ0000 != this)
-    {
-      this.cℤ0000.close();
-    }
-
-    if (this.cℤ0001 != this)
-    {
-      this.cℤ0001.close();
-    }
-
-    if (this.cℤ0002 != this)
-    {
-      this.cℤ0002.close();
-    }
-
-    if (this.cseℤ0009 != this)
-    {
-      this.cseℤ0009.close();
-    }
-
-    if (this.cseℤ0010 != this)
-    {
-      this.cseℤ0010.close();
-    }
-
-    if (this.cseℤ0011 != this)
-    {
-      this.cseℤ0011.close();
-    }
-
-    if (this.cseℤ0012 != this)
-    {
-      this.cseℤ0012.close();
-    }
-
-    if (this.vXℂ0020 != this)
-    {
-      this.vXℂ0020.close();
-    }
-
-    if (this.vXℂ0021 != this)
-    {
-      this.vXℂ0021.close();
-    }
-
-    if (this.vXℂ0022 != this)
-    {
-      this.vXℂ0022.close();
-    }
-
-    if (this.vXℂ0023 != this)
-    {
-      this.vXℂ0023.close();
-    }
-
-    if (this.vXℂ0024 != this)
-    {
-      this.vXℂ0024.close();
-    }
-
-    if (this.vXℂ0025 != this)
-    {
-      this.vXℂ0025.close();
-    }
-
-    if (this.vℂ0001 != this)
-    {
-      this.vℂ0001.close();
-    }
-
-    if (this.vℂ0002 != this)
-    {
-      this.vℂ0002.close();
-    }
-
-    if (this.vℂ0003 != this)
-    {
-      this.vℂ0003.close();
-    }
-
-    if (this.vℤ0011 != this)
-    {
-      this.vℤ0011.close();
-    }
-
-    if (this.vℤ0012 != this)
-    {
-      this.vℤ0012.close();
-    }
-
-    if (this.vℤ0013 != this)
-    {
-      this.vℤ0013.close();
-    }
-
-    if (this.vℤ0014 != this)
-    {
-      this.vℤ0014.close();
-    }
-
+    this.cℤ0000.close();
+    this.cℤ0001.close();
+    this.cℤ0002.close();
+    this.cseℤ0009.close();
+    this.cseℤ0010.close();
+    this.cseℤ0011.close();
+    this.cseℤ0012.close();
+    this.vXℂ0020.close();
+    this.vXℂ0021.close();
+    this.vXℂ0022.close();
+    this.vXℂ0023.close();
+    this.vXℂ0024.close();
+    this.vXℂ0025.close();
+    this.vℂ0001.close();
+    this.vℂ0002.close();
+    this.vℂ0003.close();
+    this.vℤ0011.close();
+    this.vℤ0012.close();
+    this.vℤ0013.close();
+    this.vℤ0014.close();
     if (this.βv != null)
     {
-      AutoCloseable var10020 = (AutoCloseable) this.βv;
-      this.βv = null;
-      var10020.close();
+      this.βv.close();
     }
 
     if (this.αv != null)
     {
-      AutoCloseable var1 = (AutoCloseable) this.αv;
-      this.αv = null;
-      var1.close();
+      this.αv.close();
     }
 
     if (this.hv != null)
     {
-      AutoCloseable var2 = (AutoCloseable) this.hv;
-      this.hv = null;
-      var2.close();
+      this.hv.close();
     }
 
     if (this.Pn != null)
     {
-      AutoCloseable var3 = this.Pn;
-      this.Pn = null;
-      var3.close();
+      this.Pn.close();
     }
   }
 

@@ -1,15 +1,22 @@
-package arb.crap;
+package arb.fuckedup;
 
-import java.util.*;
-
-import arb.*;
+import arb.ComplexPolynomial;
+import arb.Field;
+import arb.Initializable;
 import arb.Integer;
+import arb.Named;
+import arb.Real;
+import arb.Typesettable;
 import arb.exceptions.CompilerException;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.Function;
 import arb.functions.IndexCache;
 import arb.functions.integer.ComplexPolynomialSequence;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.IdentityHashMap;
+import java.util.Set;
 
 public class a implements
                ComplexPolynomialSequence,
@@ -93,14 +100,14 @@ public class a implements
     }
   }
 
-  private Object evaluate_body(Integer k, int order, int bits, Object result)
+  private ComplexPolynomial evaluate_body(Integer k, int order, int bits, ComplexPolynomial result)
   {
     if (result == null)
     {
       result = new ComplexPolynomial();
     }
 
-    if (!this.isInitialized)
+    if (!this.isInitialized) 
     {
       this.initialize();
     }
@@ -407,143 +414,39 @@ public class a implements
   @Override
   public void close()
   {
-    if (this.cℤ0000 != this)
-    {
-      this.cℤ0000.close();
-    }
-
-    if (this.cℤ0001 != this)
-    {
-      this.cℤ0001.close();
-    }
-
-    if (this.cseℤ0001 != this)
-    {
-      this.cseℤ0001.close();
-    }
-
-    if (this.cseℤ0002 != this)
-    {
-      this.cseℤ0002.close();
-    }
-
-    if (this.cseℤ0003 != this)
-    {
-      this.cseℤ0003.close();
-    }
-
-    if (this.jXℂ0001ℤ0001 != this)
-    {
-      this.jXℂ0001ℤ0001.close();
-    }
-
-    if (this.sumXℂ0001 != this)
-    {
-      this.sumXℂ0001.close();
-    }
-
-    if (this.upperLimitℤ0001 != this)
-    {
-      this.upperLimitℤ0001.close();
-    }
-
-    if (this.vXℂ0007 != this)
-    {
-      this.vXℂ0007.close();
-    }
-
-    if (this.vXℂ0008 != this)
-    {
-      this.vXℂ0008.close();
-    }
-
-    if (this.vXℂ0009 != this)
-    {
-      this.vXℂ0009.close();
-    }
-
-    if (this.vXℂ0010 != this)
-    {
-      this.vXℂ0010.close();
-    }
-
-    if (this.valueXℂ0001 != this)
-    {
-      this.valueXℂ0001.close();
-    }
-
-    if (this.vℝ0001 != this)
-    {
-      this.vℝ0001.close();
-    }
-
-    if (this.vℝ0002 != this)
-    {
-      this.vℝ0002.close();
-    }
-
-    if (this.vℝ0003 != this)
-    {
-      this.vℝ0003.close();
-    }
-
-    if (this.vℝ0004 != this)
-    {
-      this.vℝ0004.close();
-    }
-
-    if (this.vℝ0005 != this)
-    {
-      this.vℝ0005.close();
-    }
-
-    if (this.vℝ0006 != this)
-    {
-      this.vℝ0006.close();
-    }
-
-    if (this.vℝ0007 != this)
-    {
-      this.vℝ0007.close();
-    }
-
-    if (this.vℝ0008 != this)
-    {
-      this.vℝ0008.close();
-    }
-
-    if (this.vℝ0009 != this)
-    {
-      this.vℝ0009.close();
-    }
-
-    if (this.vℤ0001 != this)
-    {
-      this.vℤ0001.close();
-    }
-
-    if (this.vℤ0002 != this)
-    {
-      this.vℤ0002.close();
-    }
-
-    if (this.vℤ0003 != this)
-    {
-      this.vℤ0003.close();
-    }
-
+    this.cℤ0000.close();
+    this.cℤ0001.close();
+    this.cseℤ0001.close();
+    this.cseℤ0002.close();
+    this.cseℤ0003.close();
+    this.jXℂ0001ℤ0001.close();
+    this.sumXℂ0001.close();
+    this.upperLimitℤ0001.close();
+    this.vXℂ0007.close();
+    this.vXℂ0008.close();
+    this.vXℂ0009.close();
+    this.vXℂ0010.close();
+    this.valueXℂ0001.close();
+    this.vℝ0001.close();
+    this.vℝ0002.close();
+    this.vℝ0003.close();
+    this.vℝ0004.close();
+    this.vℝ0005.close();
+    this.vℝ0006.close();
+    this.vℝ0007.close();
+    this.vℝ0008.close();
+    this.vℝ0009.close();
+    this.vℤ0001.close();
+    this.vℤ0002.close();
+    this.vℤ0003.close();
     if (this.a != null)
     {
-      AutoCloseable var10025 = this.a;
-      this.a = null;
-      var10025.close();
+      this.a.close();
     }
 
     if (this.operandF0001 != null)
     {
-      AutoCloseable var1 = (AutoCloseable) this.operandF0001;
-      this.operandF0001 = null;
-      var1.close();
+      this.operandF0001.close();
     }
   }
 

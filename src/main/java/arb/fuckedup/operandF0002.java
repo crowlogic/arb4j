@@ -1,4 +1,4 @@
-package arb.crap;
+package arb.fuckedup;
 
 import arb.Complex;
 import arb.ComplexPolynomial;
@@ -13,28 +13,27 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.Function;
 import arb.functions.integer.Sequence;
-import arb.functions.polynomials.orthogonal.complex.OrthogonalPolynomialMomentFunctionalSequence;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.Set;
 
-public class operandF0001 implements Sequence<ComplexPolynomial>, Typesettable, AutoCloseable, Initializable, Named {
+public class operandF0002 implements Sequence<ComplexPolynomial>, Typesettable, AutoCloseable, Initializable, Named {
    public boolean isInitialized;
    protected Context context;
    public Expression expression;
    private boolean evaluating;
-   public OrthogonalPolynomialMomentFunctionalSequence Q;
+   public Pn Pn;
    public Integer M;
    public ComplexPolynomial p0;
    public ComplexPolynomial p1;
    public Complex v;
    public Real μ;
    public ArrayList<Function<Integer, ComplexPolynomial>> derivativeCache;
-   public ComplexPolynomial vXℂ0026 = new ComplexPolynomial();
-   public ComplexPolynomial vXℂ0027 = new ComplexPolynomial();
-   public ComplexPolynomial vXℂ0028 = new ComplexPolynomial();
-   public Integer vℤ0015 = new Integer();
+   public ComplexPolynomial vXℂ0029 = new ComplexPolynomial();
+   public ComplexPolynomial vXℂ0030 = new ComplexPolynomial();
+   public ComplexPolynomial vXℂ0031 = new ComplexPolynomial();
+   public Integer vℤ0016 = new Integer();
 
    @Override
    public Class<Integer> domainType() {
@@ -64,7 +63,7 @@ public class operandF0001 implements Sequence<ComplexPolynomial>, Typesettable, 
       }
    }
 
-   private Object evaluate_body(Integer j, int order, int bits, ComplexPolynomial result) {
+   private ComplexPolynomial evaluate_body(Integer j, int order, int bits, ComplexPolynomial result) {
       if (result == null) {
          result = new ComplexPolynomial();
       }
@@ -74,9 +73,9 @@ public class operandF0001 implements Sequence<ComplexPolynomial>, Typesettable, 
       }
 
       if (order <= 1) {
-         ComplexPolynomial var9 = ((ComplexPolynomial)this.Q.evaluate(this.M, order, bits, this.vXℂ0026))
-            .get(this.M.sub(j, bits, this.vℤ0015))
-            .mul(this.vXℂ0027.identity().pow(j, bits, this.vXℂ0028), bits, result);
+         ComplexPolynomial var9 = ((ComplexPolynomial)this.Pn.evaluate(this.M, order, bits, this.vXℂ0029))
+            .get(this.M.sub(j, bits, this.vℤ0016))
+            .mul(this.vXℂ0030.identity().pow(j, bits, this.vXℂ0031), bits, result);
          var9.setIndependentVariableName("z");
          return var9;
       } else {
@@ -113,8 +112,8 @@ public class operandF0001 implements Sequence<ComplexPolynomial>, Typesettable, 
 
    public void invalidateCache(Set<Function<?, ?>> var1) {
       if (var1.add(this)) {
-         if (this.Q != null) {
-            this.Q.invalidateCache(var1);
+         if (this.Pn != null) {
+            this.Pn.invalidateCache(var1);
          }
       }
    }
@@ -129,14 +128,38 @@ public class operandF0001 implements Sequence<ComplexPolynomial>, Typesettable, 
          throw new AssertionError("Already initialized");
       } else {
          this.derivativeCache = new ArrayList<>();
-         if (this.Q == null) {
-            Function var10001 = this.context.lookupFunctionInstance("Q");
+         if (this.Pn == null) {
+            Function var10001 = this.context.lookupFunctionInstance("Pn");
             if (var10001 != null) {
-               this.Q = (OrthogonalPolynomialMomentFunctionalSequence)var10001;
+               this.Pn = (Pn)var10001;
             } else {
-               this.Q = new OrthogonalPolynomialMomentFunctionalSequence();
-               this.Q.context = this.context;
+               this.Pn = new Pn();
+               this.Pn.context = this.context;
             }
+         }
+
+         if (this.Pn.p0 == null) {
+            this.Pn.p0 = this.p0;
+         } else {
+            this.Pn.p0.set(this.p0);
+         }
+
+         if (this.Pn.p1 == null) {
+            this.Pn.p1 = this.p1;
+         } else {
+            this.Pn.p1.set(this.p1);
+         }
+
+         if (this.Pn.v == null) {
+            this.Pn.v = this.v;
+         } else {
+            this.Pn.v.set(this.v);
+         }
+
+         if (this.Pn.μ == null) {
+            this.Pn.μ = this.μ;
+         } else {
+            this.Pn.μ.set(this.μ);
          }
 
          this.isInitialized = true;
@@ -145,26 +168,12 @@ public class operandF0001 implements Sequence<ComplexPolynomial>, Typesettable, 
 
    @Override
    public void close() {
-      if (this.vXℂ0026 != this) {
-         this.vXℂ0026.close();
-      }
-
-      if (this.vXℂ0027 != this) {
-         this.vXℂ0027.close();
-      }
-
-      if (this.vXℂ0028 != this) {
-         this.vXℂ0028.close();
-      }
-
-      if (this.vℤ0015 != this) {
-         this.vℤ0015.close();
-      }
-
-      if (this.Q != null) {
-         AutoCloseable var10004 = (AutoCloseable)this.Q;
-         this.Q = null;
-         var10004.close();
+      this.vXℂ0029.close();
+      this.vXℂ0030.close();
+      this.vXℂ0031.close();
+      this.vℤ0016.close();
+      if (this.Pn != null) {
+         this.Pn.close();
       }
    }
 
@@ -185,11 +194,11 @@ public class operandF0001 implements Sequence<ComplexPolynomial>, Typesettable, 
 
    @Override
    public String toString() {
-      return String.format("j➔(Q(%1$s)[%1$s-j])*(z^j)", String.valueOf(this.M));
+      return String.format("j➔(Pn(%1$s)[%1$s-j])*(z^j)", String.valueOf(this.M));
    }
 
    @Override
    public String typeset() {
-      return "\\left(\\Q\\left(M\\right)_{\\left(M-j\\right)} \\cdot {z}^{j}\\right)";
+      return "\\left(\\Pn\\left(M\\right)_{\\left(M-j\\right)} \\cdot {z}^{j}\\right)";
    }
 }
