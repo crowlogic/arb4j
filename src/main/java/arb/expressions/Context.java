@@ -339,7 +339,7 @@ public class Context implements
 
   protected <D, R, F extends Function<? extends D, ? extends R>> void injectContextReference(F f)
   {
-    setFieldValue(f.getClass(), f, "context", this);
+    // Context is no longer injected into generated expressions
   }
 
   /**

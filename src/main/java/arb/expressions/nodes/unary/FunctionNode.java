@@ -743,7 +743,10 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
         }
       }
       instanceContextField.set(instance, expression.getContext());
-
+    }
+    catch (NoSuchFieldException e)
+    {
+      // context field not present in generated function — no injection needed
     }
     catch (Exception e)
     {
