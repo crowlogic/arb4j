@@ -1,3 +1,48 @@
+arb4j (1.1.1) UNRELEASED; urgency=low
+
+  [ Stephen Crowley ]
+  * σ-table exponential eliminated (#1034). The cyclic {σ,α,β,h} OPS
+    recurrence in MuntzPadeApproximant is now memoized through σfunc and
+    warmed bottom-up (ops.warmTo(m, bits)) before any top-down read, so a
+    top-down evaluation can no longer memoize a partial-∅ entry and then
+    divide by it. Re-calls land as cache hits and the previous exponential
+    re-computation of the σ-table is gone (~13× on the affected paths).
+  * New arb.functions.IndexCache<C>: O(1) memoization keyed by a signed int,
+    backed by two on-demand-growing ArrayLists (a non-negative side and a
+    negative side). It replaces the TreeMap<Integer,C> peek/poke cache whose
+    arb.Integer.compareTo comparator path dominated recursive-sequence
+    profiles and which allocated a fresh arb.Integer key on every poke.
+    Function.peek/Function.poke retarget to it, and it serves the negative
+    recurrence indices the earlier single-ArrayList cache returned null for.
+    Generated classes now carry an IndexCache `cache` field, clear it on
+    invalidateCache, and copy it into nested function instances.
+  * Context.invalidateAllCaches() walks every instantiated function and clears
+    its per-index cache. Those caches are precision-blind — an entry built at
+    N bits is accurate to N bits and no further — so MuntzPadeApproximant
+    invalidates and rebuilds when more bits are requested while reusing the
+    cache as-is for fewer-or-equal bits.
+  * MuntzPadeFunctional: cachedOrder dropped from the evaluate memo key (now
+    keyed on (v, bits)); invalidateCache uses the alreadyInvalidated.add()
+    short-circuit and propagates invalidation to the Müntz coefficient
+    sequence a.
+  * Generated close()/field-descriptor fixes (#1034): emitted close() reads
+    each function-reference field through its declared interface descriptor
+    (GETFIELD), CHECKCASTs to AutoCloseable and INVOKEINTERFACEs close() to
+    match the bytecode declareFunctionReferences emits; the context field is
+    loaded via internalName() so packaged/namespaced contexts resolve.
+  * #1032 cleanup: deduplicated the instantiate() re-entrance guards and
+    trimmed the surrounding comments on the self-recursive-instance machinery.
+  * Tooling: bin/profile, a JFR-based hot-method profiler for main classes
+    and tests.
+  * Licensing: add License.txt and a Production Use License contract template
+    (ProductionUseLicense.template.txt) conveying copyright and patent terms.
+  * Docs: CACHING-MECHANISM.md writes up the index-cache / σ-table warming
+    design. New regression tests SigmaTableCacheEfficiencyTest (HITS/MISSES
+    accounting, guarded against a vacuous zero-access pass) and IndexCacheTest.
+  * Issues addressed: #1032, #1034.
+
+ -- Stephen Crowley <stephencrowley214@gmail.com>  Fri, 22 May 2026 14:35:07 -0500
+
 arb4j (1.1) UNRELEASED; urgency=low
 
   [ Stephen Crowley ]
