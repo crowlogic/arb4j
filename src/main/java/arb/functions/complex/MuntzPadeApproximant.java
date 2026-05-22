@@ -113,7 +113,9 @@ public final class MuntzPadeApproximant implements
           Complex curr      = new Complex();
           Complex best      = new Complex();
           Complex diff      = new Complex();
-          Integer M         = new Integer() )
+          Integer M         = new Integer();
+          Integer hIdx      = new Integer();
+          ComplexPolynomial hPoly = new ComplexPolynomial() )
     {
       // Half-precision target: bit-exact agreement at `bits` is unreachable
       // because the OPS h(j) underflows precision at some M*, so the
@@ -124,11 +126,23 @@ public final class MuntzPadeApproximant implements
       M.set(2);
       Φ.evaluate(M, 1, bits, null).evaluate(z, 1, bits, prev);
       best.set(prev);
-      // Unbounded by design: the diff descends monotonically to that floor
-      // then stops shrinking, so one exit below always fires at finite M.
+      // Unbounded by design: M grows until one of three exits fires at finite
+      // M — convergence, the diff hitting its precision floor, or h(m-1)
+      // underflowing so the next Padé would divide by an arb-zero.
       for (int m = 3;; m++)
       {
         M.set(m);
+        // α(m-1)=σ(m-1)/h(m-1) is the highest-index division Φ(m) performs, and
+        // acb_poly_divrem fails when the divisor's leading coefficient contains
+        // zero. Detecting that underflow here returns the converged best instead
+        // of provoking the throw one line down. h is a pure σ-table diagonal
+        // lookup, so evaluating it divides by nothing and cannot itself throw.
+        hIdx.set(m - 1);
+        ops.h.evaluate(hIdx, 1, bits, hPoly);
+        if (leadingCoefficientVanishes(hPoly))
+        {
+          return result.set(best);
+        }
         Φ.evaluate(M, 1, bits, null).evaluate(z, 1, bits, curr);
         curr.sub(prev, bits, diff).abs(bits, diffMag);
         if (diffMag.compareTo(threshold) <= 0)
@@ -142,14 +156,30 @@ public final class MuntzPadeApproximant implements
         }
         else
         {
-          // Diff stopped shrinking: we hit the precision floor. The previous
-          // iterate is closest to the limit — return it, stopping before the
-          // h(j)→0 division a few M further on.
+          // Diff stopped shrinking: the precision floor is reached, so the
+          // best-seen iterate is closest to the limit.
           return result.set(best);
         }
         prev.set(curr);
       }
     }
+  }
+
+  /**
+   * Whether dividing by {@code divisor} would fail: true when it is the zero
+   * polynomial or its leading coefficient ball contains zero — the exact
+   * condition under which {@code acb_poly_divrem} returns 0 and the division
+   * throws.
+   */
+  private static boolean leadingCoefficientVanishes(ComplexPolynomial divisor)
+  {
+    int length = divisor.getLength();
+    if (length == 0)
+    {
+      return true;
+    }
+    Complex leadingCoefficient = divisor.get(length - 1);
+    return leadingCoefficient == null || leadingCoefficient.containsZero();
   }
 
   @Override
