@@ -1064,24 +1064,35 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected void constructReferencedFunctionInstanceIfItIsNull(MethodVisitor mv, FunctionMapping<?, ?, ?> mapping)
   {
-    assert mapping != null : "mapping shan't be null";
-    boolean isSelfRef = mapping.functionName != null && functionName != null && functionName.equals(mapping.functionName);
-    boolean hasSomething = mapping.expression != null || mapping.instance != null;
-    if (!isSelfRef && hasSomething)
+    if ((mapping.functionName == null || functionName == null || !functionName.equals(mapping.functionName)) && mapping.expression != null)
     {
-      String typeInternalName = mapping.functionInternalName();
-      String fieldDescriptor  = mapping.functionFieldDescriptor();
-      var    alreadyInitialized = new Label();
 
-      loadThisOntoStack(mv).visitFieldInsn(GETFIELD, internalName(), mapping.functionName, fieldDescriptor);
-      mv.visitJumpInsn(Opcodes.IFNONNULL, alreadyInitialized);
-
+      Class<?> type = mapping.type();
+      if (type == null)
+      {
+        mapping.instantiate();
+        type = mapping.type();
+      }
+      assert type != null : "type is  null for mapping=" + mapping;
+      String concreteInternalName = type.isInterface() ? mapping.functionInternalName() : Type.getInternalName(type);
+      String fieldDescriptor      = mapping.functionFieldDescriptor();
+      var    alreadyInitialized   = new Label();
+      loadThisOntoStack(mv).visitFieldInsn(GETFIELD,
+                                           className,
+                                           mapping.functionName,
+                                           fieldDescriptor);
+      mv.visitJumpInsn(Opcodes.IFNONNULL,
+                       alreadyInitialized);
       loadThisOntoStack(mv);
-      generateNewObjectInstruction(mv, typeInternalName);
+      generateNewObjectInstruction(mv,
+                                   concreteInternalName);
       duplicateTopOfTheStack(mv);
-      invokeDefaultConstructor(mv, typeInternalName);
-      putField(mv, internalName(), mapping.functionName, fieldDescriptor);
-
+      invokeDefaultConstructor(mv,
+                               concreteInternalName);
+      putField(mv,
+               className,
+               mapping.functionName,
+               fieldDescriptor);
       mv.visitLabel(alreadyInitialized);
     }
   }
@@ -1212,6 +1223,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       cw.visitField(Opcodes.ACC_PUBLIC, "staticPrecision", "I", null, null);
     }
+    declareContext(cw);
     declareSourceExpressionField(cw);
     declareCacheField(cw);
     declareReEntrancyGuardField(cw);
@@ -2043,7 +2055,26 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     mv.visitLdcInsn(String.format("%s(%s,%s)", op, rootNode.toString(), getIndependentVariable()));
 
-    Compiler.invokeStaticMethod(mv, Function.class, "express", Function.class, Class.class, Class.class, Class.class, String.class, String.class);
+    if (context != null)
+    {
+      loadThisAndFieldOntoStack(mv, "context", Context.class);
+
+      Compiler.invokeStaticMethod(mv,
+                                  Function.class,
+                                  "express",
+                                  Function.class,
+                                  Class.class,
+                                  Class.class,
+                                  Class.class,
+                                  String.class,
+                                  String.class,
+                                  Context.class);
+    }
+    else
+    {
+      Compiler.invokeStaticMethod(mv, Function.class, "express", Function.class, Class.class, Class.class, Class.class, String.class, String.class);
+
+    }
 
     Compiler.generateReturnFromMethod(mv);
 
@@ -2418,6 +2449,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       // Also propagate the `context` field itself so the functional's own
       // initialize() — and any subsequent runtime lookups it performs via
       // {@link Context#lookupFunctionInstance} — see the same live, populated
+      // Context. Without this, the freshly-allocated functional keeps its
+      // field-initializer default (`new Context()`) which has no functions
+      // registered, so transitive references like `m → a` resolve to null.
+      // Stack on entry: [..., funcRef]   →   exit: [..., funcRef]
+      String contextTypeDesc = Type.getDescriptor(Context.class);
+      duplicateTopOfTheStack(mv);                                                  // [..., funcRef, funcRef]
+      loadThisOntoStack(mv);                                                       // [..., funcRef, funcRef, this]
+      mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);     // [..., funcRef, funcRef, ctx]
+      mv.visitFieldInsn(PUTFIELD, functional.internalName(), "context", contextTypeDesc); // [..., funcRef]
     }
 
     invokeInitializationMethod(mv, functional);
@@ -2514,9 +2554,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     methodVisitor.visitCode();
     Compiler.annotateWithOverride(methodVisitor);
 
-    loadThisOntoStack(methodVisitor);
-    methodVisitor.visitFieldInsn(Opcodes.GETFIELD, internalName(), "expression", Type.getDescriptor(Expression.class));
-    Compiler.generateVirtualMethodInvocation(methodVisitor, Expression.class, "getContext", Context.class);
+    Compiler.getFieldFromThis(methodVisitor, internalName(), "context", Context.class);
 
     Compiler.generateReturnFromMethod(methodVisitor);
     return classVisitor;
@@ -2809,6 +2847,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     constructNewObject(mv, nestedFunctionInternalName);
     invokeDefaultConstructor(duplicateTopOfTheStack(mv), nestedFunctionInternalName);
     putField(mv, internalName(), functionName, fieldDescriptor);
+    // this.<self>.context = this.context;  — share the parent's context so
+    // the new instance's initialize() sees the live, populated Context.
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(GETFIELD, internalName(), functionName, fieldDescriptor);
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
+    mv.visitFieldInsn(PUTFIELD, nestedFunctionInternalName, "context", contextTypeDesc);
     // One cache per recursion level: the self-instance keeps its own IndexCache
     // (field initializer), it is NOT shared down the chain. Sharing one map
     // across levels let a value poked by one level — whose captured index
@@ -5005,6 +5050,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
       String funcTypeDesc    = funcMapping.functionFieldDescriptor();
       String nestedClassName = funcMapping.functionInternalName();
+
+      // Share parent's context with child arg class (#842)
+      if (nestedExpr.upstreamExpression != null)
+      {
+        String contextTypeDesc = Context.class.descriptorString();
+        // Generate: this.<funcFieldName>.context = this.context
+        loadThisOntoStack(mv);
+        mv.visitFieldInsn(GETFIELD, internalName(), funcFieldName, funcTypeDesc);
+        loadThisOntoStack(mv);
+        mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
+        mv.visitFieldInsn(PUTFIELD, nestedClassName, "context", contextTypeDesc);
+      }
 
       // Check each variable referenced by the nested expression
       for (var varEntry : nestedExpr.referencedVariables.entrySet())
