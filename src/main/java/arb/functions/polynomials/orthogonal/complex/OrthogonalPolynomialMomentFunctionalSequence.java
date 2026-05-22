@@ -110,50 +110,6 @@ public class OrthogonalPolynomialMomentFunctionalSequence extends
     p0.one(); // P(0, x) = 1; p1 set lazily in initialize()
   }
 
-  /**
-   * Populate the σ-table caches bottom-up through index {@code M} so that every
-   * later top-down read of σ(j)(k), h(j), α(j), β(j) is a cache hit on a fully
-   * computed value.
-   *
-   * <p>
-   * The cluster is mutually recursive (α(j)=σ(j)(j+1)/h(j); the σ recurrence
-   * references α(j-1), β(j-1)). Evaluated top-down, computing α(j) cold drives
-   * the σ recurrence into α(j-1) <em>while α(j) is still in flight on the same
-   * instance</em> — re-entering it and memoising a partially-computed ∅, which a
-   * later α read divides by, throwing {@code DivisionByZeroException: ∅}.
-   *
-   * <p>
-   * Computing strictly bottom-up removes that: at step j the σ(j) cells are
-   * filled by direct σ evaluation (so α is not in flight) using the already
-   * cached α(j-1)/β(j-1)/σ(j-1)/σ(j-2); then h(j), α(j), β(j) are pure cache
-   * reads of σ(j). No instance is re-entered and no partial value is ever
-   * cached. With the inner-curry σfunc memoised this is O(M²) and idempotent
-   * (re-calls are cache hits).
-   */
-  public void warmTo(int M, int bits)
-  {
-    try ( Integer j = new Integer(); Integer k = new Integer(); ComplexPolynomial scratch = new ComplexPolynomial())
-    {
-      for (int jj = 0; jj <= M; jj++)
-      {
-        j.set(jj);
-        @SuppressWarnings("resource")
-        ComplexPolynomialSequence σj = σ.evaluate(j, 1, bits, null);
-        // k must reach high enough that σ(jj)(jj+1) — and every cell the higher
-        // levels read back through it — is materialised; 2M+2 covers the
-        // σ(j)(k)=σ(j-1)(k+1)-… back-reference chain down to σ(0)(2M+1).
-        for (int kk = 0; kk <= 2 * M + 2 - jj; kk++)
-        {
-          k.set(kk);
-          σj.evaluate(k, 1, bits, scratch);
-        }
-        h.evaluate(j, 1, bits, scratch);
-        α.evaluate(j, 1, bits, scratch);
-        β.evaluate(j, 1, bits, scratch);
-      }
-    }
-  }
-
   /** Set p1 = x − α(0), then delegate to the parent. */
   @Override
   public void initialize()

@@ -284,10 +284,6 @@ public class Context implements
       {
         return;
       }
-      // All function mappings are injected, including cluster members. This
-      // enables external references (m.a) to work but allows reentrancy in
-      // the {α, σ, h, β} cluster (#1034). A reentrancy guard in evaluate()
-      // detects and throws CompilerException if reentry is detected.
       // Match by name AND type: a name shared between the variables and
       // functions namespaces yields two same-named public fields (legal —
       // field identity is name+descriptor), so getField(name) is ambiguous.
