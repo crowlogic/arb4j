@@ -95,11 +95,11 @@ public final class MuntzPadeApproximant implements
           Complex diff      = new Complex();
           Integer M         = new Integer() )
     {
-      // Padé convergence is limited by the OPS h(j) sequence underflowing
-      // working precision long before bit-exact agreement at `bits` is
-      // possible. Half-precision is enough to detect convergence well above
-      // the noise floor while leaving headroom before the OPS recurrence
-      // hits its h-zero failure mode.
+      // Half-precision convergence target. Bit-exact agreement at `bits` is
+      // unreachable: the OPS h(j) sequence underflows working precision at
+      // some M*, and the neighbour-diff bottoms out at a floor above 2^-bits,
+      // then climbs back up as precision is lost, before α(j)=σ(j)(j+1)/h(j)
+      // would finally divide by an h(j) that arb classifies as zero.
       threshold.one().mul2e(-bits / 2, threshold);
       bestMag.posInf();
       M.set(2);
@@ -108,31 +108,30 @@ public final class MuntzPadeApproximant implements
       for (int m = 3; m < 1024; m++)
       {
         M.set(m);
-        try
-        {
-          Φ.evaluate(M, 1, bits, null).evaluate(z, 1, bits, curr);
-        }
-        catch (arb.exceptions.DivisionByZeroException divByZero)
-        {
-          // The OPS h(j) sequence shrinks past the working bit precision —
-          // α(j) = σ(j)(j+1)/h(j) fails when arb classifies the divisor as
-          // exactly zero. Past that M the moment functional has no further
-          // useful information at this precision; return the best iterate
-          // observed so far (smallest neighbour-diff = closest to the limit
-          // before precision loss inverts convergence).
-          return result.set(best);
-        }
+        Φ.evaluate(M, 1, bits, null).evaluate(z, 1, bits, curr);
         curr.sub(prev, bits, diff).abs(bits, diffMag);
         if (diffMag.compareTo(threshold) <= 0)
         {
           return result.set(curr);
         }
-        // Track the iterate whose neighbour-diff is smallest — that's the
-        // best estimate before precision loss inverts convergence.
         if (diffMag.compareTo(bestMag) < 0)
         {
+          // Still descending toward the precision floor: this is the best
+          // iterate so far.
           bestMag.set(diffMag);
           best.set(curr);
+        }
+        else
+        {
+          // The neighbour-diff stopped shrinking — we've reached the floor
+          // imposed by h(j) underflow and further M only loses precision.
+          // The previous iterate was the closest to the true limit. Stop
+          // here, before the h(j)→0 division that lies a few M further on.
+          // Detecting the floor by its signature (diff no longer decreasing)
+          // is what lets this terminate cleanly instead of running into —
+          // and catching — the DivisionByZeroException that the degenerate
+          // moment functional would otherwise raise.
+          return result.set(best);
         }
         prev.set(curr);
       }
