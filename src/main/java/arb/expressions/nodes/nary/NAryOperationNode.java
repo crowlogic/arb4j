@@ -1075,6 +1075,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                                         true,
                                                         operandExpression,
                                                         expr);
+    operandMapping.privateToOwner = true;
     if (Expression.traceNodes)
     {
       logger.debug(String.format("\nregisterOperand(operandExpression=%s,\noperandMapping=%s\n)\n\n", operandExpression, operandMapping));

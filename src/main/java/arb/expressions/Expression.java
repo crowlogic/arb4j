@@ -1091,33 +1091,49 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       loadThisOntoStack(mv).visitFieldInsn(GETFIELD, internalName(), mapping.functionName, fieldDescriptor);
       mv.visitJumpInsn(Opcodes.IFNONNULL, alreadyInitialized);
 
-      // 2. Try the context's canonical instance:
-      //      Function f = this.context.lookupFunctionInstance("<name>");
-      //      if (f != null) { this.<field> = (FieldType) f; goto done; }
-      // This avoids allocating a second instance whose own field-injection
-      // never runs (e.g. σfunc creating a fresh `new m()` whose `a` field
-      // stays null because σ has no `a` field of its own to propagate from).
-      loadThisOntoStack(mv);
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
-      mv.visitLdcInsn(mapping.functionName);
-      mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                         Type.getInternalName(Context.class),
-                         "lookupFunctionInstance",
-                         "(Ljava/lang/String;)Larb/functions/Function;",
-                         false);
-      duplicateTopOfTheStack(mv);
-      mv.visitJumpInsn(Opcodes.IFNULL, needsAllocation);
-      // Stack: this, function. Cast and store.
-      mv.visitTypeInsn(Opcodes.CHECKCAST, typeInternalName);
-      putField(mv, internalName(), mapping.functionName, fieldDescriptor);
-      mv.visitJumpInsn(Opcodes.GOTO, alreadyInitialized);
+      if (!mapping.privateToOwner)
+      {
+        // 2. Try the context's canonical instance:
+        //      Function f = this.context.lookupFunctionInstance("<name>");
+        //      if (f != null) { this.<field> = (FieldType) f; goto done; }
+        // This avoids allocating a second instance whose own field-injection
+        // never runs (e.g. σfunc creating a fresh `new m()` whose `a` field
+        // stays null because σ has no `a` field of its own to propagate from).
+        // privateToOwner functions (NAry operands) are skipped here — each
+        // instance of the owning sequence must own its private operand so that
+        // captured mutable fields (e.g. the loop index k in a convolution) are
+        // not clobbered by deeper recursion levels sharing the same object.
+        loadThisOntoStack(mv);
+        loadThisOntoStack(mv);
+        mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
+        mv.visitLdcInsn(mapping.functionName);
+        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                           Type.getInternalName(Context.class),
+                           "lookupFunctionInstance",
+                           "(Ljava/lang/String;)Larb/functions/Function;",
+                           false);
+        duplicateTopOfTheStack(mv);
+        mv.visitJumpInsn(Opcodes.IFNULL, needsAllocation);
+        // Stack: [this_for_putfield, found]. If found is currently evaluating (mutual
+        // recursion cycle: e.g. α→σ→σfunc→α), using it would re-enter with evaluating=true
+        // and clobber its scratch fields. Skip it — fall through to fresh allocation.
+        if (mapping.expression != null)
+        {
+          duplicateTopOfTheStack(mv);                                               // [this, found, found]
+          mv.visitTypeInsn(Opcodes.CHECKCAST, typeInternalName);                   // [this, found, found_cast]
+          mv.visitFieldInsn(GETFIELD, typeInternalName, "evaluating", "Z");        // [this, found, evaluating]
+          mv.visitJumpInsn(Opcodes.IFNE, needsAllocation);                         // if true → fresh alloc
+        }
+        // Stack: [this_for_putfield, found]. Use found.
+        mv.visitTypeInsn(Opcodes.CHECKCAST, typeInternalName);
+        putField(mv, internalName(), mapping.functionName, fieldDescriptor);
+        mv.visitJumpInsn(Opcodes.GOTO, alreadyInitialized);
+        mv.visitLabel(needsAllocation);
+        mv.visitInsn(Opcodes.POP); // discard found (or null)
+        mv.visitInsn(Opcodes.POP); // discard `this` we loaded for the eventual PUTFIELD
+      }
 
-      // 3. Fallback: context has no instance yet (mutual-recursion mid-bootstrap).
-      //    Allocate a fresh one, propagate context, run context-level injection.
-      mv.visitLabel(needsAllocation);
-      mv.visitInsn(Opcodes.POP); // discard the dup'd null
-      mv.visitInsn(Opcodes.POP); // discard the `this` we loaded for the eventual PUTFIELD
+      // 3. Allocate a fresh instance, propagate context.
       loadThisOntoStack(mv);
       generateNewObjectInstruction(mv, typeInternalName);
       duplicateTopOfTheStack(mv);
@@ -1222,7 +1238,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected void declareReEntrancyGuardField(ClassVisitor cw)
   {
-    cw.visitField(Opcodes.ACC_PRIVATE, "evaluating", "Z", null, null);
+    cw.visitField(Opcodes.ACC_PUBLIC, "evaluating", "Z", null, null);
   }
 
   private ClassVisitor declareContext(ClassVisitor cw)
@@ -2264,11 +2280,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
 
     Label startLabel = new Label();
-    Label endLabel = new Label();
-    Label guardCheckLabel = new Label();
-    Label tryStart = new Label();
-    Label tryEnd = new Label();
-    Label exceptionHandler = new Label();
+    Label endLabel   = new Label();
 
     var mv = visitEvaluationMethod(classVisitor);
     mv.visitCode();
@@ -2276,45 +2288,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     designateLabel(mv, startLabel);
     Compiler.annotateWithOverride(mv);
 
-    // Re-entrancy guard with try-finally wrapping helper method
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "evaluating", "Z");
-    mv.visitJumpInsn(Opcodes.IFEQ, guardCheckLabel);
-    // evaluating is true, throw CompilerException
-    mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(CompilerException.class));
-    duplicateTopOfTheStack(mv);
-    mv.visitLdcInsn("re-entrant evaluate() call on same instance");
-    Compiler.invokeConstructor(mv, CompilerException.class, String.class);
-    mv.visitInsn(Opcodes.ATHROW);
-
-    designateLabel(mv, guardCheckLabel);
-    loadThisOntoStack(mv);
-    mv.visitInsn(Opcodes.ICONST_1);
-    mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "evaluating", "Z");
-
-    mv.visitTryCatchBlock(tryStart, tryEnd, exceptionHandler, null);
-    designateLabel(mv, tryStart);
-
-    // Call the helper method that contains actual evaluation logic
     loadThisOntoStack(mv);
     loadInputParameterChecked(mv);
     mv.visitVarInsn(Opcodes.ILOAD, 2); // order
     mv.visitVarInsn(Opcodes.ILOAD, 3); // bits
     mv.visitVarInsn(Opcodes.ALOAD, 4); // result
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, internalName(), evaluationBodyMethodName(), evaluationBodyMethodDescriptor(), false);
-
-    designateLabel(mv, tryEnd);
-    loadThisOntoStack(mv);
-    mv.visitInsn(Opcodes.ICONST_0);
-    mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "evaluating", "Z");
     mv.visitInsn(Opcodes.ARETURN);
-
-    // Exception handler: reset evaluating and rethrow
-    designateLabel(mv, exceptionHandler);
-    loadThisOntoStack(mv);
-    mv.visitInsn(Opcodes.ICONST_0);
-    mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "evaluating", "Z");
-    mv.visitInsn(Opcodes.ATHROW);
 
     designateLabel(mv, endLabel);
     declareEvaluateMethodArguments(mv, startLabel, endLabel);

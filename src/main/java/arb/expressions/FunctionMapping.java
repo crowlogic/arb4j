@@ -67,6 +67,16 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
   private String                              declaredAs;
 
   /**
+   * True for inner operand functions created by {@link arb.expressions.nodes.nary.NAryOperationNode}
+   * (e.g. the summand {@code operandF0001} inside a convolution recurrence). These
+   * must NOT be looked up from the shared {@link Context} by sub-instances of the
+   * owning function — every instance must create its own fresh copy so that
+   * captured fields (e.g. the loop index {@code k}) are not clobbered by deeper
+   * recursion levels.
+   */
+  public boolean                              privateToOwner;
+
+  /**
    * Cached {@link Class#getFields()} array for this mapping's instantiated
    * generated class. Lazily populated by {@link #getInstanceFields()}.
    *
