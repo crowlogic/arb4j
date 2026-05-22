@@ -1976,9 +1976,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                                            intermediateVariable.name,
                                                                                            intermediateVariable.type));
 
-      // Only close functions that were declared as fields (in dependency order — see declareFunctionReferences).
-      // Use the declared field descriptor (interface type) for GETFIELD, then INVOKEINTERFACE close()
-      // on AutoCloseable to match the bytecode that declareFunctionReferences emits.
+      // Close declared function-reference fields, breaking mutual-recursion
+      // cycles by nulling each field BEFORE invoking close() on its referent.
+      // Without the null-first step, f.close → g.close → f.close … infinite
+      // recursion for f ↔ g back-filled instances.
       if (dependencies != null)
       {
         for (Dependency dependency : dependencies)
@@ -1992,9 +1993,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
             methodVisitor.visitFieldInsn(GETFIELD, internalName(), name, fieldDesc);
             Label skip = new Label();
             methodVisitor.visitJumpInsn(IFNULL, skip);
+            // Snapshot the referent on the stack, null the field, then close.
             loadThisOntoStack(methodVisitor);
             methodVisitor.visitFieldInsn(GETFIELD, internalName(), name, fieldDesc);
             methodVisitor.visitTypeInsn(CHECKCAST, Type.getInternalName(AutoCloseable.class));
+            loadThisOntoStack(methodVisitor);
+            methodVisitor.visitInsn(Opcodes.ACONST_NULL);
+            methodVisitor.visitFieldInsn(PUTFIELD, internalName(), name, fieldDesc);
             methodVisitor.visitMethodInsn(INVOKEINTERFACE, Type.getInternalName(AutoCloseable.class), "close", "()V", true);
             methodVisitor.visitLabel(skip);
           }
@@ -2651,9 +2656,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * Emit the cycle-safe {@code public void invalidateCache(Set)} override (the
-   * no-arg entry point is left to the {@link Function} interface default, which
-   * already calls this with a fresh identity set) that:
+   * Emit the cycle-safe {@code public void invalidateCache(Set)} override (and a
+   * no-arg shim that calls it with a fresh identity set) that:
    * <ol>
    * <li>returns immediately if {@code alreadyInvalidated.add(this)} is
    * {@code false} (already visited — prevents unbounded recursion in the
@@ -2737,10 +2741,21 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitMaxs(0, 0);
     mv.visitEnd();
 
-    // The no-arg invalidateCache() is intentionally NOT emitted: the Function
-    // interface already supplies a default that does exactly
-    // invalidateCache(Collections.newSetFromMap(new IdentityHashMap<>())), so an
-    // emitted override would be byte-for-byte redundant.
+    // public void invalidateCache() { invalidateCache(Collections.newSetFromMap(new
+    // IdentityHashMap())); }
+    var shim = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, "invalidateCache", "()V", null, null);
+    shim.visitCode();
+    loadThisOntoStack(shim);
+    String idMapInternal       = Type.getInternalName(IdentityHashMap.class);
+    String collectionsInternal = Type.getInternalName(Collections.class);
+    shim.visitTypeInsn(Opcodes.NEW, idMapInternal);
+    shim.visitInsn(Opcodes.DUP);
+    shim.visitMethodInsn(Opcodes.INVOKESPECIAL, idMapInternal, "<init>", "()V", false);
+    shim.visitMethodInsn(Opcodes.INVOKESTATIC, collectionsInternal, "newSetFromMap", "(Ljava/util/Map;)Ljava/util/Set;", false);
+    shim.visitMethodInsn(Opcodes.INVOKEVIRTUAL, internalName(), "invalidateCache", "(L" + setInternal + ";)V", false);
+    shim.visitInsn(Opcodes.RETURN);
+    shim.visitMaxs(0, 0);
+    shim.visitEnd();
     return classVisitor;
   }
 
@@ -3637,6 +3652,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       instantiateAndInjectReferencedFunctions(instance);
       injectContextFunctionAndVariableReferences(instance);
       populateSourceExpressionBackPointer(instance);
+      backfillMutuallyRecursiveReferences(instance);
     }
     finally
     {
@@ -3647,6 +3663,46 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
 
     return instance;
+  }
+
+  /**
+   * Back-fill cross-references on previously-instantiated members of this
+   * sequence's SCC. When the second sequence in a mutual cycle (e.g. f ↔ g)
+   * is instantiated, the FIRST sequence's reference to the SECOND was set to
+   * {@code null} at first-instantiate time (the FunctionMapping had no
+   * instance yet). Walk every other context member that has a declared field
+   * named {@code this.functionName} and assign our {@code instance} into it
+   * if currently null.
+   */
+  protected void backfillMutuallyRecursiveReferences(F selfInstance)
+  {
+    if (context == null || functionName == null)
+      return;
+    for (var otherEntry : context.functions.entrySet())
+    {
+      String otherName = otherEntry.getKey();
+      if (otherName == null || otherName.equals(functionName))
+        continue;
+      Object otherInstance = otherEntry.getValue().instance;
+      if (otherInstance == null || otherInstance == selfInstance)
+        continue;
+      try
+      {
+        java.lang.reflect.Field field = otherInstance.getClass().getField(functionName);
+        if (field.get(otherInstance) == null)
+        {
+          field.set(otherInstance, selfInstance);
+        }
+      }
+      catch (NoSuchFieldException ignored)
+      {
+        // The other class doesn't reference us — not in our SCC, nothing to do.
+      }
+      catch (IllegalAccessException ignored)
+      {
+        // Field isn't accessible — skip; codegen will surface any real failure.
+      }
+    }
   }
 
   /**
