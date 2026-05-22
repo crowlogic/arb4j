@@ -2651,8 +2651,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * Emit the cycle-safe {@code public void invalidateCache(Set)} override (and a
-   * no-arg shim that calls it with a fresh identity set) that:
+   * Emit the cycle-safe {@code public void invalidateCache(Set)} override (the
+   * no-arg entry point is left to the {@link Function} interface default, which
+   * already calls this with a fresh identity set) that:
    * <ol>
    * <li>returns immediately if {@code alreadyInvalidated.add(this)} is
    * {@code false} (already visited — prevents unbounded recursion in the
@@ -2736,21 +2737,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitMaxs(0, 0);
     mv.visitEnd();
 
-    // public void invalidateCache() { invalidateCache(Collections.newSetFromMap(new
-    // IdentityHashMap())); }
-    var shim = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, "invalidateCache", "()V", null, null);
-    shim.visitCode();
-    loadThisOntoStack(shim);
-    String idMapInternal       = Type.getInternalName(IdentityHashMap.class);
-    String collectionsInternal = Type.getInternalName(Collections.class);
-    shim.visitTypeInsn(Opcodes.NEW, idMapInternal);
-    shim.visitInsn(Opcodes.DUP);
-    shim.visitMethodInsn(Opcodes.INVOKESPECIAL, idMapInternal, "<init>", "()V", false);
-    shim.visitMethodInsn(Opcodes.INVOKESTATIC, collectionsInternal, "newSetFromMap", "(Ljava/util/Map;)Ljava/util/Set;", false);
-    shim.visitMethodInsn(Opcodes.INVOKEVIRTUAL, internalName(), "invalidateCache", "(L" + setInternal + ";)V", false);
-    shim.visitInsn(Opcodes.RETURN);
-    shim.visitMaxs(0, 0);
-    shim.visitEnd();
+    // The no-arg invalidateCache() is intentionally NOT emitted: the Function
+    // interface already supplies a default that does exactly
+    // invalidateCache(Collections.newSetFromMap(new IdentityHashMap<>())), so an
+    // emitted override would be byte-for-byte redundant.
     return classVisitor;
   }
 
