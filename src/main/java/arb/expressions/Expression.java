@@ -1223,6 +1223,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
+  protected void declareReEntrancyGuardField(ClassVisitor cw)
+  {
+    cw.visitField(Opcodes.ACC_PRIVATE, "evaluating", "Z", null, null);
+  }
+
   private ClassVisitor declareContext(ClassVisitor cw)
   {
     Class<?> type           = Context.class;
@@ -1263,6 +1268,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     declareContext(cw);
     declareSourceExpressionField(cw);
     declareCacheField(cw);
+    declareReEntrancyGuardField(cw);
     if (!coDomainType.isInterface())
     {
       declareLiteralConstants(cw);
@@ -2267,12 +2273,39 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     Label startLabel  = new Label();
     Label endLabel    = new Label();
     Label taylorLabel = new Label();
+    Label guardCheckLabel = new Label();
+    Label tryStart = new Label();
+    Label tryEnd = new Label();
+    Label exceptionHandler = new Label();
 
-    var   mv          = visitEvaluationMethod(classVisitor);
+    var mv = visitEvaluationMethod(classVisitor);
     mv.visitCode();
 
     designateLabel(mv, startLabel);
     Compiler.annotateWithOverride(mv);
+
+    // Re-entrancy guard wrapper with proper try-finally
+
+    // Check if evaluating is true
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "evaluating", "Z");
+    mv.visitJumpInsn(Opcodes.IFEQ, guardCheckLabel);
+    // evaluating is true, throw CompilerException
+    mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(CompilerException.class));
+    duplicateTopOfTheStack(mv);
+    mv.visitLdcInsn("re-entrant evaluate() call on same instance");
+    Compiler.invokeConstructor(mv, CompilerException.class, String.class);
+    mv.visitInsn(Opcodes.ATHROW);
+
+    designateLabel(mv, guardCheckLabel);
+    // Set evaluating to true
+    loadThisOntoStack(mv);
+    mv.visitInsn(Opcodes.ICONST_1);
+    mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "evaluating", "Z");
+
+    // Register exception handler - must be before any code in try block
+    mv.visitTryCatchBlock(tryStart, tryEnd, exceptionHandler, null);
+    designateLabel(mv, tryStart);
 
     // Issue #1014: for reified-functional codomains (ComplexPolynomial,
     // RealPolynomial, RationalFunction, ComplexRationalFunction) the
@@ -2377,6 +2410,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       generateValueBackingPoke(mv);
     }
 
+    // Reset evaluating flag and mark end of try block
+    loadThisOntoStack(mv);
+    mv.visitInsn(Opcodes.ICONST_0);
+    mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "evaluating", "Z");
+    designateLabel(mv, tryEnd);
+
     designateLabel(mv, endLabel);
     declareEvaluateMethodArguments(mv, startLabel, endLabel);
 
@@ -2390,6 +2429,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
       // --- Taylor series evaluation for order > 1 ---
       generateTaylorSeriesPath(mv, taylorLabel);
+
+      // Exception handler: reset evaluating and rethrow
+      designateLabel(mv, exceptionHandler);
+      loadThisOntoStack(mv);
+      mv.visitInsn(Opcodes.ICONST_0);
+      mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "evaluating", "Z");
+      mv.visitInsn(Opcodes.ATHROW);
 
       mv.visitMaxs(0, 0);
       mv.visitEnd();
@@ -2841,16 +2887,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     loadThisOntoStack(mv);
     mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
     mv.visitFieldInsn(PUTFIELD, nestedFunctionInternalName, "context", contextTypeDesc);
-    // this.<self>.cache = this.cache;  — share the memoization map so a deep
-    // recursive chain reuses results instead of going O(N) deep on the stack.
-    if (shouldCache())
-    {
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, internalName(), functionName, fieldDescriptor);
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, internalName(), "cache", Type.getDescriptor(IndexCache.class));
-      mv.visitFieldInsn(PUTFIELD, nestedFunctionInternalName, "cache", Type.getDescriptor(IndexCache.class));
-    }
+    // One cache per recursion level: the self-instance keeps its own IndexCache
+    // (field initializer), it is NOT shared down the chain. Sharing one map
+    // across levels let a value poked by one level — whose captured index
+    // (e.g. operandF0001.k in the convolution j➔a(j)*a(k-1-j)) differs from a
+    // shallower level's — be read back at a stale key, corrupting the recurrence
+    // (issue #1034). Each level's captured state is fixed for that instance, so a
+    // per-level cache is correct; the chain depth is bounded by the recurrence.
     mv.visitLabel(alreadyAssigned);
     initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv), internalName(), functionName, functionName, context.variableClassStream());
     return mv;
@@ -6172,20 +6215,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean shouldCache()
   {
-    return domainType.equals(Integer.class) && upstreamExpression == null;
+    return domainType.equals(Integer.class);
   }
 
   /**
-   * True when this expression is the inner curry body of an integer-domain
-   * sequence whose codomain is itself a function (Issue #1005). Such expressions
-   * get a per-instance value-backing cache: a single (lastInput, cachedResult)
-   * pair, populated on first evaluate and short-circuited on repeat calls with
-   * the same input by reference identity.
+   * Disabled (issue #1034). Every integer-domain expression — top-level or an
+   * inner curry body — now gets the full per-index {@link IndexCache} via
+   * {@link #shouldCache()}. The former single-slot value-backing (#1005)
+   * superseded that table for inner bodies and thrashed under the σ-table's
+   * interleaved-index recurrence.
    */
   public boolean shouldCacheValueBacking()
   {
-    return upstreamExpression != null && upstreamExpression.shouldCache() && upstreamExpression.isGeneratedFunctional()
-                  && Field.class.isAssignableFrom(coDomainType);
+    return false;
   }
 
   /**
