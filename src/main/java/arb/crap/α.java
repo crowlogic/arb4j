@@ -66,7 +66,7 @@ public class α implements ComplexPolynomialSequence, Typesettable, AutoCloseabl
       }
    }
 
-   private Object evaluate_body(Object j, int order, int bits, Object result) {
+   private Object evaluate_body(Integer j, int order, int bits, ComplexPolynomial result) {
       if (result == null) {
          result = new ComplexPolynomial();
       }

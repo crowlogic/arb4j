@@ -92,7 +92,7 @@ public class σfunc implements ComplexPolynomialSequence, Typesettable, AutoClos
       }
    }
 
-   private Object evaluate_body(Object k, int order, int bits, Object result) {
+   private Object evaluate_body(Integer k, int order, int bits, ComplexPolynomial result) {
       if (result == null) {
          result = new ComplexPolynomial();
       }

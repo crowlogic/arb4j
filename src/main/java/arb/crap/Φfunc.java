@@ -64,7 +64,7 @@ public class Φfunc implements ComplexFunction, Typesettable, AutoCloseable, Ini
       }
    }
 
-   private Object evaluate_body(Object z, int order, int bits, Object result) {
+   private Object evaluate_body(Complex z, int order, int bits, Complex result) {
       if (!this.isInitialized) {
          this.initialize();
       }

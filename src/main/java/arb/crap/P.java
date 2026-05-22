@@ -49,7 +49,7 @@ public class P implements ComplexPolynomialNullaryFunction, Typesettable, AutoCl
       }
    }
 
-   private Object evaluate_body(Object in, int order, int bits, Object result) {
+   private Object evaluate_body(Object in, int order, int bits, ComplexPolynomial result) {
       if (result == null) {
          result = new ComplexPolynomial();
       }

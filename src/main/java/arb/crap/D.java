@@ -1,21 +1,14 @@
 package arb.crap;
 
-import arb.ComplexPolynomial;
-import arb.Field;
-import arb.Initializable;
+import java.util.*;
+
+import arb.*;
 import arb.Integer;
-import arb.Named;
-import arb.Real;
-import arb.Typesettable;
 import arb.exceptions.CompilerException;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.Function;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.IdentityHashMap;
-import java.util.Set;
 
 public class D implements ComplexPolynomialNullaryFunction, Typesettable, AutoCloseable, Initializable, Named {
    public boolean isInitialized;
@@ -67,7 +60,7 @@ public class D implements ComplexPolynomialNullaryFunction, Typesettable, AutoCl
       }
    }
 
-   private Object evaluate_body(Object in, int order, int bits, Object result) {
+   private Object evaluate_body(Object in, int order, int bits, ComplexPolynomial result) {
       if (result == null) {
          result = new ComplexPolynomial();
       }

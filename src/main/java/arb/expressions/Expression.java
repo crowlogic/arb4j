@@ -1965,14 +1965,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected MethodVisitor generateCloseFieldCall(MethodVisitor methodVisitor, String fieldName, Class<?> fieldType)
   {
-    getFieldFromThis(methodVisitor, internalName(), fieldName, fieldType);
-    methodVisitor.visitVarInsn(ALOAD, 0);
-    Label skip = new Label();
-    methodVisitor.visitJumpInsn(IF_ACMPEQ, skip);
-    getFieldFromThis(methodVisitor, internalName(), fieldName, fieldType);
-    invokeCloseMethod(methodVisitor, fieldType);
-    methodVisitor.visitLabel(skip);
-    return methodVisitor;
+    getFieldFromThis(methodVisitor, className, fieldName, fieldType);
+    return invokeCloseMethod(methodVisitor, fieldType);
   }
 
   protected ClassVisitor generateCloseMethod(ClassVisitor classVisitor)
@@ -2000,9 +1994,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         methodVisitor.visitFieldInsn(GETFIELD, internalName(), name, fieldDesc);
         methodVisitor.visitTypeInsn(CHECKCAST, Type.getInternalName(AutoCloseable.class));
         // null the field first, THEN close — breaks the cycle
-        loadThisOntoStack(methodVisitor);
-        methodVisitor.visitInsn(ACONST_NULL);
-        methodVisitor.visitFieldInsn(PUTFIELD, internalName(), name, fieldDesc);
         methodVisitor.visitMethodInsn(INVOKEINTERFACE, Type.getInternalName(AutoCloseable.class), "close", "()V", true);
         methodVisitor.visitLabel(skip);
       });

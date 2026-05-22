@@ -62,7 +62,7 @@ public class Φ implements ComplexFunctionSequence, Typesettable, AutoCloseable,
       }
    }
 
-   private Object evaluate_body(Object M, int order, int bits, Object result) {
+   private Object evaluate_body(Integer M, int order, int bits, ComplexFunction result) {
       if (!this.isInitialized) {
          this.initialize();
       }

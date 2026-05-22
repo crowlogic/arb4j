@@ -49,7 +49,7 @@ public class _1 implements ComplexNullaryFunction, Typesettable, AutoCloseable, 
       }
    }
 
-   private Object evaluate_body(Object in, int order, int bits, Object result) {
+   private Object evaluate_body(Object in, int order, int bits, Complex result) {
       if (order <= 1) {
          return result.set(this.cℤ0000);
       } else {

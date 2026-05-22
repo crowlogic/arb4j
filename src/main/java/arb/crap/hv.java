@@ -61,7 +61,7 @@ public class hv implements ComplexSequence, Typesettable, AutoCloseable, Initial
       }
    }
 
-   private Object evaluate_body(Object n, int order, int bits, Object result) {
+   private Object evaluate_body(Integer n, int order, int bits, Complex result) {
       if (!this.isInitialized) {
          this.initialize();
       }

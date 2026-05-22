@@ -67,7 +67,7 @@ public class Φden implements ComplexPolynomialSequence, Typesettable, AutoClose
       }
    }
 
-   private Object evaluate_body(Object M, int order, int bits, Object result) {
+   private Object evaluate_body(Integer M, int order, int bits, ComplexPolynomial result) {
       if (result == null) {
          result = new ComplexPolynomial();
       }
