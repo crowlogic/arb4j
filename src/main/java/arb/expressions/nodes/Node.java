@@ -804,19 +804,11 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public Class<?> generateCastTo(MethodVisitor methodVisitor, Class<?> type)
   {
-    return generateCastTo(methodVisitor, type, true);
-  }
-
-  public Class<?> generateCastTo(MethodVisitor methodVisitor, Class<?> type, boolean castFromGeneratedType)
-  {
     if (Expression.traceNodes)
     {
       getLogger().debug(String.format("generateCastTo(type=%s) from generatedType=%s\n", type, generatedType));
     }
-    if (castFromGeneratedType)
-    {
-      cast(methodVisitor, generatedType);
-    }
+    cast(methodVisitor, generatedType);
     // At the root the converted value IS the result, so write it into the
     // result parameter; using an intermediate would leave `result` empty and
     // the cache would memoize that emptiness (a type-promoted WhenNode branch
