@@ -1165,9 +1165,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (shouldCache())
     {
       String signature = "L" + Type.getInternalName(IndexCache.class) + "<" + Type.getDescriptor(coDomainType) + ">;";
-      // Not final: generateSelfReference shares this cache into the allocated
-      // self-instance so a recursive chain memoizes once instead of
-      // recomputing at every level.
       cw.visitField(Opcodes.ACC_PRIVATE, "cache", Type.getDescriptor(IndexCache.class), signature, null);
     }
     if (shouldCacheValueBacking())
