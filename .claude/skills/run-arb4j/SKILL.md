@@ -128,6 +128,32 @@ mvn test
 838 JUnit tests; expect `BUILD SUCCESS`, `Tests run: 838, Failures: 0,
 Errors: 0`. A single class/method: `mvn test -Dtest=RealTest#testSqrt`.
 
+## Profile (why is something slow) — bin/profile
+
+`bin/profile` records a run with Java Flight Recorder (built into the JDK, low
+overhead, no native agent) and prints a hot-method report. Because arb math is
+native (FLINT via JNI), each native call is sampled as its Java wrapper frame
+(`arb.arblib.*`), so JNI-boundary costs are visible.
+
+```bash
+bin/profile --test MuntzPadeApproximantPrecisionTest   # profile a JUnit test
+bin/profile arb.applications.SomeMain arg1              # profile a main class
+REPS=8 bin/profile arb.functions.complex.SomeProbe      # REPS → sole arg
+```
+
+It prints two rankings: **top executing methods** (top of stack — shows the
+raw native primitive, e.g. `fmpz_cmp`) and **top hot application frames** (first
+non-JDK/JNI caller — the arb method actually responsible, e.g.
+`arb.Integer.compareTo`). For a one-shot expensive operation, profile a small
+main that repeats it (more samples = cleaner attribution) rather than the test.
+The recording is left at `/tmp/arb4j-profile.jfr` (override with `JFR=`); reopen
+it with `jfr print` or JDK Mission Control. To analyse who calls a hot frame:
+
+```bash
+jfr print --events jdk.ExecutionSample --stack-depth 30 /tmp/arb4j-profile.jfr \
+  | grep -B3 'fmpz_cmp'          # callers of a hot native primitive
+```
+
 ## Gotchas
 
 - **arb/FLINT types own native memory.** Every `Real`, `Complex`, `Integer`,

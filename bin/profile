@@ -1,0 +1,68 @@
+#!/bin/sh
+#
+# Profile an arb4j main class or JUnit test with Java Flight Recorder, then
+# print a hot-method report. JFR ships in the JDK, samples Java + JNI frames at
+# low overhead, and needs no native agent — so native arb/FLINT calls show up
+# as their Java wrapper frames (arb.arblib.* / arb.*), which is exactly what you
+# want when the cost is across the JNI boundary.
+#
+# Usage:
+#   bin/profile <MainClass> [args...]          profile a main class
+#   bin/profile --test <Class#method>          profile a JUnit test (surefire)
+#   bin/profile --test <Class>                 profile a whole test class
+#
+# Env:
+#   JFR=/path/out.jfr   override the recording path (default /tmp/arb4j-profile.jfr)
+#   REPS=<n>            passed as the sole arg to a main class (convenience)
+#
+# The recording is left at $JFR so you can re-analyse with `jfr print` or load
+# it in JDK Mission Control.
+
+BASEDIR=$(dirname $(readlink -f "$0"))/..
+cd "$BASEDIR" || exit 1
+
+JFR=${JFR:-/tmp/arb4j-profile.jfr}
+REC="-XX:StartFlightRecording=filename=$JFR,settings=profile,dumponexit=true"
+rm -f "$JFR"
+
+if [ "$1" = "--test" ] || [ "$1" = "-t" ]; then
+  TEST=$2
+  [ -n "$TEST" ] || { echo "usage: bin/profile --test <Class#method>"; exit 2; }
+  echo ">> profiling test $TEST"
+  # Surefire's argLine ends in ${argLine}, so -DargLine appends the recorder
+  # flag while keeping -Djava.library.path and the native-access flags.
+  mvn test -Dtest="$TEST" -DargLine="$REC" 2>&1 \
+    | grep -E "Tests run:|BUILD|ERROR" | tail -5
+else
+  MAIN=$1
+  [ -n "$MAIN" ] || { echo "usage: bin/profile <MainClass> [args...]"; exit 2; }
+  shift
+  [ -n "$REPS" ] && set -- "$REPS" "$@"
+  CP="$(cat "$BASEDIR/class.path"):$BASEDIR/build/classes:$BASEDIR/build/test-classes:."
+  echo ">> profiling main $MAIN $*"
+  java -ea --illegal-native-access=allow --sun-misc-unsafe-memory-access=allow \
+       --enable-preview -Djava.library.path="$BASEDIR" $REC \
+       -cp "$CP" "$MAIN" "$@"
+fi
+
+[ -f "$JFR" ] || { echo "!! no recording produced at $JFR"; exit 1; }
+
+total=$(jfr print --events jdk.ExecutionSample "$JFR" | grep -c "jdk.ExecutionSample")
+echo
+echo "================ JFR profile: $JFR ================"
+echo "execution samples: $total"
+echo
+echo "---- top 25 executing methods (top of stack) ----"
+jfr print --events jdk.ExecutionSample --stack-depth 1 "$JFR" 2>/dev/null \
+  | grep -E '\.[A-Za-z0-9_$<]+\(' | sed -E 's/^[[:space:]]+//; s/ line:.*//' \
+  | sort | uniq -c | sort -rn | head -25
+echo
+echo "---- top 25 hot application frames (first non-JDK/JNI caller) ----"
+jfr print --events jdk.ExecutionSample --stack-depth 60 "$JFR" 2>/dev/null | awk '
+  /stackTrace = \[/ {instack=1; n=0; delete f; next}
+  instack && /^[[:space:]]*\]/ {instack=0;
+    for (i=0;i<n;i++)
+      if (f[i] !~ /arblibJNI|^arb\.arblib\.|^java\.|^jdk\.|^sun\.|^org\./) { print f[i]; break }
+    next}
+  instack {l=$0; sub(/^[[:space:]]+/,"",l); sub(/\(.*/,"",l); f[n++]=l}
+' | sort | uniq -c | sort -rn | head -25
