@@ -1,3 +1,48 @@
+arb4j (1.1) UNRELEASED; urgency=low
+
+  [ Stephen Crowley ]
+  * Müntz–Padé spectral tau method for the constant-coefficient fractional
+    Riccati equation Đᵅ y = p(v) + q(v)·y + r(v)·y², landing the machinery
+    behind the rough-Heston characteristic-function publication (tag
+    v1.0-rh-publication) and beyond. RiccatiMuntzPadeFunctional builds the
+    curried Müntz coefficient sequence k ↦ v ↦ aₖ(v) from the algebraic
+    recurrence and hands it to MuntzPadeApproximant for global analytic
+    continuation by diagonal Padé approximation.
+  * MuntzPadeApproximant rebuilt around the polynomial Chebyshev/Wheeler
+    σ-table OPS recurrence (#1031, #1016), replacing the Hankel
+    bordered-inverse construction — O(M²) and free of Hankel
+    ill-conditioning. The arbitrary M<1024 expansion cap is removed; the
+    expansion order is chosen adaptively per evaluation point and requested
+    precision (#1010) rather than from a fixed sample point, with a
+    precision guard so cache reuse can never cap accuracy and a Padé
+    precision-floor detector replacing DivisionByZeroException catching.
+  * MuntzPadeFunctional memoizes its most-recent evaluate result and returns
+    it again for a repeated (v, order, bits), cleared on invalidateCache so a
+    parameter refresh can never surface a stale approximant.
+  * FractionalRicattiOrthogonalPolynomialMomentFunctionalSequence (renamed
+    from OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequence)
+    exposes the OPS of the Müntz–Padé moment functional via the polynomial
+    Chebyshev/Wheeler recurrence; shared Context is threaded through so the
+    moment sequence m's expression survives, and p/q/r registration in
+    RiccatiMuntzPadeFunctional is idempotent.
+  * HyperbolicTangentTest pins tanh as a fractional-Riccati-moment-problem
+    oracle (P=1, Q=0, R=−1, μ=1); five tanh oracle cases now pass.
+  * Expression-compiler / codegen hardening: self-recursive sequences use a
+    separate instance per recursion level with the attendant codegen defects
+    fixed (#1032); referenced-function ASM owners route through
+    Expression.internalName() at every emit site (#1024); scalarCoDomain maps
+    polynomial-sequence interfaces to their element type (#1021); the
+    f(x)/g(x) → 1 fold and a WhenNode lookup-switch type-promotion bug are
+    fixed; ClassCircularityError avoided by caching the compiled class under
+    its simple name; lambdas are no longer registrable as functions.
+  * Added Complex.neg(Complex result) and RealPolynomial composition with
+    expression-compiler coverage; documented the solution methodology for
+    constant-coefficient fractional Riccati equations.
+  * Issues addressed: #1005, #1010, #1014, #1015, #1016, #1018, #1021, #1023,
+    #1024, #1027, #1029, #1031, #1032. Test suite 838/838 green on JDK 26.
+
+ -- Stephen Crowley <stephencrowley214@gmail.com>  Fri, 22 May 2026 04:07:09 -0500
+
 arb4j (0.99.9.9.10) UNRELEASED; urgency=low
 
   [ Stephen Crowley ]
