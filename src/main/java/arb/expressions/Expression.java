@@ -1978,7 +1978,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected MethodVisitor generateCloseFieldCall(MethodVisitor methodVisitor, String fieldName, Class<?> fieldType)
   {
-    getFieldFromThis(methodVisitor, className, fieldName, fieldType);
+    getFieldFromThis(methodVisitor, internalName(), fieldName, fieldType);
     return invokeCloseMethod(methodVisitor, fieldType);
   }
 
