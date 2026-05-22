@@ -39,8 +39,14 @@ public final class IndexCache<C>
   private final ArrayList<C> neg    = new ArrayList<>();
 
   /** @return the cached value at {@code index}, or {@code null} if not cached. */
+  public static long HITS=0,MISSES=0;
   public C get(int index)
   {
+    C __v=(index>=0)?(index<nonneg.size()?nonneg.get(index):null):((-index-1)<neg.size()?neg.get(-index-1):null);
+    if(__v==null)MISSES++;else HITS++;
+    return __v;
+  }
+  private C getU(int index){
     if (index >= 0)
       return index < nonneg.size() ? nonneg.get(index) : null;
     int i = -index - 1;

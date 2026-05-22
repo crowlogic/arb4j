@@ -1064,77 +1064,35 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected void constructReferencedFunctionInstanceIfItIsNull(MethodVisitor mv, FunctionMapping<?, ?, ?> mapping)
   {
-    assert mapping != null : "mapping shan't be null";
-    boolean isSelfRef = mapping.functionName != null && functionName != null && functionName.equals(mapping.functionName);
-    // Also wire mappings that have a live instance but no defining expression
-    // (e.g. Context.registerSequence("B", bops)); otherwise an inner
-    // self-recursive instance never gets that field set (injection only runs
-    // on the externally-instantiated outer instance, not on the ones
-    // generateSelfReference allocates).
-    boolean hasSomething = mapping.expression != null || mapping.instance != null;
-    if (!isSelfRef && hasSomething)
+    if ((mapping.functionName == null || functionName == null || !functionName.equals(mapping.functionName)) && mapping.expression != null)
     {
-      // Bytecode-only path: use the mapping's already-known generated-class
-      // internal name. ASM's new/invokespecial accept name strings; resolving
-      // the Class<?> here would force eager compilation of the dependency
-      // and break mutual recursion across mappings (a ↔ S in the fractional
-      // Riccati Müntz recurrence, issue #982). The class is resolved lazily
-      // by the JVM when the opcode first executes — by which point the outer
-      // compile chain has defined every class in the recursive cluster.
-      String typeInternalName   = mapping.functionInternalName();
-      String fieldDescriptor    = mapping.functionFieldDescriptor();
-      String contextTypeDesc    = Type.getDescriptor(Context.class);
-      var    alreadyInitialized = new Label();
-      var    needsAllocation    = new Label();
 
-      // 1. if (this.<field> != null) skip → field already populated, done.
-      loadThisOntoStack(mv).visitFieldInsn(GETFIELD, internalName(), mapping.functionName, fieldDescriptor);
-      mv.visitJumpInsn(Opcodes.IFNONNULL, alreadyInitialized);
-
-      // 2. Try the context's canonical instance:
-      //      Function f = this.context.lookupFunctionInstance("<name>");
-      //      if (f != null) { this.<field> = (FieldType) f; goto done; }
-      // This avoids allocating a second instance whose own field-injection
-      // never runs (e.g. σfunc creating a fresh `new m()` whose `a` field
-      // stays null because σ has no `a` field of its own to propagate from).
+      Class<?> type = mapping.type();
+      if (type == null)
+      {
+        mapping.instantiate();
+        type = mapping.type();
+      }
+      assert type != null : "type is  null for mapping=" + mapping;
+      String concreteInternalName = type.isInterface() ? mapping.functionInternalName() : Type.getInternalName(type);
+      String fieldDescriptor      = mapping.functionFieldDescriptor();
+      var    alreadyInitialized   = new Label();
+      loadThisOntoStack(mv).visitFieldInsn(GETFIELD,
+                                           className,
+                                           mapping.functionName,
+                                           fieldDescriptor);
+      mv.visitJumpInsn(Opcodes.IFNONNULL,
+                       alreadyInitialized);
       loadThisOntoStack(mv);
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
-      mv.visitLdcInsn(mapping.functionName);
-      mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                         Type.getInternalName(Context.class),
-                         "lookupFunctionInstance",
-                         "(Ljava/lang/String;)Larb/functions/Function;",
-                         false);
+      generateNewObjectInstruction(mv,
+                                   concreteInternalName);
       duplicateTopOfTheStack(mv);
-      mv.visitJumpInsn(Opcodes.IFNULL, needsAllocation);
-      // Stack: this, function. Cast and store.
-      mv.visitTypeInsn(Opcodes.CHECKCAST, typeInternalName);
-      putField(mv, internalName(), mapping.functionName, fieldDescriptor);
-      mv.visitJumpInsn(Opcodes.GOTO, alreadyInitialized);
-
-      // 3. Fallback: context has no instance yet (mutual-recursion mid-bootstrap).
-      //    Allocate a fresh one, propagate context, run context-level injection.
-      mv.visitLabel(needsAllocation);
-      mv.visitInsn(Opcodes.POP); // discard the dup'd null
-      mv.visitInsn(Opcodes.POP); // discard the `this` we loaded for the eventual PUTFIELD
-      loadThisOntoStack(mv);
-      generateNewObjectInstruction(mv, typeInternalName);
-      duplicateTopOfTheStack(mv);
-      invokeDefaultConstructor(mv, typeInternalName);
-      putField(mv, internalName(), mapping.functionName, fieldDescriptor);
-      // Propagate the parent's context field into the new instance's context
-      // field so the new instance's own initialize() sees the live, populated
-      // Context. Without this, the new instance keeps its field-initializer
-      // default (an empty `new Context()`), which has no functions or
-      // variables registered, and every nested function reference (e.g. He)
-      // remains null at runtime.
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, internalName(), mapping.functionName, fieldDescriptor);
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
-      mv.visitFieldInsn(PUTFIELD, typeInternalName, "context", contextTypeDesc);
-
+      invokeDefaultConstructor(mv,
+                               concreteInternalName);
+      putField(mv,
+               className,
+               mapping.functionName,
+               fieldDescriptor);
       mv.visitLabel(alreadyInitialized);
     }
   }
@@ -2062,12 +2020,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "staticPrecision", "I");
     }
 
-    // Only root expressions create their own Context.
-    // Child arg classes receive the parent's context via initialize() (#842)
-    if (context != null && upstreamExpression == null)
-    {
-      generateContextInitializer(mv);
-    }
 
     if (!coDomainType.isInterface())
     {
@@ -2080,17 +2032,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return classVisitor;
   }
 
-  public MethodVisitor generateContextInitializer(MethodVisitor methodVisitor)
-  {
-
-    loadThisOntoStack(methodVisitor);
-    String contextTypeInternalName = Type.getInternalName(Context.class);
-    methodVisitor.visitTypeInsn(NEW, contextTypeInternalName);
-    methodVisitor.visitInsn(DUP);
-    methodVisitor.visitMethodInsn(INVOKESPECIAL, contextTypeInternalName, "<init>", "()V", false);
-    methodVisitor.visitFieldInsn(PUTFIELD, internalName(), "context", Context.class.descriptorString());
-    return methodVisitor;
-  }
 
   protected ClassVisitor generateDelegateMethod(ClassVisitor classVisitor, String func, String op)
   {
@@ -6172,7 +6113,29 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean shouldCache()
   {
-    return domainType.equals(Integer.class) && upstreamExpression == null;
+    // Integer-domain expressions are memoized by their index — but only when the
+    // index is the *only* thing the value depends on, so that the index alone is
+    // a sound cache key.
+    //
+    // - upstreamExpression == null: a top-level integer sequence. Sound.
+    // - upstreamExpression.isGeneratedFunctional(): this is the inner curry of a
+    //   *curried* sequence (the outer's codomain is a function interface, e.g.
+    //   σ:j➔k➔… whose outer σ returns a ComplexPolynomialSequence). The curry
+    //   machinery spawns a *fresh* inner instance per outer index and fixes that
+    //   index in the instance, so memoizing the inner by its own index is sound.
+    //   This is what makes the σ-table recurrence
+    //   σ(j)(k)=σ(j-1)(k+1)−α(j-1)σ(j-1)(k)−β(j-1)σ(j-2)(k) linear instead of
+    //   exponentially re-walked (#1034).
+    //
+    // It must NOT fire for an integer-indexed operand of a value-returning
+    // operator (sum/product), e.g. the j➔Q(M)[M-j]·zʲ operand of
+    // Φden:M➔sum(…): that operand is a *single* instance whose M field is
+    // mutated as the enclosing M advances, so its value depends on M as well as
+    // j and caching by j alone would serve stale terms. Such an operand's
+    // upstream (Φden) returns a value (ComplexPolynomial), not a function, so
+    // isGeneratedFunctional() is false and it is correctly left uncached.
+    return domainType.equals(Integer.class)
+                  && (upstreamExpression == null || upstreamExpression.isGeneratedFunctional());
   }
 
   /**
