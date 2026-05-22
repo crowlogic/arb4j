@@ -12,14 +12,6 @@ When debugging or diagnosing a problem, do not speculate. This applies to every 
 
 Words like "suspicion", "I bet", "probably", "my guess is", "likely", "might be", "could be" are banned from any token stream the user sees, including reasoning. If a step in a causal chain isn't directly verified, verify it before claiming it. State only what evidence supports. The cost of guessing in a JVM-bytecode + native-arb stack is wasted hours chasing the wrong cause — a tool gives the answer in seconds.
 
-## Cardinal rule: NEVER remove the re-entrancy guard
-
-The `evaluating` boolean field and re-entrancy guard in `generateEvaluationMethod` must NOT be removed. It is the safety mechanism that prevents infinite re-entrancy from corrupting shared scratch fields. If the guard fires incorrectly for a legitimate call pattern (mutual recursion between two expressions, or derivative computation calling itself at order=1), the fix is to make those callers use **separate instances** — not to remove the guard. Removing the guard is never the answer.
-
-## Cardinal rule: NEVER share IndexCache across instances
-
-Each generated function instance owns its own `IndexCache`. Do **not** copy or assign `this.cache` to a sub-instance, do not pass it as a constructor argument, and do not expose it through any shared reference. Every instance independently memoizes its own evaluations. Proposing cache-sharing as a solution to exponential recomputation is always wrong — fix the architecture (single-instance self-reference, correct recursion shape, proper operand scoping) instead.
-
 ## Cardinal rule: NEVER manipulate expression strings programmatically
 
 Expression strings (the bodies passed to `*.express(...)`, `*.compile(...)`, `*.declare(...)`) are LITERAL source code that the compiler parses into AST → bytecode. They must always be **string literals** at the call site.
