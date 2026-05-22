@@ -12,10 +12,6 @@ When debugging or diagnosing a problem, do not speculate. This applies to every 
 
 Words like "suspicion", "I bet", "probably", "my guess is", "likely", "might be", "could be" are banned from any token stream the user sees, including reasoning. If a step in a causal chain isn't directly verified, verify it before claiming it. State only what evidence supports. The cost of guessing in a JVM-bytecode + native-arb stack is wasted hours chasing the wrong cause — a tool gives the answer in seconds.
 
-## Cardinal rule: the word "fallback" is proof the design is wrong
-
-This is about the concept, not any particular code. The moment the language you use to describe or justify an implementation contains the notion of a **fallback** — "fall back to", "otherwise try", "best-effort", "if that didn't work, do this other thing instead", "graceful degradation" — that implementation is wrong, whatever it is. The word is the tell: it means you do not have one path that is guaranteed correct, so you have bolted a second one beside it to cover for the first. Delete the second path. Establish the invariant that makes the one path always succeed. If that one path can still fail, it must **die immediately and loudly** at the fault site with an exception naming what was expected and what was found — never limp onward to a different source, a looser lookup, a default, a skip, or a catch-and-recover. A loud death at the true fault is always better than a quiet wrong answer carried downstream.
-
 ## Cardinal rule: NEVER manipulate expression strings programmatically
 
 Expression strings (the bodies passed to `*.express(...)`, `*.compile(...)`, `*.declare(...)`) are LITERAL source code that the compiler parses into AST → bytecode. They must always be **string literals** at the call site.

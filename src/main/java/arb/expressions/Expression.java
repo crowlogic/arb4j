@@ -1064,35 +1064,77 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected void constructReferencedFunctionInstanceIfItIsNull(MethodVisitor mv, FunctionMapping<?, ?, ?> mapping)
   {
-    if ((mapping.functionName == null || functionName == null || !functionName.equals(mapping.functionName)) && mapping.expression != null)
+    assert mapping != null : "mapping shan't be null";
+    boolean isSelfRef = mapping.functionName != null && functionName != null && functionName.equals(mapping.functionName);
+    // Also wire mappings that have a live instance but no defining expression
+    // (e.g. Context.registerSequence("B", bops)); otherwise an inner
+    // self-recursive instance never gets that field set (injection only runs
+    // on the externally-instantiated outer instance, not on the ones
+    // generateSelfReference allocates).
+    boolean hasSomething = mapping.expression != null || mapping.instance != null;
+    if (!isSelfRef && hasSomething)
     {
+      // Bytecode-only path: use the mapping's already-known generated-class
+      // internal name. ASM's new/invokespecial accept name strings; resolving
+      // the Class<?> here would force eager compilation of the dependency
+      // and break mutual recursion across mappings (a ↔ S in the fractional
+      // Riccati Müntz recurrence, issue #982). The class is resolved lazily
+      // by the JVM when the opcode first executes — by which point the outer
+      // compile chain has defined every class in the recursive cluster.
+      String typeInternalName   = mapping.functionInternalName();
+      String fieldDescriptor    = mapping.functionFieldDescriptor();
+      String contextTypeDesc    = Type.getDescriptor(Context.class);
+      var    alreadyInitialized = new Label();
+      var    needsAllocation    = new Label();
 
-      Class<?> type = mapping.type();
-      if (type == null)
-      {
-        mapping.instantiate();
-        type = mapping.type();
-      }
-      assert type != null : "type is  null for mapping=" + mapping;
-      String concreteInternalName = type.isInterface() ? mapping.functionInternalName() : Type.getInternalName(type);
-      String fieldDescriptor      = mapping.functionFieldDescriptor();
-      var    alreadyInitialized   = new Label();
-      loadThisOntoStack(mv).visitFieldInsn(GETFIELD,
-                                           className,
-                                           mapping.functionName,
-                                           fieldDescriptor);
-      mv.visitJumpInsn(Opcodes.IFNONNULL,
-                       alreadyInitialized);
+      // 1. if (this.<field> != null) skip → field already populated, done.
+      loadThisOntoStack(mv).visitFieldInsn(GETFIELD, internalName(), mapping.functionName, fieldDescriptor);
+      mv.visitJumpInsn(Opcodes.IFNONNULL, alreadyInitialized);
+
+      // 2. Try the context's canonical instance:
+      //      Function f = this.context.lookupFunctionInstance("<name>");
+      //      if (f != null) { this.<field> = (FieldType) f; goto done; }
+      // This avoids allocating a second instance whose own field-injection
+      // never runs (e.g. σfunc creating a fresh `new m()` whose `a` field
+      // stays null because σ has no `a` field of its own to propagate from).
       loadThisOntoStack(mv);
-      generateNewObjectInstruction(mv,
-                                   concreteInternalName);
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
+      mv.visitLdcInsn(mapping.functionName);
+      mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                         Type.getInternalName(Context.class),
+                         "lookupFunctionInstance",
+                         "(Ljava/lang/String;)Larb/functions/Function;",
+                         false);
       duplicateTopOfTheStack(mv);
-      invokeDefaultConstructor(mv,
-                               concreteInternalName);
-      putField(mv,
-               className,
-               mapping.functionName,
-               fieldDescriptor);
+      mv.visitJumpInsn(Opcodes.IFNULL, needsAllocation);
+      // Stack: this, function. Cast and store.
+      mv.visitTypeInsn(Opcodes.CHECKCAST, typeInternalName);
+      putField(mv, internalName(), mapping.functionName, fieldDescriptor);
+      mv.visitJumpInsn(Opcodes.GOTO, alreadyInitialized);
+
+      // 3. Fallback: context has no instance yet (mutual-recursion mid-bootstrap).
+      //    Allocate a fresh one, propagate context, run context-level injection.
+      mv.visitLabel(needsAllocation);
+      mv.visitInsn(Opcodes.POP); // discard the dup'd null
+      mv.visitInsn(Opcodes.POP); // discard the `this` we loaded for the eventual PUTFIELD
+      loadThisOntoStack(mv);
+      generateNewObjectInstruction(mv, typeInternalName);
+      duplicateTopOfTheStack(mv);
+      invokeDefaultConstructor(mv, typeInternalName);
+      putField(mv, internalName(), mapping.functionName, fieldDescriptor);
+      // Propagate the parent's context field into the new instance's context
+      // field so the new instance's own initialize() sees the live, populated
+      // Context. Without this, the new instance keeps its field-initializer
+      // default (an empty `new Context()`), which has no functions or
+      // variables registered, and every nested function reference (e.g. He)
+      // remains null at runtime.
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(GETFIELD, internalName(), mapping.functionName, fieldDescriptor);
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
+      mv.visitFieldInsn(PUTFIELD, typeInternalName, "context", contextTypeDesc);
+
       mv.visitLabel(alreadyInitialized);
     }
   }
@@ -1920,14 +1962,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected MethodVisitor generateCloseFieldCall(MethodVisitor methodVisitor, String fieldName, Class<?> fieldType)
   {
-    getFieldFromThis(methodVisitor, internalName(), fieldName, fieldType);
-    methodVisitor.visitVarInsn(ALOAD, 0);
-    Label skip = new Label();
-    methodVisitor.visitJumpInsn(IF_ACMPEQ, skip);
-    getFieldFromThis(methodVisitor, internalName(), fieldName, fieldType);
-    invokeCloseMethod(methodVisitor, fieldType);
-    methodVisitor.visitLabel(skip);
-    return methodVisitor;
+    getFieldFromThis(methodVisitor, className, fieldName, fieldType);
+    return invokeCloseMethod(methodVisitor, fieldType);
   }
 
   protected ClassVisitor generateCloseMethod(ClassVisitor classVisitor)
@@ -1946,19 +1982,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
       getReferencedFunctions().forEach((name, mapping) ->
       {
-        String fieldDesc = mapping.functionFieldDescriptor();
+        String fieldDesc       = mapping.functionFieldDescriptor();
+        String fieldInternalName = Type.getType(fieldDesc).getInternalName();
+        boolean isInterface    = mapping.functionClass != null && mapping.functionClass.isInterface();
         loadThisOntoStack(methodVisitor);
         methodVisitor.visitFieldInsn(GETFIELD, internalName(), name, fieldDesc);
         Label skip = new Label();
         methodVisitor.visitJumpInsn(IFNULL, skip);
         loadThisOntoStack(methodVisitor);
         methodVisitor.visitFieldInsn(GETFIELD, internalName(), name, fieldDesc);
-        methodVisitor.visitTypeInsn(CHECKCAST, Type.getInternalName(AutoCloseable.class));
-        // null the field first, THEN close — breaks the cycle
-        loadThisOntoStack(methodVisitor);
-        methodVisitor.visitInsn(ACONST_NULL);
-        methodVisitor.visitFieldInsn(PUTFIELD, internalName(), name, fieldDesc);
-        methodVisitor.visitMethodInsn(INVOKEINTERFACE, Type.getInternalName(AutoCloseable.class), "close", "()V", true);
+        methodVisitor.visitMethodInsn(isInterface ? INVOKEINTERFACE : INVOKEVIRTUAL,
+                                      fieldInternalName, "close", "()V", isInterface);
         methodVisitor.visitLabel(skip);
       });
     }
@@ -2023,6 +2057,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "staticPrecision", "I");
     }
 
+    // Only root expressions create their own Context.
+    // Child arg classes receive the parent's context via initialize() (#842)
+    if (context != null && upstreamExpression == null)
+    {
+      generateContextInitializer(mv);
+    }
 
     if (!coDomainType.isInterface())
     {
@@ -2035,6 +2075,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return classVisitor;
   }
 
+  public MethodVisitor generateContextInitializer(MethodVisitor methodVisitor)
+  {
+
+    loadThisOntoStack(methodVisitor);
+    String contextTypeInternalName = Type.getInternalName(Context.class);
+    methodVisitor.visitTypeInsn(NEW, contextTypeInternalName);
+    methodVisitor.visitInsn(DUP);
+    methodVisitor.visitMethodInsn(INVOKESPECIAL, contextTypeInternalName, "<init>", "()V", false);
+    methodVisitor.visitFieldInsn(PUTFIELD, internalName(), "context", Context.class.descriptorString());
+    return methodVisitor;
+  }
 
   protected ClassVisitor generateDelegateMethod(ClassVisitor classVisitor, String func, String op)
   {
@@ -2279,6 +2330,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return Compiler.evaluationMethodDescriptor;
   }
 
+  private String evaluationBodyMethodSignature()
+  {
+    return Compiler.getMethodDescriptor(coDomainType, domainType, int.class, int.class, coDomainType);
+  }
+
   protected ClassVisitor generateEvaluationBodyMethod(ClassVisitor classVisitor) throws CompilerException
   {
     nextLocalVariableSlot = 5;
@@ -2287,7 +2343,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     Label endLabel    = new Label();
     Label taylorLabel = new Label();
 
-    var mv = classVisitor.visitMethod(Opcodes.ACC_PRIVATE, evaluationBodyMethodName(), evaluationBodyMethodDescriptor(), null, null);
+    var mv = classVisitor.visitMethod(Opcodes.ACC_PRIVATE, evaluationBodyMethodName(), evaluationBodyMethodDescriptor(), evaluationBodyMethodSignature(), null);
     mv.visitCode();
 
     designateLabel(mv, startLabel);
@@ -6185,10 +6241,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean shouldCache()
   {
-
-    return domainType.equals(Integer.class)
-                  && (upstreamExpression == null || upstreamExpression.isGeneratedFunctional());
-
+//    return domainType.equals(Integer.class)
+//                  && (upstreamExpression == null || upstreamExpression.isGeneratedFunctional());
+    return domainType.equals(Integer.class) && upstreamExpression == null;
   }
 
   /**

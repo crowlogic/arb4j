@@ -58,6 +58,12 @@ public class Real implements Cloneable,Becomable<Real>,Domain<Real>,Serializable
   }
 
 
+	public Complex neg(Complex value)
+	{
+	  return value.set(this).neg();
+	}
+
+	
 	private static final ThreadLocal<Real[]> autocorrelationScratch =
 	  ThreadLocal.withInitial(() -> new Real[] { new Real(), new Real() });
 
@@ -2033,11 +2039,6 @@ public class Real implements Cloneable,Becomable<Real>,Domain<Real>,Serializable
   public boolean isInfinite()
   {
     return !isFinite();
-  }
-  
-  public Complex neg(Complex value)
-  {
-    return value.set(this).neg();
   }
   
   /**
