@@ -107,6 +107,11 @@ public class OrthogonalPolynomialMomentFunctionalSequence extends
     this.h = context.getFunctionMapping("h").instantiate();
     this.α = context.getFunctionMapping("α").instantiate();
 
+    // Declare the k-reach of σ's 3-term recurrence to the generic warmer.
+    // σ(j)(k) = σ(j-1)(k+1) — α(j-1)·σ(j-1)(k) − β(j-1)·σ(j-2)(k): +1 in k per j-step.
+    // To materialise σ(M)(M+1) the lowest level needs k up to 2M+1; +1 covers it.
+    context.setKExtentProvider("σ", (topIdx, j) -> 2 * topIdx + 2 - j);
+
     p0.one(); // P(0, x) = 1; p1 set lazily in initialize()
   }
 
@@ -130,27 +135,14 @@ public class OrthogonalPolynomialMomentFunctionalSequence extends
    * σfunc memoised (see {@code Expression.shouldCache}) this is O(M²) and
    * idempotent — re-calls are cache hits.
    */
+  /**
+   * Generic bottom-up warmer: delegate to {@link Context#warmToBottomUp}, which
+   * detects the {σ,h,α,β} SCC and walks it in dependency order. The σ k-extent
+   * is supplied via the {@code setKExtentProvider} call in the constructor.
+   */
   public void warmTo(int M, int bits)
   {
-    try ( Integer j = new Integer(); Integer k = new Integer(); ComplexPolynomial scratch = new ComplexPolynomial())
-    {
-      for (int jj = 0; jj <= M; jj++)
-      {
-        j.set(jj);
-        @SuppressWarnings("resource")
-        ComplexPolynomialSequence σj = σ.evaluate(j, 1, bits, null);
-        // σ(j)(k)=σ(j-1)(k+1)-… chains back to σ(0)(k+j), so to materialise
-        // σ(M)(M+1) the lowest level needs k up to 2M+1; 2M+2 covers it.
-        for (int kk = 0; kk <= 2 * M + 2 - jj; kk++)
-        {
-          k.set(kk);
-          σj.evaluate(k, 1, bits, scratch);
-        }
-        h.evaluate(j, 1, bits, scratch);
-        α.evaluate(j, 1, bits, scratch);
-        β.evaluate(j, 1, bits, scratch);
-      }
-    }
+    context.warmToBottomUp("β", M, bits);
   }
 
   /** Set p1 = x − α(0), then delegate to the parent. */

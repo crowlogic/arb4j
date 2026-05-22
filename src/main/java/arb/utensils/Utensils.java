@@ -408,6 +408,82 @@ public class Utensils
     black.add(vertex);
   }
 
+  /**
+   * Tarjan's strongly-connected-components algorithm over the
+   * {@link Dependency#dependsOn} graph. Returns the list of SCCs in reverse
+   * topological order. A trivial SCC (single vertex with no self-loop) is
+   * returned as a singleton set. Multi-vertex SCCs — or singletons with a
+   * self-loop — are the cyclic clusters that need bottom-up warming.
+   */
+  public static List<Set<String>> stronglyConnectedComponents(Map<String, Dependency> graph)
+  {
+    Map<String, Integer> index    = new HashMap<>();
+    Map<String, Integer> lowlink  = new HashMap<>();
+    Set<String>          onStack  = new HashSet<>();
+    Deque<String>        stack    = new ArrayDeque<>();
+    List<Set<String>>    sccs     = new ArrayList<>();
+    int[]                counter  = { 0 };
+
+    for (String v : graph.keySet())
+    {
+      if (!index.containsKey(v))
+      {
+        tarjanStrongConnect(v, graph, index, lowlink, onStack, stack, sccs, counter);
+      }
+    }
+    return sccs;
+  }
+
+  private static void tarjanStrongConnect(String v,
+                                          Map<String, Dependency> graph,
+                                          Map<String, Integer> index,
+                                          Map<String, Integer> lowlink,
+                                          Set<String> onStack,
+                                          Deque<String> stack,
+                                          List<Set<String>> sccs,
+                                          int[] counter)
+  {
+    index.put(v, counter[0]);
+    lowlink.put(v, counter[0]);
+    counter[0]++;
+    stack.push(v);
+    onStack.add(v);
+
+    Dependency dep = graph.get(v);
+    if (dep != null)
+    {
+      for (String w : dep.dependsOn)
+      {
+        if (!index.containsKey(w))
+        {
+          if (graph.containsKey(w))
+          {
+            tarjanStrongConnect(w, graph, index, lowlink, onStack, stack, sccs, counter);
+            lowlink.put(v, Math.min(lowlink.get(v), lowlink.get(w)));
+          }
+        }
+        else if (onStack.contains(w))
+        {
+          lowlink.put(v, Math.min(lowlink.get(v), index.get(w)));
+        }
+      }
+    }
+
+    if (lowlink.get(v).equals(index.get(v)))
+    {
+      Set<String> component = new LinkedHashSet<>();
+      String      w;
+      do
+      {
+        w = stack.pop();
+        onStack.remove(w);
+        component.add(w);
+      }
+      while (!w.equals(v));
+      sccs.add(component);
+    }
+  }
+
   public static List<Dependency> sortDependencies(Map<String, Dependency> dependencies, Map<String, FunctionMapping<?, ?, ?>> mappings)
   {
     var initializationOrder = new ArrayList<Dependency>();

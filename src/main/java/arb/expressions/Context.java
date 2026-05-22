@@ -643,6 +643,166 @@ public class Context implements
 
       functionReferenceGraph.put(functionName, dependency);
     }
+    sccByName = null; // invalidate cached SCC partition
+  }
+
+  /**
+   * Cached strongly-connected-component partition of
+   * {@link #functionReferenceGraph}. Each registered function name maps to the
+   * (possibly singleton) set of names that are mutually recursive with it.
+   */
+  private Map<String, Set<String>> sccByName;
+
+  /**
+   * @return the set of function names mutually recursive with {@code name}
+   *         (including {@code name} itself), or a singleton set containing
+   *         just {@code name} if it isn't in a cycle. Never null.
+   */
+  public Set<String> sccOf(String name)
+  {
+    if (sccByName == null)
+    {
+      synchronized (this)
+      {
+        if (sccByName == null)
+        {
+          if (functionReferenceGraph.isEmpty())
+          {
+            populateFunctionReferenceGraph();
+          }
+          Map<String, Set<String>> map = new HashMap<>();
+          for (Set<String> scc : Utensils.stronglyConnectedComponents(functionReferenceGraph))
+          {
+            for (String member : scc)
+            {
+              map.put(member, scc);
+            }
+          }
+          sccByName = map;
+        }
+      }
+    }
+    Set<String> scc = sccByName.get(name);
+    return scc != null ? scc : Collections.singleton(name);
+  }
+
+  /**
+   * True iff {@code name} is in a non-trivial SCC (mutually recursive with at
+   * least one other name, or self-recursive via a {@code dependsOn} self-edge).
+   */
+  public boolean isInCycle(String name)
+  {
+    Set<String> scc = sccOf(name);
+    if (scc.size() > 1)
+      return true;
+    Dependency dep = functionReferenceGraph.get(name);
+    return dep != null && dep.dependsOn.contains(name);
+  }
+
+  /**
+   * Per-curried-member k-extent providers. Key: function name (e.g. {@code "σ"}).
+   * Value: {@code (topIdx, j) -> kMax}, returning the maximum inner index that
+   * the recurrence reaches when populating outer index {@code j} given that the
+   * caller's top-level request is at {@code topIdx}.
+   */
+  private final Map<String, java.util.function.IntBinaryOperator> kExtentProviders = new HashMap<>();
+
+  /**
+   * Register the k-extent calculation for a curried sequence in this Context.
+   * Required before {@link #warmToBottomUp} can warm a curried SCC member.
+   *
+   * @param name     the outer sequence's name (e.g. {@code "σ"})
+   * @param provider {@code (topIdx, j) -> kMax}
+   * @return this for chaining
+   */
+  public Context setKExtentProvider(String name, java.util.function.IntBinaryOperator provider)
+  {
+    kExtentProviders.put(name, provider);
+    return this;
+  }
+
+  private final ThreadLocal<Boolean> warming = ThreadLocal.withInitial(() -> Boolean.FALSE);
+
+  /**
+   * Bottom-up warmer for a mutually-recursive integer-domain sequence cluster.
+   * Iterates {@code i = 0..idx}; at each {@code i}, evaluates every SCC member
+   * at {@code i} so its index cache is populated in dependency order. Curried
+   * members get their inner sequence warmed to the k-extent reported by the
+   * provider registered via {@link #setKExtentProvider}.
+   *
+   * <p>
+   * Idempotent. Honors precision: a higher-bits call routes through each
+   * member's own precision guard.
+   *
+   * @param name target SCC member that's about to be evaluated at {@code idx}
+   * @param idx  the index the caller wants ready
+   * @param bits the precision
+   */
+  public void warmToBottomUp(String name, int idx, int bits)
+  {
+    Set<String> scc    = sccOf(name);
+    boolean     cyclic = scc.size() > 1;
+    if (!cyclic)
+    {
+      Dependency dep = functionReferenceGraph.get(name);
+      if (dep == null || !dep.dependsOn.contains(name))
+        return;
+    }
+
+    if (warming.get())
+      return;
+    warming.set(true);
+    try
+    {
+      try ( Integer i = new Integer())
+      {
+        for (int ii = 0; ii <= idx; ii++)
+        {
+          i.set(ii);
+          for (String member : scc)
+          {
+            FunctionMapping<?, ?, ?> m = functions.get(member);
+            if (m == null || m.instance == null)
+              continue;
+            warmMember(m, i, ii, idx, bits);
+          }
+        }
+      }
+    }
+    finally
+    {
+      warming.set(false);
+    }
+  }
+
+  @SuppressWarnings({ "unchecked", "rawtypes" })
+  private void warmMember(FunctionMapping<?, ?, ?> m, Integer i, int ii, int idx, int bits)
+  {
+    Object instance = m.instance;
+    Object outer    = ((Function) instance).evaluate(i, 1, bits, null);
+    if (outer instanceof Sequence)
+    {
+      java.util.function.IntBinaryOperator provider = kExtentProviders.get(m.functionName);
+      if (provider == null)
+      {
+        throw new CompilerException(String.format("warmToBottomUp(%s, idx=%d): %s is curried and in a mutually-recursive cluster, but no k-extent provider is registered. "
+                      + "Call context.setKExtentProvider(\"%s\", (topIdx, j) -> ...) returning the max inner index reached when populating outer index j given top-level request topIdx.",
+                                                  m.functionName,
+                                                  idx,
+                                                  m.functionName,
+                                                  m.functionName));
+      }
+      Sequence innerSeq = (Sequence) outer;
+      int      kMax     = provider.applyAsInt(idx, ii);
+      try ( Integer k = new Integer())
+      {
+        for (int kk = 0; kk <= kMax; kk++)
+        {
+          k.set(kk);
+          innerSeq.evaluate(k, 1, bits, null);
+        }
+      }
+    }
   }
 
   public FunctionMapping<?, ?, ?> registerFunction(String string, Function<?, ?> func)
