@@ -1077,8 +1077,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       String concreteInternalName = type.isInterface() ? mapping.functionInternalName() : Type.getInternalName(type);
       String fieldDescriptor      = mapping.functionFieldDescriptor();
       var    alreadyInitialized   = new Label();
-      // Check if the field is already non-null (injected by injectFunctionReferences
-      // during instantiate()). If so, skip allocation to preserve the injected reference.
       loadThisOntoStack(mv).visitFieldInsn(GETFIELD,
                                            className,
                                            mapping.functionName,
