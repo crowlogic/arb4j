@@ -265,7 +265,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     if (operandFunctionFieldName == null)
     {
-      operandFunctionFieldName = expression.getNextIntermediateVariableFieldName("operand", Function.class);
+      operandFunctionFieldName = expression.getNextIntermediateVariableFieldName(expression.className() + "operand", Function.class);
     }
     if (operandValueFieldName == null)
     {

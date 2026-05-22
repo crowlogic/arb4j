@@ -291,8 +291,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return Complex.class;
     }
     if (RealSequence.class.equals(parentCoDomainType) || ComplexSequence.class.equals(parentCoDomainType)
-                  || ComplexPolynomialSequence.class.equals(parentCoDomainType)
-                  || RealPolynomialSequence.class.equals(parentCoDomainType))
+                  || ComplexPolynomialSequence.class.equals(parentCoDomainType) || RealPolynomialSequence.class.equals(parentCoDomainType))
     {
       return Integer.class;
     }
@@ -1065,7 +1064,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected void constructReferencedFunctionInstanceIfItIsNull(MethodVisitor mv, FunctionMapping<?, ?, ?> mapping)
   {
     assert mapping != null : "mapping shan't be null";
-    boolean isSelfRef = mapping.functionName != null && functionName != null && functionName.equals(mapping.functionName);
+    boolean isSelfRef    = mapping.functionName != null && functionName != null && functionName.equals(mapping.functionName);
     // Also wire mappings that have a live instance but no defining expression
     // (e.g. Context.registerSequence("B", bops)); otherwise an inner
     // self-recursive instance never gets that field set (injection only runs
@@ -1092,8 +1091,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       mv.visitJumpInsn(Opcodes.IFNONNULL, alreadyInitialized);
 
       // 2. Try the context's canonical instance:
-      //      Function f = this.context.lookupFunctionInstance("<name>");
-      //      if (f != null) { this.<field> = (FieldType) f; goto done; }
+      // Function f = this.context.lookupFunctionInstance("<name>");
+      // if (f != null) { this.<field> = (FieldType) f; goto done; }
       // This avoids allocating a second instance whose own field-injection
       // never runs (e.g. σfunc creating a fresh `new m()` whose `a` field
       // stays null because σ has no `a` field of its own to propagate from).
@@ -1114,7 +1113,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       mv.visitJumpInsn(Opcodes.GOTO, alreadyInitialized);
 
       // 3. Fallback: context has no instance yet (mutual-recursion mid-bootstrap).
-      //    Allocate a fresh one, propagate context, run context-level injection.
+      // Allocate a fresh one, propagate context, run context-level injection.
       mv.visitLabel(needsAllocation);
       mv.visitInsn(Opcodes.POP); // discard the dup'd null
       mv.visitInsn(Opcodes.POP); // discard the `this` we loaded for the eventual PUTFIELD
@@ -1959,14 +1958,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected MethodVisitor generateCloseFieldCall(MethodVisitor methodVisitor, String fieldName, Class<?> fieldType)
   {
-    getFieldFromThis(methodVisitor, internalName(), fieldName, fieldType);
-    methodVisitor.visitVarInsn(ALOAD, 0);
-    Label skip = new Label();
-    methodVisitor.visitJumpInsn(IF_ACMPEQ, skip);
-    getFieldFromThis(methodVisitor, internalName(), fieldName, fieldType);
-    invokeCloseMethod(methodVisitor, fieldType);
-    methodVisitor.visitLabel(skip);
-    return methodVisitor;
+    getFieldFromThis(methodVisitor, className, fieldName, fieldType);
+    return invokeCloseMethod(methodVisitor, fieldType);
   }
 
   protected ClassVisitor generateCloseMethod(ClassVisitor classVisitor)
@@ -1983,23 +1976,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                                            intermediateVariable.name,
                                                                                            intermediateVariable.type));
 
-      getReferencedFunctions().forEach((name, mapping) ->
-      {
-        String fieldDesc = mapping.functionFieldDescriptor();
-        loadThisOntoStack(methodVisitor);
-        methodVisitor.visitFieldInsn(GETFIELD, internalName(), name, fieldDesc);
-        Label skip = new Label();
-        methodVisitor.visitJumpInsn(IFNULL, skip);
-        loadThisOntoStack(methodVisitor);
-        methodVisitor.visitFieldInsn(GETFIELD, internalName(), name, fieldDesc);
-        methodVisitor.visitTypeInsn(CHECKCAST, Type.getInternalName(AutoCloseable.class));
-        // null the field first, THEN close — breaks the cycle
-        loadThisOntoStack(methodVisitor);
-        methodVisitor.visitInsn(ACONST_NULL);
-        methodVisitor.visitFieldInsn(PUTFIELD, internalName(), name, fieldDesc);
-        methodVisitor.visitMethodInsn(INVOKEINTERFACE, Type.getInternalName(AutoCloseable.class), "close", "()V", true);
-        methodVisitor.visitLabel(skip);
-      });
+      referencedFunctions.forEach((name, mapping) -> generateCloseFieldCall(loadThisOntoStack(methodVisitor), name, mapping.type()));
     }
 
     Compiler.generateReturnFromVoidMethod(methodVisitor);
@@ -2439,11 +2416,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       // Context. Without this, the freshly-allocated functional keeps its
       // field-initializer default (`new Context()`) which has no functions
       // registered, so transitive references like `m → a` resolve to null.
-      // Stack on entry: [..., funcRef]   →   exit: [..., funcRef]
+      // Stack on entry: [..., funcRef] → exit: [..., funcRef]
       String contextTypeDesc = Type.getDescriptor(Context.class);
-      duplicateTopOfTheStack(mv);                                                  // [..., funcRef, funcRef]
-      loadThisOntoStack(mv);                                                       // [..., funcRef, funcRef, this]
-      mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);     // [..., funcRef, funcRef, ctx]
+      duplicateTopOfTheStack(mv); // [..., funcRef, funcRef]
+      loadThisOntoStack(mv); // [..., funcRef, funcRef, this]
+      mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc); // [..., funcRef, funcRef, ctx]
       mv.visitFieldInsn(PUTFIELD, functional.internalName(), "context", contextTypeDesc); // [..., funcRef]
     }
 
@@ -2834,14 +2811,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     constructNewObject(mv, nestedFunctionInternalName);
     invokeDefaultConstructor(duplicateTopOfTheStack(mv), nestedFunctionInternalName);
     putField(mv, internalName(), functionName, fieldDescriptor);
-    // this.<self>.context = this.context;  — share the parent's context so
+    // this.<self>.context = this.context; — share the parent's context so
     // the new instance's initialize() sees the live, populated Context.
     loadThisOntoStack(mv);
     mv.visitFieldInsn(GETFIELD, internalName(), functionName, fieldDescriptor);
     loadThisOntoStack(mv);
     mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
     mv.visitFieldInsn(PUTFIELD, nestedFunctionInternalName, "context", contextTypeDesc);
-    // this.<self>.cache = this.cache;  — share the memoization map so a deep
+    // this.<self>.cache = this.cache; — share the memoization map so a deep
     // recursive chain reuses results instead of going O(N) deep on the stack.
     if (shouldCache())
     {
@@ -3640,7 +3617,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (functionMapping != null && !functionMapping.instantiateInProgress)
     {
       functionMapping.instantiateInProgress = true;
-      clearMidInstantiate = true;
+      clearMidInstantiate                   = true;
     }
     try
     {
