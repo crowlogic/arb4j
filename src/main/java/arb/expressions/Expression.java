@@ -6227,9 +6227,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean shouldCache()
   {
-//    return domainType.equals(Integer.class)
-//                  && (upstreamExpression == null || upstreamExpression.isGeneratedFunctional());
-    return domainType.equals(Integer.class) && upstreamExpression == null;
+    return domainType.equals(Integer.class) && (upstreamExpression == null || upstreamExpression.isGeneratedFunctional());
   }
 
   /**
