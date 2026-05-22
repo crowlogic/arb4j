@@ -7,7 +7,7 @@ import junit.framework.TestCase;
 
 /**
  * Smoke + correctness tests for
- * {@link OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequence}.
+ * {@link FractionalRicattiOrthogonalPolynomialMomentFunctionalSequence}.
  *
  * <p>
  * Reference: Theorem 5.1 of
@@ -34,7 +34,7 @@ public class OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequenceTest e
     μ.set("0.6", bits);
     μ.setBounds(0, false, 1, true);
 
-    try (var ops = new OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequence(μ,
+    try (var ops = new FractionalRicattiOrthogonalPolynomialMomentFunctionalSequence(μ,
                                                                                      "1",
                                                                                      "-1/2",
                                                                                      "3/10"))

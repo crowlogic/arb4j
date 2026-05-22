@@ -1,6 +1,5 @@
 package arb.functions.polynomials.orthogonal.complex;
 
-import arb.ComplexPolynomial;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -35,21 +34,20 @@ import arb.functions.integer.ComplexPolynomialSequence;
  * <p>
  * The Müntz–Tau coefficient sequence is delegated to the existing
  * {@link RiccatiMuntzPadeFunctional}; its {@code muntzBasis()} produces the
- * sequence k ↦ a(k, v) of polynomials in v, which this class shifts by one
- * to obtain m(k, v) = a(k+1, v).
+ * sequence k ↦ a(k, v) of polynomials in v, which this class shifts by one to
+ * obtain m(k, v) = a(k+1, v).
  *
  * <p>
  * The functional is never positive-definite at any v ∈ ℝ for which the §9.5
- * contraction hypotheses hold (Volterra contraction → no real poles of
- * g(·, v)), so OPS zeros are complex; their reciprocals are the poles of
- * g(·, v), condensing on the Stahl compact Δ_g(v) ⊂ ℂ \ ℝ as the OPS degree
- * grows.
+ * contraction hypotheses hold (Volterra contraction → no real poles of g(·,
+ * v)), so OPS zeros are complex; their reciprocals are the poles of g(·, v),
+ * condensing on the Stahl compact Δ_g(v) ⊂ ℂ \ ℝ as the OPS degree grows.
  *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequence extends
-                                                                          OrthogonalPolynomialMomentFunctionalSequence
+public class FractionalRicattiOrthogonalPolynomialMomentFunctionalSequence extends
+                                                                           OrthogonalPolynomialMomentFunctionalSequence
 {
 
   /** Holder of μ, P, Q, R and the Müntz–Tau coefficient sequence. */
@@ -59,31 +57,34 @@ public class OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequence exten
    * Construct from a fresh {@link RiccatiMuntzPadeFunctional} built from (μ, P,
    * Q, R).
    */
-  public OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequence(Real μ,
+  public FractionalRicattiOrthogonalPolynomialMomentFunctionalSequence(Real μ,
                                                                        ComplexPolynomialNullaryFunction P,
                                                                        ComplexPolynomialNullaryFunction Q,
                                                                        ComplexPolynomialNullaryFunction R)
   {
-    this(new RiccatiMuntzPadeFunctional(μ, P, Q, R));
+    this(new RiccatiMuntzPadeFunctional(μ,
+                                        P,
+                                        Q,
+                                        R));
   }
 
   /** Convenience: build from string expressions for P, Q, R. */
-  public OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequence(Real μ,
-                                                                       String P,
-                                                                       String Q,
-                                                                       String R)
+  public FractionalRicattiOrthogonalPolynomialMomentFunctionalSequence(Real μ, String P, String Q, String R)
   {
-    this(new RiccatiMuntzPadeFunctional(μ, P, Q, R));
+    this(new RiccatiMuntzPadeFunctional(μ,
+                                        P,
+                                        Q,
+                                        R));
   }
 
   /**
    * Construct from an existing {@link RiccatiMuntzPadeFunctional}, sharing its
-   * Müntz–Tau coefficient sequence between this OPS path and any other
-   * consumer.
+   * Müntz–Tau coefficient sequence between this OPS path and any other consumer.
    */
-  public OrthogonalPolynomialFractionalRiccatiMomentFunctionalSequence(RiccatiMuntzPadeFunctional muntz)
+  public FractionalRicattiOrthogonalPolynomialMomentFunctionalSequence(RiccatiMuntzPadeFunctional muntz)
   {
-    super(muntz.context, riccatiMomentSequence(muntz));
+    super(muntz.context,
+          riccatiMomentSequence(muntz));
     this.muntz = muntz;
   }
 
