@@ -169,7 +169,6 @@ public class operandF0001 implements
         {
           this.Q = (OrthogonalPolynomialMomentFunctionalSequence) var10001;
         }
-        
       }
 
       this.isInitialized = true;

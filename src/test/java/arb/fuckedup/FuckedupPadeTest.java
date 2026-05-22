@@ -49,7 +49,6 @@ public class FuckedupPadeTest extends TestCase
     aSeq.q       = q;
     aSeq.r       = r;
     aSeq.μ       = mu;
-    ctx.registerFunction("a", aSeq);
 
     // m(k) = a(k+1)
     m mSeq = new m();
@@ -57,7 +56,6 @@ public class FuckedupPadeTest extends TestCase
     mSeq.a       = aSeq;
     mSeq.v       = v;
     mSeq.μ       = mu;
-    ctx.registerFunction("m", mSeq);
 
     // α, β recurrence coefficients (as polynomials in v)
     α alphaSeq = new α();
