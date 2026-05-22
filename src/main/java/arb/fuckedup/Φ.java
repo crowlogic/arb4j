@@ -17,13 +17,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.Set;
-import java.util.TreeMap;
+import arb.functions.IndexCache;
 
 public class Φ implements ComplexFunctionSequence, Typesettable, AutoCloseable, Initializable, Named {
    public boolean isInitialized;
    protected Context context;
    public Expression expression;
-   private TreeMap<Integer, ComplexFunction> cache = new TreeMap<>();
+   private IndexCache<ComplexFunction> cache = new IndexCache<>();
    public Φden Φden;
    public Φnum Φnum;
    public ComplexPolynomial p0;
@@ -53,7 +53,7 @@ public class Φ implements ComplexFunctionSequence, Typesettable, AutoCloseable,
          if (var11 != null) {
             return var11;
          } else {
-            TreeMap var9 = this.cache;
+            IndexCache var9 = this.cache;
             Integer var10 = M;
             Φfunc var12 = new Φfunc();
             if (var12.M == null) {

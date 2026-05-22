@@ -1205,11 +1205,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (shouldCache())
     {
-      String signature = "L" + Type.getInternalName(TreeMap.class) + "<" + Type.getDescriptor(arb.Integer.class) + Type.getDescriptor(coDomainType) + ">;";
-      // Not final: generateSelfReference shares this map into the allocated
+      String signature = "L" + Type.getInternalName(IndexCache.class) + "<" + Type.getDescriptor(coDomainType) + ">;";
+      // Not final: generateSelfReference shares this cache into the allocated
       // self-instance so a recursive chain memoizes once instead of
       // recomputing at every level.
-      cw.visitField(Opcodes.ACC_PRIVATE, "cache", Type.getDescriptor(TreeMap.class), signature, null);
+      cw.visitField(Opcodes.ACC_PRIVATE, "cache", Type.getDescriptor(IndexCache.class), signature, null);
     }
     if (shouldCacheValueBacking())
     {
@@ -1828,22 +1828,22 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (shouldCache())
     {
-      String internalName = Type.getInternalName(TreeMap.class);
+      String internalName = Type.getInternalName(IndexCache.class);
       loadThisOntoStack(mv);
       mv.visitTypeInsn(Opcodes.NEW, internalName);
       duplicateTopOfTheStack(mv);
 
       mv.visitMethodInsn(Opcodes.INVOKESPECIAL, internalName, "<init>", "()V", false);
-      mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "cache", Type.getDescriptor(TreeMap.class));
+      mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "cache", Type.getDescriptor(IndexCache.class));
     }
   }
 
   protected void generateCachePeek(MethodVisitor mv)
   {
     Label cacheMiss = new Label();
-    loadThisAndFieldOntoStack(mv, "cache", TreeMap.class);
+    loadThisAndFieldOntoStack(mv, "cache", IndexCache.class);
     loadInputParameterChecked(mv);
-    invokeStaticMethod(mv, Function.class, "peek", Object.class, TreeMap.class, arb.Integer.class);
+    invokeStaticMethod(mv, Function.class, "peek", Object.class, IndexCache.class, arb.Integer.class);
     cast(mv, coDomainType);
     duplicateTopOfTheStack(mv);
     jumpToIfNull(mv, cacheMiss);
@@ -1900,7 +1900,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       mv.visitInsn(Opcodes.SWAP); // stack: cache, functionInstance
       mv.visitVarInsn(Opcodes.ALOAD, cacheIndexSlot);
       mv.visitInsn(Opcodes.SWAP); // stack: cache, index, functionInstance
-      Compiler.invokeStaticMethod(mv, Function.class, "poke", Object.class, TreeMap.class, arb.Integer.class, Object.class);
+      Compiler.invokeStaticMethod(mv, Function.class, "poke", Object.class, IndexCache.class, arb.Integer.class, Object.class);
       mv.visitInsn(Opcodes.POP); // discard poke return value
 
       // return the original functionInstance still on the stack (under the dup)
@@ -1932,7 +1932,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitVarInsn(Opcodes.ALOAD, cacheArrayListSlot);
     mv.visitVarInsn(Opcodes.ALOAD, cacheIndexSlot);
     mv.visitVarInsn(Opcodes.ALOAD, freshCopySlot);
-    Compiler.invokeStaticMethod(mv, Function.class, "poke", Object.class, TreeMap.class, arb.Integer.class, Object.class);
+    Compiler.invokeStaticMethod(mv, Function.class, "poke", Object.class, IndexCache.class, arb.Integer.class, Object.class);
     mv.visitInsn(Opcodes.POP); // discard poke return value
 
     // return result
@@ -1950,7 +1950,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     cacheArrayListSlot = allocateLocalVariableSlot();
     cacheIndexSlot     = allocateLocalVariableSlot();
-    loadThisAndFieldOntoStack(mv, "cache", TreeMap.class);
+    loadThisAndFieldOntoStack(mv, "cache", IndexCache.class);
     mv.visitVarInsn(Opcodes.ASTORE, cacheArrayListSlot);
     loadInputParameterChecked(mv);
     mv.visitVarInsn(Opcodes.ASTORE, cacheIndexSlot);
@@ -1976,7 +1976,30 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                                            intermediateVariable.name,
                                                                                            intermediateVariable.type));
 
-      referencedFunctions.forEach((name, mapping) -> generateCloseFieldCall(loadThisOntoStack(methodVisitor), name, mapping.type()));
+      // Only close functions that were declared as fields (in dependency order — see declareFunctionReferences).
+      // Use the declared field descriptor (interface type) for GETFIELD, then INVOKEINTERFACE close()
+      // on AutoCloseable to match the bytecode that declareFunctionReferences emits.
+      if (dependencies != null)
+      {
+        for (Dependency dependency : dependencies)
+        {
+          String name    = dependency.variableName;
+          var    mapping = referencedFunctions.get(name);
+          if (mapping != null)
+          {
+            String fieldDesc = mapping.functionFieldDescriptor();
+            loadThisOntoStack(methodVisitor);
+            methodVisitor.visitFieldInsn(GETFIELD, internalName(), name, fieldDesc);
+            Label skip = new Label();
+            methodVisitor.visitJumpInsn(IFNULL, skip);
+            loadThisOntoStack(methodVisitor);
+            methodVisitor.visitFieldInsn(GETFIELD, internalName(), name, fieldDesc);
+            methodVisitor.visitTypeInsn(CHECKCAST, Type.getInternalName(AutoCloseable.class));
+            methodVisitor.visitMethodInsn(INVOKEINTERFACE, Type.getInternalName(AutoCloseable.class), "close", "()V", true);
+            methodVisitor.visitLabel(skip);
+          }
+        }
+      }
     }
 
     Compiler.generateReturnFromVoidMethod(methodVisitor);
@@ -2683,8 +2706,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       // the Müntz a/S recurrence) must drop every entry, otherwise a(k) returns
       // the previous v's value at the same k.
       loadThisOntoStack(mv);
-      mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "cache", Type.getDescriptor(TreeMap.class));
-      mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, Type.getInternalName(TreeMap.class), "clear", "()V", false);
+      mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "cache", Type.getDescriptor(IndexCache.class));
+      mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, Type.getInternalName(IndexCache.class), "clear", "()V", false);
     }
     if (shouldCacheValueBacking())
     {
@@ -2825,8 +2848,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       loadThisOntoStack(mv);
       mv.visitFieldInsn(GETFIELD, internalName(), functionName, fieldDescriptor);
       loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, internalName(), "cache", Type.getDescriptor(TreeMap.class));
-      mv.visitFieldInsn(PUTFIELD, nestedFunctionInternalName, "cache", Type.getDescriptor(TreeMap.class));
+      mv.visitFieldInsn(GETFIELD, internalName(), "cache", Type.getDescriptor(IndexCache.class));
+      mv.visitFieldInsn(PUTFIELD, nestedFunctionInternalName, "cache", Type.getDescriptor(IndexCache.class));
     }
     mv.visitLabel(alreadyAssigned);
     initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv), internalName(), functionName, functionName, context.variableClassStream());

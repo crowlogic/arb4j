@@ -17,13 +17,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.Set;
-import java.util.TreeMap;
+import arb.functions.IndexCache;
 
 public class σ implements ComplexPolynomialSequenceSequence, Typesettable, AutoCloseable, Initializable, Named {
    public boolean isInitialized;
    protected Context context;
    public Expression expression;
-   private TreeMap<Integer, ComplexPolynomialSequence> cache = new TreeMap<>();
+   private IndexCache<ComplexPolynomialSequence> cache = new IndexCache<>();
    public α α;
    public σ σ;
    public m m;
@@ -55,7 +55,7 @@ public class σ implements ComplexPolynomialSequenceSequence, Typesettable, Auto
          if (var11 != null) {
             return var11;
          } else {
-            TreeMap var9 = this.cache;
+            IndexCache var9 = this.cache;
             Integer var10 = j;
             σfunc var12 = new σfunc();
             if (var12.j == null) {

@@ -16,13 +16,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.Set;
-import java.util.TreeMap;
+import arb.functions.IndexCache;
 
 public class Bops implements ComplexPolynomialSequence, Typesettable, AutoCloseable, Initializable, Named {
    public boolean isInitialized;
    protected Context context;
    public Expression expression;
-   private TreeMap<Integer, ComplexPolynomial> cache = new TreeMap<>();
+   private IndexCache<ComplexPolynomial> cache = new IndexCache<>();
    public α α;
    public ComplexPolynomial p0;
    public ComplexPolynomial p1;
@@ -57,7 +57,7 @@ public class Bops implements ComplexPolynomialSequence, Typesettable, AutoClosea
             result.set(var11);
             return result;
          } else {
-            TreeMap var9 = this.cache;
+            IndexCache var9 = this.cache;
             Integer var10 = n;
             ((ComplexPolynomial)this.α.evaluate(n, order, bits, this.vXℂ0034)).neg(result);
             ComplexPolynomial var7 = new ComplexPolynomial();

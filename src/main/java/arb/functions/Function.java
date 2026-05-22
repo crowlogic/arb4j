@@ -30,32 +30,31 @@ public interface Function<D, CO> extends
 {
 
   /**
-   * Memoization peek over a {@link HashMap} keyed by signed {@code int} index.
-   * Replaces the previous {@link ArrayList}-backed cache, which silently returned
-   * {@code null} for negative indices and triggered unbounded recompute on
-   * recursive sequences whose recurrence reaches negative arguments.
-   * {@code HashMap} permits arbitrary integer keys, so every {@code peek} that
-   * finds a stored value short-circuits the recursion.
+   * Memoization peek over an {@link IndexCache} keyed by signed {@code int}
+   * index. The cache is two ArrayLists (non-negative and negative sides) grown
+   * on demand, so this is O(1) array indexing — no tree/hash navigation and no
+   * key allocation. It supersedes the {@link TreeMap}{@code <Integer,C>} cache
+   * whose {@link arb.Integer#compareTo} comparator path dominated profiles, and
+   * still handles the negative indices a plain single-ArrayList cache could not.
    *
-   * @param cache memoization map; never {@code null} for generated classes
+   * @param cache memoization cache; never {@code null} for generated classes
    * @param n     signed integer index — may be negative
    * @return the cached value if present, otherwise {@code null}
    */
-  static <C> C peek(TreeMap<Integer, C> cache, arb.Integer n)
+  static <C> C peek(IndexCache<C> cache, arb.Integer n)
   {
-    return cache.get(n);
+    return cache.get(n.getSignedValue());
   }
 
   /**
-   * Memoization poke over a {@link TreeMap} keyed by signed {@code int} index.
-   * See {@link #peek(TreeMap, Integer)} for the rationale.
+   * Memoization poke over an {@link IndexCache} keyed by signed {@code int}
+   * index. See {@link #peek(IndexCache, arb.Integer)} for the rationale.
    *
    * @return the inserted value (for chaining)
    */
-  static <C> C poke(TreeMap<Integer, C> cache, arb.Integer n, C value)
+  static <C> C poke(IndexCache<C> cache, arb.Integer n, C value)
   {
-    cache.put(new arb.Integer(n), value);
-    return value;
+    return cache.put(n.getSignedValue(), value);
   }
 
   /**

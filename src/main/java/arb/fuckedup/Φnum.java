@@ -16,13 +16,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.Set;
-import java.util.TreeMap;
+import arb.functions.IndexCache;
 
 public class Φnum implements ComplexPolynomialSequence, Typesettable, AutoCloseable, Initializable, Named {
    public boolean isInitialized;
    protected Context context;
    public Expression expression;
-   private TreeMap<Integer, ComplexPolynomial> cache = new TreeMap<>();
+   private IndexCache<ComplexPolynomial> cache = new IndexCache<>();
    public final Integer cℤ0000;
    public ΦnumoperandF0001 ΦnumoperandF0001;
    public Pn Pn;
@@ -62,7 +62,7 @@ public class Φnum implements ComplexPolynomialSequence, Typesettable, AutoClose
             result.set(var11);
             return result;
          } else {
-            TreeMap var9 = this.cache;
+            IndexCache var9 = this.cache;
             Integer var10 = M;
             if (this.ΦnumoperandF0001.M == null) {
                this.ΦnumoperandF0001.M = new Integer();

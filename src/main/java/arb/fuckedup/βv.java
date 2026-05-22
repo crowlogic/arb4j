@@ -16,13 +16,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.Set;
-import java.util.TreeMap;
+import arb.functions.IndexCache;
 
 public class βv implements ComplexSequence, Typesettable, AutoCloseable, Initializable, Named {
    public boolean isInitialized;
    protected Context context;
    public Expression expression;
-   private TreeMap<Integer, Complex> cache = new TreeMap<>();
+   private IndexCache<Complex> cache = new IndexCache<>();
    public β β;
    public ComplexPolynomial p0;
    public ComplexPolynomial p1;
@@ -53,7 +53,7 @@ public class βv implements ComplexSequence, Typesettable, AutoCloseable, Initia
             result.set(var11);
             return result;
          } else {
-            TreeMap var9 = this.cache;
+            IndexCache var9 = this.cache;
             Integer var10 = n;
             var11 = (Complex)((ComplexPolynomial)this.β.evaluate(n, order, bits, this.vXℂ0018)).evaluate(this.v, order, bits, result);
             Complex var7 = new Complex();

@@ -7,6 +7,7 @@ import arb.Integer;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.Function;
+import arb.functions.IndexCache;
 import arb.functions.integer.ComplexPolynomialSequence;
 
 public class Pn implements
@@ -19,7 +20,7 @@ public class Pn implements
   public boolean                                         isInitialized;
   protected Context                                      context;
   public Expression                                      expression;
-  private TreeMap<Integer, ComplexPolynomial>            cache = new TreeMap<>();
+  private IndexCache<ComplexPolynomial> cache = new IndexCache<>();
   public final Integer                                   cℤ0000;
   public final Integer                                   cℤ0001;
   public final Integer                                   cℤ0002;
@@ -85,7 +86,7 @@ public class Pn implements
       }
       else
       {
-        TreeMap var9  = this.cache;
+        IndexCache var9  = this.cache;
         Integer var10 = n;
 
         (switch (n.getSignedValue())
