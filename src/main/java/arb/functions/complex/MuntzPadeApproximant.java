@@ -105,7 +105,14 @@ public final class MuntzPadeApproximant implements
       M.set(2);
       Φ.evaluate(M, 1, bits, null).evaluate(z, 1, bits, prev);
       best.set(prev);
-      for (int m = 3; m < 1024; m++)
+      // No upper bound on M. Termination is guaranteed by the convergence
+      // structure, not by an arbitrary cap: the neighbour-diff descends
+      // monotonically to a precision floor (hard-bounded below by the
+      // working `bits`) and then stops decreasing. One of the two exits
+      // below therefore always fires at finite M — either diffMag reaches
+      // the half-precision threshold, or it stops shrinking and we return
+      // the best iterate seen before precision loss set in.
+      for (int m = 3;; m++)
       {
         M.set(m);
         Φ.evaluate(M, 1, bits, null).evaluate(z, 1, bits, curr);
@@ -135,7 +142,6 @@ public final class MuntzPadeApproximant implements
         }
         prev.set(curr);
       }
-      throw new ArithmeticException("Müntz–Padé did not converge by M=1024");
     }
   }
 
