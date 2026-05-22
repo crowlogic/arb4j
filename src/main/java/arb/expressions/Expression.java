@@ -1181,6 +1181,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
+  protected void declareReEntrancyGuardField(ClassVisitor cw)
+  {
+    cw.visitField(Opcodes.ACC_PRIVATE, "evaluating", "Z", null, null);
+  }
+
   private ClassVisitor declareContext(ClassVisitor cw)
   {
     Class<?> type           = Context.class;
@@ -1221,6 +1226,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     declareContext(cw);
     declareSourceExpressionField(cw);
     declareCacheField(cw);
+    declareReEntrancyGuardField(cw);
     if (!coDomainType.isInterface())
     {
       declareLiteralConstants(cw);
@@ -2203,17 +2209,91 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       define(true);
     }
 
+    Label startLabel = new Label();
+    Label endLabel = new Label();
+    Label guardCheckLabel = new Label();
+    Label tryStart = new Label();
+    Label tryEnd = new Label();
+    Label exceptionHandler = new Label();
+
+    var mv = visitEvaluationMethod(classVisitor);
+    mv.visitCode();
+
+    designateLabel(mv, startLabel);
+    Compiler.annotateWithOverride(mv);
+
+    // Re-entrancy guard with try-finally wrapping helper method
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "evaluating", "Z");
+    mv.visitJumpInsn(Opcodes.IFEQ, guardCheckLabel);
+    // evaluating is true, throw CompilerException
+    mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(CompilerException.class));
+    duplicateTopOfTheStack(mv);
+    mv.visitLdcInsn("re-entrant evaluate() call on same instance");
+    Compiler.invokeConstructor(mv, CompilerException.class, String.class);
+    mv.visitInsn(Opcodes.ATHROW);
+
+    designateLabel(mv, guardCheckLabel);
+    loadThisOntoStack(mv);
+    mv.visitInsn(Opcodes.ICONST_1);
+    mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "evaluating", "Z");
+
+    mv.visitTryCatchBlock(tryStart, tryEnd, exceptionHandler, null);
+    designateLabel(mv, tryStart);
+
+    // Call the helper method that contains actual evaluation logic
+    loadThisOntoStack(mv);
+    loadInputParameterChecked(mv);
+    mv.visitVarInsn(Opcodes.ILOAD, 2); // order
+    mv.visitVarInsn(Opcodes.ILOAD, 3); // bits
+    mv.visitVarInsn(Opcodes.ALOAD, 4); // result
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, internalName(), evaluationBodyMethodName(), evaluationBodyMethodDescriptor(), false);
+
+    designateLabel(mv, tryEnd);
+    loadThisOntoStack(mv);
+    mv.visitInsn(Opcodes.ICONST_0);
+    mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "evaluating", "Z");
+    mv.visitInsn(Opcodes.ARETURN);
+
+    // Exception handler: reset evaluating and rethrow
+    designateLabel(mv, exceptionHandler);
+    loadThisOntoStack(mv);
+    mv.visitInsn(Opcodes.ICONST_0);
+    mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "evaluating", "Z");
+    mv.visitInsn(Opcodes.ATHROW);
+
+    designateLabel(mv, endLabel);
+    declareEvaluateMethodArguments(mv, startLabel, endLabel);
+
+    mv.visitMaxs(0, 0);
+    mv.visitEnd();
+
+    generateEvaluationBodyMethod(classVisitor);
+    return classVisitor;
+  }
+
+  private String evaluationBodyMethodName()
+  {
+    return "evaluate_body";
+  }
+
+  private String evaluationBodyMethodDescriptor()
+  {
+    return Compiler.evaluationMethodDescriptor;
+  }
+
+  protected ClassVisitor generateEvaluationBodyMethod(ClassVisitor classVisitor) throws CompilerException
+  {
     nextLocalVariableSlot = 5;
 
     Label startLabel  = new Label();
     Label endLabel    = new Label();
     Label taylorLabel = new Label();
 
-    var   mv          = visitEvaluationMethod(classVisitor);
+    var mv = classVisitor.visitMethod(Opcodes.ACC_PRIVATE, evaluationBodyMethodName(), evaluationBodyMethodDescriptor(), null, null);
     mv.visitCode();
 
     designateLabel(mv, startLabel);
-    Compiler.annotateWithOverride(mv);
 
     // Issue #1014: for reified-functional codomains (ComplexPolynomial,
     // RealPolynomial, RationalFunction, ComplexRationalFunction) the
@@ -2296,12 +2376,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // the result after set()).
     if (isReifiedFunctional() && getPlaceholderVariable() != null)
     {
-      // Stack top is the result reference, possibly typed as Object
-      // (generic evaluate(Object, int, int, Object) signature). DUP it,
-      // CHECKCAST to coDomainType so invokevirtual on the typed method
-      // verifies, push the placeholder name, invoke the setter, pop the
-      // returned (this) reference; the original result reference remains
-      // for ARETURN.
       duplicateTopOfTheStack(mv);
       mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(coDomainType));
       mv.visitLdcInsn(getPlaceholderVariable().getName());
@@ -2328,13 +2402,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     else
     {
       mv.visitInsn(Opcodes.ARETURN);
-
-      // --- Taylor series evaluation for order > 1 ---
       generateTaylorSeriesPath(mv, taylorLabel);
-
       mv.visitMaxs(0, 0);
       mv.visitEnd();
     }
+
     return classVisitor;
   }
 
@@ -2782,16 +2854,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     loadThisOntoStack(mv);
     mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
     mv.visitFieldInsn(PUTFIELD, nestedFunctionInternalName, "context", contextTypeDesc);
-    // this.<self>.cache = this.cache;  — share the memoization map so a deep
-    // recursive chain reuses results instead of going O(N) deep on the stack.
-    if (shouldCache())
-    {
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, internalName(), functionName, fieldDescriptor);
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, internalName(), "cache", Type.getDescriptor(IndexCache.class));
-      mv.visitFieldInsn(PUTFIELD, nestedFunctionInternalName, "cache", Type.getDescriptor(IndexCache.class));
-    }
+    // One cache per recursion level: the self-instance keeps its own IndexCache
+    // (field initializer), it is NOT shared down the chain. Sharing one map
+    // across levels let a value poked by one level — whose captured index
+    // (e.g. operandF0001.k in the convolution j➔a(j)*a(k-1-j)) differs from a
+    // shallower level's — be read back at a stale key, corrupting the recurrence
+    // (issue #1034). Each level's captured state is fixed for that instance, so a
+    // per-level cache is correct; the chain depth is bounded by the recurrence.
     mv.visitLabel(alreadyAssigned);
     initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv), internalName(), functionName, functionName, context.variableClassStream());
     return mv;
@@ -3586,6 +3655,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     try
     {
       instantiateAndInjectReferencedFunctions(instance);
+      // Inject variable and function references from context. The guarded
+      // injectFunctionReferences will skip any functions currently being
+      // instantiated as part of a mutually-recursive cluster
+      // (instantiateInProgress == true), letting the generated initialize()
+      // code allocate fresh instances (#1034). External functions that are
+      // already instantiated will be injected normally.
       injectContextFunctionAndVariableReferences(instance);
       populateSourceExpressionBackPointer(instance);
     }
@@ -6113,42 +6188,22 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean shouldCache()
   {
-    // Integer-domain expressions are memoized by their index — but only when the
-    // index is the *only* thing the value depends on, so that the index alone is
-    // a sound cache key.
-    //
-    // - upstreamExpression == null: a top-level integer sequence. Sound.
-    // - upstreamExpression.isGeneratedFunctional(): this is the inner curry of a
-    //   *curried* sequence (the outer's codomain is a function interface, e.g.
-    //   σ:j➔k➔… whose outer σ returns a ComplexPolynomialSequence). The curry
-    //   machinery spawns a *fresh* inner instance per outer index and fixes that
-    //   index in the instance, so memoizing the inner by its own index is sound.
-    //   This is what makes the σ-table recurrence
-    //   σ(j)(k)=σ(j-1)(k+1)−α(j-1)σ(j-1)(k)−β(j-1)σ(j-2)(k) linear instead of
-    //   exponentially re-walked (#1034).
-    //
-    // It must NOT fire for an integer-indexed operand of a value-returning
-    // operator (sum/product), e.g. the j➔Q(M)[M-j]·zʲ operand of
-    // Φden:M➔sum(…): that operand is a *single* instance whose M field is
-    // mutated as the enclosing M advances, so its value depends on M as well as
-    // j and caching by j alone would serve stale terms. Such an operand's
-    // upstream (Φden) returns a value (ComplexPolynomial), not a function, so
-    // isGeneratedFunctional() is false and it is correctly left uncached.
+
     return domainType.equals(Integer.class)
                   && (upstreamExpression == null || upstreamExpression.isGeneratedFunctional());
+
   }
 
   /**
-   * True when this expression is the inner curry body of an integer-domain
-   * sequence whose codomain is itself a function (Issue #1005). Such expressions
-   * get a per-instance value-backing cache: a single (lastInput, cachedResult)
-   * pair, populated on first evaluate and short-circuited on repeat calls with
-   * the same input by reference identity.
+   * Disabled (issue #1034). Every integer-domain expression — top-level or an
+   * inner curry body — now gets the full per-index {@link IndexCache} via
+   * {@link #shouldCache()}. The former single-slot value-backing (#1005)
+   * superseded that table for inner bodies and thrashed under the σ-table's
+   * interleaved-index recurrence.
    */
   public boolean shouldCacheValueBacking()
   {
-    return upstreamExpression != null && upstreamExpression.shouldCache() && upstreamExpression.isGeneratedFunctional()
-                  && Field.class.isAssignableFrom(coDomainType);
+    return false;
   }
 
   /**

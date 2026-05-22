@@ -284,6 +284,15 @@ public class Context implements
       {
         return;
       }
+      // Skip injection of functions that are currently being instantiated
+      // as part of a mutually-recursive cluster. The cluster's instantiate()
+      // call has not yet returned, so instantiateInProgress == true. Let the
+      // generated initialize() bytecode allocate fresh instances to break
+      // aliasing/reentrancy cycles (#1034).
+      if (functionMapping.instantiateInProgress)
+      {
+        return;
+      }
       // Match by name AND type: a name shared between the variables and
       // functions namespaces yields two same-named public fields (legal —
       // field identity is name+descriptor), so getField(name) is ambiguous.
