@@ -95,6 +95,13 @@ the terms of this License or the Additional Use Grant. Any exception,
 including any extension of the evaluation period or any waiver, is
 effective only if set out in a Contract.
 
+For the avoidance of doubt, this License and this Additional Use Grant
+convey rights under copyright only and grant no license under any
+patent. Where Production Use also requires a patent license, that
+license is conveyed solely by a Production Use License Contract (see
+ProductionUseLicense.template.txt). This clarification imposes no
+additional restriction on the copyright rights granted above.
+
 ===Terms===
 
 The Licensor hereby grants You the right to

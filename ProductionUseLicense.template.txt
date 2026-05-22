@@ -1,0 +1,108 @@
+================================================================================
+arb4j PRODUCTION USE LICENSE — CONTRACT TEMPLATE
+================================================================================
+
+This template is the "Contract" and "Production Use License" referred to in the
+arb4j Business Source License (see License.txt). It is the single instrument by
+which Licensor conveys BOTH (a) authorization for Production Use of the Licensed
+Work under copyright and (b) a license under Licensor's patent rights essential
+to practicing the methods embodied in the Licensed Work. Mere possession of the
+source grants no patent license; only an executed Contract of this kind does.
+
+[This is a fill-in template, not a finalized agreement. Bracketed fields must be
+completed and the instrument signed by the Licensor to take effect.]
+
+--------------------------------------------------------------------------------
+1.  PARTIES
+--------------------------------------------------------------------------------
+Licensor:   Stephen Andrew Crowley <stephencrowley214@gmail.com>
+Licensee:   [legal name and address of the natural person or Organization]
+Effective Date: [date]
+
+--------------------------------------------------------------------------------
+2.  DEFINITIONS
+--------------------------------------------------------------------------------
+"Licensed Work", "Production Use", "Organization", "Transformation", "Change
+Date", and "Change License" have the meanings given in the arb4j Business Source
+License (License.txt), which is incorporated by reference.
+
+"Licensor Patents" means all patents and patent applications, in any
+jurisdiction, owned or licensable by Licensor whose claims would be infringed by
+practicing the computational methods embodied in the Licensed Work — including
+without limitation the Müntz–Padé spectral solution of constant-coefficient
+fractional Riccati equations, the σ-table Chebyshev–Wheeler orthogonal-
+polynomial Padé acceleration, and the certified-precision interval-arithmetic
+output described therein.
+
+"Essential Patent Claims" means those claims of the Licensor Patents that are
+necessarily infringed by using the Licensed Work as distributed to perform its
+intended computation.
+
+--------------------------------------------------------------------------------
+3.  GRANT
+--------------------------------------------------------------------------------
+Subject to Licensee's compliance with this Contract and payment of any fee in
+§ 5, Licensor grants Licensee, for the Term and Territory below:
+
+(a) COPYRIGHT / PRODUCTION USE.  The right to make Production Use of the Licensed
+    Work (and its Transformations) as defined in the Business Source License,
+    notwithstanding the expiry of the ninety-day evaluation period in that
+    License's Additional Use Grant.
+
+(b) PATENT.  A non-exclusive, non-transferable license under the Essential Patent
+    Claims to make, have made, use, and execute the Licensed Work for the
+    Production Use authorized in (a), co-extensive in scope, field, Term, and
+    Territory with that authorization and no broader.
+
+The patent license in (b) is limited to the Licensed Work as distributed by
+Licensor and to Transformations thereof; it does not extend to independent
+re-implementations of the claimed methods that are not derived from the Licensed
+Work.
+
+--------------------------------------------------------------------------------
+4.  RESERVATION OF RIGHTS
+--------------------------------------------------------------------------------
+All rights not expressly granted are reserved. In particular, no license under
+the Licensor Patents arises from possession, copying, modification, Personal
+Use, or evaluation-period use of the Licensed Work; such a license arises only
+under an executed Contract of this kind. Nothing here grants any right in any
+Licensor trademark or logo.
+
+--------------------------------------------------------------------------------
+5.  FEE / TERM / TERRITORY  [select and complete]
+--------------------------------------------------------------------------------
+Fee:        [ ] one-time [ ] subscription — amount: [____], or [ ] gifted at no charge
+Term:       [ ] perpetual  [ ] fixed: from Effective Date through [____]
+Territory:  [ ] worldwide  [ ] [____]
+Field of use (optional restriction): [____]
+
+--------------------------------------------------------------------------------
+6.  CHANGE DATE INTERACTION
+--------------------------------------------------------------------------------
+On the Change Date applicable to a given version of the Licensed Work, that
+version becomes available under the Change License (GNU LGPL v3.0 or later).
+The Change License carries its own patent terms for that version (LGPLv3
+incorporating GPLv3 § 11). This Contract governs Production Use of versions
+that have not yet reached their Change Date, and any version expressly listed
+below; it does not enlarge or restrict the rights the Change License confers on
+a converted version.
+Versions covered: [____]
+
+--------------------------------------------------------------------------------
+7.  WARRANTY / LIABILITY
+--------------------------------------------------------------------------------
+The Licensed Work is provided "AS IS" without warranty of any kind, consistent
+with the disclaimer in the Business Source License. Licensor's aggregate
+liability under this Contract shall not exceed the fee paid under § 5.
+
+--------------------------------------------------------------------------------
+8.  SIGNATURE
+--------------------------------------------------------------------------------
+This Contract is effective only upon signature by Licensor (electronic signature
+permitted), as required by the Business Source License.
+
+Licensor: _______________________________   Date: ____________
+          Stephen Andrew Crowley
+
+Licensee: _______________________________   Date: ____________
+          [name / title]
