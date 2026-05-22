@@ -110,6 +110,49 @@ public class OrthogonalPolynomialMomentFunctionalSequence extends
     p0.one(); // P(0, x) = 1; p1 set lazily in initialize()
   }
 
+  /**
+   * Populate the σ-table caches bottom-up through index {@code M} so every later
+   * top-down read of σ(j)(k), h(j), α(j), β(j) is a cache hit on a fully computed
+   * value.
+   *
+   * <p>
+   * The cluster {σ,α,β,h} is mutually recursive (α(j)=σ(j)(j+1)/h(j); σ references
+   * α(j-1)). Evaluated on demand, computing α(j) before α(j-1) is cached drives
+   * the σ recurrence into α(j-1) <em>while α(j) is still in flight on the same
+   * instance</em>, corrupting its scratch and memoising a partial ∅ that a later
+   * read divides by → {@code DivisionByZeroException: ∅}.
+   *
+   * <p>
+   * Filling strictly bottom-up removes that: at step j the σ(j) cells are
+   * materialised by direct σ evaluation (α not in flight) using the already
+   * cached α(&lt;j)/β(&lt;j)/σ(&lt;j); then h(j), α(j), β(j) are pure cache reads
+   * of σ(j). No instance is re-entered cold and no partial value is cached. With
+   * σfunc memoised (see {@code Expression.shouldCache}) this is O(M²) and
+   * idempotent — re-calls are cache hits.
+   */
+  public void warmTo(int M, int bits)
+  {
+    try ( Integer j = new Integer(); Integer k = new Integer(); ComplexPolynomial scratch = new ComplexPolynomial())
+    {
+      for (int jj = 0; jj <= M; jj++)
+      {
+        j.set(jj);
+        @SuppressWarnings("resource")
+        ComplexPolynomialSequence σj = σ.evaluate(j, 1, bits, null);
+        // σ(j)(k)=σ(j-1)(k+1)-… chains back to σ(0)(k+j), so to materialise
+        // σ(M)(M+1) the lowest level needs k up to 2M+1; 2M+2 covers it.
+        for (int kk = 0; kk <= 2 * M + 2 - jj; kk++)
+        {
+          k.set(kk);
+          σj.evaluate(k, 1, bits, scratch);
+        }
+        h.evaluate(j, 1, bits, scratch);
+        α.evaluate(j, 1, bits, scratch);
+        β.evaluate(j, 1, bits, scratch);
+      }
+    }
+  }
+
   /** Set p1 = x − α(0), then delegate to the parent. */
   @Override
   public void initialize()

@@ -6172,7 +6172,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean shouldCache()
   {
-    return domainType.equals(Integer.class) && upstreamExpression == null;
+    // Memoize any integer-indexed function whose value is a pure function of its
+    // index. A top-level sequence (no upstream) qualifies. An inner curry body
+    // qualifies iff its upstream is itself a generated functional — i.e. it is
+    // the k-body of a curried sequence-of-sequences (σ:j➔k➔…): the curry builds
+    // a fresh inner instance per outer index j, so the body depends only on k
+    // and that frozen j and is safe to cache by k. Without this the σ-table's
+    // 3-term recurrence re-runs exponentially (φ^j) — the #1034 slowness.
+    // A Σ/Π operand (j➔a(j)·a(k-1-j)) is excluded: its upstream `a` returns a
+    // value (ComplexPolynomial), not a functional, so isGeneratedFunctional() is
+    // false; it depends on the enclosing k and would serve stale terms if cached.
+    return domainType.equals(Integer.class) && (upstreamExpression == null || upstreamExpression.isGeneratedFunctional());
   }
 
   /**
