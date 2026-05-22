@@ -1982,9 +1982,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
       getReferencedFunctions().forEach((name, mapping) ->
       {
-        String fieldDesc       = mapping.functionFieldDescriptor();
+        String fieldDesc         = mapping.functionFieldDescriptor();
         String fieldInternalName = Type.getType(fieldDesc).getInternalName();
-        boolean isInterface    = mapping.functionClass != null && mapping.functionClass.isInterface();
+        // Use the field descriptor to decide INVOKEVIRTUAL vs INVOKEINTERFACE:
+        // functionClass may be an interface while fieldDesc is the concrete generated
+        // class — using functionClass.isInterface() in that case would emit
+        // INVOKEINTERFACE on a class, causing IncompatibleClassChangeError at runtime.
+        boolean isInterface = mapping.functionClass != null
+                              && mapping.functionClass.isInterface()
+                              && fieldDesc.equals(mapping.functionClass.descriptorString());
         loadThisOntoStack(methodVisitor);
         methodVisitor.visitFieldInsn(GETFIELD, internalName(), name, fieldDesc);
         Label skip = new Label();

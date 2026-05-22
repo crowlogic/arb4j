@@ -848,7 +848,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if (!getGeneratedType().equals(resultType))
     {
-      generateCastTo(mv, resultType);
+      generateCastTo(mv, resultType, false);
     }
 
     return mv;
