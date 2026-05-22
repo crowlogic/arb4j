@@ -39,6 +39,14 @@ public class SigmaTableCacheEfficiencyTest
     long totalAccesses = IndexCache.HITS + IndexCache.MISSES;
     long hitRate = totalAccesses > 0 ? (IndexCache.HITS * 100) / totalAccesses : 0;
 
+    // Guard against a vacuous pass: if the σ-table was never exercised (build
+    // broke, IndexCache unused, counters not wired), totalAccesses is 0 and the
+    // upper-bound check below trivially passes — the test would go green having
+    // measured nothing. A correct run does ~137 accesses, so demand well above 0.
+    assertTrue("σ-table was not exercised: totalAccesses=" + totalAccesses
+               + " — the test measured nothing and must NOT pass as green",
+               totalAccesses >= 100);
+
     // For small evaluation (128-bit precision), expect <10K total cache accesses
     // (a properly-cached σ-table is ~137 lookups, flat across precision). The
     // previous 100K bound was a false negative: the 128-bit exponential count
