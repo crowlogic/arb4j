@@ -284,15 +284,10 @@ public class Context implements
       {
         return;
       }
-      // Skip injection of functions that are currently being instantiated
-      // as part of a mutually-recursive cluster. The cluster's instantiate()
-      // call has not yet returned, so instantiateInProgress == true. Let the
-      // generated initialize() bytecode allocate fresh instances to break
-      // aliasing/reentrancy cycles (#1034).
-      if (functionMapping.instantiateInProgress)
-      {
-        return;
-      }
+      // Note: cluster members will be aliased here, causing reentrancy in
+      // #1034. The reentrancy guard in evaluate() will detect and throw.
+      // TODO: distinguish cluster members from external functions and only
+      // inject external ones.
       // Match by name AND type: a name shared between the variables and
       // functions namespaces yields two same-named public fields (legal —
       // field identity is name+descriptor), so getField(name) is ambiguous.
