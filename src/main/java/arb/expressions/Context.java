@@ -626,8 +626,18 @@ public class Context implements
     }
   }
 
+  /**
+   * Names whose body references themselves (self-edge in the unfiltered function
+   * reference graph). The codegen-order graph in {@link #functionReferenceGraph}
+   * explicitly filters self-edges out so the topological sort terminates; this
+   * set preserves them so {@link #isInCycle} can correctly report a single
+   * self-recursive sequence as cyclic.
+   */
+  public final Set<String>            selfReferential              = new HashSet<>();
+
   public void populateFunctionReferenceGraph()
   {
+    selfReferential.clear();
     for (var entry : functions.entrySet())
     {
       var          functionName    = entry.getKey();
@@ -638,7 +648,12 @@ public class Context implements
       List<String> dependencies    = dependency.dependsOn;
       if (functionMapping.expression != null && functionMapping.expression.getReferencedFunctions() != null)
       {
-        dependencies.addAll(functionMapping.expression.getReferencedFunctions().keySet().stream().filter(name -> !name.equals(functionName)).toList());
+        var refs = functionMapping.expression.getReferencedFunctions().keySet();
+        if (refs.contains(functionName))
+        {
+          selfReferential.add(functionName);
+        }
+        dependencies.addAll(refs.stream().filter(name -> !name.equals(functionName)).toList());
       }
 
       functionReferenceGraph.put(functionName, dependency);
@@ -688,15 +703,18 @@ public class Context implements
 
   /**
    * True iff {@code name} is in a non-trivial SCC (mutually recursive with at
-   * least one other name, or self-recursive via a {@code dependsOn} self-edge).
+   * least one other name) OR is self-recursive (its body references itself).
+   * The self-edge is tracked in {@link #selfReferential} because
+   * {@link #functionReferenceGraph} filters self-edges for the codegen-order pass.
    */
   public boolean isInCycle(String name)
   {
-    Set<String> scc = sccOf(name);
-    if (scc.size() > 1)
+    // Force graph population so selfReferential is up to date.
+    sccOf(name);
+    Set<String> scc = sccByName != null ? sccByName.get(name) : null;
+    if (scc != null && scc.size() > 1)
       return true;
-    Dependency dep = functionReferenceGraph.get(name);
-    return dep != null && dep.dependsOn.contains(name);
+    return selfReferential.contains(name);
   }
 
   /**
@@ -741,13 +759,9 @@ public class Context implements
   public void warmToBottomUp(String name, int idx, int bits)
   {
     Set<String> scc    = sccOf(name);
-    boolean     cyclic = scc.size() > 1;
+    boolean     cyclic = scc.size() > 1 || selfReferential.contains(name);
     if (!cyclic)
-    {
-      Dependency dep = functionReferenceGraph.get(name);
-      if (dep == null || !dep.dependsOn.contains(name))
-        return;
-    }
+      return;
 
     if (warming.get())
       return;
