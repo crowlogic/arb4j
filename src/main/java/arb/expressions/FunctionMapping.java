@@ -182,25 +182,13 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
   }
 
   /**
-   * Re-entrance guard for {@link #instantiate()}. The instantiate flow calls
-   * {@code expression.instantiate()} which calls
-   * {@code injectContextFunctionAndVariableReferences} which calls
-   * {@code Class.getFields()} — the JVM may, while resolving field types, call
-   * {@link ExpressionClassLoader#findClass} which can route back to this same
-   * mapping and call {@link #instantiate()} recursively. Without a guard, this is
-   * the ping-pong observed in #1027 between mutually- referencing generated
-   * classes (S ↔ α).
-   */
-  /**
-   * Re-entrance guard for both {@link #instantiate()} (the mapping's own
-   * compile-then-instantiate path) and {@link Expression#instantiate()} when
-   * called directly via {@link arb.functions.Function#express}. Setting this
-   * before descending into {@code instantiateAndInjectReferencedFunctions}
-   * is what stops sub-expressions whose body references the owning
-   * sequence (e.g. {@code Σj➔a(j)*a(k-1-j)} inside the body of {@code a})
-   * from looping back through {@link FunctionMapping#instantiate()} and
-   * allocating a ghost instance that overwrites
-   * {@link Expression#instance}. See issue #1032.
+   * Re-entrance guard for {@link #instantiate()} and {@link Expression#instantiate()}.
+   * Resolving a field type during instantiation can route through
+   * {@link ExpressionClassLoader#findClass} back to this same mapping; and a
+   * sub-expression whose body references the owning sequence (e.g.
+   * {@code Σj➔a(j)*a(k-1-j)} inside {@code a}) loops back the same way. Either
+   * path would re-enter {@code instantiate()} and allocate a ghost instance
+   * that overwrites {@link Expression#instance}; the guard short-circuits it.
    */
   boolean instantiateInProgress;
 
@@ -242,18 +230,10 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
   }
 
   /**
-   * Bytecode-level internal name of the class this mapping resolves to. Used as
-   * the {@code owner} argument for ASM emit sites that reference the mapping's
-   * function — {@code visitTypeInsn(NEW, ...)},
-   * {@code visitFieldInsn(..., owner, ...)},
-   * {@code visitMethodInsn(..., owner, ...)}. Slash-form, package-qualified
-   * when the resolved class is in a non-default package.
-   *
-   * <p>
-   * Resolution preference: a live {@link #instance} wins over a defining
-   * {@link #expression} wins over the bare {@link #functionName} (used as a
-   * fallback for mappings registered without either — e.g. forward declarations
-   * before the defining expression has been parsed).
+   * Slash-form (package-qualified) internal name of the class this mapping
+   * resolves to, for use as the ASM {@code owner} of NEW/field/method insns.
+   * Preference: a live {@link #instance}, else a defining {@link #expression},
+   * else the bare {@link #functionName} (forward-declaration fallback).
    */
   public String functionInternalName()
   {

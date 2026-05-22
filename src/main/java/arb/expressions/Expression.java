@@ -1066,13 +1066,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     assert mapping != null : "mapping shan't be null";
     boolean isSelfRef = mapping.functionName != null && functionName != null && functionName.equals(mapping.functionName);
-    // issue #1032 follow-up: also emit the wire-up block for mappings
-    // registered with a live instance but no defining expression (e.g.
-    // Context.registerSequence("B", bopsInstance) in the OPS framework).
-    // Without this, the inner self-recursive instance's `this.B` stays
-    // null at first evaluate(), because only externally-injected outer
-    // instances ever get B set — Function.express's injectFunctionReferences
-    // doesn't run on inner-recursion instances allocated by generateSelfReference.
+    // Also wire mappings that have a live instance but no defining expression
+    // (e.g. Context.registerSequence("B", bops)); otherwise an inner
+    // self-recursive instance never gets that field set (injection only runs
+    // on the externally-instantiated outer instance, not on the ones
+    // generateSelfReference allocates).
     boolean hasSomething = mapping.expression != null || mapping.instance != null;
     if (!isSelfRef && hasSomething)
     {
@@ -1209,12 +1207,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (shouldCache())
     {
       String signature = "L" + Type.getInternalName(TreeMap.class) + "<" + Type.getDescriptor(arb.Integer.class) + Type.getDescriptor(coDomainType) + ">;";
-      // issue #1032: not final, so that generateSelfReference can propagate
-      // the parent's cache TreeMap into the freshly-allocated separate
-      // self-instance — every instance in a self-recursive chain shares the
-      // same memoization map. Without this share, depth-N recursion through
-      // the chain re-computes from scratch at every level instead of hitting
-      // the cache populated by the outer level.
+      // Not final: generateSelfReference shares this map into the allocated
+      // self-instance so a recursive chain memoizes once instead of
+      // recomputing at every level.
       cw.visitField(Opcodes.ACC_PRIVATE, "cache", Type.getDescriptor(TreeMap.class), signature, null);
     }
     if (shouldCacheValueBacking())
@@ -2596,12 +2591,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                 getReferencedFunctions().keySet());
     }
     addChecksForNullVariableReferences(mv);
-    // issue #1032: emit the self-ref allocation BEFORE wiring up referenced
-    // functions. The wiring step propagates this.<self> into referenced
-    // functions (e.g. operandF0001.a = this.a), so this.<self> must already
-    // hold the freshly-allocated separate instance by that point. Without
-    // the reorder, those propagations spread null and the operand instances
-    // end up unable to call back into the self-recursive sequence.
+    // Allocate the self-reference before wiring referenced functions: that
+    // step propagates this.<self> into them (e.g. operandF0001.a = this.a),
+    // so it must already be non-null here.
     if (recursive)
     {
       generateSelfReference(mv);
@@ -2849,11 +2841,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     loadThisOntoStack(mv);
     mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
     mv.visitFieldInsn(PUTFIELD, nestedFunctionInternalName, "context", contextTypeDesc);
-    // this.<self>.cache = this.cache;  — share the memoization map so the
-    // chain of separate instances collapses recursion depth past the first
-    // pass. Without this, every level of the chain has its own empty cache
-    // and a single deep call goes O(N) deep on the stack, blowing it for
-    // any non-trivial recurrence.
+    // this.<self>.cache = this.cache;  — share the memoization map so a deep
+    // recursive chain reuses results instead of going O(N) deep on the stack.
     if (shouldCache())
     {
       loadThisOntoStack(mv);
@@ -3643,16 +3632,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     instance = newInstance();
 
-    // issue #1032: instantiateAndInjectReferencedFunctions may walk a
-    // sub-expression (e.g. Σ's operand body) that references the owning
-    // sequence by name. Without a re-entrancy signal that path would call
-    // FunctionMapping.instantiate() on this same mapping, which in turn
-    // would call expression.instantiate() recursively, overwrite the
-    // `instance` field with a ghost, and leave the outer continuing with
-    // a different Java object than the one it allocated. Mark the mapping
-    // as mid-instantiate so the recursive FunctionMapping.instantiate()
-    // short-circuits through its existing instantiateInProgress guard and
-    // returns null instead of allocating a ghost.
+    // Mark the mapping mid-instantiate: a sub-expression that references the
+    // owning sequence (e.g. Σ's operand body) would otherwise re-enter
+    // instantiate() and overwrite `instance` with a ghost. The guard makes
+    // the recursive FunctionMapping.instantiate() return null instead.
     boolean clearMidInstantiate = false;
     if (functionMapping != null && !functionMapping.instantiateInProgress)
     {

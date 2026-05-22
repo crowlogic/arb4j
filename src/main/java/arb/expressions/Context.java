@@ -143,11 +143,9 @@ public class Context implements
     System.loadLibrary("arblib");
   }
 
-  // issue #1032: lazy-init so that throwaway Contexts allocated by generated
-  // <init> on inner-recursion instances (which immediately have their context
-  // overwritten by `this.<self>.context = this.context` from the parent's
-  // initialize) don't pay for an ExpressionClassLoader allocation they
-  // never use. Access via getClassLoader().
+  // Lazy: a generated <init> allocates a Context that its parent's initialize
+  // immediately overwrites, so the throwaway shouldn't build a class loader it
+  // never uses. Access via getClassLoader().
   public ExpressionClassLoader                classLoader                  = null;
 
   public Map<String, Dependency>              functionReferenceGraph       = new HashMap<String, Dependency>();
@@ -156,8 +154,8 @@ public class Context implements
 
   public final HashMap<String, AtomicInteger> intermediateVariableCounters = new HashMap<>();
 
-  // issue #1032: static so a chain of N self-recursive instance Contexts
-  // doesn't pay N LoggerFactory.getLogger lookups at construction time.
+  // Static: a chain of N self-recursive instance Contexts shouldn't do N
+  // LoggerFactory lookups at construction.
   private static final Logger                 log                          = LoggerFactory.getLogger(Context.class);
 
   public boolean                              saveClasses                  = false;
@@ -278,40 +276,21 @@ public class Context implements
       {
         return;
       }
-      // NEVER alias f.<name> = f. A function class A's own field of type A
-      // is the recursive-call receiver, and it MUST be a DIFFERENT A
-      // instance from f, otherwise the recursive call shares every field
-      // with the outer frame and field-writes clobber the outer's data.
-      // The bytecode in initialize() will allocate a fresh `new A()` when
-      // this.A is null (which it stays here because we skip the assignment).
+      // Never alias f.<name> = f: a function's own field of its own type is
+      // the recursive-call receiver and must be a *different* instance, or
+      // the recursion re-enters f and clobbers its scratch fields. Left null
+      // here, generateSelfReference's `new <Self>()` fills it at initialize.
       if (functionMapping.instance == f)
       {
         return;
       }
-      // Look up the field by name AND type-compatibility. A name shared
-      // between the {@code variables} and {@code functions} namespaces
-      // (e.g. a Real {@code r} variable and a {@code r} ComplexFunction)
-      // can produce TWO public fields with the same name in one compiled
-      // class — Java permits this at the bytecode level since field
-      // identity is name+descriptor. {@link Class#getField(String)} would
-      // return an arbitrary one of them. Enumerate all public fields and
-      // pick the one whose declared type accepts this function instance;
-      // the variable-side injector handles the other.
+      // Match by name AND type: a name shared between the variables and
+      // functions namespaces yields two same-named public fields (legal —
+      // field identity is name+descriptor), so getField(name) is ambiguous.
       java.lang.reflect.Field field = findAssignableField(functionClass, functionName, functionMapping.instance.getClass());
       if (field == null)
       {
         return; // expression body never references this function in its function-namespace role
-      }
-      // issue #1032: NEVER alias f.<name> = f. A function class A's own field
-      // of type A is the recursive-call receiver, and the call graph must
-      // not re-enter the same Java object — its scratch fields are not
-      // re-entrant. Leaving the field null lets the bytecode emitted by
-      // generateSelfReference allocate a separate instance with its own
-      // scratch, which is the only correct way to support recursion on a
-      // sequence with instance-field scratch state.
-      if (functionMapping.instance == f)
-      {
-        return;
       }
       try
       {
@@ -329,6 +308,24 @@ public class Context implements
     injectVariableReferences(f);
     injectFunctionReferences(f);
     injectContextReference(f);
+  }
+
+  /**
+   * Clear the memoization cache of every instantiated function in this
+   * Context, sharing one cycle-guard set so the reference graph is walked
+   * once. The per-index caches are precision-blind, so callers invoke this
+   * when a higher working precision is requested.
+   */
+  public void invalidateAllCaches()
+  {
+    Set<Function<?, ?>> visited = Collections.newSetFromMap(new IdentityHashMap<>());
+    functions.values().forEach(mapping ->
+    {
+      if (mapping.instance != null)
+      {
+        mapping.instance.invalidateCache(visited);
+      }
+    });
   }
 
   protected <D, R, F extends Function<? extends D, ? extends R>> void injectContextReference(F f)

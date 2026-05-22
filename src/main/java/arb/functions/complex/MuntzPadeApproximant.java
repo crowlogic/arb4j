@@ -1,13 +1,8 @@
 package arb.functions.complex;
 
-import java.util.Collections;
-import java.util.IdentityHashMap;
-import java.util.Set;
-
 import arb.*;
 import arb.Integer;
 import arb.expressions.Context;
-import arb.functions.Function;
 import arb.functions.integer.ComplexFunctionSequence;
 import arb.functions.integer.ComplexPolynomialSequence;
 import arb.functions.integer.ComplexSequence;
@@ -100,25 +95,13 @@ public final class MuntzPadeApproximant implements
   {
     if (closed) throw new IllegalStateException("closed");
 
-    // Precision guard. The σ-table / Jacobi / Padé caches are keyed by
-    // sequence index only, so an entry computed at N bits is accurate to N
-    // bits and no further. Reusing those entries for a request at MORE bits
-    // would silently cap the result at the lower precision. So:
-    //   requested bits >  cachedBits  → the cache is too coarse; clear it and
-    //                                    rebuild at the new precision.
-    //   requested bits <= cachedBits  → the cache is at least as precise as
-    //                                    asked; reuse as-is (and reuse freely
-    //                                    across different t at the same bits).
+    // The index-keyed sequence caches are precision-blind: an entry built at
+    // N bits is accurate to N bits and no further, so a request for more bits
+    // must rebuild them. Fewer-or-equal bits reuse the cache as-is (and reuse
+    // freely across different t at the same precision).
     if (bits > cachedBits)
     {
-      Set<Function<?, ?>> invalidated = Collections.newSetFromMap(new IdentityHashMap<>());
-      for (var mapping : context.functions.values())
-      {
-        if (mapping.instance != null)
-        {
-          mapping.instance.invalidateCache(invalidated);
-        }
-      }
+      context.invalidateAllCaches();
       cachedBits = bits;
     }
 
@@ -132,23 +115,17 @@ public final class MuntzPadeApproximant implements
           Complex diff      = new Complex();
           Integer M         = new Integer() )
     {
-      // Half-precision convergence target. Bit-exact agreement at `bits` is
-      // unreachable: the OPS h(j) sequence underflows working precision at
-      // some M*, and the neighbour-diff bottoms out at a floor above 2^-bits,
-      // then climbs back up as precision is lost, before α(j)=σ(j)(j+1)/h(j)
-      // would finally divide by an h(j) that arb classifies as zero.
+      // Half-precision target: bit-exact agreement at `bits` is unreachable
+      // because the OPS h(j) underflows precision at some M*, so the
+      // neighbour-diff floors above 2^-bits and then climbs as precision is
+      // lost (eventually α=σ/h would divide by an arb-zero h(j)).
       threshold.one().mul2e(-bits / 2, threshold);
       bestMag.posInf();
       M.set(2);
       Φ.evaluate(M, 1, bits, null).evaluate(z, 1, bits, prev);
       best.set(prev);
-      // No upper bound on M. Termination is guaranteed by the convergence
-      // structure, not by an arbitrary cap: the neighbour-diff descends
-      // monotonically to a precision floor (hard-bounded below by the
-      // working `bits`) and then stops decreasing. One of the two exits
-      // below therefore always fires at finite M — either diffMag reaches
-      // the half-precision threshold, or it stops shrinking and we return
-      // the best iterate seen before precision loss set in.
+      // Unbounded by design: the diff descends monotonically to that floor
+      // then stops shrinking, so one exit below always fires at finite M.
       for (int m = 3;; m++)
       {
         M.set(m);
@@ -160,21 +137,14 @@ public final class MuntzPadeApproximant implements
         }
         if (diffMag.compareTo(bestMag) < 0)
         {
-          // Still descending toward the precision floor: this is the best
-          // iterate so far.
           bestMag.set(diffMag);
           best.set(curr);
         }
         else
         {
-          // The neighbour-diff stopped shrinking — we've reached the floor
-          // imposed by h(j) underflow and further M only loses precision.
-          // The previous iterate was the closest to the true limit. Stop
-          // here, before the h(j)→0 division that lies a few M further on.
-          // Detecting the floor by its signature (diff no longer decreasing)
-          // is what lets this terminate cleanly instead of running into —
-          // and catching — the DivisionByZeroException that the degenerate
-          // moment functional would otherwise raise.
+          // Diff stopped shrinking: we hit the precision floor. The previous
+          // iterate is closest to the limit — return it, stopping before the
+          // h(j)→0 division a few M further on.
           return result.set(best);
         }
         prev.set(curr);
