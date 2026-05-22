@@ -40,8 +40,12 @@ public class SigmaTableCacheEfficiencyTest
     long hitRate = totalAccesses > 0 ? (IndexCache.HITS * 100) / totalAccesses : 0;
 
     // For small evaluation (128-bit precision), expect <10K total cache accesses
-    // Exponential recomputation shows as 1M+ accesses
-    if (totalAccesses > 100_000) {
+    // (a properly-cached σ-table is ~137 lookups, flat across precision). The
+    // previous 100K bound was a false negative: the 128-bit exponential count
+    // (~73K accesses for ~180 distinct values) sits under 100K, so the test
+    // PASSED while the σfunc no-caching defect (#1034) was still unfixed. The
+    // bound is its own stated expectation — 10K.
+    if (totalAccesses > 10_000) {
       fail(String.format(
         "EXPONENTIAL RECOMPUTATION DETECTED (#1034):\n" +
         "  Cache Hits:    %,d\n" +
