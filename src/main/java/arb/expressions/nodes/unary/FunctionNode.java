@@ -1174,10 +1174,13 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
-    assert arg != null : "arg is null";
+    // Some FunctionNode instances (nullary context-lookup calls, e.g.
+    // m(), σ(), context-lookup binom) carry no argument subtree. spliceInto
+    // must reproduce that null-arg form rather than dereferencing arg.
+    Node<E, S, G> splicedArg = (arg == null) ? null : arg.spliceInto(newExpression);
     return new FunctionNode<E, S, G>(newExpression,
                                      functionName,
-                                     arg.spliceInto(newExpression),
+                                     splicedArg,
                                      derivativeOrder);
   }
 

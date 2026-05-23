@@ -73,6 +73,12 @@ public abstract class UnaryOperationNode<D, R, F extends Function<? extends D, ?
   @Override
   public boolean dependsOn(VariableNode<D, R, F> variable)
   {
+    // Some FunctionNode instances (nullary context-lookup calls, e.g. m(),
+    // σ(), context-lookup binom) carry no argument subtree. From the AST
+    // perspective the variable does not appear lexically inside the call;
+    // any dependence is carried by the looked-up mapping itself and is not
+    // visible through this node.
+    if (arg == null) return false;
     return arg.dependsOn(variable);
   }
 }

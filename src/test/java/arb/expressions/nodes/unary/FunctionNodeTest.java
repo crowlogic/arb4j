@@ -232,4 +232,51 @@ public class FunctionNodeTest extends
     var f = RealFunction.express("sqrt(2)/sqrt(2)");
     assertEquals("1", f.toString());
   }
+
+  /**
+   * Regression: a nullary FunctionNode (e.g. {@code m()}) parses with
+   * {@code arg == null}. When such a node appears inside a constant subtree
+   * subject to constant-folding, the optimizer walks the subtree calling
+   * {@code isConstant} → {@code isIndependentOfInput} → {@code dependsOn} on
+   * every node. {@link UnaryOperationNode#dependsOn} must tolerate
+   * {@code arg == null} for these context-lookup nullary calls.
+   *
+   * <p>Before the fix, this expression compilation throws
+   * {@code NullPointerException: "this.arg" is null} from
+   * {@code UnaryOperationNode.dependsOn}.
+   */
+  public static void testNullaryFunctionCallInsideConstantSubtree()
+  {
+    Context ctx = new Context();
+    // Register a nullary scalar named "m" — callable as m() from expressions.
+    RealNullaryFunction.express("m", "42", ctx);
+    // An expression with m() appearing inside a constant-folded subtree.
+    // The outer expression is x ↦ (1 + m()) * x, which has the constant
+    // subtree (1 + m()) that the optimizer attempts to fold.
+    RealFunction f = RealFunction.express("x➔(1+m())*x", ctx);
+    // It must compile without throwing and evaluate to 43*x.
+    Real result = f.evaluate(new Real("2", 128), 128, new Real());
+    assertEquals("f(2) = 43*2 = 86", 86.0, result.doubleValue(), 1e-30);
+  }
+
+  /**
+   * Regression: a nullary FunctionNode (e.g. {@code m()}) inside a
+   * function-sequence body triggers {@code spliceInto} during codegen for
+   * each curried inner element. {@link FunctionNode#spliceInto} must
+   * tolerate {@code arg == null} for nullary context-lookup calls.
+   *
+   * <p>Before the fix, this expression compilation throws
+   * {@code AssertionError: "arg is null"} from FunctionNode.spliceInto.
+   */
+  public static void testNullaryFunctionCallInsideCurriedSequence()
+  {
+    Context ctx = new Context();
+    RealNullaryFunction.express("m", "7", ctx);
+    // Curried RealFunctionSequence with m() inside the inner body:
+    //   F: j ➔ k ➔ m() + j + k
+    // generateFunctionalElement splices the inner body, exercising the
+    // null-arg path through FunctionNode.spliceInto. Compilation alone
+    // is the assertion — if spliceInto NPEs on null arg, this throws.
+    arb.functions.integer.RealFunctionSequence.express("F", "j➔k➔m()+j+k", ctx);
+  }
 }
