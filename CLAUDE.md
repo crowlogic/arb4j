@@ -118,6 +118,23 @@ Maven does not clean these between runs. Aggregating `Tests run:` lines from `bu
 
 **Only ever trust the live `mvn test` console output for the current run.** If a previous output was lost, re-run `mvn test` — do not read the report directory.
 
+### NEVER run destructive git commands on uncommitted source files
+
+The working tree in this repo routinely contains hours of uncommitted work.
+`git checkout <file>`, `git restore <file>`, `git reset --hard`, `git clean -fd`,
+and `git stash drop` all permanently destroy that work. The user has explicitly
+required monetary compensation for any work destroyed by these commands.
+
+Before doing ANY git operation that could overwrite working-tree files:
+  1. `git status --short` to see what is uncommitted.
+  2. If anything material is modified or untracked, commit it to a WIP branch
+     FIRST (`git checkout -b wip/<topic> && git add -A && git commit -m 'WIP'`),
+     then perform the operation on the WIP branch — never on the working tree
+     you care about.
+  3. If a revert of one file is truly needed, copy that file out of the working
+     tree to /tmp first, then restore it manually after the operation — do not
+     rely on git to remember it.
+
 ## Packaging notes
 
 - The `debian` Maven profile (used by `debian/rules`) emits a relocated classpath (`class.path.debian` → `/usr/share/arb4j/lib/...`) and stages every runtime dep into `target/dependency`. Default `mvn install` does neither.
