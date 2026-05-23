@@ -769,14 +769,40 @@ import arb.functions.real.RealFunction;
     return result;   
   }
  
+  /**
+   * Returns the i-th coefficient of this polynomial. The polynomial is treated
+   * as an infinite formal series extended by zeros past its stored length —
+   * coefficient access at any non-negative index is mathematically well-defined,
+   * even when the underlying Arb storage has collapsed to a shorter
+   * representation due to leading-zero normalization (e.g. after
+   * {@code set(k, zero)} the polynomial may report {@code getLength() == 0}
+   * even though every coefficient is still 0).
+   *
+   * <p>Negative indices are a logic error and throw
+   * {@link IndexOutOfBoundsException}.
+   *
+   * @param i non-negative coefficient index
+   * @return the i-th coefficient. When {@code i >= getLength()} the returned
+   *         Real is a fresh zero. When {@code i < getLength()} it is an alias
+   *         into the underlying native storage and must be treated read-only
+   *         by callers that intend the polynomial to remain unchanged.
+   */
   public Real get(int i)
   {
-    Real coeff = getCoeffs();
-    if  (coeff == null )
+    if (i < 0)
     {
-      return null;
+      throw new IndexOutOfBoundsException(
+          "RealPolynomial coefficient access at negative index: " + i
+        + " \u2014 polynomial coefficients are non-negatively indexed; a negative "
+        + "index indicates a flaw in the calling code.");
     }
-    return i < coeff.size() ? coeff.get(i) : null;
+    int length = getLength();
+    if (i >= length)
+    {
+      return new Real().zero();
+    }
+    Real coeff = getCoeffs();
+    return coeff.get(i);
   }
    
     
