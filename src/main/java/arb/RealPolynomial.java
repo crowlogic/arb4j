@@ -821,7 +821,7 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
     {
       throw new IndexOutOfBoundsException(
           "RealPolynomial coefficient access at negative index: " + i
-        + " \u2014 polynomial coefficients are non-negatively indexed; a negative "
+        + " — polynomial coefficients are non-negatively indexed; a negative "
         + "index indicates a flaw in the calling code.");
     }
     int length = getLength();

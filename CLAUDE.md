@@ -118,6 +118,15 @@ Maven does not clean these between runs. Aggregating `Tests run:` lines from `bu
 
 **Only ever trust the live `mvn test` console output for the current run.** If a previous output was lost, re-run `mvn test` — do not read the report directory.
 
+### NEVER write Unicode escape sequences — always use the actual character
+
+Never write `\uXXXX` in Java source, SWIG `.i` files, expression strings, or
+anywhere else. Always write the literal Unicode character: `—` not `\u2014`,
+`σ` not `\u03c3`, `➜` not `\u279c`, `Σ` not `\u03a3`, `κ` not `\u03ba`. The source
+files are UTF-8 throughout. Unicode escapes are unreadable, error-prone, and
+clash with the project's expression-language conventions where these characters
+are first-class identifiers.
+
 ### NEVER run destructive git commands on uncommitted source files
 
 The working tree in this repo routinely contains hours of uncommitted work.
