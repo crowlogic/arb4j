@@ -5,6 +5,7 @@ import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
+import arb.functions.integer.ComplexFunctionSequence;
 import arb.functions.integer.ComplexPolynomialSequence;
 import arb.functions.integer.RealSequence;
 
@@ -111,13 +112,30 @@ public class MuntzPadeCumulantGenerator implements
   public final ComplexPolynomialSequence d;
 
   /**
-   * Compiled cumulant generating function:
+   * Compiled cumulant generating function (the closed-form expression):
    *
    * <pre>
    *   Φ(v, T) = Σ_{k=0..N} d(k)(v) · T^(k·μ + 1)
    * </pre>
+   *
+   * Evaluating this directly resums every term from k=0 to N. Prefer
+   * {@link #evaluate} for adaptive growth, which uses {@link #term} to add
+   * one term per step instead of resumming.
    */
   public final ComplexFunction           Φ;
+
+  /**
+   * Compiled single-term sequence:
+   *
+   * <pre>
+   *   term : k ➔ v ➔ d(k)(v) · T^(k·μ + 1)
+   * </pre>
+   *
+   * Used by {@link #evaluate} for incremental accumulation: at adaptive step
+   * n, the running partial sum gets {@code term(n)(v)} added rather than
+   * the whole {@code Φ_n} being recomputed.
+   */
+  public final ComplexFunctionSequence   term;
 
   /**
    * Build a Müntz-lattice CGF from the Riccati Müntz coefficients and
@@ -168,23 +186,110 @@ public class MuntzPadeCumulantGenerator implements
     // when(k=0, w(0)*a(1)(v), else, u(k)*a(k)(v)+w(k)*a(k+1)(v))
     this.d = ComplexPolynomialSequence.express("d:k➔v➔when(k=0,w(0)*a(1)(v),else,u(k)*a(k)(v)+w(k)*a(k+1)(v))", context);
 
-    // CGF assembled on the common lattice {T^(kμ+1)}.
+    // Single-term sequence for incremental accumulation in adaptive evaluate().
+    this.term = ComplexFunctionSequence.express("term:k➔v➔d(k)(v)*T^(k*μ+1)", context);
+
+    // CGF assembled on the common lattice {T^(kμ+1)} — closed-form alternative
+    // to the incremental path; evaluate() uses incremental by default.
     this.Φ = ComplexFunction.express("Φ:v➔Σk➔d(k)(v)*T^(k*μ+1){k=0..N}", context);
   }
 
-  /** Set the CGF truncation order. */
-  public MuntzPadeCumulantGenerator setN(int newN)
+  /**
+   * Set a hard upper bound for the adaptive truncation search inside
+   * {@link #evaluate}. Default {@code 256}; raise this if the series hasn't
+   * converged within the default cap.
+   */
+  public MuntzPadeCumulantGenerator setMaxN(int newMaxN)
   {
-    if (newN < 0)
-      throw new IllegalArgumentException("N must be ≥ 0, got " + newN);
-    N.set(newN);
+    if (newMaxN < 1)
+      throw new IllegalArgumentException("maxN must be ≥ 1, got " + newMaxN);
+    this.maxN = newMaxN;
     return this;
   }
+
+  /**
+   * Force the truncation order to a fixed value, disabling the adaptive search.
+   * Restore adaptive growth via {@link #setAdaptive}.
+   */
+  public MuntzPadeCumulantGenerator setN(int fixedN)
+  {
+    if (fixedN < 0)
+      throw new IllegalArgumentException("N must be ≥ 0, got " + fixedN);
+    this.adaptive = false;
+    N.set(fixedN);
+    return this;
+  }
+
+  /** Re-enable adaptive truncation growth in {@link #evaluate}. */
+  public MuntzPadeCumulantGenerator setAdaptive(boolean on)
+  {
+    this.adaptive = on;
+    return this;
+  }
+
+  /** Hard upper bound on adaptive truncation. */
+  private int     maxN     = 256;
+
+  /** Whether {@link #evaluate} grows N adaptively. Defaults to true. */
+  private boolean adaptive = true;
 
   @Override
   public arb.Complex evaluate(arb.Complex v, int order, int bits, arb.Complex res)
   {
-    return Φ.evaluate(v, order, bits, res);
+    if (!adaptive)
+    {
+      return Φ.evaluate(v, order, bits, res);
+    }
+
+    // Incremental adaptive growth: maintain a running partial sum and add
+    // one term per step. Stop when |term_n| drops below the half-precision
+    // threshold or stops shrinking (precision floor reached).
+    try ( arb.Real    threshold = new arb.Real();
+          arb.Real    addMag    = new arb.Real();
+          arb.Real    bestMag   = new arb.Real();
+          arb.Complex sum       = new arb.Complex();
+          arb.Complex addition  = new arb.Complex();
+          arb.Complex best      = new arb.Complex();
+          arb.Integer kIdx      = new arb.Integer())
+    {
+      threshold.one().mul2e(-bits / 2, threshold);
+      bestMag.posInf();
+      sum.zero();
+
+      // Accumulate term(0), term(1), … one at a time.
+      for (int n = 0; n <= maxN; n++)
+      {
+        kIdx.set(n);
+        @SuppressWarnings("resource")
+        ComplexFunction termAtK = term.evaluate(kIdx, 1, bits, null);
+        termAtK.evaluate(v, 1, bits, addition);
+        sum.add(addition, bits, sum);
+        addition.abs(bits, addMag);
+
+        if (n == 0)
+        {
+          best.set(sum);
+          continue;
+        }
+        if (addMag.compareTo(threshold) <= 0)
+        {
+          return res.set(sum);
+        }
+        if (addMag.compareTo(bestMag) < 0)
+        {
+          bestMag.set(addMag);
+          best.set(sum);
+        }
+        else
+        {
+          // Term magnitudes stopped shrinking: precision floor. Return the
+          // best partial sum (one step before the floor).
+          return res.set(best);
+        }
+      }
+      // Hit maxN without convergence.
+      return res.set(best);
+    }
   }
 
   @Override

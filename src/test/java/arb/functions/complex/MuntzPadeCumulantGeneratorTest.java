@@ -2,6 +2,7 @@ package arb.functions.complex;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -64,14 +65,26 @@ public class MuntzPadeCumulantGeneratorTest
             assertEquals("Im(Φ(0, T)) must be 0", 0.0, res.im().doubleValue(), 1e-10);
           }
 
-          // setN should mutate the live truncation.
+          // Adaptive growth: same v at 32 bits vs 64 bits should both converge
+          // and the 32-bit result should agree with the 64-bit one to the
+          // 32-bit threshold.
+          try ( Complex v = new Complex(); Complex r32 = new Complex(); Complex r64 = new Complex())
+          {
+            v.re().set("0.5", bits);
+            cgf.evaluate(v, 1, 32, r32);
+            cgf.evaluate(v, 1, 64, r64);
+            double diff = Math.hypot(r32.re().doubleValue() - r64.re().doubleValue(),
+                                     r32.im().doubleValue() - r64.im().doubleValue());
+            // Threshold for 32-bit convergence is 2^-16 ≈ 1.5e-5; allow some slack.
+            assertTrue("adaptive 32-bit vs 64-bit disagreement: " + diff, diff < 1e-3);
+          }
+
+          // Fixed-N mode disables adaptive growth.
           cgf.setN(8);
           try ( Complex v = new Complex(); Complex res = new Complex())
           {
             v.re().set("0.5", bits);
             cgf.evaluate(v, 1, bits, res);
-            // No assertion on exact value — just smoke-test that evaluation completes
-            // at the new truncation order without throwing.
             assertNotNull(res);
           }
         }
