@@ -171,7 +171,16 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     this.symbol       = symbol;
     this.functionForm = functionForm;
     expression.getContext();
-    assignFieldNamesIfNecessary(expression.coDomainType);
+    // Two-phase field naming: parseOperand() needs the operand function field
+    // name (it becomes the operand sub-class's class name and the key under
+    // which the operandMapping is registered), but the operand VALUE field
+    // (operandValueFieldName) is declared as a member of the OUTER class with a
+    // specific type — and that type must match the operand body's actual
+    // resolved type, which may be wider than expression.coDomainType (e.g.
+    // Complex body inside a Real-valued outer expression where re/im extract
+    // the Real part). So name the function field now; defer the value field
+    // until after parseOperand has promoted operandExpression.coDomainType.
+    assignOperandFunctionFieldNameIfNecessary();
     parseOperand();
     functionInternalName = expression.internalName();
     assert functionInternalName != null : "functionInternalName=expression.internalName() shan't be null for operandExpression=" + operandExpression;
@@ -185,6 +194,12 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     generatedType = (operandExpression != null && operandExpression.coDomainType != null)
                   ? operandExpression.coDomainType
                   : expression.coDomainType;
+    // Now declare the value field at the promoted type so that GETFIELD at
+    // codegen time (which uses generatedType) matches the field's actual
+    // declared descriptor. Declaring it earlier (with expression.coDomainType)
+    // would name the field Real while codegen GETFIELDs it as Complex, causing
+    // NoSuchFieldError at first evaluate() call.
+    assignOperandValueFieldNameIfNecessary(generatedType);
     parseOperatorLimitSpecifications();
   }
 
@@ -270,16 +285,38 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     }
   }
 
-  protected void assignFieldNamesIfNecessary(Class<?> resultType)
+  /**
+   * Allocate the operand-function field name (used as the operand sub-class's
+   * class name and the operandMapping registration key). Type-independent, so
+   * it can be called before the operand body has been parsed/resolved.
+   */
+  protected void assignOperandFunctionFieldNameIfNecessary()
   {
     if (operandFunctionFieldName == null)
     {
       operandFunctionFieldName = expression.getNextIntermediateVariableFieldName(expression.className() + "operand", Function.class);
     }
+  }
+
+  /**
+   * Allocate the operand-value field on the OUTER class with the given type.
+   * Type-dependent, so it must be called only after parseOperand() has
+   * resolved (and possibly promoted) the operand body type, otherwise the
+   * field's declared descriptor will not match the GETFIELD descriptor used
+   * by codegen.
+   */
+  protected void assignOperandValueFieldNameIfNecessary(Class<?> resultType)
+  {
     if (operandValueFieldName == null)
     {
       operandValueFieldName = expression.newIntermediateVariable("value", resultType);
     }
+  }
+
+  protected void assignFieldNamesIfNecessary(Class<?> resultType)
+  {
+    assignOperandFunctionFieldNameIfNecessary();
+    assignOperandValueFieldNameIfNecessary(resultType);
     if (Expression.traceNodes)
     {
       int indentation = 18 + getClass().getSimpleName().length();
