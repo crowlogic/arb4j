@@ -810,10 +810,9 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
    *
    * @param i non-negative coefficient index
    * @return the i-th coefficient. When {@code i >= getLength()} the returned
-   *         Real is a fresh zero (caller does not own it; do not mutate). When
-   *         {@code i < getLength()} it is an alias into the underlying native
-   *         storage and must be treated read-only by callers that intend the
-   *         polynomial to remain unchanged.
+   *         Real is a fresh zero. When {@code i < getLength()} it is an alias
+   *         into the underlying native storage and must be treated read-only
+   *         by callers that intend the polynomial to remain unchanged.
    */
   public Real get(int i)
   {

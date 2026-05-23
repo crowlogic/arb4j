@@ -1255,6 +1255,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected void declareFields(ClassVisitor cw)
   {
     cw.visitField(Opcodes.ACC_PUBLIC, IS_INITIALIZED, "Z", null, null);
+    cw.visitField(Opcodes.ACC_PUBLIC, "closed", "Z", null, null);
     if (hasStaticNodes)
     {
       cw.visitField(Opcodes.ACC_PUBLIC, "staticPrecision", "I", null, null);
@@ -1987,6 +1988,23 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     methodVisitor.visitCode();
 
+    // Idempotent-close guard: if (this.closed) return; this.closed = true;
+    // Breaks recursion when the referenced-function graph contains a cycle
+    // (e.g. a self-referential recurrence such as c(n)=…c(n-k)…): a cycle
+    // a→b→a re-enters a.close(), which now returns immediately because
+    // a.closed was set on first entry. Replaces the former null-the-field-
+    // first hack, which only handled direct two-node back-references and
+    // left long self-referential chains to overflow the stack.
+    Label notClosed = new Label();
+    loadThisOntoStack(methodVisitor);
+    methodVisitor.visitFieldInsn(GETFIELD, internalName(), "closed", "Z");
+    methodVisitor.visitJumpInsn(IFEQ, notClosed);
+    methodVisitor.visitInsn(RETURN);
+    methodVisitor.visitLabel(notClosed);
+    loadThisOntoStack(methodVisitor);
+    methodVisitor.visitInsn(ICONST_1);
+    methodVisitor.visitFieldInsn(PUTFIELD, internalName(), "closed", "Z");
+
     if (!coDomainType.isInterface())
     {
       getSortedLiteralConstantNodes().forEach(constant -> generateCloseFieldCall(loadThisOntoStack(methodVisitor), constant.fieldName, constant.type()));
@@ -1995,10 +2013,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                                            intermediateVariable.name,
                                                                                            intermediateVariable.type));
 
-      // Close declared function-reference fields, breaking mutual-recursion
-      // cycles by nulling each field BEFORE invoking close() on its referent.
-      // Without the null-first step, f.close → g.close → f.close … infinite
-      // recursion for f ↔ g back-filled instances.
+      // Close declared function-reference fields. Recursion is bounded by the
+      // `closed` guard above, so referents are closed directly with no field-
+      // nulling tricks.
       if (dependencies != null)
       {
         for (Dependency dependency : dependencies)
@@ -2016,13 +2033,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
             methodVisitor.visitFieldInsn(GETFIELD, internalName(), name, fieldDesc);
             Label skip = new Label();
             methodVisitor.visitJumpInsn(IFNULL, skip);
-            // Snapshot the referent on the stack, null the field, then close.
             loadThisOntoStack(methodVisitor);
             methodVisitor.visitFieldInsn(GETFIELD, internalName(), name, fieldDesc);
             methodVisitor.visitTypeInsn(CHECKCAST, Type.getInternalName(AutoCloseable.class));
-            loadThisOntoStack(methodVisitor);
-            methodVisitor.visitInsn(Opcodes.ACONST_NULL);
-            methodVisitor.visitFieldInsn(PUTFIELD, internalName(), name, fieldDesc);
             methodVisitor.visitMethodInsn(INVOKEINTERFACE, Type.getInternalName(AutoCloseable.class), "close", "()V", true);
             methodVisitor.visitLabel(skip);
           }
