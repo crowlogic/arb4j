@@ -2163,35 +2163,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
 
     // The 'assignment' class declared its `functionName` field with whatever
-    // descriptor was current at THAT class's compile time — typically the
-    // interface descriptor when functionName was forward-declared. Our local
-    // `functionDescriptor` may be the concrete class. Use the OTHER class's
-    // own view of the descriptor so PUTFIELD matches its constant pool.
-    // Prefer the live instance's class (most authoritative) over the parsed
-    // expression's referenced-functions view, since the expression may have
-    // been compiled before functionName was concrete.
+    // type was current at THAT class's compile time — typically the interface
+    // descriptor when functionName was forward-declared. Our local
+    // `functionDescriptor` may be the concrete class. Read the descriptor
+    // straight off the peer's loaded class so PUTFIELD matches its constant pool.
     String declaredFieldDescriptor = functionDescriptor;
-    if (otherMapping != null && otherMapping.instance != null)
+    if (otherMapping != null && otherMapping.expression != null && otherMapping.expression.compiledClass != null)
     {
       try
       {
-        var f = otherMapping.instance.getClass().getField(functionName);
-        declaredFieldDescriptor = f.getType().descriptorString();
+        declaredFieldDescriptor = otherMapping.expression.compiledClass.getField(functionName).getType().descriptorString();
       }
       catch (NoSuchFieldException ignored)
       {
-      }
-    }
-    else if (otherMapping != null && otherMapping.expression != null)
-    {
-      var otherRefs = otherMapping.expression.getReferencedFunctions();
-      if (otherRefs != null)
-      {
-        var otherViewOfFunction = otherRefs.get(functionName);
-        if (otherViewOfFunction != null)
-        {
-          declaredFieldDescriptor = otherViewOfFunction.functionFieldDescriptor();
-        }
       }
     }
 
