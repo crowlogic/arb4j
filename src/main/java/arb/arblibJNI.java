@@ -719,6 +719,7 @@ public class arblibJNI {
   public final static native void arf_interval_get_arb(long jarg1, Real jarg1_, long jarg2, FloatInterval jarg2_, int jarg3);
   public final static native int arb_sgn_nonzero(long jarg1, Real jarg1_);
   public final static native void acb_poly_product_roots(long jarg1, ComplexPolynomial jarg1_, long jarg2, Complex jarg2_, int jarg3, int jarg4);
+  public final static native int acb_poly_find_roots(long jarg1, Complex jarg1_, long jarg2, ComplexPolynomial jarg2_, long jarg3, Complex jarg3_, int jarg4, int jarg5);
   public final static native void acb_poly_evaluate(long jarg1, Complex jarg1_, long jarg2, ComplexPolynomial jarg2_, long jarg3, Complex jarg3_, int jarg4);
   public final static native void acb_poly_evaluate2(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, ComplexPolynomial jarg3_, long jarg4, Complex jarg4_, int jarg5);
   public final static native void acb_poly_compose(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_, long jarg3, ComplexPolynomial jarg3_, int jarg4);

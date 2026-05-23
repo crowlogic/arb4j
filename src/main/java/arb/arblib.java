@@ -2727,6 +2727,10 @@ public class arblib {
     arblibJNI.acb_poly_product_roots(ComplexPolynomial.getCPtr(poly), poly, Complex.getCPtr(xs), xs, n, prec);
   }
 
+  public static int acb_poly_find_roots(Complex roots, ComplexPolynomial poly, Complex initial, int maxiter, int prec) {
+    return arblibJNI.acb_poly_find_roots(Complex.getCPtr(roots), roots, ComplexPolynomial.getCPtr(poly), poly, Complex.getCPtr(initial), initial, maxiter, prec);
+  }
+
   public static void acb_poly_evaluate(Complex y, ComplexPolynomial f, Complex x, int prec) {
     arblibJNI.acb_poly_evaluate(Complex.getCPtr(y), y, ComplexPolynomial.getCPtr(f), f, Complex.getCPtr(x), x, prec);
   }

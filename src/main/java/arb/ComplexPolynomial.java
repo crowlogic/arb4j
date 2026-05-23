@@ -676,7 +676,29 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
     acb_poly_product_roots(this, xs, xs.dim, prec);
     return this;
   }
-  
+
+  /**
+   * Isolate all complex roots of this polynomial via {@code acb_poly_find_roots}
+   * (Durand–Kerner/Aberth with verified inclusions). The returned vector has one
+   * entry per root (degree entries); roots are unordered. Uses internally
+   * computed initial approximations and the default iteration cap.
+   *
+   * @param prec working precision in bits
+   * @return a {@link Complex} vector of the {@code degree()} roots
+   * @throws ArithmeticException if not all roots could be isolated at {@code prec}
+   * @see arb#acb_poly_find_roots(Complex, ComplexPolynomial, Complex, int, int)
+   */
+  public Complex roots(int prec)
+  {
+    int deg = degree();
+    Complex r = new Complex(deg);
+    int found = acb_poly_find_roots(r, this, null, 0, prec);
+    if (found < deg)
+      throw new ArithmeticException("acb_poly_find_roots isolated only " + found + " of " + deg
+                                    + " roots at " + prec + " bits");
+    return r;
+  }
+
   @Override
   public Complex evaluate(Complex z, int order, int prec, Complex w)
   {
