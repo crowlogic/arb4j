@@ -1315,10 +1315,29 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       if (functionMapping != null)
       {
         functionMapping.declare(classVisitor, dependencyVariableName);
+        // Snapshot the exact descriptor that was just written into this class's
+        // constant pool. Peers compiled later (PUTFIELD-ing into this field)
+        // read it back via emittedPeerFieldDescriptor(name) instead of querying
+        // the shared mapping, whose descriptor mutates as functionClass moves
+        // from interface forward-decl to concrete post-compile.
+        emittedPeerFieldDescriptors.put(dependencyVariableName, functionMapping.functionFieldDescriptor());
       }
     }
 
     return classVisitor;
+  }
+
+  /**
+   * Per-peer field descriptor as emitted in this expression's class file. Read
+   * by peer expressions when they PUTFIELD into one of our declared fields.
+   * Stable: never mutates after declareFunctionReferences runs.
+   */
+  public final Map<String, String> emittedPeerFieldDescriptors = new HashMap<>();
+
+  /** @return the descriptor this expression's class declared for field {@code peerName}, or {@code null} if no such field. */
+  public String emittedPeerFieldDescriptor(String peerName)
+  {
+    return emittedPeerFieldDescriptors.get(peerName);
   }
 
   protected void declareIntermediateVariables(ClassVisitor classVisitor)
@@ -1988,7 +2007,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
           var    mapping = referencedFunctions.get(name);
           if (mapping != null)
           {
-            String fieldDesc = mapping.functionFieldDescriptor();
+            // Prefer the descriptor as actually emitted into our own class file;
+            // mapping.functionFieldDescriptor() may have drifted post-compile if
+            // the peer's functionClass moved from interface to concrete.
+            String emitted   = emittedPeerFieldDescriptor(name);
+            String fieldDesc = emitted != null ? emitted : mapping.functionFieldDescriptor();
             loadThisOntoStack(methodVisitor);
             methodVisitor.visitFieldInsn(GETFIELD, internalName(), name, fieldDesc);
             Label skip = new Label();
@@ -2162,20 +2185,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       log.debug("generateDependencyAssignment: functionName={} functionDescriptor={} assignment={}", functionName, functionDescriptor, assignment);
     }
 
-    // The 'assignment' class declared its `functionName` field with whatever
-    // type was current at THAT class's compile time — typically the interface
-    // descriptor when functionName was forward-declared. Our local
-    // `functionDescriptor` may be the concrete class. Read the descriptor
-    // straight off the peer's loaded class so PUTFIELD matches its constant pool.
+    // The 'assignment' class declared its `functionName` field with a specific
+    // descriptor at compile time — stored on the peer Expression's
+    // emittedPeerFieldDescriptors. Use that exact value so PUTFIELD matches
+    // the peer's constant pool. Plain map lookup; no reflection.
     String declaredFieldDescriptor = functionDescriptor;
-    if (otherMapping != null && otherMapping.expression != null && otherMapping.expression.compiledClass != null)
+    if (otherMapping != null && otherMapping.expression != null)
     {
-      try
+      String emitted = otherMapping.expression.emittedPeerFieldDescriptor(functionName);
+      if (emitted != null)
       {
-        declaredFieldDescriptor = otherMapping.expression.compiledClass.getField(functionName).getType().descriptorString();
-      }
-      catch (NoSuchFieldException ignored)
-      {
+        declaredFieldDescriptor = emitted;
       }
     }
 
