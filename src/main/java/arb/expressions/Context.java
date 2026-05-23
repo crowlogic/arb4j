@@ -821,6 +821,7 @@ public class Context implements
 
   public FunctionMapping<?, ?, ?> registerFunction(String string, Function<?, ?> func)
   {
+    validateIdentifier(string, "function");
     return registerFunctionMapping(string, func, func.domainType(), func.coDomainType());
   }
 
@@ -954,6 +955,7 @@ public class Context implements
 
   public <R> FunctionMapping<Integer, R, Sequence<R>> registerSequence(String name, Sequence<R> seq)
   {
+    validateIdentifier(name, "sequence");
     return registerFunctionMapping(name, seq, seq.domainType(), seq.coDomainType());
   }
 
@@ -979,6 +981,7 @@ public class Context implements
   {
     assert name != null : "name cannot be null";
     assert variable != null : "variable cannot be null";
+    validateIdentifier(name, "variable");
 
     if (variables.get(name) != null)
     {
@@ -991,6 +994,55 @@ public class Context implements
     }
     variableMap().put(name, variable);
     return variable;
+  }
+
+  /**
+   * Reject names that contain superscript or subscript characters. Such
+   * characters have parser-level meaning in the expression language (powers,
+   * indices) and silently embedding them in an identifier produces names that
+   * the tokenizer cannot match as a single token, causing baffling
+   * {@code UndefinedReferenceException}s at expression-compile time when the
+   * tokenizer takes the prefix and leaves the trailing exponent/subscript
+   * unconsumed.
+   *
+   * @param name what is being registered
+   * @param kind "variable" or "function" — used only for the error message
+   * @throws IllegalArgumentException if {@code name} contains any superscript
+   *         or subscript character
+   */
+  static void validateIdentifier(String name, String kind)
+  {
+    if (name == null || name.isEmpty()) return;
+    name.codePoints().forEach(cp -> {
+      String cpStr = new String(Character.toChars(cp));
+      if (arb.expressions.Parser.SUPERSCRIPT_TO_NORMAL.containsKey(cpStr))
+      {
+        throw new IllegalArgumentException(format(
+            "Cannot register %s with name '%s': contains superscript character '%s' (U+%04X). "
+          + "Superscripts are parser tokens (exponents) and cannot appear in identifiers.",
+            kind, name, cpStr, cp));
+      }
+      for (Character sub : arb.expressions.Parser.SUBSCRIPT_DIGITS_ARRAY)
+      {
+        if (sub.charValue() == cp)
+        {
+          throw new IllegalArgumentException(format(
+              "Cannot register %s with name '%s': contains subscript digit '%s' (U+%04X). "
+            + "Subscript digits are parser tokens (indices) and cannot appear in identifiers.",
+              kind, name, cpStr, cp));
+        }
+      }
+      for (Character sub : arb.expressions.Parser.SUBSCRIPT_CHARACTERS_ARRAY)
+      {
+        if (sub.charValue() == cp)
+        {
+          throw new IllegalArgumentException(format(
+              "Cannot register %s with name '%s': contains subscript character '%s' (U+%04X). "
+            + "Subscript characters are parser tokens (indices) and cannot appear in identifiers.",
+              kind, name, cpStr, cp));
+        }
+      }
+    });
   }
 
   public Context resetClassLoader()
