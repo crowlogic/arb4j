@@ -189,9 +189,15 @@ public class MuntzPadeCumulantGenerator implements
     // Single-term sequence for incremental accumulation in adaptive evaluate().
     this.term = ComplexFunctionSequence.express("term:k➔v➔d(k)(v)*T^(k*μ+1)", context);
 
-    // CGF assembled on the common lattice {T^(kμ+1)} — closed-form alternative
-    // to the incremental path; evaluate() uses incremental by default.
-    this.Φ = ComplexFunction.express("Φ:v➔Σk➔d(k)(v)*T^(k*μ+1){k=0..N}", context);
+    // Closed-form (fixed-N) alternative compiled under the name ΦClosed so that
+    // the adaptive `this` instance can claim the name `Φ` in the context —
+    // letting downstream expressions like φ:v➔exp(Φ(v)) dispatch to the
+    // adaptive evaluate().
+    this.Φ = ComplexFunction.express("ΦClosed:v➔Σk➔d(k)(v)*T^(k*μ+1){k=0..N}", context);
+
+    // Register THIS instance under Φ so downstream compiled expressions that
+    // reference Φ(v) hit the adaptive incremental evaluate().
+    context.registerFunction("Φ", this);
   }
 
   /**
@@ -290,6 +296,18 @@ public class MuntzPadeCumulantGenerator implements
       // Hit maxN without convergence.
       return res.set(best);
     }
+  }
+
+  @Override
+  public Class<arb.Complex> domainType()
+  {
+    return arb.Complex.class;
+  }
+
+  @Override
+  public Class<arb.Complex> coDomainType()
+  {
+    return arb.Complex.class;
   }
 
   @Override
