@@ -663,7 +663,7 @@
   public Complex roots(int prec)
   {
     int deg = degree();
-    Complex r = new Complex(deg);
+    Complex r = Complex.newVector(deg);
     int found = acb_poly_find_roots(r, this, null, 0, prec);
     if (found < deg)
       throw new ArithmeticException("acb_poly_find_roots isolated only " + found + " of " + deg

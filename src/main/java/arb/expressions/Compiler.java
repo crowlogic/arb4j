@@ -438,6 +438,50 @@ public class Compiler
     return methodVisitor;
   }
 
+  /** Work queue for {@link #closeReferent}, one per thread. */
+  private static final ThreadLocal<ArrayDeque<AutoCloseable>> CLOSE_QUEUE = new ThreadLocal<>();
+
+  /**
+   * Close {@code f} and everything transitively reachable from it through the
+   * generated {@code close()} bodies, but with O(1) Java-stack depth instead of
+   * one frame per graph edge. Generated {@code close()} methods route every
+   * referent through here: the first (top-level) call installs a thread-local
+   * work queue and drains it iteratively, while the re-entrant calls made from
+   * each {@code close()} body merely enqueue and return. A reference graph of
+   * any depth — e.g. a deep self-referential recurrence receiver chain — is
+   * therefore closed without overflowing the call stack. Each object's own
+   * {@code close()} still runs exactly once; its {@code closed} guard turns any
+   * duplicate enqueue into a no-op.
+   */
+  public static void closeReferent(AutoCloseable f)
+  {
+    if (f == null)
+      return;
+    ArrayDeque<AutoCloseable> queue = CLOSE_QUEUE.get();
+    if (queue != null)
+    {
+      queue.add(f);
+      return;
+    }
+    queue = new ArrayDeque<>();
+    CLOSE_QUEUE.set(queue);
+    try
+    {
+      f.close();
+      AutoCloseable next;
+      while ((next = queue.poll()) != null)
+        next.close();
+    }
+    catch (Exception e)
+    {
+      throw new RuntimeException(e);
+    }
+    finally
+    {
+      CLOSE_QUEUE.remove();
+    }
+  }
+
   public static void invokeConstructor(MethodVisitor mv, Class<?> returnType, Class<?>... argTypes)
   {
     invokeMethod(mv, INVOKESPECIAL, returnType, "<init>", Void.class, argTypes);

@@ -250,25 +250,34 @@ public class MuntzPadeCumulantGenerator implements
     // Incremental adaptive growth: maintain a running partial sum and add
     // one term per step. Stop when |term_n| drops below the half-precision
     // threshold or stops shrinking (precision floor reached).
-    try ( arb.Real    threshold = new arb.Real();
-          arb.Real    addMag    = new arb.Real();
-          arb.Real    bestMag   = new arb.Real();
-          arb.Complex sum       = new arb.Complex();
-          arb.Complex addition  = new arb.Complex();
-          arb.Complex best      = new arb.Complex();
-          arb.Integer kIdx      = new arb.Integer())
+    try ( arb.Real             threshold = new arb.Real();
+          arb.Real             addMag    = new arb.Real();
+          arb.Real             bestMag   = new arb.Real();
+          arb.Real             expo      = new arb.Real();
+          arb.Real             tpow      = new arb.Real();
+          arb.Complex          sum       = new arb.Complex();
+          arb.Complex          addition  = new arb.Complex();
+          arb.Complex          best      = new arb.Complex();
+          arb.ComplexPolynomial dk       = new arb.ComplexPolynomial();
+          arb.Integer          kIdx      = new arb.Integer())
     {
       threshold.one().mul2e(-bits / 2, threshold);
       bestMag.posInf();
       sum.zero();
 
-      // Accumulate term(0), term(1), … one at a time.
+      // Accumulate d(0)(v)·T^1, d(1)(v)·T^(μ+1), … one at a time. Evaluate the
+      // *cached* d polynomial sequence directly (reusing the dk buffer) rather
+      // than materialising a fresh term(k) function per index — the latter
+      // allocates and injects a new reference sub-graph on every call, which
+      // accumulates without bound across repeated φ evaluations.
       for (int n = 0; n <= maxN; n++)
       {
         kIdx.set(n);
-        @SuppressWarnings("resource")
-        ComplexFunction termAtK = term.evaluate(kIdx, 1, bits, null);
-        termAtK.evaluate(v, 1, bits, addition);
+        d.evaluate(kIdx, 1, bits, dk);
+        dk.evaluate(v, 1, bits, addition);          // d(n)(v)
+        μ.mul(n, bits, expo).add(1, bits, expo);    // nμ + 1
+        T.pow(expo, bits, tpow);                    // T^(nμ+1)
+        addition.mul(tpow, bits, addition);         // d(n)(v)·T^(nμ+1)
         sum.add(addition, bits, sum);
         addition.abs(bits, addMag);
 

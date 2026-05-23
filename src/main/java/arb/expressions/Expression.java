@@ -2013,9 +2013,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                                            intermediateVariable.name,
                                                                                            intermediateVariable.type));
 
-      // Close declared function-reference fields. Recursion is bounded by the
-      // `closed` guard above, so referents are closed directly with no field-
-      // nulling tricks.
+      // Close declared function-reference fields through Compiler.closeReferent,
+      // which drives an iterative (work-queue) traversal of the reachable graph.
+      // Recursing referent.close() directly overflowed the stack on deep
+      // self-referential receiver chains; routing through the queue keeps the
+      // Java stack at O(1) regardless of graph depth. The `closed` guard above
+      // still makes each object close exactly once.
       if (dependencies != null)
       {
         for (Dependency dependency : dependencies)
@@ -2031,13 +2034,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
             String fieldDesc = emitted != null ? emitted : mapping.functionFieldDescriptor();
             loadThisOntoStack(methodVisitor);
             methodVisitor.visitFieldInsn(GETFIELD, internalName(), name, fieldDesc);
-            Label skip = new Label();
-            methodVisitor.visitJumpInsn(IFNULL, skip);
-            loadThisOntoStack(methodVisitor);
-            methodVisitor.visitFieldInsn(GETFIELD, internalName(), name, fieldDesc);
             methodVisitor.visitTypeInsn(CHECKCAST, Type.getInternalName(AutoCloseable.class));
-            methodVisitor.visitMethodInsn(INVOKEINTERFACE, Type.getInternalName(AutoCloseable.class), "close", "()V", true);
-            methodVisitor.visitLabel(skip);
+            methodVisitor.visitMethodInsn(INVOKESTATIC,
+                                          Type.getInternalName(Compiler.class),
+                                          "closeReferent",
+                                          "(Ljava/lang/AutoCloseable;)V",
+                                          false);
           }
         }
       }
