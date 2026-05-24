@@ -847,6 +847,31 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
     return result;
   }
 
+  /**
+   * Reciprocal power series: {@code result = 1/this} truncated to length
+   * {@code order} (FLINT {@code acb_poly_inv_series}). Requires a nonzero
+   * constant term. Aliased calls are routed through a temporary.
+   */
+  public ComplexPolynomial invSeries(int order, int bits, ComplexPolynomial result)
+  {
+    if (get(0).isZero())
+    {
+      throw new arb.exceptions.ArbException(
+          "(acb_poly_inv_series): nonzero constant term required but had " + get(0));
+    }
+    if (result == this)
+    {
+      try (ComplexPolynomial buffer = new ComplexPolynomial())
+      {
+        arblib.acb_poly_inv_series(buffer, this, order, bits);
+        result.set(buffer);
+      }
+      return result;
+    }
+    arblib.acb_poly_inv_series(result, this, order, bits);
+    return result;
+  }
+
   public void setCoeffsNative(Complex value) {
     arblibJNI.ComplexPolynomial_coeffsNative_set(swigCPtr, this, Complex.getCPtr(value), value);
   }

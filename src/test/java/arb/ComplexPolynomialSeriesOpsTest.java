@@ -107,6 +107,30 @@ public class ComplexPolynomialSeriesOpsTest extends
     }
   }
 
+  /** 1/(1+w) = 1 − w + w² − w³ + w⁴ (geometric series). */
+  public void testInvSeries()
+  {
+    try (ComplexPolynomial p = poly(1.0, 1.0); ComplexPolynomial r = new ComplexPolynomial())
+    {
+      p.invSeries(5, bits, r);
+      double[] exp = { 1, -1, 1, -1, 1 };
+      for (int i = 0; i < 5; i++)
+        assertEquals("1/(1+w)[" + i + "]", exp[i], r.get(i).re().doubleValue(), tol);
+    }
+  }
+
+  /** 1/(2+w) = ½(1 − w/2 + w²/4 − …): coefficient k is (−1)ᵏ/2^{k+1}. */
+  public void testInvSeriesScaled()
+  {
+    try (ComplexPolynomial p = poly(2.0, 1.0); ComplexPolynomial r = new ComplexPolynomial())
+    {
+      p.invSeries(4, bits, r);
+      for (int k = 0; k < 4; k++)
+        assertEquals("1/(2+w)[" + k + "]", (k % 2 == 0 ? 1 : -1) / Math.pow(2, k + 1),
+                     r.get(k).re().doubleValue(), tol);
+    }
+  }
+
   /** Aliasing: result == this must still be correct (routed through a buffer). */
   public void testExpSeriesAliasing()
   {
