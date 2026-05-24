@@ -187,7 +187,12 @@ The map
 \begin{equation}\label{eq:contraction}
 \mathcal{T}[y] := \Imu(P+Qy+Ry^2)
 \end{equation}
-is a contraction on $C[0,T_0]$ for $T_0^\mu$ sufficiently small.
+is a contraction on the ball
+$\{y\in C[0,T_0]:\|y\|_\infty\le 2|P(u)|\,T_0^\mu/\Gamma(\mu+1)\}$ whenever
+\begin{equation}\label{eq:contraction_radius}
+T_0^\mu \;<\; \frac{\Gamma(\mu+1)}{\,|Q(u)|+2|R(u)|\,\|y\|_\infty\,},
+\end{equation}
+making the local existence radius explicit and $u$-dependent.
 Substitution of the M\"{u}ntz ansatz~\eqref{eq:Muntz_ansatz} and
 application of Lemma~\ref{lem:psi_eig} match coefficients of
 $t^{(k+1)\mu}$: $k=0$ gives~\eqref{eq:a0}; $k \ge 1$
@@ -476,7 +481,14 @@ $\Z_{\le 0}$, $\Z_{\ge 1}$, and $(1+m)/\mu$ for $m\ge 0$.
 A pole at $(1+m)/\mu$ is cancelled by a denominator pole at
 $1+(1+n)/\mu$ iff $m-n=\mu$; for $\mu\in(0,1]$ this requires
 $\mu=1$. For $\mu\in(0,1)$ the lattice $\{(1+m)/\mu\}$ survives
-uncancelled.
+uncancelled. At $\mu=1$ the collapse is explicit:
+\begin{equation}\label{eq:mellin_mu1}
+M_{\Psi_1}(s)=\Gamma(s)\,\Gamma(1-s)\,\frac{\Gamma(1-s)}{\Gamma(2-s)}
+            =\frac{\Gamma(s)\,\Gamma(1-s)}{1-s},
+\end{equation}
+whose order-two pole at $s=1$ is precisely what produces the logarithmic
+kernel $\Psi_1(z)=-\log(1-z)/z$: a simple Mellin pole would give a power law,
+the double pole gives the $\log$.
 \end{lemma}
 
 \begin{proof}
@@ -784,7 +796,10 @@ Theorem~\ref{thm:gragg}.
 $D_M$ is determined by~\eqref{eq:Q_orth}. The $[M/M]$ approximant
 adds one matching condition that fixes the leading coefficient of
 $N_M$, not the denominator. Hence $\{D_M\}_{M\ge 1}$ is identical
-for both types and Stahl's theorem applies to either.
+for both types and Stahl's theorem applies to either. By quasi-definiteness
+the Pad\'{e} table of $A(\cdot,u)$ is normal: all Hankel determinants
+$H_n(u)\ne 0$, and the $[M-1/M]$ and $[M/M]$ entries share the denominator
+$\pi_M(\cdot,u)$ (the Gragg connection, Theorem~\ref{thm:gragg}).
 
 \emph{Convergence in capacity.}
 By Theorem~\ref{thm:Acont}, $A$ is meromorphic on
@@ -1167,7 +1182,7 @@ $\widetilde X\setminus K_\Phi$.
 
 \begin{proof}
 The denominators $D_M$ have all zeros in $K_\Phi$ up to a set of
-asymptotic capacity zero. This is the Nuttall--Stahl localisation:
+asymptotic capacity zero. This is the Nuttall--Stahl localisation \cite[Thm.~1]{StahlBranch}:
 the zero-counting measure
 \begin{equation}\label{eq:nu_M}
 \nu_M := M^{-1}\sum_{D_M(z)=0}\delta_z
