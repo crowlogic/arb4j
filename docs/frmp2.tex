@@ -1,7 +1,6 @@
 \documentclass{article}
 \usepackage{geometry,amsmath,amssymb}
 \geometry{letterpaper, margin=1.2in}
-\newcommand{\C}{\mathbb{C}}
 \newcommand{\Real}{\operatorname{Re}}
 \newcommand{\Imag}{\operatorname{Im}}
 
@@ -12,113 +11,92 @@
 \date{May 2026}
 \maketitle
 
-\noindent
-Parameters: $H\in(0,\tfrac{1}{2})$, $\mu=H+\tfrac{1}{2}$,
-$\lambda,\theta,\nu,\rho,V_0,r,S_0,K,T,M$.
+Fix parameters $H\in(0,\tfrac12)$, $\mu=H+\tfrac12$,
+$\lambda,\theta,\nu,\rho,V_0,r,S_0,K,T$ and truncation order $M$.
 
 \bigskip
-
-\noindent\textbf{Step 1. Riccati coefficients.}
+\noindent\textbf{Step 1.} Set
 \begin{align}
-P(v) &= \tfrac{1}{2}(-v^2-iv), \\
-Q(v) &= \lambda(iv\rho\nu-1), \\
-R &= \tfrac{1}{2}\lambda^2\nu^2, \\
+P(v) &= \tfrac12(-v^2-iv), &
+Q(v) &= \lambda(iv\rho\nu-1), &
+R &= \tfrac12\lambda^2\nu^2, &
 k &= \log(K/S_0)-rT.
 \end{align}
 
 \bigskip
-
-\noindent\textbf{Step 2. M\"untz--Tau recurrence.}
-Compute $a_j(v)$ for $j=1,\ldots,2M+2$:
+\noindent\textbf{Step 2.} Compute $a_j(v)$ for $j=1,\ldots,2M+2$:
 \begin{align}
-a_1(v) &= \frac{P(v)}{\Gamma(\mu+1)}, \\
-a_j(v) &= \frac{\Gamma((j-1)\mu+1)}{\Gamma(j\mu+1)}
-\left(Q(v)\,a_{j-1}(v)
-+R\sum_{\ell=1}^{j-2}a_\ell(v)\,a_{j-1-\ell}(v)\right),
+a_1 &= \frac{P(v)}{\Gamma(\mu+1)}, \\
+a_j &= \frac{\Gamma((j-1)\mu+1)}{\Gamma(j\mu+1)}
+\!\left(Q\,a_{j-1}+R\sum_{\ell=1}^{j-2}a_\ell\,a_{j-1-\ell}\right),
 \quad j\ge2.
 \end{align}
 
 \bigskip
-
-\noindent\textbf{Step 3. Cumulant moments.}
-For $k=0,\ldots,2M$:
+\noindent\textbf{Step 3.} Form cumulant moments $d_k(v)$ for $k=0,\ldots,2M$,
+with $a_0:=0$:
 \begin{align}
-u_k &= \begin{cases}0 & k=0,\\[2pt]
-\dfrac{\lambda\theta}{k\mu+1} & k\ge1,\end{cases} \\
-w_k &= \begin{cases}V_0\,\Gamma(\mu+1) & k=0,\\[4pt]
-V_0\,\dfrac{\Gamma((k+1)\mu+1)}{\Gamma(k\mu+2)} & k\ge1,\end{cases} \\
-d_k(v) &= u_k\,a_k(v)+w_k\,a_{k+1}(v).
+u_k &= \begin{cases}0&k=0\\[2pt]\dfrac{\lambda\theta}{k\mu+1}&k\ge1\end{cases}, &
+w_k &= \begin{cases}V_0\Gamma(\mu+1)&k=0\\[4pt]
+V_0\dfrac{\Gamma((k+1)\mu+1)}{\Gamma(k\mu+2)}&k\ge1\end{cases},
+\end{align}
+\begin{equation}
+d_k(v) = u_k\,a_k(v)+w_k\,a_{k+1}(v).
+\end{equation}
+
+\bigskip
+\noindent\textbf{Step 4.} Run the Chebyshev--Stieltjes algorithm on
+$\{d_k(v)\}_{k=0}^{2M}$. Initialize $\sigma(0,\ell)=d_\ell$,
+$\sigma(-1,\ell)=0$, $\alpha_0=d_1/d_0$, $\beta_0=d_0$.
+For $n=1,\ldots,M$:
+\begin{align}
+\sigma(n,\ell) &= \sigma(n-1,\ell+1)
+-\alpha_{n-1}\,\sigma(n-1,\ell)-\beta_{n-1}\,\sigma(n-2,\ell), \\
+\alpha_n &= \frac{\sigma(n,n+1)}{\sigma(n,n)}
+-\frac{\sigma(n-1,n)}{\sigma(n-1,n-1)}, \\
+\beta_n &= \frac{\sigma(n,n)}{\sigma(n-1,n-1)}.
 \end{align}
 
 \bigskip
-
-\noindent\textbf{Step 4. Chebyshev/Stieltjes algorithm (in $z=T^\mu$).}
-Initialize $\sigma(-1,\ell)=0$, $\sigma(0,\ell)=d_\ell(v)$.
-For $n=0,\ldots,M$:
+\noindent\textbf{Step 5.} Evaluate the three-term recurrence at $z=T^\mu$
+($p_{-1}=0$, $p_0=1$, $p_{-1}^{(1)}=-1$, $p_0^{(1)}=0$):
 \begin{align}
-\alpha_n &= \frac{\sigma(n,\,n+1)}{\sigma(n,\,n)}
--\frac{\sigma(n-1,\,n)}{\sigma(n-1,\,n-1)}, \\
-\beta_n &= \frac{\sigma(n,\,n)}{\sigma(n-1,\,n-1)}, \\
-\sigma(n+1,\ell) &= \sigma(n,\ell+1)
--\alpha_n\,\sigma(n,\ell)-\beta_n\,\sigma(n-1,\ell).
-\end{align}
-Convention: $\sigma(n,\ell)/\sigma(n-1,\cdot)=0$ when $n=0$, so
-$\alpha_0=d_1(v)/d_0(v)$, $\beta_0=d_0(v)$.
-
-\bigskip
-
-\noindent\textbf{Step 5. FOPS and Pad\'e element.}
-Evaluate at $z=T^\mu$ via the three-term recurrence
-\begin{align}
-p_{n+1} &= (T^\mu-\alpha_n)\,p_n - \beta_n\,p_{n-1},
-& p_{-1}&=0,& p_0&=1, \\
-p_{n+1}^{(1)} &= (T^\mu-\alpha_n)\,p_n^{(1)}-\beta_n\,p_{n-1}^{(1)},
-& p_{-1}^{(1)}&=-1,& p_0^{(1)}&=0.
+p_{n+1} &= (T^\mu-\alpha_n)\,p_n-\beta_n\,p_{n-1}, \\
+p_{n+1}^{(1)} &= (T^\mu-\alpha_n)\,p_n^{(1)}-\beta_n\,p_{n-1}^{(1)}.
 \end{align}
 Then
 \begin{equation}
-\Phi_M(v,T) = T\cdot d_0(v)\cdot
-\frac{p_{M+1}^{(1)}}{p_{M+1}}.
+\Phi_M(v,T) = T\cdot d_0(v)\cdot\frac{p_{M+1}^{(1)}}{p_{M+1}}.
 \end{equation}
 
 \bigskip
-
-\noindent\textbf{Step 6. $v$-plane poles and residues.}
-Expand
-\begin{equation}
-b_k(T) = \bigl[v^{-(k+1)}\bigr]\,\Phi_M(v,T),\quad k=0,\ldots,2M.
-\end{equation}
-Repeat Steps 4--5 with moments $b_k(T)$ in place of $d_k(v)$
-(the variable is now $v$, the evaluation point is each candidate
-pole). The zeros of the resulting denominator polynomial are
-$\{\eta_j\}$; the corresponding numerator values divided by the
-denominator derivative give the residues $\{c_j\}$:
+\noindent\textbf{Step 6.} Extract Laurent coefficients
+$b_k(T)=[v^{-(k+1)}]\,\Phi_M(v,T)$ for $k=0,\ldots,2M$,
+then repeat Steps 4--5 with moments $\{b_k(T)\}$ (variable $v$)
+to get poles $\{\eta_j\}$ and residues $\{c_j\}$:
 \begin{equation}
 \Phi_M(v,T)=\sum_{j=1}^N\frac{c_j}{v-\eta_j},\qquad N\le2M.
 \end{equation}
 
 \bigskip
-
-\noindent\textbf{Step 7. Auxiliary functions.}
+\noindent\textbf{Step 7.} For each $j$ define
 \begin{align}
 H_j(v) &= \exp\!\left(\sum_{i\ne j}\frac{c_i}{v-\eta_i}\right), \\
 G_j(v) &= \frac{e^{-ivk}H_j(v)}{v(v+i)}.
 \end{align}
 
 \bigskip
-
-\noindent\textbf{Step 8. Residue series.}
-Let $\rho_j=\min_{i\ne j}|\eta_i-\eta_j|$. Sum until the tail bound
-$M_{\rho_j}|c_j|^{n+2}/(\rho_j^n(n+2)!)$ is below tolerance:
+\noindent\textbf{Step 8.} Sum until the tail bound
+$M_{\rho_j}|c_j|^{n+2}/(\rho_j^n(n+2)!)$ is below tolerance,
+where $\rho_j=\min_{i\ne j}|\eta_i-\eta_j|$:
 \begin{equation}
-\mathcal{R}_j = \sum_{n=0}^{N_j}
+\mathcal{R}_j = \sum_{n=0}^{\infty}
 \frac{c_j^{n+1}\,G_j^{(n)}(\eta_j)}{(n+1)!\,n!}.
 \end{equation}
 
 \bigskip
-
-\noindent\textbf{Step 9. Price.}
-Set $p^*=\min_j(-\Imag\,\eta_j)$ and pick any $\alpha\in(1,p^*)$:
+\noindent\textbf{Step 9.} Pick any $\alpha\in(1,\,p^*)$ where
+$p^*=\min_j(-\Imag\,\eta_j)$:
 \begin{equation}
 C_M=\begin{cases}
 (S_0-Ke^{-rT})
