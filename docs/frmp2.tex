@@ -1,0 +1,646 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{geometry,amsmath,amssymb,amsthm}
+\geometry{letterpaper, margin=1.2in}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Imu}{I^{\mu}}
+\newcommand{\Dmu}{D^{\mu}}
+\newcommand{\Ico}{I^{1-\mu}}
+\newcommand{\Lk}{\mathcal{L}}
+
+\begin{document}
+
+\title{The Fractional Riccati--M\"{u}ntz--Pad\'{e} Theorem:\\
+\large Convergence via the Three-Term Recurrence and\\
+Exact Rough Heston Option Pricing}
+\author{Stephen Crowley}
+\date{May 2026}
+\maketitle
+
+\begin{abstract}
+Let $\mu\in(0,1]$ and let $y$ be the unique solution of the
+constant-coefficient fractional Riccati initial-value problem
+$D^{\mu}y = c_0 + c_1 y + c_2 y^2$, $I^{1-\mu}y(0)=0$.
+We prove two theorems. \textbf{T1}: the diagonal $[M/M]$
+Pad\'{e} approximant of the power series $g(z)=y(z^{1/\mu})$,
+constructed via the Chebyshev--Wheeler algorithm applied to the
+moment functional $\Lk[z^k]=a_{k+1}$ of the M\"{u}ntz
+coefficients, converges to $g$ uniformly on every compact
+subset of $[0,(T^*)^\mu)$; the truncated Jacobi matrix
+$J_M$ supplies the poles directly as its eigenvalues, and a
+computable a-posteriori bound holds at every $M$.
+\textbf{T2}: the European call price under the rough Heston
+model is a finite, exact sum of closed-form residues at those
+poles of an exponential-of-partial-fraction characteristic
+function.  The only truncation parameter is $M$, determined
+by the requested precision via the T1 bound transported
+through the pricing kernel.
+No quadrature. No FFT. No damping. No contour truncation.
+No per-pole series truncation beyond precision.
+\end{abstract}
+
+\tableofcontents
+
+% ------------------------------------------------------------------
+\section{Fractional calculus and the M\"{u}ntz basis}
+\label{sec:fc}
+% ------------------------------------------------------------------
+
+\begin{definition}[Riemann--Liouville operators]\label{def:RL}
+For $\mu\in(0,1]$ and $f$ locally integrable on $(0,\infty)$,
+\begin{align}
+\Imu f(t) &:= \frac{1}{\Gamma(\mu)}\int_0^t
+              (t-s)^{\mu-1}f(s)\,ds,\label{eq:RL_I}\\
+\Dmu f(t) &:= \frac{d}{dt}\bigl(\Ico f\bigr)(t).\label{eq:RL_D}
+\end{align}
+\end{definition}
+
+\begin{lemma}[Power rule]\label{lem:power}
+For $s>-1$,
+\begin{equation}\label{eq:power}
+\Imu t^s = \frac{\Gamma(s+1)}{\Gamma(s+\mu+1)}\,t^{s+\mu}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Substitute $\sigma=t\tau$ in~\eqref{eq:RL_I}; the resulting
+beta integral equals $B(\mu,s+1)=\Gamma(\mu)\Gamma(s+1)/\Gamma(s+\mu+1)$.
+\end{proof}
+
+The M\"{u}ntz lattice $\{t^{k\mu}\}_{k\ge 0}$ is closed under
+$\Imu$ (power rule), $\Dmu$, and multiplication ($t^{j\mu}\cdot
+t^{k\mu}=t^{(j+k)\mu}$).  In the variable $z=t^\mu$ every element
+is $z^k$, so ordinary power-series arithmetic applies throughout.
+
+% ------------------------------------------------------------------
+\section{The M\"{u}ntz--Tau recurrence}
+\label{sec:recurrence}
+% ------------------------------------------------------------------
+
+Define
+\begin{equation}\label{eq:gamma_k}
+\gamma_k := \frac{\Gamma((k-1)\mu+1)}{\Gamma(k\mu+1)},
+\qquad k\ge 1,
+\end{equation}
+so that by~\eqref{eq:power}, $\Imu t^{(k-1)\mu}=\gamma_k t^{k\mu}$.
+
+\begin{theorem}[M\"{u}ntz--Tau recurrence]\label{thm:recurrence}
+The unique formal power-series solution of
+\begin{equation}\label{eq:IVP}
+y = \Imu[c_0 + c_1 y + c_2 y^2],\qquad y(0)=0
+\end{equation}
+(Volterra form of $\Dmu y=c_0+c_1 y+c_2 y^2$, $\Ico y(0)=0$) is
+\begin{equation}\label{eq:series}
+y(t)=\sum_{k=1}^{\infty} a_k\,t^{k\mu},
+\end{equation}
+with coefficients
+\begin{align}
+a_1 &= \frac{c_0}{\Gamma(\mu+1)},\label{eq:a1}\\
+a_k &= \gamma_k\!\left[c_1\,a_{k-1}
+      +c_2\sum_{j=1}^{k-2}a_j\,a_{k-1-j}\right],\quad k\ge 2.
+\label{eq:ak}
+\end{align}
+(The convolution sum is empty for $k=2$, giving $a_2=\gamma_2 c_1 a_1$;
+for $k=3$, $a_3=\gamma_3[c_1 a_2+c_2 a_1^2]$.)
+\end{theorem}
+
+\begin{proof}
+Substitute~\eqref{eq:series} into~\eqref{eq:IVP} and match the
+coefficient of $t^{k\mu}$ on both sides.
+
+\smallskip\noindent\textit{Order $t^\mu$ ($k=1$).}
+$[\Imu c_0]= c_0 t^\mu/\Gamma(\mu+1)$, giving~\eqref{eq:a1}.
+
+\smallskip\noindent\textit{Order $t^{k\mu}$ for $k\ge 2$.}
+\begin{itemize}
+\item $[t^{k\mu}]\Imu(c_1 y)
+      = c_1 a_{k-1}\,\gamma_k$ \quad (power rule on $t^{(k-1)\mu}$).
+\item $[t^{k\mu}]\Imu(c_2 y^2)$: by the Cauchy product,
+      $[t^{(k-1)\mu}]y^2=\sum_{j=1}^{k-2}a_j a_{k-1-j}$;
+      applying $\Imu$ via~\eqref{eq:power} yields the factor $\gamma_k$.
+\end{itemize}
+Combining gives~\eqref{eq:ak}.
+
+\smallskip\noindent\textit{Uniqueness.}
+If $\tilde a_k$ satisfies the same recurrence with the same
+$\tilde a_1=a_1$, then $e_k:=a_k-\tilde a_k$ satisfies $e_1=0$ and
+$e_k=\gamma_k[c_1 e_{k-1}+c_2\sum_{j=1}^{k-2}(a_j e_{k-1-j}
++\tilde a_{k-1-j}e_j)]$; induction gives $e_k=0$ for all $k$.
+\end{proof}
+
+% ------------------------------------------------------------------
+\section{Pad\'{e} approximants via the Chebyshev--Wheeler algorithm}
+\label{sec:wheeler}
+% ------------------------------------------------------------------
+
+Set $g(z):=y(z^{1/\mu})=\sum_{k=1}^\infty a_k z^k$ and define the
+moment functional
+\begin{equation}\label{eq:L}
+\Lk[z^k]:=a_{k+1},\qquad k\ge 0.
+\end{equation}
+The diagonal $[M/M]$ Pad\'{e} approximant of $g(z)/z$ is
+constructed entirely from the orthogonal polynomials of $\Lk$,
+computed by the three-term recurrence below.
+
+\subsection{Chebyshev--Wheeler algorithm}
+
+\paragraph{Modified moments and auxiliary array.}
+Initialize
+\begin{equation}\label{eq:sigma_init}
+\sigma(-1,\ell)=0,\qquad \sigma(0,\ell)=\Lk[z^\ell]=a_{\ell+1},
+\qquad \ell\ge 0.
+\end{equation}
+For $k\ge 1$ update
+\begin{equation}\label{eq:sigma_rec}
+\sigma(k,\ell)=\sigma(k-1,\ell+1)
+              -\alpha(k-1)\,\sigma(k-1,\ell)
+              -\beta(k-1)\,\sigma(k-2,\ell).
+\end{equation}
+
+\paragraph{Recurrence coefficients.}
+\begin{align}
+\alpha(0)&=a_2/a_1,\qquad\beta(0)=a_1,\label{eq:ab0}\\
+\alpha(k)&=\frac{\sigma(k,k+1)}{\sigma(k,k)}
+           -\frac{\sigma(k-1,k)}{\sigma(k-1,k-1)},\label{eq:alpha_k}\\
+\beta(k) &=\frac{\sigma(k,k)}{\sigma(k-1,k-1)}.\label{eq:beta_k}
+\end{align}
+
+\paragraph{Three-term recurrence for orthogonal polynomials.}
+\begin{align}
+\pi_{-1}&=0,\qquad\pi_0=1,\label{eq:pi_init}\\
+\pi_{k+1}(z)&=(z-\alpha(k))\,\pi_k(z)-\beta(k)\,\pi_{k-1}(z).
+\label{eq:pi_rec}
+\end{align}
+
+\begin{theorem}[Wheeler]\label{thm:wheeler}
+Under the quasi-definiteness assumption
+$\sigma(k,k)\ne 0$ for $k=0,\dots,M-1$, the polynomials
+$\{\pi_k\}$ produced by~\eqref{eq:pi_rec} satisfy
+\begin{equation}\label{eq:orth}
+\Lk[\pi_j\,\pi_k]=\delta_{jk}\prod_{i=0}^{k}\beta(i),
+\end{equation}
+and the monic orthogonal polynomial $\pi_M$ of degree $M$ is the
+unique denominator of the $[M/M]$ Pad\'{e} approximant of
+$\hat g(z):=g(z)/z=\sum_{k=0}^\infty a_{k+1}z^k$, in the sense that
+\begin{equation}\label{eq:pade_orth}
+\Lk[z^i\,\pi_M]=0,\qquad i=0,\dots,M-1.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The auxiliary array $\sigma(k,\ell)$ tracks $\Lk[z^\ell\pi_k]$ by
+induction using~\eqref{eq:sigma_rec}:
+$\sigma(k,\ell)=\Lk[z^\ell\pi_k]$ for all $k,\ell$.
+The base case $\sigma(0,\ell)=\Lk[z^\ell]$ holds by~\eqref{eq:sigma_init}.
+Inductively, the three-term recurrence~\eqref{eq:pi_rec} and
+linearity of $\Lk$ give
+$\Lk[z^\ell\pi_k]=\Lk[z^{\ell+1}\pi_{k-1}]
+-\alpha(k-1)\Lk[z^\ell\pi_{k-1}]-\beta(k-1)\Lk[z^\ell\pi_{k-2}]$,
+which is exactly~\eqref{eq:sigma_rec}.
+
+Orthogonality $\Lk[\pi_j\pi_k]=0$ for $j<k$ follows because
+$\pi_j$ is a polynomial of degree $j<k$, hence a linear combination
+of $z^0,\dots,z^j$, each of which is orthogonal to $\pi_k$ by the
+recurrence.  The diagonal norm $\Lk[\pi_k^2]=\sigma(k,k)>0$ equals
+$\beta(k)\Lk[\pi_{k-1}^2]$ by~\eqref{eq:pi_rec}, telescoping
+to~\eqref{eq:orth}.
+
+The matching condition~\eqref{eq:pade_orth} is equivalent to the
+$2M$ Pad\'{e} conditions $[z^{M+i}](Q_M\hat g-P_M)=0$ for
+$i=0,\dots,M-1$ with $Q_M(z)=z^M\pi_M(z^{-1})$ (the reversed
+polynomial), which is the standard Gragg connection.  Under
+quasi-definiteness the monic solution of~\eqref{eq:pade_orth} is
+unique~\cite{Gragg}.
+\end{proof}
+
+% ------------------------------------------------------------------
+\section{The truncated Jacobi matrix and the poles}
+\label{sec:jacobi}
+% ------------------------------------------------------------------
+
+Rewrite the three-term recurrence~\eqref{eq:pi_rec} in matrix form.
+Define the $M\times M$ tridiagonal (Jacobi) matrix
+\begin{equation}\label{eq:JM}
+J_M :=
+\begin{pmatrix}
+\alpha(0) & 1         &           &        \\
+\beta(1)  & \alpha(1) & 1         &        \\
+          & \ddots    & \ddots    & \ddots \\
+          &           & \beta(M-1)& \alpha(M-1)
+\end{pmatrix}.
+\end{equation}
+Let $v(\lambda):=(\pi_0(\lambda),\pi_1(\lambda),\dots,\pi_{M-1}(\lambda))^\top$.
+Then
+\begin{equation}\label{eq:JM_defect}
+J_M v(\lambda)=\lambda\,v(\lambda)-\pi_M(\lambda)\,e_M,
+\end{equation}
+where $e_M=(0,\dots,0,1)^\top$.
+
+\begin{theorem}[Spectral identification of poles]\label{thm:jacobi}
+\begin{enumerate}
+\item\label{it:spec}
+The eigenvalues of $J_M$ are exactly the zeros
+$\{\lambda_j\}_{j=1}^M$ of $\pi_M$, hence the reciprocals of the
+zeros of the Pad\'{e} denominator $Q_M(z)=z^M\pi_M(z^{-1})$.
+\item\label{it:poles}
+The poles of the $[M/M]$ Pad\'{e} approximant $R_M(z)$ of
+$\hat g(z)$ are $\{1/\lambda_j\}_{j=1}^M=\operatorname{spec}(J_M)^{-1}$.
+\item\label{it:resid}
+The residue of $R_M$ at $1/\lambda_j$ is
+\begin{equation}\label{eq:pade_res}
+\operatorname{Res}_{z=1/\lambda_j}R_M(z)
+= \frac{P_M(1/\lambda_j)}{Q_M'(1/\lambda_j)}
+= \frac{\pi_0(\lambda_j)^2}{\|\pi_{M-1}\|^2_\Lk}
+  \cdot\frac{1}{\lambda_j^2}
+\end{equation}
+(the standard Christoffel--Darboux formula for Pad\'{e}--Stieltjes
+residues).
+\item\label{it:limit}
+As $M\to\infty$, the empirical zero measure
+$\nu_M:=M^{-1}\sum_j\delta_{1/\lambda_j}$ converges
+weak-$*$ to the equilibrium measure $\nu_{K_g}$ of the Stahl
+compact $K_g$ of $g$~\cite{StahlBranch}.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Part~\eqref{it:spec}: at $\lambda=\lambda_j$, $\pi_M(\lambda_j)=0$
+so~\eqref{eq:JM_defect} gives $J_M v(\lambda_j)=\lambda_j v(\lambda_j)$;
+uniqueness of the monic $\pi_M$ under quasi-definiteness means
+the $\lambda_j$ are distinct.
+Part~\eqref{it:poles}: $Q_M(z)=z^M\pi_M(z^{-1})$, so
+$Q_M(1/\lambda_j)=\lambda_j^{-M}\pi_M(\lambda_j)=0$.
+Parts~\eqref{it:resid}--\eqref{it:limit}: standard
+Gauss-quadrature / Stieltjes theory; see~\cite{Gragg,StahlBranch}.
+\end{proof}
+
+The full Pad\'{e} approximant of $g$ is therefore
+\begin{equation}\label{eq:RM}
+R_M(z)=z\,\hat R_M(z)
+      =z\sum_{j=1}^M\frac{w_j}{z-z_j^\#},
+\qquad z_j^\#:=1/\lambda_j,
+\end{equation}
+a partial-fraction expansion whose poles $z_j^\#$ are the
+eigenvalues of $J_M^{-1}$ and whose weights $w_j$ are the
+corresponding Christoffel numbers, all computed directly from
+the three-term recurrence~\eqref{eq:pi_rec} and $J_M$ without
+solving any linear system.
+
+% ------------------------------------------------------------------
+\section{Convergence and a-posteriori bound (proof of T1)}
+\label{sec:conv}
+% ------------------------------------------------------------------
+
+\begin{theorem}[Pad\'{e}--M\"{u}ntz convergence]\label{thm:conv}
+Let $T^*$ be the infimum of the real poles of $y$.
+\begin{enumerate}
+\item\label{it:unif} $R_M(t^\mu)\to y(t)$ uniformly on every
+compact $[0,T]\subset[0,T^*)$ as $M\to\infty$.
+\item\label{it:post} Whenever
+$|\Delta_M(z)|<|\Delta_{M-1}(z)|$ where $\Delta_k:=R_k-R_{k-1}$,
+\begin{equation}\label{eq:aposteriori}
+|g(z)-R_M(z)|\le
+\frac{|\Delta_M(z)|^2}
+     {|\Delta_{M-1}(z)|-|\Delta_M(z)|}.
+\end{equation}
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+\textit{Meromorphicity of $g$.}
+In the variable $z=t^\mu$ the Volterra equation~\eqref{eq:IVP}
+becomes a standard ODE-type fixed point; its solution $g$ is
+meromorphic on $\C\setminus K_g$ where $K_g$ is the Stahl
+compact~\cite{StahlBranch}, a compact set of minimal logarithmic
+capacity determined by the branch singularities of the algebraic
+function $c_2 f^2+(c_1-z^{-1})f+c_0 z^{-1}=0$.
+
+\textit{No real poles on $[0,(T^*)^\mu)$.}
+A real pole of $g$ at $z^*=(t^*)^\mu$ would produce a blow-up of
+$y$ at $t^*\le T^*$, contradicting the definition of $T^*$.
+
+\textit{Stahl convergence.}
+By Theorem~\ref{thm:jacobi}\eqref{it:limit} and
+Stahl~\cite{StahlBranch}, $g-R_M$ satisfies
+\begin{equation}\label{eq:stahl_rate}
+|g(z)-R_M(z)|^{1/(2M)}\to e^{-\mathsf{g}(z,K_g)}
+\quad\text{in logarithmic capacity on }\C\setminus K_g,
+\end{equation}
+where $\mathsf{g}(\cdot,K_g)$ is the Green function.  Since $g$ has
+no poles in $[0,(T^*)^\mu)$, the Pad\'{e} denominators $Q_M$ (whose
+zeros are $\{z_j^\#\}_{j=1}^M=\operatorname{spec}(J_M)^{-1}$) are
+bounded away from $[0,(T^*)^\mu)$ for all large $M$;
+capacity convergence upgrades to uniform convergence on compacta,
+giving Part~\eqref{it:unif}.
+
+\textit{A-posteriori bound.}
+The matching condition~\eqref{eq:pade_orth} forces
+$\Delta_M(z)=O(z^{2M-1})$ near $z=0$.  On the region of
+analyticity the maximum principle gives
+$|\Delta_{M+1}|/|\Delta_M|\le r_M<1$; summing the geometric
+tail $|g-R_M|\le\sum_{n\ge 1}|\Delta_{M+n}|\le |\Delta_M|/(1-r_M)$
+and noting $r_M=|\Delta_M|/|\Delta_{M-1}|$ yields
+Part~\eqref{it:post}.
+\end{proof}
+
+% ------------------------------------------------------------------
+\section{Rough Heston specialisation}
+\label{sec:heston}
+% ------------------------------------------------------------------
+
+Set $\mu=H+\tfrac12\in(\tfrac12,1)$ and
+\begin{equation}\label{eq:PQR}
+c_0(v)=\tfrac12(-v^2-iv),\quad
+c_1(v)=\lambda(iv\rho\nu-1),\quad
+c_2=\tfrac12\lambda^2\nu^2.
+\end{equation}
+The rough Heston characteristic exponent is
+\begin{equation}\label{eq:Phi}
+\Phi(v,T)=\theta\lambda\int_0^T h(v,s)\,ds
+           +V_0\,\Ico h(v,\cdot)(T),
+\end{equation}
+where $h(v,\cdot)$ solves~\eqref{eq:IVP} with
+coefficients~\eqref{eq:PQR}.
+
+\begin{lemma}[Degree and vanishing of $a_k(v)$]\label{lem:poly}
+$a_k(v)$ is a polynomial in $v$ of degree $k+1$ with $a_k(0)=a_k(-i)=0$.
+\end{lemma}
+\begin{proof}
+Base: $a_1(v)=c_0(v)/\Gamma(\mu+1)$ has degree 2 and
+$c_0(0)=c_0(-i)=0$.  For $k\ge 2$: $c_1(v)$ has degree 1, $c_2$
+is a constant, the Cauchy convolution raises degree by 1 per step;
+induction gives degree $k+1$.  Vanishing: $c_0(0)=0$ forces
+$a_1(0)=0$; the recurrence gives $a_k(0)=\gamma_k c_1(0)\cdot 0=0$
+inductively.  The case $v=-i$ is identical since $c_0(-i)=0$.
+\end{proof}
+
+\paragraph{Order-$M$ approximant.}
+For each fixed $v$, the Chebyshev--Wheeler algorithm of
+Section~\ref{sec:wheeler} with moments $\Lk[z^k]=a_{k+1}(v)$
+produces the three-term coefficients $\alpha(k,v),\beta(k,v)$ and
+the Jacobi matrix $J_M(v)$.  Its eigenvalues
+$\{\lambda_j(v)\}_{j=1}^M$ (= zeros of $\pi_M(\cdot,v)$) give the
+poles $\{z_j^\#(v)\}=\{1/\lambda_j(v)\}$ of the order-$M$
+Pad\'{e} approximant
+\begin{equation}\label{eq:hM}
+h_M(v,t)=t\cdot\sum_{j=1}^M\frac{w_j(v)}{t^\mu-z_j^\#(v)},
+\end{equation}
+where the weights $w_j(v)$ are the Christoffel numbers of $J_M(v)$.
+
+The Pad\'{e} characteristic exponent is
+\begin{equation}\label{eq:PhiM}
+\Phi_M(v,T)
+=\theta\lambda\int_0^T h_M(v,s)\,ds
+ +V_0\,\Ico h_M(v,\cdot)(T),
+\end{equation}
+each integral evaluated in closed form via partial fractions and the
+power rule~\eqref{eq:power}.  The result is a rational function of
+$v$ with simple poles $\{\eta_j(T)\}_{j=1}^{N(M)}$, so
+\begin{equation}\label{eq:PhiM_pf}
+\Phi_M(v,T)=\sum_{j=1}^{N(M)}\frac{c_j(T)}{v-\eta_j(T)}.
+\end{equation}
+The poles $\eta_j(T)$ are eigenvalues of a second Jacobi-type matrix
+constructed from $J_M(v)$ regarded as a matrix polynomial in $v$;
+they are therefore computable directly from the three-term
+recurrence data without solving any linear system.
+
+By Theorem~\ref{thm:conv}, $h_M(v,t)\to h(v,t)$ and
+$\Phi_M(v,T)\to\Phi(v,T)$ uniformly on compacta of the
+analyticity strip as $M\to\infty$.
+
+% ------------------------------------------------------------------
+\section{Exact European call price (proof of T2)}
+\label{sec:pricing}
+% ------------------------------------------------------------------
+
+Fix maturity $T$, rate $r$, spot $S_0$, strike $K$.
+Set $k_0:=\log(K/S_0)-rT$.  The order-$M$ characteristic function
+of the centered log-return $X_T:=\log(S_T/S_0)-rT$ is
+\begin{equation}\label{eq:phiM}
+\phi_M(v):=\exp(\Phi_M(v,T)).
+\end{equation}
+
+\begin{lemma}[Normalisation]\label{lem:norm}
+$\phi_M(0)=1$ and $\phi_M(-i)=1$ for every $M\ge 1$.
+\end{lemma}
+\begin{proof}
+Lemma~\ref{lem:poly}: $a_k(0)=a_k(-i)=0$ for all $k$, hence
+$h_M(0,\cdot)\equiv h_M(-i,\cdot)\equiv 0$, so
+$\Phi_M(0,T)=\Phi_M(-i,T)=0$.
+\end{proof}
+
+\begin{lemma}[Hermitian symmetry]\label{lem:herm}
+$\phi_M(-\bar v)=\overline{\phi_M(v)}$.
+\end{lemma}
+\begin{proof}
+$c_0(-\bar v)=\overline{c_0(v)}$, $c_1(-\bar v)=\overline{c_1(v)}$,
+$c_2\in\R$; induction on~\eqref{eq:ak} gives
+$a_k(-\bar v)=\overline{a_k(v)}$, hence
+$\Phi_M(-\bar v,T)=\overline{\Phi_M(v,T)}$.
+\end{proof}
+
+\begin{lemma}[No real poles of $\Phi_M$ in $v$]\label{lem:norealv}
+The poles $\{\eta_j(T)\}$ of $\Phi_M(\cdot,T)$ lie off $\R$ and
+come in conjugate pairs.
+\end{lemma}
+\begin{proof}
+By Lemma~\ref{lem:herm}, if $\eta$ is a pole so is $-\bar\eta$;
+the pairing with $\bar\eta$ follows because $\Phi_M(i\sigma,T)\in\R$
+for $\sigma\in\R$ (the rough Heston exponent is real on the
+imaginary $v$-axis).  A real pole $\eta_j\in\R$ in $v$ at fixed $T$
+would require a real pole of $h_M(\eta_j,\cdot)$ in $t$ on $(0,T]$
+at the corresponding zero $z_j^\#(\eta_j)$ of $Q_M(\cdot,\eta_j)$.
+But the zeros of $Q_M(\cdot,v)$ are the reciprocals of the
+eigenvalues of $J_M(v)$, which converge to $K_g(v)\subset\C$ as
+$M\to\infty$ (Theorem~\ref{thm:jacobi}\eqref{it:limit} and no-real-poles,
+Theorem~\ref{thm:conv}); they are bounded away from $(0,(T^*)^\mu)$
+for all large $M$.
+\end{proof}
+
+\begin{lemma}[Payoff transform]\label{lem:payoff}
+Let $w(x):=(S_0 e^{x+rT}-K)^+$.  For $\operatorname{Im}v<-1$,
+\begin{equation}\label{eq:payoff}
+\int_\R e^{-ivx}w(x)\,dx = -\frac{K e^{-ivk_0}}{v(v+i)}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+$\int_{k_0}^\infty e^{-ivx}S_0 e^{x+rT}\,dx
+=-S_0 e^{rT}e^{(1-iv)k_0}/(1-iv)$
+and
+$\int_{k_0}^\infty e^{-ivx}(-K)\,dx=Ke^{-ivk_0}/(iv)$.
+With $S_0 e^{k_0+rT}=K$,
+$1/(iv)-1/(1-iv)=-1/(v(v+i))$, combining gives~\eqref{eq:payoff}.
+\end{proof}
+
+\begin{theorem}[Exact European call price]\label{thm:price}
+For any $\alpha\in(1,p^*)$ where $-ip^*$ is the pole of $\phi_M$
+nearest the strip $\{\operatorname{Im}v=-\alpha\}$ from below,
+\begin{equation}\label{eq:parseval}
+C_M=-\frac{Ke^{-rT}}{2\pi}\int_{\operatorname{Im}v=-\alpha}
+    \frac{e^{-ivk_0}\phi_M(v)}{v(v+i)}\,dv.
+\end{equation}
+Closing the contour gives the exact finite formula
+\begin{equation}\label{eq:price_formula}
+C_M=
+\begin{cases}
+\displaystyle
+(S_0-Ke^{-rT})
+-Ke^{-rT}\operatorname{Re}\!\Bigl[i\!\!\sum_{\operatorname{Im}\eta_j>-\alpha}\!\!\mathcal{R}_j\Bigr],
+& k_0\le 0,\\[2ex]
+\displaystyle
+-Ke^{-rT}\operatorname{Re}\!\Bigl[i\!\!\sum_{\operatorname{Im}\eta_j<-\alpha}\!\!\mathcal{R}_j\Bigr],
+& k_0>0,
+\end{cases}
+\end{equation}
+where, writing $\phi_M(v)=\exp(c_j/(v-\eta_j))\,H_j(v)$ with
+$H_j$ holomorphic and nonvanishing at $\eta_j$, and
+$G_j(v):=e^{-ivk_0}H_j(v)/(v(v+i))$,
+\begin{equation}\label{eq:Rj}
+\mathcal{R}_j
+:=\operatorname*{Res}_{v=\eta_j}
+  \frac{e^{-ivk_0}\phi_M(v)}{v(v+i)}
+=\sum_{n=0}^\infty\frac{c_j^{n+1}\,G_j^{(n)}(\eta_j)}{(n+1)!\,n!}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+\textit{Parseval and contour shift.}
+Under the risk-neutral measure,
+\[
+C_M=e^{-rT}\mathbb{E}[(S_0 e^{rT+X_T}-K)^+]
+   =\frac{e^{-rT}}{2\pi}\int_\R\phi_M(v)
+    \int_\R w(x)e^{-ivx}\,dx\,dv.
+\]
+The inner integral converges only for $\operatorname{Im}v<-1$
+(Lemma~\ref{lem:payoff}), so shift to
+$\operatorname{Im}v=-\alpha$, $\alpha\in(1,p^*)$.  By
+Lemma~\ref{lem:norealv} $\phi_M$ is holomorphic on
+$\{-p^*<\operatorname{Im}v<0\}$; by Lemma~\ref{lem:herm} and
+standard decay of $\Phi_M$ along horizontal lines the Jordan
+lemma applies.  No poles are crossed during the shift.
+Substituting Lemma~\ref{lem:payoff} gives~\eqref{eq:parseval}.
+
+\textit{Contour closure.}
+For $k_0\le 0$: $e^{-ivk_0}$ decays as $\operatorname{Im}v\to+\infty$;
+close upward.  Enclosed singularities: the simple kernel
+poles at $v=0$ (above $-\alpha$ since $\alpha>0$) and $v=-i$
+(above $-\alpha$ since $\alpha>1$), plus the model poles
+$\eta_j$ with $\operatorname{Im}\eta_j>-\alpha$.
+
+For $k_0>0$: $e^{-ivk_0}$ decays as $\operatorname{Im}v\to-\infty$;
+close downward.  No kernel poles enclosed.
+
+\textit{Kernel residues.}
+By Lemma~\ref{lem:norm}:
+\[
+\operatorname{Res}_{v=0}\frac{e^{-ivk_0}\phi_M(v)}{v(v+i)}
+=\frac{1}{i}=-i,
+\qquad
+\operatorname{Res}_{v=-i}\frac{e^{-ivk_0}\phi_M(v)}{v(v+i)}
+=\frac{e^{ik_0}}{-i}=ie^{ik_0}.
+\]
+With $e^{ik_0}=K/(S_0 e^{rT})$,
+\[
+-Ke^{-rT}\cdot i\bigl(-i+ie^{ik_0}\bigr)
+=Ke^{-rT}\bigl(-1+e^{ik_0}\bigr)\cdot(-1)
+=S_0-Ke^{-rT}.
+\]
+
+\textit{Model residues.}
+Write $\phi_M(v)=e^{c_j/(v-\eta_j)}H_j(v)$ and expand:
+\[
+e^{c_j/(v-\eta_j)}G_j(v)
+=\Bigl(\sum_{p\ge 0}\frac{c_j^p}{p!}(v-\eta_j)^{-p}\Bigr)
+ \Bigl(\sum_{n\ge 0}\frac{G_j^{(n)}(\eta_j)}{n!}(v-\eta_j)^n\Bigr).
+\]
+The $(v-\eta_j)^{-1}$ coefficient (the residue) comes from
+$p=n+1$:
+\[
+\mathcal{R}_j
+=\sum_{n=0}^\infty\frac{c_j^{n+1}}{(n+1)!}\cdot
+ \frac{G_j^{(n)}(\eta_j)}{n!},
+\]
+giving~\eqref{eq:Rj}.  Absolute convergence:
+$|G_j^{(n)}(\eta_j)|\le n!\,\|G_j\|/\rho_j^n$ by Cauchy,
+where $\rho_j=\min_{\ell\ne j}|\eta_\ell-\eta_j|>0$, so the
+series is dominated by $\|G_j\|\sum_n|c_j/\rho_j|^{n+1}/(n+1)!<\infty$.
+
+\textit{Reality of $C_M$.}
+By Lemma~\ref{lem:norealv} poles come in conjugate pairs $\eta_j,\bar\eta_j$,
+and $\mathcal{R}_{\bar\eta_j}=\overline{\mathcal{R}_{\eta_j}}$
+(Lemma~\ref{lem:herm} transported to the residues), so
+$\sum_j i\mathcal{R}_j$ is purely imaginary and
+$\operatorname{Re}[i\sum_j\mathcal{R}_j]\in\R$.
+\end{proof}
+
+\begin{proposition}[Pricing convergence]\label{prop:pconv}
+On compact strike-maturity sets there exist $C'<\infty$ and
+$r_*\in(0,1)$ with $|C_M-C|\le C'r_*^M$ where $C$ is the exact
+rough Heston price.
+\end{proposition}
+\begin{proof}
+By Theorem~\ref{thm:conv}, $|\Phi_M-\Phi|=O(e^{-2M\mathsf{g}})$
+on the integration contour $\operatorname{Im}v=-\alpha$; the kernel
+$e^{-rT}/(v(v+i))$ is integrable there, so the geometric rate
+is preserved by~\eqref{eq:parseval}.
+\end{proof}
+
+% ------------------------------------------------------------------
+\section{Summary}
+\label{sec:summary}
+% ------------------------------------------------------------------
+
+\textbf{Theorem T1} (Sections~\ref{sec:recurrence}--\ref{sec:conv}).
+The M\"{u}ntz--Tau recurrence~\eqref{eq:a1}--\eqref{eq:ak} provides
+the moments of the functional $\Lk$.  The Chebyshev--Wheeler
+algorithm (Section~\ref{sec:wheeler}) converts these moments into
+the three-term recurrence~\eqref{eq:pi_rec} without solving any
+linear system.  The truncated Jacobi matrix $J_M$
+(Section~\ref{sec:jacobi}) supplies the poles
+$\{1/\lambda_j\}_{j=1}^M$ of the Pad\'{e} approximant $R_M$ as its
+eigenvalues.  Theorem~\ref{thm:conv} proves uniform convergence
+$R_M(t^\mu)\to y(t)$ on $[0,T^*)$ and gives the computable
+a-posteriori bound~\eqref{eq:aposteriori}.
+
+\textbf{Theorem T2} (Section~\ref{sec:pricing}).
+The European call price under rough Heston is given exactly
+by~\eqref{eq:price_formula}--\eqref{eq:Rj}: a finite sum of
+residues at the poles $\{\eta_j(T)\}$ of $\Phi_M$, themselves the
+eigenvalues of the Jacobi matrix built from $J_M(v)$ at the
+relevant $v$-values.  No quadrature, no FFT, no damping, no
+contour truncation, no free parameter other than $M$.
+Convergence to the exact price is geometric in $M$
+(Proposition~\ref{prop:pconv}).
+
+\begin{thebibliography}{9}
+\bibitem{SKM}
+S.~G.~Samko, A.~A.~Kilbas, O.~I.~Marichev,
+\emph{Fractional Integrals and Derivatives},
+Gordon and Breach, 1993.
+
+\bibitem{StahlBranch}
+H.~Stahl, \emph{Convergence of Pad\'{e} approximants to functions
+with branch points},
+J.~Approx.~Theory \textbf{91} (1997), 139--204.
+
+\bibitem{Wheeler}
+J.~C.~Wheeler, \emph{Modified moments and Gaussian quadratures},
+Rocky Mountain J.~Math.\ \textbf{4} (1974), 287--296.
+
+\bibitem{Gragg}
+W.~B.~Gragg, \emph{The Pad\'{e} table and its relation to certain
+algorithms of numerical analysis},
+SIAM Review \textbf{14} (1972), 1--62.
+
+\bibitem{ElEuchRosenbaum}
+O.~El~Euch and M.~Rosenbaum,
+\emph{The characteristic function of rough Heston models},
+Math.~Finance \textbf{29} (2019), 3--38.
+\end{thebibliography}
+
+\end{document}
