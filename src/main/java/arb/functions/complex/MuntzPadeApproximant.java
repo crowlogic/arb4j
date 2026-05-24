@@ -99,7 +99,18 @@ public final class MuntzPadeApproximant implements
     // N bits is accurate to N bits and no further, so a request for more bits
     // must rebuild them. Fewer-or-equal bits reuse the cache as-is (and reuse
     // freely across different t at the same precision).
-    if (bits > cachedBits)
+    //
+    // A freshly-constructed approximant has EMPTY caches, so there is nothing
+    // to invalidate on its first evaluation — and invalidating would needlessly
+    // recurse through any shared upstream self-recursive sequence (e.g. the
+    // Riccati Müntz coefficient sequence a), whose per-level instance chain can
+    // be arbitrarily deep. Only a genuine precision INCREASE on an
+    // already-populated cache must rebuild.
+    if (cachedBits < 0)
+    {
+      cachedBits = bits;
+    }
+    else if (bits > cachedBits)
     {
       context.invalidateAllCaches();
       cachedBits = bits;

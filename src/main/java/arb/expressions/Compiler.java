@@ -434,7 +434,11 @@ public class Compiler
 
   public static MethodVisitor invokeCloseMethod(MethodVisitor methodVisitor, Class<?> type)
   {
-    methodVisitor.visitMethodInsn(INVOKEVIRTUAL, Type.getInternalName(type), "close", "()V", false);
+    // A field typed as an interface (e.g. ComplexPolynomialSequence) must be
+    // closed via INVOKEINTERFACE; INVOKEVIRTUAL on an interface method throws
+    // IncompatibleClassChangeError ("found interface ..., but class was expected").
+    boolean itf = type.isInterface();
+    methodVisitor.visitMethodInsn(itf ? INVOKEINTERFACE : INVOKEVIRTUAL, Type.getInternalName(type), "close", "()V", itf);
     return methodVisitor;
   }
 
