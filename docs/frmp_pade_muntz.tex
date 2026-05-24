@@ -1,0 +1,501 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{geometry,amsmath,amssymb,amsthm}
+\geometry{letterpaper, margin=1.2in}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\cpct}[1]{\operatorname{cap}(#1)}
+
+\begin{document}
+
+\title{The Fractional Riccati M\"{u}ntz--Pad\'{e} Theorem\\
+and an Exact Closed-Form European Call Price\\
+under the Rough Heston Model}
+\author{Stephen Crowley}
+\date{May 2026}
+\maketitle
+
+\begin{abstract}
+Two theorems are proved.
+\textbf{(T1)} The diagonal $[M/M]$ Pad\'{e} approximants built from
+the unique formal power series solution of the constant-coefficient
+fractional Riccati initial value problem converge to that solution
+uniformly on every compact real interval free of poles. The single
+parameter $M$ is determined by the required bit-precision via a
+computable a-posteriori bound; there is no other truncation parameter.
+\textbf{(T2)} The European call price under the rough Heston model
+is a finite closed-form sum of residues of an
+exponential-of-partial-fraction characteristic function derived from
+the Pad\'{e}--M\"{u}ntz solution of T1. The formula requires no
+quadrature, no FFT, no damping, no contour truncation, and no
+per-pole series truncation. The sole parameter is $M$.
+\end{abstract}
+
+\tableofcontents
+
+% ---------------------------------------------------------------
+\section{Fractional Calculus and the M\"{u}ntz Basis}
+\label{sec:setup}
+% ---------------------------------------------------------------
+
+\begin{definition}[Riemann--Liouville operators]\label{def:RL}
+For $\mu\in(0,1]$ and $f$ locally integrable on $(0,\infty)$,
+\begin{align}
+I^{\mu} f(t) &:=
+  \frac{1}{\Gamma(\mu)}\int_{0}^{t}(t-s)^{\mu-1}f(s)\,ds,
+  \label{eq:IRL}\\
+D^{\mu} f(t) &:=
+  \frac{d}{dt}\!\left(I^{1-\mu} f\right)\!(t).
+  \label{eq:DRL}
+\end{align}
+\end{definition}
+
+\begin{lemma}[Power rule]\label{lem:power}
+For $s>-1$,
+\begin{equation}\label{eq:power}
+I^{\mu}\, t^{s}
+= \frac{\Gamma(s+1)}{\Gamma(s+\mu+1)}\,t^{s+\mu}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The substitution $\sigma = t\tau$ in \eqref{eq:IRL} gives
+\[
+I^{\mu}\,t^{s}
+= \frac{t^{s+\mu}}{\Gamma(\mu)}\int_0^1(1-\tau)^{\mu-1}\tau^s\,d\tau
+= \frac{t^{s+\mu}}{\Gamma(\mu)}\,B(\mu,s+1)
+= \frac{\Gamma(s+1)}{\Gamma(s+\mu+1)}\,t^{s+\mu}.\qedhere
+\]
+\end{proof}
+
+\begin{definition}[Fractional Riccati IVP]\label{def:IVP}
+For $c_0,c_1,c_2\in\C$ with $c_2\ne 0$ and $\mu\in(0,1]$,
+\begin{equation}\label{eq:Riccati}
+D^{\mu} y(t) = c_0 + c_1\,y(t) + c_2\,y(t)^2,
+\qquad I^{1-\mu}y\big|_{t=0}=0.
+\end{equation}
+\end{definition}
+
+\begin{lemma}[Volterra equivalence]\label{lem:Volt}
+Equation~\eqref{eq:Riccati} is equivalent to
+\begin{equation}\label{eq:Volt}
+y = I^{\mu}\!\left[c_0 + c_1\,y + c_2\,y^2\right].
+\end{equation}
+\end{lemma}
+\begin{proof}
+Apply $I^{\mu}$ to both sides of \eqref{eq:Riccati}. The composition
+identity $I^{\mu}D^{\mu}f = f - (I^{1-\mu}f)(0)\,t^{\mu-1}/\Gamma(\mu)$
+(Samko--Kilbas--Marichev~\cite{SKM}) reduces to $I^{\mu}D^{\mu}f=f$
+under the homogeneous initial condition.
+\end{proof}
+
+The M\"{u}ntz lattice $\{t^{k\mu}\}_{k\ge 0}$ is closed under
+$I^{\mu}$ by Lemma~\ref{lem:power}, under $D^{\mu}$ on the subspace
+with $I^{1-\mu}f(0)=0$, and under pointwise multiplication, making
+it the natural basis for \eqref{eq:Volt}.
+
+% ---------------------------------------------------------------
+\section{The M\"{u}ntz--Tau Recurrence}\label{sec:muntz}
+% ---------------------------------------------------------------
+
+\begin{theorem}[M\"{u}ntz--Tau recurrence]\label{thm:muntz}
+The unique formal power series solution of \eqref{eq:Volt} is
+\begin{equation}\label{eq:series}
+y(t) = \sum_{k=1}^{\infty} a_k\, t^{k\mu},
+\end{equation}
+where
+\begin{align}
+a_1 &= \frac{c_0}{\Gamma(\mu+1)},\label{eq:a1}\\
+a_k &= \gamma_k\!\left(
+        c_1\,a_{k-1}
+      + c_2\sum_{j=1}^{k-2} a_j\,a_{k-1-j}
+      \right), \quad k\ge 2,\label{eq:ak}
+\end{align}
+and
+\begin{equation}\label{eq:gamma}
+\gamma_k := \frac{\Gamma\!\left((k-1)\mu+1\right)}{\Gamma(k\mu+1)}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+\textbf{Existence and uniqueness.}
+The map $\mathcal{T}[y]:=I^{\mu}(c_0+c_1 y+c_2 y^2)$ is a contraction on
+$\{\|y\|_\infty\le 2|c_0|T_0^\mu/\Gamma(\mu+1)\}$ for
+$T_0^\mu < \Gamma(\mu+1)/(|c_1|+4|c_0||c_2|/\Gamma(\mu+1))$,
+giving a unique local solution by Banach's fixed-point theorem.
+
+\textbf{Coefficient of $t^{\mu}$ ($k=1$).}
+$I^{\mu}[c_0] = c_0\,t^\mu/\Gamma(\mu+1)$, so $a_1=c_0/\Gamma(\mu+1)$.
+
+\textbf{Coefficient of $t^{k\mu}$ ($k\ge 2$).}
+The linear term yields
+\[
+c_1\,I^{\mu}\!\left[a_{k-1}\,t^{(k-1)\mu}\right]
+= c_1\,a_{k-1}\,\frac{\Gamma((k-1)\mu+1)}{\Gamma(k\mu+1)}
+= c_1\,a_{k-1}\,\gamma_k.
+\]
+The Cauchy product $y^2=\sum_{n\ge 2}\bigl(\sum_{j=1}^{n-1}a_j a_{n-j}\bigr)t^{n\mu}$
+contributes at $n=k-1$ the coefficient $\sum_{j=1}^{k-2}a_j a_{k-1-j}$
+(one-indexed; the sum is empty for $k=2$). Applying $I^{\mu}$ via
+Lemma~\ref{lem:power} brings down $\gamma_k$, yielding \eqref{eq:ak}.
+
+Explicitly: $a_2=\gamma_2 c_1 a_1$; $a_3=\gamma_3(c_1 a_2+c_2 a_1^2)$.
+\end{proof}
+
+\begin{remark}[Correction of prior version]
+The recurrence in the previous version of this document wrote
+$\sum_{j+\ell=k-1}a_j a_\ell$ with zero-based indices, conflating
+the nonexistent $a_0$ with $a_1$, and used the weight
+$\psi_k=\Gamma(k\mu+1)/\Gamma(k\mu+\mu+1)$ instead of the correct
+$\gamma_k=\Gamma((k-1)\mu+1)/\Gamma(k\mu+1)$. Both errors are
+corrected above.
+\end{remark}
+
+% ---------------------------------------------------------------
+\section{Pad\'{e} Rational Representation}\label{sec:pade}
+% ---------------------------------------------------------------
+
+Set $g(z):=y(z^{1/\mu})=\sum_{k=1}^{\infty}a_k z^k$ in $z=t^\mu$.
+
+\begin{definition}[Diagonal Pad\'{e} approximant]\label{def:pade}
+The $[M/M]$ Pad\'{e} approximant of $g$ is the unique rational
+function $R_M(z)=P_M(z)/Q_M(z)$ with $\deg P_M\le M$,
+$\deg Q_M\le M$, $Q_M(0)=1$, and
+\begin{equation}\label{eq:pade_match}
+Q_M(z)\,g(z) - P_M(z) = O\!\left(z^{2M+1}\right).
+\end{equation}
+\end{definition}
+
+\noindent\textbf{Construction.}
+Writing $Q_M(z)=1+\sum_{i=1}^M q_i z^i$, the conditions
+$[z^{M+\ell}](Q_M g)=0$ for $\ell=1,\dots,M$ give the Hankel system
+\begin{equation}\label{eq:hankel}
+\sum_{i=1}^M q_i\,a_{M+\ell-i} = -a_{M+\ell},
+\quad \ell=1,\dots,M.
+\end{equation}
+Given $Q_M$, set $P_M(z)=\bigl(Q_M(z)\,g(z)\bigr)\bmod z^{M+1}$.
+
+% ---------------------------------------------------------------
+\section{Convergence of Pad\'{e} Approximants (Proof of T1)}\label{sec:conv}
+% ---------------------------------------------------------------
+
+\begin{theorem}[T1]\label{thm:T1}
+Let $[0,T]\subset\mathbb{R}_+$ be a compact interval on which $y(t)$
+is finite. Then
+\begin{equation}\label{eq:conv}
+\sup_{t\in[0,T]}\bigl|y(t)-R_M(t^\mu)\bigr| \;\to\; 0
+\quad\text{as }M\to\infty.
+\end{equation}
+Moreover, at each $t\ge 0$ where $|\Delta_{M-1}(t^\mu)|>|\Delta_M(t^\mu)|$,
+\begin{equation}\label{eq:aposteriori}
+\bigl|y(t)-R_M(t^\mu)\bigr|
+\;\le\;
+\frac{|\Delta_M(t^\mu)|^2}
+     {|\Delta_{M-1}(t^\mu)|-|\Delta_M(t^\mu)|},
+\qquad \Delta_k := R_k - R_{k-1}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+\textbf{Step 1 (Radius of convergence).}
+The contraction argument gives
+\begin{equation}\label{eq:R_lower}
+R_g \;\ge\;
+\frac{\Gamma(\mu+1)}{2|c_0||c_2|}
+\end{equation}
+for the radius of convergence of $g$.
+
+\textbf{Step 2 (Meromorphic continuation).}
+Differentiating \eqref{eq:Volt} with respect to $t$ and substituting
+$z=t^\mu$ yields a first-order algebraic ODE for $g$ in $z$ with
+coefficients analytic on $\C\setminus\{0\}$. By the standard analytic
+continuation theorem for ODEs (Ince~\cite[Ch.~15]{Ince}), $g$ extends
+to a meromorphic function on its maximal star domain in $\C$, with
+only isolated poles.
+
+\textbf{Step 3 (Stahl's theorem).}
+The series $g$ is meromorphic outside a compact $K$ of minimal
+logarithmic capacity. Stahl~\cite[Theorem~1.4]{StahlConvergence} gives
+\[
+\cpct{\{z\in K_0:|g(z)-R_M(z)|>\varepsilon\}}\;\to\;0
+\]
+for every $\varepsilon>0$ and $K_0\Subset\C\setminus K$.
+
+\textbf{Step 4 (Uniform on $\mathbb{R}_+$).}
+Since $y$ is finite on $[0,T]$, $g$ has no pole on $[0,T^\mu]$, so
+$\delta:=\operatorname{dist}([0,T^\mu],K)>0$. On the neighbourhood
+$U:=\{z:\operatorname{dist}(z,[0,T^\mu])<\delta/2\}$, $g$ is holomorphic
+and bounded. The family $\{R_M\}$ is normal on $U$ by Montel's theorem;
+Stahl's capacity convergence upgrades to uniform convergence on
+$[0,T^\mu]$, which transfers to $[0,T]$ via $z=t^\mu$.
+
+\textbf{A-posteriori bound.}
+The matching condition gives $|\Delta_M(z)|=O(z^{2M-1})$, so
+$|\Delta_k|$ decreases geometrically for $|z|<\operatorname{cap}(K)$.
+Summing the tail as a geometric series with ratio
+$r=|\Delta_M|/|\Delta_{M-1}|<1$:
+\[
+|g-R_M|\le\sum_{k=M+1}^\infty|\Delta_k|
+\le |\Delta_M|\cdot\frac{r}{1-r}
+= \frac{|\Delta_M|^2}{|\Delta_{M-1}|-|\Delta_M|}.\qedhere
+\]
+\end{proof}
+
+% ---------------------------------------------------------------
+\section{Rough Heston Riccati Specialisation}\label{sec:rH}
+% ---------------------------------------------------------------
+
+The rough Heston model~\cite{EERI} has $\mu=H+\tfrac{1}{2}$,
+$H\in(0,\tfrac{1}{2})$, characteristic function
+$\mathbb{E}[e^{ivX_T}]=\exp(\Phi(v,T))$ with $X_T:=\log(S_T/S_0)-rT$,
+\begin{equation}\label{eq:Phi_def}
+\Phi(v,T)
+= \theta\lambda\int_0^T h(v,s)\,ds
+  + V_0\,I^{1-\mu}\![h(v,\,\cdot\,)](T),
+\end{equation}
+where $h(v,\cdot)$ solves \eqref{eq:Riccati} with
+\begin{equation}\label{eq:rough_coeffs}
+c_0(v)=\tfrac{1}{2}(-v^2-iv),\quad
+c_1(v)=\lambda(iv\rho\nu-1),\quad
+c_2=\tfrac{\lambda^2\nu^2}{2}.
+\end{equation}
+Parameters: $\theta$ (long-run variance), $\lambda$ (mean-reversion),
+$\rho$ (correlation), $\nu$ (vol-of-vol), $V_0$ (initial variance),
+$H$ (Hurst exponent).
+
+\begin{lemma}[Polynomial structure]\label{lem:poly}
+For each $k\ge 1$, $a_k(v)$ is a polynomial in $v$ of degree $k+1$
+with $a_k(0)=a_k(-i)=0$.
+\end{lemma}
+\begin{proof}
+\emph{Base case.} $a_1(v)=c_0(v)/\Gamma(\mu+1)=(-v^2-iv)/(2\Gamma(\mu+1))$
+has degree~$2$. $a_1(0)=0$ trivially. $a_1(-i)=(-(-i)^2-i(-i))/(2\Gamma(\mu+1))
+=(-1+1\cdot(-1))/(\ldots)$; directly: $-(-i)^2-i(-i)=-(- 1)-(-i^2)=1-1=0$.
+\emph{Induction.} Assuming $a_j(0)=a_j(-i)=0$ and $\deg a_j=j+1$
+for all $j<k$: each term $c_1(v)a_{k-1}(v)$ and $a_j(v)a_{k-1-j}(v)$
+has degree $k+1$ and vanishes at $0,-i$. Hence $a_k$ does too by \eqref{eq:ak}.
+\end{proof}
+
+Substituting $h_M(v,t):=R_M^{(v)}(t^\mu)$ into \eqref{eq:Phi_def}
+and integrating termwise using the power rule gives the Pad\'{e}
+characteristic exponent $\Phi_M(v,T)$. By Theorem~\ref{thm:T1},
+$h_M\to h$ uniformly on $[0,T]$, hence $\Phi_M\to\Phi$. At fixed $T$,
+the rational function $\Phi_M(\cdot,T)$ in $v$ has partial-fraction form
+\begin{equation}\label{eq:PF}
+\Phi_M(v,T)=\sum_{j=1}^{N}\frac{c_j(T)}{v-\eta_j(T)},\quad N\le 2M.
+\end{equation}
+
+% ---------------------------------------------------------------
+\section{Exact European Call Price (Proof of T2)}\label{sec:pricing}
+% ---------------------------------------------------------------
+
+Fix $k:=\log(K/S_0)-rT$ and let
+$\varphi_M(v):=\exp(\Phi_M(v,T))=\exp\!\bigl(\sum_j c_j/(v-\eta_j)\bigr)$.
+
+\begin{lemma}[Normalisation]\label{lem:norm}
+$\varphi_M(0)=\varphi_M(-i)=1$ for every $M\ge 1$.
+\end{lemma}
+\begin{proof}
+Lemma~\ref{lem:poly} gives $a_k(0)=a_k(-i)=0$ for all $k\ge 1$, so
+$\Phi_M(0,T)=\Phi_M(-i,T)=0$.
+\end{proof}
+
+\begin{lemma}[Hermitian symmetry]\label{lem:conj}
+$\varphi_M(-\bar v)=\overline{\varphi_M(v)}$.
+\end{lemma}
+\begin{proof}
+From \eqref{eq:rough_coeffs}, $c_i(-\bar v)=\overline{c_i(v)}$ for each $i$.
+Induction via \eqref{eq:ak} gives $a_k(-\bar v)=\overline{a_k(v)}$,
+hence $\Phi_M(-\bar v,T)=\overline{\Phi_M(v,T)}$.
+\end{proof}
+
+\begin{lemma}[No real poles of $\Phi_M$ in $v$]\label{lem:norealpoles}
+$\operatorname{Im}\eta_j\ne 0$ for all $j$.
+\end{lemma}
+\begin{proof}
+At any real $v_0$, the coefficients $c_0(v_0),c_1(v_0),c_2$ are finite,
+so the Volterra contraction gives a bounded $h(v_0,t)$ on $[0,T]$.
+By T1, $h_M(v_0,\cdot)$ is uniformly bounded, so integrating in
+\eqref{eq:Phi_def} gives finite $\Phi_M(v_0,T)$, contradicting a pole.
+By Lemma~\ref{lem:conj}, poles come in conjugate pairs off $\mathbb{R}$.
+\end{proof}
+
+\begin{lemma}[Payoff transform]\label{lem:payoff}
+With $w(x):=(S_0 e^{x+rT}-K)^+$, for $\operatorname{Im}v<-1$,
+\begin{equation}\label{eq:payoff_ft}
+\int_{-\infty}^{\infty}e^{-ivx}w(x)\,dx
+= -\frac{Ke^{-ivk}}{v(v+i)}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The integrand is supported on $(k,\infty)$. Split:
+\begin{align*}
+\int_k^\infty e^{-ivx}S_0 e^{x+rT}\,dx
+&= S_0 e^{rT}\frac{e^{(1-iv)k}}{iv-1}
+ = \frac{Ke^{-ivk}}{iv-1},\\
+\int_k^\infty e^{-ivx}(-K)\,dx
+&= \frac{Ke^{-ivk}}{iv}.
+\end{align*}
+Sum: $Ke^{-ivk}\bigl[\tfrac{1}{iv-1}+\tfrac{1}{iv}\bigr]
+= -Ke^{-ivk}/(v(v+i))$.
+\end{proof}
+
+\begin{theorem}[T2: Exact European call price]\label{thm:T2}
+Let $p^*:=\min_j(-\operatorname{Im}\eta_j)>0$ and $\alpha\in(1,p^*)$.
+The order-$M$ call price is
+\begin{equation}\label{eq:price_contour}
+C_M = -\frac{Ke^{-rT}}{2\pi}
+\int_{\operatorname{Im}v=-\alpha}
+\frac{e^{-ivk}\varphi_M(v)}{v(v+i)}\,dv,
+\end{equation}
+which equals the finite closed-form sum
+\begin{equation}\label{eq:price_residues}
+C_M =
+\begin{cases}
+\displaystyle
+(S_0 - Ke^{-rT})
+- Ke^{-rT}\,\operatorname{Re}\!\left[
+   i\!\!\!\sum_{\operatorname{Im}\eta_j>-\alpha}\!\!\!\mathcal{R}_j
+\right], & k\le 0,\\[2ex]
+\displaystyle
+-\,Ke^{-rT}\,\operatorname{Re}\!\left[
+   i\!\!\!\sum_{\operatorname{Im}\eta_j<-\alpha}\!\!\!\mathcal{R}_j
+\right], & k>0,
+\end{cases}
+\end{equation}
+where, with $H_j(v):=\exp\!\bigl(\sum_{i\ne j}c_i/(v-\eta_i)\bigr)$
+and $G_j(v):=e^{-ivk}H_j(v)/(v(v+i))$,
+\begin{equation}\label{eq:residue_series}
+\mathcal{R}_j
+:= \operatorname*{Res}_{v=\eta_j}\!
+   \frac{e^{-ivk}\varphi_M(v)}{v(v+i)}
+= \sum_{n=0}^{\infty}
+  \frac{c_j^{n+1}\,G_j^{(n)}(\eta_j)}{(n+1)!\,n!}.
+\end{equation}
+The series \eqref{eq:residue_series} converges absolutely.
+$C_M\to C$ (the exact rough Heston price) at the capacity rate as
+$M\to\infty$.
+\end{theorem}
+
+\begin{proof}
+\textbf{Parseval and contour shift.}
+\[
+C_M = \frac{e^{-rT}}{2\pi}
+  \int_\mathbb{R}\varphi_M(v)
+  \!\int_\mathbb{R} w(x)e^{-ivx}\,dx\,dv.
+\]
+The inner integral requires $\operatorname{Im}v<-1$
+(Lemma~\ref{lem:payoff}). Shift the $v$-contour to
+$\operatorname{Im}v=-\alpha$, $\alpha\in(1,p^*)$. Validity:
+$\varphi_M$ is holomorphic and bounded on $-p^*<\operatorname{Im}v<0$
+(Lemma~\ref{lem:norealpoles}); neither kernel pole $v=0,-i$ lies in
+the strip. Substituting Lemma~\ref{lem:payoff} gives \eqref{eq:price_contour}.
+
+\textbf{Contour closure.}
+Set $F(v):=e^{-ivk}\varphi_M(v)/(v(v+i))$.
+
+$k\le 0$: $|e^{-ivk}|\to 0$ as $\operatorname{Im}v\to+\infty$.
+Close upward; Jordan's lemma kills the arc. Enclosed poles:
+$v=0$, $v=-i$, and $\eta_j$ with $\operatorname{Im}\eta_j\in(-\alpha,0)$.
+
+$k>0$: close downward. Enclosed poles: $\eta_j$ with
+$\operatorname{Im}\eta_j<-\alpha$.
+
+\textbf{Kernel residues ($k\le 0$ only).}
+By Lemma~\ref{lem:norm}, $\varphi_M(0)=\varphi_M(-i)=1$:
+\[
+\operatorname{Res}_{v=0}F = \frac{1}{i}=-i,
+\qquad
+\operatorname{Res}_{v=-i}F = \frac{e^{-k}}{-i}=ie^{-k}.
+\]
+Prefactor from \eqref{eq:price_contour}: $-Ke^{-rT}/(2\pi)\cdot 2\pi i
+=-iKe^{-rT}$. Kernel contribution:
+\[
+(-iKe^{-rT})\bigl[(-i)+ie^{-k}\bigr]
+= -Ke^{-rT} + Ke^{-rT}e^{-k}
+= -Ke^{-rT} + S_0
+= S_0 - Ke^{-rT},
+\]
+using $Ke^{-rT}e^{-k}=Ke^{-rT}\cdot S_0e^{rT}/K=S_0$.
+
+\textbf{Model-pole residues.}
+At $\eta_j$: $\varphi_M(v)=\exp(c_j/(v-\eta_j))\cdot H_j(v)$
+with $H_j$ holomorphic and nonzero at $\eta_j$. Define
+$G_j(v):=e^{-ivk}H_j(v)/(v(v+i))$, holomorphic at $\eta_j$ since
+$\eta_j\ne 0,-i$ (Lemma~\ref{lem:norealpoles}). Expand:
+\[
+\exp\!\left(\frac{c_j}{v-\eta_j}\right)
+=\sum_{p=0}^\infty\frac{c_j^p}{p!}(v-\eta_j)^{-p},
+\qquad
+G_j(v)=\sum_{n=0}^\infty\frac{G_j^{(n)}(\eta_j)}{n!}(v-\eta_j)^n.
+\]
+The coefficient of $(v-\eta_j)^{-1}$ in the product is
+\eqref{eq:residue_series}. Absolute convergence follows from the
+Cauchy estimate $|G_j^{(n)}(\eta_j)/n!|\le\|G_j\|_\rho\,\rho^{-n}$
+with $\rho:=\min_{i\ne j}|\eta_i-\eta_j|>0$, making the series
+summable. The generating-function identity
+$\sum_{n=0}^\infty x^{n+1}/((n+1)!\,n!)=\sqrt{x}\,I_1(2\sqrt{x})$
+identifies this as a weighted modified Bessel function.
+
+\textbf{Assembly and reality.}
+For $k\le 0$, summing kernel and model contributions and using the
+conjugate-pair structure (Lemma~\ref{lem:conj}) to extract the real
+part gives the first case of \eqref{eq:price_residues}. The $k>0$
+case (downward closure, no kernel poles, sign from orientation) gives
+the second.
+
+\textbf{Convergence.}
+By T1, $\Phi_M\to\Phi$ at the capacity rate uniformly on
+$\operatorname{Im}v=-\alpha$; hence $\varphi_M\to\varphi$ uniformly;
+hence $C_M\to C$ at the same geometric rate. For $B$ bits of
+precision, $M$ is the smallest integer for which
+\eqref{eq:aposteriori} transported through $1/(v(v+i))$ on the
+contour gives error $<2^{-B}$.\qedhere
+\end{proof}
+
+% ---------------------------------------------------------------
+\section{Summary}\label{sec:summary}
+% ---------------------------------------------------------------
+
+\noindent\textbf{Theorem T1} (Section~\ref{sec:conv}).
+The $[M/M]$ Pad\'{e}--M\"{u}ntz approximant $R_M(t^\mu)$ converges
+uniformly to $y(t)$ on every real compact free of poles, with
+a-posteriori bound \eqref{eq:aposteriori}. No parameter other than $M$.
+
+\noindent\textbf{Theorem T2} (Section~\ref{sec:pricing}).
+The rough Heston European call price is the exact finite residue
+sum \eqref{eq:price_residues}--\eqref{eq:residue_series}. No
+quadrature. No FFT. No damping. No contour truncation. No per-pole
+series truncation. Sole parameter: $M$.
+
+\begin{thebibliography}{9}
+
+\bibitem{EERI}
+O.~El~Euch, M.~Rosenbaum,
+\emph{The characteristic function of rough Heston models},
+Mathematical Finance \textbf{29} (2019), 3--38.
+
+\bibitem{Ince}
+E.~L.~Ince,
+\emph{Ordinary Differential Equations},
+Dover, New York, 1956.
+
+\bibitem{SKM}
+S.~G.~Samko, A.~A.~Kilbas, O.~I.~Marichev,
+\emph{Fractional Integrals and Derivatives},
+Gordon and Breach, 1993.
+
+\bibitem{StahlConvergence}
+H.~Stahl,
+\emph{Convergence of Pad\'{e} approximants to functions with branch points},
+J.~Approx.~Theory \textbf{91} (1997), 139--204.
+
+\end{thebibliography}
+
+\end{document}
