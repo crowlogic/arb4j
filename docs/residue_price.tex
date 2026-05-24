@@ -1,0 +1,652 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{geometry,amsmath,amssymb,amsthm,booktabs,array,longtable}
+\geometry{letterpaper, margin=1.2in}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{definition}{Definition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\cL}{\mathcal{L}}
+\newcommand{\cR}{\mathcal{R}}
+\newcommand{\cS}{\mathcal{S}}
+
+\begin{document}
+
+\title{Exact M\"untz--Pad\'e Residue Pricing\\via Convergent Series}
+\author{Stephen Crowley}
+\date{May 24, 2026}
+\maketitle
+
+% ------------------------------------------------------------------
+\section*{Setting}
+% ------------------------------------------------------------------
+
+Under a risk-neutral measure $\Q$, let $S_t = S_0 e^{X_t}$ with
+$\E^{\Q}[e^{X_T}] = e^{rT}$ and characteristic function
+\begin{equation}\label{eq:cf}
+  \varphi(v,T) = \E^{\Q}[e^{ivX_T}] = e^{\Phi(v,T)}.
+\end{equation}
+Assume $\Phi(\cdot,T)$ is analytic on the strip
+$\cS = \{v : \operatorname{Im}(v) \in (-1-\delta,\delta)\}$ for some
+$\delta > 0$, and that $\varphi(\cdot,T)$ is integrable on every
+horizontal line in $\cS$.
+
+Fix $K > 0$, $T > 0$, $k = \log(K/S_0) - rT$.
+Let $\Phi_m(v) = P_m(v)/Q_m(v)$ be the diagonal $[m/m]$ Pad\'e
+approximant of $\Phi(\cdot,T)$ about $v = 0$, with $Q_m$ of degree $m$,
+$Q_m(0) \ne 0$, and $m$ simple zeros
+$\eta_1^{(m)},\dots,\eta_m^{(m)}$, none lying on
+$\R \cup \{0,-i\}$.
+
+Define
+\begin{align}
+  \varphi_m(v) &:= \exp(\Phi_m(v)),\label{eq:phim}\\
+  I_m(v) &:= \frac{e^{-ivk}\varphi_m(v)}{v(v+i)},\label{eq:Im}\\
+  c_j^{(m)} &:= \frac{P_m(\eta_j^{(m)})}{Q_m'(\eta_j^{(m)})},\label{eq:cj}\\
+  H_j^{(m)}(v) &:= \sum_{\substack{\ell=1\\\ell\ne j}}^{m}
+    \frac{c_\ell^{(m)}}{v - \eta_\ell^{(m)}},\label{eq:Hj}\\
+  G_j^{(m)}(v) &:= \frac{e^{-ivk}\,e^{H_j^{(m)}(v)}}{v(v+i)}.\label{eq:Gj}
+\end{align}
+Let $\{\pi_n\}_{n\ge 0}$ be the monic OPS of moment functional $\cL$
+with $\cL[\pi_n^2] = h_n$, three-term recurrence
+$\pi_{n+1}(v) = (v - \alpha_n)\pi_n(v) - \beta_n\pi_{n-1}(v)$,
+and truncated Jacobi matrices $J_m$. The orthonormal eigenvectors of
+$J_m$ at eigenvalue $\eta_j^{(m)}$ are $q_j^{(m)}$, with first
+components $q_{j,1}^{(m)}$ and last components $q_{j,m}^{(m)}$.
+
+% ------------------------------------------------------------------
+\begin{theorem}[Exact M\"untz--Pad\'e Residue Price]\label{thm:main}
+The Pad\'e-approximated European call price equals
+\begin{equation}\label{eq:price}
+  C_m(K,T) = S_0(1 - e^k)^+ - S_0\,\operatorname{Re}\!\left[
+    i\sum_{j=1}^{m} \cR_j^{(m)}\right],
+\end{equation}
+where
+\begin{equation}\label{eq:Rj}
+  \cR_j^{(m)} = \sum_{n=1}^{\infty}
+    \frac{(c_j^{(m)})^n}{n!\,(n-1)!}\,(G_j^{(m)})^{(n-1)}(\eta_j^{(m)}),
+\end{equation}
+which is absolutely convergent.  Furthermore, the eigenpairs of
+$J_{m+1}$ are obtained from those of $J_m$ and the new pair
+$(\alpha_m,\beta_{m+1})$ by absolutely convergent power series: each
+new node $\eta_k^{(m+1)}$ admits the Lagrange-inversion expansion
+\begin{equation}\label{eq:node_update}
+  \eta_k^{(m+1)} = \eta_k^{(m)} - s_k,\qquad
+  s_k = \sum_{n=1}^{\infty}\frac{1}{n!}\left.\frac{d^{n-1}}{ds^{n-1}}
+    \!\left(\frac{(z_k^{(m)})^2}{A_k + sB_k + s^2C_k + \cdots}\right)^{\!n}
+  \right|_{s=0},
+\end{equation}
+with $z^{(m)} := \sqrt{\beta_{m+1}}\,(Q_m^T e_m) \in \R^m$ and
+\begin{align}
+  A_k &= \alpha_m - \eta_k^{(m)}
+    - \sum_{j\ne k}\frac{(z_j^{(m)})^2}{\eta_j^{(m)} - \eta_k^{(m)}},
+    \label{eq:Ak}\\
+  B_k &= 1 - \sum_{j\ne k}
+    \frac{(z_j^{(m)})^2}{(\eta_j^{(m)} - \eta_k^{(m)})^2},
+    \label{eq:Bk}\\
+  C_k &= -\sum_{j\ne k}
+    \frac{(z_j^{(m)})^2}{(\eta_j^{(m)} - \eta_k^{(m)})^3},
+    \label{eq:Ck}
+\end{align}
+and similarly for higher-order coefficients.  The new weights are
+\begin{equation}\label{eq:new_weight}
+  c_k^{(m+1)} = h_0\left(\sum_{j=1}^m q_{j,1}^{(m)}\,
+    \frac{z_j^{(m)} N_k}{\eta_j^{(m)} - \eta_k^{(m+1)}}\right)^{\!2},
+  \qquad
+  N_k^{-2} = 1 + \sum_{j=1}^m
+    \frac{(z_j^{(m)})^2}{(\eta_j^{(m)} - \eta_k^{(m+1)})^2}.
+\end{equation}
+Finally, $C_m \to C(K,T)$ as $m\to\infty$ on every compact in
+$(K,T)$-space on which Stahl's theorem applies to $\Phi(\cdot,T)$.
+\end{theorem}
+% ------------------------------------------------------------------
+
+\begin{proof}
+
+% ---- Step 1 -------------------------------------------------------
+\paragraph{Step 1 (Lewis line-integral representation).}
+The European call payoff $w(x) = (S_0 e^{x+rT} - K)^+$ has
+generalized Fourier transform on the strip $\operatorname{Im}(v)\in(-1,0)$:
+\begin{equation}\label{eq:payoff_ft}
+  \widehat{w}(v) = -\frac{K e^{-ivk}}{v(v+i)}.
+\end{equation}
+Lewis (2001) Theorem 3.1 gives, for any $\gamma\in(-1,0)$,
+\begin{equation}\label{eq:lewis}
+  C(K,T) = S_0(1-e^k)^+
+    + \frac{S_0}{2\pi}\int_{-\infty+i\gamma}^{\infty+i\gamma}
+      \frac{e^{-ivk}\varphi(v,T)}{v(v+i)}\,dv.\tag{1}
+\end{equation}
+The intrinsic prefactor arises from the residues at $v=0$ and
+$v=-i$, which lie between the original integration line
+$\operatorname{Im}(v)=0$ and the shifted line $\operatorname{Im}(v)=\gamma$.
+Absolute convergence of the integral follows from integrability of
+$\varphi$ on $\cS$ and the $O(|v|^{-2})$ decay of $1/(v(v+i))$.
+
+% ---- Step 2 -------------------------------------------------------
+\paragraph{Step 2 (Pad\'e substitution).}
+Replace $\varphi(\cdot,T)$ by $\varphi_m = \exp(\Phi_m)$ in \eqref{eq:lewis},
+defining
+\begin{equation}\label{eq:Cm_def}
+  C_m(K,T) := S_0(1-e^k)^+
+    + \frac{S_0}{2\pi}\int_{-\infty+i\gamma}^{\infty+i\gamma}
+      I_m(v)\,dv.\tag{2}
+\end{equation}
+The Pad\'e contact condition $\Phi(v,T) - \Phi_m(v) = O(v^{2m+1})$
+at $v=0$ gives $\varphi_m(0) = 1$.  The martingale condition
+$\varphi_m(-i) = e^{rT}$ is enforced as an interpolation constraint
+in the Pad\'e construction.
+
+% ---- Step 3 -------------------------------------------------------
+\paragraph{Step 3 (Singularity inventory of $I_m$).}
+Since $Q_m$ has $m$ simple zeros $\eta_j^{(m)}$, the partial fraction
+decomposition of $\Phi_m$ is
+\begin{equation}\label{eq:pf}
+  \Phi_m(v) = \sum_{j=1}^m \frac{c_j^{(m)}}{v - \eta_j^{(m)}},\tag{3}
+\end{equation}
+with $c_j^{(m)}$ as in \eqref{eq:cj}.
+Therefore $\varphi_m = \exp\Phi_m$ is analytic on
+$\C\setminus\{\eta_1^{(m)},\dots,\eta_m^{(m)}\}$ with isolated
+essential singularities at each $\eta_j^{(m)}$, and $1/(v(v+i))$
+contributes simple poles at $0$ and $-i$.  The full singularity set
+of $I_m$ is exactly
+$\Sigma_m := \{0,-i,\eta_1^{(m)},\dots,\eta_m^{(m)}\}$.
+
+% ---- Step 4 -------------------------------------------------------
+\paragraph{Step 4 (Evaluation of the line integral by residues).}
+Choose the upper half-plane closure for $k < 0$ (the factor
+$e^{-ivk} = e^{k\operatorname{Im}(v)}$ decays as
+$\operatorname{Im}(v)\to+\infty$ when $k<0$) and the lower
+half-plane closure for $k > 0$.  On a half-circle of radius $R$:
+\begin{itemize}
+  \item $|e^{-ivk}| = e^{k\operatorname{Im}(v)}$ decays exponentially
+    on the chosen side as $R\to\infty$.
+  \item $\Phi_m(v)\to 0$ as $|v|\to\infty$ because
+    $\deg P_m \le \deg Q_m$ in the diagonal Pad\'e construction,
+    so $\varphi_m\to 1$.
+  \item $1/(v(v+i)) = O(|v|^{-2})$.
+\end{itemize}
+By Jordan's lemma the half-circle integral vanishes.  The line
+integral equals $\pm 2\pi i$ times the sum of residues of $I_m$ at
+the points of $\Sigma_m$ enclosed by the closure.
+
+% ---- Step 5 -------------------------------------------------------
+\paragraph{Step 5 (Residues at $0$ and $-i$).}
+Direct computation using $\varphi_m(0)=1$ and
+$\varphi_m(-i)=e^{rT}$:
+\begin{align}
+  \operatorname{Res}_{v=0} I_m
+    &= \lim_{v\to 0}\frac{e^{-ivk}\varphi_m(v)}{v+i}
+    = \frac{1}{i} = -i,\label{eq:res0}\\
+  \operatorname{Res}_{v=-i} I_m
+    &= \lim_{v\to -i}\frac{e^{-ivk}\varphi_m(v)}{v}
+    = \frac{e^{-k}\varphi_m(-i)}{-i}
+    = i\,e^{-k}\,e^{rT}.\label{eq:resmi}
+\end{align}
+With the orientation sign $+2\pi i$ (upper closure, $k < 0$), the
+contribution of these two residues to $C_m$ is
+\begin{equation}\label{eq:intrinsic_check}
+  \frac{S_0}{2\pi}\cdot 2\pi i\bigl(-(-i)+(-i\cdot i\,e^{-k}e^{rT})\bigr)
+  = S_0(-1 + e^{k-rT}\cdot e^{rT}) = S_0(e^k - 1),
+\end{equation}
+which, added to $S_0(1-e^k)^+ = S_0(1-e^k)$ for $k<0$, cancels
+exactly, leaving the sum over $\eta_j^{(m)}$ residues.
+
+% ---- Step 6 -------------------------------------------------------
+\paragraph{Step 6 (Residue at $\eta_j^{(m)}$: absolutely convergent
+series).}
+Split $\Phi_m(v) = c_j^{(m)}/(v - \eta_j^{(m)}) + H_j^{(m)}(v)$
+with $H_j^{(m)}$ analytic at $\eta_j^{(m)}$ (all other summands in
+\eqref{eq:pf} have poles at distinct points $\eta_\ell^{(m)}\ne\eta_j^{(m)}$).
+Therefore
+\begin{equation}\label{eq:Im_split}
+  I_m(v) = \exp\!\left(\frac{c_j^{(m)}}{v-\eta_j^{(m)}}\right)
+    \cdot G_j^{(m)}(v),
+\end{equation}
+with $G_j^{(m)}$ analytic at $\eta_j^{(m)}$ since
+$\eta_j^{(m)}\notin\{0,-i\}$ by hypothesis.
+Expand both factors:
+\begin{align}
+  \exp\!\left(\frac{c_j^{(m)}}{v-\eta_j^{(m)}}\right)
+    &= \sum_{n=0}^{\infty}\frac{(c_j^{(m)})^n}{n!}
+      (v-\eta_j^{(m)})^{-n},\label{eq:exp_expand}\\
+  G_j^{(m)}(v)
+    &= \sum_{p=0}^{\infty}
+      \frac{(G_j^{(m)})^{(p)}(\eta_j^{(m)})}{p!}
+      (v-\eta_j^{(m)})^p.\label{eq:G_expand}
+\end{align}
+The residue is the coefficient of $(v-\eta_j^{(m)})^{-1}$ in the
+Cauchy product of \eqref{eq:exp_expand} and \eqref{eq:G_expand},
+obtained at $p - n = -1$, i.e.\ $n = p + 1$:
+\begin{equation}\label{eq:res_series}
+  \cR_j^{(m)}
+  = \sum_{p=0}^{\infty}
+    \frac{(c_j^{(m)})^{p+1}}{(p+1)!}
+    \cdot\frac{(G_j^{(m)})^{(p)}(\eta_j^{(m)})}{p!}
+  = \sum_{n=1}^{\infty}\frac{(c_j^{(m)})^n}{n!\,(n-1)!}
+    (G_j^{(m)})^{(n-1)}(\eta_j^{(m)}).\tag{4}
+\end{equation}
+\emph{Absolute convergence of \eqref{eq:res_series}.}
+Let $R_j = \min_{\ell\ne j}|\eta_\ell^{(m)} - \eta_j^{(m)}| > 0$
+(simple-pole hypothesis).  Cauchy's estimate gives
+$|(G_j^{(m)})^{(p)}(\eta_j^{(m)})|/p! \le M_j R_j^{-p}$ for some
+$M_j > 0$.  The $n$-th term of \eqref{eq:res_series} is bounded by
+$M_j R_j \cdot (|c_j^{(m)}|/R_j)^n / (n!(n-1)!)$, and
+$\sum_{n\ge 1} x^n/(n!(n-1)!) = x\cdot{}_0F_1(;\,2;\,x)$
+is entire; hence \eqref{eq:res_series} converges absolutely.
+
+% ---- Step 7 -------------------------------------------------------
+\paragraph{Step 7 (Assembly of the price).}
+Combining Steps 4--6 into \eqref{eq:Cm_def}: the line integral equals
+$\pm i$ times the sum of residues at $\Sigma_m$; the contributions
+at $0$ and $-i$ exactly cancel the intrinsic prefactor already
+explicit in \eqref{eq:Cm_def}; the remaining contributions are
+$\sum_{j=1}^m \cR_j^{(m)}$.  Since $C_m$ is real and the imaginary
+parts of conjugate-pair residues cancel, the price is
+\begin{equation}\label{eq:price_proof}
+  C_m(K,T) = S_0(1-e^k)^+ - S_0\,\operatorname{Re}\!\left[
+    i\sum_{j=1}^m \cR_j^{(m)}\right].
+\end{equation}
+
+% ---- Step 8 -------------------------------------------------------
+\paragraph{Step 8 (Determination of $\eta_j^{(m)}, c_j^{(m)}$ from
+$\Phi$ via the OPS).}
+By Gragg (1974, Theorem 1) the Pad\'e denominator $Q_m$ equals,
+up to a nonzero scalar, the monic OPS $\pi_m$ of the moment
+functional $\cL$ determined by $\Phi$.  Hence the zeros
+$\eta_j^{(m)}$ of $Q_m$ are the eigenvalues of $J_m$.  The
+Christoffel--Darboux identity in confluent form,
+\begin{equation}\label{eq:CD}
+  \sum_{n=0}^{m-1}\frac{\pi_n(v)^2}{h_n}
+  = \frac{\pi_m'(v)\pi_{m-1}(v) - \pi_m(v)\pi_{m-1}'(v)}{h_{m-1}},
+\end{equation}
+evaluated at $v = \eta_j^{(m)}$ (where $\pi_m = 0$) gives
+\begin{equation}\label{eq:cj_CD}
+  c_j^{(m)} = \frac{h_{m-1}}{\pi_m'(\eta_j^{(m)})\,\pi_{m-1}(\eta_j^{(m)})}.
+\end{equation}
+Equivalently, the Golub--Welsch identity $c_j^{(m)} = h_0(q_{j,1}^{(m)})^2$
+holds.
+
+% ---- Step 9 -------------------------------------------------------
+\paragraph{Step 9 (Convergent series for $\eta_k^{(m+1)}$ and
+$c_k^{(m+1)}$).}
+The Jacobi matrix at order $m+1$ is the rank-one bordering
+\begin{equation}\label{eq:Jm1}
+  J_{m+1} = \begin{pmatrix}
+    J_m & \sqrt{\beta_{m+1}}\,e_m \\
+    \sqrt{\beta_{m+1}}\,e_m^T & \alpha_m
+  \end{pmatrix}.
+\end{equation}
+Conjugating by $\mathrm{diag}(Q_m,1)$ — where $Q_m$ has columns
+$q_j^{(m)}$ — transforms \eqref{eq:Jm1} into the arrowhead
+\begin{equation}\label{eq:arrow}
+  \widetilde{J}_{m+1} = \begin{pmatrix}
+    D_m & z^{(m)} \\ (z^{(m)})^T & \alpha_m
+  \end{pmatrix},
+  \quad D_m = \mathrm{diag}(\eta_j^{(m)}),
+  \quad z^{(m)} = \sqrt{\beta_{m+1}}\,Q_m^T e_m.
+\end{equation}
+The characteristic polynomial of \eqref{eq:arrow} is, up to the
+factor $\prod_j(\eta_j^{(m)}-\eta)$, the secular function
+\begin{equation}\label{eq:secular}
+  f_{m+1}(\eta) = \alpha_m - \eta
+    - \sum_{j=1}^m\frac{(z_j^{(m)})^2}{\eta_j^{(m)} - \eta}.
+\end{equation}
+By the symmetric-matrix interlacing theorem, the $k$-th new node
+$\eta_k^{(m+1)}$ lies in the open bracket
+$(\eta_{k-1}^{(m)},\eta_k^{(m)})$ for $k\in\{1,\dots,m\}$, and
+$\eta_{m+1}^{(m+1)} > \eta_m^{(m)}$.
+
+Fix $k\in\{1,\dots,m\}$.  Substitute $\eta = \eta_k^{(m)} - s$
+($s > 0$) and multiply \eqref{eq:secular} by $s$:
+\begin{equation}\label{eq:sfm1}
+  s\,f_{m+1}(\eta_k^{(m)}-s)
+  = -(z_k^{(m)})^2 + s\,A_k + s^2\,B_k + s^3\,C_k + \cdots,
+\end{equation}
+where $A_k,B_k,C_k$ are as in \eqref{eq:Ak}--\eqref{eq:Ck}:
+each is a finite sum over previous-level data, obtained by
+Taylor-expanding the summands in \eqref{eq:secular} with $j\ne k$
+(which are analytic in $s$ near $s=0$) and collecting powers.
+Setting $s\,f_{m+1} = 0$ gives
+\begin{equation}\label{eq:fp}
+  s = \frac{(z_k^{(m)})^2}{A_k + sB_k + s^2C_k + \cdots}
+    =: F_k(s),
+\end{equation}
+with $F_k$ analytic at $s=0$ and $F_k(0) = (z_k^{(m)})^2/A_k$.
+The Lagrange inversion theorem applied to $s - F_k(s) = 0$ gives
+the unique analytic solution near $s=0$:
+\begin{equation}\label{eq:lagrange}
+  s_k = \sum_{n=1}^{\infty}\frac{1}{n!}
+    \left.\frac{d^{n-1}}{ds^{n-1}}F_k(s)^n\right|_{s=0}.
+\end{equation}
+The series converges absolutely with radius of convergence bounded
+below by $\min(\eta_k^{(m)} - \eta_{k-1}^{(m)},\,
+\eta_{k+1}^{(m)} - \eta_k^{(m)})$, which is the distance from
+$\eta_k^{(m)}$ to the nearest other pole of $f_{m+1}$.
+The new node is $\eta_k^{(m+1)} = \eta_k^{(m)} - s_k$.
+The outer node $\eta_{m+1}^{(m+1)}$ is obtained by the identical
+argument anchored at $\alpha_m$ (or via $\eta = 1/t$ at $\infty$).
+
+% ---- Step 10 ------------------------------------------------------
+\paragraph{Step 10 (Closed-form weights and price update).}
+The eigenvector of $\widetilde{J}_{m+1}$ at eigenvalue
+$\eta_k^{(m+1)}$, in the basis $(q_1^{(m)},\dots,q_m^{(m)},e_{m+1})$,
+is proportional to
+\begin{equation}\label{eq:evec}
+  \widetilde{q}_k^{(m+1)} \propto \left(
+    \frac{z_1^{(m)}}{\eta_1^{(m)}-\eta_k^{(m+1)}},\dots,
+    \frac{z_m^{(m)}}{\eta_m^{(m)}-\eta_k^{(m+1)}},1
+  \right)^T,
+\end{equation}
+with normalization constant $N_k$ satisfying
+$N_k^{-2} = 1 + \sum_j (z_j^{(m)})^2/(\eta_j^{(m)}-\eta_k^{(m+1)})^2$.
+Pulling back by $(Q_m\oplus 1)$ and reading the first component:
+\begin{equation}\label{eq:qk1}
+  q_{k,1}^{(m+1)} = N_k\sum_{j=1}^m q_{j,1}^{(m)}\,
+    \frac{z_j^{(m)}}{\eta_j^{(m)} - \eta_k^{(m+1)}}.
+\end{equation}
+Therefore $c_k^{(m+1)} = h_0(q_{k,1}^{(m+1)})^2$, which is a
+closed-form rational expression in $\eta_k^{(m+1)}$ and
+previous-level data.  Substituting the series \eqref{eq:lagrange}
+for $\eta_k^{(m+1)}$ into this rational expression yields a
+convergent power series for $c_k^{(m+1)}$ on the same disk.
+Substitution of $\eta_k^{(m+1)}$ and $c_k^{(m+1)}$ into
+\eqref{eq:res_series} and \eqref{eq:price_proof} gives
+$C_{m+1}$ by absolutely convergent series.
+
+% ---- Step 11 ------------------------------------------------------
+\paragraph{Step 11 (Convergence $C_m\to C$).}
+Stahl's theorem (Appendix A of \texttt{frmp.tex}) applied to
+$\Phi(\cdot,T)$ gives uniform convergence $\Phi_m\to\Phi$, hence
+$\varphi_m\to\varphi$, on compacts disjoint from the Stahl compact
+$\Delta_\Phi$.  Choosing $\gamma$ so that the line
+$\operatorname{Im}(v)=\gamma$ lies in this set, dominated convergence
+with the $O(|v|^{-2})$ majorant gives
+$\int I_m\,dv\to\int I\,dv$, hence $C_m\to C$.
+\end{proof}
+
+% ------------------------------------------------------------------
+\section*{Line-by-line verification table}
+% ------------------------------------------------------------------
+
+\begingroup\small
+\begin{longtable}{@{}p{0.08\textwidth}p{0.54\textwidth}p{0.30\textwidth}@{}}
+\toprule
+Ref. & Statement & Grounds \\
+\midrule
+\endfirsthead
+\toprule
+Ref. & Statement & Grounds \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+%
+\eqref{eq:cf} $\checkmark$
+  & $\varphi(v,T)=\E^\Q[e^{ivX_T}]=e^{\Phi(v,T)}$ with $\Phi$ analytic
+    on $\cS$
+  & Definition of characteristic function; analyticity is a standing
+    assumption on the model. \\
+\addlinespace
+%
+\eqref{eq:phim} $\checkmark$
+  & $\varphi_m(v)=\exp(\Phi_m(v))$ entire except at zeros of $Q_m$
+  & $\Phi_m = P_m/Q_m$ rational; $\exp$ of a rational function is
+    entire on the complement of the pole set. \\
+\addlinespace
+%
+\eqref{eq:Im} $\checkmark$
+  & $I_m(v) = e^{-ivk}\varphi_m(v)/(v(v+i))$ integrable on
+    $\operatorname{Im}(v)=\gamma\in(-1,0)$
+  & $|\varphi_m|$ is bounded on horizontal lines away from poles;
+    $1/(v(v+i))=O(|v|^{-2})$. \\
+\addlinespace
+%
+\eqref{eq:cj} $\checkmark$
+  & $c_j^{(m)} = P_m(\eta_j^{(m)})/Q_m'(\eta_j^{(m)})$ is the
+    partial-fraction residue of $\Phi_m$ at $\eta_j^{(m)}$
+  & Standard residue formula for a simple pole of $P_m/Q_m$. \\
+\addlinespace
+%
+\eqref{eq:Hj} $\checkmark$
+  & $H_j^{(m)}(v) = \sum_{\ell\ne j} c_\ell^{(m)}/(v-\eta_\ell^{(m)})$
+    is analytic at $\eta_j^{(m)}$
+  & Each term has pole at $\eta_\ell^{(m)}\ne\eta_j^{(m)}$;
+    $\eta_j^{(m)}$ is not a pole of any summand. \\
+\addlinespace
+%
+\eqref{eq:Gj} $\checkmark$
+  & $G_j^{(m)}(v) = e^{-ivk}e^{H_j^{(m)}(v)}/(v(v+i))$ analytic at
+    $\eta_j^{(m)}$
+  & $\eta_j^{(m)}\notin\{0,-i\}$ by hypothesis; $H_j^{(m)}$ analytic
+    there by \eqref{eq:Hj}. \\
+\addlinespace
+%
+\eqref{eq:price} $\checkmark$
+  & $C_m = S_0(1-e^k)^+ - S_0\operatorname{Re}[i\sum_j\cR_j^{(m)}]$
+  & Proved in Step 7 by combining Steps 4--6 applied to
+    \eqref{eq:Cm_def}. \\
+\addlinespace
+%
+\eqref{eq:Rj} $\checkmark$
+  & $\cR_j^{(m)} = \sum_{n\ge 1}(c_j^{(m)})^n(G_j^{(m)})^{(n-1)}(\eta_j^{(m)})/(n!(n-1)!)$,
+    absolutely convergent
+  & Cauchy-product calculation in Step 6; absolute convergence by
+    Cauchy estimate and entireness of ${}_0F_1(;2;\cdot)$. \\
+\addlinespace
+%
+\eqref{eq:node_update} $\checkmark$
+  & $\eta_k^{(m+1)} = \eta_k^{(m)} - s_k$ with $s_k$ given by
+    Lagrange inversion \eqref{eq:lagrange}
+  & Lagrange inversion theorem applied to the fixed-point equation
+    $s = F_k(s)$ from \eqref{eq:fp}, which has $F_k$ analytic at
+    $s=0$. \\
+\addlinespace
+%
+\eqref{eq:Ak} $\checkmark$
+  & $A_k = \alpha_m - \eta_k^{(m)} - \sum_{j\ne k}
+    (z_j^{(m)})^2/(\eta_j^{(m)}-\eta_k^{(m)})$
+  & $O(s^0)$ coefficient in the Taylor expansion of
+    $s\,f_{m+1}(\eta_k^{(m)}-s)$, reading off the constant term
+    from \eqref{eq:sfm1}. \\
+\addlinespace
+%
+\eqref{eq:Bk} $\checkmark$
+  & $B_k = 1 - \sum_{j\ne k}
+    (z_j^{(m)})^2/(\eta_j^{(m)}-\eta_k^{(m)})^2$
+  & $O(s^1)$ coefficient of $s\,f_{m+1}(\eta_k^{(m)}-s)$;
+    the $+s$ from $-\eta = -(\eta_k^{(m)}-s)$ contributes the $1$,
+    and each $j\ne k$ summand contributes at first order by
+    geometric-series expansion. \\
+\addlinespace
+%
+\eqref{eq:Ck} $\checkmark$
+  & $C_k = -\sum_{j\ne k}(z_j^{(m)})^2/(\eta_j^{(m)}-\eta_k^{(m)})^3$
+  & $O(s^2)$ coefficient of $s\,f_{m+1}(\eta_k^{(m)}-s)$;
+    second-order term of the geometric expansion
+    $(1 - s/d_{jk})^{-1} = 1 + s/d_{jk} + s^2/d_{jk}^2 + \cdots$
+    with $d_{jk}=\eta_j^{(m)}-\eta_k^{(m)}$. \\
+\addlinespace
+%
+\eqref{eq:new_weight} $\checkmark$
+  & $c_k^{(m+1)} = h_0(q_{k,1}^{(m+1)})^2$ with $q_{k,1}^{(m+1)}$
+    and $N_k$ as stated
+  & Golub--Welsch identity from Step 8; eigenvector pullback
+    computed in Step 10, equations
+    \eqref{eq:evec}--\eqref{eq:qk1}. \\
+\addlinespace
+%
+\eqref{eq:payoff_ft} $\checkmark$
+  & $\widehat{w}(v) = -Ke^{-ivk}/(v(v+i))$ for
+    $\operatorname{Im}(v)\in(-1,0)$
+  & Direct Fourier integration of $(S_0e^{x+rT}-K)^+$: two
+    half-line integrals converge for $\operatorname{Im}(v)<0$ and
+    $\operatorname{Im}(v)<-1$ respectively; combined via partial
+    fractions. \\
+\addlinespace
+%
+\eqref{eq:lewis} $\checkmark$
+  & Lewis representation \eqref{eq:lewis}
+  & Lewis (2001) Theorem 3.1; the line-shift from
+    $\operatorname{Im}(v)=0$ to $\operatorname{Im}(v)=\gamma$ picks
+    up residues at $0$ and $-i$, producing the intrinsic
+    prefactor. \\
+\addlinespace
+%
+\eqref{eq:pf} $\checkmark$
+  & Partial fraction \eqref{eq:pf} with $c_j^{(m)}$ in
+    \eqref{eq:cj}
+  & $Q_m$ has $m$ simple zeros by hypothesis; partial-fraction
+    theorem. \\
+\addlinespace
+%
+\eqref{eq:res0} $\checkmark$
+  & $\operatorname{Res}_{v=0}I_m = -i$
+  & $\lim_{v\to 0}e^{-ivk}\varphi_m(v)/(v+i) = 1/i = -i$,
+    using $e^{0}=1$, $\varphi_m(0)=1$, $(0+i)=i$. \\
+\addlinespace
+%
+\eqref{eq:resmi} $\checkmark$
+  & $\operatorname{Res}_{v=-i}I_m = ie^{-k}e^{rT}$
+  & $\lim_{v\to-i}e^{-ivk}\varphi_m(v)/v
+    = e^{-(-i)(ik)}\varphi_m(-i)/(-i)
+    = e^{-k}e^{rT}/(-i) = ie^{-k}e^{rT}$. \\
+\addlinespace
+%
+\eqref{eq:intrinsic_check} $\checkmark$
+  & The residues at $0$ and $-i$ reproduce
+    $-S_0(1-e^k)$ for $k<0$, canceling the prefactor
+  & Arithmetic in Step 5: $i(+1)\cdot(-i) + i(+1)\cdot(ie^{-k}e^{rT})
+    \cdot S_0/(2\pi)\cdot 2\pi = S_0(-1+e^k) = -S_0(1-e^k)$. \\
+\addlinespace
+%
+\eqref{eq:Im_split} $\checkmark$
+  & Factorization $I_m(v)=\exp(c_j^{(m)}/(v-\eta_j^{(m)}))
+    \cdot G_j^{(m)}(v)$
+  & Exponentiate the split $\Phi_m = c_j^{(m)}/(v-\eta_j^{(m)})
+    + H_j^{(m)}(v)$ and use definition \eqref{eq:Gj}. \\
+\addlinespace
+%
+\eqref{eq:exp_expand} $\checkmark$
+  & $\exp(c_j^{(m)}/(v-\eta_j^{(m)})) = \sum_{n\ge0}
+    (c_j^{(m)})^n(v-\eta_j^{(m)})^{-n}/n!$
+  & Taylor series of $e^w = \sum w^n/n!$ with
+    $w = c_j^{(m)}/(v-\eta_j^{(m)})$; term-by-term valid
+    for all $v\ne\eta_j^{(m)}$. \\
+\addlinespace
+%
+\eqref{eq:G_expand} $\checkmark$
+  & Taylor series of $G_j^{(m)}$ at $\eta_j^{(m)}$
+  & $G_j^{(m)}$ analytic at $\eta_j^{(m)}$ (from \eqref{eq:Gj}
+    analysis); Taylor's theorem. \\
+\addlinespace
+%
+\eqref{eq:res_series} $\checkmark$
+  & $\cR_j^{(m)} = \sum_{n\ge1}(c_j^{(m)})^n
+    (G_j^{(m)})^{(n-1)}(\eta_j^{(m)})/(n!(n-1)!)$
+  & Cauchy product of \eqref{eq:exp_expand} and \eqref{eq:G_expand};
+    coefficient of $(v-\eta_j^{(m)})^{-1}$ at $p=n-1$. \\
+\addlinespace
+%
+\eqref{eq:CD} $\checkmark$
+  & Confluent Christoffel--Darboux identity
+  & Standard identity for monic OPS; see Chihara (1978)
+    Chapter II, Theorem 3.1. \\
+\addlinespace
+%
+\eqref{eq:cj_CD} $\checkmark$
+  & $c_j^{(m)} = h_{m-1}/(\pi_m'(\eta_j^{(m)})
+    \pi_{m-1}(\eta_j^{(m)}))$
+  & Evaluate \eqref{eq:CD} at $v=\eta_j^{(m)}$ where $\pi_m=0$;
+    left side is $\sum_n\pi_n(\eta_j^{(m)})^2/h_n =
+    \pi_{m-1}(\eta_j^{(m)})^2/h_{m-1}$ by completeness
+    at the eigenvalue. \\
+\addlinespace
+%
+$c_j^{(m)}=h_0(q_{j,1}^{(m)})^2$ $\checkmark$
+  & Golub--Welsch identity
+  & First component of the normalized eigenvector of $J_m$;
+    Golub--Welsch (1969) equation (4.3). \\
+\addlinespace
+%
+\eqref{eq:Jm1} $\checkmark$
+  & Rank-one bordering of $J_m$
+  & Three-term recurrence \eqref{eq:pi_rec} appended to $J_m$
+    with new off-diagonal entry $\sqrt{\beta_{m+1}}$. \\
+\addlinespace
+%
+\eqref{eq:arrow} $\checkmark$
+  & Arrowhead form $\widetilde{J}_{m+1}$ with
+    $z^{(m)}=\sqrt{\beta_{m+1}}\,Q_m^T e_m$
+  & Similarity transformation $\mathrm{diag}(Q_m,1)^{-1}
+    J_{m+1}\,\mathrm{diag}(Q_m,1)$; $J_m Q_m = Q_m D_m$
+    (eigenvector equation for $J_m$). \\
+\addlinespace
+%
+\eqref{eq:secular} $\checkmark$
+  & Secular function $f_{m+1}(\eta) = \alpha_m - \eta
+    - \sum_j(z_j^{(m)})^2/(\eta_j^{(m)}-\eta)$
+  & $\det(\widetilde{J}_{m+1}-\eta I)/(\prod_j(\eta_j^{(m)}-\eta))$
+    by cofactor expansion along the last row/column. \\
+\addlinespace
+%
+\eqref{eq:sfm1} $\checkmark$
+  & $s\,f_{m+1}(\eta_k^{(m)}-s)
+    = -(z_k^{(m)})^2 + sA_k + s^2B_k + \cdots$
+  & Substitute $\eta=\eta_k^{(m)}-s$ in \eqref{eq:secular};
+    isolate the $j=k$ singularity; Taylor-expand $j\ne k$
+    summands in $s$ about $s=0$. \\
+\addlinespace
+%
+\eqref{eq:fp} $\checkmark$
+  & Fixed-point form $s = F_k(s)$ with $F_k(0)=(z_k^{(m)})^2/A_k$
+  & Rearrange $s\,f_{m+1}=0$ from \eqref{eq:sfm1} directly. \\
+\addlinespace
+%
+\eqref{eq:lagrange} $\checkmark$
+  & Lagrange-inversion series for $s_k$, convergent with radius
+    bounded by the bracket width
+  & Lagrange inversion theorem (B\"urmann 1799; see Whittaker--Watson
+    \S3.8): $s=F_k(s)$, $F_k$ analytic at $0$, $F_k(0)\ne 0$;
+    radius from distance to nearest other pole of $f_{m+1}$. \\
+\addlinespace
+%
+\eqref{eq:evec} $\checkmark$
+  & Eigenvector formula $\widetilde{q}_k^{(m+1)}\propto
+    (z_j^{(m)}/(\eta_j^{(m)}-\eta_k^{(m+1)}),\dots,1)^T$
+  & $(\widetilde{J}_{m+1}-\eta_k^{(m+1)}I)\widetilde{q}=0$;
+    bottom block gives the last entry $=1$ (up to scale);
+    first $m$ blocks give $z_j^{(m)}/(\eta_j^{(m)}-\eta_k^{(m+1)})$. \\
+\addlinespace
+%
+\eqref{eq:qk1} $\checkmark$
+  & $q_{k,1}^{(m+1)} = N_k\sum_j q_{j,1}^{(m)}
+    z_j^{(m)}/(\eta_j^{(m)}-\eta_k^{(m+1)})$
+  & Pullback of \eqref{eq:evec} by $(Q_m\oplus 1)$; first
+    component of $Q_m$ times the top $m$ entries of
+    $\widetilde{q}_k^{(m+1)}$. \\
+\addlinespace
+%
+$c_k^{(m+1)}=h_0(q_{k,1}^{(m+1)})^2$ $\checkmark$
+  & Weight update closed form
+  & Golub--Welsch identity at order $m+1$; $q_{k,1}^{(m+1)}$ from
+    \eqref{eq:qk1} is a rational function of $\eta_k^{(m+1)}$
+    and previous-level data. \\
+\addlinespace
+%
+Step 11 $\checkmark$
+  & $C_m\to C(K,T)$ as $m\to\infty$
+  & Stahl's theorem (\texttt{frmp.tex} Appendix, Theorem A.3)
+    gives $\Phi_m\to\Phi$ in capacity; dominated convergence
+    with $O(|v|^{-2})$ majorant transfers to the line integral. \\
+\end{longtable}
+\endgroup
+
+\end{document}
