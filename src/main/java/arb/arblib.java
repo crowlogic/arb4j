@@ -145,6 +145,14 @@ public class arblib {
     arblibJNI.acb_poly_inv_series(ComplexPolynomial.getCPtr(Qinv), Qinv, ComplexPolynomial.getCPtr(Q), Q, n, prec);
   }
 
+  public static void acb_poly_exp_series(ComplexPolynomial f, ComplexPolynomial h, int n, int prec) {
+    arblibJNI.acb_poly_exp_series(ComplexPolynomial.getCPtr(f), f, ComplexPolynomial.getCPtr(h), h, n, prec);
+  }
+
+  public static void acb_poly_mullow(ComplexPolynomial res, ComplexPolynomial poly1, ComplexPolynomial poly2, int n, int prec) {
+    arblibJNI.acb_poly_mullow(ComplexPolynomial.getCPtr(res), res, ComplexPolynomial.getCPtr(poly1), poly1, ComplexPolynomial.getCPtr(poly2), poly2, n, prec);
+  }
+
   public static void acb_hypgeom_si(Complex res, Complex z, int prec) {
     arblibJNI.acb_hypgeom_si(Complex.getCPtr(res), res, Complex.getCPtr(z), z, prec);
   }

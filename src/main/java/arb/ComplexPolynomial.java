@@ -806,6 +806,47 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
     return result;
   }
 
+  /**
+   * Power-series exponential: {@code result = exp(this)} as a power series
+   * truncated to length {@code order} (FLINT {@code acb_poly_exp_series}).
+   * The constant term may be nonzero. Aliased calls are routed through a
+   * temporary.
+   */
+  public ComplexPolynomial expSeries(int order, int bits, ComplexPolynomial result)
+  {
+    if (result == this)
+    {
+      try (ComplexPolynomial buffer = new ComplexPolynomial())
+      {
+        arblib.acb_poly_exp_series(buffer, this, order, bits);
+        result.set(buffer);
+      }
+      return result;
+    }
+    arblib.acb_poly_exp_series(result, this, order, bits);
+    return result;
+  }
+
+  /**
+   * Truncated (low) product: {@code result = this·that} truncated to length
+   * {@code order} (FLINT {@code acb_poly_mullow}). Aliased calls are routed
+   * through a temporary.
+   */
+  public ComplexPolynomial mulLow(ComplexPolynomial that, int order, int bits, ComplexPolynomial result)
+  {
+    if (result == this || result == that)
+    {
+      try (ComplexPolynomial buffer = new ComplexPolynomial())
+      {
+        arblib.acb_poly_mullow(buffer, this, that, order, bits);
+        result.set(buffer);
+      }
+      return result;
+    }
+    arblib.acb_poly_mullow(result, this, that, order, bits);
+    return result;
+  }
+
   public void setCoeffsNative(Complex value) {
     arblibJNI.ComplexPolynomial_coeffsNative_set(swigCPtr, this, Complex.getCPtr(value), value);
   }

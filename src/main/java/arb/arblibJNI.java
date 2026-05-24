@@ -43,6 +43,8 @@ public class arblibJNI {
   public final static native void arb_poly_lgamma_series(long jarg1, RealPolynomial jarg1_, long jarg2, RealPolynomial jarg2_, int jarg3, int jarg4);
   public final static native void acb_poly_lgamma_series(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_, int jarg3, int jarg4);
   public final static native void acb_poly_inv_series(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_, int jarg3, int jarg4);
+  public final static native void acb_poly_exp_series(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_, int jarg3, int jarg4);
+  public final static native void acb_poly_mullow(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_, long jarg3, ComplexPolynomial jarg3_, int jarg4, int jarg5);
   public final static native void acb_hypgeom_si(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
   public final static native void acb_hypgeom_si_series(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_, int jarg3, int jarg4);
   public final static native void arb_hypgeom_si(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
