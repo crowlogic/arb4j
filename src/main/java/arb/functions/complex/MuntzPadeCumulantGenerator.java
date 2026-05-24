@@ -29,21 +29,21 @@ import arb.functions.integer.RealSequence;
  *
  * the cumulant generating function associated with the affine Volterra model
  * driving the Riccati is built from term-by-term Müntz integration. For an
- * application that combines an ordinary and a fractional-order time integral
- * of {@code h}, the result lives on the common lattice {T^{kμ+1}} and takes
- * the form
+ * application that combines an ordinary and a fractional-order time integral of
+ * {@code h}, the result lives on the common lattice {T^{kμ+1}} and takes the
+ * form
  *
  * <pre>
  *   Φ(v,T) = Σ_{k≥0} d_k(v) · T^{kμ+1},
  *   d_k(v) = u_k · a_k(v) + w_k · a_{k+1}(v),
  * </pre>
  *
- * where {@code (u_k, w_k)} are application-supplied scalar weights derived
- * from the moment-generating structure of the underlying model (e.g.
- * (θλ, V0)-weighted ordinary and fractional integrals for rough Heston;
- * different weights for other affine Volterra processes), {@code a₀(v) := 0},
- * and a is the Müntz coefficient sequence produced by a Riccati solver such
- * as {@link RiccatiMuntzPadeFunctional}.
+ * where {@code (u_k, w_k)} are application-supplied scalar weights derived from
+ * the moment-generating structure of the underlying model (e.g. (θλ,
+ * V0)-weighted ordinary and fractional integrals for rough Heston; different
+ * weights for other affine Volterra processes), {@code a₀(v) := 0}, and a is
+ * the Müntz coefficient sequence produced by a Riccati solver such as
+ * {@link RiccatiMuntzPadeFunctional}.
  *
  * <h2>What this class provides</h2>
  *
@@ -61,30 +61,33 @@ import arb.functions.integer.RealSequence;
  *
  * <p>
  * Use this class as the general arb4j entry point for any application that
- * needs the cumulant Müntz expansion of an affine Volterra / fractional
- * Riccati system. The rough-Heston application is one instance: pick its
- * (u, w) and the resulting Φ matches Equation (...) of the rough-Heston
- * CGF derivation. Other affine Volterra processes plug in their own weights.
+ * needs the cumulant Müntz expansion of an affine Volterra / fractional Riccati
+ * system. The rough-Heston application is one instance: pick its (u, w) and the
+ * resulting Φ matches Equation (...) of the rough-Heston CGF derivation. Other
+ * affine Volterra processes plug in their own weights.
  *
  * @author Stephen Crowley ©2026
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
+@SuppressWarnings("unchecked")
 public class MuntzPadeCumulantGenerator implements
-                                         ComplexFunction,
-                                         AutoCloseable
+                                        ComplexFunction,
+                                        AutoCloseable
 {
 
-  /** Fractional Müntz exponent μ ∈ (0, 1). Read from the context as variable {@code μ}. */
+  /**
+   * Fractional Müntz exponent μ ∈ (0, 1). Read from the context as variable
+   * {@code μ}.
+   */
   public final Real                      μ;
 
   /** Maturity T > 0. Read from the context as variable {@code T}. */
   public final Real                      T;
 
   /**
-   * Truncation order N for the CGF series. The compiled Σ uses this as its
-   * upper bound; mutate via {@link #setN} to change the truncation without
-   * recompile.
+   * Truncation order N for the CGF series. The compiled Σ uses this as its upper
+   * bound; mutate via {@link #setN} to change the truncation without recompile.
    */
   public final Integer                   N;
 
@@ -107,7 +110,8 @@ public class MuntzPadeCumulantGenerator implements
    *   d : k ➔ v ➔ u(k) · a(k)(v) + w(k) · a(k+1)(v)
    * </pre>
    *
-   * with the convention a(0)(v) := 0 enforced via {@code when(k=0, w(0)·a(1)(v), else, …)}.
+   * with the convention a(0)(v) := 0 enforced via
+   * {@code when(k=0, w(0)·a(1)(v), else, …)}.
    */
   public final ComplexPolynomialSequence d;
 
@@ -119,8 +123,8 @@ public class MuntzPadeCumulantGenerator implements
    * </pre>
    *
    * Evaluating this directly resums every term from k=0 to N. Prefer
-   * {@link #evaluate} for adaptive growth, which uses {@link #term} to add
-   * one term per step instead of resumming.
+   * {@link #evaluate} for adaptive growth, which uses {@link #term} to add one
+   * term per step instead of resumming.
    */
   public final ComplexFunction           Φ;
 
@@ -131,9 +135,9 @@ public class MuntzPadeCumulantGenerator implements
    *   term : k ➔ v ➔ d(k)(v) · T^(k·μ + 1)
    * </pre>
    *
-   * Used by {@link #evaluate} for incremental accumulation: at adaptive step
-   * n, the running partial sum gets {@code term(n)(v)} added rather than
-   * the whole {@code Φ_n} being recomputed.
+   * Used by {@link #evaluate} for incremental accumulation: at adaptive step n,
+   * the running partial sum gets {@code term(n)(v)} added rather than the whole
+   * {@code Φ_n} being recomputed.
    */
   public final ComplexFunctionSequence   term;
 
@@ -141,12 +145,12 @@ public class MuntzPadeCumulantGenerator implements
    * Build a Müntz-lattice CGF from the Riccati Müntz coefficients and
    * application-supplied lattice weights.
    *
-   * @param context the shared expression context. Must already register
-   *                {@code μ} (Real, fractional exponent) and {@code T} (Real,
-   *                maturity). Sequences {@code a}, {@code u}, {@code w} are
-   *                registered into the context by this constructor.
-   * @param a       Müntz coefficient sequence k ↦ a_k(v), e.g. the {@code a}
-   *                from a {@link RiccatiMuntzPadeFunctional}.
+   * @param context the shared expression context. Must already register {@code μ}
+   *                (Real, fractional exponent) and {@code T} (Real, maturity).
+   *                Sequences {@code a}, {@code u}, {@code w} are registered into
+   *                the context by this constructor.
+   * @param a       Müntz coefficient sequence k ↦ a_k(v), e.g. the {@code a} from
+   *                a {@link RiccatiMuntzPadeFunctional}.
    * @param u       ordinary-integral weight sequence k ↦ u_k (scalars).
    * @param w       fractional-integral weight sequence k ↦ w_k (scalars).
    * @param N0      initial truncation order. Mutate via {@link #setN}.
@@ -184,7 +188,7 @@ public class MuntzPadeCumulantGenerator implements
 
     // Consolidated coefficient sequence with a(0):=0 enforced via the when().
     // when(k=0, w(0)*a(1)(v), else, u(k)*a(k)(v)+w(k)*a(k+1)(v))
-    this.d = ComplexPolynomialSequence.express("d:k➔v➔when(k=0,w(0)*a(1)(v),else,u(k)*a(k)(v)+w(k)*a(k+1)(v))", context);
+    this.d    = ComplexPolynomialSequence.express("d:k➔v➔when(k=0,w(0)*a(1)(v),else,u(k)*a(k)(v)+w(k)*a(k+1)(v))", context);
 
     // Single-term sequence for incremental accumulation in adaptive evaluate().
     this.term = ComplexFunctionSequence.express("term:k➔v➔d(k)(v)*T^(k*μ+1)", context);
@@ -193,7 +197,7 @@ public class MuntzPadeCumulantGenerator implements
     // the adaptive `this` instance can claim the name `Φ` in the context —
     // letting downstream expressions like φ:v➔exp(Φ(v)) dispatch to the
     // adaptive evaluate().
-    this.Φ = ComplexFunction.express("ΦClosed:v➔Σk➔d(k)(v)*T^(k*μ+1){k=0..N}", context);
+    this.Φ    = ComplexFunction.express("ΦClosed:v➔Σk➔d(k)(v)*T^(k*μ+1){k=0..N}", context);
 
     // Register THIS instance under Φ so downstream compiled expressions that
     // reference Φ(v) hit the adaptive incremental evaluate().
@@ -209,57 +213,19 @@ public class MuntzPadeCumulantGenerator implements
   {
     if (newMaxN < 1)
       throw new IllegalArgumentException("maxN must be ≥ 1, got " + newMaxN);
-    this.maxN = newMaxN;
     return this;
   }
-
-  /**
-   * Force the truncation order to a fixed value, disabling the adaptive search.
-   * Restore adaptive growth via {@link #setAdaptive}.
-   */
-  public MuntzPadeCumulantGenerator setN(int fixedN)
-  {
-    if (fixedN < 0)
-      throw new IllegalArgumentException("N must be ≥ 0, got " + fixedN);
-    this.adaptive = false;
-    N.set(fixedN);
-    return this;
-  }
-
-  /** Re-enable adaptive truncation growth in {@link #evaluate}. */
-  public MuntzPadeCumulantGenerator setAdaptive(boolean on)
-  {
-    this.adaptive = on;
-    return this;
-  }
-
-  /** Hard upper bound on adaptive truncation. */
-  private int     maxN     = 256;
-
-  /** Whether {@link #evaluate} grows N adaptively. Defaults to true. */
-  private boolean adaptive = true;
 
   @Override
   public arb.Complex evaluate(arb.Complex v, int order, int bits, arb.Complex res)
   {
-    if (!adaptive)
-    {
-      return Φ.evaluate(v, order, bits, res);
-    }
 
     // Incremental adaptive growth: maintain a running partial sum and add
     // one term per step. Stop when |term_n| drops below the half-precision
     // threshold or stops shrinking (precision floor reached).
-    try ( arb.Real             threshold = new arb.Real();
-          arb.Real             addMag    = new arb.Real();
-          arb.Real             bestMag   = new arb.Real();
-          arb.Real             expo      = new arb.Real();
-          arb.Real             tpow      = new arb.Real();
-          arb.Complex          sum       = new arb.Complex();
-          arb.Complex          addition  = new arb.Complex();
-          arb.Complex          best      = new arb.Complex();
-          arb.ComplexPolynomial dk       = new arb.ComplexPolynomial();
-          arb.Integer          kIdx      = new arb.Integer())
+    try ( arb.Real threshold = new arb.Real(); arb.Real addMag = new arb.Real(); arb.Real bestMag = new arb.Real(); arb.Real expo = new arb.Real();
+          arb.Real tpow = new arb.Real(); arb.Complex sum = new arb.Complex(); arb.Complex addition = new arb.Complex(); arb.Complex best = new arb.Complex();
+          arb.ComplexPolynomial dk = new arb.ComplexPolynomial(); arb.Integer kIdx = new arb.Integer())
     {
       threshold.one().mul2e(-bits / 2, threshold);
       bestMag.posInf();
@@ -270,14 +236,14 @@ public class MuntzPadeCumulantGenerator implements
       // than materialising a fresh term(k) function per index — the latter
       // allocates and injects a new reference sub-graph on every call, which
       // accumulates without bound across repeated φ evaluations.
-      for (int n = 0; n <= maxN; n++)
+      for (int n = 0; true; n++)
       {
         kIdx.set(n);
         d.evaluate(kIdx, 1, bits, dk);
-        dk.evaluate(v, 1, bits, addition);          // d(n)(v)
-        μ.mul(n, bits, expo).add(1, bits, expo);    // nμ + 1
-        T.pow(expo, bits, tpow);                    // T^(nμ+1)
-        addition.mul(tpow, bits, addition);         // d(n)(v)·T^(nμ+1)
+        dk.evaluate(v, 1, bits, addition); // d(n)(v)
+        μ.mul(n, bits, expo).add(1, bits, expo); // nμ + 1
+        T.pow(expo, bits, tpow); // T^(nμ+1)
+        addition.mul(tpow, bits, addition); // d(n)(v)·T^(nμ+1)
         sum.add(addition, bits, sum);
         addition.abs(bits, addMag);
 
@@ -302,8 +268,7 @@ public class MuntzPadeCumulantGenerator implements
           return res.set(best);
         }
       }
-      // Hit maxN without convergence.
-      return res.set(best);
+
     }
   }
 
@@ -322,8 +287,11 @@ public class MuntzPadeCumulantGenerator implements
   @Override
   public void close()
   {
-    if (Φ != null) Φ.close();
-    if (d != null) d.close();
-    if (N != null) N.close();
+    if (Φ != null)
+      Φ.close();
+    if (d != null)
+      d.close();
+    if (N != null)
+      N.close();
   }
 }

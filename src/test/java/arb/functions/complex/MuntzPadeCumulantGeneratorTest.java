@@ -79,8 +79,6 @@ public class MuntzPadeCumulantGeneratorTest
             assertTrue("adaptive 32-bit vs 64-bit disagreement: " + diff, diff < 1e-3);
           }
 
-          // Fixed-N mode disables adaptive growth.
-          cgf.setN(8);
           try ( Complex v = new Complex(); Complex res = new Complex())
           {
             v.re().set("0.5", bits);
