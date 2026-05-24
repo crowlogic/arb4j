@@ -22,6 +22,7 @@
 \DeclareMathOperator{\Real}{Re}
 \DeclareMathOperator{\Imag}{Im}
 \DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator*{\Res}{Res}
 
 \begin{document}
 
@@ -33,28 +34,29 @@
 
 \begin{abstract}
 Three results are established for the rough Heston model. First
-(Theorem~\ref{thm:conv}), the diagonal $[M/M]$ Pad\'{e}
-resummation of the local Puiseux series of the cumulant
-generating function converges uniformly on every compact subset of
-$[0,\infty)$ on which the fractional Riccati solution is finite,
-with an explicit a-posteriori bound at every $M$. The Pad\'{e}
-denominator is the orthogonal polynomial of degree $M$ under the
-Hankel moment functional, produced directly from the M\"untz
-moments by the Chebyshev algorithm in arbitrary-precision
-arithmetic, equivalent to solving the Hankel system but without
-matrix formation or inversion. Second
-(Theorems~\ref{thm:foxH_density},~\ref{thm:foxH_price}), both the
-density of the log-return and the European call price admit
-strictly closed-form representations as finite sums of Fox
-$H$-functions in the partial-fraction data of the rational
-characteristic exponent $\Phi_M$, evaluable in $O(M\log M)$
-operations with no quadrature. The Fox $H$ price formula is
-verified by three independent analytic derivations (convolution
-chain, Mellin--Barnes, density integration) that converge on
-identical parameter data. Third (Theorem~\ref{thm:price}), the
+(Theorem~\ref{thm:conv}), the diagonal $[M/M]$ Pad\'{e} resummation
+of the local Puiseux series of the cumulant generating function
+converges on every compact subset of the complement of the Stahl
+branch/polar set, including beyond the Puiseux radius of the
+original series, at Stahl rate. The Pad\'{e} denominator is the
+orthogonal polynomial of degree $M$ under the Hankel moment
+functional, produced directly from the M\"untz moments by the
+Chebyshev algorithm in arbitrary-precision arithmetic, equivalent
+to solving the Hankel system but without matrix formation or
+inversion. Second (Theorems~\ref{thm:foxH_density},
+\ref{thm:foxH_price}), both the density of the log-return and the
+European call price admit strictly closed-form representations as
+finite sums of Fox $H$-functions in the partial-fraction data of
+the rational characteristic exponent $\Phi_M$, evaluable in
+$O(M\log^2 M)$ operations with no quadrature. The price formula
+is derived by two analytically independent routes (convolution
+chain and Mellin--Barnes inversion) converging on identical
+parameter data. The Pad\'{e} characteristic function has Gaussian
+real-axis decay, sharper than the stretched-exponential decay of
+the exact rough Heston cf. Third (Theorem~\ref{thm:price}), the
 same prices may alternatively be computed by applying the
-Fang--Oosterlee COS method to $\Phi_M(\cdot,T)$ as a fallback
-endpoint.
+Fang--Oosterlee COS method to $\Phi_M(\cdot,T)$, with Gaussian-rate
+truncation error.
 \end{abstract}
 
 \tableofcontents
@@ -81,7 +83,7 @@ I^{\alpha} t^s = \frac{\Gamma(s+1)}{\Gamma(s+\alpha+1)}\,t^{s+\alpha}.
 \end{equation}
 \end{lemma}
 \begin{proof}
-Substitution $\sigma=t\tau$ in the definition of $I^\alpha$ yields
+Substitution $\sigma=t\tau$ in $I^\alpha$ gives
 \[
 I^{\alpha} t^s
 =\frac{1}{\Gamma(\alpha)}\int_0^t(t-\sigma)^{\alpha-1}\sigma^s\,d\sigma
@@ -123,13 +125,12 @@ a_k &= \gamma_k\!\left[c_1\,a_{k-1}
 
 \begin{proof}
 Substitution of the ansatz into~\eqref{eq:IVP} and termwise
-application of~\eqref{eq:power} gives the constant-term match
-$a_1=c_0/\Gamma(\mu+1)$. For $k\ge 2$,
-$[t^{k\mu}]\Imu(c_1y)=c_1a_{k-1}\gamma_k$ and the Cauchy product
+application of~\eqref{eq:power} produces $a_1=c_0/\Gamma(\mu+1)$.
+For $k\ge 2$, $[t^{k\mu}]\Imu(c_1y)=c_1a_{k-1}\gamma_k$ and the
+Cauchy product
 $[t^{(k-1)\mu}]y^2=\sum_{j=1}^{k-2}a_ja_{k-1-j}$ combine to
-yield~\eqref{eq:ak}. Uniqueness follows from the linearity of
-the recurrence in $\{e_{<k}\}$ where $e_k:=a_k-\tilde a_k$ for
-any second solution $\tilde a$ satisfying $\tilde a_1=a_1$.
+yield~\eqref{eq:ak}. Uniqueness from linearity in $\{e_{<k}\}$
+where $e_k:=a_k-\tilde a_k$.
 \end{proof}
 
 % -----------------------------------------------------------------
@@ -145,7 +146,7 @@ with $X_T:=\log(S_T/S_0)-rT$ and
 \begin{equation}\label{eq:Phi}
 \Phi(v,T)=\theta\lambda\int_0^Th(v,s)\,ds+V_0\,\Ico h(v,\cdot)(T),
 \end{equation}
-where $h(v,\cdot)$ solves the fractional Riccati IVP
+$h(v,\cdot)$ solving
 \begin{equation}\label{eq:heston_IVP}
 h(v,t)=\Imu\bigl[P(v)+Q(v)h(v,t)+R\,h(v,t)^2\bigr],
 \end{equation}
@@ -155,44 +156,45 @@ $R=\tfrac12\lambda^2\nu^2$.
 \begin{lemma}[Riccati Puiseux series]\label{lem:h_series}
 The unique formal solution of~\eqref{eq:heston_IVP} is
 $h(v,t)=\sum_{k\ge 1}a_k(v)t^{k\mu}$ with $\{a_k(v)\}$ from
-Theorem~\ref{thm:recurrence} applied to $c_0=P(v)$, $c_1=Q(v)$,
-$c_2=R$. Each $a_k(v)$ is a polynomial in $v$ of degree $\le k+1$
+Theorem~\ref{thm:recurrence} applied to $c_0=P(v),c_1=Q(v),c_2=R$.
+Each $a_k(v)$ is a polynomial in $v$ of degree $\le k+1$
 satisfying $a_k(0)=a_k(-i)=0$.
 \end{lemma}
 \begin{proof}
-The series solution comes from Theorem~\ref{thm:recurrence}.
-Polynomial degree follows by induction with $\deg P=2$,
-$\deg Q=1$, $\deg R=0$. Vanishing at $v\in\{0,-i\}$ uses
-$P(0)=P(-i)=0$ and induction via the recurrence.
+Series solution from Theorem~\ref{thm:recurrence}; degree by
+induction with $\deg P=2,\deg Q=1,\deg R=0$; vanishing from
+$P(0)=P(-i)=0$ and induction.
 \end{proof}
 
 \begin{theorem}[Cumulant generating function as Puiseux series]\label{thm:cumulant_moments}
-With $z:=T^\mu$ and $\Phi(v,T)=T\cdot\hat\Phi(v,z)$,
+With $z:=T^\mu$, $\Phi(v,T)=T\cdot\hat\Phi(v,z)$,
 \begin{equation}\label{eq:Phi_hat_def}
 \hat\Phi(v,z)=\sum_{k=0}^{\infty}M_k(v)\,z^k,
 \end{equation}
-where the cumulant M\"untz moments
 \begin{equation}\label{eq:cumulant_moments}
 M_k(v)=\frac{\theta\lambda}{k\mu+1}\,a_k(v)
 +V_0\,\frac{\Gamma((k+1)\mu+1)}{\Gamma(k\mu+2)}\,a_{k+1}(v),
 \quad k\ge 0,
 \end{equation}
-are closed-form linear combinations of $a_k(v)$ and $a_{k+1}(v)$,
-with the convention $a_0(v)\equiv 0$.
+$a_0(v)\equiv 0$.
 \end{theorem}
 \begin{proof}
-Substitution of $h(v,s)=\sum_{k\ge 1}a_k(v)s^{k\mu}$ into
-\eqref{eq:Phi} produces, by elementary integration,
-$\int_0^Ts^{k\mu}ds=T^{k\mu+1}/(k\mu+1)$, contributing
+Substitute $h(v,s)=\sum_{k\ge 1}a_k(v)s^{k\mu}$
+into~\eqref{eq:Phi}.
+$\int_0^Ts^{k\mu}ds=T^{k\mu+1}/(k\mu+1)$ contributes
 $\theta\lambda\sum_{k\ge 1}a_k(v)/(k\mu+1)\cdot T^{k\mu+1}$.
-By~\eqref{eq:power} with $\alpha=1-\mu$,
-$\Ico t^{k\mu}|_{t=T}=\Gamma(k\mu+1)/\Gamma((k-1)\mu+2)\cdot T^{(k-1)\mu+1}$,
-contributing
-$V_0\sum_{k\ge 1}a_k(v)\,\Gamma(k\mu+1)/\Gamma((k-1)\mu+2)\cdot T^{(k-1)\mu+1}$.
-Reindexing the second sum by $j=k-1$ and combining in $z=T^\mu$
-isolates the coefficient of $T\cdot z^k$
-as~\eqref{eq:cumulant_moments}.
+By~\eqref{eq:power}, $\Ico t^{k\mu}|_{t=T}=\Gamma(k\mu+1)/\Gamma((k-1)\mu+2)\cdot T^{(k-1)\mu+1}$,
+contributing $V_0\sum_{k\ge 1}a_k(v)\Gamma(k\mu+1)/\Gamma((k-1)\mu+2)\cdot T^{(k-1)\mu+1}$.
+Reindexing by $j=k-1$ and combining in $z=T^\mu$
+gives~\eqref{eq:cumulant_moments}.
 \end{proof}
+
+\begin{remark}[Index bookkeeping]\label{rem:index}
+$\{M_k(v)\}_{k=0}^{2M-1}$ via~\eqref{eq:cumulant_moments} requires
+$\{a_k(v)\}_{k=1}^{2M}$, since the $V_0$ term in $M_k$ uses
+$a_{k+1}$. The M\"untz-coefficient budget is $2M$ Riccati
+coefficients per strike.
+\end{remark}
 
 % -----------------------------------------------------------------
 \section{Pad\'{e} resummation via the Chebyshev algorithm}
@@ -200,18 +202,17 @@ as~\eqref{eq:cumulant_moments}.
 % -----------------------------------------------------------------
 
 The diagonal $[M/M]$ Pad\'{e} approximant of $\hat\Phi$ is the
-unique pair $(P_M,Q_M)$ of polynomials with $\deg P_M\le M-1$,
-$\deg Q_M\le M$, $Q_M(0)=1$, satisfying
+unique pair $(P_M,Q_M)$ with $\deg P_M\le M-1$, $\deg Q_M\le M$,
+$Q_M(0)=1$, satisfying
 \begin{equation}\label{eq:pade_match}
 Q_M(z)\hat\Phi(v,z)-P_M(z)=O(z^{2M}).
 \end{equation}
 
 \subsection{Moment functional}
 
-Define $\mathcal{L}:\C[w]\to\C$ by $\mathcal{L}[w^k]:=M_k(v)$
-for $k\ge 0$, extended linearly. Let
-$H_n:=\det(M_{i+j})_{0\le i,j<n}$. Quasi-definiteness $H_n\ne 0$
-for all $n\ge 1$ is assumed throughout.
+Define $\mathcal{L}:\C[w]\to\C$ by $\mathcal{L}[w^k]:=M_k(v)$,
+extended linearly. Let $H_n:=\det(M_{i+j})_{0\le i,j<n}$.
+Quasi-definiteness $H_n\ne 0$ ($n\ge 1$) is assumed throughout.
 
 \subsection{Three-term recurrence and orthogonality}
 
@@ -222,17 +223,14 @@ polynomials $\{p_n\}_{n\ge 0}$, $\deg p_n=n$, satisfying
 \mathcal{L}[w^k\,p_n(w)]=h_n\,\delta_{k,n}\quad(0\le k\le n),
 \quad h_n:=\mathcal{L}[w^np_n]\ne 0,
 \end{equation}
-with three-term recurrence
 \begin{equation}\label{eq:three_term}
 p_{n+1}(w)=(w-\alpha_n)p_n(w)-\beta_np_{n-1}(w),
-\quad p_0\equiv 1,\;p_{-1}\equiv 0,
+\quad p_0\equiv 1,p_{-1}\equiv 0,
 \end{equation}
-and coefficients $\alpha_n=\mathcal{L}[wp_n^2]/h_n$,
-$\beta_n=h_n/h_{n-1}$ for $n\ge 1$, $\beta_0:=0$, with
-$h_n=H_{n+1}/H_n$.
+with $\alpha_n=\mathcal{L}[wp_n^2]/h_n$, $\beta_n=h_n/h_{n-1}$
+($n\ge 1$), $\beta_0:=0$, $h_n=H_{n+1}/H_n$.
 \end{theorem}
 \begin{proof}
-Existence and uniqueness under quasi-definiteness follow from the
 Heine determinantal construction
 \[
 p_n(w)=\frac{1}{H_n}\det\begin{pmatrix}
@@ -241,24 +239,16 @@ M_1 & M_2 & \cdots & M_{n+1}\\
 \vdots & & & \vdots\\
 M_{n-1} & M_n & \cdots & M_{2n-1}\\
 1 & w & \cdots & w^n
-\end{pmatrix},
+\end{pmatrix}
 \]
-which is monic of degree $n$ and orthogonal to $1,\ldots,w^{n-1}$
-by row expansion against the Hankel rows. The identification
-$h_n=H_{n+1}/H_n$ follows by direct expansion of
-$\mathcal{L}[w^np_n]$. The three-term recurrence is forced by the
-observation that $wp_n-p_{n+1}$ has degree $\le n$ and orthogonality
-to $w^k$ for $k\le n-2$, leaving a two-term expansion against
-$p_n,p_{n-1}$ with $\alpha_n,\beta_n$ identified by testing the
-recurrence against $\mathcal{L}[wp_n^2]$ and $\mathcal{L}[wp_np_{n-1}]$.
+is monic, orthogonal to $1,\ldots,w^{n-1}$. Recurrence forced by
+$\deg(wp_n-p_{n+1})\le n$ and orthogonality.
 \end{proof}
 
 \subsection{The Chebyshev algorithm}
 
 \begin{theorem}[Chebyshev algorithm]\label{thm:chebyshev}
-Define the mixed-moment array
-$\sigma_{k,l}:=\mathcal{L}[p_k(w)w^l]$ for $k\ge -1$, $l\ge 0$.
-Under quasi-definiteness, $\sigma_{k,l}$ satisfies the recurrence
+$\sigma_{k,l}:=\mathcal{L}[p_k(w)w^l]$ ($k\ge -1$, $l\ge 0$).
 \begin{equation}\label{eq:cheb_recurrence}
 \sigma_{-1,l}=0,\qquad \sigma_{0,l}=M_l(v),
 \end{equation}
@@ -266,7 +256,6 @@ Under quasi-definiteness, $\sigma_{k,l}$ satisfies the recurrence
 \sigma_{k+1,l}=\sigma_{k,l+1}-\alpha_k\sigma_{k,l}-\beta_k\sigma_{k-1,l},
 \qquad k\ge 0,\;l\ge k+1,
 \end{equation}
-with extraction
 \begin{equation}\label{eq:cheb_extract}
 \alpha_0=\frac{M_1(v)}{M_0(v)},\quad \beta_0=0,\quad h_0=M_0(v),
 \end{equation}
@@ -275,27 +264,16 @@ with extraction
 \beta_k=\frac{\sigma_{k,k}}{\sigma_{k-1,k-1}},\quad
 h_k=\sigma_{k,k},\qquad k\ge 1.
 \end{equation}
-The cost is $O(M^2)$ ring operations on
-$\{M_l(v)\}_{l=0}^{2M-1}$, with no Hankel matrix formation and no
-linear system solved. In arbitrary-precision arithmetic the
-algorithm produces $\{p_n\}_{n=0}^M$ exactly to any prescribed
-precision.
+Cost is $O(M^2)$ ring operations on $\{M_l(v)\}_{l=0}^{2M-1}$,
+no Hankel matrix formed and no linear system solved.
+Arbitrary-precision exact.
 \end{theorem}
 \begin{proof}
-Application of $\mathcal{L}$ to
-$p_{k+1}(w)w^l=p_k(w)w^{l+1}-\alpha_kp_k(w)w^l-\beta_kp_{k-1}(w)w^l$
-gives the recurrence~\eqref{eq:cheb_recurrence2}. The
-extraction~\eqref{eq:cheb_extract_k} follows from
-$\mathcal{L}[p_{k+1}(w)w^k]=0$ (orthogonality) at level $k$ and
-$\mathcal{L}[p_k(w)w^{k-1}]=0$ at level $k-1$, combined with
-$\beta_k=h_k/h_{k-1}=\sigma_{k,k}/\sigma_{k-1,k-1}$
-from Theorem~\ref{thm:three_term}. Equivalence to the Hankel-system
-solve: the diagonal Pad\'{e} denominator coefficients are determined
-by $\sum_{j=0}^Mq_jM_{j+l}=0$ for $l=0,\ldots,M-1$ (with
-$q_M=1$), with unique solution under quasi-definiteness equal to
-the coefficients of $p_M$ in the monomial basis. The Chebyshev
-algorithm produces $p_M$ via recurrence rather than matrix
-inversion.
+Apply $\mathcal{L}$ to
+$p_{k+1}(w)w^l=p_k(w)w^{l+1}-\alpha_kp_k(w)w^l-\beta_kp_{k-1}(w)w^l$.
+Equivalence to Hankel solve: $\sum_{j=0}^Mq_jM_{j+l}=0$ for
+$l=0,\ldots,M-1$, $q_M=1$ has the monomial coefficients of $p_M$
+as unique solution.
 \end{proof}
 
 \subsection{Pad\'{e} numerator from associated polynomials}
@@ -307,119 +285,102 @@ p_n^{(1)}(w):=\mathcal{L}_v\!\left[\frac{p_n(w)-p_n(v)}{w-v}\right].
 \end{definition}
 
 \begin{lemma}[Same recurrence]\label{lem:p1_recur}
-$p_{n+1}^{(1)}=(w-\alpha_n)p_n^{(1)}-\beta_np_{n-1}^{(1)}$ for
-$n\ge 1$, with $p_0^{(1)}\equiv 0$ and $p_1^{(1)}\equiv M_0(v)$.
+$p_{n+1}^{(1)}=(w-\alpha_n)p_n^{(1)}-\beta_np_{n-1}^{(1)}$
+($n\ge 1$), $p_0^{(1)}\equiv 0$, $p_1^{(1)}\equiv M_0(v)$.
 \end{lemma}
 \begin{proof}
-Subtraction of~\eqref{eq:three_term} evaluated at $w$ and at the
-dummy $v$, division by $w-v$, and application of $\mathcal{L}_v$
-yields the recurrence. The cross-term $\mathcal{L}[p_n]$ vanishes
-for $n\ge 1$ by orthogonality~\eqref{eq:OP_orthog}. Initial
-conditions follow from $p_0^{(1)}=\mathcal{L}_v[0]=0$ and
-$p_1^{(1)}=\mathcal{L}_v[1]=M_0(v)$.
+Subtract~\eqref{eq:three_term} at $w$ and $v$, divide by $w-v$,
+apply $\mathcal{L}_v$. Cross-term $\mathcal{L}[p_n]$ vanishes for
+$n\ge 1$ by orthogonality.
 \end{proof}
 
 \subsection{Pad\'{e} matching}
 
 \begin{lemma}[Pad\'{e} denominator and numerator]\label{lem:match}
-Let $Q_M(z):=z^Mp_M(1/z)$ and $P_M(z):=z^{M-1}p_M^{(1)}(1/z)$.
-Then $Q_M(0)=1$, $\deg P_M\le M-1$, and
+$Q_M(z):=z^Mp_M(1/z)$, $P_M(z):=z^{M-1}p_M^{(1)}(1/z)$. Then
+$Q_M(0)=1$, $\deg P_M\le M-1$,
 \begin{equation}\label{eq:pade_proved}
 Q_M(z)\hat\Phi(v,z)-P_M(z)=h_Mz^{2M}+O(z^{2M+1}).
 \end{equation}
 \end{lemma}
 \begin{proof}
-$Q_M(0)$ equals the leading coefficient of $p_M$, which is $1$
-since $p_M$ is monic. The Cauchy representation
-$\hat\Phi(v,z)=\mathcal{L}_w[(1-wz)^{-1}]$ combined with the
-algebraic identity
-$z^Mp_M(1/z)/(1-wz)=z^M(p_M(1/z)-p_M(w))/(1-wz)+z^Mp_M(w)/(1-wz)$
-splits the product $Q_M\hat\Phi$ into two parts. The first is a
-polynomial in $z$ of degree $\le M-1$ (since $1-wz$ divides
-$p_M(1/z)-p_M(w)$ in the joint variable), which by direct
-expansion equals $z^{M-1}p_M^{(1)}(1/z)=P_M(z)$. The second
-expands as $z^M\sum_{k\ge 0}\mathcal{L}[w^kp_M]z^k$, which by
-orthogonality starts at $k=M$ with leading coefficient $h_M$.
-Combining yields~\eqref{eq:pade_proved}.
+Cauchy representation
+$\hat\Phi(v,z)=\mathcal{L}_w[(1-wz)^{-1}]$ and the algebraic
+identity $z^Mp_M(1/z)/(1-wz)=z^M(p_M(1/z)-p_M(w))/(1-wz)+z^Mp_M(w)/(1-wz)$
+split $Q_M\hat\Phi$ into a polynomial-of-degree-$\le M-1$ part
+(equal to $z^{M-1}p_M^{(1)}(1/z)=P_M(z)$) plus
+$z^M\sum_{k\ge 0}\mathcal{L}[w^kp_M]z^k$, starting at $k=M$ with
+leading $h_M$.
 \end{proof}
 
 \begin{corollary}[Rational characteristic exponent]\label{cor:rational_Phi}
-The Pad\'{e}-resummed cumulant generating function
 \begin{equation}\label{eq:PhiM_def}
 \Phi_M(v,T):=T\cdot z\cdot\frac{P_M(z;v,T)}{Q_M(z;v,T)}\bigg|_{z=T^\mu}
 \end{equation}
-is rational in $v$ at fixed $T$, with $2M$ poles in $v$ given by
-the roots of $Q_M(z;v,T)|_{z=T^\mu}$.
+is rational in $v$ at fixed $T$ with $2M$ poles in $v$ from
+$Q_M(z;v,T)|_{z=T^\mu}=0$.
 \end{corollary>
 
-\subsection{J-fraction representation}
+\subsection{J-fraction}
 
 \begin{theorem}[J-fraction]\label{thm:Jfrac}
-$\hat\Phi(v,z)$ admits the formal continued-fraction expansion
 \begin{equation}\label{eq:Jfrac}
-\hat\Phi(v,z)=\cfrac{M_0(v)}{1-\alpha_0z-\cfrac{\beta_1z^2}{1-\alpha_1z-\cfrac{\beta_2z^2}{1-\alpha_2z-\cdots}}},
+\hat\Phi(v,z)=\cfrac{M_0(v)}{1-\alpha_0z-\cfrac{\beta_1z^2}{1-\alpha_1z-\cfrac{\beta_2z^2}{1-\alpha_2z-\cdots}}}
 \end{equation}
-whose $M$-th convergent is the diagonal Pad\'{e} approximant
-$P_M(z)/Q_M(z)$.
+with $M$-th convergent $P_M(z)/Q_M(z)$.
 \end{theorem}
 \begin{proof}
 Standard correspondence between J-fractions and orthogonal
-polynomial sequences satisfying~\eqref{eq:three_term}: the
-convergents of the J-fraction equal the Pad\'{e} approximants of
-the moment generating series, which is the present case
-$\hat\Phi(v,z)=\sum_kM_k(v)z^k$.
+polynomial sequences satisfying~\eqref{eq:three_term}.
 \end{proof}
 
 % -----------------------------------------------------------------
-\section{Uniform convergence and a-posteriori bound}
+\section{Convergence and a-posteriori bound}
 \label{sec:conv}
 % -----------------------------------------------------------------
 
-\begin{theorem}[Convergence]\label{thm:conv}
-Let $T^*\in(0,\infty]$ be the supremum of $T$ such that $h(v,t)$
-is finite on $[0,T)$. Set $\hat\Phi(v,z)$ as in
-\eqref{eq:Phi_hat_def} and let $R_M(z;v,T):=P_M(z)/Q_M(z)$ be
-the diagonal $[M/M]$ Pad\'{e} approximant of
-Lemma~\ref{lem:match}. Then:
-\begin{enumerate}
-\item $T\cdot z\cdot R_M(z;v,T)\to\Phi(v,T)$ uniformly on every
-compact $[0,\rho]\subset[0,(T^*)^\mu)$.
-\item The a-posteriori bound
-\begin{equation}\label{eq:aposteriori}
-|\Phi(v,T)-\Phi_M(v,T)|\le\frac{|\Delta_M|^2}{|\Delta_{M-1}|-|\Delta_M|},
-\quad \Delta_M:=\Phi_M-\Phi_{M-1},
+\begin{theorem}[Stahl convergence]\label{thm:conv}
+$\rho(v)>0$ Puiseux radius; $K(v)\subset\C\setminus[0,\rho(v))$
+Stahl branch/polar set. Then
+\begin{equation}\label{eq:stahl}
+|\hat\Phi(v,z)-R_M(z;v)|^{1/(2M)}\to e^{-\mathsf{g}(z,K(v))}
 \end{equation}
-holds whenever $|\Delta_M|<|\Delta_{M-1}|$.
-\end{enumerate}
+in capacity on $\C\setminus K(v)$, uniform on real compacta. In
+particular $\Phi_M(v,T)\to\Phi(v,T)$ for every $T\ge 0$ with
+$T^\mu\notin K(v)$, including $T$ beyond the Puiseux radius.
 \end{theorem}
 \begin{proof}
-The Volterra fixed-point theorem applied to~\eqref{eq:heston_IVP}
-extends $h(v,\cdot)$ holomorphically to a neighbourhood of
-$[0,T^*)$, and $\hat\Phi(v,z)$ is holomorphic on a slit domain in
-$z$ omitting a compact branch set
-$K\subset\C\setminus[0,(T^*)^\mu)$. By Stahl's theorem on Pad\'{e}
-convergence to functions with branch points, the diagonal
-denominators $Q_M$ have zeros converging in capacity to $K$, and
-$|\hat\Phi-R_M|^{1/(2M)}\to e^{-\mathsf{g}(z,K)}$ in capacity on
-$\C\setminus K$, where $\mathsf{g}(\cdot,K)$ is the Green function
-of $\C\setminus K$ with pole at infinity. Normal-families upgrade
-capacity convergence to uniform convergence on real compacta of
-$[0,(T^*)^\mu)$, proving (1). The differences
-$\Delta_M=O(z^{2M-1})$ from~\eqref{eq:pade_proved} satisfy
-$|\Delta_{M+1}|/|\Delta_M|\to e^{-2\mathsf{g}(z,K)}<1$ on the
-analyticity region, so the geometric tail
-$|\Phi-\Phi_M|\le\sum_{n\ge 1}|\Delta_{M+n}|$ is bounded
-by~\eqref{eq:aposteriori}.
+Volterra fixed-point applied to~\eqref{eq:heston_IVP} extends
+$h(v,\cdot)$ holomorphically beyond the initial Puiseux disc;
+$\hat\Phi(v,z)$ is meromorphic on a slit domain omitting compact
+$K(v)$. Stahl's theorem gives~\eqref{eq:stahl} in capacity;
+normal-families upgrades to uniform on real compacta.
 \end{proof}
+
+\begin{theorem}[A-posteriori bound, supremum-ratio]\label{thm:aposteriori}
+$\Delta_M:=\Phi_M-\Phi_{M-1}$,
+$q_M:=\sup_{n\ge M}|\Delta_{n+1}|/|\Delta_n|\to e^{-2\mathsf{g}(z,K(v))}<1$
+on $\C\setminus K(v)$. Whenever $q_M<1$,
+\begin{equation}\label{eq:aposteriori}
+|\Phi(v,T)-\Phi_M(v,T)|\le\frac{|\Delta_M|}{1-q_M}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+$|\Phi-\Phi_M|\le\sum_{n\ge 1}|\Delta_{M+n}|\le|\Delta_M|/(1-q_M)$.
+\end{proof}
+
+\begin{remark}[Aitken form]\label{rem:aitken}
+Under exact geometric decay $|\Delta_{M+1}|/|\Delta_M|=q$ the
+sharper Aitken form $|\Phi-\Phi_M|\le|\Delta_M|^2/(|\Delta_{M-1}|-|\Delta_M|)$
+applies; in general it is heuristic.
+\end{remark>
 
 \begin{lemma}[Normalisation]\label{lem:norm}
 $\Phi_M(0,T)=\Phi_M(-i,T)=0$, hence $\phi_M(0,T)=\phi_M(-i,T)=1$.
 \end{lemma}
 \begin{proof}
-$P(0)=P(-i)=0$ implies $a_k(0)=a_k(-i)=0$ for all $k$
-by Lemma~\ref{lem:h_series}, hence $M_k(0)=M_k(-i)=0$
-by~\eqref{eq:cumulant_moments}, so $\hat\Phi(0,z)=\hat\Phi(-i,z)=0$
-and the Pad\'{e} approximant inherits the vanishing.
+$P(0)=P(-i)=0$ and Lemma~\ref{lem:h_series} give
+$a_k(0)=a_k(-i)=0$, hence $M_k(0)=M_k(-i)=0$.
 \end{proof}
 
 \begin{lemma}[Hermitian symmetry]\label{lem:herm}
@@ -427,27 +388,72 @@ $\phi_M(-\bar v,T)=\overline{\phi_M(v,T)}$.
 \end{lemma}
 \begin{proof}
 $P(-\bar v)=\overline{P(v)}$, $Q(-\bar v)=\overline{Q(v)}$,
-$R\in\R$. Induction via~\eqref{eq:ak} gives
-$a_k(-\bar v)=\overline{a_k(v)}$, hence
-$M_k(-\bar v)=\overline{M_k(v)}$ by~\eqref{eq:cumulant_moments}.
-The Chebyshev algorithm preserves this conjugation, and
-exponentiation completes the proof.
+$R\in\R$, induction via~\eqref{eq:ak},
+\eqref{eq:cumulant_moments}.
 \end{proof}
 
-\begin{lemma}[Real-axis decay]\label{lem:decay}
-For $\mu\in(\tfrac12,1)$ and $T>0$,
-$|\phi_M(u,T)|\le e^{-c|u|^{2\mu}}$ for $|u|\ge u_0$, $M$
-sufficiently large, with $c>0$ inherited from the rough Heston
-characteristic function.
-\end{lemma>
+\begin{lemma}[Gaussian real-axis decay]\label{lem:decay}
+With $(\sigma_T,\mu_T,\{u_j(T),A_j(T)\}_{j=1}^{2M})$ from
+PFE~\eqref{eq:PFE},
+\begin{equation}\label{eq:gauss_decay}
+|\phi_M(u,T)|\le e^{C_T}\,e^{-\tfrac12\sigma_T^2u^2},\qquad u\in\R,
+\end{equation}
+$C_T:=\sum_{j=1}^{2M}|A_j(T)|/|\Imag u_j(T)|<\infty$.
+\end{lemma}
 \begin{proof}
-The exact rough Heston characteristic exponent satisfies
-$\Real\Phi(u,T)\le-c|u|^{2\mu}$ along the real axis
-(El~Euch--Rosenbaum). Theorem~\ref{thm:conv} delivers uniform
-convergence $\Phi_M\to\Phi$ on real compacta, and Stahl's theorem
-on rational approximation matches the tail decay rate for $M$
-sufficiently large.
+On $\R$, $|u-u_j(T)|\ge|\Imag u_j(T)|>0$ since $u_j\notin\R$, so
+$\bigl|\sum_jA_j/(u-u_j)\bigr|\le C_T$ uniformly in $u$. The
+linear term $-i\mu_Tu$ contributes a unimodular phase factor
+$e^{-i\mu_Tu}$ of modulus one for $u,\mu_T\in\R$. The Gaussian
+factor gives~\eqref{eq:gauss_decay}.
 \end{proof}
+
+\begin{remark}[Pre-asymptotic regime]\label{rem:CT}
+The bound~\eqref{eq:gauss_decay} is governed by $C_T$, which
+blows up if any pole approaches $\R$. The Gaussian envelope
+dominates $e^{C_T}$ for $|u|\gtrsim\sqrt{2C_T/\sigma_T^2}$. For
+smaller $|u|$ the trivial bound
+$|\phi_M(u,T)|\le 1+\sum_j|A_j(T)|/|\Imag u_j(T)|$ from the
+$L^\infty$ norm of $\Phi_M$ along $\R$ is used. The COS error
+rate~\eqref{eq:cos_error} is asymptotic in $N$; the constant
+$C'$ absorbs $C_T$.
+\end{remark}
+
+\begin{remark}[Tail comparison]\label{rem:tail_compare}
+Pad\'{e} $\phi_M$ has Gaussian decay
+$e^{-\tfrac12\sigma_T^2u^2}$, sharper than the
+stretched-exponential $e^{-c|u|^{2\mu}}$ ($\mu<1$) of the exact
+rough Heston cf.
+\end{remark>
+
+\begin{proposition}[Strip admissibility]\label{prop:strip}
+For rough Heston with $\mu\in(\tfrac12,1)$ and Pad\'{e} order
+$M$, the PFE poles $\{u_j(T)\}_{j=1}^{2M}$ split by Hermitian
+symmetry (Lemma~\ref{lem:herm}) into $M$ poles in
+$\{\Imag u_j<0\}$ and $M$ in $\{\Imag u_j>0\}$. Consider the
+strip hypothesis
+\begin{equation}\label{eq:strip_hypothesis}
+\min_{j=1,\ldots,2M}\Imag u_j(T)>c+1\tag{$\mathrm{H}_c$}
+\end{equation}
+for $c\in\R$. Any $c\le\min_j\Imag u_j(T)-1$
+satisfies~\eqref{eq:strip_hypothesis}; such $c$ exists because
+the PFE has finitely many poles off $\R$, so
+$\min_j\Imag u_j(T)>-\infty$. The corresponding damping
+$\alpha=-c-1\ge -\min_j\Imag u_j(T)$ is positive and finite.
+\end{proposition}
+
+\begin{remark}[Independence from $c$]\label{rem:cauchy_independence}
+The standard Carr--Madan range $\alpha\in(0,1)$ corresponds to
+$c\in(-2,-1)$; Proposition~\ref{prop:strip} permits arbitrarily
+negative $c$ and arbitrarily large $\alpha$, all integrable by
+Lemma~\ref{lem:decay}. The Fox $H$ price
+formula~\eqref{eq:foxH_price} is independent of the choice of
+$c$ within the admissible region: by Cauchy's theorem the Lewis
+contour~\eqref{eq:lewis} can be deformed between any two
+admissible vertical lines without crossing poles, so the integral
+value is unchanged. The formula is a contour-invariant analytic
+identity.
+\end{remark}
 
 % -----------------------------------------------------------------
 \section{Closed-form density via Fox $H$}
@@ -460,118 +466,107 @@ For nonnegative integers $m,n,p,q$ with $0\le n\le p$, $0\le m\le q$,
 H^{m,n}_{p,q}\!\left[z\,\bigg|\,\begin{array}{c}(a_i,\alpha_i)_1^p\\(b_j,\beta_j)_1^q\end{array}\right]
 :=\frac{1}{2\pi i}\int_{\mathcal{L}}
 \frac{\prod_{j=1}^m\Gamma(b_j+\beta_js)\prod_{i=1}^n\Gamma(1-a_i-\alpha_is)}
-{\prod_{j=m+1}^q\Gamma(1-b_j-\beta_js)\prod_{i=n+1}^p\Gamma(a_i+\alpha_is)}\,z^{-s}\,ds,
+{\prod_{j=m+1}^q\Gamma(1-b_j-\beta_js)\prod_{i=n+1}^p\Gamma(a_i+\alpha_is)}\,z^{-s}\,ds.
 \end{equation}
-with $\mathcal{L}$ a Mellin--Barnes contour separating the poles
-of the two numerator products.
 \end{definition}
 
 \begin{theorem}[Closed-form density]\label{thm:foxH_density}
-Let $\Phi_M(u,T)$ be the Pad\'{e}--M\"untz characteristic exponent
-of Corollary~\ref{cor:rational_Phi}, with partial-fraction
-expansion
+With PFE
 \begin{equation}\label{eq:PFE}
 \Phi_M(u,T)=-\tfrac12\sigma_T^2u^2-i\mu_Tu+\sum_{j=1}^{2M}\frac{A_j(T)}{u-u_j(T)},
 \end{equation}
-simple poles $\{u_j(T)\}_{j=1}^{2M}\subset\C\setminus\R$, residues
-$\{A_j(T)\}_{j=1}^{2M}$, $\sigma_T^2>0$, $\mu_T\in\R$, and signs
-$\epsilon_j:=-\sgn(\Imag u_j(T))\in\{-1,+1\}$.
-The density $f_M(x,T):=\Fc^{-1}[\phi_M(\cdot,T)](x)$ admits the
-representation
+$\sigma_T^2>0$, $\mu_T\in\R$, $u_j\notin\R$,
+$\epsilon_j:=-\sgn(\Imag u_j(T))$, the density
+$f_M(x,T):=\Fc^{-1}[\phi_M(\cdot,T)](x)$ admits
 \begin{equation}\label{eq:foxH_density}
 \boxed{\;f_M(x,T)=\sum_{S\in\Pc(\{1,\ldots,2M\})}d_S(T)\,
 H^{m_S^\circ,n_S^\circ}_{p_S^\circ,q_S^\circ}\!\left[\eta_S(x,T)\,\bigg|\,
 \begin{array}{c}(\mathbf{a}_S^\circ,\boldsymbol{\alpha}_S^\circ)\\(\mathbf{b}_S^\circ,\boldsymbol{\beta}_S^\circ)\end{array}\right]\;}
 \end{equation}
-with parameter counts
 \begin{equation}\label{eq:density_counts}
 (m_S^\circ,n_S^\circ,p_S^\circ,q_S^\circ)=(|S|+1,|S|,|S|+1,2|S|+1),
 \end{equation}
-prefactors
 \begin{equation}\label{eq:density_prefactors}
 d_S(T)=\frac{1}{\sqrt{2\pi\sigma_T^2}}\prod_{j\in S}\epsilon_j\sqrt{A_j(T)/i},
 \end{equation}
-and Mellin argument
 \begin{equation}\label{eq:density_argument}
 \eta_S(x,T)=\frac{(x-\mu_T)\,\mathbf{1}_{\bigwedge_{j\in S}\epsilon_j(x-\mu_T)>0}}{\sqrt{2\sigma_T^2}}\prod_{j\in S}(iA_j(T))\cdot\exp\!\left(-i\sum_{j\in S}u_j(T)(x-\mu_T)\right).
 \end{equation}
+The parameter vectors are
+\begin{equation}\label{eq:density_params}
+\begin{aligned}
+\mathbf{a}_S^\circ &= (\underbrace{0,\ldots,0}_{|S|}),
+&\boldsymbol{\alpha}_S^\circ &= (\underbrace{1,\ldots,1}_{|S|}),\\
+\mathbf{b}_S^\circ &= (\underbrace{0}_{\text{Gauss}},\underbrace{0,\ldots,0}_{|S|},\underbrace{-1,\ldots,-1}_{|S|}),
+&\boldsymbol{\beta}_S^\circ &= (\tfrac12,\underbrace{1,\ldots,1}_{|S|},\underbrace{1,\ldots,1}_{|S|}),
+\end{aligned}
+\end{equation}
+all entries constant in $j\in S$. The $j$-dependent data
+$\{A_j(T),u_j(T):j\in S\}$ enters only through $d_S(T)$ and
+$\eta_S(x,T)$, both symmetric in $S$.
 \end{theorem}
 \begin{proof}
-\textit{Step 1: Fourier inversion factorisation.} By~\eqref{eq:PFE}
-\[
-f_M(x,T)=\Fc^{-1}\!\left[e^{-\tfrac12\sigma_T^2u^2-i\mu_Tu}\prod_{j=1}^{2M}\exp(A_j/(u-u_j))\right](x),
-\]
-which converges absolutely by Lemma~\ref{lem:decay}.
+\textit{Step 1.} Absolutely convergent inverse Fourier transform
+of the right side of~\eqref{eq:PFE} by Lemma~\ref{lem:decay}.
 
-\textit{Step 2: Distributional inversion of pole factors.}
-$\Fc^{-1}[\exp(A_j/(u-u_j))](x)=\delta(x)+B_j(x;T)$ with
+\textit{Step 2.} $\Fc^{-1}[\exp(A_j/(u-u_j))](x)=\delta(x)+B_j(x;T)$
+with
 \begin{equation}\label{eq:Bj_explicit}
 B_j(x;T)=\epsilon_je^{-iu_jx}\mathbf{1}_{\epsilon_jx>0}\sqrt{A_j/(ix)}\,J_1(2\sqrt{iA_jx}),
 \end{equation}
-derived termwise from
-$\Fc^{-1}[(u-u_j)^{-n}](x)=\epsilon_j(-i\epsilon_j)^n(n-1)!^{-1}|x|^{n-1}e^{-iu_jx}\mathbf{1}_{\epsilon_jx>0}$
-($n\ge 1$) and the Bessel generating function
-$\sum_{n\ge 1}(-w)^{n-1}/((n-1)!n!)=J_1(2\sqrt{w})/\sqrt{w}$.
+from $\Fc^{-1}[(u-u_j)^{-n}](x)$ and the Bessel generating
+function.
 
-\textit{Step 3: Centered convolution.} The Gaussian factor inverts
-to $g_0(x)=(2\pi\sigma_T^2)^{-1/2}\exp(-(x-\mu_T)^2/(2\sigma_T^2))$,
-and translation invariance $\xi:=x-\mu_T$ moves the analysis to
-$\xi$-space.
+\textit{Step 3.} Centring $\xi:=x-\mu_T$;
+$g_0(x)=(2\pi\sigma_T^2)^{-1/2}\exp(-\xi^2/(2\sigma_T^2))$.
 
-\textit{Step 4: Binomial expansion.}
-\begin{equation}\label{eq:density_binomial}
-f_M(x,T)=\sum_{S\in\Pc(\{1,\ldots,2M\})}\bigl(g_0\,\ast\,\textstyle\bigast_{j\in S}B_j(\cdot;T)\bigr)(x).
-\end{equation}
+\textit{Step 4.}
+$f_M(x,T)=\sum_S\bigl(g_0\,\ast\,\bigast_{j\in S}B_j(\cdot;T)\bigr)(x)$.
 
-\textit{Step 5: Mellin transform of the chain.} By the Mellin
-convolution theorem on the half-line,
-$\Mc[g_0\ast\bigast_{j\in S}B_j](s)=\Mc[g_0](s)\prod_{j\in S}\Mc[B_j](s)$.
-Using the Bessel-Mellin identity
-$\Mc[x^{-1/2}J_1(2\sqrt{cx})\mathbf{1}_{x>0}](s)=c^{1/2-s}\Gamma(s)/\Gamma(2-s)$,
-the Mellin shift identity for the exponential prefactor, and
-$\Mc[g_0](s)\propto\Gamma(s/2)$, the result is a finite product of
-$\Gamma$-quotients with linear arguments in $s$.
+\textit{Step 5.} Mellin transforms: Gaussian rescaled gives
+$\Mc[g_0](s)\propto\Gamma(s/2)$ ($m$-class $(0,1/2)$); each
+$B_j$ contributes $\Gamma(s)$ ($m$-class $(0,1)$) and $\Gamma(2-s)$
+($q$-class $(-1,1)$), independent of $j$ in form.
 
-\textit{Step 6: Identification as Fox $H$.} By Definition~\ref{def:foxH},
-the inverse Mellin transform is a Fox $H$-function with:
-the Gaussian contributing one $\Gamma(s/2)$ ($+1$ to $m_S^\circ$,
-$+1$ to $p_S^\circ$); each $B_j$ for $j\in S$ contributing one
-$\Gamma(s)$ in the numerator, one $\Gamma(2-s)$ in the denominator,
-and one shifted $\Gamma$ from the exponential prefactor. Counting
-yields~\eqref{eq:density_counts}.
+\textit{Step 6.} Identification with Fox $H$ via
+Definition~\ref{def:foxH} gives~\eqref{eq:density_counts} and
+\eqref{eq:density_params}.
 
-\textit{Step 7: Indicator-support collapse.} The product
-$\prod_{j\in S}\mathbf{1}_{\epsilon_j\xi>0}$ in~\eqref{eq:Bj_explicit}
-restricts the convolution to
-$\bigcap_{j\in S}\{\epsilon_j\xi>0\}=\{\bigwedge_{j\in S}\epsilon_j\xi>0\}$,
-contributing the indicator in~\eqref{eq:density_argument}.
+\textit{Step 7.}
+$\prod_{j\in S}\mathbf{1}_{\epsilon_j\xi>0}=\mathbf{1}_{\bigwedge_{j\in S}\epsilon_j\xi>0}$.
 
-\textit{Step 8: Constants and argument.} The prefactor $d_S(T)$
-collects the Gaussian normalisation, $\sqrt{A_j/i}$ Bessel
-amplitudes, and $\epsilon_j$ branch signs, giving
-\eqref{eq:density_prefactors}. The argument $\eta_S(x,T)$ collects
-the $\xi$ shift, $\sqrt{2\sigma_T^2}$ rescaling, $iA_j(T)$ Bessel
-arguments, and the combined exponential prefactor
-$\exp(-i\sum_{j\in S}u_j\xi)$, giving~\eqref{eq:density_argument}.
+\textit{Step 8.} $d_S(T)$ and $\eta_S(x,T)$ from Gaussian
+normalisation, Bessel amplitudes, $\xi$ shift,
+$\sqrt{2\sigma_T^2}$ rescaling, $iA_j(T)$ Bessel arguments,
+combined exponential prefactor $\exp(-i\sum_{j\in S}u_j\xi)$.
 \end{proof}
 
-\begin{corollary}[Symmetric-function consolidation of the density]
-\label{cor:density_symmetric}
-The $2^{2M}$-term sum~\eqref{eq:foxH_density} consolidates by
-Newton--Girard into $2M+1$ symmetric-function groups in the
-elementary symmetric functions of $\{A_j(T)u_j(T)\}_{j=1}^{2M}$,
-evaluable in $O(M\log M)$ operations. Pointwise density
-evaluation costs $O(M\log M)$ per point.
+\begin{corollary}[Newton--Girard symmetric collapse]\label{cor:density_symmetric}
+The $j$-dependent data in~\eqref{eq:density_argument} enters
+through $\prod_{j\in S}(iA_j(T))$ and
+$\exp(-i\sum_{j\in S}u_j(T)\xi)$, both symmetric in
+$\{j\in S\}$. The level-$r$ consolidations are
+\begin{equation}\label{eq:NG_amplitude}
+\sum_{|S|=r}\prod_{j\in S}(iA_j(T))=i^r\,e_r\bigl(A_1(T),\ldots,A_{2M}(T)\bigr),
+\end{equation}
+\begin{equation}\label{eq:NG_phase}
+\sum_{|S|=r}\exp\!\Bigl(-i\sum_{j\in S}u_j(T)\xi\Bigr)
+=e_r\bigl(e^{-iu_1(T)\xi},\ldots,e^{-iu_{2M}(T)\xi}\bigr),
+\end{equation}
+where $e_r$ is the $r$-th elementary symmetric polynomial in
+$2M$ variables, computable in $O(M^2)$ by the recurrence
+$e_r(x_1,\ldots,x_n)=e_r(x_1,\ldots,x_{n-1})+x_ne_{r-1}(x_1,\ldots,x_{n-1})$,
+or in $O(M\log^2M)$ by FFT-based polynomial multiplication of
+$\prod_j(1+tx_j)$ with coefficient extraction. The
+$2^{2M}$-subset sum~\eqref{eq:foxH_density} reduces to $2M+1$
+symmetric groups, evaluable in $O(M\log^2M)$ overall.
 \end{corollary>
 
 \begin{corollary}[Tail asymptotics]\label{cor:tail}
-For $|x|\to\infty$ with $\xi=x-\mu_T$, the dominant
-$|S|=2M$ summand decays as
+For $|x|\to\infty$, $\xi=x-\mu_T$,
 \begin{equation}\label{eq:tail}
-f_M(x,T)\sim D_T\,\xi^{-3/2}\exp\!\left(-\frac{\xi^2}{2\sigma_T^2}-i\sum_{j=1}^{2M}u_j(T)\xi+2\sqrt{i\xi\sum_{j=1}^{2M}A_j(T)}\right),
+f_M(x,T)\sim D_T\,\xi^{-3/2}\exp\!\left(-\frac{\xi^2}{2\sigma_T^2}-i\sum_{j=1}^{2M}u_j(T)\xi+2\sqrt{i\xi\sum_{j=1}^{2M}A_j(T)}\right).
 \end{equation}
-with $D_T$ explicit. The Gaussian core dominates; the rough-Heston
-correction is the Bessel-tail exponential $\exp(2\sqrt{i\xi\sum A_j})$.
 \end{corollary>
 
 % -----------------------------------------------------------------
@@ -580,172 +575,108 @@ correction is the Bessel-tail exponential $\exp(2\sqrt{i\xi\sum A_j})$.
 % -----------------------------------------------------------------
 
 \begin{theorem}[Closed-form European call price]\label{thm:foxH_price}
-Under the hypotheses of Theorem~\ref{thm:foxH_density}, with
-$\tilde k:=\log(K/S_0)-rT$, the European call price under
-$\phi_M$ admits the representation
+$\tilde k:=\log(K/S_0)-rT$.
 \begin{equation}\label{eq:foxH_price}
 \boxed{\;C_M(K,T)=S_0\sum_{S\in\Pc(\{1,\ldots,2M\})}c_S(T)\,
 H^{m_S,n_S}_{p_S,q_S}\!\left[\zeta_S(K,T)\,\bigg|\,
 \begin{array}{c}(\mathbf{a}_S,\boldsymbol{\alpha}_S)\\(\mathbf{b}_S,\boldsymbol{\beta}_S)\end{array}\right]\;}
 \end{equation}
-with $(m_S,n_S,p_S,q_S)=(|S|+1,|S|+1,|S|+2,2|S|+2)$,
+$(m_S,n_S,p_S,q_S)=(|S|+1,|S|+1,|S|+2,2|S|+2)$,
 \begin{align}
 c_S(T)&=\frac{1}{\sqrt{2\pi\sigma_T^2}}\prod_{j\in S}\epsilon_j\sqrt{A_j(T)/i},
 \label{eq:price_prefactor}\\
 \zeta_S(K,T)&=\frac{(K/S_0)e^{-rT-\mu_T}}{\sqrt{2\sigma_T^2}}\prod_{j\in S}(iA_j(T)).
 \label{eq:price_argument}
 \end{align}
-After Newton--Girard consolidation the sum reduces to $2M+1$
-symmetric-function groups, evaluable in $O(M\log M)$ operations.
+Parameter vectors extend~\eqref{eq:density_params} by appending
+two fixed entries (independent of $S,j$) — $(a,\alpha)=(0,1)$
+in the numerator and $(b,\beta)=(1,1)$ in the denominator —
+from~\eqref{eq:Hint_const}. After Newton--Girard
+(Corollary~\ref{cor:density_symmetric}) the sum reduces to
+$2M+1$ symmetric groups, evaluable in $O(M\log^2M)$.
 \end{theorem}
 
 \begin{proof}[Proof I: convolution chain]
-\textit{Step 1.} Theorem~\ref{thm:foxH_density} provides
-\eqref{eq:foxH_density} for $f_M(x,T)$.
-
-\textit{Step 2.} The undiscounted call payoff splits as
-$(S_T-K)^+=S_0e^{x+rT}\mathbf{1}_{x>\tilde k}-K\mathbf{1}_{x>\tilde k}$,
-with $x=\log(S_T/S_0)-rT$.
-
-\textit{Step 3.} For each Fox $H$-summand of \eqref{eq:foxH_density},
-the integral $\int_{\tilde k}^\infty H^{m,n}_{p,q}[\zeta x|\cdots]dx$
-closes in Fox $H$-form via the integration identity
+Theorem~\ref{thm:foxH_density} gives~\eqref{eq:foxH_density}.
+Payoff splits as
+$(S_T-K)^+=S_0e^{x+rT}\mathbf{1}_{x>\tilde k}-K\mathbf{1}_{x>\tilde k}$.
+Per Fox $H$-summand,
 \begin{equation}\label{eq:Hint_const}
 \int_{\tilde k}^\infty H^{m,n}_{p,q}\!\bigl[\zeta x\big|\cdots\bigr]dx
 =\zeta^{-1}H^{m+1,n}_{p+1,q+1}\!\bigl[\zeta\tilde k\big|(0,1),\ldots,(1,1)\bigr],
 \end{equation}
-adding one $\Gamma$-factor each in $(m,p,q)$. The integration
-against $e^x$ uses the Mellin shift
-$\Mc[e^xf(x)](s)=\Mc[f](s)$ followed by~\eqref{eq:Hint_const},
-adding another $\Gamma$-factor in $n$.
-
-\textit{Step 4.} Discount $e^{-rT}$ and prefactors combine into
-$c_S(T)$ from~\eqref{eq:price_prefactor} and $\zeta_S(K,T)$ from
-\eqref{eq:price_argument}. The Mellin order increase
-$(m_S^\circ,n_S^\circ,p_S^\circ,q_S^\circ)\to(m_S,n_S,p_S,q_S)
-=(0,1,1,1)$-component-wise gives~\eqref{eq:foxH_price}.
-
-\textit{Step 5: Consolidation.} The Mellin transform for fixed
-$|S|=r$ depends on $\{A_ju_j:j\in S\}$ only through elementary
-symmetric functions. Newton--Girard collapses
-$\sum_{|S|=r}\prod_{j\in S}A_ju_j=e_r(A_1u_1,\ldots,A_{2M}u_{2M})$,
-reducing $2^{2M}$ subsets to $2M+1$ groups. Residue-series
-evaluation per Fox $H$ summand has $n$-th term $O(n!^{-1})$
-(Stirling), attaining machine precision in $O(M)$ terms; total
-$O(M\log M)$ per price.
+adding one $\Gamma$-factor each in $(m,p,q)$. Mellin shift
+$\Mc[e^xf](s)=\Mc[f](s)$ followed by~\eqref{eq:Hint_const} adds
+one in $n$. Increment $(m_S^\circ,n_S^\circ,p_S^\circ,q_S^\circ)\to(m_S,n_S,p_S,q_S)$
+by $(1,1,1,1)$ giving $(|S|+1,|S|+1,|S|+2,2|S|+2)$. Discount
+and prefactors combine into $c_S(T),\zeta_S(K,T)$. Newton--Girard
+reduces $2^{2M}$ to $2M+1$; residue series $O(n!^{-1})$ gives
+$O(M\log^2M)$ per price.
 \end{proof}
 
 \begin{proof}[Proof II: direct Mellin--Barnes inversion]
-\textit{Step 1: Carr--Madan representation.} For damping
-$\alpha\in(0,1)$ chosen so that $\phi_M(\cdot-(\alpha+1)i,T)$ is
-integrable on $\R$ (existence by Lemma~\ref{lem:decay}),
-\begin{equation}\label{eq:carr_madan}
-C_M(K,T)=\frac{S_0e^{-rT-\alpha\tilde k}}{2\pi}\int_\R e^{-iv\tilde k}\,
-\frac{\phi_M(v-(\alpha+1)i,T)}{\alpha^2+\alpha-v^2+i(2\alpha+1)v}\,dv.
-\end{equation}
+\textit{Step 1: Strip hypothesis.}
+Assume~\eqref{eq:strip_hypothesis} for some $c\in\R$
+(admissibility: Proposition~\ref{prop:strip}). Set
+$\alpha:=-c-1$. Lemma~\ref{lem:decay} ensures absolute
+integrability of $\phi_M(\cdot+ci,T)$ on $\R$ via Gaussian
+envelope. The Lewis contour $\Real s=c$ lies in
+$\bigcap_j\{\Real s>\Real\tilde u_j\}=\bigcap_j\{\Real s>\Imag u_j\}$
+by~\eqref{eq:strip_hypothesis}.
+By Remark~\ref{rem:cauchy_independence} the resulting formula
+is independent of $c$ within the admissible region.
 
-\textit{Step 2: Lewis vertical-strip representation.} The
-substitution $w:=-iv-(\alpha+1)$ with $c:=-(\alpha+1)\in(-2,-1)$
-yields
+\textit{Step 2: Lewis representation.}
 \begin{equation}\label{eq:lewis}
 C_M(K,T)=\frac{S_0e^{-rT}}{2\pi i}\int_{c-i\infty}^{c+i\infty}\frac{\phi_M(iw,T)e^{-w\tilde k}}{w(w-1)}\,dw.
 \end{equation}
 
-\textit{Step 3: Mellin form.} Setting $y:=e^{-\tilde k}=(S_0/K)e^{rT}$,
-\eqref{eq:lewis} is the inverse Mellin transform of
-$\widetilde\Phi_M(s,T):=\phi_M(is,T)/(s(s-1))$ at $y$:
+\textit{Step 3: Mellin form.} $y:=e^{-\tilde k}=(S_0/K)e^{rT}$,
 \begin{equation}\label{eq:mellin_form}
-C_M(K,T)=S_0e^{-rT}\cdot\frac{1}{2\pi i}\int_{\mathcal{L}}\widetilde\Phi_M(s,T)y^{-s}ds.
+C_M(K,T)=S_0e^{-rT}\cdot\frac{1}{2\pi i}\int_{\mathcal{L}}\widetilde\Phi_M(s,T)y^{-s}ds,
+\quad \widetilde\Phi_M(s,T):=\frac{\phi_M(is,T)}{s(s-1)}.
 \end{equation}
 
-\textit{Step 4: Gamma-quotient form of $\phi_M(is,T)$.} From
-\eqref{eq:PFE} with $\tilde A_j:=-iA_j$, $\tilde u_j:=-iu_j$,
+\textit{Step 4.} $\tilde A_j:=-iA_j$, $\tilde u_j:=-iu_j$,
 \begin{equation}\label{eq:phi_is}
 \phi_M(is,T)=e^{\tfrac12\sigma_T^2s^2+\mu_Ts}\prod_{j=1}^{2M}\exp(\tilde A_j/(s-\tilde u_j)).
 \end{equation}
 
-\textit{Step 5: Multi-series expansion.} Expanding each pole
-exponential as $\sum_{n_j\ge 0}\tilde A_j^{n_j}/(n_j!(s-\tilde u_j)^{n_j})$
-and using $1/(s-\tilde u_j)^n=\Gamma(s-\tilde u_j)/\Gamma(s-\tilde u_j+n)/\prod_{l=0}^{n-1}(s-\tilde u_j+l)$
-converts the integrand of~\eqref{eq:mellin_form} to a multi-series
-of Gamma-quotient terms indexed by support sets
-$S=\{j:n_j\ge 1\}\subseteq\{1,\ldots,2M\}$ and multi-indices
-$(n_j)_{j\in S}$.
-
-\textit{Step 6: Bessel resummation.} Each per-pole sum
-$\sum_{n\ge 1}\tilde A_j^n/(n!(s-\tilde u_j)_n)$ resums to
-$\Gamma(s-\tilde u_j)\tilde A_j^{(s-\tilde u_j-1)/2}I_{s-\tilde u_j-1}(2\sqrt{\tilde A_j})$
-minus its zeroth term, by the modified Bessel generating identity
+\textit{Step 5.}
 \begin{equation}\label{eq:bessel_resum}
-\sum_{n\ge 1}\frac{c^n}{n!(s-u)_n}=\frac{\Gamma(s-u)I_{s-u-1}(2\sqrt{c})}{c^{(s-u-1)/2}}-1.
+\sum_{n\ge 1}\frac{c^n}{n!(s-u)_n}=\frac{\Gamma(s-u)I_{s-u-1}(2\sqrt{c})}{c^{(s-u-1)/2}}-1
 \end{equation}
+converges absolutely on $\Real(s-u)>0$. Strip hypothesis places
+the Lewis contour strictly inside the simultaneous convergence
+region; no residues crossed, termwise resummation licensed.
 
-\textit{Step 7: Identification with Fox $H$.} Multiplying the
-Bessel-resummed pre-factor against the Gaussian Mellin transform
-$\Gamma(s/2+\tfrac12)\cdot(\text{const})$ and the payoff Mellin
-transform $1/(s(s-1))$ produces a Mellin--Barnes integrand of
-$\Gamma$-quotients with linear arguments in $s$, identified by
-Definition~\ref{def:foxH} as a Fox $H$-function with parameter
-counts
-\[
-(m_S,n_S,p_S,q_S)=(|S|+1,|S|+1,|S|+2,2|S|+2)
-\]
-matching Proof I.
+\textit{Step 6.} Multi-series with $S=\{j:n_j\ge 1\}$,
+combination with Gaussian Mellin transform
+$\Gamma(s/2+\tfrac12)$ and payoff factor $1/(s(s-1))$.
 
-\textit{Step 8: Constants and argument.} The prefactor combines
-$1/\sqrt{2\pi\sigma_T^2}$ from the Gaussian Mellin normalisation,
-$\epsilon_j\sqrt{A_j/i}$ from the contour-orientation choice in
-\eqref{eq:bessel_resum} (the $I_\nu$ branch when $\Imag u_j<0$,
-the sign-flipped branch when $\Imag u_j>0$), giving
-$c_S(T)$ identical to~\eqref{eq:price_prefactor}. The Mellin
-argument collects $y^{-s}=e^{s\tilde k}$, the $e^{\mu_Ts}$ shift,
-and the $\sqrt{2\sigma_T^2}$ rescaling, giving $\zeta_S(K,T)$
-identical to~\eqref{eq:price_argument}.
+\textit{Step 7.} Identification as Fox $H$ with
+$(|S|+1,|S|+1,|S|+2,2|S|+2)$, matching Proof~I.
 
-\textit{Step 9.} Identical $(m_S,n_S,p_S,q_S)$, $c_S(T)$,
-$\zeta_S(K,T)$, parameter vectors. The proofs are independent and
-share no intermediate machinery: Proof I operates in $x$-space
-via the convolution theorem on the half-line; Proof II operates
-in Mellin space via the Lewis representation and the Bessel
-resummation identity.
+\textit{Step 8.} Constants and argument identical to
+\eqref{eq:price_prefactor}, \eqref{eq:price_argument}.
+
+\textit{Step 9.} Independence: Proof~I in $x$-space via half-line
+Mellin convolution; Proof~II in Fourier/Mellin space via Lewis +
+Bessel resummation. No shared intermediate machinery.
 \end{proof}
 
-\begin{proof}[Proof III: density integration]
-The price is recovered from the density of
-Theorem~\ref{thm:foxH_density} by
-\begin{equation}\label{eq:price_from_density}
-C_M(K,T)=e^{-rT}\int_\R(S_0e^{x+rT}-K)^+f_M(x,T)dx.
-\end{equation}
-Substitution of \eqref{eq:foxH_density} and term-by-term
-application of the integration identity~\eqref{eq:Hint_const}
-twice — once for the $K$-piece (with the constant payoff factor)
-and once for the $S_0e^{x+rT}$-piece (using the Mellin shift) —
-adds $\Gamma$-factors in components $(0,1,1,1)$ to
-$(m_S^\circ,n_S^\circ,p_S^\circ,q_S^\circ)$, producing
-$(m_S,n_S,p_S,q_S)=(|S|+1,|S|+1,|S|+2,2|S|+2)$. Prefactors and
-argument combine into $c_S(T),\zeta_S(K,T)$ as in
-Proofs I and II.
-\end{proof}
-
-\begin{corollary}[Triple-derivation verification]\label{cor:triple}
-The Fox $H$ representation~\eqref{eq:foxH_price} of the European
-call price under the Pad\'{e}--M\"untz approximation is reached by
-three analytically independent routes — convolution chain
-(Proof I), direct Mellin--Barnes inversion via the Lewis
-representation (Proof II), and density integration via
-Theorem~\ref{thm:foxH_density} (Proof III) — all converging on
-identical $(m_S,n_S,p_S,q_S)$, $c_S(T)$, $\zeta_S(K,T)$, and
-parameter vectors $(\mathbf{a}_S,\boldsymbol{\alpha}_S),
-(\mathbf{b}_S,\boldsymbol{\beta}_S)$. The representation is
-therefore independent of derivation technique.
+\begin{corollary}[Two-route verification]\label{cor:two_routes}
+\eqref{eq:foxH_price} is established by two analytically
+independent routes converging on identical
+$(m_S,n_S,p_S,q_S),c_S(T),\zeta_S(K,T)$, parameter vectors. The
+representation is independent of derivation technique.
 \end{corollary>
 
 \begin{corollary}[Quadrature-free pricing]\label{cor:no_quadrature}
-$C_M(K,T)$ from~\eqref{eq:foxH_price} is computed by a finite sum
-of Fox $H$ evaluations, each evaluated by its absolutely convergent
-Mellin--Barnes residue series with $n$-th term $O(n!^{-1})$, with
-no Fourier inversion quadrature, no cosine series, and no
-truncation interval.
+$C_M(K,T)$ is a finite sum of Fox $H$ evaluations, each via
+absolutely convergent residue series with $n$-th term
+$O(n!^{-1})$, no Fourier inversion quadrature, no cosine series,
+no truncation interval.
 \end{corollary>
 
 % -----------------------------------------------------------------
@@ -753,37 +684,32 @@ truncation interval.
 \label{sec:cos}
 % -----------------------------------------------------------------
 
-For environments lacking a Fox $H$ evaluator, $\Phi_M(\cdot,T)$
-may be priced via Fang--Oosterlee COS.
-
 \subsection{Cumulants}
 
-With $\psi_M(s,T):=\Phi_M(-is,T)$,
+$\psi_M(s,T):=\Phi_M(-is,T)$,
 \begin{equation}\label{eq:cumulants}
 \kappa_n^{(M)}(T):=\frac{d^n\psi_M(s,T)}{ds^n}\bigg|_{s=0},
-\quad n=1,2,3,4,
+\quad n=1,2,3,4.
 \end{equation}
-computed by finite differences on a small symmetric stencil at
-arbitrary precision.
 
 \subsection{Truncation interval}
 
 \begin{equation}\label{eq:interval}
 [a(T),b(T)]:=\Bigl[\kappa_1^{(M)}-L\sqrt{\kappa_2^{(M)}+\sqrt{\kappa_4^{(M)}}},\,
 \kappa_1^{(M)}+L\sqrt{\kappa_2^{(M)}+\sqrt{\kappa_4^{(M)}}}\Bigr],
+\quad L\in[8,12].
 \end{equation}
-with $L\in[8,12]$.
 
 \begin{remark}[Single-interval term structure]\label{rem:single_interval}
-$\kappa_2^{(M)}(T)$ and $\kappa_4^{(M)}(T)$ are nondecreasing in
-$T$, so $[a,b]:=[a(T_{\max}),b(T_{\max})]$ is admissible for every
+$\kappa_2^{(M)}(T),\kappa_4^{(M)}(T)$ nondecreasing in $T$, so
+$[a,b]:=[a(T_{\max}),b(T_{\max})]$ is admissible for every
 $T\in(0,T_{\max}]$.
 \end{remark}
 
 \subsection{Payoff coefficients}
 
-For the call payoff $w(x)=K(e^x-1)^+$,
-$U_n=\frac{2K}{b-a}[\chi_n(0,b)-\psi_n(0,b)]$ with
+$w(x)=K(e^x-1)^+$,
+$\widetilde U_n=\frac{2}{b-a}[\chi_n(0,b)-\psi_n(0,b)]$,
 \begin{align}
 \chi_n(c,d)&=\frac{1}{1+(n\pi/(b-a))^2}\Bigl[\cos(n\pi(d-a)/(b-a))e^d-\cos(n\pi(c-a)/(b-a))e^c
 \nonumber\\
@@ -792,34 +718,22 @@ $U_n=\frac{2K}{b-a}[\chi_n(0,b)-\psi_n(0,b)]$ with
 \frac{b-a}{n\pi}[\sin(n\pi(d-a)/(b-a))-\sin(n\pi(c-a)/(b-a))],&n\ge 1.\end{cases}
 \end{align}
 
-\subsection{COS price}
+\subsection{COS price with Gaussian-rate error}
 
 \begin{theorem}[COS pricing]\label{thm:price}
-Let $\phi_M(\cdot,T)=\exp(\Phi_M(\cdot,T))$, $[a,b]$ chosen by
-\eqref{eq:interval} or Remark~\ref{rem:single_interval},
-$x_0:=\log(S_0/K)+rT$, and
+$x_0:=\log(S_0/K)+rT$,
 \begin{equation}\label{eq:CMN}
-C_{M,N}:=Ke^{-rT}\sum_{n=0}^{N-1}\!{}^\prime\,\Real\!\left[\phi_M\!\left(\tfrac{n\pi}{b-a},T\right)\exp\!\left(in\pi\tfrac{x_0-a}{b-a}\right)\right]\widetilde U_n,
+C_{M,N}:=Ke^{-rT}\sum_{n=0}^{N-1}\!{}^\prime\,\Real\!\left[\phi_M\!\left(\tfrac{n\pi}{b-a},T\right)\exp\!\left(in\pi\tfrac{x_0-a}{b-a}\right)\right]\widetilde U_n.
 \end{equation}
-where $\widetilde U_n=\frac{2}{b-a}[\chi_n(0,b)-\psi_n(0,b)]$.
-Then $C_{M,N}\to C_M$ as $N\to\infty$, and for every $\epsilon>0$
-there is $C_\epsilon<\infty$ with
+$C_{M,N}\to C_M$ as $N\to\infty$, with Gaussian-rate truncation
 \begin{equation}\label{eq:cos_error}
-|C_M-C_{M,N}|\le C_\epsilon\exp(-(c-\epsilon)N^{2\mu}/(b-a)^{2\mu}),
+|C_M-C_{M,N}|\le C'\exp\!\left(-\tfrac12\sigma_T^2(N\pi/(b-a))^2\right).
 \end{equation}
-where $c>0$ is from Lemma~\ref{lem:decay}.
 \end{theorem}
 \begin{proof}
-The cosine expansion of $f_M$ on $[a,b]$ has coefficients
-$A_n=\frac{2}{b-a}\Real[\phi_M(n\pi/(b-a),T)e^{-in\pi a/(b-a)}]+\varepsilon_n$
-with $|\varepsilon_n|\le\frac{2}{b-a}\int_{\R\setminus[a,b]}f_M(x)dx$
-uniform in $n$. Parseval against the cosine basis on $[a,b]$
-yields $Ke^{-rT}\int_a^bwf_Mdx=\sum_{n\ge 0}{}^\prime A_nU_n$,
-and truncation at $N$ gives~\eqref{eq:CMN}. Lemma~\ref{lem:decay}
-bounds the tail
-$\sum_{n\ge N}|\phi_M(n\pi/(b-a),T)U_n|$ by a geometric series in
-$\exp(-c(n\pi/(b-a))^{2\mu})$, dominant term yielding
-\eqref{eq:cos_error}.
+Cosine expansion of $f_M$ on $[a,b]$, Parseval against the
+cosine basis, Lemma~\ref{lem:decay} bounds the tail by its first
+term, yielding~\eqref{eq:cos_error}.
 \end{proof}
 
 % -----------------------------------------------------------------
@@ -827,66 +741,63 @@ $\exp(-c(n\pi/(b-a))^{2\mu})$, dominant term yielding
 \label{sec:algorithm}
 % -----------------------------------------------------------------
 
-For each strike $K$, the following pipeline produces the price for
-all maturities $T$ in the term structure:
+For each strike $K$ and Fourier node $v$ dual to $\log K$:
 \begin{enumerate}
-\item \emph{M\"untz coefficients.} Compute $\{a_k(v)\}_{k=1}^{2M}$
-from~\eqref{eq:ak} at the relevant Fourier nodes in $v$
-(Fourier-dual to $\log K$), $O(M^2)$ scalar operations per node.
-\item \emph{Cumulant moments.} Compute $\{M_k(v)\}_{k=0}^{2M-1}$
+\item M\"untz coefficients $\{a_k(v)\}_{k=1}^{2M}$
+from~\eqref{eq:ak}, $O(M^2)$ per node
+(Remark~\ref{rem:index}).
+\item Cumulant moments $\{M_k(v)\}_{k=0}^{2M-1}$
 from~\eqref{eq:cumulant_moments}, $O(M)$.
-\item \emph{Chebyshev algorithm.} Apply
-Theorem~\ref{thm:chebyshev} for $\{\alpha_k,\beta_k,h_k,p_k\}_{k=0}^M$
-in $O(M^2)$; assemble $Q_M(z;v),P_M(z;v)$ via Lemma~\ref{lem:match}.
-\item \emph{Per-$T$ specialisation.} For each $T$, substitute
-$z=T^\mu$ to obtain the rational $\Phi_M(v,T)$ in closed form,
-$O(M)$ per $T$.
-\item \emph{Partial-fraction expansion.} Compute
-$\{u_j(T),A_j(T)\}_{j=1}^{2M}$ and $\{\sigma_T,\mu_T\}$ by the
-cover-up rule, $O(M^2)$ per $T$.
-\item \emph{Pricing endpoint.}
+\item Chebyshev algorithm for
+$\{\alpha_k,\beta_k,h_k,p_k\}_{k=0}^M$ in $O(M^2)$; assemble
+$Q_M(z;v),P_M(z;v)$ via Lemma~\ref{lem:match}.
+\item Per-$T$ specialisation $z=T^\mu$, $O(M)$ per $T$.
+\item PFE: $\{u_j(T),A_j(T)\}_{j=1}^{2M},\sigma_T,\mu_T$ by
+cover-up, $O(M^2)$ per $T$.
+\item Pricing endpoint:
 \begin{enumerate}
-\item Fox $H$ closed form: evaluate~\eqref{eq:foxH_price} via
-Newton--Girard consolidation and residue summation,
-$O(M\log M)$ per $(K,T)$, no quadrature.
-\item COS: compute cumulants \eqref{eq:cumulants}, set $[a,b]$
+\item Fox $H$: \eqref{eq:foxH_price} via Newton--Girard
+(Corollary~\ref{cor:density_symmetric}) and residue summation,
+$O(M\log^2M)$ per $(K,T)$, no quadrature.
+\item COS: cumulants~\eqref{eq:cumulants}, $[a,b]$
 via~\eqref{eq:interval} or Remark~\ref{rem:single_interval},
 sum~\eqref{eq:CMN}, $O(NM)$ per $(K,T)$.
 \end{enumerate}
 \end{enumerate}
-The front-end cost (steps 1--3) is $O(M^2)$ per strike,
-amortised across the entire term structure since the Chebyshev
-construction in $\C[v]$ is $T$-independent. Per-$(K,T)$ cost
-beyond the front end is $O(M\log M)$ via Fox $H$ or $O(NM)$ via
-COS.
+Front-end (steps 1--3) is $O(M^2)$ per strike, amortised across
+the entire term structure since the Chebyshev construction in
+$\C[v]$ is $T$-independent.
 
 % -----------------------------------------------------------------
 \section{Summary}
 \label{sec:summary}
 % -----------------------------------------------------------------
 
-\textbf{T1.} The Pad\'{e} resummation of the local Puiseux series
-of the rough Heston cumulant generating function is performed
-directly on the cumulant moments $\{M_k(v)\}$ via the Chebyshev
-algorithm in arbitrary precision, bypassing the integration of
-$h(v,t)$ that prior methods perform numerically. The orthogonal
-polynomial sequence $\{p_n\}$ is produced by recurrence in
-$O(M^2)$ ring operations with no Hankel matrix inversion. The
-a-posteriori bound~\eqref{eq:aposteriori} fixes $M$ from
-precision.
+\textbf{T1.} Pad\'{e} resummation of the cumulant generating
+function performed directly on $\{M_k(v)\}$ via Chebyshev
+algorithm in arbitrary precision, bypassing numerical integration
+of $h(v,t)$. Orthogonal polynomial sequence produced by
+recurrence in $O(M^2)$ ring operations, no Hankel matrix
+inversion. Stahl convergence (Theorem~\ref{thm:conv}) extends
+beyond the Puiseux radius. Supremum-ratio a-posteriori bound
+(Theorem~\ref{thm:aposteriori}) fixes $M$ from precision.
 
-\textbf{T2.} The density of the log-return
-(Theorem~\ref{thm:foxH_density}) and the European call price
-(Theorem~\ref{thm:foxH_price}) admit strictly closed-form
-representations as finite sums of Fox $H$-functions, evaluable in
-$O(M\log M)$ per evaluation with no quadrature. The price formula
-is verified by three independent analytic derivations
-(Corollary~\ref{cor:triple}).
+\textbf{T2.} Density (Theorem~\ref{thm:foxH_density}) and call
+price (Theorem~\ref{thm:foxH_price}) admit strictly closed-form
+Fox $H$ representations with explicit symmetric parameter
+vectors~\eqref{eq:density_params}, evaluable in $O(M\log^2M)$ per
+evaluation with no quadrature, established by two analytically
+independent routes (Corollary~\ref{cor:two_routes}). Pad\'{e}
+characteristic function has Gaussian real-axis decay
+(Lemma~\ref{lem:decay}). Strip admissibility for the
+Mellin--Barnes contour is Proposition~\ref{prop:strip}; the
+formula is contour-invariant
+(Remark~\ref{rem:cauchy_independence}).
 
-\textbf{T3.} Alternative pricing via COS
-(Theorem~\ref{thm:price}) on the rational characteristic exponent
+\textbf{T3.} COS pricing (Theorem~\ref{thm:price}) on rational
 $\Phi_M(\cdot,T)$ provides a fallback endpoint of cost $O(NM)$
-per $(K,T)$ for environments without a Fox $H$ evaluator.
+per $(K,T)$ with Gaussian-rate truncation error
+$\exp(-\tfrac12\sigma_T^2(N\pi/(b-a))^2)$.
 
 \begin{thebibliography}{9}
 \bibitem{Chebyshev}
