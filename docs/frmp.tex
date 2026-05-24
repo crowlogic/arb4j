@@ -897,14 +897,25 @@ the generating function $A(z,u)$ has no poles on $(0,\infty)$.
 \end{lemma}
 
 \begin{proof}
-Each pole $z^{*}$ of $A(\cdot,u)$ is simple, with residue
+A pole $z^{*}(u)$ of $A(\cdot,u)$ is inherited from a discriminant zero of
+$F(\cdot,u)$, i.e. $(1-z^{*}Q(u))^{2}=4z^{*}P(u)R(u)\,\Psimu(z^{*})$. Expanding
+$F$ from~\eqref{eq:Fformula} about $z^{*}$ with
+$\Delta_F(z,u)=\Delta_F'(z^{*},u)\,(z-z^{*})+O((z-z^{*})^{2})$ gives
+\begin{equation}\label{eq:res_F}
+\operatorname{Res}\bigl(F(\cdot,u),z^{*}\bigr)
+  = \frac{\sqrt{-\Delta_F'(z^{*},u)}}{2\,z^{*}R(u)};
+\end{equation}
+transferring to $A$ by Lemma~\ref{lem:branch_transfer} and substituting
+$\Delta_F'(z^{*},u)$ from the defining discriminant relation reduces this to
 \begin{equation}\label{eq:res_no_real}
 \operatorname{Res}\bigl(A(\cdot,u),z^{*}\bigr)
    = -\,\frac{(z^{*})^{(\mu-1)/\mu}}{R(u)\,\mu}.
 \end{equation}
-For $z^{*}\in(0,\infty)$ this residue is nonzero; but the Volterra fixed
-point is holomorphic on every compact real interval on which it converges,
-a contradiction. Hence $A(\cdot,u)$ has no poles on $(0,\infty)$.
+For $z^{*}\in(0,\infty)$ this residue is nonzero; but the Volterra fixed point
+$y(t,u)=t^{\mu}A(t^{\mu},u)$ is holomorphic on every compact real $t$-interval
+on which the M\"{u}ntz series~\eqref{eq:Muntz_ansatz} converges
+(Theorem~\ref{thm:Muntz}), a contradiction. Hence $A(\cdot,u)$ has no poles on
+$(0,\infty)$.
 \end{proof}
 
 \begin{corollary}[Uniform convergence on $\mathbb{R}_{+}$]\label{cor:uniform}
