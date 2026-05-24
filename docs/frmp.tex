@@ -436,6 +436,73 @@ $D_M(0,u)=1$.
 \end{proof}
 
 % ---------------------------------------------------------------
+\paragraph{The truncated Jacobi matrix.}
+\begin{equation}\label{eq:JM_def}
+J_M(u) :=
+\begin{pmatrix}
+\alpha(0,u) & 1 & & \\
+\beta(1,u) & \alpha(1,u) & 1 & \\
+ & \ddots & \ddots & \ddots \\
+ & & \beta(M-1,u) & \alpha(M-1,u)
+\end{pmatrix}.
+\end{equation}
+On the orthonormal basis
+$\widehat\pi_k = \pi_k/\sqrt{\prod_{i=0}^{k}\beta(i,u)}$, the three-term
+recurrence~\eqref{eq:pi_rec} gives the defect equation
+\begin{equation}\label{eq:JM_defect}
+J_M(u)\,v(\lambda) = \lambda\,v(\lambda) - \pi_M(\lambda,u)\,e_M,
+\qquad v(\lambda) = \bigl(\widehat\pi_0(\lambda),\dots,\widehat\pi_{M-1}(\lambda)\bigr)^{\!\top}.
+\end{equation}
+
+\begin{theorem}[Spectral identification]\label{thm:JM_spectrum}
+Under quasi-definiteness:
+\begin{enumerate}
+\item The eigenvalues of $J_M(u)$ are exactly the zeros of $\pi_M(\cdot,u)$,
+hence the reciprocals of the zeros of $D_M(z,u)=z^{M}\pi_M(z^{-1},u)$
+(Theorem~\ref{thm:gragg}).
+\item For each eigenvalue $\lambda$ the right eigenvector is
+$v(\lambda)=(\widehat\pi_0(\lambda),\dots,\widehat\pi_{M-1}(\lambda))^{\top}$,
+and the defect equation~\eqref{eq:JM_defect} holds.
+\item As $M\to\infty$, the reciprocal empirical eigenvalue measure
+$\nu_M^{\mathrm{rec}}(u):=M^{-1}\!\!\sum_{\lambda\in\operatorname{spec}J_M(u)}\!\!\delta_{1/\lambda}$
+converges to the pushforward $(1/z)_{*}\,\nu_{K_A(u)}$ of the equilibrium
+measure of the Stahl compact $K_A(u)$, weakly on compacta of
+$\widehat{\C}\setminus\{0\}$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(1) By the determinantal identity
+\begin{equation}\label{eq:detident}
+\widehat\pi_k(\lambda,u)
+  = \det\bigl(\lambda I_k - \widetilde J_k(u)\bigr)\Big/
+    \prod_{i=2}^{k}\sqrt{\beta(i,u)},
+\end{equation}
+with $\widetilde J_k(u)$ the symmetric tridiagonal form of $J_k(u)$, the zeros
+of $\pi_M(\cdot,u)$ coincide with $\operatorname{spec}J_M(u)$; the
+identification $D_M(z,u)=z^{M}\pi_M(z^{-1},u)$ gives the reciprocal
+relationship. (2) Substituting $v(\lambda)$ into $J_M(u)$ at rows $k<M-1$
+yields $(J_M(u)v(\lambda))_k=\lambda\,\widehat\pi_k(\lambda)$ by~\eqref{eq:pi_rec};
+at row $M-1$ the absent $\pi_M(\lambda)$ entry contributes
+$-\pi_M(\lambda,u)\,e_M$, which is~\eqref{eq:JM_defect}. (3) The zeros of
+$D_M$ are reciprocals of $\operatorname{spec}J_M(u)$;
+Theorem~\ref{thm:stahl_convergence} and~\eqref{eq:nu_M} give weak-$*$
+convergence of the zero-counting measure of $D_M$ to $\nu_{K_A(u)}$, and the
+pushforward under the homeomorphism $z\mapsto 1/z$ of
+$\widehat{\C}\setminus\{0\}$ yields the stated reciprocal limit on compacta
+avoiding the origin.
+\end{proof}
+
+\begin{remark}[Spectral measure, constant-coefficient case]\label{rem:spec_meas}
+When $P(u),Q(u),R(u)\in\C$ are constants, $A$ is meromorphic on $\C$ with
+simple poles $\mathcal{P}_A$, and the spectral measure
+$\mu_A:=\sum_{z^{*}\in\mathcal{P}_A}\operatorname{Res}(A,z^{*})\,\delta_{z^{*}}$
+has moments $\Lk[x^k]=a(k,u)$. In this setting $J_M(u)$ is the truncated
+Jacobi operator of $\mu_A$ (Stone's theorem) and $N_M/D_M$ is the rank-$M$
+Stieltjes transform of $\mu_A$.
+\end{remark}
+
+% ---------------------------------------------------------------
 \section{Meromorphic Continuation of $A$}\label{sec:meromorphy}
 % ---------------------------------------------------------------
 
