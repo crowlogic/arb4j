@@ -20,32 +20,27 @@
 \begin{document}
 
 \title{The Fractional Riccati--M\"{u}ntz--Pad\'{e} Theorem:\\
-\large Convergence via the Three-Term Recurrence and\\
-Exact Rough Heston Option Pricing}
+\large Exact Rough Heston Option Pricing}
 \author{Stephen Crowley}
 \date{May 2026}
 \maketitle
 
 \begin{abstract}
-Let $\mu\in(0,1]$ and let $y$ be the unique solution of the
-constant-coefficient fractional Riccati initial-value problem
-$D^{\mu}y = c_0 + c_1 y + c_2 y^2$, $I^{1-\mu}y(0)=0$.
-We prove two theorems.  \textbf{T1}: the diagonal $[M/M]$
-Pad\'{e} approximant of $g(z)=y(z^{1/\mu})$, constructed via
-the Chebyshev--Wheeler algorithm applied to the moment sequence
-$\Lk[z^k]=a_{k+1}$ of the M\"{u}ntz coefficients, converges to
-$g$ uniformly on $[0,(T^*)^\mu)$; the truncated Jacobi matrix
-$J_M$ supplies the poles as its eigenvalues with no linear
-system solved at any step.
-\textbf{T2}: the European call price under rough Heston is a
-finite exact sum of residues at the poles $\{\eta_j(T)\}$ of
-$\Phi_M(v,T)$---itself an explicit rational function of $v$
-whose poles are eigenvalues of a second Jacobi matrix built by
-a second Wheeler pass on the computable Laurent coefficients of
-$\Phi_M$---with each residue given in closed form by the
-modified Bessel $I_1$ generating function.  The only parameter
-is $M$, determined by the requested precision.  No quadrature,
-no FFT, no damping, no contour truncation, no linear systems.
+Let $\mu=H+\tfrac12\in(\tfrac12,1)$ and let $h(v,t)$ solve the rough
+Heston fractional Riccati equation.  Define scalar weights
+$u_k=\lambda\theta/(k\mu+1)$ ($k\ge1$, $u_0=0$) and
+$w_k=V_0\Gamma((k+1)\mu+1)/\Gamma(k\mu+2)$ ($k\ge0$), and set
+$d_k(v):=u_k a_k(v)+w_k a_{k+1}(v)$ where $\{a_k(v)\}$ are the
+M\"{u}ntz--Tau coefficients of $h$.  Then
+$\Phi(v,T)=\sum_{k=0}^\infty d_k(v)T^{k\mu+1}$
+is a power series in $z=T^\mu$ with moments $d_k(v)$, and its
+diagonal $[M/M]$ Pad\'{e} approximant $\Phi_M(v,T)$,
+constructed by the Wheeler algorithm applied to
+$\Lk[z^k]=d_k(v)$, converges uniformly to $\Phi$ and admits
+the partial-fraction form $\Phi_M=\sum_j c_j/(v-\eta_j)$
+whose poles $\eta_j$ are eigenvalues of the associated Jacobi
+matrix.  The European call price is then the exact finite sum
+given in Theorem~\ref{thm:price}.
 \end{abstract}
 
 \tableofcontents
@@ -56,595 +51,278 @@ no FFT, no damping, no contour truncation, no linear systems.
 % ------------------------------------------------------------------
 
 \begin{definition}[Riemann--Liouville operators]\label{def:RL}
-For $\mu\in(0,1]$ and $f$ locally integrable on $(0,\infty)$,
 \begin{align}
-\Imu f(t) &:= \frac{1}{\Gamma(\mu)}\int_0^t
-              (t-s)^{\mu-1}f(s)\,ds,\label{eq:RL_I}\\
-\Dmu f(t) &:= \frac{d}{dt}\bigl(\Ico f\bigr)(t).\label{eq:RL_D}
+\Imu f(t)&:=\frac{1}{\Gamma(\mu)}\int_0^t(t-s)^{\mu-1}f(s)\,ds,
+\label{eq:RL_I}\\
+\Dmu f(t)&:=\frac{d}{dt}\bigl(\Ico f\bigr)(t).
+\label{eq:RL_D}
 \end{align}
 \end{definition}
 
 \begin{lemma}[Power rule]\label{lem:power}
-For $s>-1$,
-\begin{equation}\label{eq:power}
-\Imu t^s = \frac{\Gamma(s+1)}{\Gamma(s+\mu+1)}\,t^{s+\mu}.
-\end{equation}
+For $s>-1$ and $r>0$,
+$I^r t^s = \tfrac{\Gamma(s+1)}{\Gamma(s+r+1)}\,t^{s+r}$.
 \end{lemma}
 \begin{proof}
-Substitute $\sigma=t\tau$ in~\eqref{eq:RL_I}; the beta integral
-gives $B(\mu,s+1)=\Gamma(\mu)\Gamma(s+1)/\Gamma(s+\mu+1)$.
+Substitute $\sigma=t\tau$; the beta integral gives
+$B(r,s+1)=\Gamma(r)\Gamma(s+1)/\Gamma(s+r+1)$.
 \end{proof}
 
-The M\"{u}ntz lattice $\{t^{k\mu}\}_{k\ge 0}$ is closed under
-$\Imu$, $\Dmu$, and multiplication.  In $z=t^\mu$ every element
-is $z^k$, so ordinary power-series arithmetic applies throughout.
-
 % ------------------------------------------------------------------
-\section{The M\"{u}ntz--Tau recurrence}
+\section{M\"{u}ntz--Tau recurrence and the $d_k$ moments}
 \label{sec:recurrence}
 % ------------------------------------------------------------------
 
-Set $\gamma_k:=\Gamma((k-1)\mu+1)/\Gamma(k\mu+1)$ so that
-$\Imu t^{(k-1)\mu}=\gamma_k t^{k\mu}$ by~\eqref{eq:power}.
+Set $\gamma_k:=\Gamma((k-1)\mu+1)/\Gamma(k\mu+1)$.
 
 \begin{theorem}[M\"{u}ntz--Tau recurrence]\label{thm:recurrence}
-The unique formal power-series solution of
-\begin{equation}\label{eq:IVP}
-y=\Imu[c_0+c_1 y+c_2 y^2],\qquad y(0)=0,
-\end{equation}
-is $y(t)=\sum_{k=1}^\infty a_k t^{k\mu}$ with
+The unique solution of
+$D^\mu h=c_0+c_1 h+c_2 h^2$, $\Ico h(0)=0$,
+is $h(v,t)=\sum_{k\ge1}a_k(v)t^{k\mu}$ with
 \begin{align}
-a_1 &= \frac{c_0}{\Gamma(\mu+1)},\label{eq:a1}\\
-a_k &= \gamma_k\!\left[c_1 a_{k-1}
-      +c_2\sum_{j=1}^{k-2}a_j a_{k-1-j}\right],\quad k\ge 2.
-\label{eq:ak}
+a_1&=\frac{c_0(v)}{\Gamma(\mu+1)},\label{eq:a1}\\
+a_k&=\gamma_k\!\left[c_1(v)a_{k-1}+c_2\sum_{j=1}^{k-2}a_ja_{k-1-j}\right],
+\quad k\ge2.\label{eq:ak}
 \end{align}
-The convolution sum is empty for $k=2$, giving
-$a_2=\gamma_2 c_1 a_1$; for $k=3$,
-$a_3=\gamma_3[c_1 a_2+c_2 a_1^2]$.
+Each $a_k(v)\in\C[v]$ has degree $k+1$ and $a_k(0)=a_k(-i)=0$.
 \end{theorem}
 \begin{proof}
-Substitute the ansatz into~\eqref{eq:IVP} and match the
-coefficient of $t^{k\mu}$.  At order $t^\mu$:
-$\Imu c_0=c_0 t^\mu/\Gamma(\mu+1)$ gives~\eqref{eq:a1}.
-At order $t^{k\mu}$, $k\ge 2$: the power rule gives
-$[t^{k\mu}]\Imu(c_1 y)=c_1 a_{k-1}\gamma_k$; the Cauchy
-product $[t^{(k-1)\mu}]y^2=\sum_{j=1}^{k-2}a_j a_{k-1-j}$
-followed by $\Imu$ yields the factor $\gamma_k$; combining
-gives~\eqref{eq:ak}.  Uniqueness: if $\tilde a_k$ satisfies
-the same recurrence, $e_k:=a_k-\tilde a_k$ satisfies $e_1=0$
-and the same recurrence with $e_1=0$ forcing $e_k=0$ for all
-$k$ by induction.
+Match coefficients of $t^{k\mu}$ using the power rule and the Cauchy
+product; uniqueness by induction on the error sequence.
+\end{proof}
+
+\begin{definition}[$d_k$ moments]\label{def:dk}
+Set $u_0=0$, $u_k=\lambda\theta/(k\mu+1)$ for $k\ge1$,
+and $w_k=V_0\Gamma((k+1)\mu+1)/\Gamma(k\mu+2)$ for $k\ge0$.
+Define
+\begin{equation}\label{eq:dk}
+d_k(v):=u_k a_k(v)+w_k a_{k+1}(v)\in\C[v],\qquad k\ge0.
+\end{equation}
+\end{definition}
+
+\begin{theorem}[M\"{u}ntz-lattice form of the cumulant]\label{thm:Phi_series}
+With $a_0(v):=0$,
+\begin{equation}\label{eq:Phi_series}
+\Phi(v,T)
+:=\lambda\theta\int_0^T h(v,s)\,ds+V_0\,\Ico h(v,\cdot)(T)
+=\sum_{k=0}^\infty d_k(v)\,T^{k\mu+1}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+By the power rule with $r=1$:
+$\lambda\theta\int_0^T s^{k\mu}\,ds=u_k T^{k\mu+1}$.
+By the power rule with $r=1-\mu$:
+$V_0 I^{1-\mu}[s^{k\mu}](T)=V_0\tfrac{\Gamma(k\mu+1)}{\Gamma((k-1)\mu+2)}T^{(k-1)\mu+1}$;
+reindex $k\mapsto k+1$ to land on $T^{k\mu+1}$ with coefficient $w_k$.
+Both operations act diagonally on the M\"{u}ntz coefficients; summing
+gives~\eqref{eq:Phi_series}.
 \end{proof}
 
 % ------------------------------------------------------------------
-\section{Pad\'{e} approximants via the Chebyshev--Wheeler algorithm}
+\section{Pad\'{e} approximant of $\Phi$ via Wheeler}
 \label{sec:wheeler}
 % ------------------------------------------------------------------
 
-Define the moment functional $\Lk[z^k]:=a_{k+1}$ for $k\ge 0$.
+Write $\Phi(v,T)=T\cdot\hat\Phi(v,T^\mu)$ where
+$\hat\Phi(v,z)=\sum_{k=0}^\infty d_k(v)z^k$.
+The diagonal $[M/M]$ Pad\'{e} approximant of $\hat\Phi$ in $z$ at
+fixed $v$ is determined by the moment functional
+$\Lk[z^k]:=d_k(v)$.
 
-\subsection{Auxiliary array and three-term recurrence}
+\subsection{Wheeler algorithm}
 
-Initialize
-\begin{equation}\label{eq:sigma_init}
-\sigma(-1,\ell)=0,\qquad
-\sigma(0,\ell)=a_{\ell+1},\qquad \ell\ge 0.
-\end{equation}
-For $k=1,\ldots,M-1$ update
+Initialize $\sigma(-1,\ell)=0$, $\sigma(0,\ell)=d_{\ell}(v)$.
+For $k=1,\ldots,M-1$:
 \begin{equation}\label{eq:sigma_rec}
 \sigma(k,\ell)=\sigma(k-1,\ell+1)
-              -\alpha(k-1)\,\sigma(k-1,\ell)
-              -\beta(k-1)\,\sigma(k-2,\ell),
+-\alpha(k-1)\sigma(k-1,\ell)-\beta(k-1)\sigma(k-2,\ell),
 \end{equation}
-with
 \begin{align}
-\alpha(0)&=a_2/a_1,\qquad\beta(0)=a_1,\label{eq:ab0}\\
-\alpha(k)&=\frac{\sigma(k,k+1)}{\sigma(k,k)}
-           -\frac{\sigma(k-1,k)}{\sigma(k-1,k-1)},\label{eq:alpha_k}\\
-\beta(k) &=\frac{\sigma(k,k)}{\sigma(k-1,k-1)}.\label{eq:beta_k}
+\alpha(0)&=d_1/d_0,\quad\beta(0)=d_0,\label{eq:ab0}\\
+\alpha(k)&=\sigma(k,k+1)/\sigma(k,k)-\sigma(k-1,k)/\sigma(k-1,k-1),
+\label{eq:alpha_k}\\
+\beta(k)&=\sigma(k,k)/\sigma(k-1,k-1).\label{eq:beta_k}
 \end{align}
-The monic orthogonal polynomials of $\Lk$ satisfy
-\begin{equation}\label{eq:pi_rec}
-\pi_{-1}=0,\quad\pi_0=1,\quad
-\pi_{k+1}(z)=(z-\alpha(k))\pi_k(z)-\beta(k)\pi_{k-1}(z).
-\end{equation}
+The three-term recurrence
+$\pi_{k+1}=(z-\alpha(k))\pi_k-\beta(k)\pi_{k-1}$,
+$\pi_{-1}=0$, $\pi_0=1$,
+produces the denominator $\pi_M=Q_M$ of the Pad\'{e} approximant.
 
-\begin{theorem}[Wheeler]\label{thm:wheeler}
-The auxiliary array satisfies $\sigma(k,\ell)=\Lk[z^\ell\pi_k]$
-for all $k,\ell\ge 0$, hence
-$\Lk[\pi_j\pi_k]=\delta_{jk}\prod_{i=0}^{k}\beta(i)$.
-The monic polynomial $\pi_M$ is the denominator of the $[M/M]$
-Pad\'{e} approximant of $\hat g(z):=g(z)/z$:
-\begin{equation}\label{eq:pade_orth}
-\Lk[z^i\pi_M]=0,\qquad i=0,\ldots,M-1.
-\end{equation}
-\end{theorem}
-\begin{proof}
-Induction using~\eqref{eq:sigma_rec} and linearity of $\Lk$:
-$\sigma(k,\ell)=\Lk[z^{\ell+1}\pi_{k-1}]
--\alpha(k-1)\Lk[z^\ell\pi_{k-1}]-\beta(k-1)\Lk[z^\ell\pi_{k-2}]
-=\Lk[z^\ell\pi_k]$.
-Orthogonality follows because $\pi_j\in\operatorname{span}
-(z^0,\ldots,z^j)$ and each $z^i$ ($i<k$) is killed by $\pi_k$
-via the recurrence.  The Pad\'{e} identification follows from the
-Gragg connection $Q_M(z)=z^M\pi_M(z^{-1})$ and the $2M$ matching
-conditions~\cite{Gragg}.
-\end{proof}
+\subsection{Jacobi matrix and poles}
 
-% ------------------------------------------------------------------
-\section{The truncated Jacobi matrix and the poles}
-\label{sec:jacobi}
-% ------------------------------------------------------------------
-
-Define the $M\times M$ tridiagonal Jacobi matrix
+Assemble the $M\times M$ tridiagonal Jacobi matrix
 \begin{equation}\label{eq:JM}
-J_M:=
-\begin{pmatrix}
-\alpha(0) & 1         &           &        \\
-\beta(1)  & \alpha(1) & 1         &        \\
-          & \ddots    & \ddots    & \ddots \\
-          &           & \beta(M-1)& \alpha(M-1)
+J_M=\begin{pmatrix}
+\alpha(0)&1&&\\
+\beta(1)&\alpha(1)&1&\\
+&\ddots&\ddots&\ddots\\
+&&\beta(M-1)&\alpha(M-1)
 \end{pmatrix}.
 \end{equation}
-With $v(\lambda):=(\pi_0(\lambda),\ldots,\pi_{M-1}(\lambda))^\top$
-and $e_M=(0,\ldots,0,1)^\top$, the three-term
-recurrence~\eqref{eq:pi_rec} gives
-\begin{equation}\label{eq:JM_defect}
-J_M v(\lambda)=\lambda\, v(\lambda)-\pi_M(\lambda)\,e_M.
+The eigenvalues $\{\lambda_j\}$ of $J_M$ are the zeros of $\pi_M$;
+the poles of $\Phi_M(v,T)=T\cdot P_M(v,T^\mu)/Q_M(v,T^\mu)$
+in $z=T^\mu$ are $\{z_j^\#=1/\lambda_j\}$.
+With unit eigenvectors $u_j$ of $J_M$ and $e_1=(1,0,\ldots,0)^\top$,
+the partial-fraction form is
+\begin{equation}\label{eq:PhiM_pf_z}
+\Phi_M(v,T)=T\sum_{j=1}^M\frac{w_j^\#}{T^\mu-z_j^\#},\qquad
+w_j^\#=\frac{(e_1^\top u_j)^2}{\lambda_j^2}.
 \end{equation}
-
-\begin{theorem}[Spectral identification of poles]\label{thm:jacobi}
-\begin{enumerate}
-\item\label{it:spec}
-The eigenvalues $\{\lambda_j\}_{j=1}^M$ of $J_M$ are exactly
-the zeros of $\pi_M$.
-\item\label{it:poles}
-The poles of $R_M(z)$ are $\{z_j^\#\}:=\{1/\lambda_j\}
-=\operatorname{spec}(J_M^{-1})$.
-\item\label{it:weights}
-With $u_j$ the unit eigenvector of $J_M$ for $\lambda_j$ and
-$e_1=(1,0,\ldots,0)^\top$, the residue of $R_M$ at $z_j^\#$ is
-\begin{equation}\label{eq:pade_res}
-w_j:=\operatorname{Res}_{z=z_j^\#}R_M(z)
-= \frac{(e_1^\top u_j)^2}{\lambda_j^2}.
-\end{equation}
-\item\label{it:pf}
-\begin{equation}\label{eq:RM}
-R_M(z)=z\sum_{j=1}^M\frac{w_j}{z-z_j^\#}.
-\end{equation}
-\end{enumerate}
-\end{theorem}
-\begin{proof}
-At $\lambda_j$: $\pi_M(\lambda_j)=0$
-so~\eqref{eq:JM_defect} gives $J_M v(\lambda_j)=\lambda_j
-v(\lambda_j)$, confirming part~\eqref{it:spec}.
-Part~\eqref{it:poles}: $Q_M(z)=z^M\pi_M(1/z)$, so
-$Q_M(z_j^\#)=\lambda_j^{-M}\pi_M(\lambda_j)=0$.
-Parts~\eqref{it:weights}--\eqref{it:pf}: the Pad\'{e} approximant
-equals the Stieltjes transform of the spectral measure of $J_M$
-with respect to $e_1$; the weight at eigenvalue $\lambda_j$ is
-$(e_1^\top u_j)^2$ (the standard Gauss quadrature weight), and
-the $1/\lambda_j^2$ factor comes from the change of variable
-$z\leftrightarrow 1/\lambda$~\cite{Gragg}.
-\end{proof}
 
 % ------------------------------------------------------------------
-\section{Convergence and a-posteriori bound (proof of T1)}
+\section{Convergence (Theorem T1)}
 \label{sec:conv}
 % ------------------------------------------------------------------
 
-\begin{theorem}[Pad\'{e}--M\"{u}ntz convergence]\label{thm:conv}
-Let $T^*$ be the infimum of real poles of $y$.
-\begin{enumerate}
-\item\label{it:unif}
-$R_M(t^\mu)\to y(t)$ uniformly on every compact
-$[0,T]\subset[0,T^*)$.
-\item\label{it:post}
-Whenever $|\Delta_M(z)|<|\Delta_{M-1}(z)|$ with
-$\Delta_k:=R_k-R_{k-1}$,
+\begin{theorem}[Convergence of $\Phi_M$]\label{thm:conv}
+Let $T^*$ be the radius of convergence of $\hat\Phi(v,\cdot)$
+in $z=T^\mu$.  Then $\Phi_M(v,T)\to\Phi(v,T)$ uniformly on
+every compact $[0,T]\subset[0,T^*)$, with a-posteriori bound
 \begin{equation}\label{eq:aposteriori}
-|g(z)-R_M(z)|\le
-\frac{|\Delta_M(z)|^2}{|\Delta_{M-1}(z)|-|\Delta_M(z)|}.
+|\Phi(v,T)-\Phi_M(v,T)|\le
+\frac{|\Delta_M|^2}{|\Delta_{M-1}|-|\Delta_M|},\qquad
+\Delta_k:=\Phi_k-\Phi_{k-1},
 \end{equation}
-\end{enumerate}
+whenever $|\Delta_M|<|\Delta_{M-1}|$.
 \end{theorem}
 \begin{proof}
-\textit{Meromorphicity.}
-In $z=t^\mu$, $g$ is meromorphic on $\C\setminus K_g$ where
-$K_g$ is the Stahl compact~\cite{StahlBranch} of minimal
-logarithmic capacity, determined by the branch points of
-$c_2 f^2+(c_1-z^{-1})f+c_0 z^{-1}=0$.
-
-\textit{No real poles on $[0,(T^*)^\mu)$.}
-A real pole $z^*=(t^*)^\mu$ would give a blow-up of $y$ at
-$t^*\le T^*$, contradicting the definition of $T^*$.
-
-\textit{Stahl convergence.}
-The poles of $R_M$ are the eigenvalues of $J_M^{-1}$
-(Theorem~\ref{thm:jacobi}\eqref{it:poles}).  By
-Stahl~\cite{StahlBranch} these converge in logarithmic
-capacity to $K_g$, so they are bounded away from
-$[0,(T^*)^\mu)$ for all large $M$.  Capacity convergence
-upgrades to uniform convergence on compacta by a
-normal-families argument, giving part~\eqref{it:unif}.
-
-\textit{A-posteriori bound.}
-The matching condition~\eqref{eq:pade_orth} forces
-$\Delta_M(z)=O(z^{2M-1})$ near $z=0$.  On the analyticity
-domain the maximum principle gives ratio
-$r_M:=|\Delta_M|/|\Delta_{M-1}|<1$.  Summing the
-geometric tail $|g-R_M|\le|\Delta_M|/(1-r_M)$ and
-substituting $r_M$ gives~\eqref{eq:aposteriori}.
+$\hat\Phi(v,\cdot)$ is meromorphic on $\C\setminus K$ for the Stahl
+compact $K$~\cite{StahlBranch}; the eigenvalues of $J_M$ converge
+in capacity to $K$ and are bounded away from $[0,(T^*)^\mu)$ for
+all large $M$.  Capacity convergence upgrades to uniform convergence
+on compacta by normal families.  The bound follows from summing a
+geometric tail with ratio $|\Delta_M|/|\Delta_{M-1}|<1$.
 \end{proof}
 
 % ------------------------------------------------------------------
-\section{Rough Heston: explicit construction of $\Phi_M(v,T)$}
-\label{sec:heston}
-% ------------------------------------------------------------------
-
-Set $\mu=H+\tfrac12$,
-$c_0(v)=\tfrac12(-v^2-iv)$,
-$c_1(v)=\lambda(iv\rho\nu-1)$,
-$c_2=\tfrac12\lambda^2\nu^2$.
-The rough Heston characteristic exponent is
-\begin{equation}\label{eq:Phi}
-\Phi(v,T)=\theta\lambda\int_0^T h(v,s)\,ds
-           +V_0\,\Ico h(v,\cdot)(T),
-\end{equation}
-where $h(v,\cdot)$ solves~\eqref{eq:IVP} with
-$c_0(v),c_1(v),c_2$~\cite{ElEuchRosenbaum}.
-
-\begin{lemma}[Degree and vanishing]\label{lem:poly}
-$a_k(v)$ is a polynomial in $v$ of degree $k+1$ with
-$a_k(0)=a_k(-i)=0$ for all $k\ge 1$.
-\end{lemma}
-\begin{proof}
-$a_1=c_0(v)/\Gamma(\mu+1)$ has degree 2 and $c_0(0)=c_0(-i)=0$.
-$c_1(v)$ has degree 1; induction on~\eqref{eq:ak} gives
-degree $k+1$.  Vanishing at $0$ and $-i$ propagates by
-induction since $c_0(0)=c_0(-i)=0$.
-\end{proof}
-
-\subsection{Weight sequences $\mathcal{G}_k(T)$}
-
-By the power rule~\eqref{eq:power} applied termwise to $\Phi$,
-\begin{equation}\label{eq:Gk}
-\mathcal{G}_k(T):=
-\frac{\theta\lambda\,T^{k\mu+1}}{k\mu+1}
-+\frac{V_0\,\Gamma(k\mu+1)}{\Gamma((k-1)\mu+2)}\,T^{(k-1)\mu+1},
-\qquad k\ge 1,
-\end{equation}
-so that $\Phi(v,T)=\sum_{k=1}^\infty a_k(v)\,\mathcal{G}_k(T)$.
-
-\subsection{Explicit rational form of $\Phi_M(v,T)$}
-
-The Pad\'{e} approximant $h_M$ of $h$ at fixed $v$ is given
-by~\eqref{eq:RM}.  Expanding $w_j/(z-z_j^\#)$ as a geometric
-series in $z/z_j^\#$ gives the $t^{k\mu}$-coefficient of $h_M$:
-\begin{equation}\label{eq:tilde_a}
-\tilde a_k(v):=[t^{k\mu}]h_M(v,t)
-=-\sum_{j=1}^M w_j(v)\,(z_j^\#(v))^{-(k+1)},
-\qquad k=1,\ldots,2M.
-\end{equation}
-These are rational functions of $v$ computed directly from the
-eigendecomposition of $J_M(v)$.  The order-$M$ exponent is
-\begin{equation}\label{eq:PhiM_sum}
-\Phi_M(v,T)=\sum_{k=1}^{2M}\tilde a_k(v)\,\mathcal{G}_k(T),
-\end{equation}
-a rational function of $v$ (since each $\tilde a_k(v)$ is
-rational in $v$).
-
-\subsection{Second Wheeler pass: poles and residues of $\Phi_M$}
-
-Expand $\Phi_M(v,T)$ as a Laurent series at $v=\infty$:
-\begin{equation}\label{eq:Phi_Laurent}
-\Phi_M(v,T)=\sum_{k=0}^\infty b_k(T)\,v^{-(k+1)},\qquad
-b_k(T):=\sum_{\ell=1}^{2M}\mathcal{G}_\ell(T)\,
-[\text{coeff of }v^{-(k+1)}\text{ in }\tilde a_\ell(v)].
-\end{equation}
-Each $b_k(T)$ is a computable number (finite sum of rational
-functions of the eigenvalues $\lambda_j(v)$ of $J_M(v)$
-evaluated and summed against the weights $\mathcal{G}_\ell(T)$).
-
-Apply the Wheeler algorithm a second time with moment
-functional $\Lk_v[v^{-k-1}]:=b_k(T)$.  This produces
-recurrence coefficients $\{\alpha_v(k),\beta_v(k)\}$, a
-Jacobi matrix $J_N^{(v)}$ of size $N\le M$, and orthogonal
-polynomials $\{\pi_k^{(v)}\}$ via
-\begin{equation}\label{eq:pi_v_rec}
-\pi_{k+1}^{(v)}(v)=
-(v-\alpha_v(k))\pi_k^{(v)}(v)-\beta_v(k)\pi_{k-1}^{(v)}(v).
-\end{equation}
-By Theorem~\ref{thm:jacobi} applied to $J_N^{(v)}$:
-\begin{itemize}
-\item The poles $\{\eta_j(T)\}_{j=1}^N$ of $\Phi_M(\cdot,T)$
-  are the eigenvalues of $J_N^{(v)}$.
-\item The residues are
-  $c_j(T)=(e_1^\top u_j^{(v)})^2/(\eta_j(T))^2$
-  where $u_j^{(v)}$ is the $j$-th unit eigenvector of $J_N^{(v)}$.
-\end{itemize}
-Hence
-\begin{equation}\label{eq:PhiM_pf}
-\Phi_M(v,T)=\sum_{j=1}^N\frac{c_j(T)}{v-\eta_j(T)},
-\end{equation}
-constructed by two Wheeler passes and two tridiagonal
-eigendecompositions, with no linear system solved at any step.
-
-By Theorem~\ref{thm:conv}, $\Phi_M(v,T)\to\Phi(v,T)$
-uniformly on compacta of the analyticity strip as $M\to\infty$.
-
-% ------------------------------------------------------------------
-\section{Exact European call price (proof of T2)}
+\section{The $v$-plane partial fraction and the price}
 \label{sec:pricing}
 % ------------------------------------------------------------------
 
-Set $k_0:=\log(K/S_0)-rT$ and
-$\phi_M(v):=\exp(\Phi_M(v,T))$.
+For fixed $T$, $\Phi_M(v,T)$ is a rational function of $v$ (since
+each $d_k(v)\in\C[v]$).  By Theorem~\ref{thm:Phi_series} and the
+closed form~\eqref{eq:PhiM_pf_z}, collect over a common denominator
+in $v$ to obtain
+\begin{equation}\label{eq:PhiM_v_pf}
+\Phi_M(v,T)=\sum_{j=1}^N\frac{c_j(T)}{v-\eta_j(T)},\qquad N\le 2M,
+\end{equation}
+where the poles $\{\eta_j(T)\}$ and residues $\{c_j(T)\}$ are
+obtained by a second application of the Wheeler algorithm to the
+Laurent coefficients of $\Phi_M(\cdot,T)$ at $v=\infty$
+(moments $b_k(T):=[v^{-(k+1)}]\Phi_M(v,T)$, computable from~\eqref{eq:PhiM_pf_z}):
+the eigenvalues of the resulting Jacobi matrix $J_N^{(v)}$ are the
+$\eta_j(T)$ and its Christoffel numbers are the $c_j(T)$.
 
-\begin{lemma}[Normalisation]\label{lem:norm}
-$\phi_M(0)=\phi_M(-i)=1$.
+\begin{lemma}\label{lem:norm}
+$\Phi_M(0,T)=\Phi_M(-i,T)=0$, hence
+$\varphi_M(v):=\exp\Phi_M(v,T)$ satisfies $\varphi_M(0)=\varphi_M(-i)=1$.
 \end{lemma}
 \begin{proof}
-Lemma~\ref{lem:poly} gives $a_k(0)=a_k(-i)=0$; then
-$\tilde a_k(0)=\tilde a_k(-i)=0$
-by~\eqref{eq:tilde_a}, so $\Phi_M(0,T)=\Phi_M(-i,T)=0$.
+$a_k(0)=a_k(-i)=0$ for all $k$ (Theorem~\ref{thm:recurrence}),
+so $d_k(0)=d_k(-i)=0$, hence $\Phi_M(0,T)=\Phi_M(-i,T)=0$.
 \end{proof}
 
-\begin{lemma}[Hermitian symmetry]\label{lem:herm}
-$\phi_M(-\bar v)=\overline{\phi_M(v)}$.
+\begin{lemma}\label{lem:herm}
+$\varphi_M(-\bar v)=\overline{\varphi_M(v)}$.
+The poles $\{\eta_j\}$ lie off $\R$ and come in conjugate pairs;
+$p^*:=\min_j(-\operatorname{Im}\eta_j)>0$.
 \end{lemma}
 \begin{proof}
 $c_0(-\bar v)=\overline{c_0(v)}$, $c_1(-\bar v)=\overline{c_1(v)}$,
 $c_2\in\R$; induction on~\eqref{eq:ak} gives
-$a_k(-\bar v)=\overline{a_k(v)}$, hence
-$\Phi_M(-\bar v,T)=\overline{\Phi_M(v,T)}$.
-\end{proof}
-
-\begin{lemma}[No real poles in $v$]\label{lem:norealv}
-The poles $\{\eta_j(T)\}$ of $\Phi_M(\cdot,T)$ lie off $\R$
-and come in conjugate pairs.
-\end{lemma}
-\begin{proof}
-By Lemma~\ref{lem:herm}, $\Phi_M(v,T)$ is real for
-$v=i\sigma$, $\sigma\in\R$, so poles come in conjugate pairs
-$\eta,\bar\eta$.  A real pole $\eta_j\in\R$ would require a
-real $t$-pole of $h_M(\eta_j,\cdot)$, i.e.\ a real eigenvalue
-of $J_M(\eta_j)^{-1}$ in $(0,(T^*)^\mu)$; by
-Theorem~\ref{thm:conv} the Pad\'{e} poles converge away from
-that interval, so no such pole exists for large $M$.
-\end{proof}
-
-\begin{lemma}[Payoff transform]\label{lem:payoff}
-Let $w(x):=(S_0 e^{x+rT}-K)^+$.  For $\operatorname{Im}v<-1$,
-\begin{equation}\label{eq:payoff}
-\int_\R e^{-ivx}w(x)\,dx=-\frac{Ke^{-ivk_0}}{v(v+i)}.
-\end{equation}
-\end{lemma}
-\begin{proof}
-$\int_{k_0}^\infty e^{-ivx}S_0 e^{x+rT}\,dx
-=-S_0 e^{rT}e^{(1-iv)k_0}/(1-iv)$
-and
-$\int_{k_0}^\infty e^{-ivx}(-K)\,dx=Ke^{-ivk_0}/(iv)$.
-With $S_0 e^{k_0+rT}=K$ and $1/(iv)-1/(1-iv)=-1/(v(v+i))$.
-\end{proof}
-
-\begin{theorem}[Bessel residue identity]\label{thm:bessel}
-For each pole $\eta_j$ of $\Phi_M(\cdot,T)$ write
-$\phi_M(v)=\exp(c_j/(v-\eta_j))\,H_j(v)$ where
-$H_j(v):=\exp\bigl(\sum_{\ell\ne j}c_\ell/(v-\eta_\ell)\bigr)$
-is holomorphic and nonvanishing at $\eta_j$.  Set
-$G_j(v):=e^{-ivk_0}H_j(v)/(v(v+i))$, holomorphic at $\eta_j$.
-Then
-\begin{equation}\label{eq:Rj}
-\mathcal{R}_j
-:=\operatorname*{Res}_{v=\eta_j}
-  \frac{e^{-ivk_0}\phi_M(v)}{v(v+i)}
-=\sum_{n=0}^\infty\frac{c_j^{n+1}\,G_j^{(n)}(\eta_j)}{(n+1)!\,n!}.
-\end{equation}
-The series is identified via the generating function
-\begin{equation}\label{eq:bessel_gen}
-\sum_{n=0}^\infty\frac{x^{n+1}}{(n+1)!\,n!}
-=\sqrt{x}\,I_1(2\sqrt{x}),
-\end{equation}
-where $I_1(w)=\sum_{m\ge0}(w/2)^{2m+1}/(m!(m+1)!)$ is the
-modified Bessel function of the first kind.
-Identity~\eqref{eq:bessel_gen} follows by setting $w=2\sqrt{x}$
-in the series definition.  Hence $\mathcal{R}_j$ is the
-Bessel-$I_1$-weighted sum of Taylor coefficients of $G_j$:
-\begin{equation}\label{eq:Rj_bessel}
-\mathcal{R}_j
-=\sum_{n=0}^\infty
- \underbrace{\frac{c_j^{n+1}}{(n+1)!\,n!}}_{\text{Bessel weight}}
- G_j^{(n)}(\eta_j).
-\end{equation}
-The series converges absolutely: by Cauchy's inequality,
-$|G_j^{(n)}(\eta_j)|\le n!\,\|G_j\|_{\partial B_{\rho_j}}/\rho_j^n$
-where $\rho_j:=\min_{\ell\ne j}|\eta_\ell-\eta_j|>0$, giving
-\begin{equation}\label{eq:Rj_bound}
-|\mathcal{R}_j|\le\|G_j\|\sum_{n=0}^\infty
-\frac{|c_j/\rho_j|^{n+1}}{(n+1)!}
-=\|G_j\|\bigl(e^{|c_j|/\rho_j}-1\bigr)<\infty.
-\end{equation}
-Each derivative $G_j^{(n)}(\eta_j)$ is a rational function of
-$\eta_j$ and $\{c_\ell,\eta_\ell\}_{\ell\ne j}$, computed
-from the eigendecomposition of $J_N^{(v)}$ without further
-approximation.  For $B$ bits of precision, the number of terms
-needed is $n_{\max}\approx B/\log_2(\rho_j/|c_j|)$, determined
-solely by $c_j$ and the pole separation $\rho_j$---not a free
-parameter.
-\end{theorem}
-\begin{proof}
-Expand $e^{c_j/(v-\eta_j)}=\sum_{p\ge0}c_j^p(v-\eta_j)^{-p}/p!$
-and $G_j(v)=\sum_{n\ge0}G_j^{(n)}(\eta_j)(v-\eta_j)^n/n!$;
-multiply; the coefficient of $(v-\eta_j)^{-1}$ comes from
-$p=n+1$, giving~\eqref{eq:Rj}.  Identity~\eqref{eq:bessel_gen}
-is the series definition of $I_1$ with $w=2\sqrt{x}$.
-Absolute convergence follows from~\eqref{eq:Rj_bound}.
+$a_k(-\bar v)=\overline{a_k(v)}$, hence $d_k(-\bar v)=\overline{d_k(v)}$
+and $\Phi_M(-\bar v,T)=\overline{\Phi_M(v,T)}$.
+A real pole $\eta_j\in\R$ would force a real blow-up of $h_M$ on
+$(0,T^*)$, excluded by Theorem~\ref{thm:conv}.
 \end{proof}
 
 \begin{theorem}[Exact European call price]\label{thm:price}
-For any $\alpha\in(1,p^*)$ where $-ip^*$ is the pole of
-$\phi_M$ nearest $\operatorname{Im}v=-\alpha$ from below,
-\begin{equation}\label{eq:parseval}
-C_M=-\frac{Ke^{-rT}}{2\pi}\int_{\operatorname{Im}v=-\alpha}
-    \frac{e^{-ivk_0}\phi_M(v)}{v(v+i)}\,dv.
+Let $k_0=\log(K/S_0)-rT$,
+$G_j(v)=e^{-ivk_0}H_j(v)/[v(v+i)]$,
+$H_j(v)=\exp(\sum_{\ell\ne j}c_\ell/(v-\eta_\ell))$, and
+\begin{equation}\label{eq:Rj}
+\mathcal{R}_j=\sum_{n=0}^\infty
+\frac{c_j^{n+1}G_j^{(n)}(\eta_j)}{(n+1)!\,n!}.
 \end{equation}
-Closing the contour gives the exact finite formula
+For any $\alpha\in(1,p^*)$,
 \begin{equation}\label{eq:price_formula}
-C_M=
-\begin{cases}
-\displaystyle
-(S_0-Ke^{-rT})
--Ke^{-rT}\operatorname{Re}\!\Bigl[i\!\!\sum_{\operatorname{Im}\eta_j>-\alpha}
-\!\!\mathcal{R}_j\Bigr],
-& k_0\le 0,\\[2ex]
-\displaystyle
--Ke^{-rT}\operatorname{Re}\!\Bigl[i\!\!\sum_{\operatorname{Im}\eta_j<-\alpha}
-\!\!\mathcal{R}_j\Bigr],
-& k_0>0,
+C_M=\begin{cases}
+(S_0-Ke^{-rT})-Ke^{-rT}\operatorname{Re}\!\bigl[i\!\!\displaystyle
+\sum_{\operatorname{Im}\eta_j>-\alpha}\!\!\mathcal{R}_j\bigr],
+& k_0\le0,\\[1.5ex]
+-Ke^{-rT}\operatorname{Re}\!\bigl[i\!\!\displaystyle
+\sum_{\operatorname{Im}\eta_j<-\alpha}\!\!\mathcal{R}_j\bigr],
+& k_0>0.
 \end{cases}
 \end{equation}
-with $\mathcal{R}_j$ given explicitly by
-Theorem~\ref{thm:bessel}.
 \end{theorem}
 \begin{proof}
-\textit{Parseval and contour shift.}
+\textit{Step 1 (Parseval).}
+Let $w(x)=(S_0e^{x+rT}-K)^+$.  For $\operatorname{Im}v<-1$,
+$\int_\R e^{-ivx}w(x)\,dx=-Ke^{-ivk_0}/[v(v+i)]$
+(integrate $\int_{k_0}^\infty$; use $S_0e^{k_0+rT}=K$ and
+$1/(iv)-1/(1-iv)=-1/[v(v+i)]$).
+Risk-neutral pricing and Plancherel give
 \[
-C_M=\frac{e^{-rT}}{2\pi}\int_\R\phi_M(v)
-    \int_\R w(x)e^{-ivx}\,dx\,dv.
+C_M=-\frac{Ke^{-rT}}{2\pi}\int_{\operatorname{Im}v=-\alpha}
+\frac{e^{-ivk_0}\varphi_M(v)}{v(v+i)}\,dv.
 \]
-The inner integral requires $\operatorname{Im}v<-1$
-(Lemma~\ref{lem:payoff}); shift to $\operatorname{Im}v=-\alpha$,
-$\alpha\in(1,p^*)$.  Lemma~\ref{lem:norealv} guarantees no
-poles are crossed; the Jordan lemma applies because
-$\Phi_M(v,T)=O(1/|v|)$ as $|v|\to\infty$ on horizontal lines
-(from~\eqref{eq:PhiM_pf}).  Substituting
-Lemma~\ref{lem:payoff} gives~\eqref{eq:parseval}.
+The contour shift from $\operatorname{Im}v=-1-\varepsilon$ to
+$\operatorname{Im}v=-\alpha$ is valid: $\varphi_M$ is holomorphic
+and bounded on $-p^*<\operatorname{Im}v<0$ (Lemma~\ref{lem:herm})
+and $\Phi_M(v,T)=O(1/|v|)$ as $|v|\to\infty$, so Jordan's lemma
+applies.
 
-\textit{Contour closure.}
-For $k_0\le 0$ close upward ($e^{-ivk_0}$ decays as
-$\operatorname{Im}v\to+\infty$); for $k_0>0$ close downward.
-
-\textit{Kernel residues.}
-By Lemma~\ref{lem:norm}, $\phi_M(0)=\phi_M(-i)=1$:
+\textit{Step 2 (Contour closure and kernel residues).}
+For $k_0\le0$: $|e^{-ivk_0}|\to0$ as $\operatorname{Im}v\to+\infty$;
+close upward (counterclockwise).  For $k_0>0$: close downward
+(clockwise, contributing $-2\pi i$).
+Kernel residues using Lemma~\ref{lem:norm}:
 \[
-\operatorname{Res}_{v=0}\frac{e^{-ivk_0}\phi_M(v)}{v(v+i)}
-=-i,\qquad
-\operatorname{Res}_{v=-i}\frac{e^{-ivk_0}\phi_M(v)}{v(v+i)}
-=ie^{ik_0}.
+\operatorname{Res}_{v=0}F=-i,\quad
+\operatorname{Res}_{v=-i}F=ie^{-k_0},\quad
+-Ke^{-rT}\cdot i[(-i)+ie^{-k_0}]=S_0-Ke^{-rT}.
 \]
-Their contribution is
-$-Ke^{-rT}\cdot i(-i+ie^{ik_0})=S_0-Ke^{-rT}$,
-the discounted intrinsic value (present only for $k_0\le0$).
+Kernel poles $v=0,-i$ lie above $\operatorname{Im}v=-\alpha$ ($\alpha>1$)
+and are enclosed only for $k_0\le0$.
 
-\textit{Model residues.}
-Each $\mathcal{R}_j$ is given by
-Theorem~\ref{thm:bessel}.
+\textit{Step 3 (Model residues).}
+Write $\varphi_M(v)=e^{c_j/(v-\eta_j)}H_j(v)$ near $\eta_j$;
+expand both factors as Laurent/Taylor series in $(v-\eta_j)$;
+the coefficient of $(v-\eta_j)^{-1}$ comes from $p=n+1$:
+$\mathcal{R}_j=\operatorname{Res}_{v=\eta_j}F$
+gives~\eqref{eq:Rj}.  Absolute convergence: Cauchy's estimate
+gives $|G_j^{(n)}(\eta_j)/n!|\le M_\rho\rho^{-n}$ where
+$\rho=\min_{\ell\ne j}|\eta_\ell-\eta_j|$, so
+$\sum_n|c_j|^{n+1}M_\rho\rho^{-n}/(n+1)!\le M_\rho|c_j|e^{|c_j|/\rho}<\infty$.
 
-\textit{Reality.}
-Lemma~\ref{lem:herm} gives
+\textit{Step 4 (Reality).}
+Conjugate-pair symmetry
+(Lemma~\ref{lem:herm}) gives
 $\mathcal{R}_{\bar\eta_j}=\overline{\mathcal{R}_{\eta_j}}$,
-so $\sum_j i\mathcal{R}_j$ is purely imaginary and
-$\operatorname{Re}[i\sum_j\mathcal{R}_j]\in\R$.
+so $\operatorname{Re}[i\sum_j\mathcal{R}_j]\in\R$.
+
+\textit{Step 5 (Signs).}
+For $k_0\le0$ the contour is counterclockwise and the factor is
+$-Ke^{-rT}\cdot\frac{2\pi i}{2\pi}$, giving net coefficient
+$-iKe^{-rT}$ on $\sum\mathcal{R}_j$.
+For $k_0>0$ the contour is clockwise ($-2\pi i$) and kernel poles
+are excluded; net coefficient is $+iKe^{-rT}$ on
+$\sum_{\operatorname{Im}\eta_j<-\alpha}\mathcal{R}_j$;
+taking $\operatorname{Re}[i\sum\mathcal{R}_j]=-\operatorname{Re}[i\sum(-\mathcal{R}_j)]$
+yields $-Ke^{-rT}\operatorname{Re}[i\sum_{\operatorname{Im}\eta_j<-\alpha}\mathcal{R}_j]$.
 \end{proof}
 
-\begin{proposition}[Pricing convergence]\label{prop:pconv}
-$|C_M-C|\le C' r_*^M$ for constants $C'<\infty$,
-$r_*\in(0,1)$ depending on model parameters and $T$, where
-$C$ is the exact rough Heston price.
+\begin{proposition}[Convergence rate]\label{prop:pconv}
+$|C_M-C|\le C'r_*^M$ for some $r_*\in(0,1)$; the rate is
+determined by the logarithmic capacity of the singular set of
+$\hat\Phi(v,\cdot)$.
 \end{proposition}
 \begin{proof}
-Theorem~\ref{thm:conv} gives $|\Phi_M-\Phi|=O(e^{-2M\mathsf{g}})$
-on $\operatorname{Im}v=-\alpha$; the kernel $1/(v(v+i))$ is
-integrable there, so the geometric rate is preserved
-by~\eqref{eq:parseval}.
+Theorem~\ref{thm:conv} gives geometric decay of
+$|\Phi_M-\Phi|$ on $\operatorname{Im}v=-\alpha$; the
+kernels $e^{-ivk_0}/(v(v+i))$ are integrable there.
 \end{proof}
-
-% ------------------------------------------------------------------
-\section{Summary and constructive algorithm}
-\label{sec:summary}
-% ------------------------------------------------------------------
-
-The following steps compute $C_M$ to $B$ bits of precision.
-No linear system is solved at any step.
-
-\begin{enumerate}
-\item\label{alg:muntz}
-\textbf{M\"{u}ntz--Tau recurrence.}
-Run~\eqref{eq:a1}--\eqref{eq:ak} to produce the polynomials
-$a_1(v),\ldots,a_{2M}(v)\in\C[v]$.
-
-\item\label{alg:Gk}
-\textbf{Weight sequences.}
-Compute $\mathcal{G}_1(T),\ldots,\mathcal{G}_{2M}(T)$
-from~\eqref{eq:Gk}.
-
-\item\label{alg:JM}
-\textbf{First Wheeler pass (in $z=t^\mu$, at each required $v$).}
-For each $v$ needed, set $\Lk[z^k]=a_{k+1}(v)$; run
-\eqref{eq:sigma_init}--\eqref{eq:beta_k} to get
-$\alpha(0),\ldots,\alpha(M-1)$ and $\beta(0),\ldots,\beta(M-1)$;
-assemble $J_M(v)$~\eqref{eq:JM}; eigendecompose to get
-poles $\{z_j^\#(v)=1/\lambda_j(v)\}$ and weights
-$\{w_j(v)=(e_1^\top u_j)^2/\lambda_j^2\}$.
-
-\item\label{alg:tilde_a}
-\textbf{Taylor coefficients of $h_M$.}
-Compute $\tilde a_k(v)$ from~\eqref{eq:tilde_a}.
-
-\item\label{alg:Laurent}
-\textbf{Laurent coefficients of $\Phi_M$.}
-Compute $b_k(T)$ from~\eqref{eq:Phi_Laurent} by expanding
-each $\tilde a_\ell(v)$ at $v=\infty$ and contracting
-against $\mathcal{G}_\ell(T)$.
-
-\item\label{alg:JNv}
-\textbf{Second Wheeler pass (in $v$).}
-Set $\Lk_v[v^{-k-1}]=b_k(T)$; run the Wheeler algorithm
-to get $J_N^{(v)}$; eigendecompose to get poles
-$\{\eta_j(T)\}$ and residues $\{c_j(T)\}$
-from~\eqref{eq:PhiM_pf}.
-
-\item\label{alg:Gj}
-\textbf{Functions $G_j$ and their derivatives.}
-For each $j$, compute $G_j^{(n)}(\eta_j)$ for
-$n=0,\ldots,n_{\max}$ where
-$n_{\max}=\lceil B/\log_2(\rho_j/|c_j|)\rceil$
-and $\rho_j=\min_{\ell\ne j}|\eta_\ell-\eta_j|$.
-Each derivative is rational in $\eta_j$ and
-$\{c_\ell,\eta_\ell\}_{\ell\ne j}$,
-evaluated from step~\ref{alg:JNv} output.
-
-\item\label{alg:Rj}
-\textbf{Bessel residues.}
-Sum~\eqref{eq:Rj_bessel} to $n_{\max}$ terms.
-The truncation error is bounded
-by~\eqref{eq:Rj_bound} with $n>n_{\max}$ tail:
-$|{\rm tail}|\le\|G_j\|(e^{|c_j|/\rho_j}-1)
-\cdot(|c_j|/\rho_j)^{n_{\max}+1}/(n_{\max}+1)!$.
-
-\item\label{alg:price}
-\textbf{Price.}
-Assemble~\eqref{eq:price_formula}.
-\end{enumerate}
-
-\medskip
-\noindent\textbf{Theorem T1}
-(Sections~\ref{sec:recurrence}--\ref{sec:conv}).
-$R_M(t^\mu)\to y(t)$ uniformly on $[0,T^*)$; poles are
-eigenvalues of $J_M$; a-posteriori bound~\eqref{eq:aposteriori}
-is computable from consecutive Pad\'{e} differences; $M$ is
-the only parameter.
-
-\medskip
-\noindent\textbf{Theorem T2}
-(Sections~\ref{sec:heston}--\ref{sec:pricing}).
-$C_M$ is exact at every $M$ and converges geometrically to
-the true rough Heston price (Proposition~\ref{prop:pconv}).
-No quadrature, no FFT, no damping, no contour truncation,
-no per-pole series truncation beyond what precision demands,
-no parameter other than $M$.
 
 \begin{thebibliography}{9}
 \bibitem{SKM}
@@ -665,6 +343,11 @@ Rocky Mountain J.~Math.\ \textbf{4} (1974), 287--296.
 W.~B.~Gragg, \emph{The Pad\'{e} table and its relation to
 certain algorithms of numerical analysis},
 SIAM Review \textbf{14} (1972), 1--62.
+
+\bibitem{AbiJaber}
+E.~Abi~Jaber, M.~Larsson, S.~Pulido,
+\emph{Affine Volterra processes},
+Ann.~Appl.~Probab.\ \textbf{29} (2019), 3155--3200.
 
 \bibitem{ElEuchRosenbaum}
 O.~El~Euch and M.~Rosenbaum,
