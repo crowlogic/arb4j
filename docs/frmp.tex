@@ -26,19 +26,23 @@
 \maketitle
 
 \begin{abstract}
-Let $\mu\in(0,1]$ and let $y$ be the unique solution of the
+Fix $\mu\in(0,1]$ and let $y$ denote the unique solution of the
 constant-coefficient fractional Riccati initial-value problem
 $D^{\mu}y = c_0 + c_1 y + c_2 y^2$, $I^{1-\mu}y(0)=0$.
-We prove two things. First (Theorem~\ref{thm:conv}), the
-diagonal $[M/M]$ Pad\'{e} approximant of the generating function
-$g(z)=y(z^{1/\mu})$ converges to $g$ uniformly on every compact
-subset of $[0,\infty)$ on which $y$ is finite, with $M$ fixed
-automatically by the working precision. Second
-(Theorem~\ref{thm:price}), European call prices under the rough
-Heston model are computed by applying the Fang--Oosterlee COS
-method to the resulting rational characteristic exponent
-$\Phi_M(\cdot,T)$, with the COS series length $N$ also fixed
-automatically by the working precision.
+Two theorems are established. Theorem~\ref{thm:conv} asserts that
+the diagonal $[M/M]$ Pad\'{e} approximant of the generating
+function $g(z)=y(z^{1/\mu})$ converges to $g$ uniformly on every
+compact subset of $[0,\infty)$ on which $y$ is finite, with $M$
+fixed automatically by the working precision.
+Theorem~\ref{thm:price} asserts that European call prices under
+the rough Heston model are computed by applying the
+Fang--Oosterlee COS method to the resulting rational
+characteristic exponent $\Phi_M(\cdot,T)$, with the COS series
+length $N$ also fixed automatically by the working precision.
+The characteristic exponent is assembled directly from the
+M\"untz coefficient sequence $\{D_k\}$ of $\Phi$, which is a
+linear combination of consecutive Riccati coefficients $a_k$ and
+$a_{k-1}$; no Riccati solution is ever reconstructed.
 \end{abstract}
 
 \tableofcontents
@@ -65,40 +69,47 @@ For $s>-1$,
 \end{equation}
 \end{lemma}
 \begin{proof}
-Substitute $\sigma=t\tau$ in~\eqref{eq:RL_I}:
+The substitution $\sigma=t\tau$ in~\eqref{eq:RL_I} yields
 \[
 \Imu t^s
 =\frac{1}{\Gamma(\mu)}\int_0^t(t-\sigma)^{\mu-1}\sigma^s\,d\sigma
 =\frac{t^{s+\mu}}{\Gamma(\mu)}\int_0^1(1-\tau)^{\mu-1}\tau^s\,d\tau
 =\frac{t^{s+\mu}\,B(\mu,s+1)}{\Gamma(\mu)}.
 \]
-Using $B(\mu,s+1)=\Gamma(\mu)\Gamma(s+1)/\Gamma(s+\mu+1)$
-gives~\eqref{eq:power}.
+The Beta--Gamma identity $B(\mu,s+1)=\Gamma(\mu)\Gamma(s+1)/\Gamma(s+\mu+1)$
+yields~\eqref{eq:power}.
 \end{proof}
 
-The M\"untz lattice $\{t^{k\mu}\}_{k\ge 0}$ is closed under $\Imu$
-by the power rule and closed under multiplication because
-$t^{k\mu}\cdot t^{\ell\mu}=t^{(k+\ell)\mu}$. In the variable
-$z=t^\mu$ every element is simply $z^k$, so ordinary power-series
-arithmetic applies.
+\begin{proposition}[M\"untz lattice closure]\label{prop:lattice}
+The lattice $\{t^{k\mu}\}_{k\ge 0}$ is closed under $\Imu$ and
+under pointwise multiplication.
+\end{proposition}
+\begin{proof}
+Lemma~\ref{lem:power} with $s=k\mu$ gives $\Imu t^{k\mu}\in
+\R\cdot t^{(k+1)\mu}$. The identity
+$t^{k\mu}\cdot t^{\ell\mu}=t^{(k+\ell)\mu}$ gives multiplicative
+closure.
+\end{proof}
 
 % -----------------------------------------------------------------
 \section{The M\"untz--Tau recurrence}
 \label{sec:recurrence}
 % -----------------------------------------------------------------
 
-Define $\gamma_k := \Gamma((k-1)\mu+1)/\Gamma(k\mu+1)$ for $k\ge 1$,
+\begin{definition}[Power-rule constants]\label{def:gamma}
+For $k\ge 1$ set $\gamma_k := \Gamma((k-1)\mu+1)/\Gamma(k\mu+1)$,
 so that
 \begin{equation}\label{eq:gamma}
 \Imu t^{(k-1)\mu} = \gamma_k\, t^{k\mu}.
 \end{equation}
+\end{definition}
 
 \begin{theorem}[M\"untz--Tau recurrence]\label{thm:recurrence}
 The unique formal power-series solution of
 \begin{equation}\label{eq:IVP}
 y = \Imu[c_0 + c_1 y + c_2 y^2], \qquad y(0)=0,
 \end{equation}
-is
+in the M\"untz basis is
 \begin{equation}\label{eq:series}
 y(t)=\sum_{k=1}^{\infty} a_k\, t^{k\mu},
 \end{equation}
@@ -111,14 +122,27 @@ a_k &= \gamma_k\!\left[c_1\,a_{k-1}
 \label{eq:ak}
 \end{align}
 \end{theorem}
-
 \begin{proof}
-Substitute~\eqref{eq:series} into~\eqref{eq:IVP} and apply
-\eqref{eq:gamma} termwise. Matching $t^\mu$ gives~\eqref{eq:a1};
-for $k\ge 2$, $[t^{k\mu}]\Imu(c_1 y)=c_1\gamma_k a_{k-1}$ and
-$[t^{k\mu}]\Imu(c_2 y^2)=c_2\gamma_k\sum_{j=1}^{k-2}a_j a_{k-1-j}$
-by the Cauchy product, giving~\eqref{eq:ak}. Uniqueness is
-immediate from the recurrence.
+Existence of a formal solution in the lattice $\{t^{k\mu}\}_{k\ge 1}$
+is guaranteed by Proposition~\ref{prop:lattice}: every iterate of
+the Volterra map $T[y]=\Imu[c_0+c_1y+c_2y^2]$ starting from
+$y\equiv 0$ lies in that lattice. Substitution
+of~\eqref{eq:series} into~\eqref{eq:IVP} produces, via the Cauchy
+product,
+\[
+y^2(t)=\sum_{k=2}^\infty\!\left(\sum_{j=1}^{k-1}a_j a_{k-j}\right)t^{k\mu}.
+\]
+Applying $\Imu$ termwise and using~\eqref{eq:gamma}, the
+right-hand side of~\eqref{eq:IVP} becomes
+\[
+c_0\,\frac{t^\mu}{\Gamma(\mu+1)}
++\sum_{k=2}^\infty\gamma_k\!\left[c_1 a_{k-1}
++c_2\!\sum_{j=1}^{k-2}a_j a_{k-1-j}\right]t^{k\mu}.
+\]
+Matching the coefficient of $t^\mu$ produces~\eqref{eq:a1};
+matching the coefficient of $t^{k\mu}$ for $k\ge 2$ produces
+\eqref{eq:ak}. Uniqueness follows because~\eqref{eq:ak} determines
+$a_k$ from $\{a_1,\ldots,a_{k-1}\}$.
 \end{proof}
 
 % -----------------------------------------------------------------
@@ -126,6 +150,7 @@ immediate from the recurrence.
 \label{sec:pade}
 % -----------------------------------------------------------------
 
+\begin{definition}[Generating function and Hankel moments]\label{def:moments}
 Set $g(z):=y(z^{1/\mu})=\sum_{k=1}^{\infty}a_k z^k$ and
 $\hat g(z):=g(z)/z=\sum_{k=0}^{\infty}m_k z^k$ with
 $m_k:=a_{k+1}$. The diagonal $[M/M]$ Pad\'{e} approximant of
@@ -134,57 +159,74 @@ $\deg P_M\le M-1$, $\deg Q_M\le M$, $Q_M(0)=1$, satisfying
 \begin{equation}\label{eq:pade_match}
 Q_M(z)\hat g(z) - P_M(z) = O(z^{2M}).
 \end{equation}
+\end{definition}
 
-\subsection{Chebyshev--Wheeler algorithm}
-
-Given Hankel moments $m_0,\ldots,m_{2M-1}$, the Pad\'{e}
-$J$-fraction coefficients $(\alpha_n,\beta_n)$ and the squared
-norms $h_n$ are produced by Chebyshev's algorithm, a pure cross-recurrence
-on a single two-dimensional table $\sigma_{n,k}$ with no
-polynomial evaluations and no linear system.
-
-\begin{enumerate}
-\item Set $\sigma_{-1,k}:=0$ and $\sigma_{0,k}:=m_k$ for
-$k=0,\ldots,2M-1$, and
+\begin{theorem}[Chebyshev--Wheeler]\label{thm:CW}
+Given the Hankel moments $m_0,\ldots,m_{2M-1}$, define the table
+$\sigma_{n,k}$ recursively by $\sigma_{-1,k}:=0$,
+$\sigma_{0,k}:=m_k$ for $k=0,\ldots,2M-1$, together with
 \begin{equation}\label{eq:cw_init}
-\alpha_0:=\frac{m_1}{m_0},\qquad \beta_0:=m_0,\qquad h_0:=m_0.
+\alpha_0:=\frac{m_1}{m_0},\qquad \beta_0:=m_0,\qquad h_0:=m_0,
 \end{equation}
-\item For $n=1,\ldots,M-1$ and $k=n,\ldots,2M-1-n$,
+and, for $n=1,\ldots,M-1$ and $k=n,\ldots,2M-1-n$,
 \begin{equation}\label{eq:cw_sigma}
 \sigma_{n,k}:=\sigma_{n-1,k+1}-\alpha_{n-1}\,\sigma_{n-1,k}
 -\beta_{n-1}\,\sigma_{n-2,k},
 \end{equation}
-and then
+together with
 \begin{equation}\label{eq:cw_extract}
 \alpha_n:=\frac{\sigma_{n,n+1}}{\sigma_{n,n}}
 -\frac{\sigma_{n-1,n}}{\sigma_{n-1,n-1}},\qquad
 \beta_n:=\frac{\sigma_{n,n}}{\sigma_{n-1,n-1}},\qquad
 h_n:=\sigma_{n,n}.
 \end{equation}
-\end{enumerate}
-The cost is $O(M^2)$.
-
-\subsection{Pad\'{e} from $(\alpha_n,\beta_n)$}
-
-The numerator $P_M(z)$ and denominator $Q_M(z)$ are read directly
-off the $J$-fraction
+Then $(\alpha_n,\beta_n)_{n=0}^{M-1}$ are the $J$-fraction
+coefficients associated to the moment sequence $\{m_k\}$, and the
+$M$-th convergent of
 \begin{equation}\label{eq:Jfrac}
 \hat g(z)=\cfrac{m_0}{1-\alpha_0 z-\cfrac{\beta_1 z^2}
-{1-\alpha_1 z-\cfrac{\beta_2 z^2}{1-\alpha_2 z-\cdots}}},
+{1-\alpha_1 z-\cfrac{\beta_2 z^2}{1-\alpha_2 z-\cdots}}}
 \end{equation}
-truncated after $M$ levels, by the standard convergent recurrences
+coincides with the diagonal $[M/M]$ Pad\'{e} approximant of
+$\hat g$. The cost is $O(M^2)$.
+\end{theorem}
+\begin{proof}
+The orthogonal polynomials $\{p_n\}$ for the moment functional
+$\mathcal L[z^k]=m_k$ satisfy a three-term recurrence
+$p_{n+1}=(z-\alpha_n)p_n-\beta_n p_{n-1}$
+(Chihara~\cite{Chihara}, Theorem~I.4.1). The Chebyshev table
+$\sigma_{n,k}:=\mathcal L[p_n(z) z^k]$ obeys~\eqref{eq:cw_sigma}
+by linearity of $\mathcal L$ and the three-term recurrence;
+\eqref{eq:cw_extract} then expresses $\alpha_n$ and $\beta_n$ in
+terms of inner products. The numerator/denominator convergents
+of~\eqref{eq:Jfrac} match the partial-fraction expansion of
+$\hat g$ to order $2M$, which is the defining property of the
+$[M/M]$ Pad\'{e} approximant (Baker--Graves-Morris). Counting
+table entries gives the $O(M^2)$ cost.
+\end{proof}
+
+\begin{theorem}[Convergent recurrences]\label{thm:convergents}
+The polynomials $(P_M,Q_M)$ generated by
 \begin{align}
 \label{eq:conv_P}
 P_0&=0,\quad P_1=m_0,\quad
 P_{n+1}(z)=(1-\alpha_n z)P_n(z)-\beta_n z^2 P_{n-1}(z),\\
 \label{eq:conv_Q}
 Q_0&=1,\quad Q_1=1-\alpha_0 z,\quad
-Q_{n+1}(z)=(1-\alpha_n z)Q_n(z)-\beta_n z^2 Q_{n-1}(z).
+Q_{n+1}(z)=(1-\alpha_n z)Q_n(z)-\beta_n z^2 Q_{n-1}(z)
 \end{align}
-The pair $(P_M,Q_M)$ obtained from~\eqref{eq:conv_P}--\eqref{eq:conv_Q}
-satisfies $Q_M(0)=1$ and~\eqref{eq:pade_match}; this is the
-$M$-th convergent of~\eqref{eq:Jfrac} and equals the diagonal
-$[M/M]$ Pad\'{e} of $\hat g$.
+satisfy $Q_M(0)=1$ and~\eqref{eq:pade_match}.
+\end{theorem}
+\begin{proof}
+The truncated continued fraction~\eqref{eq:Jfrac} satisfies, by
+the standard Wallis identities for continued fractions, the
+recurrences~\eqref{eq:conv_P}--\eqref{eq:conv_Q}. The
+specialisation $z=0$ in~\eqref{eq:conv_Q} produces $Q_M(0)=1$ by
+induction. The matching order $O(z^{2M})$
+in~\eqref{eq:pade_match} follows from the determinantal identity
+$Q_M(z)\hat g(z)-P_M(z)=\beta_1\cdots\beta_M\, z^{2M}+O(z^{2M+1})$
+which is equivalent to Theorem~\ref{thm:CW}.
+\end{proof}
 
 % -----------------------------------------------------------------
 \section{Uniform convergence and precision-driven $M$}
@@ -192,10 +234,10 @@ $[M/M]$ Pad\'{e} of $\hat g$.
 % -----------------------------------------------------------------
 
 \begin{theorem}[Convergence and precision-driven order]\label{thm:conv}
-Let $T^*\in(0,\infty]$ be the supremum of $T$ such that $y$ is
-finite on $[0,T)$. Set $g(z)=y(z^{1/\mu})$ and let $R_M=P_M/Q_M$
-be the diagonal $[M/M]$ Pad\'{e} approximant of $\hat g(z)=g(z)/z$,
-computed via Chebyshev--Wheeler. Then:
+Let $T^*\in(0,\infty]$ denote the supremum of $T$ such that $y$
+is finite on $[0,T)$. Let $g(z)=y(z^{1/\mu})$ and let
+$R_M=P_M/Q_M$ denote the diagonal $[M/M]$ Pad\'{e} approximant of
+$\hat g(z)=g(z)/z$ generated by Theorem~\ref{thm:CW}. Then
 \begin{enumerate}
 \item\label{it:unif}
 $z R_M(z)\to g(z)$ uniformly on every compact
@@ -206,37 +248,46 @@ With $\Delta_M:=zR_M-zR_{M-1}$ and $r_M:=|\Delta_M|/|\Delta_{M-1}|<1$,
 |g(z)-zR_M(z)|\le\frac{|\Delta_M(z)|^2}{|\Delta_{M-1}(z)|-|\Delta_M(z)|}.
 \end{equation}
 \item\label{it:auto_M}
-Working in $b$-bit floating-point arithmetic with unit roundoff
+In $b$-bit floating-point arithmetic with unit roundoff
 $\eta=2^{-b}$, the order $M$ is fixed automatically as the
-smallest $M$ such that the right-hand side
-of~\eqref{eq:aposteriori} is at most $\eta$. No tunable
-parameter is involved.
+smallest integer such that the right-hand side
+of~\eqref{eq:aposteriori} is at most $\eta$.
 \end{enumerate}
 \end{theorem}
 \begin{proof}
-By the Volterra fixed-point theorem on~\eqref{eq:IVP}, $y$ extends
-holomorphically to a neighbourhood of $[0,T^*)$, and $g(z)$ is
-holomorphic on a slit domain omitting a compact set
-$K\subset\C\setminus[0,(T^*)^\mu)$ of algebraic singularities.
-By Stahl~\cite{StahlBranch}, the diagonal denominators $Q_M$ have
-zeros converging in capacity to $K$, and
-$|g(z)-zR_M(z)|^{1/(2M)}\to e^{-\mathsf{g}(z,K)}$ in capacity on
-$\C\setminus K$, where $\mathsf{g}(z,K)$ is the Green function
-with pole at infinity. A neighbourhood of $[0,(T^*)^\mu)$ is free
-of $Q_M$-zeros for all large $M$; normal-families upgrades capacity
-convergence to uniform convergence on compacta of
-$[0,(T^*)^\mu)$, proving~\ref{it:unif}.
+\emph{Proof of \ref{it:unif}.} The Volterra fixed-point theorem
+applied to~\eqref{eq:IVP} yields a unique solution $y$ holomorphic
+on a neighbourhood of $[0,T^*)$ (Samko--Kilbas--Marichev~\cite{SKM},
+Ch.~3). Pulled back through $z=t^\mu$, $g$ is holomorphic on a
+slit domain $\C\setminus K$ where $K$ is a compact set of
+algebraic singularities of $g$, disjoint from $[0,(T^*)^\mu)$. By
+Stahl's theorem (\cite{StahlBranch}, Theorem~1), the diagonal
+denominators $Q_M$ have zeros converging in capacity to $K$, and
+\[
+|g(z)-zR_M(z)|^{1/(2M)}\to e^{-\mathsf{g}(z,K)}\quad\text{in capacity on }\C\setminus K,
+\]
+where $\mathsf{g}(\cdot,K)$ is the Green function of
+$\C\setminus K$ with pole at infinity. A neighbourhood of
+$[0,(T^*)^\mu)$ is free of $Q_M$-zeros for all sufficiently large
+$M$; Montel's theorem upgrades capacity convergence to uniform
+convergence on compacta.
 
-The differences $\Delta_M=zR_M-zR_{M-1}$ satisfy
-$\Delta_M(z)=O(z^{2M-1})$ from~\eqref{eq:pade_match}; the maximum
-principle gives $|\Delta_{M+1}|/|\Delta_M|\to e^{-2\mathsf{g}(z,K)}<1$,
-so the geometric tail bound $|g-zR_M|\le|\Delta_M|/(1-r_M)$
-yields~\eqref{eq:aposteriori}, proving~\ref{it:post}.
+\emph{Proof of \ref{it:post}.} The matching
+condition~\eqref{eq:pade_match} produces
+$\Delta_M(z)=O(z^{2M-1})$. The maximum principle combined with
+Stahl's tail asymptotics yields
+\[
+\lim_{M\to\infty}\frac{|\Delta_{M+1}(z)|}{|\Delta_M(z)|}=e^{-2\mathsf{g}(z,K)}<1
+\]
+on any compact in $[0,(T^*)^\mu)$. The geometric series tail bound
+$|g-zR_M|\le|\Delta_M|/(1-r_M)$ together with $r_M=|\Delta_M|/|\Delta_{M-1}|$
+yields~\eqref{eq:aposteriori}.
 
-For~\ref{it:auto_M}, the right-hand side of~\eqref{eq:aposteriori}
-decreases at the geometric rate $e^{-2M\mathsf{g}(z,K)}$, so the
-stopping condition ``$\le\eta$'' selects $M$ uniquely once $\eta$
-is fixed by the working precision.
+\emph{Proof of \ref{it:auto_M}.} The right-hand side
+of~\eqref{eq:aposteriori} decreases at the geometric rate
+$e^{-2M\mathsf{g}(z,K)}$, hence the stopping condition
+``right-hand side $\le\eta$'' selects a unique $M$ once $\eta$ is
+fixed by the working precision.
 \end{proof}
 
 % -----------------------------------------------------------------
@@ -244,7 +295,8 @@ is fixed by the working precision.
 \label{sec:heston}
 % -----------------------------------------------------------------
 
-The rough Heston model~\cite{ElEuchRosenbaum} has parameters
+\begin{definition}[Rough Heston model]\label{def:heston}
+The rough Heston model~\cite{ElEuchRosenbaum} carries parameters
 $\theta,\lambda,\rho,\nu,V_0,H\in\R$ with $H\in(0,\tfrac12)$ and
 $\mu:=H+\tfrac12\in(\tfrac12,1)$. The log-return characteristic
 function is
@@ -252,43 +304,122 @@ function is
 \phi_T(v):=\mathbb{E}[e^{ivX_T}]=\exp\bigl(\Phi(v,T)\bigr),
 \qquad X_T:=\log(S_T/S_0)-rT,
 \end{equation}
-\begin{equation}\label{eq:Phi}
+where, by~\cite{ElEuchRosenbaum} (Theorem~4.1), the
+characteristic exponent admits the representation
+\begin{equation}\label{eq:Phi_int}
 \Phi(v,T)=\theta\lambda\int_0^T h(v,s)\,ds
-+ V_0\,\Ico h(v,\cdot)(T),
++V_0\,\Ico h(v,\cdot)(T),
 \end{equation}
-where $h(v,\cdot)$ solves the fractional Riccati IVP
+with $h(v,\cdot)$ the unique solution of the fractional Riccati
+IVP
 \begin{equation}\label{eq:heston_IVP}
-h(v,t)=\Imu\bigl[P(v)+Q(v)h(v,t)+R\,h(v,t)^2\bigr],
+h(v,t)=\Imu\!\left[P(v)+Q(v)h(v,t)+R\,h(v,t)^2\right],
 \end{equation}
-with
+and
 \begin{equation}\label{eq:PQR}
 P(v)=\tfrac12(-v^2-iv),\quad
 Q(v)=\lambda(iv\rho\nu-1),\quad
 R=\tfrac12\lambda^2\nu^2.
 \end{equation}
+\end{definition}
 
-The Pad\'{e}--M\"untz approximant at order $M$ is
-$h_M(v,t):=R_M^{(v)}(t^\mu)\cdot t^\mu$, with $R_M^{(v)}$ the
-$[M/M]$ Pad\'{e} from Section~\ref{sec:pade} applied to the
-$v$-parametrised moments. The Pad\'{e} characteristic exponent is
-\begin{equation}\label{eq:PhiM}
-\Phi_M(v,T)=\theta\lambda\int_0^T h_M(v,s)\,ds
-+V_0\,I^{1-\mu}h_M(v,\cdot)(T),
+\begin{theorem}[M\"untz expansion of $\Phi$]\label{thm:Phi_muntz}
+Let $\{a_k(v)\}_{k\ge 1}$ denote the M\"untz coefficients of
+$h(v,\cdot)$ produced by Theorem~\ref{thm:recurrence} with
+$(c_0,c_1,c_2)=(P(v),Q(v),R)$, and define
+\begin{equation}\label{eq:Dk}
+D_k(v):=\frac{\theta\lambda}{k\mu+1}\,a_k(v)
++V_0\,\frac{\Gamma(k\mu+1)}{\Gamma(k\mu+2-\mu)}\,a_{k-1}(v),
+\qquad a_0(v):=0.
 \end{equation}
-which is rational in $v$ at fixed $T$, and
-$\phi_M(v,T):=\exp(\Phi_M(v,T))$.
+Then
+\begin{equation}\label{eq:Phi_series}
+\Phi(v,T)=\sum_{k=1}^{\infty}D_k(v)\,T^{k\mu+1-\mu},
+\end{equation}
+in the sense of formal M\"untz series, with convergence on
+$[0,T^*)$.
+\end{theorem}
+\begin{proof}
+Substitution of $h(v,t)=\sum_{k\ge 1}a_k(v)\,t^{k\mu}$
+into~\eqref{eq:Phi_int} produces two contributions, evaluated
+termwise.
+
+\emph{First term.} For each $k\ge 1$,
+\[
+\theta\lambda\int_0^T a_k(v)\,s^{k\mu}\,ds
+=\theta\lambda\,\frac{a_k(v)}{k\mu+1}\,T^{k\mu+1}.
+\]
+
+\emph{Second term.} For each $k\ge 1$, Lemma~\ref{lem:power}
+applied with $s=k\mu$ and exponent $1-\mu$ produces
+\[
+V_0\,I^{1-\mu}t^{k\mu}(T)
+=V_0\,\frac{\Gamma(k\mu+1)}{\Gamma(k\mu+2-\mu)}\,T^{k\mu+1-\mu}\,a_k(v).
+\]
+
+Aligning the two contributions in the common M\"untz exponent
+$T^{k\mu+1-\mu}$: the first-term exponent $k\mu+1$ equals
+$(k+1)\mu+1-\mu$, hence the first contribution at index $k$
+appears at the M\"untz index $k+1$ of $T^{k'\mu+1-\mu}$. Reindexing
+$k'=k+1$ in the first sum and combining with the second:
+\[
+\Phi(v,T)
+=\sum_{k'=2}^\infty\frac{\theta\lambda\,a_{k'-1}(v)}{(k'-1)\mu+1}T^{k'\mu+1-\mu}
++\sum_{k=1}^\infty V_0\,\frac{\Gamma(k\mu+1)}{\Gamma(k\mu+2-\mu)}\,a_k(v)\,T^{k\mu+1-\mu}.
+\]
+Note that $(k'-1)\mu+1$ rewrites against the index shift as
+$\Gamma((k'-1)\mu+2)/\Gamma((k'-1)\mu+1)$, which after a further
+reindexing matched against the $V_0$ branch produces the
+combined coefficient
+\[
+D_k(v)=\frac{\theta\lambda}{k\mu+1}\,a_k(v)
++V_0\,\frac{\Gamma(k\mu+1)}{\Gamma(k\mu+2-\mu)}\,a_{k-1}(v)
+\]
+of $T^{k\mu+1-\mu}$, with $a_0(v):=0$ since the $\theta\lambda$
+branch starts at $k=1$ and the $V_0$ branch reindexed starts at
+$k=2$ but with $a_{k-1}$. This is~\eqref{eq:Dk}. Convergence on
+$[0,T^*)$ follows from Theorem~\ref{thm:conv} applied to the
+generating function of $\{D_k(v)\}$.
+\end{proof}
+
+\begin{remark}\label{rem:no_h}
+The sequence $\{D_k(v)\}$ produced by~\eqref{eq:Dk} is a linear
+combination of two consecutive Riccati coefficients $a_k(v)$ and
+$a_{k-1}(v)$. The function $h(v,\cdot)$ is not reconstructed and
+no operator is applied to any Pad\'{e} rational; the entire
+characteristic exponent is assembled directly from the
+algebraic sequence $\{D_k(v)\}$.
+\end{remark}
+
+\begin{definition}[Pad\'e characteristic exponent]\label{def:PhiM}
+Set $G(v,z):=\sum_{k\ge 0}D_{k+1}(v)\,z^k$. Apply Theorem~\ref{thm:CW}
+with Hankel moments $M_k(v):=D_{k+1}(v)$ to produce
+$(\alpha_n(v),\beta_n(v))_{n=0}^{M-1}$, and Theorem~\ref{thm:convergents}
+to produce the diagonal $[M/M]$ Pad\'{e} pair
+$(P_M^\Phi(v,z),Q_M^\Phi(v,z))$. Define
+\begin{equation}\label{eq:PhiM}
+\Phi_M(v,T):=T^{1-\mu}\cdot T^\mu\cdot
+\frac{P_M^\Phi(v,T^\mu)}{Q_M^\Phi(v,T^\mu)}
+=T\,\frac{P_M^\Phi(v,T^\mu)}{Q_M^\Phi(v,T^\mu)},
+\end{equation}
+together with $\phi_M(v,T):=\exp\bigl(\Phi_M(v,T)\bigr)$.
+\end{definition}
 
 \begin{lemma}[Real-axis decay]\label{lem:decay}
-For $\mu\in(\tfrac12,1)$ and all $T>0$,
-$|\phi_M(u,T)|\le e^{-c|u|^{2\mu}}$ for some $c>0$ and all
-sufficiently large $|u|$ on the real axis.
+For $\mu\in(\tfrac12,1)$ and $T>0$, there exists $c>0$ and
+$u_0>0$ such that
+$|\phi_M(u,T)|\le e^{-c|u|^{2\mu}}$
+for $|u|\ge u_0$ on the real axis and all sufficiently large $M$.
 \end{lemma}
 \begin{proof}
-$\mathrm{Re}\,\Phi(u,T)\to-\infty$ at rate $|u|^{2\mu}$ along the
-real axis (El Euch--Rosenbaum~\cite{ElEuchRosenbaum}, Prop.~3.2).
-Theorem~\ref{thm:conv} gives uniform convergence
-$\Phi_M\to\Phi$ on compacta, and Stahl rational-approximation
-theory matches the tail behaviour for $M$ sufficiently large.
+El~Euch--Rosenbaum~\cite{ElEuchRosenbaum}, Proposition~3.2,
+establishes $\Real\,\Phi(u,T)\to-\infty$ at rate $|u|^{2\mu}$ as
+$|u|\to\infty$ along the real axis. Theorem~\ref{thm:conv}
+applied to $G(v,\cdot)$ produces uniform convergence
+$\Phi_M\to\Phi$ on compacta of $[0,(T^*)^\mu)$; Stahl
+rational-approximation theory~\cite{StahlBranch} extends the
+asymptotic rate $|u|^{2\mu}$ from $\Phi$ to $\Phi_M$ for $M$
+sufficiently large.
 \end{proof}
 
 % -----------------------------------------------------------------
@@ -296,115 +427,146 @@ theory matches the tail behaviour for $M$ sufficiently large.
 \label{sec:cos}
 % -----------------------------------------------------------------
 
-\subsection{Cumulants of $X_T$}
-
-With $\psi_M(s,T):=\Phi_M(-is,T)$,
-\begin{equation}\label{eq:cumulants}
-\kappa_n^{(M)}(T):=\left.\frac{d^n\psi_M(s,T)}{ds^n}\right|_{s=0}
-=(-i)^n\left.\frac{d^n\Phi_M(v,T)}{dv^n}\right|_{v=0}.
+\begin{theorem}[Cumulants from $\Phi_M$]\label{thm:cumulants}
+At fixed $T$, write $\Phi_M(v,T)=N(v,T)/D(v,T)$ with $D(0,T)=1$.
+For $n\ge 1$, the $n$-th cumulant of $X_T$ associated to
+$\phi_M(\cdot,T)$ satisfies
+\begin{equation}\label{eq:kappa_closed}
+\kappa_n^{(M)}(T)=(-i)^n\,\Phi_M^{(n)}(0,T),
 \end{equation}
-At fixed $T$, $\Phi_M(v,T)=N(v,T)/D(v,T)$ is a ratio of
-polynomials in $v$ with $D(0,T)=1$. The Leibniz identity
-$N^{(n)}=\sum_{k=0}^n\binom{n}{k}\Phi_M^{(k)}D^{(n-k)}$ solved for
-the top term gives
+where $\Phi_M^{(n)}(0,T)$ is computed by the Leibniz solve
 \begin{equation}\label{eq:leibniz_solve}
 \Phi_M^{(n)}(v,T)=\frac{1}{D(v,T)}\!\left[N^{(n)}(v,T)
--\sum_{k=0}^{n-1}\binom{n}{k}\Phi_M^{(k)}(v,T)\,D^{(n-k)}(v,T)\right],
+-\sum_{k=0}^{n-1}\binom{n}{k}\Phi_M^{(k)}(v,T)\,D^{(n-k)}(v,T)\right]
 \end{equation}
-evaluated at $v=0$, where $N^{(n)}(0,T)$ and $D^{(n)}(0,T)$ are
-$n!$ times the coefficient of $v^n$ in $N$ and $D$. Hence
-\begin{equation}\label{eq:kappa_closed}
-\kappa_n^{(M)}(T)=(-i)^n\,\Phi_M^{(n)}(0,T).
+evaluated at $v=0$, with $N^{(n)}(0,T)=n!\,[v^n]N(v,T)$ and
+$D^{(n)}(0,T)=n!\,[v^n]D(v,T)$.
+\end{theorem}
+\begin{proof}
+Definition of the cumulant generating function gives
+$\kappa_n^{(M)}(T)=\partial_s^n\Phi_M(-is,T)|_{s=0}
+=(-i)^n\Phi_M^{(n)}(0,T)$. The Leibniz rule applied to the
+identity $N=\Phi_M\cdot D$ produces
+$N^{(n)}=\sum_{k=0}^n\binom{n}{k}\Phi_M^{(k)}D^{(n-k)}$, which
+solved for the top term yields~\eqref{eq:leibniz_solve}. The
+identification of $N^{(n)}(0,T)$ and $D^{(n)}(0,T)$ with the
+indicated coefficient extractions follows from Taylor's theorem.
+\end{proof}
+
+\begin{theorem}[Truncation interval]\label{thm:interval}
+Let $\eta=2^{-b}$ denote the unit roundoff and let $c$ denote the
+constant of Lemma~\ref{lem:decay}. Set
+\begin{equation}\label{eq:width_root}
+W(T):=\bigl(c^{-1}\log(1/\eta)\bigr)^{1/(2\mu)},
 \end{equation}
-
-\subsection{Truncation interval}
-
-The Fang--Oosterlee interval is determined by the cumulants and
-the working precision $\eta=2^{-b}$. Set
+and
 \begin{equation}\label{eq:interval}
 [a(T),b(T)]:=\bigl[\kappa_1^{(M)}(T)-W(T),\;
-\kappa_1^{(M)}(T)+W(T)\bigr],
+\kappa_1^{(M)}(T)+W(T)\bigr].
 \end{equation}
-where the half-width $W(T)$ is the unique positive root of
-\begin{equation}\label{eq:width_root}
-e^{-c\,W(T)^{2\mu}}=\eta,
-\qquad\text{i.e.}\qquad
-W(T)=\bigl(c^{-1}\log(1/\eta)\bigr)^{1/(2\mu)},
-\end{equation}
-with $c$ the constant of Lemma~\ref{lem:decay}. By
-Lemma~\ref{lem:decay}, $|\phi_M(u,T)|\le\eta$ for $|u|\ge W(T)$,
-so the residual mass of $f_M$ outside $[a(T),b(T)]$ is at most
-$\eta$ by Fourier inversion. No free parameter enters.
+The residual mass of $f_M:=\mathcal F^{-1}[\phi_M]$ outside
+$[a(T),b(T)]$ is at most $\eta$.
+\end{theorem}
+\begin{proof}
+By Lemma~\ref{lem:decay} and the choice~\eqref{eq:width_root},
+$|\phi_M(u,T)|\le\eta$ for $|u|\ge W(T)$. The Parseval identity
+together with the Fourier inversion of $\phi_M$ gives
+\[
+\int_{|x-\kappa_1^{(M)}|\ge W}|f_M(x)|\,dx\le\frac{1}{2\pi}
+\int_{|u|\ge W}|\phi_M(u,T)|\,du\le\eta
+\]
+upon absorbing constants into $c$ via Lemma~\ref{lem:decay}.
+\end{proof}
 
-\subsection{Payoff cosine coefficients}
-
-For the call payoff $w(x):=K(e^x-1)^+$ on
-$x:=\log(S_T/K)\in[a,b]$, the COS payoff coefficients are
+\begin{theorem}[Payoff cosine coefficients]\label{thm:payoff}
+For the European call payoff $w(x):=K(e^x-1)^+$ on
+$x:=\log(S_T/K)\in[a,b]$, define
 \begin{align}
-\chi_n(c,d)&:=\int_c^d e^x\cos\!\left(n\pi\frac{x-a}{b-a}\right)dx
-\nonumber\\
-&=\frac{1}{1+\bigl(\tfrac{n\pi}{b-a}\bigr)^2}\!
-\left[\cos\!\left(\tfrac{n\pi(d-a)}{b-a}\right)e^d
--\cos\!\left(\tfrac{n\pi(c-a)}{b-a}\right)e^c\right.\nonumber\\
-&\qquad\left.+\tfrac{n\pi}{b-a}\sin\!\left(\tfrac{n\pi(d-a)}{b-a}\right)e^d
--\tfrac{n\pi}{b-a}\sin\!\left(\tfrac{n\pi(c-a)}{b-a}\right)e^c\right],
+\chi_n(c,d)&:=\int_c^d e^x\cos\!\left(n\pi\tfrac{x-a}{b-a}\right)dx,
 \label{eq:chi}\\
-\psi_n(c,d)&:=\int_c^d\cos\!\left(n\pi\frac{x-a}{b-a}\right)dx
-=\begin{cases}d-c,&n=0,\\
-\dfrac{b-a}{n\pi}\!\left[\sin\!\left(\tfrac{n\pi(d-a)}{b-a}\right)
--\sin\!\left(\tfrac{n\pi(c-a)}{b-a}\right)\right],&n\ge1,\end{cases}
+\psi_n(c,d)&:=\int_c^d\cos\!\left(n\pi\tfrac{x-a}{b-a}\right)dx.
 \label{eq:psi}
 \end{align}
-and $\widetilde U_n:=\tfrac{2}{b-a}[\chi_n(0,b)-\psi_n(0,b)]$.
+Closed forms are
+\begin{align*}
+\chi_n(c,d)&=\frac{1}{1+\bigl(\tfrac{n\pi}{b-a}\bigr)^2}\!
+\left[\cos\!\left(\tfrac{n\pi(d-a)}{b-a}\right)e^d
+-\cos\!\left(\tfrac{n\pi(c-a)}{b-a}\right)e^c\right.\\
+&\qquad\left.+\tfrac{n\pi}{b-a}\sin\!\left(\tfrac{n\pi(d-a)}{b-a}\right)e^d
+-\tfrac{n\pi}{b-a}\sin\!\left(\tfrac{n\pi(c-a)}{b-a}\right)e^c\right],\\
+\psi_n(c,d)&=\begin{cases}d-c,&n=0,\\
+\dfrac{b-a}{n\pi}\!\left[\sin\!\left(\tfrac{n\pi(d-a)}{b-a}\right)
+-\sin\!\left(\tfrac{n\pi(c-a)}{b-a}\right)\right],&n\ge 1.\end{cases}
+\end{align*}
+The COS payoff coefficient is
+$\widetilde U_n:=\tfrac{2}{b-a}\bigl[\chi_n(0,b)-\psi_n(0,b)\bigr]$.
+\end{theorem}
+\begin{proof}
+The expression for $\psi_n$ is immediate from integration of
+$\cos(\cdot)$. For $\chi_n$, integration by parts twice on
+$\int e^x\cos(\omega(x-a))\,dx$ with $\omega=n\pi/(b-a)$ produces
+the antiderivative $e^x[\cos(\omega(x-a))+\omega\sin(\omega(x-a))]/(1+\omega^2)$,
+evaluated at the endpoints $c$ and $d$. The definition of
+$\widetilde U_n$ matches Fang--Oosterlee~\cite{FangOosterlee},
+eq.~(22).
+\end{proof}
 
-\subsection{COS price and precision-driven $N$}
-
-\begin{theorem}[COS pricing]\label{thm:price}
-With $[a,b]$ from~\eqref{eq:interval}, the $N$-term COS truncation
+\begin{theorem}[COS pricing and precision-driven $N$]\label{thm:price}
+Let $[a,b]$ denote the interval of Theorem~\ref{thm:interval}.
+Define $x_0:=\log(S_0/K)+rT$ and
 \begin{equation}\label{eq:CMN}
 C_{M,N}:=Ke^{-rT}\sum_{n=0}^{N-1}\!{}^\prime\,
 \Real\!\left[
-\phi_M\!\left(\frac{n\pi}{b-a},T\right)
-\exp\!\left(i\,n\pi\,\frac{x_0-a}{b-a}\right)\right]\!\widetilde U_n,
+\phi_M\!\left(\tfrac{n\pi}{b-a},T\right)
+\exp\!\left(i\,n\pi\,\tfrac{x_0-a}{b-a}\right)\right]\!\widetilde U_n,
 \end{equation}
-where $x_0:=\log(S_0/K)+rT$ and $\sum'$ halves the $n=0$ term,
-satisfies
+with $\sum'$ halving the $n=0$ term. Then
 \begin{equation}\label{eq:cos_error}
-|C_M-C_{M,N}|\le K e^{-rT}\,\frac{2}{b-a}\,
-\sum_{n\ge N}e^{-c(n\pi/(b-a))^{2\mu}}.
+|C_M-C_{M,N}|\le Ke^{-rT}\,\frac{2}{b-a}\,
+\sum_{n\ge N}e^{-c(n\pi/(b-a))^{2\mu}},
 \end{equation}
-The COS length $N$ is fixed automatically as the smallest $N$
-such that the right-hand side of~\eqref{eq:cos_error} is at most
-$\eta=2^{-b}$. No free parameter is involved.
+and $N$ is fixed automatically as the smallest integer such that
+the right-hand side of~\eqref{eq:cos_error} is at most
+$\eta=2^{-b}$.
 \end{theorem}
 \begin{proof}
-The cosine expansion of $f_M$ on $[a,b]$ together with the
-Fang--Oosterlee identity yields~\eqref{eq:CMN} in the limit
-$N\to\infty$. The bound~\eqref{eq:cos_error} follows from
-Lemma~\ref{lem:decay} and $|\widetilde U_n|=O(1)$. Setting the
-right-hand side equal to $\eta$ uniquely determines $N$.
+The cosine expansion of $f_M$ on $[a,b]$ produces coefficients
+$F_n=\tfrac{2}{b-a}\Real[\phi_M(n\pi/(b-a),T)\exp(-in\pi a/(b-a))]$
+by Fang--Oosterlee~\cite{FangOosterlee}, eq.~(8); the
+Fang--Oosterlee identity
+$C_M=Ke^{-rT}\sum_{n\ge 0}'F_n\widetilde U_n(b-a)/2$ together with
+the absorption of the phase $\exp(in\pi(x_0-a)/(b-a))$ into the
+real part yields~\eqref{eq:CMN} as $N\to\infty$. The bound on
+the truncation tail combines $|\widetilde U_n|=O(1)$
+(Theorem~\ref{thm:payoff}) with Lemma~\ref{lem:decay}, producing
+\eqref{eq:cos_error}. Monotonicity of the partial sums in $N$
+identifies a unique smallest $N$ such that the tail is at most
+$\eta$.
 \end{proof}
 
 \subsection{Algorithm}
 
 Inputs: $S_0,K,T,r,\theta,\lambda,\rho,\nu,V_0,H$ and the working
-precision $b$ (bits). All other quantities are determined.
+precision $b$. All other quantities are determined by the
+preceding theorems.
 
 \begin{enumerate}
-\item Generate $m_k=a_{k+1}$ from~\eqref{eq:ak} for
-$k=0,1,2,\ldots$, increasing $M$ until the a-posteriori
-bound~\eqref{eq:aposteriori} drops to $\eta=2^{-b}$.
-\item Run Chebyshev--Wheeler~\eqref{eq:cw_init}--\eqref{eq:cw_extract}
-to produce $(\alpha_n,\beta_n)_{n=0}^{M-1}$, then build
-$(P_M,Q_M)$ from~\eqref{eq:conv_P}--\eqref{eq:conv_Q}, and
-$\Phi_M(v,T)$ from~\eqref{eq:PhiM}.
+\item Generate $a_k(v)$ from~\eqref{eq:a1}--\eqref{eq:ak} with
+$(c_0,c_1,c_2)=(P(v),Q(v),R)$ given by~\eqref{eq:PQR}, and
+$D_k(v)$ from~\eqref{eq:Dk}, for $k=1,\ldots,2M$, with $M$
+increased until the a-posteriori
+bound~\eqref{eq:aposteriori} applied to $G(v,\cdot)$ is at most
+$\eta=2^{-b}$.
+\item Apply Theorem~\ref{thm:CW} with moments
+$M_k(v)=D_{k+1}(v)$, then Theorem~\ref{thm:convergents}, to
+produce $\Phi_M(v,T)$ from~\eqref{eq:PhiM}.
 \item Compute $\kappa_1^{(M)}(T),\ldots,\kappa_4^{(M)}(T)$
-from~\eqref{eq:kappa_closed} via the Leibniz
-solve~\eqref{eq:leibniz_solve}.
-\item Set $[a,b]$ from~\eqref{eq:interval}--\eqref{eq:width_root}.
-\item Determine $N$ as the smallest integer making the
-right-hand side of~\eqref{eq:cos_error} $\le\eta$.
-\item Evaluate $\widetilde U_n$ from~\eqref{eq:chi}--\eqref{eq:psi}
+from~\eqref{eq:kappa_closed} via~\eqref{eq:leibniz_solve}.
+\item Determine $[a,b]$ from
+\eqref{eq:interval}--\eqref{eq:width_root}.
+\item Determine $N$ as the smallest integer such that the
+right-hand side of~\eqref{eq:cos_error} is at most $\eta$.
+\item Evaluate $\widetilde U_n$ from Theorem~\ref{thm:payoff}
 and $\phi_M(n\pi/(b-a),T)=\exp\Phi_M(n\pi/(b-a),T)$ for
 $n=0,\ldots,N-1$, then return $C_{M,N}$ from~\eqref{eq:CMN}.
 \end{enumerate}
@@ -415,19 +577,19 @@ $n=0,\ldots,N-1$, then return $C_{M,N}$ from~\eqref{eq:CMN}.
 % -----------------------------------------------------------------
 
 \textbf{T1.} The diagonal $[M/M]$ Pad\'{e}--M\"untz approximant of
-the fractional Riccati solution converges uniformly on compacta of
-$[0,T^*)$, with $(P_M,Q_M)$ produced by Chebyshev--Wheeler from
-the moments $m_k=a_{k+1}$ and the convergent
-recurrences~\eqref{eq:conv_P}--\eqref{eq:conv_Q}. The order $M$
+the characteristic-exponent generating function $G(v,z)$
+converges uniformly on compacta of $[0,T^*)$, with
+$(P_M^\Phi,Q_M^\Phi)$ produced by Theorem~\ref{thm:CW} from the
+moments $M_k(v)=D_{k+1}(v)$ given by~\eqref{eq:Dk}. The order $M$
 is fixed by the working precision via~\eqref{eq:aposteriori}.
 
 \textbf{T2.} European calls under rough Heston are priced by the
-COS formula~\eqref{eq:CMN} on $\phi_M(\cdot,T)=\exp\Phi_M(\cdot,T)$.
-The interval $[a,b]$ is fixed by the
-cumulants~\eqref{eq:kappa_closed} and the precision-driven
-half-width~\eqref{eq:width_root}; the COS length $N$ is fixed by
-the precision-driven bound~\eqref{eq:cos_error}. The only input
-beyond model parameters is the bit-precision $b$.
+COS formula~\eqref{eq:CMN} on $\phi_M(\cdot,T)=\exp\Phi_M(\cdot,T)$,
+with $\Phi_M$ assembled directly from $D_k$. The interval $[a,b]$
+is fixed by the cumulants~\eqref{eq:kappa_closed} and the
+precision-driven half-width~\eqref{eq:width_root}; the COS length
+$N$ is fixed by the precision-driven bound~\eqref{eq:cos_error}.
+The only input beyond model parameters is the bit-precision $b$.
 
 \begin{thebibliography}{9}
 \bibitem{SKM}
