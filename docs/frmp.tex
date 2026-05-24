@@ -746,25 +746,18 @@ By the identity principle, $A$ extends meromorphically to
 \end{equation}
 where $S_G$ is the singularity locus of $\widehat G_R$.
 
-\textbf{Step 4: Self-consistent fixed point.}
-For $K\supseteq K_\Psi$ compact, let $\mathcal{M}(K)$ be the space
-of $\C[u][[z]]$-formal series whose unique meromorphic continuation
-lives on $\widetilde X\setminus K$. The map
-\begin{equation}\label{eq:Phi_map}
-\Phi: A \mapsto \Psimu \odot B[A]
-\end{equation}
-sends $\mathcal{M}(K)$ to itself: $B[A]=P+zQA+zRA^2$ is polynomial
-in $A$, hence in $\mathcal{M}(K)$, and the Mellin--Barnes integral
-adds only the poles of $M_{\Psimu}$, which project to
-$K_\Psi\subseteq K$. The unique formal-power-series fixed point of
-$\Phi$ is $A$ (Theorem~\ref{thm:Muntz}). $F$ is the unique
-formal-power-series root of~\eqref{eq:quad} and lies in
-$\mathcal{M}(K_F)$ (Lemma~\ref{lem:stahl_F}). Subtraction of the
-$F$-equation from the $A$-equation and order-by-order reading of the
-difference shows $A-F$ has at worst the same singular set as $F$
-(Lemma~\ref{lem:branch_transfer}). Therefore
-$A\in\mathcal{M}(K_F(u))$, and the minimal compact
-$K_A(u)\subseteq K_F(u)$ exists by Theorem~\ref{thm:stahl_extremal}.
+\textbf{Step 4 (Branch locus).}
+The formal series $A(z,u)$ is unique by Theorem~\ref{thm:Muntz} and satisfies
+$A(z,u)=\Psimu(z)\odot B[A](z,u)$ by Lemma~\ref{lem:hadamard}. For any compact
+$K\supseteq K_\Psi$ on which $A(\cdot,u)$ admits meromorphic continuation to
+$\widetilde X\setminus K$, Lemma~\ref{lem:mb} produces a meromorphic
+continuation of $\Psimu\odot B[A]$ to $\widetilde X\setminus K$, and the two
+meromorphic functions agree on the disk of convergence, hence on
+$\widetilde X\setminus K$ by the identity principle.
+Lemma~\ref{lem:branch_transfer} shows the branch locus of $A(\cdot,u)$ lies in
+the branch locus of $F(\cdot,u)$ together with $K_\Psi$, so $A(\cdot,u)$ is
+meromorphic on $\widetilde X\setminus K_F(u)$. Existence of the minimal compact
+$K_A(u)\subseteq K_F(u)$ follows from Theorem~\ref{thm:stahl_extremal}.
 \end{proof}
 
 % ---------------------------------------------------------------
