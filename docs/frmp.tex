@@ -46,15 +46,15 @@ inversion. Second (Theorems~\ref{thm:foxH_density},
 European call price admit strictly closed-form representations as
 finite sums of Fox $H$-functions in the partial-fraction data of
 the rational characteristic exponent $\Phi_M$, evaluable in
-$O(M\log^2 M)$ operations per strike-maturity pair, with the
-front-end Chebyshev construction performed once symbolically in
-$\C[v]$ at $O(M^3)$ cost per model calibration and amortised
-across the entire $(K,T)$-surface. The price formula is derived
-by two analytically independent routes (convolution chain and
-Mellin--Barnes inversion) converging on identical parameter data.
-The Pad\'{e} characteristic function has Gaussian real-axis decay,
-sharper than the stretched-exponential decay of the exact rough
-Heston cf. Third (Theorem~\ref{thm:price}), the same prices may
+$O(M\log^2 M)$ operations per strike at fixed maturity, with the
+front-end Chebyshev construction at $O(M^2)$ per parameter
+evaluation and the partial-fraction expansion at $O(M^2)$ per
+maturity. The price formula is derived by two analytically
+independent routes (convolution chain and Mellin--Barnes
+inversion) converging on identical parameter data. The Pad\'{e}
+characteristic function has Gaussian real-axis decay, sharper
+than the stretched-exponential decay of the exact rough Heston
+cf. Third (Theorem~\ref{thm:price}), the same prices may
 alternatively be computed by applying the Fang--Oosterlee COS
 method to $\Phi_M(\cdot,T)$, with Gaussian-rate truncation error.
 \end{abstract}
@@ -288,7 +288,7 @@ PFE~\eqref{eq:PFE},
 \begin{equation}\label{eq:gauss_decay}
 |\phi_M(u,T)|\le e^{C_T}\,e^{-\tfrac12\sigma_T^2u^2},\quad u\in\R,
 \end{equation}
-$C_T:=\sum_{j=1}^{2M}|A_j(T)|/|\Imag u_j(T)|<\infty$.
+where $C_T:=\sum_{j=1}^{2M}|A_j(T)|/|\Imag u_j(T)|<\infty$.
 \end{lemma}
 
 \begin{remark}[Pre-asymptotic regime]\label{rem:CT}
@@ -481,44 +481,49 @@ $C_{M,N}\to C_M$ as $N\to\infty$, with
 The Fox $H$ pricing endpoint~\eqref{eq:foxH_price} consumes the
 PFE data $\{u_j(T),A_j(T),\sigma_T,\mu_T\}$ and accepts $K$
 directly through $\zeta_S(K,T)$; no Fourier inversion is performed
-and no grid in $v$ is required. The front-end is executed
-symbolically in $\C[v]$, producing $\Phi_M(v,T)$ as a rational
-function of $(v,T)$ once per model parameter set.
+and no grid in $v$ is required.
 
-\subsection{Three-tier amortisation}
+\subsection{Three-tier decomposition}
 
-\paragraph{Tier 0 (per model calibration).}
-M\"untz coefficients $\{a_k(v)\}_{k=1}^{2M}$ are polynomials in
-$\C[v]$ of degree at most $2M+1$. The Chebyshev algorithm
-executes $O(M^2)$ ring operations on polynomials of degree
-$O(M)$, giving $O(M^3)$ scalar operations to produce $P_M(z;v)$
-and $Q_M(z;v)$. Run once per model parameter set.
+\paragraph{Tier 0 (per parameter evaluation, per Fourier node).}
+With $v$ specialised to a numeric value, the Chebyshev algorithm
+(Theorem~\ref{thm:chebyshev}) on $\{M_l(v)\}_{l=0}^{2M-1}$ costs
+$O(M^2)$ scalar operations.
 
 \paragraph{Tier 1 (per maturity $T$).}
-Specialise $z=T^\mu$, reduce to univariate rational in $v$,
-$O(M)$. PFE by root-finding and cover-up, $O(M^2)$ per $T$.
+Specialise $z=T^\mu$ to obtain the rational $\Phi_M(v,T)$, then
+compute the PFE $\{u_j(T),A_j(T),\sigma_T,\mu_T\}_{j=1}^{2M}$ by
+root-finding and cover-up at $O(M^2)$ per $T$.
 
 \paragraph{Tier 2 (per strike $K$ at fixed $T$).}
-Fox $H$ evaluation via Newton--Girard consolidation and residue
-series, $O(M\log^2M)$ per $(K,T)$, no quadrature.
+Fox $H$ evaluation~\eqref{eq:foxH_price} via Newton--Girard
+consolidation (Corollary~\ref{cor:density_symmetric}) and an
+absolutely convergent residue series with $n!^{-1}$ terms,
+$O(M\log^2M)$ per $(K,T)$, no quadrature.
 
 \subsection{Total cost across an $(N_T,N_K)$-surface}
 
+For one parameter evaluation,
 \begin{equation}\label{eq:total_cost}
-\underbrace{O(M^3)}_{\text{Tier 0, once}}+\underbrace{N_T\cdot O(M^2)}_{\text{Tier 1, per }T}+\underbrace{N_TN_K\cdot O(M\log^2M)}_{\text{Tier 2, per }(K,T)}.
+\underbrace{O(M^2)}_{\text{Tier 0}}+\underbrace{N_T\cdot O(M^2)}_{\text{Tier 1, per }T}+\underbrace{N_TN_K\cdot O(M\log^2M)}_{\text{Tier 2, per }(K,T)}.
 \end{equation}
+The structurally novel feature is the $K$-independence at
+Tier 2: every strike at fixed $T$ shares the PFE data and costs
+only $O(M\log^2M)$.
 
 \subsection{COS endpoint}
-The COS endpoint requires $\phi_M(v_n,T)$ on a Fourier grid;
-with the symbolic $\Phi_M(v,T)\in\C(v)$ from Tier 0, evaluation
-at each $v_n$ is $O(M)$, giving $O(NM)$ per $(K,T)$.
+The COS endpoint requires $\phi_M(v_n,T)$ on a Fourier grid, with
+each node costing $O(M)$ via the rational form of $\Phi_M$,
+giving $O(NM)$ per $(K,T)$.
 
 \begin{remark}[Cost decomposition]\label{rem:cost_decomposition}
-The pipeline scales as $O(M^3)$ once per model calibration,
-$O(M^2)$ per maturity, and $O(M\log^2M)$ per $(K,T)$ via Fox $H$.
-Tier 0 is independent of both $T$ (the Chebyshev recurrence acts
-on $\{M_k(v)\}$ before $z=T^\mu$) and $K$ (execution is symbolic
-in $\C[v]$, with $K$ entering only at Tier 2 through $\zeta_S(K,T)$).
+Per parameter evaluation, the pipeline scales as $O(M^2)$ for
+the Chebyshev front-end, $O(M^2)$ per maturity for the PFE, and
+$O(M\log^2M)$ per $(K,T)$ via Fox $H$, with no quadrature, no
+Fourier inversion, and no truncation interval. The $K$-independence
+of Tier 2 is what allows the full strike slice at fixed $T$ to be
+priced in time proportional to the slice size, not to its product
+with $M$.
 \end{remark}
 
 \section{Summary}\label{sec:summary}
@@ -533,9 +538,8 @@ fixes $M$ from precision.
 \textbf{T2.} Density (Theorem~\ref{thm:foxH_density}) and call
 price (Theorem~\ref{thm:foxH_price}) admit strictly closed-form
 Fox $H$ representations, evaluable in $O(M\log^2M)$ per $(K,T)$
-with no quadrature; the front-end is $O(M^3)$ once per model
-calibration in $\C[v]$ symbolically and $O(M^2)$ per maturity,
-amortised across the entire $(K,T)$-surface
+with no quadrature; the front-end is $O(M^2)$ per parameter
+evaluation and the PFE $O(M^2)$ per maturity
 (Remark~\ref{rem:cost_decomposition}). Established by two
 analytically independent routes (Corollary~\ref{cor:two_routes}).
 
