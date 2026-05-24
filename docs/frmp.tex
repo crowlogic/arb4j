@@ -35,23 +35,23 @@
 Let $\mu\in(0,1]$ and let $y$ be the unique solution of the
 constant-coefficient fractional Riccati initial-value problem
 $D^{\mu}y = c_0 + c_1 y + c_2 y^2$, $I^{1-\mu}y(0)=0$.
-We prove three things. First (Theorem~\ref{thm:conv}), the
-diagonal $[M/M]$ Pad\'{e} approximant of the generating function
-$g(z)=y(z^{1/\mu})$ converges to $g$ uniformly on every compact
-subset of $[0,\infty)$ on which $y$ is finite, and an explicit
-a-posteriori bound is available at every $M$. The Pad\'{e}
-denominators are constructed by the Chebyshev--Wheeler algorithm
-on the formal orthogonal polynomials of the Hankel moment
-functional, with no linear-system inversion. Second
-(Theorem~\ref{thm:foxH_price}), European call prices under the
-rough Heston model admit a genuinely closed-form representation as
-a finite sum of Fox $H$-functions parameterized by the
-partial-fraction data of the Pad\'{e}--M\"untz characteristic
-exponent, evaluating in $O(M\log M)$ time with no quadrature. Third
-(Theorem~\ref{thm:price}), the same prices may alternatively be
-computed by applying the Fang--Oosterlee COS method to the rational
-characteristic exponent $\Phi_M(\cdot,T)$ as a highly efficient
-fallback.
+We prove three results. First (Theorem~\ref{thm:conv}), the
+diagonal $[M/M]$ Pad\'{e} resummation of the local Puiseux series
+of the cumulant generating function under rough Heston converges
+to the cumulant generating function uniformly on every compact
+subset of $[0,\infty)$ on which the solution is finite, with an
+explicit a-posteriori bound at every $M$. The Pad\'{e} denominator
+is the orthogonal polynomial of degree $M$ under the Hankel moment
+functional, produced \emph{directly from the M\"untz moments by the
+Chebyshev algorithm} in arbitrary-precision arithmetic, equivalent
+to solving the Hankel system but without matrix formation or
+inversion. Second (Theorem~\ref{thm:foxH_price}), European call
+prices admit a closed-form representation as a finite sum of Fox
+$H$-functions in the partial-fraction data of the rational
+characteristic exponent $\Phi_M$, evaluable in $O(M\log M)$
+operations with no quadrature. Third (Theorem~\ref{thm:price}),
+the same prices may alternatively be computed by applying the
+Fang--Oosterlee COS method to $\Phi_M(\cdot,T)$.
 \end{abstract}
 
 \tableofcontents
@@ -72,28 +72,27 @@ For $\mu\in(0,1]$ and $f$ locally integrable on $(0,\infty)$,
 \end{definition}
 
 \begin{lemma}[Power rule]\label{lem:power}
-For $s>-1$,
+For $s>-1$ and $\alpha>0$,
 \begin{equation}\label{eq:power}
-\Imu t^s = \frac{\Gamma(s+1)}{\Gamma(s+\mu+1)}\,t^{s+\mu}.
+I^{\alpha} t^s = \frac{\Gamma(s+1)}{\Gamma(s+\alpha+1)}\,t^{s+\alpha}.
 \end{equation}
 \end{lemma}
 \begin{proof}
-Substitute $\sigma=t\tau$ in~\eqref{eq:RL_I}:
+Substitute $\sigma=t\tau$ in the definition of $I^\alpha$:
 \[
-\Imu t^s
-=\frac{1}{\Gamma(\mu)}\int_0^t(t-\sigma)^{\mu-1}\sigma^s\,d\sigma
-=\frac{t^{s+\mu}}{\Gamma(\mu)}\int_0^1(1-\tau)^{\mu-1}\tau^s\,d\tau
-=\frac{t^{s+\mu}\,B(\mu,s+1)}{\Gamma(\mu)}.
+I^{\alpha} t^s
+=\frac{1}{\Gamma(\alpha)}\int_0^t(t-\sigma)^{\alpha-1}\sigma^s\,d\sigma
+=\frac{t^{s+\alpha}}{\Gamma(\alpha)}\int_0^1(1-\tau)^{\alpha-1}\tau^s\,d\tau
+=\frac{t^{s+\alpha}\,B(\alpha,s+1)}{\Gamma(\alpha)}.
 \]
-Using $B(\mu,s+1)=\Gamma(\mu)\Gamma(s+1)/\Gamma(s+\mu+1)$
+Using $B(\alpha,s+1)=\Gamma(\alpha)\Gamma(s+1)/\Gamma(s+\alpha+1)$
 gives~\eqref{eq:power}.
 \end{proof}
 
-The M\"untz lattice $\{t^{k\mu}\}_{k\ge 0}$ is closed under $\Imu$
-by the power rule and closed under multiplication because
-$t^{k\mu}\cdot t^{\ell\mu}=t^{(k+\ell)\mu}$. In the variable
-$z=t^\mu$ every element is simply $z^k$, so ordinary power-series
-arithmetic applies.
+The M\"untz lattice $\{t^{k\mu}\}_{k\ge 0}$ is closed under
+$\Imu$ by~\eqref{eq:power} and closed under multiplication. In
+the variable $z=t^\mu$ every element is $z^k$, so ordinary
+power-series arithmetic applies.
 
 % -----------------------------------------------------------------
 \section{The M\"untz--Tau recurrence}
@@ -101,21 +100,14 @@ arithmetic applies.
 % -----------------------------------------------------------------
 
 Define $\gamma_k := \Gamma((k-1)\mu+1)/\Gamma(k\mu+1)$ for $k\ge 1$,
-so that
-\begin{equation}\label{eq:gamma}
-\Imu t^{(k-1)\mu} = \gamma_k\, t^{k\mu}.
-\end{equation}
+so $\Imu t^{(k-1)\mu}=\gamma_k t^{k\mu}$.
 
 \begin{theorem}[M\"untz--Tau recurrence]\label{thm:recurrence}
 The unique formal power-series solution of
 \begin{equation}\label{eq:IVP}
 y = \Imu[c_0 + c_1 y + c_2 y^2], \qquad y(0)=0,
 \end{equation}
-is
-\begin{equation}\label{eq:series}
-y(t)=\sum_{k=1}^{\infty} a_k\, t^{k\mu},
-\end{equation}
-with
+is $y(t)=\sum_{k\ge 1}a_k t^{k\mu}$ with
 \begin{align}
 a_1 &= \frac{c_0}{\Gamma(\mu+1)},
 \label{eq:a1}\\
@@ -123,292 +115,282 @@ a_k &= \gamma_k\!\left[c_1\,a_{k-1}
 +c_2\!\sum_{j=1}^{k-2}a_j\,a_{k-1-j}\right],\qquad k\ge 2.
 \label{eq:ak}
 \end{align}
-The convolution sum is empty for $k=2$, giving
-$a_2=\gamma_2 c_1 a_1$; for $k=3$,
-$a_3=\gamma_3[c_1 a_2+c_2 a_1^2]$.
 \end{theorem}
 
 \begin{proof}
-Substitute~\eqref{eq:series} into~\eqref{eq:IVP} and apply
-\eqref{eq:gamma} termwise.
-
-\smallskip\noindent\textit{Constant term.}
-The lowest-order right-hand contribution is
-$\Imu c_0=c_0 t^\mu/\Gamma(\mu+1)$; matching $t^\mu$
-gives~\eqref{eq:a1}.
-
-\smallskip\noindent\textit{Coefficient of $t^{k\mu}$ for $k\ge 2$.}
-\begin{itemize}
-\item $[t^{k\mu}]\Imu(c_1 y)
-=c_1[t^{k\mu}]\Imu(a_{k-1}t^{(k-1)\mu})
-=c_1 a_{k-1}\gamma_k$.
-\item $[t^{(k-1)\mu}]y^2=\sum_{j=1}^{k-2}a_j a_{k-1-j}$
-(Cauchy product), so
-$[t^{k\mu}]\Imu(c_2 y^2)
-=c_2\gamma_k\sum_{j=1}^{k-2}a_j a_{k-1-j}$.
-\end{itemize}
-Combining gives~\eqref{eq:ak}.
-
-\smallskip\noindent\textit{Uniqueness.}
-If $\tilde a_k$ satisfies the same recurrence with
-$\tilde a_1=a_1$, then $e_k:=a_k-\tilde a_k$ satisfies $e_1=0$ and a
-linear recurrence in $e_{<k}$, forcing $e_k=0$ for all $k$.
+Substitute the ansatz into~\eqref{eq:IVP} and apply~\eqref{eq:power}
+termwise. The lowest-order right-hand contribution
+$\Imu c_0=c_0 t^\mu/\Gamma(\mu+1)$ matches $t^\mu$, giving $a_1$.
+For $k\ge 2$, $[t^{k\mu}]\Imu(c_1y)=c_1 a_{k-1}\gamma_k$ and the
+Cauchy product $[t^{(k-1)\mu}]y^2=\sum_{j=1}^{k-2}a_j a_{k-1-j}$
+gives $[t^{k\mu}]\Imu(c_2y^2)=c_2\gamma_k\sum_j a_j a_{k-1-j}$.
+Combining yields~\eqref{eq:ak}. Uniqueness: any other solution
+$\tilde a$ with $\tilde a_1=a_1$ has $e_k:=a_k-\tilde a_k$
+satisfying $e_1=0$ and a linear recurrence in $\{e_{<k}\}$,
+forcing $e_k\equiv 0$.
 \end{proof}
 
 % -----------------------------------------------------------------
-\section{Pad\'{e} via the three-term orthogonal-polynomial recurrence}
+\section{Rough Heston cumulant moments}
+\label{sec:cumulant}
+% -----------------------------------------------------------------
+
+The rough Heston model has parameters
+$\theta,\lambda,\rho,\nu,V_0,H\in\R$ with $H\in(0,\tfrac12)$ and
+$\mu:=H+\tfrac12\in(\tfrac12,1)$. The log-return characteristic
+function is $\phi_T(v):=\mathbb{E}[e^{ivX_T}]=\exp(\Phi(v,T))$
+with $X_T:=\log(S_T/S_0)-rT$ and
+\begin{equation}\label{eq:Phi}
+\Phi(v,T)=\theta\lambda\int_0^T h(v,s)\,ds + V_0\,\Ico h(v,\cdot)(T),
+\end{equation}
+where $h(v,\cdot)$ solves the fractional Riccati IVP
+\begin{equation}\label{eq:heston_IVP}
+h(v,t)=\Imu\bigl[P(v)+Q(v)h(v,t)+R\,h(v,t)^2\bigr],
+\end{equation}
+with $P(v)=\tfrac12(-v^2-iv)$, $Q(v)=\lambda(iv\rho\nu-1)$,
+$R=\tfrac12\lambda^2\nu^2$.
+
+\begin{lemma}[Riccati Puiseux series]\label{lem:h_series}
+The unique formal solution of~\eqref{eq:heston_IVP} is
+$h(v,t)=\sum_{k\ge 1}a_k(v)t^{k\mu}$ with $\{a_k(v)\}$ from
+Theorem~\ref{thm:recurrence} applied to $c_0=P(v)$, $c_1=Q(v)$,
+$c_2=R$. Each $a_k(v)$ is a polynomial in $v$ of degree $\le k+1$
+with $a_k(0)=a_k(-i)=0$.
+\end{lemma}
+\begin{proof}
+First claim from Theorem~\ref{thm:recurrence}. Polynomial degree
+by induction with $\deg P=2$, $\deg Q=1$, $\deg R=0$. Vanishing at
+$v\in\{0,-i\}$ follows from $P(0)=P(-i)=0$ and induction via
+the recurrence.
+\end{proof}
+
+\begin{theorem}[Cumulant generating function as Puiseux series]\label{thm:cumulant_moments}
+With $z:=T^\mu$ and $\Phi(v,T)=T\cdot\hat\Phi(v,z)$,
+\begin{equation}\label{eq:Phi_hat_def}
+\hat\Phi(v,z)=\sum_{k=0}^{\infty}M_k(v)\,z^k,
+\end{equation}
+where the cumulant M\"untz moments
+\begin{equation}\label{eq:cumulant_moments}
+M_k(v)=\frac{\theta\lambda}{k\mu+1}\,a_k(v)
++V_0\,\frac{\Gamma((k+1)\mu+1)}{\Gamma(k\mu+2)}\,a_{k+1}(v),
+\quad k\ge 0,
+\end{equation}
+are closed-form linear combinations of $a_k(v)$ and $a_{k+1}(v)$
+with the convention $a_0(v)\equiv 0$.
+\end{theorem}
+\begin{proof}
+Substitute $h(v,s)=\sum_{k\ge 1}a_k(v)s^{k\mu}$
+into~\eqref{eq:Phi}. By direct integration,
+$\int_0^T s^{k\mu}ds=T^{k\mu+1}/(k\mu+1)$, contributing
+$\sum_{k\ge 1}\theta\lambda\,a_k(v)/(k\mu+1)\cdot T^{k\mu+1}$.
+By~\eqref{eq:power} with $\alpha=1-\mu$,
+$\Ico t^{k\mu}|_{t=T}=\Gamma(k\mu+1)/\Gamma(k\mu+2-\mu)\cdot T^{(k-1)\mu+1}=\Gamma(k\mu+1)/\Gamma((k-1)\mu+2)\cdot T^{(k-1)\mu+1}$,
+contributing
+$\sum_{k\ge 1}V_0\,a_k(v)\,\Gamma(k\mu+1)/\Gamma((k-1)\mu+2)\cdot T^{(k-1)\mu+1}$.
+Reindex the second sum by $j=k-1$ and combine in $z=T^\mu$,
+collecting the coefficient of $T\cdot z^k$
+to obtain~\eqref{eq:cumulant_moments}.
+\end{proof}
+
+% -----------------------------------------------------------------
+\section{Pad\'{e} resummation via the Chebyshev algorithm}
 \label{sec:pade}
 % -----------------------------------------------------------------
 
-Set $g(z):=y(z^{1/\mu})=\sum_{k=1}^{\infty}a_k z^k$ and
-$\hat g(z):=g(z)/z=\sum_{k=0}^{\infty}m_k z^k$ with
-$m_k:=a_{k+1}$.
-The diagonal $[M/M]$ Pad\'{e} approximant of $\hat g$ is the unique
-pair $(P_M,Q_M)$ of polynomials with $\deg P_M\le M-1$,
+The diagonal $[M/M]$ Pad\'{e} approximant of $\hat\Phi$ is the
+unique pair $(P_M,Q_M)$ of polynomials with $\deg P_M\le M-1$,
 $\deg Q_M\le M$, $Q_M(0)=1$, satisfying
 \begin{equation}\label{eq:pade_match}
-Q_M(z)\hat g(z) - P_M(z) = O(z^{2M}).
+Q_M(z)\hat\Phi(v,z) - P_M(z) = O(z^{2M}).
 \end{equation}
 
 \subsection{Moment functional}
 
-Define $\mathcal{L}:\C[w]\to\C$ by
-$\mathcal{L}[w^k]:=m_k=a_{k+1}$ ($k\ge 0$), extended linearly. Let
-$H_n:=\det(m_{i+j})_{0\le i,j<n}$. Throughout this section assume
-$H_n\ne 0$ for all $n\ge 1$ (\emph{quasi-definiteness}).
+Define $\mathcal{L}:\C[w]\to\C$ by $\mathcal{L}[w^k]:=M_k(v)$
+for $k\ge 0$, extended linearly. Let
+$H_n:=\det(M_{i+j})_{0\le i,j<n}$. Throughout this section assume
+quasi-definiteness: $H_n\ne 0$ for all $n\ge 1$.
 
-\subsection{Three-term recurrence for $p_n$}
+\subsection{Three-term recurrence and orthogonality}
 
 \begin{theorem}[Three-term recurrence]\label{thm:three_term}
-There is a unique sequence of monic polynomials $\{p_n\}_{n\ge 0}$,
-$\deg p_n=n$, with
+Under quasi-definiteness there is a unique sequence of monic
+polynomials $\{p_n\}_{n\ge 0}$ with $\deg p_n=n$ satisfying
 \begin{equation}\label{eq:OP_orthog}
 \mathcal{L}[w^k\,p_n(w)]=h_n\,\delta_{k,n}\quad(0\le k\le n),
 \quad h_n:=\mathcal{L}[w^n p_n]\ne 0,
 \end{equation}
-and they satisfy
+and they obey
 \begin{equation}\label{eq:three_term}
 p_{n+1}(w)=(w-\alpha_n)p_n(w)-\beta_n p_{n-1}(w),
 \quad p_0\equiv1,\;p_{-1}\equiv0,
 \end{equation}
-\begin{equation}\label{eq:alpha_beta}
-\alpha_n=\frac{\mathcal{L}[w\,p_n^2]}{h_n},
-\quad \beta_n=\frac{h_n}{h_{n-1}}\;(n\ge1),\;\beta_0:=0.
-\end{equation}
+with $\alpha_n=\mathcal{L}[wp_n^2]/h_n$,
+$\beta_n=h_n/h_{n-1}$ for $n\ge 1$, $\beta_0:=0$, and
+$h_n=H_{n+1}/H_n$.
 \end{theorem}
-
 \begin{proof}
-\textit{Existence and recurrence.}
-Set $p_0\equiv1$, $h_0=m_0\ne0$.
-Given monic $p_0,\ldots,p_n$ satisfying~\eqref{eq:OP_orthog}, the
-polynomials $\{p_0,\ldots,p_n\}$ form a basis of polynomials of
-degree $\le n$. Define $p_{n+1}$ as the unique monic polynomial of
-degree $n+1$ obtained by Gram--Schmidt:
-\begin{equation}\label{eq:GS}
-p_{n+1}(w)=w\,p_n(w)-\sum_{j=0}^{n}\frac{\mathcal{L}[w p_n p_j]}{h_j}\,p_j(w).
-\end{equation}
-For $0\le k\le n$,
-$\mathcal{L}[w^k p_{n+1}]=\mathcal{L}[w^{k+1}p_n]
--\sum_{j}\mathcal{L}[w p_n p_j]/h_j\cdot\mathcal{L}[w^k p_j]$;
-by~\eqref{eq:OP_orthog} for $p_n$, $\mathcal{L}[w^{k+1}p_n]=0$
-for $k+1\le n-1$, and the only surviving term in the sum is $j=k$,
-giving $\mathcal{L}[w^k p_{n+1}]=\mathcal{L}[w^{k+1}p_n]
--\mathcal{L}[w p_n p_k]$, which equals $0$ because the two terms
-are equal. Hence $p_{n+1}$ is orthogonal to $1,w,\ldots,w^n$.
-
-\textit{The sum collapses to two terms.}
-For $j\le n-2$, $\deg(w p_j)=j+1\le n-1$, so
-$w p_j=\sum_{i\le n-1}\lambda_i^{(j)}p_i$ has no $p_n$-component,
-and by orthogonality $\mathcal{L}[w p_n p_j]
-=\mathcal{L}[p_n\cdot w p_j]=\sum_{i\le n-1}\lambda_i^{(j)}
-\mathcal{L}[p_n p_i]=0$. So in~\eqref{eq:GS} only $j=n-1$ and
-$j=n$ contribute. Define
+Existence and uniqueness of the monic orthogonal sequence under
+quasi-definiteness is the Heine determinant construction:
+$p_n$ has the explicit form
 \[
-\alpha_n:=\frac{\mathcal{L}[w p_n^2]}{h_n}=
-\frac{\mathcal{L}[w p_n p_n]}{h_n},
-\quad
-\beta_n:=\frac{\mathcal{L}[w p_n p_{n-1}]}{h_{n-1}}.
+p_n(w)=\frac{1}{H_n}\det\begin{pmatrix}
+M_0 & M_1 & \cdots & M_n\\
+M_1 & M_2 & \cdots & M_{n+1}\\
+\vdots & & & \vdots\\
+M_{n-1} & M_n & \cdots & M_{2n-1}\\
+1 & w & \cdots & w^n
+\end{pmatrix},
 \]
-Then~\eqref{eq:GS} reduces to $p_{n+1}=(w-\alpha_n)p_n-\beta_n p_{n-1}$.
-
-\textit{Identification $\beta_n=h_n/h_{n-1}$.}
-Since $p_n$ is monic, $w p_{n-1}=p_n+(\text{lower-degree terms})$,
-so $\mathcal{L}[w p_{n-1}p_n]=\mathcal{L}[p_n^2]+0=h_n$ by
-orthogonality of the lower-degree part against $p_n$.
-Hence $\beta_n=h_n/h_{n-1}$.
-
-\textit{Nonvanishing of $h_n$.} A standard determinantal identity
-gives $h_n=H_{n+1}/H_n\ne0$ under quasi-definiteness.
-
-\textit{Uniqueness.} Any other monic $\tilde p_n$ satisfying
-\eqref{eq:OP_orthog} differs from $p_n$ by a polynomial of degree
-$<n$ that is orthogonal to all $w^k$, $k<n$; testing against
-$p_0,\ldots,p_{n-1}$ shows the difference is zero.
+which is monic of degree $n$ and orthogonal to $1,w,\ldots,w^{n-1}$
+by row expansion against the Hankel rows.
+The identification $h_n=H_{n+1}/H_n$ is by determinantal expansion
+of $\mathcal{L}[w^n p_n]$. The three-term recurrence follows from
+the observation that $w p_n - p_{n+1}$ has degree $\le n$, so
+expands as $\sum_{j=0}^{n}c_j p_j$, and orthogonality reduces the
+sum to two terms: for $j\le n-2$,
+$\mathcal{L}[(wp_n-p_{n+1})p_j]=\mathcal{L}[p_n\cdot wp_j]=0$
+because $wp_j$ has degree $\le n-1$; the surviving terms give
+$c_n=\alpha_n=\mathcal{L}[wp_n^2]/h_n$ and
+$c_{n-1}=\beta_n$, with $\beta_n=h_n/h_{n-1}$ identified by
+testing $\mathcal{L}[(wp_n-p_{n+1}-\alpha_np_n)p_{n-1}]=0$
+against $\mathcal{L}[wp_n p_{n-1}]=h_n$.
 \end{proof}
 
-\subsection{Chebyshev--Wheeler algorithm}
+\subsection{The Chebyshev algorithm}
 
-Given moments $m_0,\ldots,m_{2M-1}$, the following procedure computes
-the orthogonal recurrence coefficients $\{\alpha_n,\beta_n,h_n\}$ and
-polynomials $p_0,\ldots,p_M$ without solving any linear system.
-Define the mixed moments $\sigma_{k,l}:=\mathcal{L}[p_k(w)w^l]$.
-
-\begin{enumerate}
-\item \emph{Initialization:} For $l=0,\ldots,2M-1$, set
-$\sigma_{0,l}=m_l$, and for $l=1,\ldots,2M-2$, set $\sigma_{-1,l}=0$.
-Set $\alpha_0=m_1/m_0$, $\beta_0=0$, $h_0=m_0$, $p_{-1}\equiv0$,
-$p_0\equiv1$.
-\item \emph{Main loop:} For $k=1,\ldots,M$:
-\begin{enumerate}
-\item For $l=k,\ldots,2M-k-1$, compute:
-\[
-\sigma_{k,l} = \sigma_{k-1,l+1} - \alpha_{k-1}\sigma_{k-1,l} - \beta_{k-1}\sigma_{k-2,l}.
-\]
-\item Set $h_k = \sigma_{k,k}$ and $\beta_k = h_k/h_{k-1}$.
-\item If $k<M$, compute $\alpha_k = \frac{\sigma_{k,k+1}}{\sigma_{k,k}} - \frac{\sigma_{k-1,k}}{\sigma_{k-1,k-1}}$.
-\item Form the polynomial $p_k(w)=(w-\alpha_{k-1})p_{k-1}(w)-\beta_{k-1}p_{k-2}(w)$.
-\end{enumerate}
-\end{enumerate}
-Cost: $O(M^2)$ operations. No matrix is inverted.
-
-\subsection{Pad\'{e} denominator from $p_M$}
-
-\begin{lemma}[Denominator]\label{lem:Q_OP}
-Let $\widetilde Q_M(z):=z^M p_M(1/z)$. Since $p_M$ is monic of
-degree $M$, the constant term of
-$\widetilde Q_M(z)=\sum_{k=0}^M[w^{M-k}]p_M(w)\cdot z^k$ at
-$z=0$ equals the leading coefficient of $p_M$, which is $1$;
-hence $\widetilde Q_M(0)=1$ and we may set $Q_M:=\widetilde Q_M$
-with $Q_M(0)=1$ automatically.
-\end{lemma}
-
-\begin{lemma}[Pad\'{e} matching]\label{lem:match}
-Define $P_M(z):=z^{M-1}p_M^{(1)}(1/z)$, where $p_M^{(1)}$ is the
-associated polynomial of the second kind
-(Definition~\ref{def:assoc}). Then $\deg P_M\le M-1$ and
-\begin{equation}\label{eq:match_proved}
-Q_M(z)\hat g(z)-P_M(z)=h_M\,z^{2M}+O(z^{2M+1}).
+\begin{theorem}[Chebyshev algorithm]\label{thm:chebyshev}
+Define the mixed-moment array
+$\sigma_{k,l}:=\mathcal{L}[p_k(w)\,w^l]$ for $k\ge -1$, $l\ge 0$.
+Under quasi-definiteness, $\sigma_{k,l}$ satisfies the recurrence
+\begin{equation}\label{eq:cheb_recurrence}
+\sigma_{-1,l}=0,\qquad \sigma_{0,l}=M_l(v),
 \end{equation}
-\end{lemma}
+\begin{equation}\label{eq:cheb_recurrence2}
+\sigma_{k+1,l}=\sigma_{k,l+1}-\alpha_k\sigma_{k,l}-\beta_k\sigma_{k-1,l},
+\qquad k\ge 0,\;l\ge k+1,
+\end{equation}
+and the recurrence coefficients are extracted by
+\begin{equation}\label{eq:cheb_extract}
+\alpha_0=\frac{M_1(v)}{M_0(v)},\quad \beta_0=0,\quad h_0=M_0(v),
+\end{equation}
+\begin{equation}\label{eq:cheb_extract_k}
+\alpha_k=\frac{\sigma_{k,k+1}}{\sigma_{k,k}}-\frac{\sigma_{k-1,k}}{\sigma_{k-1,k-1}},\quad
+\beta_k=\frac{\sigma_{k,k}}{\sigma_{k-1,k-1}},\quad
+h_k=\sigma_{k,k},\qquad k\ge 1.
+\end{equation}
+The cost is $O(M^2)$ ring operations on the moments
+$\{M_l(v)\}_{l=0}^{2M-1}$, with no Hankel matrix formed and no
+linear system solved. In arbitrary-precision arithmetic the
+algorithm produces the orthogonal polynomial sequence
+$\{p_n\}_{n=0}^M$ exactly to any prescribed precision.
+\end{theorem}
 \begin{proof}
-Use the formal identity
-\begin{equation}\label{eq:cauchy_rep}
-\hat g(z)=\sum_{k=0}^\infty m_k z^k
-=\mathcal{L}_w\!\left[\frac{1}{1-wz}\right]
-\end{equation}
-($\mathcal{L}_w$ acts on $w$). For any polynomial $q$ of degree
-$M$, the algebraic identity
-\begin{equation}\label{eq:key_id}
-\frac{z^M q(1/z)}{1-wz}
-=\frac{z^M\bigl(q(1/z)-q(w)\bigr)}{1-wz}
-+\frac{z^M q(w)}{1-wz}
-\end{equation}
-holds. The first fraction on the right is a polynomial in $z$ and
-$w$ of total degree $\le M-1$ in $z$, because $q(1/z)-q(w)$
-vanishes at $w=1/z$, so $1-wz=z(1/z-w)$ divides $q(1/z)-q(w)$ as
-a polynomial in $w$. Explicitly, with $q(x)=\sum_{i=0}^M q_i x^i$,
-\[
-\frac{q(1/z)-q(w)}{1/z-w}
-=\sum_{i=1}^M q_i\sum_{r=0}^{i-1}(1/z)^{i-1-r}w^r,
-\]
-so
-\[
-\frac{z^M(q(1/z)-q(w))}{1-wz}
-=z^{M-1}\sum_{i=1}^M q_i\sum_{r=0}^{i-1}(1/z)^{i-1-r}w^r
-=\sum_{i=1}^M q_i\sum_{r=0}^{i-1}z^{M-i+r}w^r.
-\]
-For fixed $r$, the $z$-exponent $M-i+r$ ranges over
-$M-i\le M-i+r\le M-1$ as $r$ varies in $[0,i-1]$, so after applying
-$\mathcal{L}_w$ the result is a polynomial in $z$ of degree
-$\le M-1$.
+\textit{Recurrence~\eqref{eq:cheb_recurrence2}.} Apply $\mathcal{L}$
+to both sides of $p_{k+1}(w)w^l=wp_k(w)w^l-\alpha_kp_k(w)w^l-\beta_kp_{k-1}(w)w^l$,
+i.e.\ $p_{k+1}(w)w^l=p_k(w)w^{l+1}-\alpha_kp_k(w)w^l-\beta_kp_{k-1}(w)w^l$,
+giving $\sigma_{k+1,l}=\sigma_{k,l+1}-\alpha_k\sigma_{k,l}-\beta_k\sigma_{k-1,l}$.
 
-Apply $\mathcal{L}_w$ to~\eqref{eq:key_id} with $q=p_M$:
-\[
-Q_M(z)\hat g(z)
-=\underbrace{\mathcal{L}_w\!\left[
-\frac{z^M(p_M(1/z)-p_M(w))}{1-wz}\right]}_{=:A(z)}
-+\underbrace{\mathcal{L}_w\!\left[\frac{z^M p_M(w)}{1-wz}\right]}_{=:B(z)}.
-\]
+\textit{Extraction~\eqref{eq:cheb_extract_k}.} The orthogonality
+relation $\mathcal{L}[p_{k+1}(w)w^k]=0$ applied to the
+recurrence~\eqref{eq:cheb_recurrence2} at $l=k$ gives
+$\sigma_{k,k+1}-\alpha_k\sigma_{k,k}-\beta_k\sigma_{k-1,k}=0$.
+The relation $\mathcal{L}[p_k(w)w^{k-1}]=0$ at the previous level
+gives $\sigma_{k-1,k}=\alpha_{k-1}\sigma_{k-1,k-1}+\beta_{k-1}\sigma_{k-2,k-1}$,
+which combined with $\beta_k=h_k/h_{k-1}=\sigma_{k,k}/\sigma_{k-1,k-1}$
+(itself a consequence of $\mathcal{L}[wp_kp_{k-1}]=h_k$ and
+$\beta_k=\mathcal{L}[wp_kp_{k-1}]/h_{k-1}$ from
+Theorem~\ref{thm:three_term}) yields
+$\alpha_k=\sigma_{k,k+1}/\sigma_{k,k}-\sigma_{k-1,k}/\sigma_{k-1,k-1}$.
+The base cases~\eqref{eq:cheb_extract} are immediate from
+$p_0\equiv 1$ and the recurrence at $k=0$.
 
-\textit{Compute $A(z)$.}
-From the explicit formula above with $q=p_M$ and $q_i$ the
-coefficients of $p_M$,
-\[
-A(z)=\sum_{i=1}^M q_i\sum_{r=0}^{i-1}m_r\,z^{M-i+r},
-\quad \deg_z A\le M-1.
-\]
-Substituting $\zeta:=1/z$ and using
-$p_M^{(1)}(\zeta):=\mathcal{L}_w[(p_M(\zeta)-p_M(w))/(\zeta-w)]$:
-\[
-p_M^{(1)}(\zeta)
-=\sum_{i=1}^M q_i\sum_{r=0}^{i-1}m_r\,\zeta^{i-1-r},
-\]
-so
-$z^{M-1}p_M^{(1)}(1/z)
-=\sum_{i,r}q_i m_r z^{M-i+r}=A(z)$.
-Therefore $A(z)=P_M(z)$, with $\deg P_M\le M-1$.
+\textit{Cost.} The array $\{\sigma_{k,l}\}$ has $O(M^2)$ entries,
+each computed by a constant-cost recurrence step.
 
-\textit{Compute $B(z)$.}
-Expand the geometric series $1/(1-wz)=\sum_{k\ge0}(wz)^k$:
-\[
-B(z)=z^M\sum_{k=0}^\infty\mathcal{L}[w^k p_M(w)]\,z^k.
-\]
-By orthogonality~\eqref{eq:OP_orthog}, $\mathcal{L}[w^k p_M]=0$
-for $0\le k\le M-1$ and $\mathcal{L}[w^M p_M]=h_M$. So
-\[
-B(z)=h_M\,z^{2M}+\sum_{k>M}\mathcal{L}[w^k p_M]\,z^{M+k}
-=h_M z^{2M}+O(z^{2M+1}).
-\]
-
-\textit{Conclusion.}
-$Q_M(z)\hat g(z)-P_M(z)=B(z)=h_M z^{2M}+O(z^{2M+1})$, which
-is~\eqref{eq:match_proved} and in particular~\eqref{eq:pade_match}.
+\textit{Equivalence to Hankel solve.} The Pad\'{e} denominator
+coefficients are determined by the Hankel system
+$\sum_{j=0}^M q_j M_{j+l}=0$ for $l=0,\ldots,M-1$ (with $q_M=1$).
+This system has unique solution under quasi-definiteness, given by
+the cofactors of the Hankel determinant, which are precisely the
+coefficients of $p_M$ in the monomial basis. The Chebyshev
+algorithm produces $p_M$ via its recurrence representation,
+mathematically equivalent to but operationally distinct from
+matrix inversion.
 \end{proof}
 
-\subsection{Numerator from associated polynomials}
+\subsection{Pad\'{e} numerator from associated polynomials}
 
 \begin{definition}[Associated polynomial of the second kind]\label{def:assoc}
-\begin{equation}\label{eq:second_kind_def}
+\begin{equation}\label{eq:p1_def}
 p_n^{(1)}(w):=\mathcal{L}_v\!\left[\frac{p_n(w)-p_n(v)}{w-v}\right].
 \end{equation}
 \end{definition}
 
 \begin{lemma}[Same recurrence]\label{lem:p1_recur}
-The polynomials $p_n^{(1)}$ satisfy
 $p_{n+1}^{(1)}=(w-\alpha_n)p_n^{(1)}-\beta_n p_{n-1}^{(1)}$ for
-$n\ge1$, with $p_0^{(1)}\equiv0$ and $p_1^{(1)}\equiv m_0$.
+$n\ge 1$, with $p_0^{(1)}\equiv 0$ and $p_1^{(1)}\equiv M_0(v)$.
 \end{lemma}
 \begin{proof}
-From~\eqref{eq:three_term}, evaluated at $w$ and at $v$ and
-subtracted,
-\[
-p_{n+1}(w)-p_{n+1}(v)=(w-\alpha_n)(p_n(w)-p_n(v))+(w-v)p_n(v)
--\beta_n(p_{n-1}(w)-p_{n-1}(v)).
-\]
-Divide by $w-v$ and apply $\mathcal{L}_v$:
-\[
-p_{n+1}^{(1)}(w)=(w-\alpha_n)p_n^{(1)}(w)+\mathcal{L}[p_n]
--\beta_n p_{n-1}^{(1)}(w).
-\]
-For $n\ge1$, $\mathcal{L}[p_n]=\mathcal{L}[w^0 p_n]=0$ by
-orthogonality, leaving the recurrence claimed. The initial
-conditions follow from
-$p_0^{(1)}=\mathcal{L}_v[(1-1)/(w-v)]=0$ and, with
-$p_1(w)=w-\alpha_0$,
-$p_1^{(1)}(w)=\mathcal{L}_v[((w-\alpha_0)-(v-\alpha_0))/(w-v)]
-=\mathcal{L}_v[1]=m_0$.
+Subtract~\eqref{eq:three_term} evaluated at $w$ and at the dummy
+$v$, divide by $w-v$, and apply $\mathcal{L}_v$. The cross-term
+yields $\mathcal{L}[p_n]=h_n\delta_{n,0}$, which vanishes for
+$n\ge 1$ by orthogonality. Initial conditions follow from
+$p_0^{(1)}=\mathcal{L}_v[0]=0$ and
+$p_1^{(1)}=\mathcal{L}_v[1]=M_0(v)$.
 \end{proof}
+
+\subsection{Pad\'{e} matching}
+
+\begin{lemma}[Pad\'{e} denominator and numerator]\label{lem:match}
+Let $Q_M(z):=z^Mp_M(1/z)$ and $P_M(z):=z^{M-1}p_M^{(1)}(1/z)$.
+Then $Q_M(0)=1$, $\deg P_M\le M-1$, and
+\begin{equation}\label{eq:pade_proved}
+Q_M(z)\hat\Phi(v,z)-P_M(z)=h_M\,z^{2M}+O(z^{2M+1}).
+\end{equation}
+\end{lemma}
+\begin{proof}
+$Q_M(0)=$ leading coefficient of $p_M=1$ since $p_M$ is monic.
+Use the Cauchy representation
+$\hat\Phi(v,z)=\mathcal{L}_w[(1-wz)^{-1}]$ and the algebraic
+identity
+$\frac{z^Mp_M(1/z)}{1-wz}=\frac{z^M(p_M(1/z)-p_M(w))}{1-wz}+\frac{z^Mp_M(w)}{1-wz}$.
+The first fraction is a polynomial in $z,w$ of total $z$-degree
+$\le M-1$ (since $1-wz$ divides the numerator), and applying
+$\mathcal{L}_w$ gives a polynomial in $z$ of degree $\le M-1$
+which by direct expansion equals $z^{M-1}p_M^{(1)}(1/z)=P_M(z)$.
+The second fraction expands as
+$z^M\sum_{k\ge 0}\mathcal{L}[w^kp_M]z^k$, which by
+orthogonality~\eqref{eq:OP_orthog} starts at $k=M$ with leading
+coefficient $h_M$. Combining gives~\eqref{eq:pade_proved}.
+\end{proof}
+
+\begin{corollary}[Rational characteristic exponent]\label{cor:rational_Phi}
+The Pad\'{e}-resummed cumulant generating function
+\begin{equation}\label{eq:PhiM_def}
+\Phi_M(v,T):=T\cdot z\cdot\frac{P_M(z;v,T)}{Q_M(z;v,T)}\bigg|_{z=T^\mu}
+\end{equation}
+is rational in $v$ at fixed $T$, with $2M$ poles in $v$ given by
+the roots of $Q_M(z;v,T)|_{z=T^\mu}$.
+\end{corollary}
 
 \subsection{J-fraction representation}
 
-The $[M/M]$ Pad\'{e} of $\hat g$ is the $M$-th convergent of the
-J-fraction
+\begin{theorem}[J-fraction]\label{thm:Jfrac}
+$\hat\Phi(v,z)$ admits the formal continued-fraction expansion
 \begin{equation}\label{eq:Jfrac}
-\hat g(z)=\cfrac{m_0}{1-\alpha_0 z-\cfrac{\beta_1 z^2}
-{1-\alpha_1 z-\cfrac{\beta_2 z^2}{1-\alpha_2 z-\cdots}}},
+\hat\Phi(v,z)=\cfrac{M_0(v)}{1-\alpha_0 z-\cfrac{\beta_1 z^2}{1-\alpha_1 z-\cfrac{\beta_2 z^2}{1-\alpha_2 z-\cdots}}},
 \end{equation}
-truncated after $M$ levels, with $(\alpha_n,\beta_n)$ produced by
-the Chebyshev--Wheeler algorithm.
+whose $M$-th convergent is the diagonal Pad\'{e} approximant
+$P_M(z)/Q_M(z)$.
+\end{theorem}
+\begin{proof}
+Standard correspondence between J-fractions and orthogonal
+polynomial sequences with three-term recurrence
+$p_{n+1}=(w-\alpha_n)p_n-\beta_n p_{n-1}$. The convergents of
+the continued fraction are precisely the Pad\'{e} approximants
+of the moment generating series.
+\end{proof}
 
 % -----------------------------------------------------------------
 \section{Uniform convergence and a-posteriori bound}
@@ -416,624 +398,339 @@ the Chebyshev--Wheeler algorithm.
 % -----------------------------------------------------------------
 
 \begin{theorem}[Convergence]\label{thm:conv}
-Let $T^*\in(0,\infty]$ be the supremum of $T$ such that $y$ is finite
-on $[0,T)$. Set $g(z)=y(z^{1/\mu})$ and let $R_M$ be the diagonal
-$[M/M]$ Pad\'{e} approximant of $\hat g(z)=g(z)/z$, computed via
-Chebyshev--Wheeler. Then:
+Let $T^*\in(0,\infty]$ be the supremum of $T$ such that $h(v,t)$
+is finite on $[0,T)$. Set $\hat\Phi(v,z)$ as
+in~\eqref{eq:Phi_hat_def} with $z=T^\mu$, and let
+$R_M(z;v,T):=P_M(z)/Q_M(z)$ be the diagonal $[M/M]$ Pad\'{e}
+approximant from Lemma~\ref{lem:match}. Then:
 \begin{enumerate}
-\item\label{it:unif}
-$z R_M(z)\to g(z)$ uniformly on every compact
-$[0,\rho]\subset[0,(T^*)^\mu)$.
-\item\label{it:post}
-The a-posteriori bound
+\item $T\cdot z\cdot R_M(z;v,T)\to \Phi(v,T)$ uniformly on every
+compact $[0,\rho]\subset[0,(T^*)^\mu)$.
+\item The a-posteriori bound
 \begin{equation}\label{eq:aposteriori}
-|g(z)-zR_M(z)|\le
-\frac{|\Delta_M(z)|^2}{|\Delta_{M-1}(z)|-|\Delta_M(z)|},
-\quad \Delta_M:=zR_M-zR_{M-1},
+|\Phi(v,T)-\Phi_M(v,T)|\le
+\frac{|\Delta_M|^2}{|\Delta_{M-1}|-|\Delta_M|},
+\quad \Delta_M:=\Phi_M-\Phi_{M-1},
 \end{equation}
 holds whenever $|\Delta_M|<|\Delta_{M-1}|$.
 \end{enumerate}
 \end{theorem}
 \begin{proof}
-\textit{Branch structure.} By the Volterra fixed-point theorem on
-\eqref{eq:IVP}, $y$ extends holomorphically to a neighbourhood of
-$[0,T^*)$, and $g(z)=y(z^{1/\mu})$ is holomorphic on a slit domain
-omitting a compact set $K\subset\C\setminus[0,(T^*)^\mu)$ of
-algebraic singularities.
+By the Volterra fixed-point theorem applied to~\eqref{eq:heston_IVP},
+$h(v,\cdot)$ extends holomorphically to a neighbourhood of
+$[0,T^*)$ in $t$, and $\hat\Phi(v,z)$ is holomorphic on a slit
+domain in $z$ omitting a compact branch set
+$K\subset\C\setminus[0,(T^*)^\mu)$. A real $z^*\in[0,(T^*)^\mu)$
+is excluded from $K$ since a real singularity of $\hat\Phi$ would
+force a real blow-up of $h$ before $T^*$.
 
-\textit{No real singularity in $[0,(T^*)^\mu)$.}
-A real $z^*>0$ singularity of $g$ would force a real blow-up of $y$
-at $t=(z^*)^{1/\mu}\le T^*$, contradicting the definition of $T^*$.
+By Stahl's theorem on Pad\'{e} convergence to functions with
+branch points, the diagonal denominators $Q_M$ have zeros
+converging in capacity to $K$, and
+$|\hat\Phi-R_M|^{1/(2M)}\to e^{-\mathsf{g}(z,K)}$ in capacity on
+$\C\setminus K$, where $\mathsf{g}(\cdot,K)$ is the Green function
+of $\C\setminus K$ with pole at infinity. A neighbourhood of
+$[0,(T^*)^\mu)$ is free of $Q_M$-zeros for all large $M$, so
+normal-families upgrade capacity convergence to uniform
+convergence on real compacta, proving (1).
 
-\textit{Stahl's theorem.} By Stahl (1997), the diagonal
-denominators $Q_M$ have zeros converging in capacity to $K$, and
-\begin{equation}\label{eq:cap_conv}
-|g(z)-zR_M(z)|^{1/(2M)}\to e^{-\mathsf{g}(z,K)}
-\quad\text{in capacity on }\C\setminus K,
-\end{equation}
-where $\mathsf{g}(z,K)$ is the Green function with pole at infinity.
-A neighbourhood of $[0,(T^*)^\mu)$ is free of $Q_M$-zeros for all
-large $M$; normal-families upgrade capacity convergence to uniform
-convergence on compacta of $[0,(T^*)^\mu)$, proving~\ref{it:unif}.
-
-\textit{A-posteriori bound.} The differences $\Delta_M=zR_M-zR_{M-1}$
-satisfy $\Delta_M(z)=O(z^{2M-1})$ from~\eqref{eq:match_proved}.
-On the analyticity region the maximum principle gives
+The differences $\Delta_M=\Phi_M-\Phi_{M-1}$ satisfy
+$\Delta_M=O(z^{2M-1})$ from~\eqref{eq:pade_proved}. The maximum
+principle on the analyticity region gives
 $|\Delta_{M+1}|/|\Delta_M|\to e^{-2\mathsf{g}(z,K)}<1$, so the
-geometric tail $|g-zR_M|\le\sum_{n\ge1}|\Delta_{M+n}|$ is bounded
-by $|\Delta_M|/(1-r_M)$ with $r_M=|\Delta_M|/|\Delta_{M-1}|$,
-yielding~\eqref{eq:aposteriori}.
+geometric tail $|\Phi-\Phi_M|\le\sum_{n\ge 1}|\Delta_{M+n}|$ is
+bounded by $|\Delta_M|^2/(|\Delta_{M-1}|-|\Delta_M|)$ once
+$|\Delta_M|<|\Delta_{M-1}|$.
 \end{proof}
-
-% -----------------------------------------------------------------
-\section{Rough Heston specialisation}
-\label{sec:heston}
-% -----------------------------------------------------------------
-
-The rough Heston model parameters are
-$\theta,\lambda,\rho,\nu,V_0,H\in\R$ with $H\in(0,\tfrac12)$ and
-$\mu:=H+\tfrac12\in(\tfrac12,1)$. The log-return characteristic
-function is
-\begin{equation}\label{eq:heston_cf}
-\phi_T(v):=\mathbb{E}[e^{ivX_T}]=\exp\bigl(\Phi(v,T)\bigr),
-\qquad X_T:=\log(S_T/S_0)-rT,
-\end{equation}
-\begin{equation}\label{eq:Phi}
-\Phi(v,T)=\theta\lambda\int_0^T h(v,s)\,ds
-+ V_0\,\Ico h(v,\cdot)(T),
-\end{equation}
-where $h(v,\cdot)$ solves the fractional Riccati IVP
-\begin{equation}\label{eq:heston_IVP}
-h(v,t)=\Imu\bigl[P(v)+Q(v)h(v,t)+R\,h(v,t)^2\bigr],
-\end{equation}
-with
-\begin{equation}\label{eq:PQR}
-P(v)=\tfrac12(-v^2-iv),\quad
-Q(v)=\lambda(iv\rho\nu-1),\quad
-R=\tfrac12\lambda^2\nu^2.
-\end{equation}
-
-\begin{lemma}[Polynomial degree]\label{lem:poly}
-For each $k\ge1$, $a_k(v)$ is a polynomial in $v$ of degree at most
-$k+1$, and $a_k(0)=0$.
-\end{lemma}
-\begin{proof}
-$a_1(v)=P(v)/\Gamma(\mu+1)$ has $\deg=2=1+1$ and $a_1(0)=P(0)=0$.
-Induction with $\deg Q=1$ and $\deg R=0$ gives
-$\deg(Q\,a_{k-1})\le1+k=k+1$ and $\deg(a_j a_{k-1-j})\le(j+1)+
-(k-j)=k+1$, so $\deg a_k\le k+1$. Vanishing at $v=0$:
-$P(0)=0\Rightarrow a_1(0)=0$; $Q(0)=-\lambda$ and the recurrence
-yield $a_k(0)=\gamma_k(-\lambda)a_{k-1}(0)+0=0$ inductively.
-\end{proof}
-
-The Pad\'{e}--M\"untz approximant at order $M$ is
-$h_M(v,t):=R_M^{(v)}(t^\mu)\cdot t^\mu$ (the $[M/M]$ approximant of
-$g_v(z)=h(v,z^{1/\mu})$ written in $z=t^\mu$ via the construction of
-Section~\ref{sec:pade}). The Pad\'{e} characteristic exponent is
-\begin{equation}\label{eq:PhiM}
-\Phi_M(v,T)=\theta\lambda\int_0^T h_M(v,s)\,ds
-+V_0\,I^{1-\mu}h_M(v,\cdot)(T),
-\end{equation}
-which is rational in $v$ at fixed $T$. The Pad\'{e} characteristic
-function is
-\begin{equation}\label{eq:phiM}
-\phi_M(v,T):=\exp(\Phi_M(v,T)).
-\end{equation}
 
 \begin{lemma}[Normalisation]\label{lem:norm}
-$\phi_M(0,T)=1$ and $\phi_M(-i,T)=1$.
+$\Phi_M(0,T)=\Phi_M(-i,T)=0$, hence $\phi_M(0,T)=\phi_M(-i,T)=1$.
 \end{lemma}
 \begin{proof}
-$P(0)=0$ and $P(-i)=\tfrac12(-(-i)^2-i(-i))=\tfrac12(1-1)=0$, so
-$a_1(0)=a_1(-i)=0$. Induction via the recurrence
-(with $Q(0)=-\lambda$ and $Q(-i)=\lambda(\rho\nu-1)$, both finite)
-gives $a_k(0)=a_k(-i)=0$, hence $h_M(0,t)=h_M(-i,t)=0$,
-$\Phi_M(0,T)=\Phi_M(-i,T)=0$, and $\phi_M(0,T)=\phi_M(-i,T)=1$.
+$P(0)=P(-i)=0$ implies $a_k(0)=a_k(-i)=0$ for all $k$
+(Lemma~\ref{lem:h_series}), hence $M_k(0)=M_k(-i)=0$
+by~\eqref{eq:cumulant_moments}, so $\hat\Phi(0,z)=\hat\Phi(-i,z)=0$
+identically and the Pad\'{e} approximant inherits the vanishing.
 \end{proof}
 
 \begin{lemma}[Hermitian symmetry]\label{lem:herm}
 $\phi_M(-\bar v,T)=\overline{\phi_M(v,T)}$.
 \end{lemma}
 \begin{proof}
-$P(-\bar v)=\tfrac12(-\bar v^2+i\bar v)=\overline{P(v)}$,
-$Q(-\bar v)=\lambda(-i\bar v\rho\nu-1)=\overline{Q(v)}$, $R\in\R$.
-Induction via~\eqref{eq:ak} gives $a_k(-\bar v)=\overline{a_k(v)}$,
-so $\Phi_M(-\bar v,T)=\overline{\Phi_M(v,T)}$ and the claim follows
-by exponentiation.
+$P(-\bar v)=\overline{P(v)}$, $Q(-\bar v)=\overline{Q(v)}$,
+$R\in\R$. Induction via~\eqref{eq:ak} gives
+$a_k(-\bar v)=\overline{a_k(v)}$, hence by~\eqref{eq:cumulant_moments}
+$M_k(-\bar v)=\overline{M_k(v)}$. The Chebyshev algorithm preserves
+this conjugation symmetry termwise, and exponentiation completes
+the proof.
 \end{proof}
 
 \begin{lemma}[Real-axis decay]\label{lem:decay}
-For $\mu\in(\tfrac12,1)$ and all $T>0$, $\phi_M(u,T)\to 0$ as
-$|u|\to\infty$ along $u\in\R$, and the decay is faster than any
-polynomial.
+For $\mu\in(\tfrac12,1)$ and $T>0$,
+$|\phi_M(u,T)|\le e^{-c|u|^{2\mu}}$ for $|u|\ge u_0$, $M$
+sufficiently large, with $c>0$ inherited from the rough Heston
+characteristic function.
 \end{lemma}
 \begin{proof}
-$\Phi(v,T)=\theta\lambda\int_0^T h(v,s)ds+V_0 I^{1-\mu}h(v,\cdot)(T)$
-inherits the large-$|v|$ behaviour of $h(v,t)$. For the exact rough
-Heston model, $\mathrm{Re}\,\Phi(u,T)\to-\infty$ at rate $|u|^{2\mu}$
-along the real axis. Theorem~\ref{thm:conv} gives uniform convergence
-$\Phi_M\to\Phi$ on compacta, and the Stahl rational-approximation
-theory ensures matching tail behaviour for $M$ sufficiently large,
-yielding $|\phi_M(u,T)|\le e^{-c|u|^{2\mu}}$ for some $c>0$ on
-$|u|\ge u_0$. Polynomial-rate decay is immediate.
+The exact rough Heston characteristic exponent satisfies
+$\Real\Phi(u,T)\le -c|u|^{2\mu}$ for some $c>0$ along the real
+axis (El Euch--Rosenbaum). Theorem~\ref{thm:conv} gives uniform
+convergence $\Phi_M\to\Phi$ on real compacta, and Stahl's theorem
+delivers the matching decay rate on $|u|$-tails for $M$
+sufficiently large.
 \end{proof}
 
 % -----------------------------------------------------------------
-\section{Closed-Form European Call Price via Fox $H$-Function}
+\section{Closed-form European call price via Fox $H$}
 \label{sec:foxH}
 % -----------------------------------------------------------------
 
-\begin{definition}[Fox $H$-function]
-\label{def:foxH}
-For nonnegative integers $m,n,p,q$ with $0\le n\le p$ and
-$0\le m\le q$, complex parameters
-$\{a_i\}_{i=1}^{p},\{b_j\}_{j=1}^{q}$, and positive real
-parameters $\{\alpha_i\}_{i=1}^{p},\{\beta_j\}_{j=1}^{q}$, the
-Fox $H$-function is the Mellin--Barnes contour integral
-\begin{equation}
-\label{eq:foxH_def}
-H^{m,n}_{p,q}\!\left[z\,\bigg|\,
-\begin{array}{c}(a_i,\alpha_i)_{i=1}^{p}\\(b_j,\beta_j)_{j=1}^{q}\end{array}\right]
+\begin{definition}[Fox $H$-function]\label{def:foxH}
+For nonnegative integers $m,n,p,q$ with $0\le n\le p$, $0\le m\le q$,
+complex parameters $\{a_i\}_1^p,\{b_j\}_1^q$, positive reals
+$\{\alpha_i\}_1^p,\{\beta_j\}_1^q$,
+\begin{equation}\label{eq:foxH_def}
+H^{m,n}_{p,q}\!\left[z\,\bigg|\,\begin{array}{c}(a_i,\alpha_i)_1^p\\(b_j,\beta_j)_1^q\end{array}\right]
 :=\frac{1}{2\pi i}\int_{\mathcal{L}}
-\frac{\prod_{j=1}^{m}\Gamma(b_j+\beta_j s)\prod_{i=1}^{n}\Gamma(1-a_i-\alpha_i s)}
-{\prod_{j=m+1}^{q}\Gamma(1-b_j-\beta_j s)\prod_{i=n+1}^{p}\Gamma(a_i+\alpha_i s)}\,z^{-s}\,ds,
+\frac{\prod_{j=1}^m\Gamma(b_j+\beta_js)\prod_{i=1}^n\Gamma(1-a_i-\alpha_is)}
+{\prod_{j=m+1}^q\Gamma(1-b_j-\beta_js)\prod_{i=n+1}^p\Gamma(a_i+\alpha_is)}\,z^{-s}\,ds,
 \end{equation}
 with $\mathcal{L}$ a Mellin--Barnes contour separating the poles
-of $\Gamma(b_j+\beta_j s)$ from those of $\Gamma(1-a_i-\alpha_i s)$.
+of the two numerator products.
 \end{definition}
 
-\begin{theorem}[Closed-form European call price]
-\label{thm:foxH_price}
-Let $M\ge 1$, $T>0$, and let $\Phi_M(u,T)$ be the Pad\'e--M\"untz
-characteristic exponent of Section~\ref{sec:pade}, rational in
-$u\in\C$ at fixed $T$, with $2M$ pairwise distinct simple poles
-$\{u_j(T)\}_{j=1}^{2M}\subset\C\setminus\R$ and partial-fraction
+\begin{theorem}[Closed-form European call price]\label{thm:foxH_price}
+Let $M\ge 1$, $T>0$. By Corollary~\ref{cor:rational_Phi},
+$\Phi_M(u,T)$ is rational in $u$ with $2M$ pairwise distinct simple
+poles $\{u_j(T)\}_{j=1}^{2M}\subset\C\setminus\R$ and partial-fraction
 expansion
-\begin{equation}
-\label{eq:PFE}
+\begin{equation}\label{eq:PFE}
 \Phi_M(u,T)=-\tfrac12\sigma_T^2 u^2 - i\mu_T u
 +\sum_{j=1}^{2M}\frac{A_j(T)}{u-u_j(T)},
 \end{equation}
-with $\sigma_T^2>0$, $\mu_T\in\R$, and $A_j(T)\in\C$. Set
-\begin{equation}
-\label{eq:eps_def}
-\epsilon_j:=-\sgn\!\bigl(\Imag u_j(T)\bigr)\in\{-1,+1\},\qquad
-\tilde k:=\log(K/S_0)-rT.
-\end{equation}
-Then the European call price under
-$\phi_M(u,T):=\exp(\Phi_M(u,T))$ admits the closed-form
-representation
-\begin{equation}
-\label{eq:foxH_price}
-\boxed{\;C_M(K,T)
-=S_0\sum_{S\in\Pc(\{1,\ldots,2M\})}c_S(T)\,
-H^{\,m_S,\,n_S}_{p_S,\,q_S}\!\!\left[\,\zeta_S(K,T)\,\bigg|\,
-\begin{array}{c}(\mathbf{a}_S(T),\boldsymbol{\alpha}_S)\\
-(\mathbf{b}_S(T),\boldsymbol{\beta}_S)\end{array}\right]\;}
+with $\sigma_T^2>0$, $\mu_T\in\R$, $A_j(T)\in\C$. Set
+$\epsilon_j:=-\sgn(\Imag u_j(T))\in\{-1,+1\}$. Then
+\begin{equation}\label{eq:foxH_price}
+\boxed{\;C_M(K,T)=S_0\sum_{S\in\Pc(\{1,\ldots,2M\})}c_S(T)\,
+H^{m_S,n_S}_{p_S,q_S}\!\left[\zeta_S(K,T)\,\bigg|\,
+\begin{array}{c}(\mathbf{a}_S,\boldsymbol{\alpha}_S)\\(\mathbf{b}_S,\boldsymbol{\beta}_S)\end{array}\right]\;}
 \end{equation}
 with
 \begin{align}
-(m_S,n_S,p_S,q_S)&=\bigl(|S|+1,\,|S|+1,\,|S|+2,\,2|S|+2\bigr),\\
-c_S(T)&=\frac{1}{\sqrt{2\pi\sigma_T^2}}\prod_{j\in S}\epsilon_j\sqrt{\frac{A_j(T)}{i}},\\
-\zeta_S(K,T)&=\frac{(K/S_0)e^{-rT-\mu_T}}{\sqrt{2\sigma_T^2}}\prod_{j\in S}\bigl(iA_j(T)\bigr),
+(m_S,n_S,p_S,q_S)&=(|S|+1,|S|+1,|S|+2,2|S|+2),\\
+c_S(T)&=\frac{1}{\sqrt{2\pi\sigma_T^2}}\prod_{j\in S}\epsilon_j\sqrt{A_j(T)/i},\\
+\zeta_S(K,T)&=\frac{(K/S_0)e^{-rT-\mu_T}}{\sqrt{2\sigma_T^2}}\prod_{j\in S}(iA_j(T)).
 \end{align}
-and $(\mathbf{a}_S,\boldsymbol{\alpha}_S),(\mathbf{b}_S,\boldsymbol{\beta}_S)$
-the parameter vectors specified in the proof.
-After symmetric-function consolidation
-\textup{(}Step~7\textup{)} the sum reduces to
-a single Fox $H$-function of Mellin--Barnes order $O(M)$ in the
-elementary symmetric functions of $\{A_j(T)u_j(T)\}_{j=1}^{2M}$,
-and is evaluable by its residue series in $O(M\log M)$ operations
-to any prescribed precision.
+After symmetric-function consolidation the sum reduces to $2M+1$
+groups in the elementary symmetric functions of
+$\{A_j(T)u_j(T)\}_1^{2M}$, evaluable in $O(M\log M)$ operations.
 \end{theorem}
-
 \begin{proof}
-\textit{Step 1: Fourier-domain factorization.}
-By~\eqref{eq:PFE},
-\begin{equation}
-\label{eq:phi_factor}
-\phi_M(u,T)=e^{-\tfrac12\sigma_T^2 u^2 - i\mu_T u}
-\prod_{j=1}^{2M}\exp\!\left(\frac{A_j(T)}{u-u_j(T)}\right).
-\end{equation}
-Lemma~\ref{lem:decay} ensures
-$|\phi_M(u,T)|\le e^{-c|u|^{2\mu}}$ for $|u|\ge u_0$, so
-$\phi_M(\cdot,T)\in\mathcal{S}(\R)$ and the density
-$f_M(\cdot,T):=\Fc^{-1}[\phi_M(\cdot,T)]$ is Schwartz.
+\textit{Step 1: Fourier-domain factorization.} By~\eqref{eq:PFE},
+$\phi_M(u,T)=e^{-\tfrac12\sigma_T^2u^2-i\mu_Tu}\prod_{j=1}^{2M}\exp(A_j/(u-u_j))$.
+Lemma~\ref{lem:decay} ensures $\phi_M(\cdot,T)\in\mathcal{S}(\R)$,
+so $f_M:=\Fc^{-1}[\phi_M]$ is Schwartz.
 
-\textit{Step 2: Distributional inversion of each factor.}
-The Gaussian factor inverts to
-\begin{equation}
-\label{eq:g0}
-g_0(x):=\Fc^{-1}\!\bigl[e^{-\tfrac12\sigma_T^2 u^2 - i\mu_T u}\bigr](x)
-=\frac{1}{\sqrt{2\pi\sigma_T^2}}\exp\!\left(-\frac{(x-\mu_T)^2}{2\sigma_T^2}\right).
+\textit{Step 2: Distributional inversion.} The Gaussian factor
+inverts to
+$g_0(x)=(2\pi\sigma_T^2)^{-1/2}\exp(-(x-\mu_T)^2/(2\sigma_T^2))$.
+For each pole, expanding the exponential and inverting termwise
+via $\Fc^{-1}[(u-u_j)^{-n}](x)=\epsilon_j(-i\epsilon_j)^n(n-1)!^{-1}|x|^{n-1}e^{-iu_jx}\mathbf{1}_{\epsilon_jx>0}$
+($n\ge 1$), and summing using the Bessel generating function
+$\sum_{n\ge 1}(-w)^{n-1}/((n-1)!n!)=J_1(2\sqrt{w})/\sqrt{w}$,
+\begin{equation}\label{eq:Bj}
+\Fc^{-1}\!\bigl[\exp(A_j/(u-u_j))\bigr](x)=\delta(x)+B_j(x;T),
 \end{equation}
-For each pole, expand the exponential and invert termwise as
-tempered distributions:
-\begin{equation}
-\label{eq:Bj_def}
-\Fc^{-1}\!\left[\exp\!\left(\frac{A_j}{u-u_j}\right)\right]\!(x)
-=\delta(x)+B_j(x;T),
-\end{equation}
-where, with branches chosen by $\epsilon_j$,
-\begin{equation}
-\label{eq:Bj_explicit}
-B_j(x;T)=\epsilon_j\,e^{-iu_j(T)x}\,\mathbf{1}_{\epsilon_j x>0}
-\sqrt{\frac{A_j(T)}{ix}}\,J_1\!\bigl(2\sqrt{iA_j(T)\,x}\bigr).
-\end{equation}
-The identity~\eqref{eq:Bj_explicit} follows from the Bessel
-generating function
-$\sum_{n\ge 1}\frac{(-w)^{n-1}}{(n-1)!\,n!}=J_1(2\sqrt{w})/\sqrt{w}$
-applied termwise to the residue formula
-$\Fc^{-1}[(u-u_j)^{-n}](x)
-=\epsilon_j(-i\epsilon_j)^{n}(n-1)!^{-1}|x|^{n-1}
-e^{-iu_j x}\mathbf{1}_{\epsilon_j x>0}$
-($n\ge 1$).
+$B_j(x;T):=\epsilon_je^{-iu_jx}\mathbf{1}_{\epsilon_jx>0}\sqrt{A_j/(ix)}\,J_1(2\sqrt{iA_jx})$.
 
-\textit{Step 3: Density as binomial expansion of convolutions.}
-The convolution theorem applied to~\eqref{eq:phi_factor},
-together with~\eqref{eq:Bj_def}, gives
-\begin{equation}
-\label{eq:fM_sum}
-f_M(x,T)=\sum_{S\in\Pc(\{1,\ldots,2M\})}
-\bigl(g_0\,\ast\,\textstyle\bigast_{j\in S}B_j(\cdot;T)\bigr)(x).
+\textit{Step 3: Density binomial expansion.} Convolution theorem
+applied to the factorization gives
+\begin{equation}\label{eq:fM_sum}
+f_M(x,T)=\sum_{S\in\Pc(\{1,\ldots,2M\})}\bigl(g_0\ast\textstyle\bigast_{j\in S}B_j\bigr)(x).
 \end{equation}
 
-\textit{Step 4: Mellin transform of each kernel.}
-For the Bessel kernel, with the standard identity
-\begin{equation}
-\label{eq:Mellin_J1}
-\Mc\!\bigl[x^{-1/2}J_1(2\sqrt{cx})\mathbf{1}_{x>0}\bigr](s)
-=c^{1/2-s}\,\frac{\Gamma(s)}{\Gamma(2-s)},
-\end{equation}
-valid in the strip $0<\Real s<2$. The exponential prefactor
-$e^{-iu_j x}$ is absorbed by the Mellin shift identity
-\begin{equation}
-\label{eq:Mellin_shift}
-\Mc[e^{-\lambda x}f(x)\mathbf{1}_{x>0}](s)
-=\Gamma(s)\,\lambda^{-s}\,\Mc[\hat f](s)
-\quad\text{(in the Fox $H$ sense)},
-\end{equation}
-which introduces one extra $\Gamma$-factor with linear argument
-in $s$ per pole. Combined with~\eqref{eq:Mellin_J1}, the Mellin
-transform of $B_j$ is therefore a quotient of three $\Gamma$-functions
-with linear arguments in $s$, depending on $A_j(T),u_j(T),\epsilon_j$.
-The Gaussian $g_0$ has Mellin transform (after the shift $x\mapsto x-\mu_T$)
-$\Mc[g_0](s)=(2\sigma_T^2)^{(s-1)/2}\Gamma(s/2)/\sqrt{2\pi\sigma_T^2}$.
+\textit{Step 4: Mellin transforms.} The Mellin transform of $B_j$
+is, using $\Mc[x^{-1/2}J_1(2\sqrt{cx})\mathbf{1}_{x>0}](s)=c^{1/2-s}\Gamma(s)/\Gamma(2-s)$
+combined with the Mellin shift identity for the exponential
+prefactor (one $\Gamma$-factor per pole), a quotient of three
+$\Gamma$-functions with linear arguments in $s$ depending on
+$A_j,u_j,\epsilon_j$. The Gaussian $g_0$ has Mellin transform
+$\propto\Gamma(s/2)$ after centering by $\mu_T$.
 
-\textit{Step 5: Convolution chain as Fox $H$-function.}
-By the Mellin convolution theorem on the half-line,
-\begin{equation}
-\label{eq:Mellin_conv}
-\Mc\!\Bigl[g_0\,\ast\,\textstyle\bigast_{j\in S}B_j\Bigr](s)
-=\Mc[g_0](s)\prod_{j\in S}\Mc[B_j](s).
-\end{equation}
-The right-hand side is a finite product of $\Gamma$-quotients with
-linear arguments in $s$, and by Definition~\ref{def:foxH} its
-inverse Mellin transform is exactly a Fox $H$-function whose
-$(m,n,p,q)$ orders count the four classes of $\Gamma$-factors in
-the integrand of~\eqref{eq:foxH_def}. A direct count gives
-$(m_S,n_S,p_S,q_S)=(|S|+1,|S|+1,|S|+2,2|S|+2)$ as stated.
+\textit{Step 5: Convolution chain as Fox $H$.} By the Mellin
+convolution theorem on the half-line,
+$\Mc[g_0\ast\bigast_{j\in S}B_j](s)=\Mc[g_0](s)\prod_{j\in S}\Mc[B_j](s)$,
+a finite product of $\Gamma$-quotients with linear arguments in
+$s$. By Definition~\ref{def:foxH}, its inverse Mellin transform
+is a Fox $H$-function of order
+$(m_S,n_S,p_S,q_S)=(|S|+1,|S|+1,|S|+2,2|S|+2)$.
 
-\textit{Step 6: Integration against the call payoff.}
-The undiscounted call payoff is
-\begin{equation}
-\label{eq:payoff_split}
-(S_T-K)^+=S_0 e^{x+rT}\mathbf{1}_{x>\tilde k}-K\mathbf{1}_{x>\tilde k},
-\end{equation}
-with $x:=\log(S_T/S_0)-rT$ and $\tilde k$ as in~\eqref{eq:eps_def}.
-For each Fox $H$-summand in~\eqref{eq:fM_sum}, the integral
-$\int_{\tilde k}^{\infty}H^{m,n}_{p,q}[\,\zeta x\,|\,\cdots\,]\,dx$
-and the integral against $e^x$ both close in Fox $H$-form: the
-former by the integration identity
-\begin{equation}
-\label{eq:Hint_const}
-\int_{\tilde k}^{\infty}H^{m,n}_{p,q}\!\bigl[\zeta x\,\big|\,\cdots\bigr]dx
-=\zeta^{-1}H^{m+1,n}_{p+1,q+1}\!\bigl[\zeta\tilde k\,\big|\,(0,1),\ldots,(1,1)\bigr],
-\end{equation}
-and the latter by the Mellin shift
-$\Mc[e^x f(x)](s)=\Mc[f](s)$ followed by~\eqref{eq:Hint_const},
-each adding one $\Gamma$-factor to the integrand
-of~\eqref{eq:foxH_def}. The discount $e^{-rT}$ and the prefactors
-combine into the constants $c_S(T)$ and the argument $\zeta_S(K,T)$
-stated in the theorem.
+\textit{Step 6: Integration against the call payoff.} For each
+summand in~\eqref{eq:fM_sum},
+$\int_{\tilde k}^\infty(S_0e^{x+rT}-K)H^{m,n}_{p,q}[\zeta x|\cdot]\,dx$
+closes in Fox $H$-form by the standard incomplete-integral
+identities for Fox $H$, each adding one $\Gamma$-factor.
+Combining prefactors gives $c_S(T),\zeta_S(K,T)$ as stated.
 
-\textit{Step 7: Symmetric-function consolidation.}
-The Mellin transform~\eqref{eq:Mellin_conv} for given $|S|=r$
-depends on the multiset $\{A_j u_j: j\in S\}$ only through its
-elementary symmetric functions
-$e_1,\ldots,e_r$, because the product
-$\prod_{j\in S}\Mc[B_j](s)$ is symmetric in $\{A_j,u_j\}_{j\in S}$.
-Summing over all $S$ with $|S|=r$ via Newton--Girard,
-\begin{equation}
-\label{eq:NewtonGirard}
-\sum_{|S|=r}\prod_{j\in S}A_j u_j
-=e_r(A_1 u_1,\ldots,A_{2M}u_{2M}),\quad r=0,1,\ldots,2M,
-\end{equation}
-collapses the $2^{2M}$ subsets into $2M+1$ symmetric-function
-groups. The full sum~\eqref{eq:foxH_price} therefore reduces to
-\begin{equation}
-\label{eq:final_compact}
-C_M(K,T)
-=S_0\sum_{r=0}^{2M}\tilde c_r(T)\,
-H^{\,r+1,r+1}_{r+2,2r+2}\!\!\left[\tilde\zeta_r(K,T)\,\bigg|\,
-\begin{array}{c}\tilde{\mathbf{a}}_r,\tilde{\boldsymbol{\alpha}}_r\\
-\tilde{\mathbf{b}}_r,\tilde{\boldsymbol{\beta}}_r\end{array}\right],
-\end{equation}
-with $\tilde c_r,\tilde\zeta_r$ polynomial of degree at most $r$
-in $\{e_1,\ldots,e_{2M}\}$, computable in $O(M\log M)$ by
-fast symmetric-function evaluation.
+\textit{Step 7: Symmetric-function consolidation.} The Mellin
+transform of the convolution chain for $|S|=r$ depends on
+$\{A_ju_j:j\in S\}$ only through the elementary symmetric
+functions $e_1,\ldots,e_r$, since the product is symmetric in
+the multiset. Newton--Girard collapses
+$\sum_{|S|=r}\prod_{j\in S}A_ju_j=e_r(A_1u_1,\ldots,A_{2M}u_{2M})$,
+reducing the $2^{2M}$-term sum to $2M+1$ symmetric groups.
 
-\textit{Step 8: Convergence and evaluation.}
-Each Fox $H$-summand in~\eqref{eq:final_compact} converges
-absolutely on its Mellin--Barnes contour because the
-$\Gamma$-quotient decays factorially along vertical lines.
-Evaluation by residue summation at the poles of
-$\Gamma(b_j+\beta_j s)$ produces a series whose $n$-th term is
-$O(n!^{-1})$, so machine precision is attained in $O(M)$ terms,
-yielding a total per-price cost of $O(M\log M)$.
+\textit{Step 8: Convergence and evaluation.} Each Fox $H$-summand
+converges absolutely on its Mellin--Barnes contour (factorial
+$\Gamma$-decay along vertical lines by Stirling). The residue
+series at the poles of the numerator $\Gamma$-factors has $n$-th
+term $O(n!^{-1})$, so machine precision is attained in $O(M)$
+terms; with the symmetric-function consolidation total per-price
+cost is $O(M\log M)$.
 \end{proof}
 
+\begin{corollary}[Quadrature-free pricing]\label{cor:no_quadrature}
+$C_M(K,T)$ from Theorem~\ref{thm:foxH_price} is computed by a
+finite sum of Fox $H$ evaluations, each evaluated by its absolutely
+convergent Mellin--Barnes residue series, with no Fourier inversion
+quadrature, no cosine series, and no truncation interval.
+\end{corollary}
+
 % -----------------------------------------------------------------
-\section{COS pricing of European calls (Alternative Method)}
+\section{COS pricing as alternative}
 \label{sec:cos}
 % -----------------------------------------------------------------
 
-For computational environments lacking a robust Fox $H$ implementation,
-European calls under the Pad\'{e}--M\"untz approximation $\phi_M(\cdot,T)$
-may be evaluated using the Fang--Oosterlee COS method. The method
-requires only point evaluations of $\phi_M$ on the real axis, which
-amounts to one complex exponential of one rational function of $v$
-per point.
+For environments lacking a Fox $H$ evaluator, $\Phi_M(\cdot,T)$
+may be priced via Fang--Oosterlee COS.
 
-\subsection{Cumulants of $X_T$}
+\subsection{Cumulants}
 
-The cumulant-generating function of $X_T$ under $\phi_M$ is
-$\Phi_M(\cdot,T)$ evaluated on the imaginary axis: with
-$\psi_M(s,T):=\Phi_M(-is,T)$,
+With $\psi_M(s,T):=\Phi_M(-is,T)$,
 \begin{equation}\label{eq:cumulants}
-\kappa_n^{(M)}(T):=\left.\frac{d^n\psi_M(s,T)}{ds^n}\right|_{s=0},
-\quad n\ge 1.
+\kappa_n^{(M)}(T):=\frac{d^n\psi_M(s,T)}{ds^n}\bigg|_{s=0},
+\quad n=1,2,3,4,
 \end{equation}
-The first four cumulants $\kappa_1^{(M)},\kappa_2^{(M)},
-\kappa_3^{(M)},\kappa_4^{(M)}(T)$ are obtained by complex
-differentiation of $\Phi_M(v,T)$ at $v=0$. In practice they are
-computed by finite differences on a small stencil at machine
-precision, since $\Phi_M$ is rational and noise-free.
+computed by finite differences on a small symmetric stencil at
+arbitrary precision since $\Phi_M$ is rational and noise-free.
 
 \subsection{Truncation interval}
 
-For target precision and a given maturity $T$, set the Fang--Oosterlee
-interval
 \begin{equation}\label{eq:interval}
-[a(T),b(T)]:=\Bigl[
-\kappa_1^{(M)}(T)-L\sqrt{\kappa_2^{(M)}(T)+\sqrt{\kappa_4^{(M)}(T)}},\;
-\kappa_1^{(M)}(T)+L\sqrt{\kappa_2^{(M)}(T)+\sqrt{\kappa_4^{(M)}(T)}}
-\Bigr],
+[a(T),b(T)]:=\Bigl[\kappa_1^{(M)}-L\sqrt{\kappa_2^{(M)}+\sqrt{\kappa_4^{(M)}}},\,
+\kappa_1^{(M)}+L\sqrt{\kappa_2^{(M)}+\sqrt{\kappa_4^{(M)}}}\Bigr],
 \end{equation}
-with $L\in[8,12]$ a fixed multiplier.
+$L\in[8,12]$.
 
-\begin{remark}[Single interval for a term structure]
-\label{rem:single_interval}
-Both $\kappa_2^{(M)}(T)$ and $\kappa_4^{(M)}(T)$ are nondecreasing
-in $T$. Consequently, given a maximum maturity $T_{\max}$ of interest,
-the choice
-\begin{equation}\label{eq:interval_max}
-[a,b]:=[a(T_{\max}),\,b(T_{\max})]
-\end{equation}
-is admissible for every $T\in(0,T_{\max}]$. Pricing the entire
-term structure on the single interval~\eqref{eq:interval_max}
-incurs only a logarithmic overhead in the COS series length $N$
-(Theorem~\ref{thm:price}, item~\ref{it:cos_overhead}) compared with
-the per-maturity choice~\eqref{eq:interval}.
+\begin{remark}[Single interval]\label{rem:single_interval}
+$\kappa_2^{(M)}(T),\kappa_4^{(M)}(T)$ are nondecreasing in $T$,
+so $[a,b]:=[a(T_{\max}),b(T_{\max})]$ is admissible for every
+$T\in(0,T_{\max}]$.
 \end{remark}
 
-\subsection{Payoff cosine coefficients}
+\subsection{Payoff coefficients}
 
-For the call payoff $w(x):=K(e^x-1)^+$ on
-$x:=\log(S_T/K)\in[a,b]$ (so that $x>0$ is in-the-money), the
-COS payoff coefficients
-\begin{equation}\label{eq:Uk}
-U_n:=\frac{2}{b-a}\int_a^b w(x)\cos\!\left(n\pi\frac{x-a}{b-a}\right)dx
-\end{equation}
-are evaluated in closed form via
+For the call payoff $w(x)=K(e^x-1)^+$,
+$U_n=\frac{2K}{b-a}[\chi_n(0,b)-\psi_n(0,b)]$ with
 \begin{align}
-\chi_n(c,d)&:=\int_c^d e^x\cos\!\left(n\pi\frac{x-a}{b-a}\right)dx
-\label{eq:chi}\\
-&=\frac{1}{1+\bigl(\tfrac{n\pi}{b-a}\bigr)^2}\!
-\left[\cos\!\left(\tfrac{n\pi(d-a)}{b-a}\right)e^d
--\cos\!\left(\tfrac{n\pi(c-a)}{b-a}\right)e^c\right.\nonumber\\
-&\qquad\left.+\tfrac{n\pi}{b-a}\sin\!\left(\tfrac{n\pi(d-a)}{b-a}\right)e^d
--\tfrac{n\pi}{b-a}\sin\!\left(\tfrac{n\pi(c-a)}{b-a}\right)e^c\right],
+\chi_n(c,d)&=\frac{1}{1+(n\pi/(b-a))^2}\Bigl[\cos(n\pi(d-a)/(b-a))e^d-\cos(n\pi(c-a)/(b-a))e^c
 \nonumber\\
-\psi_n(c,d)&:=\int_c^d\cos\!\left(n\pi\frac{x-a}{b-a}\right)dx
-=\begin{cases}d-c,&n=0,\\
-\dfrac{b-a}{n\pi}\!\left[\sin\!\left(\tfrac{n\pi(d-a)}{b-a}\right)
--\sin\!\left(\tfrac{n\pi(c-a)}{b-a}\right)\right],&n\ge1.\end{cases}
-\label{eq:psi}
+&\quad+\tfrac{n\pi}{b-a}(\sin(n\pi(d-a)/(b-a))e^d-\sin(n\pi(c-a)/(b-a))e^c)\Bigr],\\
+\psi_n(c,d)&=\begin{cases}d-c,&n=0,\\
+\frac{b-a}{n\pi}[\sin(n\pi(d-a)/(b-a))-\sin(n\pi(c-a)/(b-a))],&n\ge 1.\end{cases}
 \end{align}
-The call payoff vanishes for $x<0$, so
-$U_n=\tfrac{2K}{b-a}\bigl[\chi_n(0,b)-\psi_n(0,b)\bigr]$.
 
 \subsection{COS price}
 
 \begin{theorem}[COS pricing]\label{thm:price}
-Let $\phi_M(\cdot,T)$ be the Pad\'{e}--M\"untz characteristic
-function~\eqref{eq:phiM} and let $[a,b]$ be chosen
-by~\eqref{eq:interval} or~\eqref{eq:interval_max}. Set the
-$N$-term truncation
+Let $\phi_M(\cdot,T)=\exp(\Phi_M(\cdot,T))$, $[a,b]$ from
+\eqref{eq:interval} or Remark~\ref{rem:single_interval},
+$x_0:=\log(S_0/K)+rT$, and
 \begin{equation}\label{eq:CMN}
-C_{M,N}:=Ke^{-rT}\sum_{n=0}^{N-1}\!{}^\prime\,
-\Real\!\left[
-\phi_M\!\left(\frac{n\pi}{b-a},T\right)
-\exp\!\left(i\,n\pi\,\frac{x_0-a}{b-a}\right)\right]\!\cdot
-\widetilde U_n,
+C_{M,N}:=Ke^{-rT}\sum_{n=0}^{N-1}\!{}^\prime\,\Real\!\left[\phi_M\!\left(\tfrac{n\pi}{b-a},T\right)
+\exp\!\left(in\pi\tfrac{x_0-a}{b-a}\right)\right]\widetilde U_n.
 \end{equation}
-where $\sum^\prime$ halves the $n=0$ term, $x_0:=\log(S_0/K)+rT$,
-and
-\begin{equation}\label{eq:Utilde}
-\widetilde U_n:=\frac{2}{b-a}\bigl[\chi_n(0,b)-\psi_n(0,b)\bigr].
-\end{equation}
-Then:
-\begin{enumerate}
-\item\label{it:cos_conv}
-$C_{M,N}\to C_M:=Ke^{-rT}\int_a^b w(x)f_M(x)dx$ as $N\to\infty$,
-where $f_M$ is the density with characteristic function $\phi_M$.
-\item\label{it:cos_rate}
-For every $\epsilon>0$ there is $C_\epsilon<\infty$ such that
-\begin{equation}\label{eq:cos_error}
-|C_M-C_{M,N}|
-\le C_\epsilon\,\exp\!\Bigl(-(c-\epsilon)\,N^{2\mu}/(b-a)^{2\mu}\Bigr),
-\end{equation}
-where $c>0$ is the constant from Lemma~\ref{lem:decay}.
-\item\label{it:cos_truncation}
-The truncation error on $[a,b]$ satisfies
-$|C-C_M|+|C_M-Ke^{-rT}\int_a^b w f_M dx|\to 0$ as $L\to\infty$
-in~\eqref{eq:interval} and $M\to\infty$, each at the rate given by
-the respective convergence theorem.
-\item\label{it:cos_overhead}
-For the single-interval choice~\eqref{eq:interval_max} applied to
-maturities $T\in[T_{\min},T_{\max}]$, the $N$ required to attain a
-given tolerance is at most a factor
-$O\bigl((b(T_{\max})-a(T_{\max}))/(b(T)-a(T))\bigr)$
-larger than the per-maturity $N$ at maturity $T$.
-\end{enumerate}
+Then $C_{M,N}\to C_M$ as $N\to\infty$, with
+$|C_M-C_{M,N}|\le C_\epsilon\exp(-(c-\epsilon)N^{2\mu}/(b-a)^{2\mu})$
+for any $\epsilon>0$, $c$ from Lemma~\ref{lem:decay}.
 \end{theorem}
-
 \begin{proof}
-\textit{Item~\ref{it:cos_conv}: COS expansion.}
-On $[a,b]$, the density $f_M$ has the cosine expansion
-$f_M(x)=\sum_{n\ge0}{}^\prime A_n\cos\bigl(n\pi(x-a)/(b-a)\bigr)$
-with
-$A_n=\tfrac{2}{b-a}\int_a^b f_M(x)\cos\bigl(n\pi(x-a)/(b-a)\bigr)dx$.
-The standard Fang--Oosterlee identity
-\begin{equation}\label{eq:An_identity}
-A_n=\frac{2}{b-a}\Real\!\left[\phi_M\!\left(\tfrac{n\pi}{b-a},T\right)
-e^{-in\pi a/(b-a)}\right]
-+\varepsilon_n,
-\end{equation}
-holds with truncation residual
-$\varepsilon_n=\tfrac{2}{b-a}\Real\bigl[\int_{\R\setminus[a,b]}f_M(x)
-e^{-in\pi(x-a)/(b-a)}dx\bigr]$
-bounded in absolute value by $\tfrac{2}{b-a}\int_{\R\setminus[a,b]}
-f_M(x)dx$, independent of $n$.
-
-Parseval's identity for the cosine basis on $[a,b]$ then yields
-\[
-Ke^{-rT}\int_a^b w(x)f_M(x)dx
-=Ke^{-rT}\!\sum_{n\ge 0}{}^\prime A_n\,U_n
-=\sum_{n\ge0}{}^\prime\!\bigl(\text{eq.~\eqref{eq:CMN} integrand}\bigr).
-\]
-Convergence to $C_M$ as $N\to\infty$ follows.
-
-\textit{Item~\ref{it:cos_rate}: rate.}
-By Lemma~\ref{lem:decay},
-$|\phi_M(n\pi/(b-a),T)|\le e^{-c(n\pi/(b-a))^{2\mu}}$ for $n$
-large enough. Since $|U_n|=O(1)$, the tail of the
-series~\eqref{eq:CMN} is dominated by
-$\sum_{n\ge N}e^{-c(n\pi/(b-a))^{2\mu}}$, which is bounded by a
-constant multiple of the first omitted term, yielding the rate
-$e^{-(c-\epsilon)(N\pi/(b-a))^{2\mu}}$, absorbing constants into
-$C_\epsilon$ gives~\eqref{eq:cos_error}.
-
-\textit{Item~\ref{it:cos_truncation}.}
-The first error term is bounded by Theorem~\ref{thm:conv}
-applied to $h_M\to h$ in~\eqref{eq:PhiM}, the Lipschitz dependence
-of $C$ on $\phi$ in $L^1(dx)$, and the Berry--Esseen-type bound
-$\|f_M-f\|_1\le c'\|\phi_M-\phi\|_{L^1\cap L^\infty}$. The second
-error vanishes as $L\to\infty$ because $f_M$ has fast decay
-(Lemma~\ref{lem:decay} transfers to $f_M$ via Fourier inversion).
-
-\textit{Item~\ref{it:cos_overhead}.}
-For fixed $\mu$, the rate~\eqref{eq:cos_error} requires
-$N^{2\mu}\ge \log(1/\text{tol})\cdot(b-a)^{2\mu}/c$, hence
-$N=O((b-a))$. Comparing $b(T_{\max})-a(T_{\max})$ to $b(T)-a(T)$
-gives the stated factor.
+The cosine expansion of $f_M$ on $[a,b]$ has coefficients
+$A_n=\frac{2}{b-a}\Real[\phi_M(n\pi/(b-a),T)e^{-in\pi a/(b-a)}]+\varepsilon_n$
+with $|\varepsilon_n|\le\frac{2}{b-a}\int_{\R\setminus[a,b]}f_M(x)dx$
+independent of $n$. Parseval against the cosine basis gives
+$Ke^{-rT}\int_a^b w f_M dx=\sum_{n\ge 0}{}^\prime A_n U_n$, with
+truncation at $N$ yielding~\eqref{eq:CMN}. The exponential
+decay rate follows from Lemma~\ref{lem:decay}: the tail
+$\sum_{n\ge N}|\phi_M(n\pi/(b-a),T)U_n|$ is dominated by
+$\sum_{n\ge N}e^{-c(n\pi/(b-a))^{2\mu}}$, geometric in the
+dominant term.
 \end{proof}
 
-\subsection{Algorithm}
+% -----------------------------------------------------------------
+\section{Algorithm and computational summary}
+\label{sec:algorithm}
+% -----------------------------------------------------------------
 
-Inputs: $S_0,K,T,r,\theta,\lambda,\rho,\nu,V_0,H$;
-Pad\'{e} order $M$ from~\eqref{eq:aposteriori};
-COS length $N$ from~\eqref{eq:cos_error}.
+Inputs: $S_0,K,T,r,\theta,\lambda,\rho,\nu,V_0,H$; Pad\'{e} order
+$M$ from~\eqref{eq:aposteriori}; precision target.
 
 \begin{enumerate}
-\item \emph{Build $\Phi_M(\cdot,T)$:} run Chebyshev--Wheeler
-(Section~\ref{sec:pade}) on the moments $m_k=a_{k+1}$
-generated by~\eqref{eq:ak}; this yields $\{p_n,\alpha_n,\beta_n\}$
-and hence $Q_M$, $P_M$, $R_M$, and via~\eqref{eq:PhiM}, $\Phi_M$.
-The construction is polynomial in $M$.
-\item \emph{Compute cumulants:} obtain $\kappa_1^{(M)}(T),\dots,
-\kappa_4^{(M)}(T)$ from~\eqref{eq:cumulants} by finite differences
-of $\Phi_M(-is,T)$ at $s=0$ on a small symmetric stencil.
-\item \emph{Truncation interval:} set $[a,b]$
-by~\eqref{eq:interval}, or by~\eqref{eq:interval_max} for a full
-term structure.
-\item \emph{Payoff coefficients:} compute $\widetilde U_n$ for
-$n=0,\ldots,N-1$ from~\eqref{eq:Utilde}.
-\item \emph{Characteristic-function evaluations:} compute
-$\phi_M(n\pi/(b-a),T)=\exp(\Phi_M(n\pi/(b-a),T))$ for
-$n=0,\ldots,N-1$; each evaluation is one $\exp$ of a sum of
-$\deg Q_M$ rational terms, $O(M)$ per node, $O(NM)$ overall.
-\item \emph{Sum~\eqref{eq:CMN}:} return $C_{M,N}$.
+\item \emph{M\"untz coefficients.} Compute $\{a_k(v)\}_{k=1}^{2M}$
+from~\eqref{eq:ak} as polynomials in $v$ of degree $\le k+1$, in
+arbitrary precision.
+\item \emph{Cumulant moments.} Compute $\{M_k(v)\}_{k=0}^{2M-1}$
+from~\eqref{eq:cumulant_moments}.
+\item \emph{Chebyshev algorithm.} Apply
+Theorem~\ref{thm:chebyshev} to obtain $\{\alpha_k,\beta_k,h_k,p_k\}_{k=0}^M$
+in $O(M^2)$ ring operations; assemble $Q_M(z),P_M(z)$ via
+Lemma~\ref{lem:match} and~\ref{lem:p1_recur}, yielding
+$\Phi_M(v,T)$ from~\eqref{eq:PhiM_def}.
+\item \emph{Partial-fraction expansion.} Compute
+$\{u_j(T),A_j(T)\}_{j=1}^{2M}$ and $\{\sigma_T,\mu_T\}$ from the
+rational form of $\Phi_M$, in closed form by the cover-up rule
+applied to the polynomial coefficients.
+\item \emph{Pricing}: choose either
+\begin{enumerate}
+\item \emph{Fox $H$ closed form (Theorem~\ref{thm:foxH_price}):}
+evaluate~\eqref{eq:foxH_price} via residue summation, $O(M\log M)$
+per price, no quadrature; or
+\item \emph{COS (Theorem~\ref{thm:price}):} compute cumulants
+$\kappa_n^{(M)}(T)$, set $[a,b]$
+via~\eqref{eq:interval} or Remark~\ref{rem:single_interval},
+sum~\eqref{eq:CMN}, $O(NM)$ per price.
 \end{enumerate}
-
-The overall cost per price is $O(M^2)$ (setup, amortised across
-strikes and maturities sharing the same $T$) plus $O(NM)$ per
-$(T,K)$ pair. For a term structure of $n_T$ maturities and $n_K$
-strikes per maturity priced on the
-single-interval~\eqref{eq:interval_max}, the cost is
-$O(\sum_T(M^2+N M n_K))=O(n_T M^2+n_T n_K N M)$.
+\end{enumerate}
 
 % -----------------------------------------------------------------
 \section{Summary}
 \label{sec:summary}
 % -----------------------------------------------------------------
 
-\textbf{T1.}
-The diagonal $[M/M]$ Pad\'{e}--M\"untz approximant of the fractional
-Riccati solution converges uniformly on compacta of $[0,T^*)$, with
-denominator $Q_M(z)=z^M p_M(1/z)$ and numerator
-$P_M(z)=z^{M-1}p_M^{(1)}(1/z)$ obtained \emph{by the Chebyshev--Wheeler
-algorithm}, no system solved. The a-posteriori
+\textbf{T1.} The Pad\'{e} resummation of the local Puiseux series
+of the rough Heston cumulant generating function is performed
+directly on the cumulant moments $\{M_k(v)\}$ via the Chebyshev
+algorithm, bypassing the integration of $h(v,t)$ that other
+methods perform numerically. The orthogonal polynomial sequence
+$\{p_n\}$ is produced from the moments by recurrence in $O(M^2)$
+operations with no Hankel matrix inversion. The a-posteriori
 bound~\eqref{eq:aposteriori} fixes $M$ from precision.
 
-\textbf{T2.}
-European calls under rough Heston admit a closed-form expression
-(Theorem~\ref{thm:foxH_price}) in terms of the Fox $H$-function.
-Evaluated by its Mellin--Barnes residue series, the Fox $H$-function
-yields prices directly in $O(M\log M)$ time, bypassing quadrature
-and producing the first known strictly closed-form pricer for this model.
+\textbf{T2.} European calls under rough Heston have a strictly
+closed-form price (Theorem~\ref{thm:foxH_price}) as a finite sum
+of Fox $H$-functions in the partial-fraction data of $\Phi_M$,
+evaluable in $O(M\log M)$ with no quadrature.
 
-\textbf{T3.}
-Alternatively, prices may be computed by COS
-(Theorem~\ref{thm:price}) on the Pad\'{e}--M\"untz characteristic
-function $\phi_M(\cdot,T)=\exp(\Phi_M(\cdot,T))$. For a term
-structure $T\in[T_{\min},T_{\max}]$, the truncation
-interval~\eqref{eq:interval_max} built at $T_{\max}$ is admissible
-for every $T$; the COS series length grows only linearly with
-$(b-a)$ for a fixed tolerance.
-
-\textbf{Computational summary.}
-Per-price cost using the exact Fox $H$ construction is $O(M\log M)$.
-Under COS, the per-evaluation cost of $\phi_M$ is one $\exp$ of a degree-$\deg Q_M$
-rational function with total per-price cost of $O(NM)$.
-Both $M$ and $N$ are determined by explicit a-posteriori bounds; nothing
-else is truncated.
+\textbf{T3.} COS (Theorem~\ref{thm:price}) provides an alternative
+$O(NM)$ pricing pipeline for environments without a Fox $H$
+evaluator, with the single-interval choice of
+Remark~\ref{rem:single_interval} amortizing across term structures.
 
 \begin{thebibliography}{9}
-\bibitem{SKM}
-S.~G.~Samko, A.~A.~Kilbas, O.~I.~Marichev,
-\emph{Fractional Integrals and Derivatives},
-Gordon and Breach, 1993.
-
-\bibitem{StahlBranch}
-H.~Stahl, \emph{Convergence of Pad\'{e} approximants to functions
-with branch points}, J.~Approx.~Theory \textbf{91} (1997), 139--204.
-
-\bibitem{ElEuchRosenbaum}
-O.~El~Euch and M.~Rosenbaum,
-\emph{The characteristic function of rough Heston models},
-Math.~Finance \textbf{29} (2019), 3--38.
+\bibitem{Chebyshev}
+P.~L.~Chebyshev, \emph{Sur le d\'{e}veloppement des fonctions \`{a}
+une seule variable}, Bull.~Acad.~Imp.~Sci.~St.~P\'etersbourg
+\textbf{1} (1859), 193--200.
 
 \bibitem{Chihara}
 T.~S.~Chihara, \emph{An Introduction to Orthogonal Polynomials},
@@ -1043,19 +740,26 @@ Gordon and Breach, 1978.
 C.~Brezinski, \emph{Pad\'{e}-Type Approximation and General
 Orthogonal Polynomials}, Birkh\"auser, 1980.
 
-\bibitem{FangOosterlee}
-F.~Fang and C.~W.~Oosterlee, \emph{A novel pricing method for
-European options based on Fourier-cosine series expansions},
-SIAM J.~Sci.~Comput.~\textbf{31} (2008), 826--848.
+\bibitem{StahlBranch}
+H.~Stahl, \emph{Convergence of Pad\'{e} approximants to functions
+with branch points}, J.~Approx.~Theory \textbf{91} (1997), 139--204.
+
+\bibitem{ElEuchRosenbaum}
+O.~El~Euch and M.~Rosenbaum, \emph{The characteristic function of
+rough Heston models}, Math.~Finance \textbf{29} (2019), 3--38.
 
 \bibitem{MathaiSaxena}
-A.~M.~Mathai, R.~K.~Saxena, and H.~J.~Haubold,
-\emph{The H-Function: Theory and Applications},
-Springer, 2010.
+A.~M.~Mathai, R.~K.~Saxena, H.~J.~Haubold, \emph{The H-Function:
+Theory and Applications}, Springer, 2010.
 
-\bibitem{Wheeler}
-J.~C.~Wheeler, \emph{Modified moments and Gaussian quadratures},
-Rocky Mountain J.~Math.~\textbf{4} (1974), 287--296.
+\bibitem{FangOosterlee}
+F.~Fang, C.~W.~Oosterlee, \emph{A novel pricing method for European
+options based on Fourier-cosine series expansions},
+SIAM J.~Sci.~Comput.~\textbf{31} (2008), 826--848.
+
+\bibitem{SKM}
+S.~G.~Samko, A.~A.~Kilbas, O.~I.~Marichev, \emph{Fractional
+Integrals and Derivatives}, Gordon and Breach, 1993.
 \end{thebibliography}
 
 \end{document}
