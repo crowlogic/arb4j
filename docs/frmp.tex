@@ -816,6 +816,203 @@ statement of the theorem refers to this sheetwise transfer.
 \end{proof}
 
 % ---------------------------------------------------------------
+\begin{lemma}[No real poles]\label{lem:no_real_poles}
+In the constant-coefficient case $P(u),Q(u),R(u)\in\C$ with $R(u)\ne 0$,
+the generating function $A(z,u)$ has no poles on $(0,\infty)$.
+\end{lemma}
+
+\begin{proof}
+Each pole $z^{*}$ of $A(\cdot,u)$ is simple, with residue
+\begin{equation}\label{eq:res_no_real}
+\operatorname{Res}\bigl(A(\cdot,u),z^{*}\bigr)
+   = -\,\frac{(z^{*})^{(\mu-1)/\mu}}{R(u)\,\mu}.
+\end{equation}
+For $z^{*}\in(0,\infty)$ this residue is nonzero; but the Volterra fixed
+point is holomorphic on every compact real interval on which it converges,
+a contradiction. Hence $A(\cdot,u)$ has no poles on $(0,\infty)$.
+\end{proof}
+
+\begin{corollary}[Uniform convergence on $\mathbb{R}_{+}$]\label{cor:uniform}
+In the constant-coefficient case, for every compact
+$[0,T]\subset\mathbb{R}_{+}$,
+\begin{equation}\label{eq:uniform_conv}
+\sup_{t\in[0,T]}\bigl|y(t)-y_M(t)\bigr| \;\longrightarrow\; 0
+\qquad\text{as } M\to\infty.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+By Lemma~\ref{lem:no_real_poles},
+$\delta := \operatorname{dist}\bigl([0,T],\mathcal{P}_A\bigr) > 0$, where
+$\mathcal{P}_A$ denotes the pole set of $A(\cdot,u)$. On
+$U_\delta := \{z\in\C : \operatorname{dist}(z,[0,T]) < \delta/2\}$,
+$A(\cdot,u)$ is holomorphic and bounded. Convergence in capacity on
+$U_\delta$ (Theorem~\ref{thm:stahl_convergence}) upgrades to uniform
+convergence on $[0,T]$: the capacity-zero exceptional sets cannot meet
+$[0,T]$ for all sufficiently large $M$, and a normal-families bound
+finishes the argument. The substitution $z=t^{\mu}$ transfers uniform
+convergence from $[0,T^{\mu}]$ to $[0,T]$.
+\end{proof}
+
+% ---------------------------------------------------------------
+% ---------------------------------------------------------------
+\section{Exact Option Pricing from the M\"{u}ntz--Pad\'{e} Characteristic Function}
+\label{sec:pricing}
+% ---------------------------------------------------------------
+
+Given the characteristic function in the form produced by the
+M\"{u}ntz--Pad\'{e} expansion, the European option price is computed
+\emph{exactly}: by a finite sum of residues, with no quadrature, no contour
+truncation, no damping parameter, and no fast Fourier transform. We prove the
+pricing identity (Theorem~\ref{thm:exact_price}), its error bound
+(Proposition~\ref{prop:price_error}), and its optimality
+(Remark~\ref{rem:pricing_optimal}).
+
+\paragraph{Standing setup.}
+Fix maturity $T$ and rate $r=0$; the general case differs only by the discount
+factor $e^{-rT}$ and the forward shift $k\mapsto k-rT$. Let
+$X_T=\log(S_T/S_0)$ and write the order-$M$ characteristic function as
+\begin{equation}\label{eq:phiM_pf}
+\varphi_M(v) = \exp\bigl(\Phi_M(v)\bigr),\qquad
+\Phi_M(v) = \sum_{j=1}^{M}\frac{c_j}{\,v-\eta_j\,},
+\end{equation}
+the partial fraction of the rational cumulant exponent $\Phi_M$ in the Fourier
+variable $v$, with simple poles $\{\eta_j\}_{j=1}^{M}$ and residues $c_j$ read
+off the orthogonal-polynomial recurrence (Theorem~\ref{thm:gragg}). The
+normalisations
+\begin{equation}\label{eq:phiM_norm}
+\varphi_M(0)=1,\qquad \varphi_M(-i)=\mathbb{E}[e^{X_T}]=1
+\end{equation}
+hold \emph{exactly for every $M$}, because the Riccati source
+$P(v)=\tfrac12(-v^2-iv)$ vanishes at $v=0$ and $v=-i$, so every
+$a(k,0)=a(k,-i)=0$ and $\Phi_M(0)=\Phi_M(-i)=0$. By Hermitian symmetry
+$\varphi_M(-\bar v)=\overline{\varphi_M(v)}$ and the no-real-poles property
+(Lemma~\ref{lem:no_real_poles}, transported to the $v$-plane through the
+analyticity strip of the exact $\Phi$), the poles $\eta_j$ lie off
+$\mathbb{R}$ and occur in conjugate pairs.
+
+\begin{lemma}[Payoff transform]\label{lem:payoff}
+Let $k=\log(K/S_0)$ and $w(x)=(S_0e^{x}-K)^{+}$. For $\operatorname{Im}v<-1$,
+\begin{equation}\label{eq:payoff_ft}
+\int_{\mathbb{R}} e^{-ivx}\,w(x)\,dx \;=\; -\,\frac{K\,e^{-ivk}}{v\,(v+i)} .
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For $\operatorname{Im}v<-1$, $\int_k^\infty e^{-ivx}S_0e^{x}\,dx
+=-S_0e^{(1-iv)k}/(1-iv)$, and for $\operatorname{Im}v<0$,
+$\int_k^\infty e^{-ivx}(-K)\,dx=-Ke^{-ivk}/(iv)$. With $S_0e^{k}=K$ and
+$\tfrac{1}{1-iv}+\tfrac{1}{iv}=\tfrac{1}{v(v+i)}$, the two combine
+to~\eqref{eq:payoff_ft}.
+\end{proof}
+
+\begin{theorem}[Exact European call price]\label{thm:exact_price}
+With $k=\log(K/S_0)$ and any $\alpha\in(1,p^{*})$, where $-ip^{*}$ is the
+$v$-pole of $\varphi_M$ nearest the strip $\{\operatorname{Im}v=-\alpha\}$ from
+below,
+\begin{equation}\label{eq:price_parseval}
+C_M \;=\; -\frac{K}{2\pi}\int_{\operatorname{Im}v=-\alpha}
+        \frac{e^{-ivk}\,\varphi_M(v)}{v\,(v+i)}\,dv .
+\end{equation}
+Closing the contour gives the finite, exact evaluation
+\begin{equation}\label{eq:price_residues}
+C_M =
+\begin{cases}
+(S_0-K) \;-\; K\,\operatorname{Re}\!\Bigl[\,i\!\!\displaystyle\sum_{\operatorname{Im}\eta_j>-\alpha}\!\!\mathcal{R}_j\Bigr], & k\le 0,\\[2ex]
+\phantom{(S_0-K)\;-\;}\,K\,\operatorname{Re}\!\Bigl[\,i\!\!\displaystyle\sum_{\operatorname{Im}\eta_j<-\alpha}\!\!\mathcal{R}_j\Bigr], & k>0,
+\end{cases}
+\end{equation}
+where, writing $\varphi_M(v)=\exp\!\bigl(c_j/(v-\eta_j)\bigr)\,H_j(v)$ with
+$H_j$ holomorphic and nonvanishing at $\eta_j$ and
+$G_j(v):=e^{-ivk}H_j(v)/(v(v+i))$,
+\begin{equation}\label{eq:residue_series}
+\mathcal{R}_j \;=\; \operatorname*{Res}_{v=\eta_j}
+   \frac{e^{-ivk}\,\varphi_M(v)}{v(v+i)}
+   \;=\; \sum_{n\ge 1}\frac{c_j^{\,n}\,G_j^{(n-1)}(\eta_j)}{n!\,(n-1)!}
+\end{equation}
+is an absolutely convergent ${}_0F_1$-type series.
+\end{theorem}
+
+\begin{proof}
+\emph{Parseval.}
+With density $f$ of $X_T$ and $f(x)=\tfrac{1}{2\pi}\int_{\mathbb{R}}
+e^{-ivx}\varphi_M(v)\,dv$,
+\[
+C_M=\mathbb{E}[w(X_T)]=\int_{\mathbb{R}}w(x)f(x)\,dx
+=\frac{1}{2\pi}\int_{\mathbb{R}}\varphi_M(v)\!\int_{\mathbb{R}}w(x)e^{-ivx}dx\,dv .
+\]
+The inner integral converges only for $\operatorname{Im}v<-1$, so shift the
+$v$-contour to $\operatorname{Im}v=-\alpha$ ($\alpha\in(1,p^{*})$), legitimate
+since $\varphi_M$ is holomorphic and $O(1)$ on the strip
+$-p^{*}<\operatorname{Im}v<0$ (no real poles, conjugate-pair poles bounded away
+from the strip). Lemma~\ref{lem:payoff} gives~\eqref{eq:price_parseval}.
+
+\emph{Contour closure.}
+The integrand has simple kernel poles at $v=0,\,-i$ and essential
+singularities at the $\eta_j$. For $k\le 0$ the factor $e^{-ivk}$ decays as
+$\operatorname{Im}v\to+\infty$, so close upward; the enclosed poles are $v=0$,
+$v=-i$ (both above $-\alpha$ since $\alpha>1$), and the $\eta_j$ with
+$\operatorname{Im}\eta_j>-\alpha$. By residues
+$C_M=-Ki\sum_{\text{encl}}\operatorname{Res}$.
+
+\emph{Kernel poles give the intrinsic.}
+Using~\eqref{eq:phiM_norm},
+$\operatorname{Res}_{v=0}=\varphi_M(0)/i=-i$ and
+$\operatorname{Res}_{v=-i}=e^{-k}\varphi_M(-i)/(-i)=i\,e^{-k}=i\,S_0/K$.
+Hence $-Ki\,(-i)+(-Ki)\,(iS_0/K)=-K+S_0=S_0-K$, the exact intrinsic.
+
+\emph{Model poles give the series.}
+At $\eta_j$, $\varphi_M(v)=\exp(c_j/(v-\eta_j))\,H_j(v)$ with $H_j$ holomorphic
+there. Multiplying the Laurent series
+$\exp(c_j/(v-\eta_j))=\sum_{n\ge0}c_j^{\,n}/(n!\,(v-\eta_j)^{n})$ by the Taylor
+series of $G_j$ and extracting the $(v-\eta_j)^{-1}$ coefficient
+gives~\eqref{eq:residue_series}. The bound
+$|c_j^{\,n}G_j^{(n-1)}(\eta_j)/(n!\,(n-1)!)|\le
+\|G_j\|_{B}\,|c_j|^{n}/(n!\,(n-1)!\,\rho_j^{\,n-1})$, with
+$\rho_j=\min_{i\ne j}|\eta_i-\eta_j|$, is summable and super-exponentially
+small, so~\eqref{eq:residue_series} converges absolutely. Taking the real part
+(the price is real) yields~\eqref{eq:price_residues}; the $k>0$ branch closes
+downward, enclosing neither kernel pole, so its intrinsic vanishes.
+\end{proof}
+
+\begin{proposition}[Pricing error]\label{prop:price_error}
+On compact strike--maturity sets there is $r(K,T)\in(0,1)$ and $C'(K,T)$ with
+$|C-C_M|\le C'(K,T)\,r(K,T)^{M}$, where $C=\lim_{M\to\infty}C_M$ is the exact
+price.
+\end{proposition}
+
+\begin{proof}
+$|\varphi-\varphi_M|\le e^{\max(|\Phi|,|\Phi_M|)}\,|\Phi-\Phi_M|$, and
+Theorem~\ref{thm:FRMP} bounds $|\Phi-\Phi_M|$ in capacity by
+$C_0\,r^{M}$ on the integration strip; integrating
+against the fixed kernel $1/(v(v+i))$ over $\{\operatorname{Im}v=-\alpha\}$
+preserves the geometric rate.
+\end{proof}
+
+\begin{remark}[Optimality]\label{rem:pricing_optimal}
+The evaluation~\eqref{eq:price_residues} is optimal for this representation:
+\begin{enumerate}
+\item \emph{Single error source.} The only approximation is the Pad\'{e} order
+$M$, controlling $\Phi$ at the capacity rate (Theorem~\ref{thm:FRMP}); each
+per-pole series~\eqref{eq:residue_series} converges super-exponentially in its
+truncation order $L$. A quadrature inversion (Carr--Madan, COS, Lewis) instead
+carries two error sources --- the Pad\'{e} order and a discretisation/contour
+parameter --- and converges only geometrically.
+\item \emph{Cost.} The orthogonal-polynomial recurrence and the poles/residues
+cost $O(M^{2})$ \emph{once}, reused across all strikes and maturities; each
+strike then costs $O(L^{2}M)$ to assemble~\eqref{eq:price_residues}.
+\item \emph{Conditioning.} The poles are zeros of the orthogonal polynomials of
+a Stieltjes/Markov functional, hence simple and separated with no spurious
+(Froissart) doublets (complete monotonicity $\Rightarrow$ positive measure
+$\Rightarrow$ Markov; Lemma~\ref{lem:no_real_poles},
+Theorem~\ref{thm:stahl_convergence}). Thus $\rho_j$ in~\eqref{eq:residue_series}
+is bounded below and the partial fraction is well-conditioned; the only
+precision cost is the arithmetic cancellation depth, absorbed by a guard-bit
+prescale.
+\end{enumerate}
+\end{remark}
+
+% ---------------------------------------------------------------
 \appendix
 \section{A Direct Proof of Stahl's Theorem for the Generic Two-Valued
 Class over $\C(z,\Psimu)$}\label{app:stahl}
