@@ -64,16 +64,20 @@ For $n=1,\ldots,M$:
 p_{n+1} &= (T^\mu-\alpha_n)\,p_n-\beta_n\,p_{n-1}, \\
 p_{n+1}^{(1)} &= (T^\mu-\alpha_n)\,p_n^{(1)}-\beta_n\,p_{n-1}^{(1)}.
 \end{align}
-Then
+Let $A(v):=d_0(v)\cdot p_{M+1}^{(1)}$ and $B(v):=p_{M+1}(v)$
+(polynomials in $v$); then
 \begin{equation}
-\Phi_M(v,T) = T\cdot d_0(v)\cdot\frac{p_{M+1}^{(1)}}{p_{M+1}}.
+\Phi_M(v,T) = T\cdot\frac{A(v)}{B(v)}.
 \end{equation}
 
 \bigskip
-\noindent\textbf{Step 6.} Extract Laurent coefficients
-$b_k(T)=[v^{-(k+1)}]\,\Phi_M(v,T)$ for $k=0,\ldots,2M$,
-then repeat Steps 4--5 with moments $\{b_k(T)\}$ (variable $v$)
-to get poles $\{\eta_j\}$ and residues $\{c_j\}$:
+\noindent\textbf{Step 6.} Factor $B(v)=\prod_{j=1}^N(v-\eta_j)$
+to get the poles $\{\eta_j\}$, then compute residues by polynomial
+evaluation:
+\begin{equation}
+c_j = \frac{T\cdot A(\eta_j)}{B'(\eta_j)},\qquad j=1,\ldots,N,
+\end{equation}
+so that
 \begin{equation}
 \Phi_M(v,T)=\sum_{j=1}^N\frac{c_j}{v-\eta_j},\qquad N\le2M.
 \end{equation}
