@@ -113,6 +113,7 @@ public class Compiler
     typePrefixes.put(RealHypergeometricPolynomialFunction.class, "XℝF");
     typePrefixes.put(ComplexHypergeometricPolynomialFunction.class, "XℂF");
     typePrefixes.put(ComplexRationalHypergeometricFunction.class, "ℚℂF");
+    typePrefixes.put(arb.functions.complex.FoxHFunction.class, "ℂH");
     typePrefixes.put(ComplexFraction.class, "fℂ");
     typePrefixes.put(SphericalBesselFunction.class, "sph");
     typePrefixes.put(IntegerPolynomial.class, "Xℤ");

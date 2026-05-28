@@ -189,6 +189,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                              "binomial",
                                                                              "pFq",
                                                                              "pfq",
+                                                                             "FoxH",
+                                                                             "foxh",
                                                                              "Beta",
                                                                              "beta",
                                                                              "Γ",
@@ -5616,6 +5618,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     case "pFq":
     case "pfq":
       return new HypergeometricFunctionNode<>(this);
+    case "FoxH":
+    case "foxh":
+      return new FoxHFunctionNode<>(this);
     case "Beta":
     case "beta":
       return new BetaFunctionNode<>(this);
