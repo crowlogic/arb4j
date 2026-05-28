@@ -14,7 +14,7 @@ Mutual recursion is detected by **Tarjan's strongly-connected-components
 algorithm on the function reference graph**, with the SCC results cached in
 `Context.sccByName`. Self-recursion is the easy case (one vertex, one
 self-edge); mutual recursion is the harder case (two or more vertices
-forming a cycle through each other's bodies), and it's exactly what SCC
+forming a cycle through each other's definitions), and it's exactly what SCC
 analysis is built for.
 
 ### Step 1 — build the function reference graph
@@ -23,11 +23,12 @@ In [`Context.populateFunctionReferenceGraph()`](../src/main/java/arb/expressions
 for each function name in the context:
 
 1. Take its parsed expression's `getReferencedFunctions()` — the set of
-   other (or same) function names that *textually appear inside the body*
-   during parsing. This is collected by the parser as it walks the AST and
-   encounters `FunctionNode` references like `f(...)`, `g(x)`, etc.
-2. The set of names extracted from the body becomes the outgoing edges of
-   this vertex.
+   other (or same) function names that *textually appear inside the
+   function definition* during parsing. This is collected by the parser as
+   it walks the AST and encounters `FunctionNode` references like
+   `f(...)`, `g(x)`, etc.
+2. The set of names extracted from the definition becomes the outgoing
+   edges of this vertex.
 3. **Self-edges (a name referencing itself) are filtered out of the
    dependency graph** so that the later topological-sort step terminates —
    but the fact of self-reference is preserved in a separate
@@ -39,10 +40,11 @@ After this pass the graph is fully populated and `sccByName` is invalidated
 (set to null) so the next access recomputes the SCC partition.
 
 The crucial point is that this graph is **lexical**, not runtime. Whether
-`f` references `g` is determined entirely by parsing `f`'s body — no
-execution, no instantiation, no actual recursion needs to happen. By the
-time `Context` knows about both `f` and `g`, the graph already encodes the
-mutual reference if `f`'s body mentions `g` and `g`'s body mentions `f`.
+`f` references `g` is determined entirely by parsing the definition of
+`f` — no execution, no instantiation, no actual recursion needs to
+happen. By the time `Context` knows about both `f` and `g`, the graph
+already encodes the mutual reference if the definition of `f` mentions
+`g` and the definition of `g` mentions `f`.
 
 ### Step 2 — run Tarjan's SCC algorithm
 
@@ -97,8 +99,8 @@ as non-trivial SCCs even after the filter.
 - **Indirect cycles through curried sequences**: e.g. the `σ`/`α`/`h`
   cluster in `RiccatiMuntzPadeFunctional` where `σ(j).evaluate(k)` calls
   `α` which references `h` which references `σ`. As long as each lexical
-  body contains the other name as a function reference, Tarjan finds the
-  SCC.
+  definition contains the other name as a function reference, Tarjan
+  finds the SCC.
 
 **Misses (and would be wrong about) by design:**
 
@@ -109,9 +111,10 @@ as non-trivial SCCs even after the filter.
   the recursive-function compiler only generates `this.<name>.evaluate(...)`
   bytecode for cycles it can name at codegen time, so the runtime cycle
   is impossible by construction.
-- **Mutual recursion through an external Java method.** If `f`'s body
-  calls a hand-coded Java method `Util.foo()` which happens to call back
-  into `g` which references `f` — the call chain runs through native
+- **Mutual recursion through an external Java method.** If the
+  definition of `f` calls a hand-coded Java method `Util.foo()` which
+  happens to call back into `g` which references `f` — the call chain
+  runs through native
   Java, not through the function reference graph, so Tarjan sees no
   cycle. This is the right behavior: if you escape to Java, you're
   outside the architecture's invariants and the codegen has nothing to
