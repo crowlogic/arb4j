@@ -71,16 +71,26 @@ public class FoxHFunctionTest extends
                                                 "MittagLeffler(0.6, z)",
                                                 new Context());
 
-    // For Mittag-Leffler reduction the FoxH argument is -z. With a* = 2-0.6
-    // = 1.4, the principal-sector half-width is 0.7π ≈ 2.199. To stay
-    // strictly inside, |arg(-z)| < 0.7π, equivalently |π - arg(z)| < 0.7π
-    // (for z in the upper half plane), i.e. arg(z) > 0.3π ≈ 0.94 rad.
-    // Picking z = r·e^{i·0.6π} for small r satisfies this with margin.
-    double[] radii = { 0.05, 0.15, 0.3 };
-    double   theta = 0.6 * Math.PI;
-    for (double r : radii)
+    // μ = B_1 + B_2 - A_1 = 1 + 0.6 - 1 = 0.6 > 0, so per Mathai-Saxena-
+    // Haubold the LHP residue series is the analytic continuation across the
+    // entire principal sheet |arg z| < π.  Test points span the inside-the-
+    // basic-sector regime AND the analytic-continuation regime |arg z| > a*π/2.
+    // For Mittag-Leffler the Fox H argument is -z, so |arg(-z)| = |π - arg z|;
+    // tests cover z values from purely imaginary (Fox H arg on negative
+    // imaginary axis) through near-real-positive (Fox H arg near negative
+    // real axis, deep in the continuation regime).
+    double[][] zPoints = {
+      { 0.05 * Math.cos(0.6 * Math.PI), 0.05 * Math.sin(0.6 * Math.PI) },  // inside basic sector
+      { 0.15 * Math.cos(0.6 * Math.PI), 0.15 * Math.sin(0.6 * Math.PI) },
+      { 0.3  * Math.cos(0.6 * Math.PI), 0.3  * Math.sin(0.6 * Math.PI) },
+      { 0.0, 0.2 },     // pure imaginary: |arg(-z)| = π/2, INSIDE basic sector
+      { 0.0, 0.5 },
+      { 0.1, 0.05 },    // |arg(-z)| ≈ 2.68, ABOVE a*π/2 = 2.20 — continuation regime
+      { 0.3, 0.01 },    // |arg(-z)| ≈ 3.11, very deep in continuation regime
+    };
+    for (double[] pt : zPoints)
     {
-      zVal.set(r * Math.cos(theta), r * Math.sin(theta));
+      zVal.set(pt[0], pt[1]);
       H.evaluate(zVal, 1, prec, result);
       E.evaluate(zVal, 1, prec, ref);
 

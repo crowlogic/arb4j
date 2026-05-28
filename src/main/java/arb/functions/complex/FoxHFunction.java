@@ -96,8 +96,21 @@ public class FoxHFunction implements
   public int                                                  m, n, p, q;
 
   // ───── Cached at construction ────────────────────────────────────────
-  /** Erdélyi–Braaksma exponent a* (must be {@literal >} 0). */
+  /**
+   * Erdélyi–Braaksma sector parameter
+   *   a* = Σ_{i=1..n} A_i − Σ_{i=n+1..p} A_i + Σ_{j=1..m} B_j − Σ_{j=m+1..q} B_j.
+   * Required > 0 for vertical-contour convergence.  The principal sector is
+   *   |arg z| < a* · π / 2.
+   */
   public Real                                                 aStar;
+  /**
+   * Convergence parameter
+   *   μ = Σ_{j=1..q} B_j − Σ_{i=1..p} A_i.
+   *   μ > 0 : LHP series converges for all |z| in the principal sector;
+   *   μ < 0 : RHP series converges for all |z| in the principal sector;
+   *   μ = 0 : split by |z| vs β.
+   */
+  public Real                                                 mu;
   /** Principal sector half-width: π · a* / 2. */
   public Real                                                 sectorWidth;
 
@@ -174,22 +187,25 @@ public class FoxHFunction implements
   private void computeAStarAndSector()
   {
     aStar       = new Real();
+    mu          = new Real();
     sectorWidth = new Real();
     int prec = 128;
     aStar.zero();
-    try ( Real acc = new Real() )
-    {
-      // Σ_{i=1..n} A_i  −  Σ_{i=n+1..p} A_i
-      for (int i = 0; i < n; i++)
-        aStar.add(A.get(i), prec, aStar);
-      for (int i = n; i < p; i++)
-        aStar.sub(A.get(i), prec, aStar);
-      // + Σ_{j=1..m} B_j  −  Σ_{j=m+1..q} B_j
-      for (int j = 0; j < m; j++)
-        aStar.add(B.get(j), prec, aStar);
-      for (int j = m; j < q; j++)
-        aStar.sub(B.get(j), prec, aStar);
-    }
+    mu.zero();
+    // a* = Σ_{i=1..n} A_i − Σ_{i=n+1..p} A_i + Σ_{j=1..m} B_j − Σ_{j=m+1..q} B_j
+    for (int i = 0; i < n; i++)
+      aStar.add(A.get(i), prec, aStar);
+    for (int i = n; i < p; i++)
+      aStar.sub(A.get(i), prec, aStar);
+    for (int j = 0; j < m; j++)
+      aStar.add(B.get(j), prec, aStar);
+    for (int j = m; j < q; j++)
+      aStar.sub(B.get(j), prec, aStar);
+    // μ = Σ_{j=1..q} B_j − Σ_{i=1..p} A_i
+    for (int j = 0; j < q; j++)
+      mu.add(B.get(j), prec, mu);
+    for (int i = 0; i < p; i++)
+      mu.sub(A.get(i), prec, mu);
     // sectorWidth = π · a* / 2
     arb.RealConstants.π.mul(aStar, prec, sectorWidth);
     sectorWidth.div(2, prec, sectorWidth);
@@ -320,11 +336,19 @@ public class FoxHFunction implements
 
   private void requireInPrincipalSector(Complex z, int prec)
   {
-    try ( Real arg = new Real(); Real absArg = new Real() )
+    try ( Real arg = new Real(); Real absArg = new Real(); Real bound = new Real() )
     {
       z.arg(prec, arg);
       arg.abs(prec, absArg);
-      if (absArg.compareTo(sectorWidth) >= 0)
+      // For μ > 0 the LHP series gives the analytic continuation on the entire
+      // principal sheet |arg z| < π (Mathai-Saxena-Haubold).  For μ ≤ 0 the
+      // basic absolute-convergence sector π·a*/2 applies until the dual RHP
+      // series and the μ = 0 boundary-radius case are implemented.
+      if (mu.sign() > 0)
+        bound.set(arb.RealConstants.π);
+      else
+        bound.set(sectorWidth);
+      if (absArg.compareTo(bound) >= 0)
         throw new ArbException("|arg z| = " + absArg
                                + " is not strictly less than the principal sector half-width π·a*/2 = "
                                + sectorWidth + "; the Slater residue series is outside its domain of validity");
@@ -350,6 +374,7 @@ public class FoxHFunction implements
     b = Utensils.close(b);
     B = Utensils.close(B);
     aStar       = Utensils.close(aStar);
+    mu          = Utensils.close(mu);
     sectorWidth = Utensils.close(sectorWidth);
     N = Utensils.close(N);
   }
