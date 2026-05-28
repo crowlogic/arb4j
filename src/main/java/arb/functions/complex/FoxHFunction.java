@@ -107,12 +107,10 @@ public class FoxHFunction implements
    * construction. Its bytecode reads (j, ν, z) at runtime and the bound
    * fields (a, A, b, B, m, n, p, q) by reflection.
    */
-  public Expression<Object, Complex, ComplexNullaryFunction>  T;
-  public ComplexNullaryFunction                               termFn;
+  public ComplexFunction                                      H;
 
   // ───── Expression-compiler context ────────────────────────────────────
   public Context                                              context;
-  public Complex                                              zVar;        // argument staging slot
   public Integer                                              N;           // truncation level for the residue sum (default 64)
 
   public FoxHFunction()
@@ -211,50 +209,41 @@ public class FoxHFunction implements
     context.registerVariable("q", new Integer(q, "q"));
     context.registerVariable("m", new Integer(m, "m"));
     context.registerVariable("n", new Integer(n, "n"));
-    N    = new Integer(64); N.setName("N");      context.registerVariable("N", N);
-    zVar = new Complex();   zVar.setName("z");   context.registerVariable("z", zVar);
+    N = new Integer(64); N.setName("N"); context.registerVariable("N", N);
+    // z is NOT registered — it is the independent variable of the resulting
+    // ComplexFunction, introduced by H:z→… in the express call.
   }
 
   /**
-   * Compile the residue term as one expression, with the auxiliary pole
-   * location u(j,ν) = (b_j + ν)/B_j defined as its own named function in
-   * the {@link Context} and referenced by name in the main term body.
+   * Compile the residue series as a {@link ComplexFunction} of z.
+   *
+   * <p>Defines the curried pole-location auxiliary
+   *   {@code u:j→ν→(b[j]+ν)/B[j]}
+   * as a {@link arb.functions.integer.ComplexSequenceSequence} in the
+   * context, then compiles the main residue-sum body.</p>
    */
   private void compileTerm()
   {
-    // Define the pole-location auxiliary u : (j, ν) ↦ (b_j + ν) / B_j
-    // as a two-argument complex function in the context.  The main term
-    // body then writes u(j, ν) at each Gamma argument position.
-    // The pole location u(j, ν) = (b[j] + ν) / B[j] is the only j-and-ν
-    // dependent quantity appearing inside every Γ.  Define it once as an
-    // auxiliary in the context; the residue body then references u(j)(ν)
-    // wherever it needs the pole.  Vector entries are addressed with the
-    // [k] subscript form (same convention as HypergeometricFunction's
-    // α[k], β[k] in pFq).
-    // Type: ComplexSequenceSequence — a sequence (index j) of complex-valued
-    // sequences (index ν). Both indices are Integer; the value is Complex.
-    // Wrong type would be ComplexFunctionSequence which has ν: Complex.
+    // Curried pole-location auxiliary u(j)(ν) = (b[j]+ν)/B[j].  Sequence of
+    // sequences over the two integer indices j and ν; codomain Complex.
     arb.functions.integer.ComplexSequenceSequence.express("u",
                                                           "u:j→ν→(b[j]+ν)/B[j]",
                                                           context);
 
-    // Wrap the per-(j,ν) residue in the double sum ∑_{j=1..m} ∑_{ν=0..N}.
-    String body = "Σj→Σν→"
-                + "(-1)^ν/(ν!·B[j])"
-                + "·z^u(j)(ν)"
-                + "·∏l→Γ(b[l]-B[l]·u(j)(ν)){l=1…j-1}"
-                + "·∏l→Γ(b[l]-B[l]·u(j)(ν)){l=j+1…m}"
-                + "·∏i→Γ(1-a[i]+A[i]·u(j)(ν)){i=1…n}"
-                + "/(∏l→Γ(1-b[l]+B[l]·u(j)(ν)){l=m+1…q}"
-                + " ·∏i→Γ(a[i]-A[i]·u(j)(ν)){i=n+1…p})"
-                + "{ν=0…N}{j=1…m}";
-
-    T = NullaryFunction.parse(Complex.class,
-                              ComplexNullaryFunction.class,
-                              "T",
-                              body,
-                              context);
-    termFn = T.instantiate();
+    // Residue series H(z) as a ComplexFunction of z.  The outer Σj➜Σν➜…
+    // double sum, with l≠j encoded by splitting the inner product into
+    // l=1…j-1 and l=j+1…m.
+    H = ComplexFunction.express("H",
+        "H:z→Σj→Σν→"
+      + "(-1)^ν/(ν!·B[j])"
+      + "·z^u(j)(ν)"
+      + "·∏l→Γ(b[l]-B[l]·u(j)(ν)){l=1…j-1}"
+      + "·∏l→Γ(b[l]-B[l]·u(j)(ν)){l=j+1…m}"
+      + "·∏i→Γ(1-a[i]+A[i]·u(j)(ν)){i=1…n}"
+      + "/(∏l→Γ(1-b[l]+B[l]·u(j)(ν)){l=m+1…q}"
+      + " ·∏i→Γ(a[i]-A[i]·u(j)(ν)){i=n+1…p})"
+      + "{ν=0…N}{j=1…m}",
+      context);
   }
 
   // ───── Evaluation ─────────────────────────────────────────────────────
@@ -267,10 +256,9 @@ public class FoxHFunction implements
   public Complex evaluate(Complex z, int order, int prec, Complex out)
   {
     requireInPrincipalSector(z, prec);
-    zVar.set(z);
-    // The compiled residue-term expression already includes the
-    // Σj➜Σν➜…{ν=0…N}{j=1…m} summation; one call sums all (j, ν) pairs.
-    return termFn.evaluate(null, order, prec, out);
+    // The compiled residue series is a ComplexFunction of z that already
+    // sums over Σj➜Σν➜…{ν=0…N}{j=1…m}; one call evaluates the whole H.
+    return H.evaluate(z, order, prec, out);
     // TODO: widen `out` by a proven Stirling-majorant tail bound on the
     //       ∑_{ν>N} residue tail.
   }
@@ -308,7 +296,6 @@ public class FoxHFunction implements
     B = Utensils.close(B);
     aStar       = Utensils.close(aStar);
     sectorWidth = Utensils.close(sectorWidth);
-    zVar = Utensils.close(zVar);
-    N    = Utensils.close(N);
+    N = Utensils.close(N);
   }
 }
