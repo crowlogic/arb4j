@@ -209,7 +209,7 @@ public class FoxHFunction implements
     context.registerVariable("q", new Integer(q, "q"));
     context.registerVariable("m", new Integer(m, "m"));
     context.registerVariable("n", new Integer(n, "n"));
-    N = new Integer(64); N.setName("N"); context.registerVariable("N", N);
+    N = new Integer(16); N.setName("N"); context.registerVariable("N", N);
     // z is NOT registered — it is the independent variable of the resulting
     // ComplexFunction, introduced by H:z→… in the express call.
   }
@@ -236,7 +236,7 @@ public class FoxHFunction implements
     H = ComplexFunction.express("H",
         "H:z→Σj→Σν→"
       + "(-1)^ν/(ν!·B[j])"
-      + "·z^u(j)(ν)"
+      + "·z^(u(j)(ν))"
       + "·∏l→Γ(b[l]-B[l]·u(j)(ν)){l=1…j-1}"
       + "·∏l→Γ(b[l]-B[l]·u(j)(ν)){l=j+1…m}"
       + "·∏i→Γ(1-a[i]+A[i]·u(j)(ν)){i=1…n}"

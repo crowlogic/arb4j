@@ -366,7 +366,18 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public boolean dependsOn(VariableNode<D, R, F> variable)
   {
-    return equals(variable);
+    // A VariableNode for `b[j]` carries the index `j` inside reference.index
+    // rather than as a separate IndexAccessNode child; without checking the
+    // index here, dependsOn(j) wrongly returns false for `b[j]`.
+    if (equals(variable))
+    {
+      return true;
+    }
+    if (reference != null && reference.index != null && reference.index.dependsOn(variable))
+    {
+      return true;
+    }
+    return false;
   }
 
   @Override
