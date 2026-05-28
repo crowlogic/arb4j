@@ -409,6 +409,44 @@ followed by~\eqref{eq:Hint_const} adds one in $n$. The increment
 gives $(|S|+1,|S|+1,|S|+2,2|S|+2)$.
 \end{proof}
 
+The explicit parameter tuples assembled by Proof~I, recorded for
+implementation, are
+\begin{equation}\label{eq:foxH_price_tuples}
+\boxed{\;
+\begin{aligned}
+\mathbf{a}_S &= (\underbrace{0,\ldots,0}_{|S|+1},\;1), &
+\boldsymbol{\alpha}_S &= (\underbrace{1,\ldots,1}_{|S|+2}),\\[4pt]
+\mathbf{b}_S &= (0,\;\underbrace{0,\ldots,0}_{|S|},\;\underbrace{-1,\ldots,-1}_{|S|},\;1), &
+\boldsymbol{\beta}_S &= (\tfrac{1}{2},\;\underbrace{1,\ldots,1}_{2|S|},\;1),
+\end{aligned}\;}
+\end{equation}
+of lengths $p_S = |S|+2$ and $q_S = 2|S|+2$. The first $n_S = |S|+1$
+entries of $\mathbf{a}_S$ form the upper-numerator block; the first
+$m_S = |S|+1$ entries of $\mathbf{b}_S$ form the lower-numerator
+block. The Gaussian envelope contributes
+$(b,\beta) = (0,\tfrac{1}{2})$ at the head of $\mathbf{b}_S$; the
+density contributes $(0,1)^{\times|S|}$ in $(\mathbf{a}_S^{\text{num}},
+\boldsymbol{\alpha}_S^{\text{num}})$ and $(0,1)^{\times|S|}$ together
+with $(-1,1)^{\times|S|}$ in $(\mathbf{b}_S, \boldsymbol{\beta}_S)$;
+the Mellin shift contributes one further $(0,1)$ to $(\mathbf{a}_S,
+\boldsymbol{\alpha}_S)$ (in the upper-numerator block); the payoff
+integration~\eqref{eq:Hint_const} contributes $(1,1)$ to
+$(\mathbf{a}_S, \boldsymbol{\alpha}_S)$ (in the upper-denominator
+block, as $a_{p_S} = 1$) and $(1,1)$ to $(\mathbf{b}_S,
+\boldsymbol{\beta}_S)$ (in the lower-denominator block, as
+$b_{q_S} = 1$).
+
+Sanity check at $|S| = 0$: dimensions $(1,1,2,2)$, tuples
+$\mathbf{a}_\emptyset = (0,1)$, $\boldsymbol{\alpha}_\emptyset = (1,1)$,
+$\mathbf{b}_\emptyset = (0,1)$, $\boldsymbol{\beta}_\emptyset =
+(\tfrac{1}{2}, 1)$, kernel
+$\Gamma(s)\,\Gamma(1-s) / [\Gamma(\tfrac{3}{2} - s)\,\Gamma(1+s)]
+= \Gamma(1-s) / [s\,\Gamma(\tfrac{3}{2}-s)]$, the Mellin transform of
+the Bachelier Gaussian call piece with $c_\emptyset(T) =
+(2\pi\sigma_T^2)^{-1/2}$ and $\zeta_\emptyset(K,T) =
+(K/S_0)e^{-rT-\mu_T}/\sqrt{2\sigma_T^2}$.
+
+
 \begin{proof}[Proof II: direct Mellin--Barnes inversion]
 Assume~\eqref{eq:strip_hypothesis} for some $c\in\R$
 (Proposition~\ref{prop:strip}). The Lewis representation
