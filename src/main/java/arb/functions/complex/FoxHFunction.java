@@ -252,15 +252,70 @@ public class FoxHFunction implements
    * H(z). The arb ball returned has its radius enlarged by a proven upper
    * bound on the truncation tail of the Slater series.
    */
+  /** Largest residue-series order ever needed before bailing out. */
+  private static final int CONVERGENCE_CEILING = 256;
+
+  /** Initial order for the residue series; doubled each iteration on no convergence. */
+  private static final int SEED_ORDER = 8;
+
   @Override
   public Complex evaluate(Complex z, int order, int prec, Complex out)
   {
     requireInPrincipalSector(z, prec);
-    // The compiled residue series is a ComplexFunction of z that already
-    // sums over Σj➜Σν➜…{ν=0…N}{j=1…m}; one call evaluates the whole H.
-    return H.evaluate(z, order, prec, out);
-    // TODO: widen `out` by a proven Stirling-majorant tail bound on the
-    //       ∑_{ν>N} residue tail.
+
+    // Adaptive residue-series accumulation, modeled directly on
+    // RoughHestonOptionPricer.call.  The compiled H expression has its inner
+    // sum upper bound bound to the context-registered Integer N; growing N
+    // simply re-evaluates with more residue terms.  Both the per-(j,ν)
+    // residue term and the auxiliary u(j)(ν) are N-independent, so this is
+    // pure accumulation with no cache invalidation.
+    try ( Complex curr      = new Complex();
+          Complex prev      = new Complex();
+          Complex diff      = new Complex();
+          Real    diffMag   = new Real();
+          Real    threshold = new Real();
+          Complex best      = new Complex();
+          Real    bestMag   = new Real() )
+    {
+      threshold.one().mul2e(-prec / 2, threshold);
+      bestMag.posInf();
+      prev.zero();
+
+      boolean firstIter = true;
+      for (int Nnow = SEED_ORDER; Nnow <= CONVERGENCE_CEILING; Nnow *= 2)
+      {
+        N.set(Nnow);
+        H.evaluate(z, order, prec, curr);
+
+        if (!curr.isFinite())
+          break;
+
+        if (firstIter)
+        {
+          best.set(curr);
+          prev.set(curr);
+          firstIter = false;
+          continue;
+        }
+
+        curr.sub(prev, prec, diff);
+        diff.abs(prec, diffMag);
+
+        if (diffMag.compareTo(bestMag) < 0)
+        {
+          best.set(curr);
+          bestMag.set(diffMag);
+        }
+
+        if (diffMag.compareTo(threshold) <= 0)
+          break;
+
+        prev.set(curr);
+      }
+
+      out.set(best);
+    }
+    return out;
   }
 
   private void requireInPrincipalSector(Complex z, int prec)
