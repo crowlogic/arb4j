@@ -118,6 +118,41 @@ Maven does not clean these between runs. Aggregating `Tests run:` lines from `bu
 
 **Only ever trust the live `mvn test` console output for the current run.** If a previous output was lost, re-run `mvn test` — do not read the report directory.
 
+### NEVER propose, suggest, or implement "fallback" paths
+
+A fallback is an admission that the primary method silently doesn't work in
+some regime, paired with a hidden hand-off to a different method whose answer
+may disagree with the first. That is transparent degradation — the user gets
+a number with no indication that the algorithm changed under them, no
+guarantee that the two methods agree on the boundary, and no way to reason
+about which branch produced any given result. It is the opposite of what an
+arbitrary-precision verified-arithmetic library exists to provide.
+
+The following are all forbidden:
+
+- Proposing "method A, with method B as a fallback when A converges slowly" ❌
+- A sibling `evaluateXxx` whose only purpose is "if the main path fails, try this" ❌
+- A `try { primary(); } catch { secondary(); }` shape over numerical evaluators ❌
+- Heuristic dispatch on `|z|` or convergence speed that picks between two
+  algorithms that produce numerically distinct (even if mathematically equal)
+  answers ❌
+- Any sentence in design notes, code comments, commit messages, or PR
+  descriptions that contains the word "fallback" ❌
+
+The correct stance for every function is: **pick one algorithm, prove it
+correct on its full claimed domain, deliver a verified ball whose radius
+actually encloses the truth, and refuse the inputs that are outside that
+domain with an explicit exception.** If two algorithms are genuinely
+appropriate for disjoint parameter regions (e.g. Slater series at z=0 vs.
+z=∞), they are not fallbacks for each other — they are *the same algorithm*
+expressed in two charts of the same analytic continuation, and the dispatch
+between them is part of the algorithm's specification, not a degradation
+path.
+
+If a regime exists where no in-class method gives a verified answer, the
+class must throw on those inputs. It must not silently return a less-accurate
+result from a different method.
+
 ### NEVER use Java arrays of `Real` / `Complex` / `Integer` / `Float` / `Magnitude`
 
 `Real`, `Complex`, `Integer`, `Float`, `Magnitude`, and the other top-level
