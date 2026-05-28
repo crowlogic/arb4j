@@ -118,6 +118,41 @@ Maven does not clean these between runs. Aggregating `Tests run:` lines from `bu
 
 **Only ever trust the live `mvn test` console output for the current run.** If a previous output was lost, re-run `mvn test` — do not read the report directory.
 
+### NEVER use Java arrays of `Real` / `Complex` / `Integer` / `Float` / `Magnitude`
+
+`Real`, `Complex`, `Integer`, `Float`, `Magnitude`, and the other top-level
+`arb.*` ball-arithmetic types are **scalar-or-vector by themselves**. Each is a
+single handle to an arblib struct that holds an array of `dim` ball elements
+internally (the `elements` field, with `dim == 1` by default for a scalar).
+They are constructed as scalars with `new Real()` / `new Complex()` and as
+vectors with `Real.newVector(n)` / `Complex.newVector(n)`. Indexed access is
+`x.get(i)`. The dimension is read with `x.dim()`.
+
+The following are all **wrong** and must never appear in arb4j code:
+
+- `Real[] a;`           ❌
+- `Complex[] α;`        ❌
+- `Integer[] N;`        ❌
+- `Magnitude[] r;`      ❌
+- `new Real[n]`         ❌
+- `Complex[] elements`  ❌  (as a public field of a new class — `Complex.elements` is internal)
+- `Real[].class`        ❌  in any reflective lookup
+
+The correct shapes are:
+
+- `Complex α = Complex.newVector(p);   α.set(...);   α.get(i);`  ✓
+- `Real    A = Real.newVector(p);      A.set(...);   A.get(i);`  ✓
+- `Complex z = new Complex();   z.re().set(...);   z.im().set(...);`  ✓  (scalar)
+
+This matches `HypergeometricFunction`, `Real`, `Complex`, `ComplexMatrix`, and
+every other type in the codebase. A `Real[]` is a Java array of arblib handles
+— it doubles the allocation, breaks the single-handle ownership model that
+`AutoCloseable.close()` relies on, defeats the SWIG layout the bytecode emitter
+assumes, and indicates the author has not understood that `Real` is the vector.
+
+If you find yourself reaching for `Real[]`, stop. The dimensions of every
+parameter vector belong inside one `Real`/`Complex` handle, period.
+
 ### NEVER write Unicode escape sequences — always use the actual character
 
 Never write `\uXXXX` in Java source, SWIG `.i` files, expression strings, or
