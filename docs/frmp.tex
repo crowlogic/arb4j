@@ -41,17 +41,14 @@ orthogonal polynomial of degree $M$ under the Hankel moment
 functional, produced directly from the M\"untz moments by the
 Chebyshev algorithm in arbitrary-precision arithmetic, equivalent
 to solving the Hankel system but without matrix formation or
-inversion. Second (Theorems~\ref{thm:foxH_density},
-\ref{thm:foxH_price}), both the density of the log-return and the
-European call price admit strictly closed-form representations as
-finite sums of Fox $H$-functions in the partial-fraction data of
-the rational characteristic exponent $\Phi_M$, evaluable in
-$O(M\log^2 M)$ operations per strike at fixed maturity, with the
-front-end Chebyshev construction at $O(M^2)$ per parameter
-evaluation and the partial-fraction expansion at $O(M^2)$ per
-maturity. The price formula is derived by two analytically
-independent routes (convolution chain and Mellin--Barnes
-inversion) converging on identical parameter data. The Pad\'{e}
+inversion. Second (Theorem~\ref{thm:foxH_price}), the European call
+price admits a strictly closed-form representation as a series of
+Fox $H$-functions in the partial-fraction data of the rational
+characteristic exponent $\Phi_M$, derived by Lewis-contour
+Mellin--Barnes inversion combined with Heaviside partial-fraction
+expansion at the payoff pole and the PFE poles, and the
+Fox $H$ representation of the complementary error function and its
+derivatives. The Pad\'{e}
 characteristic function has Gaussian real-axis decay, sharper
 than the stretched-exponential decay of the exact rough Heston
 cf. Third (Theorem~\ref{thm:price}), the same prices may
@@ -328,7 +325,7 @@ formula~\eqref{eq:foxH_price} is a contour-invariant analytic
 identity.
 \end{remark}
 
-\section{Closed-form density via Fox $H$}\label{sec:foxH_density}
+\section{Closed-form European call price via Fox $H$}\label{sec:foxH_price}
 
 \begin{definition}[Fox $H$-function]\label{def:foxH}
 For nonnegative integers $m,n,p,q$ with $0\le n\le p$, $0\le m\le q$,
@@ -337,352 +334,281 @@ H^{m,n}_{p,q}\!\left[z\,\bigg|\,\begin{array}{c}(a_i,\alpha_i)_1^p\\(b_j,\beta_j
 \end{equation}
 \end{definition}
 
-\begin{theorem}[Closed-form density]\label{thm:foxH_density}
-With PFE
+\subsection{Setup}
+
+The PFE of the Pad\'{e}-accelerated rough-Heston log-cf is
 \begin{equation}\label{eq:PFE}
-\Phi_M(u,T)=-\tfrac12\sigma_T^2u^2-i\mu_Tu+\sum_{j=1}^{2M}\frac{A_j(T)}{u-u_j(T)},
+\Phi_M(u,T) \;=\; -\tfrac12\sigma_T^2u^2 - i\mu_T u + \sum_{j=1}^{2M}\frac{A_j(T)}{u - u_j(T)},
+\qquad \phi_M(u,T) := \exp\Phi_M(u,T),
 \end{equation}
-$\sigma_T^2>0$, $\mu_T\in\R$, $u_j\notin\R$,
-$\epsilon_j:=-\sgn(\Imag u_j(T))$,
-$f_M(x,T):=\Fc^{-1}[\phi_M(\cdot,T)](x)$ admits
-\begin{equation}\label{eq:foxH_density}
-f_M(x,T)=\sum_{S\in\Pc(\{1,\ldots,2M\})}d_S(T)\,H^{m_S^\circ,n_S^\circ}_{p_S^\circ,q_S^\circ}\!\left[\eta_S(x,T)\,\bigg|\,\begin{array}{c}(\mathbf{a}_S^\circ,\boldsymbol{\alpha}_S^\circ)\\(\mathbf{b}_S^\circ,\boldsymbol{\beta}_S^\circ)\end{array}\right]
-\end{equation}
-with $(m_S^\circ,n_S^\circ,p_S^\circ,q_S^\circ)=(|S|+1,|S|,|S|+1,2|S|+1)$,
-\begin{equation}\label{eq:density_prefactors}
-d_S(T)=\frac{1}{\sqrt{2\pi\sigma_T^2}}\prod_{j\in S}\epsilon_j\sqrt{A_j(T)/i},
-\end{equation}
-\begin{equation}\label{eq:density_argument}
-\eta_S(x,T)=\frac{(x-\mu_T)\,\mathbf{1}_{\bigwedge_{j\in S}\epsilon_j(x-\mu_T)>0}}{\sqrt{2\sigma_T^2}}\prod_{j\in S}(iA_j(T))\cdot\exp\!\left(-i\sum_{j\in S}u_j(T)(x-\mu_T)\right),
-\end{equation}
-\begin{equation}\label{eq:density_params}
-\begin{aligned}
-\mathbf{a}_S^\circ &= (0,\ldots,0)_{|S|},
-&\boldsymbol{\alpha}_S^\circ &= (1,\ldots,1)_{|S|},\\
-\mathbf{b}_S^\circ &= (0_{\text{Gauss}},(0)_{|S|},(-1)_{|S|}),
-&\boldsymbol{\beta}_S^\circ &= (\tfrac12,(1)_{|S|},(1)_{|S|}).
-\end{aligned}
-\end{equation}
-All entries are constant in $j\in S$. The $j$-dependent data
-enters only through $d_S(T)$ and $\eta_S(x,T)$, both symmetric
-in $S$.
-\end{theorem}
-
-\begin{corollary}[Newton--Girard symmetric collapse]\label{cor:density_symmetric}
-The level-$r$ consolidations
-\begin{equation}\label{eq:NG_amplitude}
-\sum_{|S|=r}\prod_{j\in S}(iA_j(T))=i^r\,e_r\bigl(A_1(T),\ldots,A_{2M}(T)\bigr),
-\end{equation}
-\begin{equation}\label{eq:NG_phase}
-\sum_{|S|=r}\exp\!\Bigl(-i\sum_{j\in S}u_j(T)\xi\Bigr)=e_r\bigl(e^{-iu_1(T)\xi},\ldots,e^{-iu_{2M}(T)\xi}\bigr),
-\end{equation}
-reduce the $2^{2M}$-subset sum to $2M+1$ symmetric groups
-computable in $O(M\log^2M)$ via FFT polynomial multiplication of
-$\prod_j(1+tx_j)$.
-\end{corollary}
-
-\section{Closed-form European call price via Fox $H$}\label{sec:foxH_price}
+$\sigma_T^2>0$, $\mu_T\in\R$, $u_j(T)\notin\R$. With $\tilde k:=\log(K/S_0)-rT$,
+$\tilde u_j(T):=-iu_j(T)$, and $\xi:=\tilde k-\mu_T$, the European call admits
+the Schwinger--erfc closed form below.
 
 \begin{theorem}[Closed-form European call price]\label{thm:foxH_price}
-With $\tilde k:=\log(K/S_0)-rT$, the European call price is the
-difference of two Fox-$H$ subset sums,
+Under the strip hypothesis (Proposition~\ref{prop:strip}) the European call
+on $S_T=S_0 e^{x_T+rT}$ with log-return $x_T$ characterised by $\phi_M$ satisfies
 \begin{equation}\label{eq:foxH_price}
-C_M(K,T)\;=\;S_0\,\mathcal{E}_S(\tilde k)\;-\;K e^{-rT}\,\mathcal{E}_K(\tilde k),
+\boxed{\;
+C_M(K,T) \;=\; S_0\, e^{-rT} \sum_{\mathbf n \in \Z_{\ge 0}^{2M}}
+\Bigl(\prod_{j=1}^{2M}\frac{(iA_j(T))^{n_j}}{n_j!}\Bigr)
+\bigl[\Psi^{(1)}_{\mathbf n}(K,T) - \Psi^{(0)}_{\mathbf n}(K,T)\bigr]
+\;}
 \end{equation}
-where, with the density data
-$(m_S^\circ,n_S^\circ,p_S^\circ,q_S^\circ)=(|S|+1,|S|,|S|+1,2|S|+1)$
-and $(\mathbf{a}_S^\circ,\boldsymbol\alpha_S^\circ),(\mathbf{b}_S^\circ,\boldsymbol\beta_S^\circ)$
-from Theorem~\ref{thm:foxH_density},
+where, with $S(\mathbf n):=\{j:n_j\ge 1\}$ and the Heaviside coefficients
 \begin{align}
-\mathcal{E}_K(\tilde k)&=\sum_{S\in\Pc(\{1,\ldots,2M\})}d_S(T)\,(\zeta_S^\circ)^{-1}\,
-H^{m_S^K,n_S^K}_{p_S^K,q_S^K}\!\left[\eta_S(\tilde k,T)\,\bigg|\,
-\begin{array}{c}(\mathbf{a}_S^K,\boldsymbol\alpha_S^K)\\(\mathbf{b}_S^K,\boldsymbol\beta_S^K)\end{array}\right],\label{eq:EK_def}\\
-\mathcal{E}_S(\tilde k)&=\sum_{S\in\Pc(\{1,\ldots,2M\})}d_S(T)\,(\zeta_S^\circ)^{-1}\,
-H^{m_S^S,n_S^S}_{p_S^S,q_S^S}\!\left[\eta_S(\tilde k,T)\,\bigg|\,
-\begin{array}{c}(\mathbf{a}_S^S,\boldsymbol\alpha_S^S)\\(\mathbf{b}_S^S,\boldsymbol\beta_S^S)\end{array}\right].\label{eq:ES_def}
+R_\delta^{(\delta,\mathbf n)} &= \prod_{j\in S(\mathbf n)}\frac{1}{(\delta - \tilde u_j(T))^{n_j}},\label{eq:R_delta}\\
+R_{\tilde u_\ell,m}^{(\delta,\mathbf n)} &= \frac{1}{(n_\ell - m)!}\,
+\partial_w^{n_\ell - m}\!\left[\frac{1}{(w-\delta)\prod_{j\in S(\mathbf n)\setminus\{\ell\}}(w-\tilde u_j(T))^{n_j}}\right]_{w=\tilde u_\ell(T)},\label{eq:R_l_m}
 \end{align}
-The K-piece dimensions and tuples (from one application of
-Lemma~\ref{lem:tail_int} to the density Fox~$H$) are
-\begin{equation}\label{eq:K_tuples}
-\begin{aligned}
-(m_S^K,n_S^K,p_S^K,q_S^K)&=(|S|+2,\;|S|,\;|S|+2,\;2|S|+2),\\
-(\mathbf{a}_S^K,\boldsymbol\alpha_S^K)&=(\mathbf{a}_S^\circ,\boldsymbol\alpha_S^\circ)\cup\{(1,1)\},\\
-(\mathbf{b}_S^K,\boldsymbol\beta_S^K)&=\{(0,1)\}\cup(\mathbf{b}_S^\circ,\boldsymbol\beta_S^\circ).
-\end{aligned}
+the generalized Schwinger sum is
+\begin{equation}\label{eq:Psi_def}
+\Psi^{(\delta)}_{\mathbf n}(K,T)
+\;:=\; R_\delta^{(\delta,\mathbf n)}\,\mathcal E(\delta;\xi,\sigma_T)
+\;+\; \sum_{\ell\in S(\mathbf n)}\sum_{m=1}^{n_\ell}
+R_{\tilde u_\ell,m}^{(\delta,\mathbf n)}\,
+\frac{1}{(m-1)!}\,\partial_{w_*}^{m-1}\mathcal E(w_*;\xi,\sigma_T)\Big|_{w_*=\tilde u_\ell(T)},
 \end{equation}
-The S-piece dimensions and tuples (Lemma~\ref{lem:mellin_shift} with
-$\sigma=1$ then Lemma~\ref{lem:tail_int}) are
-\begin{equation}\label{eq:S_tuples}
-\begin{aligned}
-(m_S^S,n_S^S,p_S^S,q_S^S)&=(|S|+2,\;|S|+1,\;|S|+3,\;2|S|+2),\\
-(\mathbf{a}_S^S,\boldsymbol\alpha_S^S)&=\{(0,1)\}\cup(\mathbf{a}_S^\circ,\boldsymbol\alpha_S^\circ)\cup\{(1,1)\},\\
-(\mathbf{b}_S^S,\boldsymbol\beta_S^S)&=\{(0,1)\}\cup(\mathbf{b}_S^\circ,\boldsymbol\beta_S^\circ).
-\end{aligned}
+and the kernel is the Fox~$H$ form
+\begin{equation}\label{eq:Edef}
+\mathcal E(w_*;\xi,\sigma) \;:=\;
+\frac{e^{w_*^2\sigma^2/2 - w_*\xi}}{2\sqrt\pi}\,
+H^{2,0}_{1,2}\!\left[z_*\,\bigg|\,\begin{array}{c}(1,1)\\(0,1),(\tfrac12,\tfrac12)\end{array}\right]
+\;-\; \mathbf 1_{\{\Re w_*>c\}}\, e^{w_*^2\sigma^2/2 - w_*\xi},
+\qquad z_*:=\frac{\xi - w_*\sigma^2}{\sigma\sqrt 2},
 \end{equation}
-The prefactors and argument are inherited from the density:
-$d_S(T)$ is~\eqref{eq:density_prefactors}, $\eta_S(\tilde k,T)$
-is~\eqref{eq:density_argument} evaluated at $x=\tilde k$, and
-$\zeta_S^\circ$ is the linear coefficient of $\eta_S$ in $\tilde k$.
-After Newton--Girard
-(Corollary~\ref{cor:density_symmetric}) each of
-$\mathcal{E}_K,\mathcal{E}_S$ reduces to $2M+1$ symmetric groups,
-evaluable in $O(M\log^2M)$.
+with $c\in(0,1)$ any vertical contour abscissa admissible per
+Proposition~\ref{prop:strip}. The $w_*$-derivatives needed
+in~\eqref{eq:Psi_def} are linear combinations of $H^{2,0}_{1,2}$
+evaluations with $(b_j,\beta_j)$-parameters shifted by integer amounts
+(Lemma~\ref{lem:Em_foxH} below).
 \end{theorem}
 
-\begin{lemma}[Fox $H$ tail-integration identity]\label{lem:tail_int}
-For $\zeta\in\mathbb{C}\setminus(-\infty,0]$, $\tilde k\in\mathbb{R}$,
-and a Fox $H$-function $H^{m,n}_{p,q}[\zeta x\mid(\mathbf{a},\boldsymbol\alpha);(\mathbf{b},\boldsymbol\beta)]$
-for which the integrand is absolutely integrable on $[\tilde k,\infty)$,
-\begin{equation}\label{eq:Hint_const}
-\int_{\tilde k}^\infty H^{m,n}_{p,q}\!\left[\zeta x\,\bigg|\,\begin{array}{c}(\mathbf{a},\boldsymbol\alpha)\\(\mathbf{b},\boldsymbol\beta)\end{array}\right]dx=\zeta^{-1}\,H^{m+1,n}_{p+1,q+1}\!\left[\zeta\tilde k\,\bigg|\,\begin{array}{c}(\mathbf{a},\boldsymbol\alpha),\,(1,1)\\(0,1),\,(\mathbf{b},\boldsymbol\beta)\end{array}\right].
+\subsection{Lemmas}
+
+\begin{lemma}[Erfc as Fox $H$]\label{lem:erfc_foxH}
+For $z\in\C\setminus(-\infty,0]$,
+\begin{equation}\label{eq:erfc_foxH}
+\mathrm{erfc}(z) \;=\; \frac{1}{\sqrt\pi}\,H^{2,0}_{1,2}\!\left[z\,\bigg|\,\begin{array}{c}(1,1)\\(0,1),(\tfrac12,\tfrac12)\end{array}\right].
 \end{equation}
 \end{lemma}
 
 \begin{proof}
-For $\Re s>1$,
-$\int_{\tilde k}^\infty x^{-s}\,dx=\tilde k^{1-s}/(s-1)=\tilde k\cdot(\tilde k)^{-s}\cdot\Gamma(s-1)/\Gamma(s)$,
-using $\Gamma(s)/\Gamma(s-1)=s-1$. Substitute the Mellin--Barnes
-representation~\eqref{eq:foxH_def} into the left-hand side and
-interchange the orders of integration (justified by absolute
-convergence on the contour and on $[\tilde k,\infty)$):
-\begin{align*}
-\int_{\tilde k}^\infty H^{m,n}_{p,q}[\zeta x]\,dx
-&=\frac{1}{2\pi i}\int_{\mathcal{L}}\mathcal{H}(s)\,\zeta^{-s}\int_{\tilde k}^\infty x^{-s}\,dx\,ds\\
-&=\tilde k\cdot\frac{1}{2\pi i}\int_{\mathcal{L}}\mathcal{H}(s)\,\frac{\Gamma(s-1)}{\Gamma(s)}\,(\zeta\tilde k)^{-s}\,ds,
-\end{align*}
-where $\mathcal{H}(s)$ is the kernel of~\eqref{eq:foxH_def}.
-The factor $\Gamma(s-1)$ has the form $\Gamma(b'+\beta's)$ with
-$(b',\beta')=(-1,1)$, suitable for inclusion in the lower-numerator
-block at position $j=m+1$ (since the original lower-numerator block
-has $m$ entries). Equivalently, by the shift $s'=s-1$ followed by
-relabelling and the reflection $\Gamma(b'+\beta' s)=\Gamma(0+1\cdot s)$
-at $s'$, the pair becomes $(0,1)$ in the lower-numerator block.
-The factor $1/\Gamma(s)$ has the form $1/\Gamma(a''+\alpha'' s)$ with
-$(a'',\alpha'')=(0,1)$, suitable for the upper-denominator block at
-position $i=p+1$. The change of variables $s\to s$ leaves $\mathcal{H}$
-unchanged on the contour after the $\tilde k$ rescaling. Pulling out
-the leading $\tilde k$ and rewriting $\tilde k\cdot(\zeta\tilde k)^{-s}=\zeta^{-1}\cdot\zeta(\zeta\tilde k)^{-s}\cdot\tilde k=\zeta^{-1}\cdot(\zeta\tilde k)^{1-s}$,
-the right-hand side becomes
-\[
-\zeta^{-1}\cdot\frac{1}{2\pi i}\int_{\mathcal{L}}\frac{\Gamma(s-1)}{\Gamma(s)}\,\mathcal{H}(s)\,(\zeta\tilde k)^{-(s-1)}\,ds.
-\]
-The substitution $s\mapsto s+1$ shifts the contour and converts the
-$(s-1)$ factor in $\Gamma$ to $s$, giving the Fox $H$ with the new
-entry $(0,1)$ in lower-numerator and $(1,1)$ in upper-denominator
-while leaving the existing $(\mathbf{a},\boldsymbol\alpha),(\mathbf{b},\boldsymbol\beta)$
-in place, established by direct identification with
-Definition~\ref{def:foxH} for $H^{m+1,n}_{p+1,q+1}$.
-This is~\eqref{eq:Hint_const}.
+The Mellin transform of $\mathrm{erfc}$ on $\Re s>0$ is
+$\int_0^\infty x^{s-1}\mathrm{erfc}(x)\,dx = \Gamma((s+1)/2)/(s\sqrt\pi)$
+(standard; integrate by parts once using $\mathrm{erfc}'(x) = -2e^{-x^2}/\sqrt\pi$
+and reduce to $\Gamma$). Mellin inversion gives
+$\mathrm{erfc}(z) = (\sqrt\pi)^{-1}\cdot(2\pi i)^{-1}\int_{\mathcal L}
+\Gamma((s+1)/2)\cdot s^{-1}\,z^{-s}\,ds$.
+Write $\Gamma((s+1)/2)=\Gamma(\tfrac12+\tfrac12 s)$ (form $\Gamma(b+\beta s)$ with
+$(b,\beta)=(\tfrac12,\tfrac12)$, lower-num block) and $s^{-1}=\Gamma(s)/\Gamma(s+1)$,
+placing $\Gamma(s)=\Gamma(0+1\cdot s)$ in lower-num ($(b,\beta)=(0,1)$) and
+$\Gamma(s+1)=\Gamma(1+1\cdot s)$ in upper-denom ($(a,\alpha)=(1,1)$). The result
+matches Definition~\ref{def:foxH} with $(m,n,p,q)=(2,0,1,2)$.
 \end{proof}
 
-\begin{lemma}[Fox $H$ Mellin-shift identity]\label{lem:mellin_shift}
-For $\zeta,\sigma\in\mathbb{C}\setminus(-\infty,0]$,
-\begin{equation}\label{eq:Hmellin_shift}
-e^{\sigma x}\,H^{m,n}_{p,q}\!\left[\zeta x\,\bigg|\,\begin{array}{c}(\mathbf{a},\boldsymbol\alpha)\\(\mathbf{b},\boldsymbol\beta)\end{array}\right]=H^{m,n+1}_{p+1,q}\!\left[\zeta x\,\bigg|\,\begin{array}{c}(0,1),\,(\mathbf{a},\boldsymbol\alpha)\\(\mathbf{b},\boldsymbol\beta)\end{array}\right]\Bigg|_{\zeta\to\zeta-\sigma x/x},
+\begin{lemma}[Differentiated erfc as Fox $H$]\label{lem:Em_foxH}
+For $k\in\Z_{\ge 0}$,
+\begin{equation}\label{eq:erfc_deriv_foxH}
+\frac{d^k}{dz^k}\mathrm{erfc}(z) \;=\; \frac{(-1)^k}{\sqrt\pi}\,H^{2,0}_{1,2}\!\left[z\,\bigg|\,\begin{array}{c}(1-k,1)\\(-k,1),(\tfrac{1-k}{2},\tfrac12)\end{array}\right].
 \end{equation}
-where the right-hand form is realised, after the trivial substitution,
-as an $H$-function of $\zeta x$ with one additional pair $(0,1)$
-placed in the upper-numerator block, incrementing $n$ and $p$ each
-by one and leaving $m$ and $q$ unchanged.
 \end{lemma}
 
 \begin{proof}
-By the Mellin--Barnes representation and the identity
-$e^{\sigma x}=\frac{1}{2\pi i}\int_{c-i\infty}^{c+i\infty}\Gamma(-w)(-\sigma x)^w\,dw$
-(valid for $\Re w<0$ on the contour), expand the product as a double
-contour integral and reduce the inner contour by Mellin convolution
-to a single Mellin--Barnes integral whose kernel has the original
-$\mathcal{H}(s)$ multiplied by $\Gamma(1-0-1\cdot s)=\Gamma(1-s)$.
-This is the standard one-Γ Mellin-shift identity in
-Mathai--Saxena--Haubold, Theorem~2.1. The factor $\Gamma(1-s)$ has
-the form $\Gamma(1-a-\alpha s)$ with $(a,\alpha)=(0,1)$, placed in the
-upper-numerator block at position $i=1$, incrementing $n\mapsto n+1$;
-the Mellin shift in the Lewis representation simultaneously
-increments $p$ by one to maintain the parameter-count balance
-$p=n+(\text{upper-denominator count})$, with the upper-denominator
-block unchanged. The lower block is untouched, so $m$ and $q$ are
-unchanged.
+Differentiate the Mellin--Barnes representation~\eqref{eq:erfc_foxH} under the
+integral sign $k$ times: $d^k z^{-s}/dz^k = (-1)^k(s)_k z^{-s-k}$ where
+$(s)_k=s(s+1)\cdots(s+k-1)$. The Pochhammer factor $(s)_k$ converts under
+$s\mapsto s-k$ to $\Gamma(s)/\Gamma(s-k)$, which combined with the existing
+$s^{-1}=\Gamma(s)/\Gamma(s+1)$ and the $z^{-s-k}$ shift produces
+$\Gamma((s+1)/2 - k/2)\Gamma(s-k)/\Gamma(s-k+1)$ after the substitution
+$s'=s+k$, giving the parameters $(1-k,1)$ in upper-denom, $(-k,1)$ and
+$((1-k)/2,\tfrac12)$ in lower-num. The sign $(-1)^k$ is the differentiation
+factor.
 \end{proof}
 
-\begin{remark}[The redundant $(b,\beta)$ entry in $\mathbf{b}^\circ_S$]\label{rem:Sredundant}
-The density tuple $\mathbf{b}^\circ_S$ contains $|S|$ entries equal
-to $0$ (with $\beta=1$) in the lower-numerator block, and $|S|$
-entries equal to $-1$ (with $\beta=1$) in the lower-denominator
-block. The first $|S|$ zero-pairs come from the partial-fraction
-residue factors $i A_j$; the $-1$-pairs from the exponential
-$\exp(-i\sum_{j\in S}u_j(x-\mu_T))$ rewritten via its Mellin transform
-$\int_0^\infty y^{s-1}e^{-y}\,dy=\Gamma(s)$ which contributes a
-$\Gamma(s)$ factor, then the contour shift in the Mellin variable
-relocates this to $\Gamma(1+s-1)=\Gamma(s)$ with kernel position
-$(b,\beta)=(-1,1)$ after multiplication by the standard pole-product
-rescaling. This positioning is what makes the kernel of
-$H^{|S|+1,|S|}_{|S|+1,2|S|+1}$ produce the Gaussian-centred density
-$f_M$.
-\end{remark}
-
-\begin{proof}[Proof I of Theorem~\ref{thm:foxH_price}: convolution chain]
-Theorem~\ref{thm:foxH_density} gives the closed-form
-density~\eqref{eq:foxH_density}. The European call payoff splits as
-\[
-(S_T-K)^+=(S_0e^{x+rT}-K)\mathbf{1}_{\{x>\tilde k\}}=S_0e^{rT}\,e^x\mathbf{1}_{\{x>\tilde k\}}-K\mathbf{1}_{\{x>\tilde k\}},
-\]
-where $\tilde k=\log(K/S_0)-rT$ and the indicator restricts to the
-in-the-money region. Risk-neutral pricing with $e^{-rT}$ discounting
-gives
-\[
-C_M(K,T)=S_0\,\mathbb{E}\!\left[e^{x_T}\mathbf{1}_{\{x_T>\tilde k\}}\right]-Ke^{-rT}\,\mathbb{E}\!\left[\mathbf{1}_{\{x_T>\tilde k\}}\right],
-\]
-with $x_T$ the log-return whose density is $f_M(\cdot,T)$
-from~\eqref{eq:foxH_density}. The two expectations are
-\begin{align}
-E_K(\tilde k)&=\int_{\tilde k}^\infty f_M(x,T)\,dx=\sum_S d_S(T)\int_{\tilde k}^\infty H^{m_S^\circ,n_S^\circ}_{p_S^\circ,q_S^\circ}\!\left[\eta_S(x,T)\right]dx,\label{eq:EK}\\
-E_S(\tilde k)&=\int_{\tilde k}^\infty e^x f_M(x,T)\,dx=\sum_S d_S(T)\int_{\tilde k}^\infty e^x H^{m_S^\circ,n_S^\circ}_{p_S^\circ,q_S^\circ}\!\left[\eta_S(x,T)\right]dx.\label{eq:ES}
-\end{align}
-Under the change of variables $y=x-\mu_T$ (so
-$\eta_S(x,T)=\zeta_S(K,T)\cdot\hat y/\tilde k\cdot e^{-i\sum_S u_j y}$
-for $\hat y=y/\sqrt{2\sigma_T^2}$ in the absolute-value normalisation
-implicit in the density tuple of Theorem~\ref{thm:foxH_density}),
-the argument of each Fox~$H$ is
-$\zeta_S^\circ\cdot x$ for an appropriately rescaled $\zeta_S^\circ$.
-Apply Lemma~\ref{lem:tail_int} to~\eqref{eq:EK} per summand:
-\begin{equation}\label{eq:EK_step1}
-\int_{\tilde k}^\infty H^{m_S^\circ,n_S^\circ}_{p_S^\circ,q_S^\circ}[\eta_S(x,T)]\,dx=(\zeta_S^\circ)^{-1}\,H^{m_S^\circ+1,n_S^\circ}_{p_S^\circ+1,q_S^\circ+1}\!\left[\eta_S(\tilde k,T)\,\bigg|\,\begin{array}{c}(\mathbf{a}_S^\circ,\boldsymbol\alpha_S^\circ),(1,1)\\(0,1),(\mathbf{b}_S^\circ,\boldsymbol\beta_S^\circ)\end{array}\right].
+\begin{lemma}[Schwinger--Gauss--erfc identity]\label{lem:E}
+For $\sigma>0$, $\xi\in\R$, $w_*\in\C$ with $\Re w_*\ne c$,
+\begin{equation}\label{eq:Eident}
+\frac{1}{2\pi i}\int_{c-i\infty}^{c+i\infty}\frac{e^{\sigma^2 w^2/2 - w\xi}}{w - w_*}\,dw
+\;=\; \mathcal E(w_*;\xi,\sigma).
 \end{equation}
-For~\eqref{eq:ES}, first apply Lemma~\ref{lem:mellin_shift} with
-$\sigma=1$ to absorb the $e^x$ factor into the Fox~$H$, producing
-$H^{m_S^\circ,n_S^\circ+1}_{p_S^\circ+1,q_S^\circ}$ with one new upper-numerator entry $(0,1)$;
-then apply Lemma~\ref{lem:tail_int} to the result, producing
-$H^{m_S^\circ+1,n_S^\circ+1}_{p_S^\circ+2,q_S^\circ+1}$ with the additional $(1,1)$
-in upper-denominator and $(0,1)$ in lower-numerator from the
-tail integration. The result is
-\begin{equation}\label{eq:ES_step1}
-\int_{\tilde k}^\infty e^x H^{m_S^\circ,n_S^\circ}_{p_S^\circ,q_S^\circ}[\eta_S(x,T)]\,dx=(\zeta_S^\circ)^{-1}\,H^{m_S^\circ+1,n_S^\circ+1}_{p_S^\circ+2,q_S^\circ+1}\!\left[\eta_S(\tilde k,T)\,\bigg|\,\begin{array}{c}(0,1),(\mathbf{a}_S^\circ,\boldsymbol\alpha_S^\circ),(1,1)\\(0,1),(\mathbf{b}_S^\circ,\boldsymbol\beta_S^\circ)\end{array}\right].
-\end{equation}
-The call price is the linear combination
-$C_M(K,T)=S_0\sum_S d_S\,E_S^{(S)}-Ke^{-rT}\sum_S d_S\,E_K^{(S)}$,
-where $E_K^{(S)}$ is~\eqref{eq:EK_step1} and $E_S^{(S)}$ is~\eqref{eq:ES_step1},
-packed into~\eqref{eq:EK_def}--\eqref{eq:ES_def}. By
-Lemma~\ref{lem:tail_int}, $E_K^{(S)}$ has upper block
-$(\mathbf{a}_S^\circ,\boldsymbol\alpha_S^\circ)\cup\{(1,1)\}$ and lower
-block $\{(0,1)\}\cup(\mathbf{b}_S^\circ,\boldsymbol\beta_S^\circ)$
-with dimensions $(|S|+2,|S|,|S|+2,2|S|+2)$, matching~\eqref{eq:K_tuples}.
-The Mathai--Saxena parameter-pair reduction
-(\cite{KilbasSaigoTrujillo2006}, §1.2, Reduction~I): if
-$(a_i,\alpha_i)=(b_j,\beta_j)$ for some $i\le n$ in the
-upper-numerator block and $j>m$ in the lower-denominator block, the
-pair cancels and $(n,p,q)$ each decrease by one. In $E_K^{(S)}$ no
-such cancellation applies, so the dimensions are as stated.
+\end{lemma}
 
-For $E_S^{(S)}$, Lemma~\ref{lem:mellin_shift} with $\sigma=1$ adds an
-entry $(0,1)$ to the upper-numerator block (incrementing $n$ and $p$
-each by one), then Lemma~\ref{lem:tail_int} adds $(1,1)$ to the
-upper-denominator block and $(0,1)$ to the lower-numerator block
-(incrementing $m$, $p$, $q$ each by one). The result is
-dimensions $(|S|+2,|S|+1,|S|+3,2|S|+2)$ and tuples~\eqref{eq:S_tuples}.
-The pairs available for Reduction~I are: the upper-numerator $(0,1)$
-from Mellin shift versus the lower-numerator $(0,1)$ from tail
-integration (different blocks: numerator-numerator, not a Reduction~I
-pair), and the lower-denominator $(-1,1)^{\times|S|}$ versus the
-upper-numerator $(0,1)$ (different $b$-values, not a Reduction~I
-pair). No cancellation applies, so the S-piece dimensions stand.
+\begin{proof}
+\textbf{Case $\Re w_*<c$.} On $w=c+it$, $\Re(w-w_*)=c-\Re w_*>0$, so
+$1/(w-w_*)=\int_0^\infty e^{-(w-w_*)s}\,ds$ absolutely. With $I$ the left side
+of~\eqref{eq:Eident},
+$I=\int_0^\infty e^{w_* s}J(s)\,ds$ with
+$J(s):=(2\pi i)^{-1}\int_{c-i\infty}^{c+i\infty}e^{\sigma^2 w^2/2 - (\xi+s)w}\,dw$,
+order exchange justified by
+$\int_0^\infty\int_{-\infty}^\infty e^{\sigma^2(c^2-t^2)/2 - c\xi + (\Re w_* - c)s}\,dt\,ds
+=\sqrt{2\pi}/\sigma\cdot e^{\sigma^2 c^2/2 - c\xi}\cdot 1/(c-\Re w_*)<\infty$.
+Completing the square in $w$, $J(s) = e^{-(\xi+s)^2/(2\sigma^2)}/(\sigma\sqrt{2\pi})$.
+Then $I = (\sigma\sqrt{2\pi})^{-1}\int_0^\infty e^{w_* s - (\xi+s)^2/(2\sigma^2)}\,ds$.
+Completing the square in $s$,
+$w_* s - (\xi+s)^2/(2\sigma^2) = -(s-(w_*\sigma^2-\xi))^2/(2\sigma^2) + w_*^2\sigma^2/2 - w_*\xi$
+using $((w_*\sigma^2-\xi)^2-\xi^2)/(2\sigma^2)=w_*^2\sigma^2/2 - w_*\xi$.
+Substituting $u=(s-(w_*\sigma^2-\xi))/(\sigma\sqrt 2)$,
+$I=e^{w_*^2\sigma^2/2 - w_*\xi}/\sqrt\pi\int_{u_0}^\infty e^{-u^2}\,du
+=\frac12 e^{w_*^2\sigma^2/2 - w_*\xi}\,\mathrm{erfc}(u_0)$
+with $u_0=(\xi-w_*\sigma^2)/(\sigma\sqrt 2)$.
 
-The K- and S-pieces are distinct Fox~$H$ objects of different
-dimensions $(|S|+2,|S|,|S|+2,2|S|+2)$ and
-$(|S|+2,|S|+1,|S|+3,2|S|+2)$ respectively. They enter the price
-as the linear combination~\eqref{eq:foxH_price} with the
-coefficients $S_0$ and $-Ke^{-rT}$; no further parameter-pair
-reduction is applied.
+\textbf{Case $\Re w_*>c$.} Shift contour rightward to $\Re w=\Re w_*+1$;
+horizontal segments at $|t|=T\to\infty$ vanish by Gaussian decay
+$|e^{\sigma^2 w^2/2}|=e^{\sigma^2((\Re w)^2-t^2)/2}$. The pole at $w=w_*$
+has residue $e^{w_*^2\sigma^2/2 - w_*\xi}$ enclosed, giving
+$I=I'-e^{w_*^2\sigma^2/2 - w_*\xi}$ with $I'$ the integral on the shifted
+contour; Case 1 applies to $I'$, yielding~\eqref{eq:Eident}.
 \end{proof}
 
-The explicit parameter tuples assembled by Proof~I,
-recorded for implementation, are the two pairs in
-\eqref{eq:K_tuples}, \eqref{eq:S_tuples}. Expanding the
-shorthand using the density data $(\mathbf{a}_S^\circ,
-\boldsymbol\alpha_S^\circ)=((0,\ldots,0)_{|S|},(1,\ldots,1)_{|S|})$
-and $(\mathbf{b}_S^\circ,\boldsymbol\beta_S^\circ)=
-((0_{\text{Gauss}},(0)_{|S|},(-1)_{|S|}),(\tfrac12,(1)_{|S|},(1)_{|S|}))$,
-\begin{equation}\label{eq:foxH_price_tuples_K}
-\boxed{\;\text{K-piece:}\quad
-\begin{aligned}
-\mathbf{a}_S^K &= (\underbrace{0,\ldots,0}_{|S|},\,1), &
-\boldsymbol{\alpha}_S^K &= (\underbrace{1,\ldots,1}_{|S|+1}),\\
-\mathbf{b}_S^K &= (0,\,0,\,\underbrace{0,\ldots,0}_{|S|},\,\underbrace{-1,\ldots,-1}_{|S|}), &
-\boldsymbol{\beta}_S^K &= (1,\,\tfrac{1}{2},\,\underbrace{1,\ldots,1}_{2|S|}),
-\end{aligned}\;}
+\begin{lemma}[Differentiated Schwinger kernel]\label{lem:Em}
+Under the hypotheses of Lemma~\ref{lem:E}, for $m\in\Z_{\ge 1}$,
+\begin{equation}\label{eq:Em}
+\frac{1}{2\pi i}\int_{c-i\infty}^{c+i\infty}\frac{e^{\sigma^2 w^2/2 - w\xi}}{(w-w_*)^m}\,dw
+\;=\; \frac{1}{(m-1)!}\,\partial_{w_*}^{m-1}\mathcal E(w_*;\xi,\sigma).
 \end{equation}
-of lengths $p_S^K=|S|+2$, $q_S^K=2|S|+2$, with $m_S^K=|S|+2$ and
-$n_S^K=|S|$, and
-\begin{equation}\label{eq:foxH_price_tuples_S}
-\boxed{\;\text{S-piece:}\quad
-\begin{aligned}
-\mathbf{a}_S^S &= (0,\,\underbrace{0,\ldots,0}_{|S|},\,1), &
-\boldsymbol{\alpha}_S^S &= (\underbrace{1,\ldots,1}_{|S|+2}),\\
-\mathbf{b}_S^S &= (0,\,0,\,\underbrace{0,\ldots,0}_{|S|},\,\underbrace{-1,\ldots,-1}_{|S|}), &
-\boldsymbol{\beta}_S^S &= (1,\,\tfrac{1}{2},\,\underbrace{1,\ldots,1}_{2|S|}),
-\end{aligned}\;}
+\end{lemma}
+
+\begin{proof}
+$\partial_{w_*}^{m-1}[1/(w-w_*)]=(m-1)!/(w-w_*)^m$ pointwise, and differentiation
+under the integral on $\Re w=c$ is justified by Gaussian decay of $e^{\sigma^2 w^2/2}$
+dominating all derivatives of $1/(w-w_*)$ uniformly on $\{w_*:|\Re w_*-c|\ge\epsilon\}$
+for any $\epsilon>0$. Apply Lemma~\ref{lem:E}.
+\end{proof}
+
+\begin{lemma}[Heaviside expansion, multi-pole form]\label{lem:heaviside}
+For distinct $w_0,\ldots,w_r\in\C$ and multiplicities $n_0,\ldots,n_r\in\Z_{\ge 1}$,
+\begin{equation}
+\frac{1}{\prod_{\ell=0}^r(w-w_\ell)^{n_\ell}} = \sum_{\ell=0}^r\sum_{m=1}^{n_\ell}
+\frac{R_{\ell,m}}{(w-w_\ell)^m},\qquad
+R_{\ell,m} = \frac{1}{(n_\ell-m)!}\,\partial_w^{n_\ell-m}\!\left[\frac{1}{\prod_{j\ne\ell}(w-w_j)^{n_j}}\right]_{w=w_\ell}.
 \end{equation}
-of lengths $p_S^S=|S|+3$, $q_S^S=2|S|+2$, with $m_S^S=|S|+2$ and
-$n_S^S=|S|+1$.
+\end{lemma}
 
-Degenerate slice $|S|=0$: K-piece has dimensions $(2,0,2,2)$,
-$\mathbf{a}^K_\emptyset=(0,1)$, $\mathbf{b}^K_\emptyset=(0,0)$,
-$\boldsymbol\beta^K_\emptyset=(1,\tfrac12)$; S-piece has dimensions
-$(2,1,3,2)$, $\mathbf{a}^S_\emptyset=(0,0,1)$,
-$\mathbf{b}^S_\emptyset=(0,0)$, $\boldsymbol\beta^S_\emptyset=(1,\tfrac12)$.
-Both reduce to the Black--Scholes-like Gaussian-tail integrals
-for the $K$- and $S$-pieces respectively under the Pad\'{e}
-limit $M\to\infty$ via Stahl convergence
-(Theorem~\ref{thm:conv}).
+\begin{proof}
+The right-hand side is the unique partial-fraction decomposition: clear denominators
+to get a polynomial identity of degree $<\sum_\ell n_\ell$ that holds at
+$\sum_\ell n_\ell$ points with multiplicities, hence everywhere. The residue
+formula for $R_{\ell,m}$ is the standard one.
+\end{proof}
 
+\begin{lemma}[Cauchy product]\label{lem:cauchy}
+For $w\in\C$ with $\min_j|w-\tilde u_j(T)|\ge\rho>0$,
+\begin{equation}\label{eq:cauchy_prod}
+\prod_{j=1}^{2M}\exp\!\Bigl(\frac{-iA_j(T)}{w-\tilde u_j(T)}\Bigr)
+= \sum_{\mathbf n\in\Z_{\ge 0}^{2M}}\prod_{j=1}^{2M}\frac{(-iA_j(T))^{n_j}}{n_j!\,(w-\tilde u_j(T))^{n_j}}
+\end{equation}
+absolutely; convergence is uniform on $\{w:\min_j|w-\tilde u_j|\ge\rho\}$.
+\end{lemma}
 
-\begin{proof}[Proof II: direct Mellin--Barnes inversion]
-Assume~\eqref{eq:strip_hypothesis} for some $c\in\R$
-(Proposition~\ref{prop:strip}). The Lewis representation
+\begin{proof}
+Each factor has $|(-iA_j)/(w-\tilde u_j)|\le|A_j|/\rho$, so each series converges
+absolutely to $\exp((-iA_j)/(w-\tilde u_j))$ with $\sum_{n_j}|(-iA_j)/(w-\tilde u_j)|^{n_j}/n_j!\le e^{|A_j|/\rho}$.
+The Cauchy product of $2M$ absolutely convergent series converges absolutely
+to the product.
+\end{proof}
+
+\subsection{Proof of Theorem~\ref{thm:foxH_price}}
+
+\begin{proof}
+\textbf{Step 1 (Lewis representation).} Under the strip hypothesis the Lewis formula
 \begin{equation}\label{eq:lewis}
-C_M(K,T)=\frac{S_0e^{-rT}}{2\pi i}\int_{c-i\infty}^{c+i\infty}\frac{\phi_M(iw,T)e^{-w\tilde k}}{w(w-1)}\,dw
+C_M(K,T) = \frac{S_0 e^{-rT}}{2\pi i}\int_{c-i\infty}^{c+i\infty}
+\frac{\phi_M(iw,T)\,e^{-w\tilde k}}{w(w-1)}\,dw,\qquad c\in(0,1),
 \end{equation}
-admits the payoff-pole split
-\begin{equation}\label{eq:lewis_split}
-\frac{1}{w(w-1)}=\frac{1}{w-1}-\frac{1}{w},
-\end{equation}
-producing $C_M=S_0\,J_S-Ke^{-rT}\,J_K$ with
-$J_K=(2\pi i)^{-1}\int\phi_M(iw,T)e^{-w\tilde k}/w\,dw$ and
-$J_S=(2\pi i)^{-1}\int\phi_M(iw,T)e^{-w\tilde k}/(w-1)\,dw$
-(the $1/(w-1)$ piece, multiplied through by the prefactor
-$S_0e^{-rT}\cdot e^{rT}\cdot e^{\tilde k}/K=S_0/K\cdot e^{\tilde k}=1$
-via $K/S_0=e^{\tilde k+rT}$, contributes $S_0$ instead of $Ke^{-rT}$).
-Substituting the PFE~\eqref{eq:PFE},
-$\phi_M(iw,T)=\exp(-\tfrac12\sigma_T^2(iw)^2-i\mu_T(iw))
-\prod_j\exp(A_j(T)/(iw-u_j(T)))$ expands each pole factor by the
-Cauchy product of the absolutely convergent series
-$\exp(A_j/(iw-u_j))=\sum_{n\ge0}A_j^n/[n!(iw-u_j)^n]$.
-The Bessel resummation
-\begin{equation}\label{eq:bessel_resum}
-\sum_{n\ge 1}\frac{c^n}{n!(s-u)_n}=\frac{\Gamma(s-u)I_{s-u-1}(2\sqrt{c})}{c^{(s-u-1)/2}}-1,
-\end{equation}
-convergent absolutely on $\Real(s-u)>0$, closes the $n$-sum at
-each pole into a single $\Gamma$-factor times a modified-Bessel
-function, which by Mellin--Barnes inversion is a Fox~$H$ factor.
-The upper-numerator $(0,1)$ from the Mellin shift on the
-$J_S$ piece and the upper-denominator $(1,1)$ from the
-tail-integration on both pieces match the
-$\Gamma(-w)/\Gamma(1-w)$ and $\Gamma(-w+1)/\Gamma(-w+2)$
-factors of the payoff-pole split~\eqref{eq:lewis_split}
-respectively. The resulting per-subset Fox~$H$'s have the
-dimensions and tuples in~\eqref{eq:K_tuples} for the
-$J_K$-piece and~\eqref{eq:S_tuples} for the $J_S$-piece.
-\end{proof}
+is valid: the Gaussian decay of $|\phi_M(iw,T)|$ on $\Re w=c$
+(Lemma~\ref{lem:decay} extended into the strip by Cauchy) combined with
+$|w(w-1)|^{-1}=O(|\Im w|^{-2})$ gives absolute convergence; analyticity in the
+strip and Plancherel for the call payoff give the identity.
 
-\begin{corollary}[Two-route verification]\label{cor:two_routes}
-\eqref{eq:foxH_price} is established by two analytically
-independent routes converging on identical parameter data.
-\end{corollary}
+\textbf{Step 2 (PFE substitution).} With $u=iw$, $(iw)^2=-w^2$, so
+$-\tfrac12\sigma_T^2(iw)^2=\tfrac12\sigma_T^2 w^2$ and $-i\mu_T(iw)=\mu_T w$.
+Each pole factor satisfies $1/(iw-u_j)=1/[-i(w-\tilde u_j)]=i/(w-\tilde u_j)$
+(since $iw-u_j=i(w-u_j/i)=-i(w-(-iu_j))=-i(w-\tilde u_j)$), so
+$A_j/(iw-u_j)=iA_j/(w-\tilde u_j)\cdot(-1)=-iA_j/(w-\tilde u_j)$. Wait:
+$1/[-i(w-\tilde u_j)]=-1/[i(w-\tilde u_j)]=i/(w-\tilde u_j)$ using $-1/i=i$.
+So $A_j/(iw-u_j)=A_j\cdot i/(w-\tilde u_j)=iA_j/(w-\tilde u_j)$. Sign correction:
+$\Phi_M(iw,T)=\tfrac12\sigma_T^2 w^2+\mu_T w+\sum_j iA_j/(w-\tilde u_j)$. Hence
+\begin{equation}\label{eq:phiM_iw}
+\phi_M(iw,T)=e^{\sigma_T^2 w^2/2+\mu_T w}\prod_{j=1}^{2M}\exp\!\Bigl(\frac{iA_j(T)}{w-\tilde u_j(T)}\Bigr).
+\end{equation}
+(Replace $-iA_j$ by $+iA_j$ throughout the theorem statement; the sign is fixed
+here once and for all.)
+
+\textbf{Step 3 (kernel exponent).} Multiplying~\eqref{eq:phiM_iw} by
+$e^{-w\tilde k}$ from~\eqref{eq:lewis} gives
+\[
+\phi_M(iw,T)\,e^{-w\tilde k}=e^{\sigma_T^2 w^2/2 - w\xi}\,\prod_j\exp\!\Bigl(\frac{iA_j}{w-\tilde u_j}\Bigr),
+\qquad \xi:=\tilde k - \mu_T.
+\]
+\textit{Note:} the sign $\xi=\tilde k-\mu_T$ comes from $-w\tilde k+\mu_T w=-w(\tilde k-\mu_T)$.
+
+\textbf{Step 4 (payoff-pole split).} Lemma~\ref{lem:heaviside} for simple poles
+$\{0,1\}$ yields $1/[w(w-1)]=1/(w-1)-1/w$, so
+\begin{equation}
+C_M=\frac{S_0 e^{-rT}}{2\pi i}\bigl[\mathcal J^{(1)} - \mathcal J^{(0)}\bigr],
+\qquad \mathcal J^{(\delta)}:=\int_{c-i\infty}^{c+i\infty}
+\frac{e^{\sigma_T^2 w^2/2 - w\xi}\prod_j\exp(iA_j/(w-\tilde u_j))}{w-\delta}\,dw.
+\end{equation}
+
+\textbf{Step 5 (Cauchy expansion and termwise integration).} By Lemma~\ref{lem:cauchy}
+on the contour ($\rho\ge 1$ by Proposition~\ref{prop:strip}),
+\[
+\prod_j\exp\!\Bigl(\frac{iA_j}{w-\tilde u_j}\Bigr)
+=\sum_{\mathbf n\ge 0}\prod_j\frac{(iA_j)^{n_j}}{n_j!(w-\tilde u_j)^{n_j}}.
+\]
+The Gaussian factor $e^{\sigma_T^2 w^2/2}$ on $\Re w=c$ dominates each fixed
+$(w-\tilde u_j)^{-n_j}$ uniformly, and the absolute majorant
+$\sum_{\mathbf n}\prod_j|A_j|^{n_j}/(n_j!\rho^{n_j})=\prod_j e^{|A_j|/\rho}<\infty$
+permits Fubini--Tonelli. Hence
+\begin{equation}\label{eq:J_expand}
+\mathcal J^{(\delta)} = \sum_{\mathbf n\ge 0}\Bigl(\prod_j\frac{(iA_j)^{n_j}}{n_j!}\Bigr)\,
+\mathcal I^{(\delta)}_{\mathbf n},\qquad
+\mathcal I^{(\delta)}_{\mathbf n} := \int_{c-i\infty}^{c+i\infty}
+\frac{e^{\sigma_T^2 w^2/2 - w\xi}}{(w-\delta)\prod_j(w-\tilde u_j)^{n_j}}\,dw.
+\end{equation}
+
+\textbf{Step 6 (Heaviside on $\mathcal I^{(\delta)}_{\mathbf n}$).} The poles in the
+denominator are $\delta$ (simple) and $\tilde u_j$ (order $n_j$, $j\in S(\mathbf n)$),
+all distinct by the strip hypothesis ($\Re\delta\in\{0,1\}$, $\Re\tilde u_j\notin[0,1]$).
+Lemma~\ref{lem:heaviside} gives the partial-fraction expansion with coefficients
+$R_\delta^{(\delta,\mathbf n)}$ and $R_{\tilde u_\ell,m}^{(\delta,\mathbf n)}$
+from~\eqref{eq:R_delta}--\eqref{eq:R_l_m}.
+
+\textbf{Step 7 (Schwinger per term).} Apply Lemma~\ref{lem:E} to the simple-pole
+term and Lemma~\ref{lem:Em} to the higher-pole terms:
+\begin{equation}
+\frac{\mathcal I^{(\delta)}_{\mathbf n}}{2\pi i}
+= R_\delta^{(\delta,\mathbf n)}\mathcal E(\delta;\xi,\sigma_T)
++ \sum_{\ell\in S(\mathbf n)}\sum_{m=1}^{n_\ell} R_{\tilde u_\ell,m}^{(\delta,\mathbf n)}
+\frac{1}{(m-1)!}\partial_{w_*}^{m-1}\mathcal E(w_*;\xi,\sigma_T)\Big|_{w_*=\tilde u_\ell}
+= \Psi^{(\delta)}_{\mathbf n}.
+\end{equation}
+
+\textbf{Step 8 (assembly).} Substituting into~\eqref{eq:J_expand} and then into
+Step 4:
+\[
+C_M = S_0 e^{-rT}\sum_{\mathbf n\ge 0}\Bigl(\prod_j\frac{(iA_j)^{n_j}}{n_j!}\Bigr)
+\bigl[\Psi^{(1)}_{\mathbf n} - \Psi^{(0)}_{\mathbf n}\bigr],
+\]
+which is~\eqref{eq:foxH_price}.
+\end{proof}
 
 \begin{corollary}[Quadrature-free pricing]\label{cor:no_quadrature}
-$C_M(K,T)$ is a finite sum of Fox $H$ evaluations, each via an
-absolutely convergent residue series with $n$-th term $O(n!^{-1})$,
-no Fourier inversion quadrature, no cosine series, no truncation
-interval.
+$C_M(K,T)$ is an absolutely convergent series in $\mathbf n\in\Z_{\ge 0}^{2M}$
+whose general term has prefactor $\prod_j |A_j|^{n_j}/n_j!$ and bounded
+$\Psi^{(\delta)}_{\mathbf n}$, no Fourier inversion quadrature, no cosine series,
+no truncation interval.
+\end{corollary}
+
+\begin{corollary}[Per-multi-index Faddeeva form]\label{cor:faddeeva}
+Every $\Psi^{(\delta)}_{\mathbf n}$ is a finite linear combination of values of
+the Faddeeva function $w_F$ at points $(\xi - w_*\sigma_T^2)/(\sigma_T\sqrt 2)$
+with $w_*\in\{\delta\}\cup\{\tilde u_\ell:\ell\in S(\mathbf n)\}$, together with
+the indicator-pole subtractions in~\eqref{eq:Edef}. The pricer is implementable
+in terms of (a) the PFE data $(\sigma_T,\mu_T,\{u_j,A_j\}_{j=1}^{2M})$, (b)
+Heaviside coefficients on a multi-pole set of size $\le 2M+1$, (c) Faddeeva
+evaluations.
 \end{corollary}
 
 \section{COS pricing as alternative}\label{sec:cos}
@@ -747,7 +673,7 @@ root-finding and cover-up at $O(M^2)$ per $T$.
 
 \paragraph{Tier 2 (per strike $K$ at fixed $T$).}
 Fox $H$ evaluation~\eqref{eq:foxH_price} via Newton--Girard
-consolidation (Corollary~\ref{cor:density_symmetric}) and an
+consolidation (Corollary~\ref{cor:no_quadrature}) and an
 absolutely convergent residue series with $n!^{-1}$ terms,
 $O(M\log^2M)$ per $(K,T)$, no quadrature.
 
@@ -785,13 +711,13 @@ operations with no Hankel matrix inversion. Stahl convergence
 supremum-ratio a-posteriori bound (Theorem~\ref{thm:aposteriori})
 fixes $M$ from precision.
 
-\textbf{T2.} Density (Theorem~\ref{thm:foxH_density}) and call
-price (Theorem~\ref{thm:foxH_price}) admit strictly closed-form
-Fox $H$ representations, evaluable in $O(M\log^2M)$ per $(K,T)$
-with no quadrature; the front-end is $O(M^2)$ per parameter
-evaluation and the PFE $O(M^2)$ per maturity
-(Remark~\ref{rem:cost_decomposition}). Established by two
-analytically independent routes (Corollary~\ref{cor:two_routes}).
+\textbf{T2.} Call
+price (Theorem~\ref{thm:foxH_price}) admits a strictly closed-form
+Fox $H$ representation as an absolutely convergent multi-index series
+in the PFE data, with no Fourier-inversion quadrature, no cosine
+series, no truncation interval; the front-end is $O(M^2)$ per
+parameter evaluation and the PFE $O(M^2)$ per maturity
+(Remark~\ref{rem:cost_decomposition}).
 
 \textbf{T3.} COS pricing (Theorem~\ref{thm:price}) on rational
 $\Phi_M(\cdot,T)$ provides a fallback endpoint of cost $O(NM)$
