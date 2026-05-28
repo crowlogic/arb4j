@@ -225,20 +225,28 @@ public class FoxHFunction implements
     // Define the pole-location auxiliary u : (j, ν) ↦ (b_j + ν) / B_j
     // as a two-argument complex function in the context.  The main term
     // body then writes u(j, ν) at each Gamma argument position.
-    arb.functions.integer.ComplexFunctionSequence.express("u",
-                                                          "u:j→ν→(b(j)+ν)/B(j)",
+    // The pole location u(j, ν) = (b[j] + ν) / B[j] is the only j-and-ν
+    // dependent quantity appearing inside every Γ.  Define it once as an
+    // auxiliary in the context; the residue body then references u(j)(ν)
+    // wherever it needs the pole.  Vector entries are addressed with the
+    // [k] subscript form (same convention as HypergeometricFunction's
+    // α[k], β[k] in pFq).
+    // Type: ComplexSequenceSequence — a sequence (index j) of complex-valued
+    // sequences (index ν). Both indices are Integer; the value is Complex.
+    // Wrong type would be ComplexFunctionSequence which has ν: Complex.
+    arb.functions.integer.ComplexSequenceSequence.express("u",
+                                                          "u:j→ν→(b[j]+ν)/B[j]",
                                                           context);
 
-    // Wrap the per-(j,ν) residue in the double sum  ∑_{j=1..m} ∑_{ν=0..N}.
-    // j and ν are introduced as summation indices here; they are NOT context
-    // variables, exactly the way HypergeometricFunction introduces n via Σn➜.
+    // Wrap the per-(j,ν) residue in the double sum ∑_{j=1..m} ∑_{ν=0..N}.
     String body = "Σj→Σν→"
-                + "(-1)^ν/(ν!·B(j))"
+                + "(-1)^ν/(ν!·B[j])"
                 + "·z^u(j)(ν)"
-                + "·∏l→Γ(b(l)-B(l)·u(j)(ν)){l=1…m,l≠j}"
-                + "·∏i→Γ(1-a(i)+A(i)·u(j)(ν)){i=1…n}"
-                + "/(∏l→Γ(1-b(l)+B(l)·u(j)(ν)){l=m+1…q}"
-                + " ·∏i→Γ(a(i)-A(i)·u(j)(ν)){i=n+1…p})"
+                + "·∏l→Γ(b[l]-B[l]·u(j)(ν)){l=1…j-1}"
+                + "·∏l→Γ(b[l]-B[l]·u(j)(ν)){l=j+1…m}"
+                + "·∏i→Γ(1-a[i]+A[i]·u(j)(ν)){i=1…n}"
+                + "/(∏l→Γ(1-b[l]+B[l]·u(j)(ν)){l=m+1…q}"
+                + " ·∏i→Γ(a[i]-A[i]·u(j)(ν)){i=n+1…p})"
                 + "{ν=0…N}{j=1…m}";
 
     T = NullaryFunction.parse(Complex.class,
