@@ -384,16 +384,48 @@ $\prod_j(1+tx_j)$.
 \section{Closed-form European call price via Fox $H$}\label{sec:foxH_price}
 
 \begin{theorem}[Closed-form European call price]\label{thm:foxH_price}
-With $\tilde k:=\log(K/S_0)-rT$,
+With $\tilde k:=\log(K/S_0)-rT$, the European call price is the
+difference of two Fox-$H$ subset sums,
 \begin{equation}\label{eq:foxH_price}
-C_M(K,T)=S_0\sum_{S\in\Pc(\{1,\ldots,2M\})}c_S(T)\,H^{m_S,n_S}_{p_S,q_S}\!\left[\zeta_S(K,T)\,\bigg|\,\begin{array}{c}(\mathbf{a}_S,\boldsymbol{\alpha}_S)\\(\mathbf{b}_S,\boldsymbol{\beta}_S)\end{array}\right]
+C_M(K,T)\;=\;S_0\,\mathcal{E}_S(\tilde k)\;-\;K e^{-rT}\,\mathcal{E}_K(\tilde k),
 \end{equation}
-with $(m_S,n_S,p_S,q_S)=(|S|+1,|S|+1,|S|+2,2|S|+2)$,
+where, with the density data
+$(m_S^\circ,n_S^\circ,p_S^\circ,q_S^\circ)=(|S|+1,|S|,|S|+1,2|S|+1)$
+and $(\mathbf{a}_S^\circ,\boldsymbol\alpha_S^\circ),(\mathbf{b}_S^\circ,\boldsymbol\beta_S^\circ)$
+from Theorem~\ref{thm:foxH_density},
 \begin{align}
-c_S(T)&=\frac{1}{\sqrt{2\pi\sigma_T^2}}\prod_{j\in S}\epsilon_j\sqrt{A_j(T)/i},\label{eq:price_prefactor}\\
-\zeta_S(K,T)&=\frac{(K/S_0)e^{-rT-\mu_T}}{\sqrt{2\sigma_T^2}}\prod_{j\in S}(iA_j(T)).\label{eq:price_argument}
+\mathcal{E}_K(\tilde k)&=\sum_{S\in\Pc(\{1,\ldots,2M\})}d_S(T)\,(\zeta_S^\circ)^{-1}\,
+H^{m_S^K,n_S^K}_{p_S^K,q_S^K}\!\left[\eta_S(\tilde k,T)\,\bigg|\,
+\begin{array}{c}(\mathbf{a}_S^K,\boldsymbol\alpha_S^K)\\(\mathbf{b}_S^K,\boldsymbol\beta_S^K)\end{array}\right],\label{eq:EK_def}\\
+\mathcal{E}_S(\tilde k)&=\sum_{S\in\Pc(\{1,\ldots,2M\})}d_S(T)\,(\zeta_S^\circ)^{-1}\,
+H^{m_S^S,n_S^S}_{p_S^S,q_S^S}\!\left[\eta_S(\tilde k,T)\,\bigg|\,
+\begin{array}{c}(\mathbf{a}_S^S,\boldsymbol\alpha_S^S)\\(\mathbf{b}_S^S,\boldsymbol\beta_S^S)\end{array}\right].\label{eq:ES_def}
 \end{align}
-After Newton--Girard the sum reduces to $2M+1$ symmetric groups,
+The K-piece dimensions and tuples (from one application of
+Lemma~\ref{lem:tail_int} to the density Fox~$H$) are
+\begin{equation}\label{eq:K_tuples}
+\begin{aligned}
+(m_S^K,n_S^K,p_S^K,q_S^K)&=(|S|+2,\;|S|,\;|S|+2,\;2|S|+2),\\
+(\mathbf{a}_S^K,\boldsymbol\alpha_S^K)&=(\mathbf{a}_S^\circ,\boldsymbol\alpha_S^\circ)\cup\{(1,1)\},\\
+(\mathbf{b}_S^K,\boldsymbol\beta_S^K)&=\{(0,1)\}\cup(\mathbf{b}_S^\circ,\boldsymbol\beta_S^\circ).
+\end{aligned}
+\end{equation}
+The S-piece dimensions and tuples (Lemma~\ref{lem:mellin_shift} with
+$\sigma=1$ then Lemma~\ref{lem:tail_int}) are
+\begin{equation}\label{eq:S_tuples}
+\begin{aligned}
+(m_S^S,n_S^S,p_S^S,q_S^S)&=(|S|+2,\;|S|+1,\;|S|+3,\;2|S|+2),\\
+(\mathbf{a}_S^S,\boldsymbol\alpha_S^S)&=\{(0,1)\}\cup(\mathbf{a}_S^\circ,\boldsymbol\alpha_S^\circ)\cup\{(1,1)\},\\
+(\mathbf{b}_S^S,\boldsymbol\beta_S^S)&=\{(0,1)\}\cup(\mathbf{b}_S^\circ,\boldsymbol\beta_S^\circ).
+\end{aligned}
+\end{equation}
+The prefactors and argument are inherited from the density:
+$d_S(T)$ is~\eqref{eq:density_prefactors}, $\eta_S(\tilde k,T)$
+is~\eqref{eq:density_argument} evaluated at $x=\tilde k$, and
+$\zeta_S^\circ$ is the linear coefficient of $\eta_S$ in $\tilde k$.
+After Newton--Girard
+(Corollary~\ref{cor:density_symmetric}) each of
+$\mathcal{E}_K,\mathcal{E}_S$ reduces to $2M+1$ symmetric groups,
 evaluable in $O(M\log^2M)$.
 \end{theorem}
 
@@ -526,95 +558,81 @@ tail integration. The result is
 \begin{equation}\label{eq:ES_step1}
 \int_{\tilde k}^\infty e^x H^{m_S^\circ,n_S^\circ}_{p_S^\circ,q_S^\circ}[\eta_S(x,T)]\,dx=(\zeta_S^\circ)^{-1}\,H^{m_S^\circ+1,n_S^\circ+1}_{p_S^\circ+2,q_S^\circ+1}\!\left[\eta_S(\tilde k,T)\,\bigg|\,\begin{array}{c}(0,1),(\mathbf{a}_S^\circ,\boldsymbol\alpha_S^\circ),(1,1)\\(0,1),(\mathbf{b}_S^\circ,\boldsymbol\beta_S^\circ)\end{array}\right].
 \end{equation}
-The call price is the difference
-$C_M=S_0\sum_S d_S\,E_S^{(S)}-Ke^{-rT}\sum_S d_S\,E_K^{(S)}$, where
-$E_S^{(S)},E_K^{(S)}$ denote the per-summand integrals
-\eqref{eq:ES_step1},\eqref{eq:EK_step1}. By
+The call price is the linear combination
+$C_M(K,T)=S_0\sum_S d_S\,E_S^{(S)}-Ke^{-rT}\sum_S d_S\,E_K^{(S)}$,
+where $E_K^{(S)}$ is~\eqref{eq:EK_step1} and $E_S^{(S)}$ is~\eqref{eq:ES_step1},
+packed into~\eqref{eq:EK_def}--\eqref{eq:ES_def}. By
 Lemma~\ref{lem:tail_int}, $E_K^{(S)}$ has upper block
 $(\mathbf{a}_S^\circ,\boldsymbol\alpha_S^\circ)\cup\{(1,1)\}$ and lower
 block $\{(0,1)\}\cup(\mathbf{b}_S^\circ,\boldsymbol\beta_S^\circ)$
-with dimensions $(|S|+2,|S|,|S|+2,2|S|+2)$. The Mathai--Saxena
-parameter-pair reduction (\cite{KilbasSaigoTrujillo2006}, §1.2,
-Reduction~I): if $(a_i,\alpha_i)=(b_j,\beta_j)$ for some
-$i\le n$ in the upper-numerator block and $j>m$ in the
-lower-denominator block, the pair cancels and $(n,p,q)$ each
-decrease by one. In $E_K^{(S)}$ no such cancellation applies, so the
-dimensions are as stated.
+with dimensions $(|S|+2,|S|,|S|+2,2|S|+2)$, matching~\eqref{eq:K_tuples}.
+The Mathai--Saxena parameter-pair reduction
+(\cite{KilbasSaigoTrujillo2006}, §1.2, Reduction~I): if
+$(a_i,\alpha_i)=(b_j,\beta_j)$ for some $i\le n$ in the
+upper-numerator block and $j>m$ in the lower-denominator block, the
+pair cancels and $(n,p,q)$ each decrease by one. In $E_K^{(S)}$ no
+such cancellation applies, so the dimensions are as stated.
 
-In $E_S^{(S)}$, the upper-numerator block contains an entry $(0,1)$
-from the Mellin shift, and the lower-numerator block (after
-Lemma~\ref{lem:tail_int}) contains $(0,1)$ inherited from
-$\mathbf{b}_S^\circ$. These are NOT a Reduction~I pair (one is in
-upper-numerator, the other in lower-numerator). However, the
-lower-denominator block contains $(-1,1)^{\times|S|}$ inherited from
-$\mathbf{b}_S^\circ$, none of which equals $(0,1)$, so no cancellation
-is available there either. The K-piece $E_K^{(S)}$ contributes the
-factor $K e^{-rT}$ to the price, the S-piece $E_S^{(S)}$ the factor
-$S_0$. Per Remark~\ref{rem:Sredundant}, the prefactor structures
-$d_S$ multiplying both pieces are identical up to the trivial
-$Ke^{-rT}/S_0$ ratio absorbed into the arguments $\eta_S(\tilde k,T)$
-and $\zeta_S(K,T)$ via $K/S_0=e^{\tilde k+rT}$. The two Fox~$H$
-expressions then share the parameter tuple after combining via the
-identity $C_M=S_0\sum_S c_S\,(E_S^{(S)}-e^{\tilde k}E_K^{(S)})$ and
-the Bessel-resummation
-\begin{equation}\label{eq:KS_merge}
-\frac{1}{w(w-1)}=\frac{1}{w-1}-\frac{1}{w},
-\end{equation}
-which combines two consecutive simple poles into a single Fox~$H$
-factor at the Mellin level. Specifically, the contour-integral form
-of the price
-\[
-C_M=\frac{S_0 e^{-rT}}{2\pi i}\int\frac{\phi_M(iw,T)e^{-w\tilde k}}{w(w-1)}\,dw
-\]
-uses~\eqref{eq:KS_merge} to identify the S- and K-pieces as residues
-of a single rational kernel $1/[w(w-1)]$, whose two Γ-equivalent
-factors are $\Gamma(-w)/\Gamma(1-w)$ and $\Gamma(-w+1)/\Gamma(-w+2)$
-— matched, respectively, to the upper-numerator $(0,1)$ from
-Mellin shift and the upper-denominator $(1,1)$ from tail integration.
-The lower-numerator $(0,1)$ from tail integration and the
-lower-denominator $-1$ entries from $\mathbf{b}_S^\circ$ are
-likewise paired via the kernel-pole identification, yielding the
-combined Fox~$H$ with dimensions
-$(|S|+1,|S|+1,|S|+2,2|S|+2)$ and the explicit tuples given
-in~\eqref{eq:foxH_price_tuples}.
+For $E_S^{(S)}$, Lemma~\ref{lem:mellin_shift} with $\sigma=1$ adds an
+entry $(0,1)$ to the upper-numerator block (incrementing $n$ and $p$
+each by one), then Lemma~\ref{lem:tail_int} adds $(1,1)$ to the
+upper-denominator block and $(0,1)$ to the lower-numerator block
+(incrementing $m$, $p$, $q$ each by one). The result is
+dimensions $(|S|+2,|S|+1,|S|+3,2|S|+2)$ and tuples~\eqref{eq:S_tuples}.
+The pairs available for Reduction~I are: the upper-numerator $(0,1)$
+from Mellin shift versus the lower-numerator $(0,1)$ from tail
+integration (different blocks: numerator-numerator, not a Reduction~I
+pair), and the lower-denominator $(-1,1)^{\times|S|}$ versus the
+upper-numerator $(0,1)$ (different $b$-values, not a Reduction~I
+pair). No cancellation applies, so the S-piece dimensions stand.
+
+The K- and S-pieces are distinct Fox~$H$ objects of different
+dimensions $(|S|+2,|S|,|S|+2,2|S|+2)$ and
+$(|S|+2,|S|+1,|S|+3,2|S|+2)$ respectively. They enter the price
+as the linear combination~\eqref{eq:foxH_price} with the
+coefficients $S_0$ and $-Ke^{-rT}$; no further parameter-pair
+reduction is applied.
 \end{proof}
 
-The explicit parameter tuples assembled by Proof~I, recorded for
-implementation, are
-\begin{equation}\label{eq:foxH_price_tuples}
-\boxed{\;
+The explicit parameter tuples assembled by Proof~I,
+recorded for implementation, are the two pairs in
+\eqref{eq:K_tuples}, \eqref{eq:S_tuples}. Expanding the
+shorthand using the density data $(\mathbf{a}_S^\circ,
+\boldsymbol\alpha_S^\circ)=((0,\ldots,0)_{|S|},(1,\ldots,1)_{|S|})$
+and $(\mathbf{b}_S^\circ,\boldsymbol\beta_S^\circ)=
+((0_{\text{Gauss}},(0)_{|S|},(-1)_{|S|}),(\tfrac12,(1)_{|S|},(1)_{|S|}))$,
+\begin{equation}\label{eq:foxH_price_tuples_K}
+\boxed{\;\text{K-piece:}\quad
 \begin{aligned}
-\mathbf{a}_S &= (\underbrace{0,\ldots,0}_{|S|+1},\;1), &
-\boldsymbol{\alpha}_S &= (\underbrace{1,\ldots,1}_{|S|+2}),\\[4pt]
-\mathbf{b}_S &= (0,\;\underbrace{0,\ldots,0}_{|S|},\;\underbrace{-1,\ldots,-1}_{|S|},\;1), &
-\boldsymbol{\beta}_S &= (\tfrac{1}{2},\;\underbrace{1,\ldots,1}_{2|S|},\;1),
+\mathbf{a}_S^K &= (\underbrace{0,\ldots,0}_{|S|},\,1), &
+\boldsymbol{\alpha}_S^K &= (\underbrace{1,\ldots,1}_{|S|+1}),\\
+\mathbf{b}_S^K &= (0,\,0,\,\underbrace{0,\ldots,0}_{|S|},\,\underbrace{-1,\ldots,-1}_{|S|}), &
+\boldsymbol{\beta}_S^K &= (1,\,\tfrac{1}{2},\,\underbrace{1,\ldots,1}_{2|S|}),
 \end{aligned}\;}
 \end{equation}
-of lengths $p_S = |S|+2$ and $q_S = 2|S|+2$. The first $n_S = |S|+1$
-entries of $\mathbf{a}_S$ form the upper-numerator block; the first
-$m_S = |S|+1$ entries of $\mathbf{b}_S$ form the lower-numerator
-block. The Gaussian envelope contributes
-$(b,\beta) = (0,\tfrac{1}{2})$ at the head of $\mathbf{b}_S$; the
-density contributes $(0,1)^{\times|S|}$ in $(\mathbf{a}_S^{\text{num}},
-\boldsymbol{\alpha}_S^{\text{num}})$ and $(0,1)^{\times|S|}$ together
-with $(-1,1)^{\times|S|}$ in $(\mathbf{b}_S, \boldsymbol{\beta}_S)$;
-the Mellin shift contributes one further $(0,1)$ to $(\mathbf{a}_S,
-\boldsymbol{\alpha}_S)$ (in the upper-numerator block); the payoff
-integration~\eqref{eq:Hint_const} contributes $(1,1)$ to
-$(\mathbf{a}_S, \boldsymbol{\alpha}_S)$ (in the upper-denominator
-block, as $a_{p_S} = 1$) and $(1,1)$ to $(\mathbf{b}_S,
-\boldsymbol{\beta}_S)$ (in the lower-denominator block, as
-$b_{q_S} = 1$).
+of lengths $p_S^K=|S|+2$, $q_S^K=2|S|+2$, with $m_S^K=|S|+2$ and
+$n_S^K=|S|$, and
+\begin{equation}\label{eq:foxH_price_tuples_S}
+\boxed{\;\text{S-piece:}\quad
+\begin{aligned}
+\mathbf{a}_S^S &= (0,\,\underbrace{0,\ldots,0}_{|S|},\,1), &
+\boldsymbol{\alpha}_S^S &= (\underbrace{1,\ldots,1}_{|S|+2}),\\
+\mathbf{b}_S^S &= (0,\,0,\,\underbrace{0,\ldots,0}_{|S|},\,\underbrace{-1,\ldots,-1}_{|S|}), &
+\boldsymbol{\beta}_S^S &= (1,\,\tfrac{1}{2},\,\underbrace{1,\ldots,1}_{2|S|}),
+\end{aligned}\;}
+\end{equation}
+of lengths $p_S^S=|S|+3$, $q_S^S=2|S|+2$, with $m_S^S=|S|+2$ and
+$n_S^S=|S|+1$.
 
-Sanity check at $|S| = 0$: dimensions $(1,1,2,2)$, tuples
-$\mathbf{a}_\emptyset = (0,1)$, $\boldsymbol{\alpha}_\emptyset = (1,1)$,
-$\mathbf{b}_\emptyset = (0,1)$, $\boldsymbol{\beta}_\emptyset =
-(\tfrac{1}{2}, 1)$, kernel
-$\Gamma(s)\,\Gamma(1-s) / [\Gamma(\tfrac{3}{2} - s)\,\Gamma(1+s)]
-= \Gamma(1-s) / [s\,\Gamma(\tfrac{3}{2}-s)]$, the Mellin transform of
-the Bachelier Gaussian call piece with $c_\emptyset(T) =
-(2\pi\sigma_T^2)^{-1/2}$ and $\zeta_\emptyset(K,T) =
-(K/S_0)e^{-rT-\mu_T}/\sqrt{2\sigma_T^2}$.
+Degenerate slice $|S|=0$: K-piece has dimensions $(2,0,2,2)$,
+$\mathbf{a}^K_\emptyset=(0,1)$, $\mathbf{b}^K_\emptyset=(0,0)$,
+$\boldsymbol\beta^K_\emptyset=(1,\tfrac12)$; S-piece has dimensions
+$(2,1,3,2)$, $\mathbf{a}^S_\emptyset=(0,0,1)$,
+$\mathbf{b}^S_\emptyset=(0,0)$, $\boldsymbol\beta^S_\emptyset=(1,\tfrac12)$.
+Both reduce to the Black--Scholes-like Gaussian-tail integrals
+for the $K$- and $S$-pieces respectively under the Pad\'{e}
+limit $M\to\infty$ via Stahl convergence
+(Theorem~\ref{thm:conv}).
 
 
 \begin{proof}[Proof II: direct Mellin--Barnes inversion]
@@ -623,12 +641,36 @@ Assume~\eqref{eq:strip_hypothesis} for some $c\in\R$
 \begin{equation}\label{eq:lewis}
 C_M(K,T)=\frac{S_0e^{-rT}}{2\pi i}\int_{c-i\infty}^{c+i\infty}\frac{\phi_M(iw,T)e^{-w\tilde k}}{w(w-1)}\,dw
 \end{equation}
-combined with the Bessel resummation
+admits the payoff-pole split
+\begin{equation}\label{eq:lewis_split}
+\frac{1}{w(w-1)}=\frac{1}{w-1}-\frac{1}{w},
+\end{equation}
+producing $C_M=S_0\,J_S-Ke^{-rT}\,J_K$ with
+$J_K=(2\pi i)^{-1}\int\phi_M(iw,T)e^{-w\tilde k}/w\,dw$ and
+$J_S=(2\pi i)^{-1}\int\phi_M(iw,T)e^{-w\tilde k}/(w-1)\,dw$
+(the $1/(w-1)$ piece, multiplied through by the prefactor
+$S_0e^{-rT}\cdot e^{rT}\cdot e^{\tilde k}/K=S_0/K\cdot e^{\tilde k}=1$
+via $K/S_0=e^{\tilde k+rT}$, contributes $S_0$ instead of $Ke^{-rT}$).
+Substituting the PFE~\eqref{eq:PFE},
+$\phi_M(iw,T)=\exp(-\tfrac12\sigma_T^2(iw)^2-i\mu_T(iw))
+\prod_j\exp(A_j(T)/(iw-u_j(T)))$ expands each pole factor by the
+Cauchy product of the absolutely convergent series
+$\exp(A_j/(iw-u_j))=\sum_{n\ge0}A_j^n/[n!(iw-u_j)^n]$.
+The Bessel resummation
 \begin{equation}\label{eq:bessel_resum}
 \sum_{n\ge 1}\frac{c^n}{n!(s-u)_n}=\frac{\Gamma(s-u)I_{s-u-1}(2\sqrt{c})}{c^{(s-u-1)/2}}-1,
 \end{equation}
-which converges absolutely on $\Real(s-u)>0$, identifies the
-result as Fox $H$ with the same parameters.
+convergent absolutely on $\Real(s-u)>0$, closes the $n$-sum at
+each pole into a single $\Gamma$-factor times a modified-Bessel
+function, which by Mellin--Barnes inversion is a Fox~$H$ factor.
+The upper-numerator $(0,1)$ from the Mellin shift on the
+$J_S$ piece and the upper-denominator $(1,1)$ from the
+tail-integration on both pieces match the
+$\Gamma(-w)/\Gamma(1-w)$ and $\Gamma(-w+1)/\Gamma(-w+2)$
+factors of the payoff-pole split~\eqref{eq:lewis_split}
+respectively. The resulting per-subset Fox~$H$'s have the
+dimensions and tuples in~\eqref{eq:K_tuples} for the
+$J_K$-piece and~\eqref{eq:S_tuples} for the $J_S$-piece.
 \end{proof}
 
 \begin{corollary}[Two-route verification]\label{cor:two_routes}
