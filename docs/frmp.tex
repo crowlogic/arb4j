@@ -1446,6 +1446,102 @@ special function beyond $\erfc$ are used.
 \end{corollary}
 
 %======================================================================
+\section{The Edgeworth--Hermite price series and its Pad\'e resummation}
+\label{sec:edgeworth}
+
+The closed-form price of Section~\ref{sec:price} is the canonical output of this
+construction. A second, independent route to the same number is worth recording:
+it is what a moment-only implementation produces, and it exhibits the resummation
+principle of this paper a second time, now one layer above the generator.
+
+Once the cumulants
+\begin{equation}\label{eq:cumulants-ed}
+\kappa_j(T)=j!\,\Real\!\bigl[(-i)^j\,[v^j]\,\Phi_M(v,T)\bigr],\qquad j\ge1,
+\end{equation}
+are read off the resummed exponent $\Phi_M$ (so $\kappa_1=\mu_T$,
+$\kappa_2=\sigma_T^2$), the European price admits the Edgeworth--Hermite expansion
+about the matching Gaussian $\mathcal N(\kappa_1,\kappa_2)$. With standardised
+cumulants $S_k=\kappa_k/(\sigma_T^k k!)$, the Hermite weights given by the
+Blinnikov--Moessner recurrence~\cite{BlinnikovMoessner}
+\begin{equation}\label{eq:BM}
+c_0=1,\quad c_1=c_2=0,\quad
+c_n=\frac1n\sum_{k=3}^{n}k\,S_k\,c_{n-k}\ \ (n\ge3),
+\end{equation}
+and the Hermite-function moment corrections $\Delta C_n(\tilde k)$, the price
+truncated at Edgeworth order $N$ is
+\begin{equation}\label{eq:edgeworth-partial}
+\Pi_N(\tilde k)=\mathrm{GBS}(\tilde k)
++S_0\sum_{n=3}^{N}c_n\,\Delta C_n(\tilde k),
+\end{equation}
+with $\mathrm{GBS}$ the Black--Scholes leg at $(\kappa_1,\kappa_2)$.
+
+\begin{remark}[The series is asymptotic]\label{rem:ed-div}
+As anticipated in \S\ref{sec:intro}, the Gram--Charlier/Edgeworth series in
+Hermite functions does not converge for a law with finite critical moments: the
+standardised cumulants $S_k$ grow at the rate of the moments of a non-Gaussian
+density, the weights $c_n$ grow factorially, and $\{\Pi_N(\tilde k)\}_N$ has a
+finite optimal-truncation order $N^\ast$ past which the partial sums diverge and
+leave the no-arbitrage band $[0,S_0]$. In the regime $T=10$, $\nu=1.5$,
+$\mu=0.55$ at the money one finds $N^\ast\approx10$, with $|\Pi_N|$ exceeding
+$10^{9}$ by $N=44$; optimal truncation yields a few digits and no limit.
+\end{remark}
+
+The cure is the device of Section~\ref{sec:pade}, applied now to the sequence
+\eqref{eq:edgeworth-partial} rather than to $\widetilde\Phi$. Wynn's
+$\varepsilon$-algorithm~\cite{Shanks,Wynn}
+\begin{equation}\label{eq:wynn}
+\varepsilon^{(n)}_{-1}=0,\quad
+\varepsilon^{(n)}_{0}=\Pi_{n}(\tilde k),\quad
+\varepsilon^{(n)}_{m+1}=\varepsilon^{(n+1)}_{m-1}
++\bigl(\varepsilon^{(n+1)}_{m}-\varepsilon^{(n)}_{m}\bigr)^{-1},
+\end{equation}
+has even columns equal to the diagonal Pad\'e approximants of the price series,
+$\varepsilon^{(0)}_{2m}=[m/m]$ (Shanks--Wynn), so the resummed price is again a
+diagonal Pad\'e of an asymptotic series --- exactly as $\Phi_M=[M/M]$ resums the
+divergent Puiseux series of the generator.
+
+\begin{theorem}[Convergence of the resummed price]\label{thm:ed-conv}
+Under the standing hypotheses, in particular the analyticity of $\Phi(\cdot,T)$
+at $v=0$ \textup{(Theorem~\ref{thm:cgf})}, the moments of $X_T$ obey
+$m_j\le C\,j!\,\rho^{-j}$, so the Hamburger moment problem of $X_T$ is
+determinate \textup{(Carleman)}. The diagonal Pad\'e approximants $[m/m]$ of the
+moment series --- equivalently the even Wynn columns $\varepsilon^{(0)}_{2m}$ of
+\eqref{eq:wynn} --- are the convergents of the Jacobi continued fraction of the
+Cauchy transform of the law, whose recurrence coefficients are the
+Chebyshev--Wheeler data of Section~\ref{sec:op} run on the moment functional; by
+the Hamburger--Nevanlinna theorem this continued fraction converges off the real
+axis iff the problem is determinate. Hence $\varepsilon^{(0)}_{2m}$ converges to
+the true European price.
+\end{theorem}
+
+\begin{proof}
+Holomorphy of $w\mapsto\E[e^{wX_T}]=\exp\Phi(-iw,T)$ on a disc $|w|<\rho$ gives,
+by Cauchy's estimates, $m_j\le C\,j!\,r^{-j}$ for $r<\rho$; thus
+$m_{2n}^{1/2n}\le\frac{2n}{er}(1+o(1))$ and $\sum_n m_{2n}^{-1/2n}=\infty$, which
+is Carleman's condition and forces determinacy. The diagonal Pad\'e of
+$\sum_j m_j z^{-j-1}$ are the convergents $P_{n-1}/p_n$ of the J-fraction whose
+$p_n$ are the orthonormal polynomials of the moment functional --- the same twin
+three-term recurrence of Section~\ref{sec:op}, run on the moment functional in
+place of $\Lc$. The Hamburger--Nevanlinna equivalence between J-fraction
+convergence on $\C\setminus\R$ and determinacy, together with the Shanks--Wynn
+identification of even $\varepsilon$-columns with diagonal Pad\'e, gives the
+claim; the price is a bounded functional of the Cauchy transform along a contour
+off $\R$ \textup{(Section~\ref{sec:transform})} and inherits the limit.
+\end{proof}
+
+\paragraph{Implementation.}
+The resummation is carried out in the in-place running form of Wynn's algorithm:
+each new partial sum advances a single moving anti-diagonal of \eqref{eq:wynn}
+in $O(N)$ work, so the diagonal approximant after $N$ terms costs $O(N^2)$, not
+$O(N^3)$. The recurrence uses only $+,-,\div$ and is therefore field-generic; it
+is implemented as \verb|arb.series.EpsilonTable<X extends Field<X>>| in
+\texttt{arb4j}, with \verb|RealEpsilonTable| the real specialisation. The pricer
+\verb|bonanzai.options.vix.RoughHestonOptionPricer.call(K)| feeds the partial
+sums \eqref{eq:edgeworth-partial}, generated at Edgeworth orders $N=3,4,5,\dots$,
+into \verb|RealEpsilonTable.limit| and returns the converged diagonal estimate
+$\varepsilon^{(0)}_{2m}$.
+
+%======================================================================
 \section{Summary}\label{sec:summary}
 
 \textbf{T1 (resummation).} The cgf $\Phi(v,T)=T\,\widetilde\Phi(T^{\mu};v)$
@@ -1486,6 +1582,9 @@ normalisations, and $C_M\to C$ at the Stahl rate.
 \bibitem{Widder} D.~V.~Widder, \emph{The Laplace Transform}, Princeton University Press, 1941.
 \bibitem{Olver} F.~W.~J.~Olver et al., \emph{NIST Handbook of Mathematical Functions}, Cambridge University Press, 2010 (\S7.10 for $\erfc$; \S18 for Hermite polynomials).
 \bibitem{SKM} S.~G.~Samko, A.~A.~Kilbas, O.~I.~Marichev, \emph{Fractional Integrals and Derivatives}, Gordon and Breach, 1993.
+\bibitem{Shanks} D.~Shanks, \emph{Non-linear transformations of divergent and slowly convergent sequences}, J.~Math.~Phys. \textbf{34} (1955), 1--42.
+\bibitem{Wynn} P.~Wynn, \emph{On a device for computing the $e_m(S_n)$ transformation}, Math.~Tables Aids Comput. \textbf{10} (1956), 91--96.
+\bibitem{BlinnikovMoessner} S.~Blinnikov and R.~Moessner, \emph{Expansions for nearly Gaussian distributions}, Astron.~Astrophys.~Suppl.~Ser. \textbf{130} (1998), 193--205.
 \end{thebibliography}
 
 \end{document}
