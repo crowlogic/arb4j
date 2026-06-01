@@ -281,6 +281,19 @@ public interface Function<D, CO> extends
 
   }
 
+  /**
+   * Drop only this function's own hoisted state (index cache / value-backing /
+   * static precision) WITHOUT cascading to referenced functions, unlike
+   * {@link #invalidateCache()}. Used to refresh the caches that depend on a
+   * changed context variable while leaving the caches of upstream producers that
+   * do not depend on it intact. Functions with no hoisted state inherit this
+   * no-op default; cache-bearing generated classes override it.
+   */
+  public default void invalidateLocalCache()
+  {
+
+  }
+
   public static <D, H, Q extends Function<? extends D, ? extends H>>
          Expression<D, H, Q>
          parseAndCompile(Class<? extends D> domainClass, Class<? extends H> coDomainClass, Class<Q> functionClass, String expression, Context context)

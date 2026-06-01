@@ -1076,12 +1076,19 @@ public class Context implements
     {
       try
       {
-        field = compiledClass.getField(variableName);
-      }
-      catch (NoSuchFieldException nsfe)
-      {
+        // The injected fields (variables, intermediates) are declared on the
+        // generated class itself and are usually non-public, so resolve them
+        // directly. getField(name) only sees public fields and would throw
+        // NoSuchFieldException — filling a stack trace — for every non-public
+        // field on this injection path; getDeclaredField sees them without
+        // throwing.
         field = compiledClass.getDeclaredField(variableName);
         field.setAccessible(true);
+      }
+      catch (NoSuchFieldException notDeclaredHere)
+      {
+        // An inherited public field (rare): resolve it through the hierarchy.
+        field = compiledClass.getField(variableName);
       }
       field.set(f, value);
     }

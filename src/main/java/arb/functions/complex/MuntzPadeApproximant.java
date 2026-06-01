@@ -185,10 +185,27 @@ public final class MuntzPadeApproximant implements
   {
     if (closed) throw new IllegalStateException("closed");
     this.v.set(v);
-    context.invalidateAllCaches();
+    // Drop only the caches that depend on v. The σ-table (ops/Q), the Müntz
+    // coefficient sequence a, and m are functions of the polynomial variable
+    // alone — independent of the perturbation point — so they are computed once
+    // and reused across the whole v sweep. Their cache (~60% of the per-build
+    // native allocation) survives; only the v-dependent αv/βv/hv → Pn → Φnum/Φ
+    // (and Φden) caches are cleared, via the non-propagating invalidateLocalCache
+    // so clearing a consumer does not cascade into its v-independent producers.
+    for (String name : V_DEPENDENT_CACHES)
+    {
+      var mapping = context.getFunctionMapping(name);
+      if (mapping != null && mapping.instance != null)
+      {
+        mapping.instance.invalidateLocalCache();
+      }
+    }
     cachedBits = -1;
     return this;
   }
+
+  private static final String[] V_DEPENDENT_CACHES =
+  { "αv", "βv", "hv", "Pn", "Φden", "Φnum", "Φ" };
 
   @Override
   public void close()

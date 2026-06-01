@@ -2747,8 +2747,23 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       return classVisitor;
     }
-    // public void invalidateCache()
-    var     mv          = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, "invalidateCache", "()V", null, null);
+    generateInvalidateMethod(classVisitor, "invalidateCache", true);
+    // Non-propagating local-cache clear: drops only THIS function's hoisted
+    // state (index cache / value-backing / static precision) without cascading
+    // to referenced producers. A parameter rebind uses it to refresh the caches
+    // that depend on the changed variable while preserving the upstream caches
+    // that do not (see MuntzPadeApproximant.rebind, which keeps the v-independent
+    // σ-table while dropping the v-dependent αv/βv/hv/Pn/Φ caches).
+    if (hasStaticNodes || shouldCache() || shouldCacheValueBacking())
+    {
+      generateInvalidateMethod(classVisitor, "invalidateLocalCache", false);
+    }
+    return classVisitor;
+  }
+
+  protected ClassVisitor generateInvalidateMethod(ClassVisitor classVisitor, String methodName, boolean propagate)
+  {
+    var     mv          = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, methodName, "()V", null, null);
     mv.visitCode();
     boolean cached      = shouldCache();
     // Reentrancy flag keyed on the SHARED identity of the cluster:
@@ -2821,16 +2836,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "lastV", Type.getDescriptor(domainType));
     }
     // for each inlined nested Function field f: if (this.f != null) this.f.invalidateCache();
-    for (var mapping : referencedFunctions.values())
+    // Skipped for the non-propagating invalidateLocalCache variant.
+    if (propagate)
     {
-      var skip = new Label();
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), mapping.functionName, mapping.functionFieldDescriptor());
-      mv.visitJumpInsn(Opcodes.IFNULL, skip);
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), mapping.functionName, mapping.functionFieldDescriptor());
-      mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, functionInternal, "invalidateCache", "()V", true);
-      mv.visitLabel(skip);
+      for (var mapping : referencedFunctions.values())
+      {
+        var skip = new Label();
+        loadThisOntoStack(mv);
+        mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), mapping.functionName, mapping.functionFieldDescriptor());
+        mv.visitJumpInsn(Opcodes.IFNULL, skip);
+        loadThisOntoStack(mv);
+        mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), mapping.functionName, mapping.functionFieldDescriptor());
+        mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, functionInternal, "invalidateCache", "()V", true);
+        mv.visitLabel(skip);
+      }
     }
     // release the reentrancy flag (shared-cache flag for a cluster, else per-instance)
     if (cached)
@@ -3779,17 +3798,30 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       Object otherInstance = otherEntry.getValue().instance;
       if (otherInstance == null || otherInstance == selfInstance)
         continue;
+      // Find the field without throwing: most peers in the context do not
+      // reference us, so getField(functionName) would throw NoSuchFieldException
+      // — filling a stack trace — for every non-referencing peer. Scan the
+      // public fields (what getField resolves anyway) and skip when absent.
+      java.lang.reflect.Field field = null;
+      for (var candidate : otherInstance.getClass().getFields())
+      {
+        if (candidate.getName().equals(functionName))
+        {
+          field = candidate;
+          break;
+        }
+      }
+      if (field == null)
+      {
+        // The other class doesn't reference us — not in our SCC, nothing to do.
+        continue;
+      }
       try
       {
-        java.lang.reflect.Field field = otherInstance.getClass().getField(functionName);
         if (field.get(otherInstance) == null)
         {
           field.set(otherInstance, selfInstance);
         }
-      }
-      catch (NoSuchFieldException ignored)
-      {
-        // The other class doesn't reference us — not in our SCC, nothing to do.
       }
       catch (IllegalAccessException ignored)
       {
