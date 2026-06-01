@@ -1,5 +1,8 @@
 package arb.functions.complex;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -171,6 +174,13 @@ public class RiccatiMuntzPadeFunctional extends
   // per variable exactly the way p, q, r are refreshed from P, Q, R.
   private ComplexPolynomial         pdv, qdv, rdv;
   private ComplexPolynomialSequence dyByVar;
+  // ∂P/∂var, ∂Q/∂var, ∂R/∂var are fixed expressions per variable — only the
+  // values they evaluate to change as parameters change. Compile each once and
+  // cache it; recompiling per call loads a fresh class every time and exhausts
+  // the heap under a calibration that re-seeds thousands of times.
+  private final Map<String, ComplexPolynomialNullaryFunction> dP = new HashMap<>();
+  private final Map<String, ComplexPolynomialNullaryFunction> dQ = new HashMap<>();
+  private final Map<String, ComplexPolynomialNullaryFunction> dR = new HashMap<>();
 
   private void ensureDerivativeRecurrence()
   {
@@ -199,12 +209,9 @@ public class RiccatiMuntzPadeFunctional extends
   public ComplexPolynomialSequence parameterDerivative(String var, int bits)
   {
     ensureDerivativeRecurrence();
-    ComplexPolynomialNullaryFunction dP = P.derivative(var);
-    ComplexPolynomialNullaryFunction dQ = Q.derivative(var);
-    ComplexPolynomialNullaryFunction dR = R.derivative(var);
-    dP.evaluate(bits, pdv);
-    dQ.evaluate(bits, qdv);
-    dR.evaluate(bits, rdv);
+    dP.computeIfAbsent(var, v -> P.derivative(v)).evaluate(bits, pdv);
+    dQ.computeIfAbsent(var, v -> Q.derivative(v)).evaluate(bits, qdv);
+    dR.computeIfAbsent(var, v -> R.derivative(v)).evaluate(bits, rdv);
     dyByVar.invalidateCache();
     return dyByVar;
   }

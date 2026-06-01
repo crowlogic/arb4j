@@ -134,21 +134,37 @@ public abstract class EpsilonTable<X extends Field<X>> implements
    */
   public final X limit(TermSupplier<X> partials, int startIndex, int maxOrder, int bits, X result)
   {
+    return limit(partials, startIndex, maxOrder, bits, bits, result);
+  }
+
+  /**
+   * As {@link #limit(TermSupplier, int, int, int, Field)} but with the
+   * intermediate working precision {@code workBits} (the precision at which the
+   * partial sums are evaluated and the ε-recurrence is run) decoupled from
+   * {@code thresholdBits} (the requested output precision that sets the stop test
+   * {@code 2^(-thresholdBits/2)}). When the partial sums of a divergent asymptotic
+   * series reach magnitude 2^M before they cancel, evaluating them at the output
+   * precision leaves only (output−M) valid bits feeding the recurrence; raising
+   * {@code workBits} above M+output restores a correct resummed value at the
+   * requested output precision without inflating the request.
+   */
+  public final X limit(TermSupplier<X> partials, int startIndex, int maxOrder, int workBits, int thresholdBits, X result)
+  {
     n           = 0;
     cellUpdates = 0;
     try ( X cur = newVector(1); X est = newVector(1); X prev = newVector(1);
           X d = newVector(1); X best = newVector(1);
           Real diff = new Real(); Real threshold = new Real(); Real bestMag = new Real())
     {
-      threshold.one().mul2e(-bits / 2, threshold);
+      threshold.one().mul2e(-thresholdBits / 2, threshold);
       bestMag.posInf();
       boolean started = false;
       for (int idx = startIndex; idx <= maxOrder; idx++)
       {
-        partials.term(idx, bits, cur);
+        partials.term(idx, workBits, cur);
         if (!isFinite(cur))
           break;
-        next(cur, bits, est);
+        next(cur, workBits, est);
 
         // the first non-trivial diagonal Padé [m/m] (m ≥ 1) appears at the 3rd term
         if (count() < 3 || !isFinite(est))
@@ -164,8 +180,8 @@ public abstract class EpsilonTable<X extends Field<X>> implements
           started = true;
           continue;
         }
-        est.sub(prev, bits, d);
-        magnitude(d, bits, diff);
+        est.sub(prev, workBits, d);
+        magnitude(d, workBits, diff);
         if (diff.compareTo(bestMag) < 0)
         {
           best.set(est);

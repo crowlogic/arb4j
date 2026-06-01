@@ -1,18 +1,16 @@
 package arb.series;
 
-import arb.Complex;
-import arb.ComplexConstants;
-import arb.Real;
+import arb.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.integer.ComplexSequence;
 
 /**
- * {@link EpsilonTable} over {@link Complex}. The generic table carries the whole
- * algorithm; this supplies only the four complex-valued primitives and a
+ * {@link EpsilonTable} over {@link Complex}. The generic table carries the
+ * whole algorithm; this supplies only the four complex-valued primitives and a
  * {@link ComplexSequence} convenience for {@link #limit}. Used to resum a
- * complex series directly, e.g.\ a characteristic function or cumulant series at
- * a complex argument.
+ * complex series directly, e.g.\ a characteristic function or cumulant series
+ * at a complex argument.
  *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
@@ -22,7 +20,8 @@ public final class ComplexEpsilonTable extends
 {
   public ComplexEpsilonTable(int capacity, int bits)
   {
-    super(capacity, bits);
+    super(capacity,
+          bits);
   }
 
   @Override

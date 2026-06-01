@@ -168,6 +168,28 @@ public final class MuntzPadeApproximant implements
     }
   }
 
+  /**
+   * Rebind this approximant to a new perturbation point {@code v} (and working
+   * precision) without recompiling. The perturbation point enters the assembled
+   * sequences only through the runtime variable {@code v} registered in
+   * {@link #context}, so the generated σ-table / Jacobi / Padé classes are
+   * identical across {@code v}. Mutating the registered {@code v} and dropping
+   * the numeric caches that read it yields the approximant for the new point
+   * while reusing every compiled class — which is what lets a
+   * {@link MuntzPadeFunctional} evaluate across a sweep of perturbation points
+   * without regenerating (and JIT-compiling) bytecode per point.
+   *
+   * @return this
+   */
+  public MuntzPadeApproximant rebind(Complex v, int bits)
+  {
+    if (closed) throw new IllegalStateException("closed");
+    this.v.set(v);
+    context.invalidateAllCaches();
+    cachedBits = -1;
+    return this;
+  }
+
   @Override
   public void close()
   {

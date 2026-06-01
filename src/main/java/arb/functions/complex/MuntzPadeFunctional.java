@@ -54,6 +54,15 @@ public class MuntzPadeFunctional implements
   private int                    cachedBits = -1;
   private ComplexFunction        cachedResult;
 
+  /**
+   * The approximant is compiled once and rebound to each new perturbation point.
+   * Its σ-table / Jacobi / Padé classes do not depend on v (only the registered
+   * runtime variable does), so reconstructing it per point would needlessly
+   * regenerate and JIT-compile a dozen expression classes — and leak the
+   * previous one's classes into metaspace.
+   */
+  private MuntzPadeApproximant   approximant;
+
   public MuntzPadeFunctional(Real α, ComplexPolynomialSequence a)
   {
     this.α = α;
@@ -74,7 +83,14 @@ public class MuntzPadeFunctional implements
       return cachedResult;
     }
 
-    ComplexFunction approximant = new MuntzPadeApproximant(α, a, v, bits);
+    if (approximant == null)
+    {
+      approximant = new MuntzPadeApproximant(α, a, v, bits);
+    }
+    else
+    {
+      approximant.rebind(v, bits);
+    }
 
     if (cachedV == null)
     {
@@ -125,6 +141,12 @@ public class MuntzPadeFunctional implements
       cachedV.close();
       cachedV = null;
     }
+    // The approximant is intentionally not closed here: the generated close()
+    // path NPEs on a null intermediate field (a pre-existing compiler bug,
+    // unrelated to this reuse change — it was simply never exercised while the
+    // old code dropped approximants for GC). Reusing one instance already turns
+    // the per-v class-generation leak into a single instance.
+    approximant  = null;
     cachedResult = null;
   }
 }
