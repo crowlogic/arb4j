@@ -2737,21 +2737,51 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return classVisitor;
     }
     // public void invalidateCache()
-    var    mv          = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, "invalidateCache", "()V", null, null);
+    var     mv          = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, "invalidateCache", "()V", null, null);
     mv.visitCode();
-    // per-instance reentrancy: if (this.invalidatingCache) return; this.invalidatingCache = true;
-    // This terminates a cyclic reference graph (a self- or mutually-recursive
-    // cluster such as a↔S or w↔h) the same way close() uses the `closed` flag:
-    // a re-entry sees the flag already set and returns. No visited list.
+    boolean cached      = shouldCache();
+    // Reentrancy flag keyed on the SHARED identity of the cluster:
+    //
+    //  - cache-bearing class: a self-referential sequence (the Müntz a/aoperand
+    //    cluster) is evaluated through an N-deep chain of DISTINCT instances —
+    //    one per recursion level for scratch isolation — that all SHARE one
+    //    IndexCache (the parent stores child.cache = this.cache, see
+    //    generateNestedFunctionInstanceCacheSharing below). A per-instance flag
+    //    cannot stop a walk over distinct instances and overflows the stack at
+    //    large order. The flag on the shared cache collapses the whole chain to a
+    //    single visit: the first instance clears the one shared cache and sets
+    //    cache.invalidating, every other chain member (reached via the self-edge
+    //    or the operand bridge) sees it set and returns. This is the minimal,
+    //    collection-free form of "invalidate each cluster once" the same way
+    //    close() uses `closed`. Mutually-recursive sequences with independent
+    //    caches each carry their own flag and are cleared exactly once.
+    //
+    //  - cacheless class: per-instance invalidatingCache over a finite ref graph.
     var notInvalidating = new Label();
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "invalidatingCache", "Z");
-    mv.visitJumpInsn(Opcodes.IFEQ, notInvalidating);
-    mv.visitInsn(Opcodes.RETURN);
-    mv.visitLabel(notInvalidating);
-    loadThisOntoStack(mv);
-    mv.visitInsn(Opcodes.ICONST_1);
-    mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "invalidatingCache", "Z");
+    if (cached)
+    {
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "cache", Type.getDescriptor(IndexCache.class));
+      mv.visitFieldInsn(Opcodes.GETFIELD, Type.getInternalName(IndexCache.class), "invalidating", "Z");
+      mv.visitJumpInsn(Opcodes.IFEQ, notInvalidating);
+      mv.visitInsn(Opcodes.RETURN);
+      mv.visitLabel(notInvalidating);
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "cache", Type.getDescriptor(IndexCache.class));
+      mv.visitInsn(Opcodes.ICONST_1);
+      mv.visitFieldInsn(Opcodes.PUTFIELD, Type.getInternalName(IndexCache.class), "invalidating", "Z");
+    }
+    else
+    {
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "invalidatingCache", "Z");
+      mv.visitJumpInsn(Opcodes.IFEQ, notInvalidating);
+      mv.visitInsn(Opcodes.RETURN);
+      mv.visitLabel(notInvalidating);
+      loadThisOntoStack(mv);
+      mv.visitInsn(Opcodes.ICONST_1);
+      mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "invalidatingCache", "Z");
+    }
     if (hasStaticNodes)
     {
       // this.staticPrecision = -1
@@ -2759,12 +2789,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       mv.visitInsn(Opcodes.ICONST_M1);
       mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "staticPrecision", "I");
     }
-    if (shouldCache())
+    if (cached)
     {
       // this.cache.clear() — the per-index memoisation table is keyed only on
       // the domain index k, so any change to other Context variables (e.g. v in
       // the Müntz a/S recurrence) must drop every entry, otherwise a(k) returns
-      // the previous v's value at the same k.
+      // the previous v's value at the same k. One clear of the shared cache drops
+      // every level of the chain at once.
       loadThisOntoStack(mv);
       mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "cache", Type.getDescriptor(IndexCache.class));
       mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, Type.getInternalName(IndexCache.class), "clear", "()V", false);
@@ -2790,10 +2821,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, functionInternal, "invalidateCache", "()V", true);
       mv.visitLabel(skip);
     }
-    // this.invalidatingCache = false;
-    loadThisOntoStack(mv);
-    mv.visitInsn(Opcodes.ICONST_0);
-    mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "invalidatingCache", "Z");
+    // release the reentrancy flag (shared-cache flag for a cluster, else per-instance)
+    if (cached)
+    {
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "cache", Type.getDescriptor(IndexCache.class));
+      mv.visitInsn(Opcodes.ICONST_0);
+      mv.visitFieldInsn(Opcodes.PUTFIELD, Type.getInternalName(IndexCache.class), "invalidating", "Z");
+    }
+    else
+    {
+      loadThisOntoStack(mv);
+      mv.visitInsn(Opcodes.ICONST_0);
+      mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "invalidatingCache", "Z");
+    }
     mv.visitInsn(Opcodes.RETURN);
     mv.visitMaxs(0, 0);
     mv.visitEnd();
