@@ -6,6 +6,7 @@
 /libarblib.so
 /*.log
 /class.path
+/arb4j-profiling/
 /precompute_grid.csv
 /spectral_density.csv
 /zeta_st_reconstruction.csv
