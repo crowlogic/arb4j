@@ -278,25 +278,6 @@ public interface Function<D, CO> extends
    */
   public default void invalidateCache()
   {
-    invalidateCache(Collections.newSetFromMap(new IdentityHashMap<>()));
-  }
-
-  /**
-   * Cycle-safe entry point: walks the static-cache invalidation through inlined
-   * nested {@link Function} fields exactly once. Generated classes override this
-   * to (1) skip if {@code alreadyInvalidated} already contains {@code this}, (2)
-   * add {@code this}, (3) reset their own {@code staticPrecision} sentinel, and
-   * (4) recurse into each referenced nested function field passing the same set.
-   * The mutually-recursive Müntz {@code a ↔ S} cluster (and any other cycle in
-   * the function graph) terminates the traversal correctly because the set
-   * membership check is identity-based.
-   *
-   * @param alreadyInvalidated identity-based set of {@link Function} instances
-   *                           whose static caches have been invalidated during
-   *                           this traversal
-   */
-  public default void invalidateCache(Set<Function<?, ?>> alreadyInvalidated)
-  {
 
   }
 

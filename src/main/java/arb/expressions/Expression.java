@@ -1258,6 +1258,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     cw.visitField(Opcodes.ACC_PUBLIC, IS_INITIALIZED, "Z", null, null);
     cw.visitField(Opcodes.ACC_PUBLIC, "closed", "Z", null, null);
+    cw.visitField(Opcodes.ACC_PUBLIC, "invalidatingCache", "Z", null, null);
     if (hasStaticNodes)
     {
       cw.visitField(Opcodes.ACC_PUBLIC, "staticPrecision", "I", null, null);
@@ -2711,19 +2712,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * Emit the cycle-safe {@code public void invalidateCache(Set)} override (and a
-   * no-arg shim that calls it with a fresh identity set) that:
+   * Emit {@code public void invalidateCache()} that:
    * <ol>
-   * <li>returns immediately if {@code alreadyInvalidated.add(this)} is
-   * {@code false} (already visited — prevents unbounded recursion in the
-   * mutually-recursive Müntz {@code a ↔ S} cluster and any other cycle in the
-   * function graph);</li>
+   * <li>returns immediately if the per-instance {@code invalidatingCache} flag is
+   * already set, then sets it — terminating recursion in a cyclic reference
+   * graph (the mutually-recursive Müntz {@code a ↔ S} cluster, or a self-
+   * referential recurrence) the same way {@code close()} uses the {@code closed}
+   * flag, with no runtime visited-list;</li>
    * <li>resets {@code this.staticPrecision = -1} when this expression has hoisted
    * static subexpressions, forcing the next {@code evaluate()} call to re-run
    * {@code evaluateStaticSubexpressions};</li>
-   * <li>recursively calls {@code invalidateCache(set)} on every inlined nested
+   * <li>recursively calls {@code invalidateCache()} on every inlined nested
    * {@link Function} field (the {@link #referencedFunctions} entries) so their
-   * hoisted v-dependent subtrees are also flushed.</li>
+   * hoisted v-dependent subtrees are also flushed, then clears the flag.</li>
    * </ol>
    * Emitted whenever {@link #hasStaticNodes} is true OR
    * {@link #referencedFunctions} is non-empty — otherwise the {@link Function}
@@ -2735,23 +2736,22 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       return classVisitor;
     }
-    String setInternal = Type.getInternalName(Set.class);
-
-    // public void invalidateCache(Set alreadyInvalidated)
-    var    mv          = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
-                                                  "invalidateCache",
-                                                  "(L" + setInternal + ";)V",
-                                                  "(L" + setInternal + "<L" + functionInternal + "<**>;>;)V",
-                                                  null);
+    // public void invalidateCache()
+    var    mv          = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, "invalidateCache", "()V", null, null);
     mv.visitCode();
-    // if (!alreadyInvalidated.add(this)) return;
-    var notVisited = new Label();
-    mv.visitVarInsn(Opcodes.ALOAD, 1);
+    // per-instance reentrancy: if (this.invalidatingCache) return; this.invalidatingCache = true;
+    // This terminates a cyclic reference graph (a self- or mutually-recursive
+    // cluster such as a↔S or w↔h) the same way close() uses the `closed` flag:
+    // a re-entry sees the flag already set and returns. No visited list.
+    var notInvalidating = new Label();
     loadThisOntoStack(mv);
-    mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, setInternal, "add", "(Ljava/lang/Object;)Z", true);
-    mv.visitJumpInsn(Opcodes.IFNE, notVisited);
+    mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "invalidatingCache", "Z");
+    mv.visitJumpInsn(Opcodes.IFEQ, notInvalidating);
     mv.visitInsn(Opcodes.RETURN);
-    mv.visitLabel(notVisited);
+    mv.visitLabel(notInvalidating);
+    loadThisOntoStack(mv);
+    mv.visitInsn(Opcodes.ICONST_1);
+    mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "invalidatingCache", "Z");
     if (hasStaticNodes)
     {
       // this.staticPrecision = -1
@@ -2778,8 +2778,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       mv.visitInsn(Opcodes.ACONST_NULL);
       mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "lastV", Type.getDescriptor(domainType));
     }
-    // for each inlined nested Function field f: if (this.f != null)
-    // this.f.invalidateCache(alreadyInvalidated);
+    // for each inlined nested Function field f: if (this.f != null) this.f.invalidateCache();
     for (var mapping : referencedFunctions.values())
     {
       var skip = new Label();
@@ -2788,29 +2787,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       mv.visitJumpInsn(Opcodes.IFNULL, skip);
       loadThisOntoStack(mv);
       mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), mapping.functionName, mapping.functionFieldDescriptor());
-      mv.visitVarInsn(Opcodes.ALOAD, 1);
-      mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, functionInternal, "invalidateCache", "(L" + setInternal + ";)V", true);
+      mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, functionInternal, "invalidateCache", "()V", true);
       mv.visitLabel(skip);
     }
+    // this.invalidatingCache = false;
+    loadThisOntoStack(mv);
+    mv.visitInsn(Opcodes.ICONST_0);
+    mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "invalidatingCache", "Z");
     mv.visitInsn(Opcodes.RETURN);
     mv.visitMaxs(0, 0);
     mv.visitEnd();
-
-    // public void invalidateCache() { invalidateCache(Collections.newSetFromMap(new
-    // IdentityHashMap())); }
-    var shim = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, "invalidateCache", "()V", null, null);
-    shim.visitCode();
-    loadThisOntoStack(shim);
-    String idMapInternal       = Type.getInternalName(IdentityHashMap.class);
-    String collectionsInternal = Type.getInternalName(Collections.class);
-    shim.visitTypeInsn(Opcodes.NEW, idMapInternal);
-    shim.visitInsn(Opcodes.DUP);
-    shim.visitMethodInsn(Opcodes.INVOKESPECIAL, idMapInternal, "<init>", "()V", false);
-    shim.visitMethodInsn(Opcodes.INVOKESTATIC, collectionsInternal, "newSetFromMap", "(Ljava/util/Map;)Ljava/util/Set;", false);
-    shim.visitMethodInsn(Opcodes.INVOKEVIRTUAL, internalName(), "invalidateCache", "(L" + setInternal + ";)V", false);
-    shim.visitInsn(Opcodes.RETURN);
-    shim.visitMaxs(0, 0);
-    shim.visitEnd();
     return classVisitor;
   }
 

@@ -312,18 +312,17 @@ public class Context implements
 
   /**
    * Clear the memoization cache of every instantiated function in this
-   * Context, sharing one cycle-guard set so the reference graph is walked
-   * once. The per-index caches are precision-blind, so callers invoke this
-   * when a higher working precision is requested.
+   * Context; each function's own per-instance reentrancy flag terminates any
+   * cycle in the reference graph. The per-index caches are precision-blind, so
+   * callers invoke this when a higher working precision is requested.
    */
   public void invalidateAllCaches()
   {
-    Set<Function<?, ?>> visited = Collections.newSetFromMap(new IdentityHashMap<>());
     functions.values().forEach(mapping ->
     {
       if (mapping.instance != null)
       {
-        mapping.instance.invalidateCache(visited);
+        mapping.instance.invalidateCache();
       }
     });
   }

@@ -47,7 +47,7 @@ public class MuntzPadeFunctional implements
    * returned again when the next call requests the same {@code (v, bits)}.
    * Curried evaluation is expensive and consecutive calls at the same Fourier
    * argument are common in the pricing/calibration loops that drive this
-   * functional. Cleared by {@link #invalidateCache(Set)} so a parameter change
+   * functional. Cleared by {@link #invalidateCache()} so a parameter change
    * can never surface a stale approximant.
    */
   private Complex                cachedV;
@@ -92,19 +92,23 @@ public class MuntzPadeFunctional implements
    * {@code RiccatiMuntzPadeFunctional} updating p, q, r) can never surface a
    * stale approximant on the next evaluate.
    */
+  private boolean invalidatingCache;
+
   @Override
-  public void invalidateCache(Set<Function<?, ?>> alreadyInvalidated)
+  public void invalidateCache()
   {
-    if (!alreadyInvalidated.add(this))
+    if (invalidatingCache)
     {
       return;
     }
-    cachedResult = null;
-    cachedBits   = -1;
+    invalidatingCache = true;
+    cachedResult      = null;
+    cachedBits        = -1;
     if (a != null)
     {
-      a.invalidateCache(alreadyInvalidated);
+      a.invalidateCache();
     }
+    invalidatingCache = false;
   }
 
   @Override

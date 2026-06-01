@@ -203,6 +203,7 @@ public class RiccatiMuntzPadeFunctional extends
     dP.evaluate(bits, pdv);
     dQ.evaluate(bits, qdv);
     dR.evaluate(bits, rdv);
+    dyByVar.invalidateCache();
     return dyByVar;
   }
 
