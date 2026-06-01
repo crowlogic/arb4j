@@ -179,11 +179,13 @@ public class RiccatiMuntzPadeFunctional extends
     context.registerVariable(pdv = ComplexPolynomial.named("pdv"));
     context.registerVariable(qdv = ComplexPolynomial.named("qdv"));
     context.registerVariable(rdv = ComplexPolynomial.named("rdv"));
-    ComplexFunctionSequence.declare("w", context);
-    ComplexFunctionSequence.compile("f:k➔v➔when(k=0,pdv(v),else,qdv(v)*a(k)(v)+rdv(v)*∑j➔a(j)(v)*a(k-j)(v){j=1..k-1}", context);
-    ComplexFunctionSequence.compile("g:k➔v➔when(k=0,q(v),else,2*r(v)*a(k)(v))", context);
-    ComplexFunctionSequence.compile("h:k➔v➔(Γ((k-1)*μ+1)/Γ(k*μ+1))*(f(k-1)(v)+∑j➔g(k-2-j)(v)*w(j+1)(v){j=0..k-2})", context);
-    dyByVar = ComplexPolynomialSequence.express("w:k➔v➔when(k=1,pdv(v)/Γ(μ+1),else,h(k,v))", context);
+    // ∂a/∂var is its own self-referential Müntz sequence, the linearisation of
+    // the a-recurrence: da₁ = ṗ/Γ(μ+1), and for k≥2
+    //   daₖ = γₖ( q̇·aₖ₋₁ + q·daₖ₋₁ + ṙ·Σ aⱼaₖ₋₁₋ⱼ + r·Σ(daⱼ·aₖ₋₁₋ⱼ + aⱼ·daₖ₋₁₋ⱼ) ),
+    // γₖ = Γ((k-1)μ+1)/Γ(kμ+1). Same shape as a; expressed once, self-reference
+    // resolved by the compiler exactly as for a.
+    dyByVar = ComplexPolynomialSequence.express("da:k➔v➔when(k=1,pdv(v)/Γ(μ+1),else,(Γ((k-1)*μ+1)/Γ(k*μ+1))*(qdv(v)*a(k-1)(v)+q(v)*da(k-1)(v)+rdv(v)*∑j➔a(j)(v)*a(k-1-j)(v){j=1..k-2}+r(v)*∑j➔(da(j)(v)*a(k-1-j)(v)+a(j)(v)*da(k-1-j)(v)){j=1..k-2}))",
+                                                context);
   }
 
   /**

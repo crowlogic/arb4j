@@ -904,6 +904,14 @@ public class Real implements Cloneable,Becomable<Real>,Domain<Real>,Serializable
     return result.set(this).mul(operand, prec, result);
   }
 
+  public ComplexPolynomial mul(Fraction operand, int prec, ComplexPolynomial result)
+  {
+    try ( Real t = new Real())
+    {
+      return result.set(this.mul(operand, prec, t));
+    }
+  }
+
 
   public RealPolynomial add(Integer operand, int prec, RealPolynomial result)
   {
