@@ -1136,6 +1136,26 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
       mv.visitFieldInsn(PUTFIELD, typeInternalName, "context", contextTypeDesc);
 
+      // Share this instance's memoization cache with the freshly-constructed
+      // member when the two are MUTUALLY recursive and both cache: such members
+      // form one strongly-connected cluster that shares a single IndexCache by
+      // design (see generateSelfReference / IndexCache.invalidating). Without
+      // this, a member built here (the no-context construction path) memoizes
+      // into a PRIVATE cache, so its recurrence — e.g. the Müntz convolution
+      // a(j)·a(k-1-j) — never hits the shared table, rebuilds instance chains on
+      // every evaluation, and leaks their native ComplexPolynomial fields (arb
+      // has no finalizer). A one-way reference to an independent cached sequence
+      // is NOT mutually recursive, so it correctly keeps its own cache.
+      if (shouldCache() && mapping.expression != null && mapping.expression.shouldCache()
+                    && mapping.expression.getReferencedFunctions().containsKey(functionName))
+      {
+        loadThisOntoStack(mv);
+        mv.visitFieldInsn(GETFIELD, internalName(), mapping.functionName, fieldDescriptor);
+        loadThisOntoStack(mv);
+        mv.visitFieldInsn(GETFIELD, internalName(), "cache", Type.getDescriptor(IndexCache.class));
+        mv.visitFieldInsn(PUTFIELD, typeInternalName, "cache", Type.getDescriptor(IndexCache.class));
+      }
+
       mv.visitLabel(alreadyInitialized);
     }
   }
@@ -1858,6 +1878,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
       mv.visitMethodInsn(Opcodes.INVOKESPECIAL, internalName, "<init>", "()V", false);
       mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "cache", Type.getDescriptor(IndexCache.class));
+      // A value sequence stores deep copies it owns exclusively (the cache-hit
+      // path returns result.set(cached)); mark the cache so invalidation closes
+      // those entries and frees their native memory instead of leaking it. A
+      // functional sequence returns cached references by reference, so it does
+      // not own them and must not close them.
+      if (!isGeneratedFunctional())
+      {
+        loadThisOntoStack(mv);
+        mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "cache", Type.getDescriptor(IndexCache.class));
+        mv.visitInsn(Opcodes.ICONST_1);
+        mv.visitFieldInsn(Opcodes.PUTFIELD, internalName, "ownsValues", "Z");
+      }
     }
   }
 

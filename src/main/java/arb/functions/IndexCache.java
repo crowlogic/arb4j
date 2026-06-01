@@ -53,6 +53,23 @@ public final class IndexCache<C>
    */
   public boolean             invalidating;
 
+  /**
+   * Set by the generating sequence when this cache <em>exclusively owns</em> its
+   * entries: a value sequence stores deep copies and its cache-hit path returns a
+   * copy ({@code result.set(cached)}), so no consumer ever aliases a cached
+   * entry. Such entries hold native (arb/FLINT) memory that nothing else
+   * references, so {@link #clear()} must {@code close()} them or the memory leaks.
+   *
+   * <p>
+   * Left {@code false} for function sequences, whose cache-hit path returns the
+   * cached instance <em>by reference</em> (a caller may still hold it) and whose
+   * {@code close()} cascades into shared referents the cache does not own — those
+   * are disposed by their owner, not here. Ownership is a property of the
+   * sequence's codomain contract, fixed when the cache is created, not something
+   * to infer from an entry's runtime type.
+   */
+  public boolean             ownsValues;
+
   private final ArrayList<C> nonneg = new ArrayList<>();
   private final ArrayList<C> neg    = new ArrayList<>();
 
@@ -96,11 +113,48 @@ public final class IndexCache<C>
     list.set(i, value);
   }
 
-  /** Drop every cached value (used on {@code invalidateCache}). */
+  /**
+   * Drop every cached value (used on {@code invalidateCache}).
+   *
+   * <p>
+   * When {@link #ownsValues} is set, each entry is a reified value this cache
+   * owns exclusively; dropping the Java reference without {@code close()}ing it
+   * leaks the entry's native (arb/FLINT) memory, which is what made a parameter
+   * sweep that repeatedly invalidates — e.g. a Levenberg–Marquardt calibration
+   * re-pricing on every step — grow without bound and get OOM-killed. Owned
+   * entries are closed here, freeing that memory immediately. When
+   * {@code ownsValues} is false the entries are shared function references and
+   * are left for their owner to dispose.
+   */
   public void clear()
   {
+    if (ownsValues)
+    {
+      closeEntries(nonneg);
+      closeEntries(neg);
+    }
     nonneg.clear();
     neg.clear();
+  }
+
+  private static void closeEntries(ArrayList<?> list)
+  {
+    for (int i = 0; i < list.size(); i++)
+    {
+      if (list.get(i) instanceof AutoCloseable entry)
+      {
+        try
+        {
+          entry.close();
+        }
+        catch (Exception e)
+        {
+          // arb value close() does not throw — surface the impossible loudly
+          // rather than hide a corrupted dispose.
+          throw new RuntimeException("failed to close cached entry during cache invalidation", e);
+        }
+      }
+    }
   }
 
   public boolean isEmpty()

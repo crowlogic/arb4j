@@ -1820,11 +1820,20 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
       {
         unlock();
       }
-      clear();
+      boolean owned = swigCMemOwn;
+      clear();                          // acb_clear + element clears: frees the limbs
+      if (owned && swigCPtr != 0)
+      {
+        // new_Complex() calloc'd the acb_struct(s); clear() frees only the limbs
+        // inside them — the struct block must be freed too or every disposed
+        // non-pooled Complex leaks it (same dispose bug as ComplexPolynomial).
+        arblibJNI.delete_Complex(swigCPtr);
+        swigCPtr = 0;
+      }
     }
   }
-  
-  
+
+
   Real real;
   
  public Real getReal()

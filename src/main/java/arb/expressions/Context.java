@@ -812,8 +812,45 @@ public class Context implements
         for (int kk = 0; kk <= kMax; kk++)
         {
           k.set(kk);
-          innerSeq.evaluate(k, 1, bits, null);
+          // evaluate(...,null) returns a fresh OWNED copy whose only purpose is
+          // to populate the cache (the cache pokes its own separate copy). The
+          // returned copy is ours; discarding it without close() leaks its native
+          // memory on every warmed cell — and warmTo runs per order per
+          // evaluation, which is what made the calibration grow without bound.
+          closeWarmCopy(innerSeq.evaluate(k, 1, bits, null));
         }
+      }
+      // `outer`/innerSeq is the cached inner sequence, returned by reference —
+      // shared, not a copy, so it must NOT be closed here.
+    }
+    else
+    {
+      // Non-curried (value) member: the evaluate above returned the warm copy.
+      closeWarmCopy(outer);
+    }
+  }
+
+  /**
+   * Dispose a value returned solely to warm a cache. Closes an owned value copy;
+   * leaves a {@link Sequence} (a by-reference cached inner sequence, not a copy)
+   * untouched. Ownership here is structural — a value codomain such as
+   * {@code ComplexPolynomial} is itself a {@code Function}, so {@code Function}
+   * membership says nothing about it; only {@code Sequence} membership marks the
+   * shared-by-reference case.
+   */
+  private static void closeWarmCopy(Object warmed)
+  {
+    if (warmed instanceof Sequence)
+      return;
+    if (warmed instanceof AutoCloseable closeable)
+    {
+      try
+      {
+        closeable.close();
+      }
+      catch (Exception e)
+      {
+        throw new RuntimeException("failed to close cache-warming copy", e);
       }
     }
   }

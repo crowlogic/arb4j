@@ -276,7 +276,16 @@ public class Real implements Cloneable,Becomable<Real>,Domain<Real>,Serializable
       {
         unlock();
       }
-      clear();
+      boolean owned = swigCMemOwn;
+      clear();                          // frees the limbs of each element
+      if (owned && swigCPtr != 0)
+      {
+        // new_Real() calloc'd the arb_struct(s); clear() frees only the limbs —
+        // the struct block must be freed too or every disposed non-pooled Real
+        // leaks it (same dispose bug as ComplexPolynomial/Complex).
+        arblibJNI.delete_Real(swigCPtr);
+        swigCPtr = 0;
+      }
     }
   }
 
