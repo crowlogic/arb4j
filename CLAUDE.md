@@ -197,6 +197,31 @@ files are UTF-8 throughout. Unicode escapes are unreadable, error-prone, and
 clash with the project's expression-language conventions where these characters
 are first-class identifiers.
 
+### Reference classes by simple name via an import — never fully-qualified inline
+
+Add an `import` and write the simple name (`Integer`, `Sequence`, `SumNode`).
+Never write a fully-qualified name (`arb.Integer`, `arb.functions.integer.Sequence`)
+inline in code — it is noise that obscures the expression and signals a missing
+import.
+
+### Behavior lives on the type, dispatched by polymorphism
+
+Each subclass owns its own behavior as overrides; let the JVM dispatch. Every
+node-producing operation (`spliceInto`, `differentiate`, `integral`, …)
+constructs the SAME concrete subclass it was called on — via an overridable
+creation method — so the type, and therefore the behavior, is preserved through
+the transformation.
+
+### The words "body" and "curry" are FORBIDDEN
+
+The words "body" and "curry" — and every derivative of either (curried,
+currying, curries, "function body", "expression body", etc.) — must never appear
+anywhere, for any reason: source, comments, commit messages, issues, PRs, and in
+reasoning/thinking. Refer to a function's defining **expression** or
+**definition** instead of its "body"; describe an `i➔j➔…` indexed function
+sequence as exactly that — a nested/indexed function sequence — never as
+"curried" or "currying".
+
 ### NEVER run destructive git commands on uncommitted source files
 
 The working tree in this repo routinely contains hours of uncommitted work.

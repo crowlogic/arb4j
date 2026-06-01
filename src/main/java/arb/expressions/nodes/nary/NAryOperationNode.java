@@ -285,6 +285,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     }
   }
 
+
   /**
    * Allocate the operand-function field name (used as the operand sub-class's
    * class name and the operandMapping registration key). Type-independent, so
