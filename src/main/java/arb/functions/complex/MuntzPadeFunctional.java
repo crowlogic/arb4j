@@ -141,12 +141,11 @@ public class MuntzPadeFunctional implements
       cachedV.close();
       cachedV = null;
     }
-    // The approximant is intentionally not closed here: the generated close()
-    // path NPEs on a null intermediate field (a pre-existing compiler bug,
-    // unrelated to this reuse change — it was simply never exercised while the
-    // old code dropped approximants for GC). Reusing one instance already turns
-    // the per-v class-generation leak into a single instance.
-    approximant  = null;
+    if (approximant != null)
+    {
+      approximant.close();
+      approximant = null;
+    }
     cachedResult = null;
   }
 }

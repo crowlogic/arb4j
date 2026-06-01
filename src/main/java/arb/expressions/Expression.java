@@ -1981,8 +1981,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected MethodVisitor generateCloseFieldCall(MethodVisitor methodVisitor, String fieldName, Class<?> fieldType)
   {
+    // if (this.field != null) this.field.close();
+    // An intermediate-variable or constant field is null on a close() that runs
+    // after a path which never assigned it (e.g. an approximant disposed having
+    // only ever taken one branch of a when(...)/conditional), so closing it
+    // unguarded NPEs on the null receiver. Same re-load idiom as the cache
+    // invalidation guards below.
+    Label skip = new Label();
     getFieldFromThis(methodVisitor, internalName(), fieldName, fieldType);
-    return invokeCloseMethod(methodVisitor, fieldType);
+    methodVisitor.visitJumpInsn(Opcodes.IFNULL, skip);
+    getFieldFromThis(methodVisitor, internalName(), fieldName, fieldType);
+    invokeCloseMethod(methodVisitor, fieldType);
+    methodVisitor.visitLabel(skip);
+    return methodVisitor;
   }
 
   protected ClassVisitor generateCloseMethod(ClassVisitor classVisitor)
