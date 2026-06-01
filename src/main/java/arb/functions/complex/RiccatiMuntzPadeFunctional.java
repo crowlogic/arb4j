@@ -165,30 +165,50 @@ public class RiccatiMuntzPadeFunctional extends
    * variables p_dv, q_dv, r_dv for use in the f, g, w recurrence expressions.
    * </p>
    */
+  // Settable seed coefficients ṗ=∂p/∂var, q̇=∂q/∂var, ṙ=∂r/∂var, and the linear
+  // Volterra recurrence for ∂a/∂var built once over them. The recurrence is the
+  // same for every variable; only the three seeds change, so they are refreshed
+  // per variable exactly the way p, q, r are refreshed from P, Q, R.
+  private ComplexPolynomial         pdv, qdv, rdv;
+  private ComplexPolynomialSequence dyByVar;
+
+  private void ensureDerivativeRecurrence()
+  {
+    if (dyByVar != null)
+      return;
+    context.registerVariable(pdv = ComplexPolynomial.named("pdv"));
+    context.registerVariable(qdv = ComplexPolynomial.named("qdv"));
+    context.registerVariable(rdv = ComplexPolynomial.named("rdv"));
+    ComplexFunctionSequence.declare("w", context);
+    ComplexFunctionSequence.compile("f:k➔v➔when(k=0,pdv(v),else,qdv(v)*a(k)(v)+rdv(v)*∑j➔a(j)(v)*a(k-j)(v){j=1..k-1}", context);
+    ComplexFunctionSequence.compile("g:k➔v➔when(k=0,q(v),else,2*r(v)*a(k)(v))", context);
+    ComplexFunctionSequence.compile("h:k➔v➔(Γ((k-1)*μ+1)/Γ(k*μ+1))*(f(k-1)(v)+∑j➔g(k-2-j)(v)*w(j+1)(v){j=0..k-2})", context);
+    dyByVar = ComplexPolynomialSequence.express("w:k➔v➔when(k=1,pdv(v)/Γ(μ+1),else,h(k,v))", context);
+  }
+
+  /**
+   * The Müntz sequence ∂a(k,·)/∂var for var ∈ {v, λ, ν, ρ}, by differentiating
+   * the Riccati recurrence. The linear Volterra recurrence is identical to the
+   * v-derivative; only the seed coefficients ∂p/∂var, ∂q/∂var, ∂r/∂var differ,
+   * and those are obtained automatically by differentiating the coefficient
+   * expressions P, Q, R with respect to var. (μ is excluded: it also enters the
+   * Γ-ratios, contributing digamma terms.)
+   */
+  public ComplexPolynomialSequence parameterDerivative(String var, int bits)
+  {
+    ensureDerivativeRecurrence();
+    ComplexPolynomialNullaryFunction dP = P.derivative(var);
+    ComplexPolynomialNullaryFunction dQ = Q.derivative(var);
+    ComplexPolynomialNullaryFunction dR = R.derivative(var);
+    dP.evaluate(bits, pdv);
+    dQ.evaluate(bits, qdv);
+    dR.evaluate(bits, rdv);
+    return dyByVar;
+  }
+
   private ComplexFunctional partialDerivativeWithRespectToV()
   {
-    // Register derivatives as variables in context
-    context.registerVariable(p.derivative().setName("pdv"));
-    context.registerVariable(q.derivative().setName("qdv"));
-    context.registerVariable(r.derivative().setName("rdv"));
-
-    // Forward-declare w so its self-reference resolves
-    ComplexFunctionSequence.declare("w", context);
-
-    // f(k)(v) : k=0 → ṗ(v); k≥1 → q̇(v)·a(k)(v) + ṙ(v)·Σ_{j=1..k-1}
-    // a(j)(v)·a(k-j)(v)
-    ComplexFunctionSequence.compile("f:k➔v➔when(k=0,pdv(v),else,qdv(v)*a(k)(v)+rdv(v)*∑j➔a(j)(v)*a(k-j)(v){j=1..k-1}", context);
-
-    // g(k)(v) : k=0 → q(v); k≥1 → 2·r(v)·a(k)(v)
-    ComplexFunctionSequence.compile("g:k➔v➔when(k=0,q(v),else,2*r(v)*a(k)(v))", context);
-
-    ComplexFunctionSequence.compile("h:k➔v➔(Γ((k-1)*μ+1)/Γ(k*μ+1))*(f(k-1)(v)+∑j➔g(k-2-j)(v)*w(j+1)(v){j=0..k-2})", context);
-    // w(k)(v) linear Volterra recurrence
-    var w = ComplexPolynomialSequence.express("w:k➔v➔when(k=1,pdv(v)/Γ(μ+1),else,h(k,v))", context);
-
-    return new MuntzPadeFunctional("∂y/∂v",
-                                   α,
-                                   w);
+    return new MuntzPadeFunctional("∂y/∂v", α, parameterDerivative("v", bits));
   }
 
   /**
