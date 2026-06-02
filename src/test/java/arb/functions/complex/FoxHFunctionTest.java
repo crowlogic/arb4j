@@ -18,7 +18,7 @@ import junit.framework.TestCase;
  * price-level identity is the test.
  * </p>
  *
- * @author Stephen Crowley \u00a92025-2026
+ * @author Stephen Crowley ©
  */
 public class FoxHFunctionTest extends
                               TestCase
