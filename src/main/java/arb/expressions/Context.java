@@ -336,11 +336,29 @@ public class Context implements
    */
   public void invalidateAllCaches()
   {
+    // Flat, non-propagating pass over every instance this Context owns — each
+    // drops only its OWN hoisted state (index cache / value-backing / static
+    // precision). Because the manifest already contains every instance (the
+    // outer functions AND every per-level child), propagation would be pure
+    // redundancy: a propagating invalidateCache() on each registered function
+    // re-cleared every shared node once per path to it (profiling a calibration
+    // showed ~65% of wall-clock in this cascade, the same reference-graph
+    // re-walk that overflowed close()). invalidateLocalCache() does not recurse,
+    // so each cache is cleared exactly once and the cost is O(instances), not
+    // O(functions × graph). Same teardown discipline as closeOwnedInstances().
+    for (Function<?, ?> f : ownedInstances)
+    {
+      f.invalidateLocalCache();
+    }
+    // Hand-written functions registered via registerFunction (e.g. the
+    // RoughHestonCumulantSequence κ/dκ) are not in the generated manifest; reach
+    // them here. invalidateLocalCache() is a no-op for stateless ones and is
+    // overridden by those that hold a cache, so this stays non-recursive too.
     functions.values().forEach(mapping ->
     {
       if (mapping.instance != null)
       {
-        mapping.instance.invalidateCache();
+        mapping.instance.invalidateLocalCache();
       }
     });
   }
