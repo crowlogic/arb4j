@@ -1,4 +1,4 @@
-ackage arb.functions.complex;
+package arb.functions.complex;
 
 import arb.Complex;
 import arb.expressions.Context;
@@ -86,16 +86,19 @@ public class FoxHFunctionTest extends
     // real axis, deep in the continuation regime).
     double[][]      zPoints =
     {
-      { 0.05 * Math.cos(0.6 * Math.PI), 0.05 * Math.sin(0.6 * Math.PI) },                                     // inside basic sector
+      { 0.05 * Math.cos(0.6 * Math.PI), 0.05 * Math.sin(0.6 * Math.PI) },                                                           // inside basic sector
       { 0.15 * Math.cos(0.6 * Math.PI), 0.15 * Math.sin(0.6 * Math.PI) },
       { 0.3 * Math.cos(0.6 * Math.PI), 0.3 * Math.sin(0.6 * Math.PI) },
-      { 0.0, 0.2 },                                                                                           // pure imaginary: |arg(-z)| = π/2, INSIDE basic
-                                                                                                              // sector
+      { 0.0, 0.2 },                                                                                                                 // pure imaginary: |arg(-z)|
+                                                                                                                                    // = π/2, INSIDE basic
+                                                                                                                                    // sector
       { 0.0, 0.5 },
-      { 0.1, 0.05 },                                                                                          // |arg(-z)| ≈ 2.68, ABOVE a*π/2 = 2.20 —
-                                                                                                              // continuation regime
-      { 0.3, 0.01 },                                                                                          // |arg(-z)| ≈ 3.11, very deep in continuation
-                                                                                                              // regime
+      { 0.1, 0.05 },                                                                                                                // |arg(-z)| ≈ 2.68, ABOVE
+                                                                                                                                    // a*π/2 = 2.20 —
+                                                                                                                                    // continuation regime
+      { 0.3, 0.01 },                                                                                                                // |arg(-z)| ≈ 3.11, very
+                                                                                                                                    // deep in continuation
+                                                                                                                                    // regime
     };
     for (double[] pt : zPoints)
     {
