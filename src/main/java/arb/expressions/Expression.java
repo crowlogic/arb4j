@@ -2849,20 +2849,46 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     if (cached)
     {
-      // this.cache.clear() — the per-index memoisation table is keyed only on
-      // the domain index k, so any change to other Context variables (e.g. v in
-      // the Müntz a/S recurrence) must drop every entry, otherwise a(k) returns
-      // the previous v's value at the same k. One clear of the shared cache drops
-      // every level of the chain at once.
       loadThisOntoStack(mv);
       mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "cache", Type.getDescriptor(IndexCache.class));
-      mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, Type.getInternalName(IndexCache.class), "clear", "()V", false);
+      if (isGeneratedFunctional())
+      {
+        // Functional codomain: the cache entries are inner Function instances
+        // this sequence constructed and owns (e.g. Φ caches Φfunc(M)). They are
+        // reusable across a change to a Context variable (v) or to parameters —
+        // only their own per-call memo / value sub-cache goes stale — so the
+        // correct action is to invalidate each entry IN PLACE (it then closes
+        // the native memory it owns) and KEEP the instance. Dropping them via
+        // clear() orphaned their owned scratch — a leak — and forced their
+        // reconstruction every build, the allocation churn that made a v-sweep
+        // (and the calibration that drives one per LM step) slow and unbounded.
+        mv.visitInsn(propagate ? Opcodes.ICONST_1 : Opcodes.ICONST_0);
+        generateVirtualMethodInvocation(mv, IndexCache.class, "invalidateEntries", void.class, boolean.class);
+      }
+      else
+      {
+        // Value codomain: the per-index table is keyed only on the domain index
+        // k, so any change to another Context variable (e.g. v in the Müntz a/S
+        // recurrence) must drop every entry, otherwise a(k) returns the previous
+        // v's value at the same k. clear() also closes the owned value copies,
+        // freeing their native memory. One clear of the shared cache drops every
+        // level of a self-referential chain at once.
+        generateVirtualMethodInvocation(mv, IndexCache.class, "clear", void.class);
+      }
     }
     if (shouldCacheValueBacking())
     {
       // Issue #1005: drop the per-instance value-backing cache. Setting lastV
       // to null guarantees the next evaluate() call goes to the body, since
       // every non-null user-supplied input v will fail the IF_ACMPNE check.
+      //
+      // lastV is an OWNED arb instance (e.g. new Complex()); arb types have no
+      // finalizer, so nulling it without close() orphans its native memory —
+      // every invalidate (a per-step recalibration drives many) leaks exactly
+      // one. Close it (null-guarded, via the shared close-invocation helper)
+      // before nulling when the domain type owns native memory.
+      if (AutoCloseable.class.isAssignableFrom(domainType))
+        generateCloseFieldCall(mv, "lastV", domainType);
       loadThisOntoStack(mv);
       mv.visitInsn(Opcodes.ACONST_NULL);
       mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "lastV", Type.getDescriptor(domainType));

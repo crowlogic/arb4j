@@ -37,10 +37,12 @@ import arb.utensils.Utensils;
 public class Real implements Cloneable,Becomable<Real>,Domain<Real>,Serializable,Comparable<Real>,Iterable<Real>,NamedField<Real>,Lockable<Real>,IntFunction<Real>,Assignable<Real> {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
+  public transient Object leakToken;
 
   public Real(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;
+    if (cMemoryOwn) leakToken = LeakTracker.track(this);
   }
 
   public static long getCPtr(Real obj) {
@@ -55,6 +57,7 @@ public class Real implements Cloneable,Becomable<Real>,Domain<Real>,Serializable
       }
       swigCPtr = 0;
     }
+    LeakTracker.closed(leakToken);
   }
 
 
@@ -286,6 +289,7 @@ public class Real implements Cloneable,Becomable<Real>,Domain<Real>,Serializable
         arblibJNI.delete_Real(swigCPtr);
         swigCPtr = 0;
       }
+      LeakTracker.closed(leakToken);
     }
   }
 

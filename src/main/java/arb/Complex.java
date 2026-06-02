@@ -44,10 +44,12 @@ import arb.functions.complex.ComplexNullaryFunction;
 public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Complex>,Comparable<Complex>,Iterable<Complex>,Serializable,Lockable<Complex>,IntFunction<Complex>,Assignable<Complex> {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
+  public transient Object leakToken;
 
   public Complex(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;
+    if (cMemoryOwn) leakToken = LeakTracker.track(this);
   }
 
   public static long getCPtr(Complex obj) {
@@ -62,6 +64,7 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
       }
       swigCPtr = 0;
     }
+    LeakTracker.closed(leakToken);
   }
 
   static { System.loadLibrary( "arblib" ); }
@@ -1830,6 +1833,7 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
         arblibJNI.delete_Complex(swigCPtr);
         swigCPtr = 0;
       }
+      LeakTracker.closed(leakToken);
     }
   }
 

@@ -137,6 +137,45 @@ public final class IndexCache<C>
     neg.clear();
   }
 
+  /**
+   * Invalidate every cached entry in place instead of dropping it. The entries
+   * of a curried/functional sequence's cache are inner {@link Function}
+   * instances this sequence constructed and owns; they are reusable across a
+   * change to a Context variable (the perturbation point {@code v}) or to the
+   * functional's parameters — only their own per-call memo / value sub-cache
+   * goes stale. Propagating the invalidation into each entry resets that state
+   * and closes the native memory the entry owns, while keeping the instance
+   * itself for reuse. Dropping the instances (the former {@link #clear()} on a
+   * functional cache) orphaned their owned scratch — a leak — and forced their
+   * reconstruction on the next evaluation, which is what made a {@code v}-sweep
+   * (and the Levenberg–Marquardt calibration that drives one per step) grow
+   * without bound and run slowly.
+   *
+   * @param propagate {@code true} to drive each entry's {@link
+   *                  Function#invalidateCache()} (which cascades into the
+   *                  entry's own referents), {@code false} for the
+   *                  non-cascading {@link Function#invalidateLocalCache()}.
+   */
+  public void invalidateEntries(boolean propagate)
+  {
+    invalidateEntries(nonneg, propagate);
+    invalidateEntries(neg, propagate);
+  }
+
+  private static void invalidateEntries(ArrayList<?> list, boolean propagate)
+  {
+    for (int i = 0; i < list.size(); i++)
+    {
+      if (list.get(i) instanceof Function<?, ?> entry)
+      {
+        if (propagate)
+          entry.invalidateCache();
+        else
+          entry.invalidateLocalCache();
+      }
+    }
+  }
+
   private static void closeEntries(ArrayList<?> list)
   {
     for (int i = 0; i < list.size(); i++)

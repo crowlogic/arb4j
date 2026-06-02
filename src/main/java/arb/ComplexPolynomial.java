@@ -35,10 +35,19 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
   // construction and removed on clear()/delete(). Whatever remains after a
   // workload was allocated and never freed — dumpLiveComplexPolynomials() groups
   // the survivors by allocation site so the dominant leak site is obvious.
-  public static final boolean                             TRACK = Boolean.getBoolean("arb4j.trackComplexPolynomial");
+  // Runtime-settable so a test can switch it on around a workload (it defaults
+  // from the system property for command-line profiling). LIVE is always
+  // allocated; the put/remove are gated on TRACK so it stays empty and the
+  // overhead is a single boolean test when tracking is off.
+  public static boolean                                   TRACK = Boolean.getBoolean("arb4j.trackComplexPolynomial");
   private static final java.util.Map<ComplexPolynomial, String> LIVE =
-                                                          TRACK ? java.util.Collections.synchronizedMap(new java.util.IdentityHashMap<>())
-                                                                : null;
+                                                          java.util.Collections.synchronizedMap(new java.util.IdentityHashMap<>());
+
+  /** Number of owned ComplexPolynomials currently registered as live (tracking must be on). */
+  public static int liveTrackedCount()
+  {
+    return LIVE.size();
+  }
 
   private static String allocationSite()
   {
@@ -51,7 +60,7 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
 
   public static void dumpLiveComplexPolynomials(java.io.PrintStream out)
   {
-    if (LIVE == null)
+    if (!TRACK)
     {
       out.println("ComplexPolynomial tracking disabled (set -Darb4j.trackComplexPolynomial)");
       return;

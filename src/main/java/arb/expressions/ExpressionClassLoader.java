@@ -36,6 +36,15 @@ public class ExpressionClassLoader extends
 
   public final Context                   context;
 
+  /**
+   * Total number of distinct classes actually generated and defined (a cache
+   * hit does not increment it). Compiling the same expression in a fresh context
+   * defines it again, so this rises by the full class count for every recompiled
+   * instance — a test can assert it stays flat across instantiations of an
+   * identical expression to catch the redundant-recompilation slowness.
+   */
+  public static long                     classesDefined = 0;
+
   public ExpressionClassLoader(Context context)
   {
     assert context != null : "context shan't be null";
@@ -67,6 +76,7 @@ public class ExpressionClassLoader extends
       return already;
     }
     Class<?> defined = defineClass(binaryName, bytecodes, 0, bytecodes.length);
+    classesDefined++;
     compiledClasses.put(binaryName, defined);
     // Also cache under the simple name so that JVM-driven findClass calls
     // during field-type resolution (which arrive with the bare simple name,
