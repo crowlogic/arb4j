@@ -36,7 +36,12 @@ import arb.utensils.Utensils;
 	  return value.set(this).neg();
 	}
 
-	
+	public Real(String string, int bits2, String name)
+	{
+	  this(string,bits2);
+	  setName(name);
+	}
+		
 	private static final ThreadLocal<Real[]> autocorrelationScratch =
 	  ThreadLocal.withInitial(() -> new Real[] { new Real(), new Real() });
 

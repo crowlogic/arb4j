@@ -71,7 +71,7 @@ Licensor trademark or logo.
 --------------------------------------------------------------------------------
 5.  FEE / TERM / TERRITORY  [select and complete]
 --------------------------------------------------------------------------------
-Fee:        [ ] one-time [ ] subscription — amount: [____], or [ ] gifted at no charge
+Fee:        [ ] one-time   [ ] subscription — amount: [____], or [ ] gifted at no charge
 Term:       [ ] perpetual  [ ] fixed: from Effective Date through [____]
 Territory:  [ ] worldwide  [ ] [____]
 Field of use (optional restriction): [____]

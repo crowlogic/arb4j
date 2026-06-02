@@ -37,12 +37,10 @@ import arb.utensils.Utensils;
 public class Real implements Cloneable,Becomable<Real>,Domain<Real>,Serializable,Comparable<Real>,Iterable<Real>,NamedField<Real>,Lockable<Real>,IntFunction<Real>,Assignable<Real> {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
-  public transient Object leakToken;
 
   public Real(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;
-    if (cMemoryOwn) leakToken = LeakTracker.track(this);
   }
 
   public static long getCPtr(Real obj) {
@@ -57,7 +55,6 @@ public class Real implements Cloneable,Becomable<Real>,Domain<Real>,Serializable
       }
       swigCPtr = 0;
     }
-    LeakTracker.closed(leakToken);
   }
 
 
@@ -66,7 +63,12 @@ public class Real implements Cloneable,Becomable<Real>,Domain<Real>,Serializable
 	  return value.set(this).neg();
 	}
 
-	
+	public Real(String string, int bits2, String name)
+	{
+	  this(string,bits2);
+	  setName(name);
+	}
+		
 	private static final ThreadLocal<Real[]> autocorrelationScratch =
 	  ThreadLocal.withInitial(() -> new Real[] { new Real(), new Real() });
 
@@ -279,17 +281,7 @@ public class Real implements Cloneable,Becomable<Real>,Domain<Real>,Serializable
       {
         unlock();
       }
-      boolean owned = swigCMemOwn;
-      clear();                          // frees the limbs of each element
-      if (owned && swigCPtr != 0)
-      {
-        // new_Real() calloc'd the arb_struct(s); clear() frees only the limbs —
-        // the struct block must be freed too or every disposed non-pooled Real
-        // leaks it (same dispose bug as ComplexPolynomial/Complex).
-        arblibJNI.delete_Real(swigCPtr);
-        swigCPtr = 0;
-      }
-      LeakTracker.closed(leakToken);
+      clear();
     }
   }
 

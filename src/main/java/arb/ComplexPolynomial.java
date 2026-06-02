@@ -30,56 +30,9 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
-  // --- native-allocation leak tracking (diagnostic; -Darb4j.trackComplexPolynomial) ---
-  // When enabled, every owned instance is registered with its allocation stack on
-  // construction and removed on clear()/delete(). Whatever remains after a
-  // workload was allocated and never freed — dumpLiveComplexPolynomials() groups
-  // the survivors by allocation site so the dominant leak site is obvious.
-  // Runtime-settable so a test can switch it on around a workload (it defaults
-  // from the system property for command-line profiling). LIVE is always
-  // allocated; the put/remove are gated on TRACK so it stays empty and the
-  // overhead is a single boolean test when tracking is off.
-  public static boolean                                   TRACK = Boolean.getBoolean("arb4j.trackComplexPolynomial");
-  private static final java.util.Map<ComplexPolynomial, String> LIVE =
-                                                          java.util.Collections.synchronizedMap(new java.util.IdentityHashMap<>());
-
-  /** Number of owned ComplexPolynomials currently registered as live (tracking must be on). */
-  public static int liveTrackedCount()
-  {
-    return LIVE.size();
-  }
-
-  private static String allocationSite()
-  {
-    var st = Thread.currentThread().getStackTrace();
-    var sb = new StringBuilder();
-    for (int i = 3; i < Math.min(st.length, 20); i++)
-      sb.append("    ").append(st[i]).append('\n');
-    return sb.toString();
-  }
-
-  public static void dumpLiveComplexPolynomials(java.io.PrintStream out)
-  {
-    if (!TRACK)
-    {
-      out.println("ComplexPolynomial tracking disabled (set -Darb4j.trackComplexPolynomial)");
-      return;
-    }
-    var bySite = new java.util.HashMap<String, int[]>();
-    synchronized (LIVE)
-    {
-      out.println("LIVE owned ComplexPolynomial = " + LIVE.size());
-      for (String site : LIVE.values())
-        bySite.computeIfAbsent(site, k -> new int[1])[0]++;
-    }
-    bySite.entrySet().stream().sorted((a, b) -> b.getValue()[0] - a.getValue()[0]).limit(8)
-          .forEach(e -> out.println("\n==== " + e.getValue()[0] + " live, allocated at:\n" + e.getKey()));
-  }
-
   public ComplexPolynomial(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;
-    if (TRACK && cMemoryOwn) LIVE.put(this, allocationSite());
   }
 
   public static long getCPtr(ComplexPolynomial obj) {
@@ -94,7 +47,6 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
       }
       swigCPtr = 0;
     }
-    if (TRACK) LIVE.remove(this);
   }
 
 
@@ -703,25 +655,13 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
 	  swigCMemOwn = false;
 
     }
-    if (TRACK) LIVE.remove(this);
     return this;
   }
 
   @Override
   public void close()
   {
-    boolean owned = swigCMemOwn;
-    clear();                          // acb_poly_clear: frees the coefficient array
-    if (owned && swigCPtr != 0)
-    {
-      // new_ComplexPolynomial() calloc'd the acb_poly struct; acb_poly_clear frees
-      // only the coefficients inside it, so the struct itself must be freed too —
-      // otherwise every disposed polynomial leaks sizeof(acb_poly_struct), and at
-      // millions of short-lived intermediates per evaluation that is the dominant
-      // native leak (the RoughHestonCalibrator OOM).
-      arblibJNI.delete_ComplexPolynomial(swigCPtr);
-      swigCPtr = 0;
-    }
+    clear();
   }
   
  /**
