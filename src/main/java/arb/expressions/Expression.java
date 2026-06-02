@@ -2051,6 +2051,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     methodVisitor.visitInsn(ICONST_1);
     methodVisitor.visitFieldInsn(PUTFIELD, internalName(), "closed", "Z");
 
+    // Free ONLY this instance's own scratch — the hoisted literal constants and
+    // intermediate temps it allocated. A close() owns its scratch and nothing
+    // else: it does NOT reach through its reference fields. The functions it
+    // references and the per-level children a recurrence spawned are owned by
+    // the Context, not by the referrer (a reference is not an ownership). Not
+    // walking the reference graph is exactly what keeps close at O(1) Java-stack
+    // depth, so no recurrence chain — however deep, self- or mutually-recursive,
+    // or cyclic — can overflow it.
     if (!coDomainType.isInterface())
     {
       getSortedLiteralConstantNodes().forEach(constant -> generateCloseFieldCall(loadThisOntoStack(methodVisitor), constant.fieldName, constant.type()));
@@ -2058,38 +2066,28 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       sortedIntermediateVariables().forEach(intermediateVariable -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
                                                                                            intermediateVariable.name,
                                                                                            intermediateVariable.type));
-
-      // Close declared function-reference fields through Compiler.closeReferent,
-      // which drives an iterative (work-queue) traversal of the reachable graph.
-      // Recursing referent.close() directly overflowed the stack on deep
-      // self-referential receiver chains; routing through the queue keeps the
-      // Java stack at O(1) regardless of graph depth. The `closed` guard above
-      // still makes each object close exactly once.
-      if (dependencies != null)
-      {
-        for (Dependency dependency : dependencies)
-        {
-          String name    = dependency.variableName;
-          var    mapping = referencedFunctions.get(name);
-          if (mapping != null)
-          {
-            // Prefer the descriptor as actually emitted into our own class file;
-            // mapping.functionFieldDescriptor() may have drifted post-compile if
-            // the peer's functionClass moved from interface to concrete.
-            String emitted   = emittedPeerFieldDescriptor(name);
-            String fieldDesc = emitted != null ? emitted : mapping.functionFieldDescriptor();
-            loadThisOntoStack(methodVisitor);
-            methodVisitor.visitFieldInsn(GETFIELD, internalName(), name, fieldDesc);
-            methodVisitor.visitTypeInsn(CHECKCAST, Type.getInternalName(AutoCloseable.class));
-            methodVisitor.visitMethodInsn(INVOKESTATIC,
-                                          Type.getInternalName(Compiler.class),
-                                          "closeReferent",
-                                          "(Ljava/lang/AutoCloseable;)V",
-                                          false);
-          }
-        }
-      }
     }
+
+    // Hand the rest to the owner: tell the Context to free every instance it
+    // owns in one flat pass (Context.closeOwnedInstances). This close() is
+    // itself running inside that pass when the sweep reaches us, but the
+    // re-entrant call is absorbed by Context.closingOwnedInstances, and the
+    // `closed` flag set above frees this instance's scratch exactly once. So a
+    // bare `instance.close()` still tears the whole cluster down — flatly, never
+    // by recursion. Done outside the isInterface() block because a
+    // functional-codomain instance owns no scratch of its own yet still belongs
+    // to the cluster the Context must sweep.
+    String contextDescriptor = Context.class.descriptorString();
+    Label  noContext         = new Label();
+    getFieldFromThis(methodVisitor, internalName(), "context", contextDescriptor);
+    methodVisitor.visitJumpInsn(IFNULL, noContext);
+    getFieldFromThis(methodVisitor, internalName(), "context", contextDescriptor);
+    methodVisitor.visitMethodInsn(INVOKEVIRTUAL,
+                                  Type.getInternalName(Context.class),
+                                  "closeOwnedInstances",
+                                  "()V",
+                                  false);
+    methodVisitor.visitLabel(noContext);
 
     Compiler.generateReturnFromVoidMethod(methodVisitor);
 
@@ -2686,6 +2684,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected MethodVisitor generateInitializationCode(MethodVisitor mv)
   {
     generateCodeToThrowErrorIfAlreadyInitialized(mv);
+    generateOwnershipRegistration(mv);
     generateDerivativeCacheFieldInitializer(mv);
     if (trace)
     {
@@ -2719,6 +2718,34 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     generateCodeToSetIsInitializedToTrue(mv);
     return mv;
+  }
+
+  /**
+   * Emit {@code if (this.context != null) this.context.own(this);} so this
+   * instance registers itself with its owning {@link Context} the one time
+   * {@code initialize()} runs. The Context is then the sole entity responsible
+   * for freeing this instance, which it does in one flat pass
+   * ({@link Context#closeOwnedInstances()}) with no reference-graph traversal —
+   * see {@link Context#ownedInstances}. Every generated instance, outer or
+   * lazily-allocated per-level child, is initialized exactly once, so each
+   * registers exactly once.
+   */
+  protected void generateOwnershipRegistration(MethodVisitor mv)
+  {
+    String contextDescriptor = Context.class.descriptorString();
+    String contextInternal   = Type.getInternalName(Context.class);
+    Label  noContext         = new Label();
+    getFieldFromThis(mv, internalName(), "context", contextDescriptor);
+    mv.visitJumpInsn(Opcodes.IFNULL, noContext);
+    getFieldFromThis(mv, internalName(), "context", contextDescriptor);
+    loadThisOntoStack(mv);
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                       contextInternal,
+                       "own",
+                       "(Larb/functions/Function;)Larb/functions/Function;",
+                       false);
+    mv.visitInsn(Opcodes.POP);
+    mv.visitLabel(noContext);
   }
 
   protected ClassVisitor generateInitializationMethod(ClassVisitor classVisitor)

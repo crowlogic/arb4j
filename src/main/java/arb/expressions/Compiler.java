@@ -443,26 +443,12 @@ public class Compiler
     return methodVisitor;
   }
 
-  /**
-   * Close {@code f} and everything transitively reachable from it through the
-   * generated {@code close()} methods. Every generated {@code close()} sets its
-   * own {@code closed} flag before recursing into its referents, so a reference
-   * cycle terminates the moment it revisits an already-closed node — the flag
-   * itself is the re-entrancy guard, and no work queue or visited set is needed.
-   */
-  public static void closeReferent(AutoCloseable f)
-  {
-    if (f == null)
-      return;
-    try
-    {
-      f.close();
-    }
-    catch (Exception e)
-    {
-      throw new RuntimeException(e);
-    }
-  }
+  // A generated close() no longer traverses the reference graph, so there is no
+  // closeReferent: an instance frees only its own scratch and the owning Context
+  // frees the whole cluster in one flat pass (Context.closeOwnedInstances). The
+  // former recursive closeReferent overflowed the Java stack on deep recurrence
+  // receiver chains; routing teardown through ownership removes the traversal
+  // entirely, so close is O(1) on the stack regardless of recursion depth.
 
   public static void invokeConstructor(MethodVisitor mv, Class<?> returnType, Class<?>... argTypes)
   {

@@ -152,6 +152,24 @@ public class Context implements
 
   public final FunctionMappings               functions;
 
+  /**
+   * Ownership manifest: every generated function instance constructed within
+   * this Context registers itself here (in its own {@code initialize()}, via
+   * {@link #own}) — the outer {@code express()} instance and every per-level
+   * child/operand a recurrence lazily allocates alike. This Context is the sole
+   * entity responsible for freeing them. A reference is not an ownership: an
+   * instance owns only its own scratch; the children it references are owned by
+   * this Context, not by the referrer. {@link #closeOwnedInstances()} frees each
+   * instance's own scratch in one flat pass — never by traversing the reference
+   * graph — so closing a cluster costs O(1) Java stack regardless of recurrence
+   * depth, of self- vs mutual-recursion, or of cycles. Each instance is freed
+   * exactly once (its {@code closed} flag enforces once), which is required
+   * because arb {@code close()} is not safe to call twice.
+   */
+  public final java.util.List<Function<?, ?>> ownedInstances               = new java.util.ArrayList<>();
+
+  private boolean                             closingOwnedInstances;
+
   public final HashMap<String, AtomicInteger> intermediateVariableCounters = new HashMap<>();
 
   // Static: a chain of N self-recursive instance Contexts shouldn't do N
@@ -1204,9 +1222,56 @@ public class Context implements
     }
   }
 
+  /**
+   * Register {@code f} as owned by this Context, called once from every generated
+   * instance's {@code initialize()}. Returns {@code f} so the call site can be a
+   * pass-through. See {@link #ownedInstances}.
+   */
+  public Function<?, ?> own(Function<?, ?> f)
+  {
+    ownedInstances.add(f);
+    return f;
+  }
+
+  /**
+   * Free every generated instance this Context owns, in a single flat pass.
+   *
+   * <p>
+   * Each instance's {@code close()} frees only its own scratch and then re-enters
+   * this method, which the {@code closingOwnedInstances} flag turns into an
+   * immediate no-op. So the sweep visits the manifest once, each instance's
+   * {@code closed} flag frees it exactly once, and the Java stack never grows
+   * with the reference graph — closing the deepest recursive cluster is O(1)
+   * stack. Nothing here inspects references, recursion, or cycles: ownership is
+   * by construction site, not by graph shape.
+   */
+  public void closeOwnedInstances()
+  {
+    if (closingOwnedInstances)
+    {
+      return;
+    }
+    closingOwnedInstances = true;
+    for (Function<?, ?> f : ownedInstances)
+    {
+      if (f instanceof AutoCloseable closeable)
+      {
+        try
+        {
+          closeable.close();
+        }
+        catch (Exception e)
+        {
+          wrapOrThrow(e);
+        }
+      }
+    }
+  }
+
   @Override
   public void close()
   {
+    closeOwnedInstances();
     functions.values().forEach(f ->
     {
       if (f.instance != null)
