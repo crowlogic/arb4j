@@ -328,7 +328,18 @@ public class WindowManager
     e.printStackTrace(System.err);
     if (shouldShowErrors)
     {
-      Platform.runLater(() -> showAlert("Exception in " + t.getName(), e.getClass().toString(), e));
+      Runnable action = () -> showAlert("Exception in " + t.getName(), e.getClass().toString(), e);
+
+      if (Platform.isFxApplicationThread())
+      {
+        action.run();
+
+      }
+      else
+      {
+        Platform.runLater(action);
+      }
+
     }
   }
 

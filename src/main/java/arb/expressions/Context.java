@@ -803,12 +803,13 @@ public class Context implements
     warming.set(true);
     try
     {
+      List<String> order = sccWarmOrder(scc);
       try ( Integer i = new Integer())
       {
         for (int ii = 0; ii <= idx; ii++)
         {
           i.set(ii);
-          for (String member : scc)
+          for (String member : order)
           {
             FunctionMapping<?, ?, ?> m = functions.get(member);
             if (m == null || m.instance == null)
@@ -822,6 +823,56 @@ public class Context implements
     {
       warming.set(false);
     }
+  }
+
+  /**
+   * Dependency order in which to warm the members of a mutually-recursive cluster
+   * at a fixed index. The indexed sequence members (those with a k-extent
+   * provider) carry the recurrence and, within the bottom-up index loop, read
+   * only lower indices that are already cached — so they are warmed first. Every
+   * remaining value member is then warmed only after the cluster members it
+   * references at the same index, so an algebraic read-off such as
+   * {@code α(j)=σ(j)(j+1)/h(j)} is never evaluated before {@code σ} and {@code h}
+   * are cached at that index. Evaluating it out of order forces an on-demand
+   * re-entry that memoises a partial (∅) value and then divides by it — the
+   * {@code DivisionByZeroException} seen on non-symmetric moment functionals.
+   */
+  private List<String> sccWarmOrder(Set<String> scc)
+  {
+    List<String> order     = new ArrayList<>();
+    Set<String>  remaining = new LinkedHashSet<>(scc);
+    for (String member : scc)
+      if (kExtentProviders.containsKey(member))
+      {
+        order.add(member);
+        remaining.remove(member);
+      }
+    boolean progress = true;
+    while (!remaining.isEmpty() && progress)
+    {
+      progress = false;
+      for (Iterator<String> it = remaining.iterator(); it.hasNext();)
+      {
+        String     member = it.next();
+        Dependency dep    = functionReferenceGraph.get(member);
+        boolean    ready  = true;
+        if (dep != null)
+          for (String d : dep.dependsOn)
+            if (scc.contains(d) && remaining.contains(d))
+            {
+              ready = false;
+              break;
+            }
+        if (ready)
+        {
+          order.add(member);
+          it.remove();
+          progress = true;
+        }
+      }
+    }
+    order.addAll(remaining);                 // any residual value-value cycle: stable fallback
+    return order;
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })

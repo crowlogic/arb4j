@@ -97,7 +97,14 @@ public class OrthogonalPolynomialMomentFunctionalSequence extends
                                                    + " else,   σ(j-1)(k+1) − α(j-1)·σ(j-1)(k) − β(j-1)·σ(j-2)(k))",
                                               context);
     ComplexPolynomialSequence.compile("h:j ➔ σ(j)(j)", context);
-    ComplexPolynomialSequence.compile("α:j ➔ σ(j)(j+1) / h(j)", context);
+    // Chebyshev–Wheeler recurrence coefficient. The full two-term form
+    // α(j) = σ(j)(j+1)/h(j) − σ(j-1)(j)/h(j-1) is required: the second term is the
+    // x^{j-1}-coefficient correction that vanishes only for a symmetric functional
+    // (Σα=0). Dropping it (the bare σ(j)(j+1)/h(j)) makes the OPS orthogonal to 1
+    // but not to x for non-symmetric moments, so p_j ceases to be orthogonal from
+    // j≥2 onward — the failure on every rough-Heston (c₁=Q(v)≠0) functional.
+    ComplexPolynomialSequence.compile("α:j ➔ when(j = 0, σ(0)(1) / h(0), else, σ(j)(j+1) / h(j) − σ(j-1)(j) / h(j-1))",
+                                      context);
 
     // Express the leaf β; instantiating β cascades through h → σ → α.
     this.β = ComplexPolynomialSequence.express("β", "β:j ➔ when(j = 0, 0, else, h(j) / h(j-1))", context);

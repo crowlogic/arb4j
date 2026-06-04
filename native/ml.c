@@ -247,8 +247,9 @@ static void ml_series(acb_t out, const acb_t z, const arb_t alpha,
 
     mag_set_ui_2exp_si(tol, 1, -prec);
 
-    arb_gamma(gam, beta, prec);
-    arb_inv(gam, gam, prec);
+    /* Reciprocal gamma: 1/Γ is entire and vanishes at the non-positive integers,
+     * so β=0 (and any β=−n) gives a correct zero k=0 term instead of 1/Γ(0)=NaN. */
+    arb_rgamma(gam, beta, prec);
     acb_set_arb(sum, gam);
     acb_set(zpow, z);
 
@@ -256,10 +257,17 @@ static void ml_series(acb_t out, const acb_t z, const arb_t alpha,
     {
         arb_mul_si(akb, alpha, k, prec);
         arb_add(akb, akb, beta, prec);
-        arb_gamma(gam, akb, prec);
-        acb_div_arb(term, zpow, gam, prec);
+        arb_rgamma(gam, akb, prec);
+        acb_mul_arb(term, zpow, gam, prec);
         acb_get_mag(mterm, term);
-        if (mag_cmp(mterm, tol) < 0 && k > 10) break;
+        if (mag_cmp(mterm, tol) < 0 && k > 10)
+        {
+            /* Rigorous truncation tail: past the peak the terms decrease, so the
+             * untruncated tail Σ_{j≥k} z^j/Γ(αj+β) is bounded by 2·|term_k|. */
+            mag_mul_2exp_si(mterm, mterm, 1);
+            acb_add_error_mag(sum, mterm);
+            break;
+        }
         acb_add(sum, sum, term, prec);
         acb_mul(zpow, zpow, z, prec);
     }
@@ -268,6 +276,40 @@ static void ml_series(acb_t out, const acb_t z, const arb_t alpha,
     acb_clear(sum); acb_clear(term); acb_clear(zpow);
     arb_clear(akb); arb_clear(gam);
     mag_clear(tol); mag_clear(mterm);
+}
+
+/* Precision-adaptive rigorous series. The series Σ z^k/Γ(αk+β) is entire, so it
+ * is rigorous for every finite z; the only difficulty is the cancellation that
+ * occurs for moderate-to-large |z| (intermediate terms far exceed the result).
+ * Re-sum at doubled working precision until the ball carries prec bits of
+ * relative accuracy, or its absolute radius is already below 2^{-prec} (the
+ * value itself is near zero, e.g. at a pole of the Cole–Hopf w). Capped to avoid
+ * runaway. This replaces the optimal-parabolic-contour quadrature, whose finite
+ * node count produced an unsound, ~1e-13-accurate ball in the mid-|z| range. */
+static void ml_series_adaptive(acb_t out, const acb_t z, const arb_t alpha,
+                               const arb_t beta, slong prec)
+{
+    slong working = prec + 32;
+    slong cap = 16 * prec + 512;
+    mag_t abstol, rad, rr, ri;
+
+    mag_init(abstol); mag_init(rad); mag_init(rr); mag_init(ri);
+    mag_set_ui_2exp_si(abstol, 1, -prec);
+
+    for (;;)
+    {
+        ml_series(out, z, alpha, beta, working);
+        mag_set(rr, arb_radref(acb_realref(out)));
+        mag_set(ri, arb_radref(acb_imagref(out)));
+        mag_max(rad, rr, ri);
+        if (acb_rel_accuracy_bits(out) >= prec || mag_cmp(rad, abstol) < 0)
+            break;
+        if (working >= cap)
+            break;
+        working *= 2;
+    }
+
+    mag_clear(abstol); mag_clear(rad); mag_clear(rr); mag_clear(ri);
 }
 
 /* ======================== Asymptotic Method ======================== */
@@ -618,19 +660,18 @@ void acb_mittag_leffler_E(acb_t out, const acb_t z, const arb_t alpha,
     }
 
     acb_abs(absz, z, prec);
+    (void) series_thr;
+    (void) eps;
 
-    if (arb_lt(absz, series_thr))
-    {
-        ml_series(out, z, alpha, beta, prec);
-    }
-    else if (arb_gt(absz, asymp_thr))
+    if (arb_gt(absz, asymp_thr))
     {
         ml_asymptotic(out, z, alpha, beta, prec);
     }
     else
     {
-        if (!ml_opc_mid(out, z, alpha, beta, eps, prec))
-            ml_series(out, z, alpha, beta, prec);
+        /* The rigorous precision-adaptive series across the whole non-asymptotic
+         * range; the lossy optimal-parabolic-contour quadrature is no longer used. */
+        ml_series_adaptive(out, z, alpha, beta, prec);
     }
 
 done:
