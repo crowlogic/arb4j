@@ -80,6 +80,9 @@ typedef unsigned long int mp_limb_t;
 %rename (FastDFTProductScheme) acb_dft_prod_struct;
 %rename (FastDFTStepScheme) acb_dft_step_struct;
 %rename (FloatInterval) arf_interval_struct;
+
+%javamethodmodifiers real "private";
+%javamethodmodifiers imag "private";
 %rename (Complex) acb_struct;
 %rename (Real) arb_struct;
 %rename (Float) arf_struct;

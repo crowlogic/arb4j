@@ -1992,20 +1992,20 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
   }
   
 
-  public void setRealObj(Real value) {
+  private void setRealObj(Real value) {
     arblibJNI.Complex_realObj_set(swigCPtr, this, Real.getCPtr(value), value);
   }
 
-  public Real getRealObj() {
+  private Real getRealObj() {
     long cPtr = arblibJNI.Complex_realObj_get(swigCPtr, this);
     return (cPtr == 0) ? null : new Real(cPtr, false);
   }
 
-  public void setImagObj(Real value) {
+  private void setImagObj(Real value) {
     arblibJNI.Complex_imagObj_set(swigCPtr, this, Real.getCPtr(value), value);
   }
 
-  public Real getImagObj() {
+  private Real getImagObj() {
     long cPtr = arblibJNI.Complex_imagObj_get(swigCPtr, this);
     return (cPtr == 0) ? null : new Real(cPtr, false);
   }
