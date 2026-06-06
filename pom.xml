@@ -170,7 +170,14 @@
 				<configuration>
 					<argLine>-ea --illegal-native-access=allow
 						--sun-misc-unsafe-memory-access=allow
-						-Djava.library.path=${project.basedir} ${argLine}</argLine>
+						-Djava.library.path=${project.basedir}
+						-XX:+DisableExplicitGC
+						${argLine}</argLine>
+					<!-- Exclude native-memory-leak tests that require explicit GC;
+					     run them via: mvn -Pleak-test test -->
+					<excludes>
+						<exclude>**/MuntzPadeApproximantAbandonedAllocationTest.java</exclude>
+					</excludes>
 				</configuration>
 			</plugin>
 
@@ -496,6 +503,37 @@
 								-Darb4j.saveClasses=true
 								-Darb4j.decompileClasses=true
 								-Dlogback.configurationFile=logback-debug.xml</argLine>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<!--
+		  Native memory leak detection profile. Runs only
+		  MuntzPadeApproximantAbandonedAllocationTest, which requires
+		  explicit System.gc() calls to trigger LeakTracker queue
+		  processing. The main test run disables explicit GC via
+		  -XX:+DisableExplicitGC to avoid 10 unnecessary Full GC pauses
+		  (~160ms total).
+		  
+		  Usage: mvn -Pleak-test test
+		-->
+		<profile>
+			<id>leak-test</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<argLine>-ea --illegal-native-access=allow
+								--sun-misc-unsafe-memory-access=allow
+								-Djava.library.path=${project.basedir}
+								${argLine}</argLine>
+							<includes>
+								<include>**/MuntzPadeApproximantAbandonedAllocationTest.java</include>
+							</includes>
 						</configuration>
 					</plugin>
 				</plugins>
