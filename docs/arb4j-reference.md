@@ -1,10 +1,12 @@
-# The arb4j Expression Language — A Reference Exegesis
+# arb4j Reference
 
 **Version:** master @ commit `d641e98` (2026-04-28)
-**Source root:** `arb/expressions/` (84 files)
+**Source root:** `arb/expressions/` (84 files), `arb/functions/`, `arb/` (top-level wrappers)
 **Audience:** the author and other mathematicians using arb4j to express mathematical objects directly, without coefficient bookkeeping.
 
-This document is a complete walkthrough of the arb4j expression compiler — what the language **is**, what every operator does, what types it dispatches over, and which mathematical idioms are first-class. The emphasis is on what makes it a **mathematician's language** rather than a programmer's: polynomials are objects you multiply, sums are folds over an index, and the type of the operand body decides the algebra.
+This document is a comprehensive reference for arb4j — the Java API wrapping the C library [arblib](http://arblib.org)/FLINT for arbitrary-precision real and complex ball arithmetic. At its core is the **expression compiler**: a system that parses Unicode-rich mathematical notation and emits JVM bytecode directly via ASM, transforming expressions like `Pₙ(x) = (Aₙ₋₁·x + Bₙ₋₁)·Pₙ₋₁(x) − Cₙ₋₁·Pₙ₋₂(x)` into executable code with no interpreter, no coefficient bookkeeping, and no gap between notation and evaluation.
+
+This document covers what the language **is**, what every operator does, what types it dispatches over, which mathematical idioms are first-class, and how the compiler internals work — parsing, AST construction, bytecode generation, class loading, context management, recursion handling, and lifecycle.
 
 Every claim cites a file:line. Every operator is illustrated with at least one expression drawn verbatim from production code.
 
@@ -548,7 +550,42 @@ Three observations matter for understanding the language.
 
 **(c) `S(k)` for `k ≤ 2` is `sum` over an empty range** — the loop's lower bound `j=1` exceeds the upper bound `k-2` — and the language defines an empty `sum` to be `0` (the additive identity in the codomain), an empty `prod` to be `1`. The `when` clause in `a`'s definition handles the base case `k=1` separately precisely so that the recurrence's `r(v)·S(k)` term is well-defined for all `k ≥ 2`.
 
-### 10.2 Three patterns for registering a function in a context
+### 10.2 Why backfilling is necessary
+
+In a mutual cycle (say `a ↔ S`), forward declaration breaks the parse-time dependency, but the bytecode each class emits at compile time cannot know whether its peer's `FunctionMapping` will have a live instance by the time `evaluate()` runs. This creates a **reciprocal placeholder problem** that backfilling solves.
+
+**What happens at codegen.** When `S`'s `initialize()` bytecode is generated, its `FunctionMapping` for `a` has `instance == null` (because `a` hasn't been `express`'d yet). Nevertheless, the codegen emits a null-guarded fallback via `constructReferencedFunctionInstanceIfItIsNull`:
+
+```
+if (this.a == null) this.a = new A_Generated();
+this.a.context = this.context;
+```
+
+This is necessary — `S` must be able to run `evaluate()` even if `a` was never separately instantiated. But the fallback `A_Generated` instance **never received context-variable injection**. The injection block (`if (this.a.v == null) this.a.v = this.v`) is only emitted when the mapping has a live instance at codegen time (`Expression.java:2569`: `haveLiveInstance = nestedFunction.instance != null`).
+
+**What happens at `express()` time.** When `a` is finally `express()`'d, `a.initialize()` runs with proper context-variable injection (because `a` is live at its own codegen). Now there are *two* `A_Generated` objects in play:
+1. The **placeholder** created by `S`'s null-guard — it has the right methods but stale/missing context variables.
+2. The **real** instance returned by `a`'s `express()` — it has full context-variable injection.
+
+**How backfilling fixes it.** After `a` is fully instantiated, `backfillMutuallyRecursiveReferences()` (`Expression.java:3874`) walks every other context member. For each peer that declares a field named `a`, it writes the real, fully-injected `a` instance into that field, replacing the placeholder:
+
+```java
+// backfillMutuallyRecursiveReferences (simplified):
+for (var entry : context.functions) {
+    Object peer = entry.getValue().instance;
+    for (var field : peer.getClass().getFields()) {
+        if (field.getName().equals(functionName) && field.get(peer) == null) {
+            field.set(peer, selfInstance);  // replace placeholder with real instance
+        }
+    }
+}
+```
+
+Without backfilling, `S.evaluate(k)` would call `a.evaluate(...)` on the placeholder instance that lacks context-variable injection, producing either wrong results or `NullPointerException` the first time the expression referenced a context variable like `v` or `μ`.
+
+The **reverse direction** follows the same pattern: when `a` was first compiled, its own null-guard created a placeholder `S`. When `S`'s real instance is later materialised (during `instantiateAndInjectReferencedFunctions`'s recursive walk at `Expression.java:3957`), backfilling replaces `a`'s placeholder `S` with the real one. Each half of the cycle overwrites the other's placeholder — hence *backfilling* rather than just forward-filling.
+
+### 10.3 Three patterns for registering a function in a context
 
 Reading through the production code reveals exactly three idioms.
 
