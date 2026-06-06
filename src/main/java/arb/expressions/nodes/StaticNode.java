@@ -1,5 +1,6 @@
 package arb.expressions.nodes;
 
+import static org.objectweb.asm.Opcodes.ALOAD;
 import static org.objectweb.asm.Opcodes.ASTORE;
 
 import org.objectweb.asm.MethodVisitor;
@@ -49,7 +50,10 @@ public class StaticNode<D, R, F extends Function<? extends D, ? extends R>> exte
       {
         generateCastTo(mv, resultType);
       }
+      // Store to result parameter (slot 4)
       mv.visitVarInsn(ASTORE, 4);
+      // Reload for ARETURN
+      mv.visitVarInsn(ALOAD, 4);
       generatedType = fieldType;
       return mv;
     }
