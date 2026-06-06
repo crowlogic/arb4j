@@ -493,6 +493,8 @@
 								-Djava.library.path=${project.basedir}
 								-Darb4j.trace=true
 								-Darb4j.traceNodes=true
+								-Darb4j.saveClasses=true
+								-Darb4j.decompileClasses=true
 								-Dlogback.configurationFile=logback-debug.xml</argLine>
 						</configuration>
 					</plugin>
