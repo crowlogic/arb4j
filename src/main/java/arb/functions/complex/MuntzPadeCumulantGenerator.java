@@ -216,59 +216,53 @@ public class MuntzPadeCumulantGenerator implements
     return this;
   }
 
+  private final arb.Real                threshold = new arb.Real();
+  private final arb.Real                addMag    = new arb.Real();
+  private final arb.Real                bestMag   = new arb.Real();
+  private final arb.Real                expo      = new arb.Real();
+  private final arb.Real                tpow      = new arb.Real();
+  private final arb.Complex             sum       = new arb.Complex();
+  private final arb.Complex             addition  = new arb.Complex();
+  private final arb.Complex             best      = new arb.Complex();
+  private final arb.ComplexPolynomial   dk        = new arb.ComplexPolynomial();
+  private final arb.Integer             kIdx      = new arb.Integer();
+
   @Override
   public arb.Complex evaluate(arb.Complex v, int order, int bits, arb.Complex res)
   {
+    threshold.one().mul2e(-bits / 2, threshold);
+    bestMag.posInf();
+    sum.zero();
 
-    // Incremental adaptive growth: maintain a running partial sum and add
-    // one term per step. Stop when |term_n| drops below the half-precision
-    // threshold or stops shrinking (precision floor reached).
-    try ( arb.Real threshold = new arb.Real(); arb.Real addMag = new arb.Real(); arb.Real bestMag = new arb.Real(); arb.Real expo = new arb.Real();
-          arb.Real tpow = new arb.Real(); arb.Complex sum = new arb.Complex(); arb.Complex addition = new arb.Complex(); arb.Complex best = new arb.Complex();
-          arb.ComplexPolynomial dk = new arb.ComplexPolynomial(); arb.Integer kIdx = new arb.Integer())
+    for (int n = 0; true; n++)
     {
-      threshold.one().mul2e(-bits / 2, threshold);
-      bestMag.posInf();
-      sum.zero();
+      kIdx.set(n);
+      d.evaluate(kIdx, 1, bits, dk);
+      dk.evaluate(v, 1, bits, addition);
+      μ.mul(n, bits, expo).add(1, bits, expo);
+      T.pow(expo, bits, tpow);
+      addition.mul(tpow, bits, addition);
+      sum.add(addition, bits, sum);
+      addition.abs(bits, addMag);
 
-      // Accumulate d(0)(v)·T^1, d(1)(v)·T^(μ+1), … one at a time. Evaluate the
-      // *cached* d polynomial sequence directly (reusing the dk buffer) rather
-      // than materialising a fresh term(k) function per index — the latter
-      // allocates and injects a new reference sub-graph on every call, which
-      // accumulates without bound across repeated φ evaluations.
-      for (int n = 0; true; n++)
+      if (n == 0)
       {
-        kIdx.set(n);
-        d.evaluate(kIdx, 1, bits, dk);
-        dk.evaluate(v, 1, bits, addition); // d(n)(v)
-        μ.mul(n, bits, expo).add(1, bits, expo); // nμ + 1
-        T.pow(expo, bits, tpow); // T^(nμ+1)
-        addition.mul(tpow, bits, addition); // d(n)(v)·T^(nμ+1)
-        sum.add(addition, bits, sum);
-        addition.abs(bits, addMag);
-
-        if (n == 0)
-        {
-          best.set(sum);
-          continue;
-        }
-        if (addMag.compareTo(threshold) <= 0)
-        {
-          return res.set(sum);
-        }
-        if (addMag.compareTo(bestMag) < 0)
-        {
-          bestMag.set(addMag);
-          best.set(sum);
-        }
-        else
-        {
-          // Term magnitudes stopped shrinking: precision floor. Return the
-          // best partial sum (one step before the floor).
-          return res.set(best);
-        }
+        best.set(sum);
+        continue;
       }
-
+      if (addMag.compareTo(threshold) <= 0)
+      {
+        return res.set(sum);
+      }
+      if (addMag.compareTo(bestMag) < 0)
+      {
+        bestMag.set(addMag);
+        best.set(sum);
+      }
+      else
+      {
+        return res.set(best);
+      }
     }
   }
 
@@ -293,5 +287,15 @@ public class MuntzPadeCumulantGenerator implements
       d.close();
     if (N != null)
       N.close();
+    threshold.close();
+    addMag.close();
+    bestMag.close();
+    expo.close();
+    tpow.close();
+    sum.close();
+    addition.close();
+    best.close();
+    dk.close();
+    kIdx.close();
   }
 }

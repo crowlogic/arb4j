@@ -1,5 +1,7 @@
 package arb.expressions.nodes;
 
+import static org.objectweb.asm.Opcodes.ASTORE;
+
 import org.objectweb.asm.MethodVisitor;
 
 import arb.expressions.Expression;
@@ -19,7 +21,7 @@ import arb.functions.Function;
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 public class StaticNode<D, R, F extends Function<? extends D, ? extends R>> extends
-                        CachedNode<D, R, F>
+                         CachedNode<D, R, F>
 {
 
   public StaticNode(Node<D, R, F> delegate)
@@ -36,6 +38,21 @@ public class StaticNode<D, R, F extends Function<? extends D, ? extends R>> exte
       return delegate.generate(mv, resultType);
     }
     Class<?> fieldType = delegate.type();
+    if (isRootNode)
+    {
+      // Issue #1039: when the root node itself is a StaticNode (the entire
+      // expression depends only on context/fixed variables), we must write
+      // the cached value into the caller's result argument (slot 4) rather
+      // than just leaving it on the stack.
+      expression.loadThisAndFieldOntoStack(mv, fieldName, fieldType);
+      if (!resultType.equals(fieldType))
+      {
+        generateCastTo(mv, resultType);
+      }
+      mv.visitVarInsn(ASTORE, 4);
+      generatedType = fieldType;
+      return mv;
+    }
     expression.loadThisAndFieldOntoStack(mv, fieldName, fieldType);
     generatedType = fieldType;
     if (!resultType.equals(fieldType))

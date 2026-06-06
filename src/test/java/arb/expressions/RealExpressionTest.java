@@ -194,6 +194,29 @@ public class RealExpressionTest extends
     }
   }
 
+  public void testFullyStaticEvaluateWritesResultArgument()
+  {
+    // Issue #1039: when an expression is fully static (depends only on context
+    // variables, not on the independent variable), the generated evaluate()
+    // must write the computed value into the caller's result argument,
+    // not just return the cached static field.
+    Context context = new Context();
+    Real p = Real.named("p").set("3.0", 128);
+    Real q = Real.named("q").set("4.0", 128);
+    context.registerVariable(p);
+    context.registerVariable(q);
+
+    // w:t➔p+q — body depends only on context variables p and q, not on t
+    // The entire expression should be hoisted as a single StaticNode
+    RealFunction w = RealFunction.express("w:t➔p+q", context);
+
+    Real result = new Real();
+    w.evaluate(one, 1, 128, result);
+
+    // The result object should contain 7.0 (3 + 4), not 0.0
+    assertEquals(7.0, result.doubleValue());
+  }
+
   public void testDivideConstants()
   {
 
