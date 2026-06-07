@@ -82,7 +82,7 @@ public class RiccatiMuntzPadeFunctional extends PadeFunctional
     • Compiles convolution sum:
       S(k)(v) = Σ_{j=1}^{k−2} a(j)(v)·a(k−1−j)(v).
     • Compiles full recurrence:
-      a(k)(v) = when(k=1, p(v)/Γ(μ+1),
+      a(k)(v) = when(k=1, p(v)/Γ(μ+1), else,
                      Γ((k−1)μ+1)/Γ(kμ+1)
                      · (q(v)·a(k−1)(v) + r(v)·S(k)(v))).
     • Passes compiled polynomial sequence to super(μ, a).
