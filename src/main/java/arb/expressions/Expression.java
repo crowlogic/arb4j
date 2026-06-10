@@ -2864,11 +2864,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                        contextInternal,
                        "own",
-                       "(Larb/functions/Function;)Larb/functions/Function;",
+                       Compiler.getMethodDescriptor(Function.class, Function.class),
                        false);
     mv.visitInsn(Opcodes.POP);
     mv.visitLabel(noContext);
   }
+
+
 
   protected ClassVisitor generateInitializationMethod(ClassVisitor classVisitor)
   {
@@ -3657,13 +3659,21 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitFieldInsn(PUTFIELD, internalName(), "closed", "Z");
 
     // Note: cache is intentionally NOT re-allocated on clone. super.clone()'s
-    // bitwise copy carries the canonical's IndexCache reference through to the
-    // clone, so every clone in a recursive cluster shares the SAME memoization
-    // cache. Peer evaluation state (the `evaluating` flag and the scratch
-    // fields below) is per-instance; the math-output memo is cluster-shared,
-    // because re-computing a sequence index that the canonical already cached
-    // would be redundant work. Context.warmToBottomUp populates the
-    // canonical's cache; every clone reads through to it by reference.
+    // bitwise copy carries the canonical's IndexCache reference through to
+    // the clone. For peer-reference clones produced by the clone-from-
+    // canonical path (issue #1047/#1048), this shares the cluster's math
+    // memo — re-computing a sequence index that the canonical already
+    // cached would be redundant work. The shared cache is correct here
+    // because the cluster cache cells are keyed by index and the cluster's
+    // parameter state is shared by-reference (context variables), so two
+    // clones of the same canonical see the same parameters and the same
+    // cached values are valid for both. NOTE: this differs from
+    // curried-sub-sequence instances (e.g. σfunc(j) returned by
+    // σ.evaluate(j)), which need per-instance caches because each j is a
+    // different outer index. Those instances are constructed by
+    // {@code new σfunc()} inside the parent's evaluate_body, not by this
+    // {@code cloneFunction()}, so they get fresh per-instance caches from
+    // the σfunc constructor as before.
     if (shouldCacheValueBacking())
     {
       // clone.lastV = null; clone.cachedResult = null
@@ -4178,6 +4188,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       if (field == null)
       {
         // The other class doesn't reference us — not in our SCC, nothing to do.
+        continue;
+      }
+      // Skip when selfInstance's runtime class is not assignable to the peer's
+      // declared field type. This happens for derivative classes (e.g. P_dν is
+      // the derivative of P) whose name {@code functionName} collides with the
+      // original {@code P} that the peer {@code D} references. Peer {@code D.P}
+      // is typed as the ORIGINAL class {@code P}, not the derivative — a
+      // back-fill there is a category error, not a missed wire.
+      if (!field.getType().isAssignableFrom(selfInstance.getClass()))
+      {
         continue;
       }
       try
