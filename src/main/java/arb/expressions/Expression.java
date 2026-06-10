@@ -215,7 +215,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   static final String             functionInternal                  = Type.getInternalName(Function.class);
 
   public static Class<?>[]        implementedInterfaces             = new Class[]
-  { Typesettable.class, AutoCloseable.class, Initializable.class, Named.class, Cloneable.class };
+  { Typesettable.class, AutoCloseable.class, Initializable.class, Named.class };
 
   public static String            IS_INITIALIZED                    = "isInitialized";
 
@@ -1067,13 +1067,24 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     assert mapping != null : "mapping shan't be null";
     boolean isSelfRef    = mapping.functionName != null && functionName != null && functionName.equals(mapping.functionName);
-    boolean hasSomething = mapping.expression != null || mapping.instance != null || mapping.isGenerated();
+    // Also wire mappings that have a live instance but no defining expression
+    // (e.g. Context.registerSequence("B", bops)); otherwise an inner
+    // self-recursive instance never gets that field set (injection only runs
+    // on the externally-instantiated outer instance, not on the ones
+    // generateSelfReference allocates).
+    boolean hasSomething = mapping.expression != null || mapping.instance != null;
     if (!isSelfRef && hasSomething)
     {
+      // Bytecode-only path: use the mapping's already-known generated-class
+      // internal name. ASM's new/invokespecial accept name strings; resolving
+      // the Class<?> here would force eager compilation of the dependency
+      // and break mutual recursion across mappings (a ↔ S in the fractional
+      // Riccati Müntz recurrence, issue #982). The class is resolved lazily
+      // by the JVM when the opcode first executes — by which point the outer
+      // compile chain has defined every class in the recursive cluster.
       String typeInternalName   = mapping.functionInternalName();
       String fieldDescriptor    = mapping.functionFieldDescriptor();
       String contextTypeDesc    = Type.getDescriptor(Context.class);
-      String contextInternal    = Type.getInternalName(Context.class);
       var    alreadyInitialized = new Label();
       var    needsAllocation    = new Label();
 
@@ -1081,32 +1092,24 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       loadThisOntoStack(mv).visitFieldInsn(GETFIELD, internalName(), mapping.functionName, fieldDescriptor);
       mv.visitJumpInsn(Opcodes.IFNONNULL, alreadyInitialized);
 
-      // 2. Try the context's canonical instance: clone it via Prototype-pattern cloneFunction()
-      // This clones all mathematically-meaningful parameters (via super.clone()) while yielding
-      // a fresh non-reentrant instance!
+      // 2. Try the context's canonical instance:
+      // Function f = this.context.lookupFunctionInstance("<name>");
+      // if (f != null) { this.<field> = (FieldType) f; goto done; }
+      // This avoids allocating a second instance whose own field-injection
+      // never runs (e.g. σfunc creating a fresh `new m()` whose `a` field
+      // stays null because σ has no `a` field of its own to propagate from).
       loadThisOntoStack(mv);
       loadThisOntoStack(mv);
       mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
       mv.visitLdcInsn(mapping.functionName);
-      String functionInterfaceInternal = Type.getInternalName(Function.class);
       mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                         contextInternal,
+                         Type.getInternalName(Context.class),
                          "lookupFunctionInstance",
-                         Compiler.getMethodDescriptor(Function.class, String.class),
+                         "(Ljava/lang/String;)Larb/functions/Function;",
                          false);
       duplicateTopOfTheStack(mv);
       mv.visitJumpInsn(Opcodes.IFNULL, needsAllocation);
-
-      // Stack: this, function. Clone it and store. The clone arrives with
-      // isInitialized=false, a fresh IndexCache, and nulled nested-function
-      // refs; the lazy IFNONNULL allocation path inside its evaluate_body
-      // populates each ref on first reach — that same skip is the natural
-      // terminator for any cycle in the reference graph.
-      mv.visitMethodInsn(Opcodes.INVOKEINTERFACE,
-                         functionInterfaceInternal,
-                         "cloneFunction",
-                         Compiler.getMethodDescriptor(Function.class),
-                         true);
+      // Stack: this, function. Cast and store.
       mv.visitTypeInsn(Opcodes.CHECKCAST, typeInternalName);
       putField(mv, internalName(), mapping.functionName, fieldDescriptor);
       mv.visitJumpInsn(Opcodes.GOTO, alreadyInitialized);
@@ -1116,26 +1119,42 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       mv.visitLabel(needsAllocation);
       mv.visitInsn(Opcodes.POP); // discard the dup'd null
       mv.visitInsn(Opcodes.POP); // discard the `this` we loaded for the eventual PUTFIELD
-
       loadThisOntoStack(mv);
       generateNewObjectInstruction(mv, typeInternalName);
       duplicateTopOfTheStack(mv);
       invokeDefaultConstructor(mv, typeInternalName);
       putField(mv, internalName(), mapping.functionName, fieldDescriptor);
-
-      // if (this.context != null) this.context.injectReferences(this.<field>);
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
-      mv.visitJumpInsn(Opcodes.IFNULL, alreadyInitialized);
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
+      // Propagate the parent's context field into the new instance's context
+      // field so the new instance's own initialize() sees the live, populated
+      // Context. Without this, the new instance keeps its field-initializer
+      // default (an empty `new Context()`), which has no functions or
+      // variables registered, and every nested function reference (e.g. He)
+      // remains null at runtime.
       loadThisOntoStack(mv);
       mv.visitFieldInsn(GETFIELD, internalName(), mapping.functionName, fieldDescriptor);
-      mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                         contextInternal,
-                         "injectReferences",
-                         Compiler.getMethodDescriptor(Void.class, Function.class),
-                         false);
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
+      mv.visitFieldInsn(PUTFIELD, typeInternalName, "context", contextTypeDesc);
+
+      // Share this instance's memoization cache with the freshly-constructed
+      // member when the two are MUTUALLY recursive and both cache: such members
+      // form one strongly-connected cluster that shares a single IndexCache by
+      // design (see generateSelfReference / IndexCache.invalidating). Without
+      // this, a member built here (the no-context construction path) memoizes
+      // into a PRIVATE cache, so its recurrence — e.g. the Müntz convolution
+      // a(j)·a(k-1-j) — never hits the shared table, rebuilds instance chains on
+      // every evaluation, and leaks their native ComplexPolynomial fields (arb
+      // has no finalizer). A one-way reference to an independent cached sequence
+      // is NOT mutually recursive, so it correctly keeps its own cache.
+      if (shouldCache() && mapping.expression != null && mapping.expression.shouldCache()
+                    && mapping.expression.getReferencedFunctions().containsKey(functionName))
+      {
+        loadThisOntoStack(mv);
+        mv.visitFieldInsn(GETFIELD, internalName(), mapping.functionName, fieldDescriptor);
+        loadThisOntoStack(mv);
+        mv.visitFieldInsn(GETFIELD, internalName(), "cache", Type.getDescriptor(IndexCache.class));
+        mv.visitFieldInsn(PUTFIELD, typeInternalName, "cache", Type.getDescriptor(IndexCache.class));
+      }
 
       mv.visitLabel(alreadyInitialized);
     }
@@ -1209,8 +1228,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (shouldCache())
     {
       String signature = "L" + Type.getInternalName(IndexCache.class) + "<" + Type.getDescriptor(coDomainType) + ">;";
-      // Not final so generated initialization/evaluation logic can update the
-      // reference and its state in place.
+      // Not final: generateSelfReference shares this cache into the allocated
+      // self-instance so a recursive chain memoizes once instead of
+      // recomputing at every level.
       cw.visitField(Opcodes.ACC_PRIVATE, "cache", Type.getDescriptor(IndexCache.class), signature, null);
     }
     if (shouldCacheValueBacking())
@@ -1841,7 +1861,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
       generateToStringMethod(classVisitor);
       generateTypesetMethod(classVisitor);
-      generateCloneFunction(classVisitor);
     }
     finally
     {
@@ -2904,12 +2923,23 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     var     mv          = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, methodName, "()V", null, null);
     mv.visitCode();
     boolean cached      = shouldCache();
-    // Reentrancy flag per instance:
+    // Reentrancy flag keyed on the SHARED identity of the cluster:
     //
-    //  - cache-bearing class: use this.cache.invalidating to stop recursive
-    //    re-entry on this instance while invalidateCache walks referenced fields.
+    //  - cache-bearing class: a self-referential sequence (the Müntz a/aoperand
+    //    cluster) is evaluated through an N-deep chain of DISTINCT instances —
+    //    one per recursion level for scratch isolation — that all SHARE one
+    //    IndexCache (the parent stores child.cache = this.cache, see
+    //    generateNestedFunctionInstanceCacheSharing below). A per-instance flag
+    //    cannot stop a walk over distinct instances and overflows the stack at
+    //    large order. The flag on the shared cache collapses the whole chain to a
+    //    single visit: the first instance clears the one shared cache and sets
+    //    cache.invalidating, every other chain member (reached via the self-edge
+    //    or the operand bridge) sees it set and returns. This is the minimal,
+    //    collection-free form of "invalidate each cluster once" the same way
+    //    close() uses `closed`. Mutually-recursive sequences with independent
+    //    caches each carry their own flag and are cleared exactly once.
     //
-    //  - cacheless class: use this.invalidatingCache for the same purpose.
+    //  - cacheless class: per-instance invalidatingCache over a finite ref graph.
     var notInvalidating = new Label();
     if (cached)
     {
@@ -3061,16 +3091,21 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public void generateReferencedFunctionInstances(MethodVisitor mv)
   {
-    // Allocate per-instance generated references for null fields. Non-generated
-    // references are injected through Context.injectReferences.
+    // Phase 1: allocate-all. For every referenced function f registered on
+    // this expression, emit `if (this.<f> == null) this.<f> = new <f>()` and
+    // propagate this.context onto the freshly allocated instance. After this
+    // loop every direct peer field is non-null and shares this.context with
+    // the parent.
     getReferencedFunctions().values().forEach(mapping -> constructReferencedFunctionInstanceIfItIsNull(mv, mapping));
     // #1027: wirePeerReferencesIntoReferencedFunctionInstances was the
     // emitter of the malformed PUTFIELD <peer>.<h> instructions whose
     // <h> field did not exist on <peer>'s compiled class, producing the
     // NoSuchFieldError at S.initialize. Removing this Phase 2 wiring
     // does not regress: peer references are wired by
-    // each generated instance's initialize() allocation path plus
-    // Context.injectReferences on the new instance.
+    // Context.injectFunctionReferences on the parent before evaluate()
+    // ever runs, and each operand's own initialize() chain wires its
+    // own peers via the same injectFunctionReferences pass when its
+    // instance is materialised.
   }
 
   protected MethodVisitor generateSelfReference(MethodVisitor mv)
@@ -3089,9 +3124,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     String fieldDescriptor            = mapping.functionFieldDescriptor();
     String nestedFunctionInternalName = mapping.functionInternalName();
     String contextTypeDesc            = Type.getDescriptor(Context.class);
-    String contextInternal            = Type.getInternalName(Context.class);
     Label  alreadyAssigned            = new Label();
-    Label  noContext                  = new Label();
 
     // if (this.<self> != null) goto alreadyAssigned;
     loadThisOntoStack(mv).visitFieldInsn(GETFIELD, internalName(), functionName, fieldDescriptor);
@@ -3108,23 +3141,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     loadThisOntoStack(mv);
     mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
     mv.visitFieldInsn(PUTFIELD, nestedFunctionInternalName, "context", contextTypeDesc);
-
-    // Wire variables/non-generated function references/context onto the
-    // freshly constructed self instance.
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
-    mv.visitJumpInsn(Opcodes.IFNULL, noContext);
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(GETFIELD, internalName(), functionName, fieldDescriptor);
-    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                       contextInternal,
-                       "injectReferences",
-                       "(Larb/functions/Function;)V",
-                       false);
-    mv.visitLabel(noContext);
-
+    // this.<self>.cache = this.cache; — share the memoization map so a deep
+    // recursive chain reuses results instead of going O(N) deep on the stack.
+    if (shouldCache())
+    {
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(GETFIELD, internalName(), functionName, fieldDescriptor);
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(GETFIELD, internalName(), "cache", Type.getDescriptor(IndexCache.class));
+      mv.visitFieldInsn(PUTFIELD, nestedFunctionInternalName, "cache", Type.getDescriptor(IndexCache.class));
+    }
     mv.visitLabel(alreadyAssigned);
     initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv), internalName(), functionName, functionName, context.variableClassStream());
     return mv;
@@ -3284,12 +3310,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitLabel(cacheNotEmpty);
 
     // --- long factorial = 1; ---
-    // slot 5 = k (int), slot 6-7 = factorial (long), slot 8 = element (Object),
-    // slot 9 = fk (Function)
+    // slot 5 = k (int), slot 6-7 = factorial (long), slot 8 = element (Object)
     int kSlot         = 5;
     int factorialSlot = 6;
     int elementSlot   = 8;
-    int fkSlot        = 9;
 
     mv.visitInsn(Opcodes.LCONST_1);
     mv.visitVarInsn(Opcodes.LSTORE, factorialSlot);
@@ -3355,7 +3379,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitVarInsn(Opcodes.ILOAD, kSlot);
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, arrayListInternal, "get", "(I)Ljava/lang/Object;", false);
     mv.visitTypeInsn(Opcodes.CHECKCAST, functionInternal);
-    mv.visitVarInsn(Opcodes.ASTORE, fkSlot);
+    // stack: fk (Function)
 
     // --- element = result.get(k) ---
     mv.visitVarInsn(Opcodes.ALOAD, 4); // result
@@ -3364,31 +3388,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, fieldInternal, "get", "(I)Ljava/lang/Object;", true);
     mv.visitVarInsn(Opcodes.ASTORE, elementSlot);
 
-    // --- Evaluate fk at (t, 1, bits, element) ---
-    // k = 0 uses evaluate_body on this instance to avoid same-instance
-    // wrapper re-entry from derivativeCache[0] = this.
-    Label callThroughInterface = new Label();
-    Label evaluationDone       = new Label();
-    mv.visitVarInsn(Opcodes.ILOAD, kSlot);
-    mv.visitJumpInsn(Opcodes.IFNE, callThroughInterface);
-    loadThisOntoStack(mv);
-    mv.visitVarInsn(Opcodes.ALOAD, 1); // t
-    mv.visitInsn(Opcodes.ICONST_1); // order = 1
-    mv.visitVarInsn(Opcodes.ILOAD, 3); // bits
-    mv.visitVarInsn(Opcodes.ALOAD, elementSlot); // element
-    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, internalName(), "evaluate_body", Compiler.evaluationMethodDescriptor, false);
-    mv.visitInsn(Opcodes.POP);
-    mv.visitJumpInsn(Opcodes.GOTO, evaluationDone);
-
-    mv.visitLabel(callThroughInterface);
-    mv.visitVarInsn(Opcodes.ALOAD, fkSlot);
+    // --- fk.evaluate(t, 1, bits, element) ---
+    // stack already has fk; push args
     mv.visitVarInsn(Opcodes.ALOAD, 1); // t
     mv.visitInsn(Opcodes.ICONST_1); // order = 1
     mv.visitVarInsn(Opcodes.ILOAD, 3); // bits
     mv.visitVarInsn(Opcodes.ALOAD, elementSlot); // element
     mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, functionInternal, "evaluate", Compiler.evaluationMethodDescriptor, true);
     mv.visitInsn(Opcodes.POP); // discard return value
-    mv.visitLabel(evaluationDone);
 
     // --- if (k >= 2) element.div((int)factorial, bits, element) ---
     mv.visitVarInsn(Opcodes.ILOAD, kSlot);
@@ -3545,160 +3552,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
 
     return Compiler.generateTypesetMethod(classVisitor, typeset());
-  }
-
-  /**
-   * Prototype-pattern copy. {@code super.clone()} does a bitwise field copy;
-   * we then explicitly reset every per-instance evaluation-state field so the
-   * clone carries ONLY the math-parameter fields (declared variables) of the
-   * original. The reset list:
-   *   evaluating         -> false  (a hot clone must not start re-entered)
-   *   isInitialized      -> false  (it must re-run initialize() to allocate
-   *                                  its own nested Function refs)
-   *   invalidatingCache  -> false
-   *   closed             -> false
-   *   cache              -> null   (per-instance memo, not shared)
-   *   lastV / cachedResult -> null (per-instance value-backing)
-   *   derivativeCache    -> null
-   *   staticPrecision    -> -1    (force re-eval of hoisted statics)
-   *   evalStamp + each jetStamp_* -> 0
-   *   every referenced-function field -> null (let initialize() rebuild them
-   *     so the chain is a tree of fresh instances, not a graph of shared ones)
-   */
-  protected ClassVisitor generateCloneFunction(ClassVisitor classVisitor)
-  {
-    String objectInternal     = Type.getInternalName(Object.class);
-    String cloneExInternal    = Type.getInternalName(CloneNotSupportedException.class);
-    String runtimeExInternal  = Type.getInternalName(RuntimeException.class);
-
-    var mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
-                                       "cloneFunction",
-                                       Compiler.getMethodDescriptor(Function.class),
-                                       null,
-                                       null);
-    mv.visitCode();
-
-    Label start   = new Label();
-    Label end     = new Label();
-    Label handler = new Label();
-    mv.visitTryCatchBlock(start, end, handler, cloneExInternal);
-
-    mv.visitLabel(start);
-    mv.visitVarInsn(ALOAD, 0);
-    mv.visitMethodInsn(INVOKESPECIAL,
-                       objectInternal,
-                       "clone",
-                       Compiler.getMethodDescriptor(Object.class),
-                       false);
-    mv.visitTypeInsn(CHECKCAST, internalName());
-    mv.visitVarInsn(ASTORE, 1); // local 1 = the clone
-
-    // clone.evaluating = false
-    mv.visitVarInsn(ALOAD, 1);
-    mv.visitInsn(ICONST_0);
-    mv.visitFieldInsn(PUTFIELD, internalName(), "evaluating", "Z");
-
-    // clone.isInitialized = false
-    mv.visitVarInsn(ALOAD, 1);
-    mv.visitInsn(ICONST_0);
-    mv.visitFieldInsn(PUTFIELD, internalName(), IS_INITIALIZED, "Z");
-
-    // clone.invalidatingCache = false
-    mv.visitVarInsn(ALOAD, 1);
-    mv.visitInsn(ICONST_0);
-    mv.visitFieldInsn(PUTFIELD, internalName(), "invalidatingCache", "Z");
-
-    // clone.closed = false
-    mv.visitVarInsn(ALOAD, 1);
-    mv.visitInsn(ICONST_0);
-    mv.visitFieldInsn(PUTFIELD, internalName(), "closed", "Z");
-
-    if (shouldCache())
-    {
-      // clone.cache = new IndexCache(); (and clone.cache.ownsValues = true if value sequence)
-      String idxCacheInternal = Type.getInternalName(IndexCache.class);
-      mv.visitVarInsn(ALOAD, 1);
-      mv.visitTypeInsn(NEW, idxCacheInternal);
-      mv.visitInsn(DUP);
-      mv.visitMethodInsn(INVOKESPECIAL, idxCacheInternal, "<init>", "()V", false);
-      mv.visitFieldInsn(PUTFIELD, internalName(), "cache", Type.getDescriptor(IndexCache.class));
-      if (!isGeneratedFunctional())
-      {
-        mv.visitVarInsn(ALOAD, 1);
-        mv.visitFieldInsn(GETFIELD, internalName(), "cache", Type.getDescriptor(IndexCache.class));
-        mv.visitInsn(ICONST_1);
-        mv.visitFieldInsn(PUTFIELD, idxCacheInternal, "ownsValues", "Z");
-      }
-    }
-    if (shouldCacheValueBacking())
-    {
-      // clone.lastV = null; clone.cachedResult = null
-      mv.visitVarInsn(ALOAD, 1);
-      mv.visitInsn(ACONST_NULL);
-      mv.visitFieldInsn(PUTFIELD, internalName(), "lastV", Type.getDescriptor(domainType));
-      mv.visitVarInsn(ALOAD, 1);
-      mv.visitInsn(ACONST_NULL);
-      mv.visitFieldInsn(PUTFIELD, internalName(), "cachedResult", Type.getDescriptor(coDomainType));
-    }
-    if (hasStaticNodes)
-    {
-      // clone.staticPrecision = -1
-      mv.visitVarInsn(ALOAD, 1);
-      mv.visitInsn(ICONST_M1);
-      mv.visitFieldInsn(PUTFIELD, internalName(), "staticPrecision", "I");
-    }
-
-    // clone.derivativeCache = null
-    mv.visitVarInsn(ALOAD, 1);
-    mv.visitInsn(ACONST_NULL);
-    mv.visitFieldInsn(PUTFIELD, internalName(), "derivativeCache", arrayListDescriptor);
-
-    // jet stamps: clone.evalStamp = 0; clone.<jetStamp_*> = 0
-    Set<JetState> jetStates = collectJetStates();
-    if (!jetStates.isEmpty())
-    {
-      mv.visitVarInsn(ALOAD, 1);
-      mv.visitInsn(ICONST_0);
-      mv.visitFieldInsn(PUTFIELD, internalName(), "evalStamp", "I");
-      for (JetState state : jetStates)
-      {
-        mv.visitVarInsn(ALOAD, 1);
-        mv.visitInsn(ICONST_0);
-        mv.visitFieldInsn(PUTFIELD, internalName(), state.stampFieldName, "I");
-      }
-    }
-
-    // null every referenced-function field so initialize() rebuilds them fresh.
-    for (var entry : getReferencedFunctions().entrySet())
-    {
-      var refMapping = entry.getValue();
-      String refName = entry.getKey();
-      String refDesc = refMapping.functionFieldDescriptor();
-      mv.visitVarInsn(ALOAD, 1);
-      mv.visitInsn(ACONST_NULL);
-      mv.visitFieldInsn(PUTFIELD, internalName(), refName, refDesc);
-    }
-
-    mv.visitVarInsn(ALOAD, 1);
-    mv.visitLabel(end);
-    mv.visitInsn(ARETURN);
-
-    mv.visitLabel(handler);
-    mv.visitFrame(Opcodes.F_SAME1, 0, null, 1, new Object[] { cloneExInternal });
-    mv.visitVarInsn(ASTORE, 1);
-    mv.visitTypeInsn(NEW, runtimeExInternal);
-    mv.visitInsn(DUP);
-    mv.visitVarInsn(ALOAD, 1);
-    mv.visitMethodInsn(INVOKESPECIAL,
-                       runtimeExInternal,
-                       "<init>",
-                       Compiler.getMethodDescriptor(Void.class, Throwable.class),
-                       false);
-    mv.visitInsn(ATHROW);
-
-    mv.visitMaxs(0, 0);
-    mv.visitEnd();
-    return classVisitor;
   }
 
   /**
