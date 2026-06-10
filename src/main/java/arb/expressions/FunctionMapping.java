@@ -233,7 +233,7 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
    * Slash-form (package-qualified) internal name of the class this mapping
    * resolves to, for use as the ASM {@code owner} of NEW/field/method insns.
    * Preference: a live {@link #instance}, else a defining {@link #expression},
-   * else the bare {@link #functionName} (forward-declaration fallback).
+   * else the bare {@link #functionName} (the forward-declaration case).
    */
   public String functionInternalName()
   {

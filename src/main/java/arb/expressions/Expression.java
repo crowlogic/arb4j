@@ -1067,7 +1067,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     assert mapping != null : "mapping shan't be null";
     boolean isSelfRef    = mapping.functionName != null && functionName != null && functionName.equals(mapping.functionName);
-    boolean hasSomething = mapping.expression != null || mapping.instance != null || mapping.isGenerated();
+    boolean isGenerated  = mapping.isGenerated();
+    boolean hasSomething = mapping.expression != null || mapping.instance != null || isGenerated;
     if (!isSelfRef && hasSomething)
     {
       String typeInternalName   = mapping.functionInternalName();
@@ -1081,9 +1082,22 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       loadThisOntoStack(mv).visitFieldInsn(GETFIELD, internalName(), mapping.functionName, fieldDescriptor);
       mv.visitJumpInsn(Opcodes.IFNONNULL, alreadyInitialized);
 
-      // 2. Try the context's canonical instance: clone it via Prototype-pattern cloneFunction()
-      // This clones all mathematically-meaningful parameters (via super.clone()) while yielding
-      // a fresh non-reentrant instance!
+      // 2. Try the context's canonical instance.
+      //
+      // For GENERATED references (functionClass is an interface — i.e. this
+      // mapping was produced by the expression compiler), clone the canonical
+      // via Prototype-pattern cloneFunction(): super.clone() copies the
+      // math-parameter fields, the generated cloneFunction() resets the
+      // per-instance evaluation state (caches, evaluating flag, nested-function
+      // refs) so the clone is non-reentrant and owns its own evaluation tree.
+      //
+      // For NON-GENERATED references (functionClass is a concrete user class
+      // like arb.RealPolynomial or arb.functions.polynomials.orthogonal.real
+      // .JacobiPolynomialSequence registered in the Context), the canonical
+      // IS the user's configured instance and is not part of the cyclic-
+      // evaluate problem — assign it directly. These hand-written classes
+      // inherit the default Function.cloneFunction() which throws
+      // UnsupportedOperationException, so they must not be cloned here.
       loadThisOntoStack(mv);
       loadThisOntoStack(mv);
       mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
@@ -1097,21 +1111,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       duplicateTopOfTheStack(mv);
       mv.visitJumpInsn(Opcodes.IFNULL, needsAllocation);
 
-      // Stack: this, function. Clone it and store. The clone arrives with
-      // isInitialized=false, a fresh IndexCache, and nulled nested-function
-      // refs; the lazy IFNONNULL allocation path inside its evaluate_body
-      // populates each ref on first reach — that same skip is the natural
-      // terminator for any cycle in the reference graph.
-      mv.visitMethodInsn(Opcodes.INVOKEINTERFACE,
-                         functionInterfaceInternal,
-                         "cloneFunction",
-                         Compiler.getMethodDescriptor(Function.class),
-                         true);
+      if (isGenerated)
+      {
+        // Stack: this, function. Clone and store.
+        mv.visitMethodInsn(Opcodes.INVOKEINTERFACE,
+                           functionInterfaceInternal,
+                           "cloneFunction",
+                           Compiler.getMethodDescriptor(Function.class),
+                           true);
+      }
       mv.visitTypeInsn(Opcodes.CHECKCAST, typeInternalName);
       putField(mv, internalName(), mapping.functionName, fieldDescriptor);
       mv.visitJumpInsn(Opcodes.GOTO, alreadyInitialized);
 
-      // 3. Fallback: context has no instance yet (mutual-recursion mid-bootstrap).
+      // 3. Bootstrap path: context has no instance yet (mutual-recursion mid-bootstrap).
       // Allocate a fresh one, propagate context, run context-level injection.
       mv.visitLabel(needsAllocation);
       mv.visitInsn(Opcodes.POP); // discard the dup'd null
@@ -2224,10 +2237,27 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected void generateDependencyAssignment(MethodVisitor mv, String functionName, String functionDescriptor, String assignment)
   {
     var otherMapping = getReferencedFunctions().get(assignment);
+    var thisMapping  = getReferencedFunctions().get(functionName);
 
     if (Expression.trace)
     {
       log.debug("generateDependencyAssignment: functionName={} functionDescriptor={} assignment={}", functionName, functionDescriptor, assignment);
+    }
+
+    // Cluster-internal peer aliasing: when BOTH the receiving peer
+    // ({@code assignment}) and the value being assigned ({@code functionName})
+    // are generated mappings, do NOT emit
+    // {@code this.<assignment>.<functionName> = this.<functionName>}. That
+    // assignment is the singleton-aliasing edge that makes every peer in the
+    // recursive cluster share its receiver — the exact cause of same-instance
+    // re-entry on mutual recursion ({@code σ↔α↔β↔m}). With the Prototype-pattern
+    // clone path, each peer's own initialize() clones a fresh canonical from
+    // the Context, owning its own evaluation state. Hand-written non-generated
+    // peers still need this wiring because they are not part of the cyclic
+    // evaluate problem.
+    if (thisMapping != null && otherMapping != null && thisMapping.isGenerated() && otherMapping.isGenerated())
+    {
+      return;
     }
 
     // The 'assignment' class declared its `functionName` field with a specific
@@ -2382,6 +2412,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     designateLabel(mv, startLabel);
     Compiler.annotateWithOverride(mv);
+
+    // Lazy initialize(): a cloned instance arrives with isInitialized=false
+    // and its nested-function ref fields nulled by cloneFunction(). The first
+    // evaluate() on such a clone must run initialize() to wire its own
+    // referenced-function tree (cloning peers from the Context). Cleanly
+    // initialized instances skip this.
+    Label alreadyInited = new Label();
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), IS_INITIALIZED, "Z");
+    mv.visitJumpInsn(Opcodes.IFNE, alreadyInited);
+    loadThisOntoStack(mv);
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, internalName(), nameOfInitializerFunction, Compiler.getMethodDescriptor(Void.class), false);
+    mv.visitLabel(alreadyInited);
 
     // Same-thread re-entry guard. ACC_SYNCHRONIZED on the method handles
     // cross-thread; this boolean catches same-thread (the monitor is
@@ -3077,9 +3120,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     // Self-reference codegen for recursive functions.
     //
-    // Emit the same null-guarded pattern used for non-self refs: if the field
+    // Emit the same null-checked pattern used for non-self refs: if the field
     // already holds a non-null reference (because injection wired it), keep
-    // that reference; otherwise allocate a fresh instance as the fallback.
+    // that reference; otherwise allocate a fresh instance.
     FunctionMapping<?, ?, ?> mapping = getReferencedFunctions().get(functionName);
     if (mapping == null && context != null)
     {
@@ -5392,9 +5435,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     //
     // Mirrors the filtering pattern in generateFunctionInitializer (line
     // 2360-2362): if the nested expression has finished declareVariables,
-    // trust its own declared-variables set; otherwise fall back to the
-    // parent's set on the prediction that sibling Expressions sharing a
-    // Context declare the same context fields.
+    // trust its own declared-variables set; otherwise use the parent's set
+    // on the prediction that sibling Expressions sharing a Context declare
+    // the same context fields.
     for (var entry : context.variableEntries())
     {
       var   fieldName = entry.getKey();
