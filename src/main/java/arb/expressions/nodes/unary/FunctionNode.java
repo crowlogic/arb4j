@@ -701,12 +701,12 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     catch (UnsupportedOperationException | AssertionError ignored)
     {
       // instance.derivative() is not implemented for this compiled function.
-      // Fall back to symbolic differentiation of the expression body below.
+      // Proceed to symbolic differentiation of the expression body below.
     }
 
     if (derivative == null)
     {
-      // Fall back to symbolic differentiation of the expression body.
+      // Use symbolic differentiation of the expression body.
       if (functionMapping.expression != null)
       {
         return differentiateFunctionMapping(functionMapping);
