@@ -1279,6 +1279,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     cw.visitField(Opcodes.ACC_PUBLIC, IS_INITIALIZED, "Z", null, null);
     cw.visitField(Opcodes.ACC_PUBLIC, "closed", "Z", null, null);
     cw.visitField(Opcodes.ACC_PUBLIC, "invalidatingCache", "Z", null, null);
+    // Re-entrancy guard (#1034): set on entry to evaluate(), cleared in
+    // finally. evaluate() is also ACC_SYNCHRONIZED so concurrent callers
+    // serialize on the instance monitor; the boolean catches same-thread
+    // re-entry that the monitor cannot.
+    cw.visitField(Opcodes.ACC_PRIVATE, "evaluating", "Z", null, null);
     if (hasStaticNodes)
     {
       cw.visitField(Opcodes.ACC_PUBLIC, "staticPrecision", "I", null, null);
@@ -2357,6 +2362,26 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "evalStamp", "I");
   }
 
+  /**
+   * Emit the public, synchronized {@code evaluate(...)} wrapper that enforces
+   * single-threaded, non-re-entrant invocation (#1034) and delegates the
+   * actual computation to a private {@code evaluate_body(...)} helper.
+   *
+   * <p>The wrapper:
+   * <ol>
+   *   <li>checks the {@code evaluating} field; if already true, throws
+   *       {@link CompilerException} naming the offence;</li>
+   *   <li>sets {@code evaluating = true};</li>
+   *   <li>calls {@code evaluate_body(...)} inside a try/finally — the finally
+   *       resets {@code evaluating = false} on every exit (normal return or
+   *       exception), so an early return inside the body cannot leave the
+   *       flag stuck.</li>
+   * </ol>
+   *
+   * The body method is emitted by
+   * {@link #generateEvaluationBodyMethod(ClassVisitor)} and contains the
+   * same code the previous monolithic {@code evaluate} held.
+   */
   protected ClassVisitor generateEvaluationMethod(ClassVisitor classVisitor) throws CompilerException
   {
     if (rootNode == null)
@@ -2364,17 +2389,90 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       define(true);
     }
 
+    Label startLabel       = new Label();
+    Label endLabel         = new Label();
+    Label guardCheckLabel  = new Label();
+    Label tryStart         = new Label();
+    Label tryEnd           = new Label();
+    Label exceptionHandler = new Label();
+
+    var   mv               = visitEvaluationMethod(classVisitor);
+    mv.visitCode();
+
+    designateLabel(mv, startLabel);
+    Compiler.annotateWithOverride(mv);
+
+    // Same-thread re-entry guard. ACC_SYNCHRONIZED on the method handles
+    // cross-thread; this boolean catches same-thread (the monitor is
+    // re-entrant, the boolean is not).
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "evaluating", "Z");
+    mv.visitJumpInsn(Opcodes.IFEQ, guardCheckLabel);
+    mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(CompilerException.class));
+    duplicateTopOfTheStack(mv);
+    mv.visitLdcInsn("re-entrant evaluate() call on same instance");
+    Compiler.invokeConstructor(mv, CompilerException.class, String.class);
+    mv.visitInsn(Opcodes.ATHROW);
+
+    designateLabel(mv, guardCheckLabel);
+    loadThisOntoStack(mv);
+    mv.visitInsn(Opcodes.ICONST_1);
+    mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "evaluating", "Z");
+
+    mv.visitTryCatchBlock(tryStart, tryEnd, exceptionHandler, null);
+    designateLabel(mv, tryStart);
+
+    // Delegate to evaluate_body(in, order, bits, result).
+    loadThisOntoStack(mv);
+    loadInputParameterChecked(mv);
+    mv.visitVarInsn(Opcodes.ILOAD, 2); // order
+    mv.visitVarInsn(Opcodes.ILOAD, 3); // bits
+    mv.visitVarInsn(Opcodes.ALOAD, 4); // result
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, internalName(), "evaluate_body", Compiler.evaluationMethodDescriptor, false);
+
+    designateLabel(mv, tryEnd);
+    loadThisOntoStack(mv);
+    mv.visitInsn(Opcodes.ICONST_0);
+    mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "evaluating", "Z");
+    mv.visitInsn(Opcodes.ARETURN);
+
+    // Exception handler: reset the flag and rethrow on any exit path.
+    designateLabel(mv, exceptionHandler);
+    loadThisOntoStack(mv);
+    mv.visitInsn(Opcodes.ICONST_0);
+    mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "evaluating", "Z");
+    mv.visitInsn(Opcodes.ATHROW);
+
+    designateLabel(mv, endLabel);
+    declareEvaluateMethodArguments(mv, startLabel, endLabel);
+
+    mv.visitMaxs(0, 0);
+    mv.visitEnd();
+
+    generateEvaluationBodyMethod(classVisitor);
+    return classVisitor;
+  }
+
+  /**
+   * Emit the private {@code evaluate_body(...)} helper that holds the actual
+   * evaluation logic (the same code that lived inline in
+   * {@link #generateEvaluationMethod} prior to the #1034 wrapper split).
+   * Generated as a private virtual method with the same descriptor as
+   * {@code evaluate} so the synchronized wrapper can {@code INVOKEVIRTUAL}
+   * straight into it.
+   */
+  protected ClassVisitor generateEvaluationBodyMethod(ClassVisitor classVisitor) throws CompilerException
+  {
     nextLocalVariableSlot = 5;
 
     Label startLabel  = new Label();
     Label endLabel    = new Label();
     Label taylorLabel = new Label();
 
-    var   mv          = visitEvaluationMethod(classVisitor);
+    var   mv          = classVisitor.visitMethod(Opcodes.ACC_PRIVATE, "evaluate_body", Compiler.evaluationMethodDescriptor, getEvaluationMethodSignature(), null);
     mv.visitCode();
 
     designateLabel(mv, startLabel);
-    Compiler.annotateWithOverride(mv);
 
     // Issue #1014: for reified-functional codomains (ComplexPolynomial,
     // RealPolynomial, RationalFunction, ComplexRationalFunction) the
@@ -6788,7 +6886,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected MethodVisitor visitEvaluationMethod(ClassVisitor classVisitor)
   {
-    return classVisitor.visitMethod(Opcodes.ACC_PUBLIC, "evaluate", Compiler.evaluationMethodDescriptor, getEvaluationMethodSignature(), null);
+    // ACC_SYNCHRONIZED: cross-thread serialization on the instance monitor.
+    // Same-thread re-entry is caught by the `evaluating` boolean inside the
+    // method (a monitor is re-entrant, the boolean is not).
+    return classVisitor.visitMethod(Opcodes.ACC_PUBLIC | Opcodes.ACC_SYNCHRONIZED, "evaluate", Compiler.evaluationMethodDescriptor, getEvaluationMethodSignature(), null);
   }
 
   /**
