@@ -3656,14 +3656,29 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitInsn(ICONST_0);
     mv.visitFieldInsn(PUTFIELD, internalName(), "closed", "Z");
 
-    // Note: cache is intentionally NOT re-allocated on clone. super.clone()'s
-    // bitwise copy carries the canonical's IndexCache reference through to the
-    // clone, so every clone in a recursive cluster shares the SAME memoization
-    // cache. Peer evaluation state (the `evaluating` flag and the scratch
-    // fields below) is per-instance; the math-output memo is cluster-shared,
-    // because re-computing a sequence index that the canonical already cached
-    // would be redundant work. Context.warmToBottomUp populates the
-    // canonical's cache; every clone reads through to it by reference.
+    if (shouldCache())
+    {
+      // clone.cache = new IndexCache(); ownsValues = !generatedFunctional
+      // Each clone owns its own IndexCache. A shared cache is a category
+      // error: cache cells are keyed on index alone, not on (index,
+      // per-clone parameter binding), so two clones with even subtly
+      // different parameter state pollute each other. The Prototype-pattern
+      // clone exists to give independent per-instance evaluation state;
+      // the memo is part of that state.
+      String idxCacheInternal = Type.getInternalName(IndexCache.class);
+      mv.visitVarInsn(ALOAD, 1);
+      mv.visitTypeInsn(NEW, idxCacheInternal);
+      mv.visitInsn(DUP);
+      mv.visitMethodInsn(INVOKESPECIAL, idxCacheInternal, "<init>", "()V", false);
+      mv.visitFieldInsn(PUTFIELD, internalName(), "cache", Type.getDescriptor(IndexCache.class));
+      if (!isGeneratedFunctional())
+      {
+        mv.visitVarInsn(ALOAD, 1);
+        mv.visitFieldInsn(GETFIELD, internalName(), "cache", Type.getDescriptor(IndexCache.class));
+        mv.visitInsn(ICONST_1);
+        mv.visitFieldInsn(PUTFIELD, idxCacheInternal, "ownsValues", "Z");
+      }
+    }
     if (shouldCacheValueBacking())
     {
       // clone.lastV = null; clone.cachedResult = null
@@ -4178,6 +4193,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       if (field == null)
       {
         // The other class doesn't reference us — not in our SCC, nothing to do.
+        continue;
+      }
+      // Skip when this selfInstance's runtime class is not assignable to the
+      // peer's declared field type. This happens when {@code this} is a
+      // freshly-instantiated derivative class (e.g. {@code P_dν}, the
+      // derivative of {@code P}) whose name {@code functionName} collides
+      // with the original mapping name {@code P} that the peer {@code D}
+      // references. The peer's field {@code D.P} is typed as the ORIGINAL
+      // class {@code P}, not the derivative class — assigning the derivative
+      // is a type error and a category error: a derivative mapping shares a
+      // name root but is a different function with a different class, not a
+      // back-fill target for the original SCC.
+      if (!field.getType().isAssignableFrom(selfInstance.getClass()))
+      {
         continue;
       }
       try

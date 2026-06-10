@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import arb.utensils.Utensils;
+
 /**
  * Native-allocation leak detector that survives an OOM kill and separates real
  * leaks from work in flight.
@@ -165,6 +167,8 @@ public final class LeakTracker
         }
         catch (Throwable ignored)
         {
+          Utensils.wrapOrThrow(ignored);
+
         }
         try
         {
@@ -172,6 +176,7 @@ public final class LeakTracker
         }
         catch (Throwable ignored)
         {
+          Utensils.wrapOrThrow(ignored);
         }
       }
     }, "arb4j-leak-detector");
@@ -185,6 +190,8 @@ public final class LeakTracker
       }
       catch (Throwable ignored)
       {
+        Utensils.wrapOrThrow(ignored);
+
       }
     }, "arb4j-leak-dump"));
   }
@@ -230,6 +237,8 @@ public final class LeakTracker
     }
     catch (Throwable ignored)
     {
+      Utensils.wrapOrThrow(ignored);
+
     }
   }
 

@@ -20,15 +20,16 @@ import junit.framework.TestCase;
  * what made the calibration grow without bound.
  *
  * <p>
- * Unlike a live-object count, the abandonment signal is exact: {@link LeakTracker}
- * registers each owned allocation behind a weak reference, and an instance the
- * garbage collector reclaims while it was never closed is, by construction, a
- * definite leak. This test drives the rebind sweep, forces collection, and
- * asserts the sweep abandoned <em>zero</em> owned arb objects. If the
- * close-on-invalidate discipline regresses, the count climbs and this fails.
+ * Unlike a live-object count, the abandonment signal is exact:
+ * {@link LeakTracker} registers each owned allocation behind a weak reference,
+ * and an instance the garbage collector reclaims while it was never closed is,
+ * by construction, a definite leak. This test drives the rebind sweep, forces
+ * collection, and asserts the sweep abandoned <em>zero</em> owned arb objects.
+ * If the close-on-invalidate discipline regresses, the count climbs and this
+ * fails.
  */
 public class MuntzPadeApproximantAbandonedAllocationTest extends
-                                                          TestCase
+                                                         TestCase
 {
   static final int bits = 128;
 
@@ -37,11 +38,12 @@ public class MuntzPadeApproximantAbandonedAllocationTest extends
     boolean wasOn = LeakTracker.ON;
     LeakTracker.ON = true;
     LeakTracker.reset();
-    // tanh oracle: y'=1-y², y(0)=0  (μ=1, P=1, Q=0, R=-1)
-    try ( RiccatiMuntzPadeFunctional eq = new RiccatiMuntzPadeFunctional(new Real().set("1", bits), "1", "0", "-1");
-          Complex v = new Complex();
-          Complex t = new Complex();
-          Complex r = new Complex())
+    // tanh oracle: y'=1-y², y(0)=0 (μ=1, P=1, Q=0, R=-1)
+    try ( RiccatiMuntzPadeFunctional eq = new RiccatiMuntzPadeFunctional(new Real().set("1", bits),
+                                                                         "1",
+                                                                         "0",
+                                                                         "-1");
+          Complex v = new Complex(); Complex t = new Complex(); Complex r = new Complex())
     {
       t.re().set(0.5);
 
@@ -53,7 +55,7 @@ public class MuntzPadeApproximantAbandonedAllocationTest extends
       forceCollection();
       long abandonedAfterWarm = LeakTracker.abandonedTotal();
 
-      int rebinds = 80;
+      int  rebinds            = 80;
       for (int i = 0; i < rebinds; i++)
       {
         v.re().set(0.05 + 0.01 * (i % 17));
@@ -63,8 +65,11 @@ public class MuntzPadeApproximantAbandonedAllocationTest extends
       long abandonedDuringSweep = LeakTracker.abandonedTotal() - abandonedAfterWarm;
 
       assertEquals("owned arb objects were garbage-collected WITHOUT close() during the Müntz-Padé rebind "
-                    + "sweep — native memory orphaned (the calibration OOM/slowness regression): "
-                    + abandonedDuringSweep + " abandoned over " + rebinds + " rebinds",
+                   + "sweep — native memory orphaned (the calibration OOM/slowness regression): "
+                   + abandonedDuringSweep
+                   + " abandoned over "
+                   + rebinds
+                   + " rebinds",
                    0,
                    abandonedDuringSweep);
     }
