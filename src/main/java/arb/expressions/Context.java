@@ -267,11 +267,9 @@ public class Context implements
   }
 
   /**
-   * Phase-two wiring helper invoked from generated {@code initialize()} bytecode:
-   * returns the canonical {@link FunctionMapping#instance} for
+   * Returns the canonical {@link FunctionMapping#instance} for
    * {@code functionName}, or {@code null} when the registry has no entry or the
-   * entry has not yet been instantiated. The generated code uses a {@code null}
-   * return as a fallback signal to allocate a fresh operand.
+   * entry has not yet been instantiated.
    */
   public Function<?, ?> lookupFunctionInstance(String functionName)
   {
@@ -302,6 +300,14 @@ public class Context implements
       {
         return;
       }
+
+      // Generated instances keep generated function fields null until their
+      // own initialize() path allocates per-instance references.
+      if (f instanceof Initializable && (functionMapping.expression != null || functionMapping.instance instanceof Initializable))
+      {
+        return;
+      }
+
       // Match by name AND type: a name shared between the variables and
       // functions namespaces yields two same-named public fields (legal —
       // field identity is name+descriptor), so getField(name) is ambiguous.
