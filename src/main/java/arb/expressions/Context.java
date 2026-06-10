@@ -301,14 +301,9 @@ public class Context implements
         return;
       }
 
-      // Generated instances keep ALL generated peer function fields null at
-      // injection time so their own initialize() runs the clone-from-canonical
-      // allocation path on first evaluate — eliminating singleton-aliasing
-      // across the recursive peer graph (the root cause of same-instance
-      // evaluate() re-entry in mutually-recursive clusters like σ↔α↔h↔β).
-      // Hand-written non-generated peer instances are still injected by
-      // singleton because they own their own evaluation state.
-      if (f instanceof Initializable && functionMapping.isGenerated())
+      // Generated instances keep generated function fields null until their
+      // own initialize() path allocates per-instance references.
+      if (f instanceof Initializable && (functionMapping.expression != null || functionMapping.instance instanceof Initializable))
       {
         return;
       }
@@ -427,9 +422,9 @@ public class Context implements
     // Locate the owning FunctionMapping to use its cached getFields()
     // array. injectVariableReferences runs during instantiate(), BEFORE
     // express() assigns the new instance to mapping.instance, so identity
-    // lookup by {@code mapping.instance == f} may miss; in that case match
-    // by class identity (the just-instantiated f is the first instance of
-    // that compiled class).
+    // lookup by {@code mapping.instance == f} may miss; fall back to
+    // class-identity match in that case (the just-instantiated f is the
+    // first instance of that compiled class).
     java.lang.reflect.Field[] resolvedFields = null;
     for (FunctionMapping<?, ?, ?> mapping : functions.values())
     {
@@ -882,7 +877,7 @@ public class Context implements
         }
       }
     }
-    order.addAll(remaining);                 // any residual value-value cycle: stable insertion order
+    order.addAll(remaining);                 // any residual value-value cycle: stable fallback
     return order;
   }
 
