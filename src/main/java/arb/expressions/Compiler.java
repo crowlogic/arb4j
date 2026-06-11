@@ -1,5 +1,6 @@
 package arb.expressions;
 
+import arb.functions.ConvergentSeriesAccumulator;
 import static org.objectweb.asm.Opcodes.*;
 
 import java.io.File;
@@ -108,6 +109,7 @@ public class Compiler
     typePrefixes.put(RationalFunction.class, "ℚ");
     typePrefixes.put(ComplexRationalFunction.class, "ℚℂ");
     typePrefixes.put(Fraction.class, "q");
+    typePrefixes.put(ConvergentSeriesAccumulator.class, "Σ");
     typePrefixes.put(LommelPolynomial.class, "XR");
     typePrefixes.put(RationalHypergeometricFunction.class, "ℚF");
     typePrefixes.put(RealHypergeometricPolynomialFunction.class, "XℝF");
