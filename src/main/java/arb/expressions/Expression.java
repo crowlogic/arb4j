@@ -225,6 +225,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   private static boolean          saveClasses                       = Boolean.valueOf(System.getProperty("arb4j.saveClasses", "false"));
 
+  /** System property {@code arb4j.evaluateGuard} (default {@code true}).
+   *  When {@code false}, the generated {@code evaluate()} emits no re-entrancy
+   *  guard (the evaluating-boolean check, throw, try/finally wrapper). */
+  private static final boolean    evaluateGuardEnabled              = Boolean.valueOf(System.getProperty("arb4j.evaluateGuard", "false"));
+
   public static boolean           saveGraphs                        = Boolean.valueOf(System.getProperty("arb4j.saveGraphs", "false"));
 
   public static boolean           trace                             = Boolean.valueOf(System.getProperty("arb4j.trace", "false"));
@@ -2402,46 +2407,60 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     designateLabel(mv, startLabel);
     Compiler.annotateWithOverride(mv);
 
-    // Same-thread re-entry guard. ACC_SYNCHRONIZED on the method handles
-    // cross-thread; this boolean catches same-thread (the monitor is
-    // re-entrant, the boolean is not).
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "evaluating", "Z");
-    mv.visitJumpInsn(Opcodes.IFEQ, guardCheckLabel);
-    mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(CompilerException.class));
-    duplicateTopOfTheStack(mv);
-    mv.visitLdcInsn("re-entrant evaluate() call on same instance");
-    Compiler.invokeConstructor(mv, CompilerException.class, String.class);
-    mv.visitInsn(Opcodes.ATHROW);
+    if (evaluateGuardEnabled)
+    {
+      // Same-thread re-entry guard. ACC_SYNCHRONIZED on the method handles
+      // cross-thread; this boolean catches same-thread (the monitor is
+      // re-entrant, the boolean is not).
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "evaluating", "Z");
+      mv.visitJumpInsn(Opcodes.IFEQ, guardCheckLabel);
+      mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(CompilerException.class));
+      duplicateTopOfTheStack(mv);
+      mv.visitLdcInsn("re-entrant evaluate() call on same instance");
+      Compiler.invokeConstructor(mv, CompilerException.class, String.class);
+      mv.visitInsn(Opcodes.ATHROW);
 
-    designateLabel(mv, guardCheckLabel);
-    loadThisOntoStack(mv);
-    mv.visitInsn(Opcodes.ICONST_1);
-    mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "evaluating", "Z");
+      designateLabel(mv, guardCheckLabel);
+      loadThisOntoStack(mv);
+      mv.visitInsn(Opcodes.ICONST_1);
+      mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "evaluating", "Z");
 
-    mv.visitTryCatchBlock(tryStart, tryEnd, exceptionHandler, null);
-    designateLabel(mv, tryStart);
+      mv.visitTryCatchBlock(tryStart, tryEnd, exceptionHandler, null);
+      designateLabel(mv, tryStart);
 
-    // Delegate to evaluate_body(in, order, bits, result).
-    loadThisOntoStack(mv);
-    loadInputParameterChecked(mv);
-    mv.visitVarInsn(Opcodes.ILOAD, 2); // order
-    mv.visitVarInsn(Opcodes.ILOAD, 3); // bits
-    mv.visitVarInsn(Opcodes.ALOAD, 4); // result
-    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, internalName(), "evaluate_body", Compiler.evaluationMethodDescriptor, false);
+      // Delegate to evaluate_body(in, order, bits, result).
+      loadThisOntoStack(mv);
+      loadInputParameterChecked(mv);
+      mv.visitVarInsn(Opcodes.ILOAD, 2); // order
+      mv.visitVarInsn(Opcodes.ILOAD, 3); // bits
+      mv.visitVarInsn(Opcodes.ALOAD, 4); // result
+      mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, internalName(), "evaluate_body", Compiler.evaluationMethodDescriptor, false);
 
-    designateLabel(mv, tryEnd);
-    loadThisOntoStack(mv);
-    mv.visitInsn(Opcodes.ICONST_0);
-    mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "evaluating", "Z");
-    mv.visitInsn(Opcodes.ARETURN);
+      designateLabel(mv, tryEnd);
+      loadThisOntoStack(mv);
+      mv.visitInsn(Opcodes.ICONST_0);
+      mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "evaluating", "Z");
+      mv.visitInsn(Opcodes.ARETURN);
 
-    // Exception handler: reset the flag and rethrow on any exit path.
-    designateLabel(mv, exceptionHandler);
-    loadThisOntoStack(mv);
-    mv.visitInsn(Opcodes.ICONST_0);
-    mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "evaluating", "Z");
-    mv.visitInsn(Opcodes.ATHROW);
+      // Exception handler: reset the flag and rethrow on any exit path.
+      designateLabel(mv, exceptionHandler);
+      loadThisOntoStack(mv);
+      mv.visitInsn(Opcodes.ICONST_0);
+      mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "evaluating", "Z");
+      mv.visitInsn(Opcodes.ATHROW);
+    }
+    else
+    {
+      // No guard (ARB4J_EVALUATE_GUARD=false): call evaluate_body directly.
+      loadThisOntoStack(mv);
+      loadInputParameterChecked(mv);
+      mv.visitVarInsn(Opcodes.ILOAD, 2); // order
+      mv.visitVarInsn(Opcodes.ILOAD, 3); // bits
+      mv.visitVarInsn(Opcodes.ALOAD, 4); // result
+      mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, internalName(), "evaluate_body", Compiler.evaluationMethodDescriptor, false);
+      mv.visitInsn(Opcodes.ARETURN);
+    }
 
     designateLabel(mv, endLabel);
     declareEvaluateMethodArguments(mv, startLabel, endLabel);
