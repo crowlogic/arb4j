@@ -3656,14 +3656,23 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitInsn(ICONST_0);
     mv.visitFieldInsn(PUTFIELD, internalName(), "closed", "Z");
 
-    // Note: cache is intentionally NOT re-allocated on clone. super.clone()'s
-    // bitwise copy carries the canonical's IndexCache reference through to the
-    // clone, so every clone in a recursive cluster shares the SAME memoization
-    // cache. Peer evaluation state (the `evaluating` flag and the scratch
-    // fields below) is per-instance; the math-output memo is cluster-shared,
-    // because re-computing a sequence index that the canonical already cached
-    // would be redundant work. Context.warmToBottomUp populates the
-    // canonical's cache; every clone reads through to it by reference.
+    if (shouldCache())
+    {
+      // clone.cache = new IndexCache(); (and clone.cache.ownsValues = true if value sequence)
+      String idxCacheInternal = Type.getInternalName(IndexCache.class);
+      mv.visitVarInsn(ALOAD, 1);
+      mv.visitTypeInsn(NEW, idxCacheInternal);
+      mv.visitInsn(DUP);
+      mv.visitMethodInsn(INVOKESPECIAL, idxCacheInternal, "<init>", "()V", false);
+      mv.visitFieldInsn(PUTFIELD, internalName(), "cache", Type.getDescriptor(IndexCache.class));
+      if (!isGeneratedFunctional())
+      {
+        mv.visitVarInsn(ALOAD, 1);
+        mv.visitFieldInsn(GETFIELD, internalName(), "cache", Type.getDescriptor(IndexCache.class));
+        mv.visitInsn(ICONST_1);
+        mv.visitFieldInsn(PUTFIELD, idxCacheInternal, "ownsValues", "Z");
+      }
+    }
     if (shouldCacheValueBacking())
     {
       // clone.lastV = null; clone.cachedResult = null
@@ -5379,27 +5388,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
 
     var    fieldName = entry.getKey();
-    var    contextMapping = entry.getValue();
-    String fieldType = contextMapping.functionFieldDescriptor();
+    String fieldType = entry.getValue().functionFieldDescriptor();
 
-    if (!getReferencedFunctions().containsKey(entry.getKey()))
+    if (getReferencedFunctions().containsKey(entry.getKey()))
     {
-      return;
+      loadThisAndFieldOntoStack(duplicateTopOfTheStack(mv), fieldName, fieldType);
+      putField(mv, function.internalName(), fieldName, fieldType);
     }
-    // Skip the cluster-internal singleton-aliasing PUTFIELD when both peers
-    // are generated mappings: emitting {@code inner.<f> = this.<f>} here
-    // shares the SAME nested-function instance across the boundary and
-    // causes same-instance evaluate() re-entry in mutually-recursive
-    // clusters. The nested function's own initialize() clones the
-    // canonical from the Context on first evaluate. Hand-written peers
-    // still need the PUTFIELD because they own their own evaluation state.
-    var ownMapping = getReferencedFunctions().get(entry.getKey());
-    if (ownMapping != null && contextMapping.isGenerated() && ownMapping.isGenerated())
-    {
-      return;
-    }
-    loadThisAndFieldOntoStack(duplicateTopOfTheStack(mv), fieldName, fieldType);
-    putField(mv, function.internalName(), fieldName, fieldType);
   }
 
   public void propagateContextFunctionReferences(MethodVisitor mv, Expression<?, ?, Function<?, ?>> function)
