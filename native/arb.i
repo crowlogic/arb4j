@@ -155,6 +155,8 @@ typedef unsigned long int mp_limb_t;
 
 %include "ComplexPolynomial.i"
 
+%include "PartialFraction.i"
+
 %rename (coeffs) coeffsNative;
 
 %include "ComplexMatrix.i"

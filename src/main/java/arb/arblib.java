@@ -3276,4 +3276,28 @@ public class arblib {
     arblibJNI.arb_atanh(Real.getCPtr(z), z, Real.getCPtr(x), x, prec);
   }
 
+  public static void arb4j_partial_fraction_init(PartialFraction pf) {
+    arblibJNI.arb4j_partial_fraction_init(PartialFraction.getCPtr(pf), pf);
+  }
+
+  public static void arb4j_partial_fraction_clear(PartialFraction pf) {
+    arblibJNI.arb4j_partial_fraction_clear(PartialFraction.getCPtr(pf), pf);
+  }
+
+  public static int arb4j_partial_fraction_decompose(PartialFraction pf, ComplexPolynomial P, ComplexPolynomial Q, int prec) {
+    return arblibJNI.arb4j_partial_fraction_decompose(PartialFraction.getCPtr(pf), pf, ComplexPolynomial.getCPtr(P), P, ComplexPolynomial.getCPtr(Q), Q, prec);
+  }
+
+  public static void arb4j_partial_fraction_evaluate(Complex res, PartialFraction pf, Complex z, int prec) {
+    arblibJNI.arb4j_partial_fraction_evaluate(Complex.getCPtr(res), res, PartialFraction.getCPtr(pf), pf, Complex.getCPtr(z), z, prec);
+  }
+
+  public static void arb4j_partial_fraction_get_pole(Complex res, PartialFraction pf, int i) {
+    arblibJNI.arb4j_partial_fraction_get_pole(Complex.getCPtr(res), res, PartialFraction.getCPtr(pf), pf, i);
+  }
+
+  public static void arb4j_partial_fraction_get_residue(Complex res, PartialFraction pf, int i) {
+    arblibJNI.arb4j_partial_fraction_get_residue(Complex.getCPtr(res), res, PartialFraction.getCPtr(pf), pf, i);
+  }
+
 }
