@@ -3992,6 +3992,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (context == null || functionName == null)
       return;
+    if (trace)
+    {
+      log.debug("backfillMutuallyRecursiveReferences: self={} selfInstance={} in Context#{}",
+                functionName,
+                System.identityHashCode(selfInstance),
+                System.identityHashCode(context));
+    }
     for (var otherEntry : context.functions.entrySet())
     {
       String otherName = otherEntry.getKey();
