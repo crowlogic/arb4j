@@ -217,11 +217,9 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
     c.become(that.getCoeffs());
     swigCPtr                = that.swigCPtr;
     swigCMemOwn             = that.swigCMemOwn;
-    divisor                 = that.divisor;
     bits                    = that.bits;
     independentVariableName = that.independentVariableName;
     printPrecision          = that.printPrecision;
-    remainder               = that.remainder;
     return this;
   }
 
@@ -240,26 +238,6 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
     return add(i, bits, this);
   }
   
-  public RealPolynomial setRemainder(int i)
-  {
-    if ( remainder == null )
-    {
-      remainder = new RealPolynomial();
-    }
-    remainder.set(i);
-    return this;
-  }
-
-  public RealPolynomial setDivisor(int i)
-  {
-    if (divisor == null)
-    {
-      divisor = new RealPolynomial();
-    }
-    divisor.set(i);
-    return this;
-  }
-      
   /**
    * 
    * @param i
@@ -337,46 +315,85 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
    * method is called, otherwise the quotients {@link RealPolynomial#remainder}
    * will be null.
    */
+  /**
+   * Exact polynomial division: this = divisor * quotient. Throws
+   * arb.exceptions.ArbException if FLINT's arb_poly_divrem reports a
+   * non-zero remainder. Use the four-argument overload when the caller
+   * wants a remainder destination.
+   */
   @Override
   public RealPolynomial div(RealPolynomial divisor, int prec, RealPolynomial resultingQuotient)
   {
-   assert prec > 0;
+    assert prec > 0;
     if ( this.isZero() )
     {
       return resultingQuotient.zero();
     }
-
-    // arb_poly_divrem(Q, R, A, B, prec) requires that Q does NOT alias A or
-    // B, and that Q does not alias R. When the caller passes
-    // resultingQuotient == this or resultingQuotient == divisor, route
-    // through a temporary and copy the quotient back so the aliasing
-    // contract is honoured.
     boolean        aliased        = (resultingQuotient == this) || (resultingQuotient == divisor);
     RealPolynomial quotientBuffer = aliased ? new RealPolynomial() : resultingQuotient;
     RealPolynomial remainder      = new RealPolynomial();
 
-    // Performs polynomial division with remainder, computing a quotient and a
-    // remainder such that . this = divisor * resultingQuotient + remainder
-
     if (arblib.arb_poly_divrem(quotientBuffer, remainder, this, divisor, prec) == 0)
     {
-      throw new DivisionByZeroException("division by zero: dividend=" + divisor + " this=" + this);
+      remainder.close();
+      if (aliased) quotientBuffer.close();
+      throw new DivisionByZeroException("division by zero: divisor=" + divisor + " this=" + this);
     }
+    boolean nonZeroRemainder = remainder.getLength() > 0;
     if (aliased)
     {
       resultingQuotient.set(quotientBuffer);
       quotientBuffer.close();
     }
-    if (remainder.getLength() > 0)
+    if (nonZeroRemainder)
     {
-      resultingQuotient.divisor   = divisor;
-      resultingQuotient.remainder = remainder;
-    }
-    else
-    {
+      String thisStr = this.toString();
+      String divStr = divisor.toString();
+      String remStr = remainder.toString();
       remainder.close();
+      throw new arb.exceptions.ArbException("polynomial division not exact: dividend=" + thisStr + " divisor=" + divStr + " remainder=" + remStr);
+    }
+    remainder.close();
+    resultingQuotient.bits = prec;
+    return resultingQuotient;
+  }
+
+  /**
+   * Polynomial divrem: this = divisor * quotient + remainder. Quotient and
+   * remainder are written into the supplied destinations.
+   */
+  public RealPolynomial div(RealPolynomial divisor, int prec, RealPolynomial resultingQuotient, RealPolynomial resultingRemainder)
+  {
+    assert prec > 0;
+    if ( this.isZero() )
+    {
+      resultingQuotient.zero();
+      resultingRemainder.zero();
+      return resultingQuotient;
+    }
+    boolean        aliasedQ        = (resultingQuotient == this) || (resultingQuotient == divisor) || (resultingQuotient == resultingRemainder);
+    RealPolynomial quotientBuffer  = aliasedQ ? new RealPolynomial() : resultingQuotient;
+    boolean        aliasedR        = (resultingRemainder == this) || (resultingRemainder == divisor);
+    RealPolynomial remainderBuffer = aliasedR ? new RealPolynomial() : resultingRemainder;
+
+    if (arblib.arb_poly_divrem(quotientBuffer, remainderBuffer, this, divisor, prec) == 0)
+    {
+      if (aliasedQ) quotientBuffer.close();
+      if (aliasedR) remainderBuffer.close();
+      throw new DivisionByZeroException("division by zero: divisor=" + divisor + " this=" + this);
+    }
+    if (aliasedQ)
+    {
+      resultingQuotient.set(quotientBuffer);
+      quotientBuffer.close();
+    }
+    if (aliasedR)
+    {
+      resultingRemainder.set(remainderBuffer);
+      remainderBuffer.close();
     }
     resultingQuotient.bits = prec;
+    resultingRemainder.bits = prec;
     return resultingQuotient;
   }
 
@@ -692,8 +709,7 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
         }
       }
     }
-    String string = builder.toString() + ((remainder != null && !remainder.isEmpty()) ? " with remainder "
-                  + (remainder + "/" + divisor) : "");
+    String string = builder.toString();
     if (string.length() > 0 && string.charAt(0) == '-')
     {
       return "-" + string.substring(1).replaceAll("-", "- ").trim();
@@ -704,8 +720,6 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
       
   public boolean printPrecision = false;
   
-  public RealPolynomial divisor;
-
   public RealPolynomial mul(RealPolynomial that, int bits, RealPolynomial result)
   {
     if (that == null)
@@ -901,15 +915,6 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
   @Override
   public void close()
   {
-    if (remainder != null)
-    {
-      remainder.close();
-      remainder = null;
-    }
-    if ( divisor != null )
-    {
-      divisor.close();
-    }
     if (coeffs != null)
     {
       coeffs.close();
@@ -921,8 +926,6 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
     }
   }
 
-  public RealPolynomial remainder;
-  
  /**
    * @see arb#arb_poly_product_roots(RealPolynomial, Real, int, int)
    * 
@@ -1015,24 +1018,6 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
     return this;
   }
   
-  public RealPolynomial prepare()
-  {
-    if (remainder == null)
-    {
-      setRemainder(0);
-    }
-    if (divisor == null)
-    {
-      setDivisor(1);
-    }
-    return this;
-  }
-
-  public boolean hasRemainder()
-  {
-    return remainder != null && !remainder.isZero();
-  }  
-
   public RealPolynomial set(RealPolynomial a)
   {
     if (a == null)

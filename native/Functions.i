@@ -55,6 +55,8 @@ void             gr_ctx_init_fmpz(gr_ctx_t ctx);
 void *           arblib_gr_poly_coeff0_ptr(gr_poly_t poly);
 slong            arblib_gr_poly_length(gr_poly_t poly);
 gr_ctx_struct *  arblib_gr_fraction_domain_ctx(gr_ctx_t fraction_ctx);
+void             arblib_gr_fraction_numerator_polynomial_into(gr_poly_t out, void * fraction_elem, gr_ctx_t fraction_ctx);
+void             arblib_gr_fraction_denominator_polynomial_into(gr_poly_t out, void * fraction_elem, gr_ctx_t fraction_ctx);
 int              arblib_gr_set_other(void * res, const void * x, gr_ctx_t x_ctx, gr_ctx_t res_ctx);
 int              gr_poly_set_coeff_scalar(gr_poly_t poly, slong n, const void * x, gr_ctx_t ctx);
 int              arblib_gr_poly_set_coeff_from_other(gr_poly_t target, slong n, const void * src_elem, gr_ctx_t src_ctx, gr_ctx_t target_ctx);
@@ -81,6 +83,33 @@ slong arblib_gr_poly_length(gr_poly_t poly)
 gr_ctx_struct * arblib_gr_fraction_domain_ctx(gr_ctx_t fraction_ctx)
 {
     return ((gr_ctx_struct **) fraction_ctx)[0];
+}
+
+/*
+ * Copy the numerator polynomial N(v) of a fraction-field element to out.
+ * FLINT's gr_fraction stores the element as [numerator, denominator]
+ * contiguously in memory, both in canonical coprime form. out is a
+ * gr_poly_t in the underlying domain ring.
+ */
+void arblib_gr_fraction_numerator_polynomial_into(gr_poly_t out,
+                                                  void * fraction_elem,
+                                                  gr_ctx_t fraction_ctx)
+{
+    gr_ctx_struct * domain = arblib_gr_fraction_domain_ctx(fraction_ctx);
+    gr_poly_set(out, (const gr_poly_struct *) fraction_elem, domain);
+}
+
+/*
+ * Copy the denominator polynomial D(v) of a fraction-field element to out.
+ * The denominator immediately follows the numerator in FLINT's gr_fraction
+ * storage; both are in canonical coprime form.
+ */
+void arblib_gr_fraction_denominator_polynomial_into(gr_poly_t out,
+                                                    void * fraction_elem,
+                                                    gr_ctx_t fraction_ctx)
+{
+    gr_ctx_struct * domain = arblib_gr_fraction_domain_ctx(fraction_ctx);
+    gr_poly_set(out, (const gr_poly_struct *) ((char *) fraction_elem + domain->sizeof_elem), domain);
 }
 
 /* Out-of-line forwarders for the gr_vec_* inline helpers. */

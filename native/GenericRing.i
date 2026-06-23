@@ -71,6 +71,41 @@
     arblib.gr_ctx_init_gr_fraction(ctx, domain, 0);
     return ctx;
   }
+
+  /**
+   * The numerator polynomial N(v) of an F-element, returned as a
+   * {@link GenericRingPolynomial} in the underlying domain ring
+   * {@code polynomialsOver(complexBalls(…))}. N is in canonical coprime form
+   * per FLINT's gr_fraction internal storage; gcd(N, D) = 1 by construction.
+   *
+   * @param fractionPoly  the F-element, wrapped as a degree-0 polynomial in F
+   * @param out           uninitialised {@link GenericRingPolynomial} that
+   *                      will be set to the numerator polynomial; must be in
+   *                      the domain ring {@code polynomialsOver(complexBalls(…))}
+   * @param domainRing    the domain ring of the fraction field
+   */
+  public GenericRingPolynomial fractionNumerator(GenericRingPolynomial fractionPoly,
+                                                 GenericRingPolynomial out,
+                                                 GenericRing domainRing)
+  {
+    SWIGTYPE_p_void elem = arblib.arblib_gr_poly_coeff0_ptr(fractionPoly);
+    arblib.arblib_gr_fraction_numerator_polynomial_into(out, elem, this);
+    return out;
+  }
+
+  /**
+   * The denominator polynomial D(v) of an F-element, returned as a
+   * {@link GenericRingPolynomial} in the underlying domain ring. D is in
+   * canonical coprime form per FLINT's gr_fraction internal storage.
+   */
+  public GenericRingPolynomial fractionDenominator(GenericRingPolynomial fractionPoly,
+                                                   GenericRingPolynomial out,
+                                                   GenericRing domainRing)
+  {
+    SWIGTYPE_p_void elem = arblib.arblib_gr_poly_coeff0_ptr(fractionPoly);
+    arblib.arblib_gr_fraction_denominator_polynomial_into(out, elem, this);
+    return out;
+  }
 %}
 
 %typemap(javaimports) gr_poly_struct %{
@@ -280,6 +315,7 @@ int gr_poly_mul(gr_poly_t res, const gr_poly_t poly1, const gr_poly_t poly2, gr_
 int gr_poly_div(gr_poly_t Q, const gr_poly_t A, const gr_poly_t B, gr_ctx_t ctx);
 int gr_poly_divrem(gr_poly_t Q, gr_poly_t R, const gr_poly_t A, const gr_poly_t B, gr_ctx_t ctx);
 int gr_poly_derivative(gr_poly_t res, const gr_poly_t poly, gr_ctx_t ctx);
+int gr_poly_get_coeff_scalar(void * res, const gr_poly_t poly, slong n, gr_ctx_t ctx);
 
 int gr_poly_set_coeff_si(gr_poly_t poly, slong n, slong x, gr_ctx_t ctx);
 int gr_poly_set_coeff_fmpz(gr_poly_t poly, slong n, const fmpz_t x, gr_ctx_t ctx);

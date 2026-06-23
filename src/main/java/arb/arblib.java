@@ -39,6 +39,14 @@ public class arblib {
     return (cPtr == 0) ? null : new GenericRing(cPtr, false);
   }
 
+  public static void arblib_gr_fraction_numerator_polynomial_into(GenericRingPolynomial out, SWIGTYPE_p_void fraction_elem, GenericRing fraction_ctx) {
+    arblibJNI.arblib_gr_fraction_numerator_polynomial_into(GenericRingPolynomial.getCPtr(out), out, SWIGTYPE_p_void.getCPtr(fraction_elem), GenericRing.getCPtr(fraction_ctx), fraction_ctx);
+  }
+
+  public static void arblib_gr_fraction_denominator_polynomial_into(GenericRingPolynomial out, SWIGTYPE_p_void fraction_elem, GenericRing fraction_ctx) {
+    arblibJNI.arblib_gr_fraction_denominator_polynomial_into(GenericRingPolynomial.getCPtr(out), out, SWIGTYPE_p_void.getCPtr(fraction_elem), GenericRing.getCPtr(fraction_ctx), fraction_ctx);
+  }
+
   public static int arblib_gr_set_other(SWIGTYPE_p_void res, SWIGTYPE_p_void x, GenericRing x_ctx, GenericRing res_ctx) {
     return arblibJNI.arblib_gr_set_other(SWIGTYPE_p_void.getCPtr(res), SWIGTYPE_p_void.getCPtr(x), GenericRing.getCPtr(x_ctx), x_ctx, GenericRing.getCPtr(res_ctx), res_ctx);
   }
@@ -3401,6 +3409,10 @@ public class arblib {
 
   public static int gr_poly_derivative(GenericRingPolynomial res, GenericRingPolynomial poly, GenericRing ctx) {
     return arblibJNI.gr_poly_derivative(GenericRingPolynomial.getCPtr(res), res, GenericRingPolynomial.getCPtr(poly), poly, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int gr_poly_get_coeff_scalar(SWIGTYPE_p_void res, GenericRingPolynomial poly, int n, GenericRing ctx) {
+    return arblibJNI.gr_poly_get_coeff_scalar(SWIGTYPE_p_void.getCPtr(res), GenericRingPolynomial.getCPtr(poly), poly, n, GenericRing.getCPtr(ctx), ctx);
   }
 
   public static int gr_poly_set_coeff_si(GenericRingPolynomial poly, int n, int x, GenericRing ctx) {

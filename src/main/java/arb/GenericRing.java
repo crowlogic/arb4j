@@ -87,6 +87,41 @@ public class GenericRing {
     return ctx;
   }
 
+  /**
+   * The numerator polynomial N(v) of an F-element, returned as a
+   * {@link GenericRingPolynomial} in the underlying domain ring
+   * {@code polynomialsOver(complexBalls(…))}. N is in canonical coprime form
+   * per FLINT's gr_fraction internal storage; gcd(N, D) = 1 by construction.
+   *
+   * @param fractionPoly  the F-element, wrapped as a degree-0 polynomial in F
+   * @param out           uninitialised {@link GenericRingPolynomial} that
+   *                      will be set to the numerator polynomial; must be in
+   *                      the domain ring {@code polynomialsOver(complexBalls(…))}
+   * @param domainRing    the domain ring of the fraction field
+   */
+  public GenericRingPolynomial fractionNumerator(GenericRingPolynomial fractionPoly,
+                                                 GenericRingPolynomial out,
+                                                 GenericRing domainRing)
+  {
+    SWIGTYPE_p_void elem = arblib.arblib_gr_poly_coeff0_ptr(fractionPoly);
+    arblib.arblib_gr_fraction_numerator_polynomial_into(out, elem, this);
+    return out;
+  }
+
+  /**
+   * The denominator polynomial D(v) of an F-element, returned as a
+   * {@link GenericRingPolynomial} in the underlying domain ring. D is in
+   * canonical coprime form per FLINT's gr_fraction internal storage.
+   */
+  public GenericRingPolynomial fractionDenominator(GenericRingPolynomial fractionPoly,
+                                                   GenericRingPolynomial out,
+                                                   GenericRing domainRing)
+  {
+    SWIGTYPE_p_void elem = arblib.arblib_gr_poly_coeff0_ptr(fractionPoly);
+    arblib.arblib_gr_fraction_denominator_polynomial_into(out, elem, this);
+    return out;
+  }
+
   public void setData(String value) {
     arblibJNI.GenericRing_data_set(swigCPtr, this, value);
   }

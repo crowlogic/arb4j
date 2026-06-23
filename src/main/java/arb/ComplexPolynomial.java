@@ -241,8 +241,6 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
 
   static { System.loadLibrary("arblib"); }
 
-  public ComplexPolynomial divisor;
-
   public ComplexPolynomial pow(Integer in, int bits, ComplexPolynomial result)
   {
     arblib.acb_poly_pow_ui(result,this,in.getUnsignedValue(), bits);
@@ -315,35 +313,75 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
     return result;
   }
     
+  /**
+   * Exact polynomial division: {@code this = divisor · quotient}. Throws
+   * {@link arb.exceptions.ArbException} if FLINT's {@code acb_poly_divrem}
+   * reports a non-zero remainder. Use the four-argument overload when the
+   * caller wants a remainder destination.
+   */
   public ComplexPolynomial div(ComplexPolynomial divisor, int prec, ComplexPolynomial resultingQuotient)
   {
-    // acb_poly_divrem(Q, R, A, B, prec) requires that Q does NOT alias A or
-    // B, and that Q does not alias R. When the caller passes
-    // resultingQuotient == this or resultingQuotient == divisor, route
-    // through a temporary and copy the quotient back so the aliasing
-    // contract is honoured.
     boolean           aliased         = (resultingQuotient == this) || (resultingQuotient == divisor);
     ComplexPolynomial quotientBuffer  = aliased ? new ComplexPolynomial() : resultingQuotient;
     ComplexPolynomial remainder       = new ComplexPolynomial();
 
-    // Performs polynomial division with remainder, computing a quotient and a
-    // remainder such that . this = divisor * resultingQuotient + remainder
-
     if (arblib.acb_poly_divrem(quotientBuffer, remainder, this, divisor, prec) == 0)
     {
-      throw new DivisionByZeroException("division by zero: dividend=" + divisor);
+      remainder.close();
+      if (aliased) quotientBuffer.close();
+      throw new DivisionByZeroException("division by zero: divisor=" + divisor);
     }
+    boolean nonZeroRemainder = remainder.getLength() > 0;
     if (aliased)
     {
       resultingQuotient.set(quotientBuffer);
       quotientBuffer.close();
     }
-    if (remainder.getLength() > 0)
+    if (nonZeroRemainder)
     {
-      resultingQuotient.divisor   = divisor;
-      resultingQuotient.remainder = remainder;
+      String thisStr = this.toString();
+      String divStr = divisor.toString();
+      String remStr = remainder.toString();
+      remainder.close();
+      throw new arb.exceptions.ArbException("polynomial division not exact: dividend=" + thisStr + " divisor=" + divStr + " remainder=" + remStr);
+    }
+    remainder.close();
+    resultingQuotient.bits = prec;
+    return resultingQuotient;
+  }
+
+  /**
+   * Polynomial divrem: {@code this = divisor · quotient + remainder}.
+   * Quotient and remainder are written into the supplied destinations; no
+   * exception is thrown on non-zero remainder. Use this overload when the
+   * caller wants divrem semantics; use the three-argument form when the
+   * caller is asserting exactness.
+   */
+  public ComplexPolynomial div(ComplexPolynomial divisor, int prec, ComplexPolynomial resultingQuotient, ComplexPolynomial resultingRemainder)
+  {
+    boolean           aliasedQ        = (resultingQuotient == this) || (resultingQuotient == divisor) || (resultingQuotient == resultingRemainder);
+    ComplexPolynomial quotientBuffer  = aliasedQ ? new ComplexPolynomial() : resultingQuotient;
+    boolean           aliasedR        = (resultingRemainder == this) || (resultingRemainder == divisor);
+    ComplexPolynomial remainderBuffer = aliasedR ? new ComplexPolynomial() : resultingRemainder;
+
+    if (arblib.acb_poly_divrem(quotientBuffer, remainderBuffer, this, divisor, prec) == 0)
+    {
+      if (aliasedQ) quotientBuffer.close();
+      if (aliasedR) remainderBuffer.close();
+      throw new DivisionByZeroException("division by zero: divisor=" + divisor);
+    }
+    if (aliasedQ)
+    {
+      resultingQuotient.set(quotientBuffer);
+      quotientBuffer.close();
+    }
+    if (aliasedR)
+    {
+      resultingRemainder.set(remainderBuffer);
+      remainderBuffer.close();
     }
     resultingQuotient.bits = prec;
+    resultingRemainder.bits = prec;
     return resultingQuotient;
   }
 
@@ -561,8 +599,6 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
     return this;
   }
   
-  public ComplexPolynomial remainder;
-  
   public String independentVariableName = "x";
 
   public String getIndependentVariableName()
@@ -619,7 +655,7 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
         }
       }
     }
-    String string = builder.toString() + (remainder != null ? " with remainder " + remainder : "");
+    String string = builder.toString();
     if ( string.length() > 0 && string.charAt(0) == '-')
     {
       return "-" + string.substring(1).replaceAll("-", "- ").trim();
