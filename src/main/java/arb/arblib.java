@@ -17,6 +17,28 @@ public class arblib {
     return arblibJNI.arb_poly_degree(RealPolynomial.getCPtr(poly), poly);
   }
 
+  public static SWIGTYPE_p_void arblib_gr_poly_coeff0_ptr(GenericRingPolynomial poly) {
+    long cPtr = arblibJNI.arblib_gr_poly_coeff0_ptr(GenericRingPolynomial.getCPtr(poly), poly);
+    return (cPtr == 0) ? null : new SWIGTYPE_p_void(cPtr, false);
+  }
+
+  public static int arblib_gr_poly_length(GenericRingPolynomial poly) {
+    return arblibJNI.arblib_gr_poly_length(GenericRingPolynomial.getCPtr(poly), poly);
+  }
+
+  public static GenericRing arblib_gr_fraction_domain_ctx(GenericRing fraction_ctx) {
+    long cPtr = arblibJNI.arblib_gr_fraction_domain_ctx(GenericRing.getCPtr(fraction_ctx), fraction_ctx);
+    return (cPtr == 0) ? null : new GenericRing(cPtr, false);
+  }
+
+  public static void arblib_gr_fraction_numerator_acb_poly(ComplexPolynomial out, SWIGTYPE_p_void fraction_elem, GenericRing fraction_ctx) {
+    arblibJNI.arblib_gr_fraction_numerator_acb_poly(ComplexPolynomial.getCPtr(out), out, SWIGTYPE_p_void.getCPtr(fraction_elem), GenericRing.getCPtr(fraction_ctx), fraction_ctx);
+  }
+
+  public static void arblib_gr_fraction_denominator_acb_poly(ComplexPolynomial out, SWIGTYPE_p_void fraction_elem, GenericRing fraction_ctx) {
+    arblibJNI.arblib_gr_fraction_denominator_acb_poly(ComplexPolynomial.getCPtr(out), out, SWIGTYPE_p_void.getCPtr(fraction_elem), GenericRing.getCPtr(fraction_ctx), fraction_ctx);
+  }
+
   public static void acb_rgamma(Complex y, Complex x, int prec) {
     arblibJNI.acb_rgamma(Complex.getCPtr(y), y, Complex.getCPtr(x), x, prec);
   }

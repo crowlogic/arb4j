@@ -86,6 +86,32 @@ public class GenericRing {
     return ctx;
   }
 
+  /**
+   * Copy the numerator of the single coefficient of a degree-0 polynomial
+   * in {@code this} (which must be a fraction field whose domain is
+   * {@code polynomialsOver(complexBalls(…))}) into {@code out}.
+   */
+  public ComplexPolynomial fractionNumerator(GenericRingPolynomial fractionPoly,
+                                             ComplexPolynomial out)
+  {
+    SWIGTYPE_p_void elem = arblib.arblib_gr_poly_coeff0_ptr(fractionPoly);
+    arblib.arblib_gr_fraction_numerator_acb_poly(out, elem, this);
+    return out;
+  }
+
+  /**
+   * Copy the denominator of the single coefficient of a degree-0 polynomial
+   * in {@code this} (a fraction field over {@code polynomialsOver(complexBalls(…))})
+   * into {@code out}.
+   */
+  public ComplexPolynomial fractionDenominator(GenericRingPolynomial fractionPoly,
+                                               ComplexPolynomial out)
+  {
+    SWIGTYPE_p_void elem = arblib.arblib_gr_poly_coeff0_ptr(fractionPoly);
+    arblib.arblib_gr_fraction_denominator_acb_poly(out, elem, this);
+    return out;
+  }
+
   public void setData(String value) {
     arblibJNI.GenericRing_data_set(swigCPtr, this, value);
   }

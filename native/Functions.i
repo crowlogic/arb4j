@@ -31,6 +31,67 @@ slong arb_poly_degree(const arb_poly_t poly)
     return poly->length - 1;
 }
 
+/* ---- Fraction-field element accessors ------------------------------
+ *
+ * In FLINT 3.4's gr_fraction layer (src/gr/fraction.c), a fraction-field
+ * element is laid out as a pair of domain-ring elements back-to-back:
+ *
+ *     NUMER(x, ctx) = x                                   (offset 0)
+ *     DENOM(x, ctx) = x + 1 * domain->sizeof_elem         (offset sizeof_elem)
+ *
+ * Both are gr_ptr's into the same memory block. For the rough-Heston
+ * pricer the domain ring is gr_ctx_init_gr_poly(complex_acb), whose
+ * sizeof_elem equals sizeof(gr_poly_struct) and whose gr_poly_t element
+ * layout (coeffs, alloc, length) is byte-identical to acb_poly_t.
+ *
+ * Function declarations below tell SWIG to bind them; the bodies are emitted
+ * into arb_wrap.c by the %{ ... %} block immediately following the
+ * declarations.
+ */
+
+void *           arblib_gr_poly_coeff0_ptr(gr_poly_t poly);
+slong            arblib_gr_poly_length(gr_poly_t poly);
+gr_ctx_struct *  arblib_gr_fraction_domain_ctx(gr_ctx_t fraction_ctx);
+void             arblib_gr_fraction_numerator_acb_poly(acb_poly_t out, void * fraction_elem, gr_ctx_t fraction_ctx);
+void             arblib_gr_fraction_denominator_acb_poly(acb_poly_t out, void * fraction_elem, gr_ctx_t fraction_ctx);
+
+%{
+#include <flint/gr.h>
+#include <flint/gr_poly.h>
+#include <flint/acb_poly.h>
+
+void * arblib_gr_poly_coeff0_ptr(gr_poly_t poly)
+{
+    return (void *) poly->coeffs;
+}
+
+slong arblib_gr_poly_length(gr_poly_t poly)
+{
+    return poly->length;
+}
+
+gr_ctx_struct * arblib_gr_fraction_domain_ctx(gr_ctx_t fraction_ctx)
+{
+    return ((gr_ctx_struct **) fraction_ctx)[0];
+}
+
+void arblib_gr_fraction_numerator_acb_poly(acb_poly_t out,
+                                           void * fraction_elem,
+                                           gr_ctx_t fraction_ctx)
+{
+    (void) fraction_ctx;
+    acb_poly_set(out, (acb_poly_struct *) fraction_elem);
+}
+
+void arblib_gr_fraction_denominator_acb_poly(acb_poly_t out,
+                                             void * fraction_elem,
+                                             gr_ctx_t fraction_ctx)
+{
+    gr_ctx_struct * domain = arblib_gr_fraction_domain_ctx(fraction_ctx);
+    acb_poly_set(out, (acb_poly_struct *) ((char *) fraction_elem + domain->sizeof_elem));
+}
+%}
+
 void acb_rgamma(acb_t y, const acb_t x, slong prec);
 void acb_lgamma(acb_t y, const acb_t x, slong prec);
 
