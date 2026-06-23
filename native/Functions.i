@@ -52,8 +52,6 @@ slong arb_poly_degree(const arb_poly_t poly)
 void *           arblib_gr_poly_coeff0_ptr(gr_poly_t poly);
 slong            arblib_gr_poly_length(gr_poly_t poly);
 gr_ctx_struct *  arblib_gr_fraction_domain_ctx(gr_ctx_t fraction_ctx);
-void             arblib_gr_fraction_numerator_acb_poly(acb_poly_t out, void * fraction_elem, gr_ctx_t fraction_ctx);
-void             arblib_gr_fraction_denominator_acb_poly(acb_poly_t out, void * fraction_elem, gr_ctx_t fraction_ctx);
 int              arblib_gr_set_other(void * res, const void * x, gr_ctx_t x_ctx, gr_ctx_t res_ctx);
 int              gr_poly_set_coeff_scalar(gr_poly_t poly, slong n, const void * x, gr_ctx_t ctx);
 int              arblib_gr_poly_set_coeff_from_other(gr_poly_t target, slong n, const void * src_elem, gr_ctx_t src_ctx, gr_ctx_t target_ctx);
@@ -76,22 +74,6 @@ slong arblib_gr_poly_length(gr_poly_t poly)
 gr_ctx_struct * arblib_gr_fraction_domain_ctx(gr_ctx_t fraction_ctx)
 {
     return ((gr_ctx_struct **) fraction_ctx)[0];
-}
-
-void arblib_gr_fraction_numerator_acb_poly(acb_poly_t out,
-                                           void * fraction_elem,
-                                           gr_ctx_t fraction_ctx)
-{
-    (void) fraction_ctx;
-    acb_poly_set(out, (acb_poly_struct *) fraction_elem);
-}
-
-void arblib_gr_fraction_denominator_acb_poly(acb_poly_t out,
-                                             void * fraction_elem,
-                                             gr_ctx_t fraction_ctx)
-{
-    gr_ctx_struct * domain = arblib_gr_fraction_domain_ctx(fraction_ctx);
-    acb_poly_set(out, (acb_poly_struct *) ((char *) fraction_elem + domain->sizeof_elem));
 }
 
 /* Out-of-line forwarder for gr_set_other (which is GR_INLINE in gr.h). */

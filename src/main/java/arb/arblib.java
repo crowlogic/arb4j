@@ -31,14 +31,6 @@ public class arblib {
     return (cPtr == 0) ? null : new GenericRing(cPtr, false);
   }
 
-  public static void arblib_gr_fraction_numerator_acb_poly(ComplexPolynomial out, SWIGTYPE_p_void fraction_elem, GenericRing fraction_ctx) {
-    arblibJNI.arblib_gr_fraction_numerator_acb_poly(ComplexPolynomial.getCPtr(out), out, SWIGTYPE_p_void.getCPtr(fraction_elem), GenericRing.getCPtr(fraction_ctx), fraction_ctx);
-  }
-
-  public static void arblib_gr_fraction_denominator_acb_poly(ComplexPolynomial out, SWIGTYPE_p_void fraction_elem, GenericRing fraction_ctx) {
-    arblibJNI.arblib_gr_fraction_denominator_acb_poly(ComplexPolynomial.getCPtr(out), out, SWIGTYPE_p_void.getCPtr(fraction_elem), GenericRing.getCPtr(fraction_ctx), fraction_ctx);
-  }
-
   public static int arblib_gr_set_other(SWIGTYPE_p_void res, SWIGTYPE_p_void x, GenericRing x_ctx, GenericRing res_ctx) {
     return arblibJNI.arblib_gr_set_other(SWIGTYPE_p_void.getCPtr(res), SWIGTYPE_p_void.getCPtr(x), GenericRing.getCPtr(x_ctx), x_ctx, GenericRing.getCPtr(res_ctx), res_ctx);
   }

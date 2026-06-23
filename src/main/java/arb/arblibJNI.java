@@ -14,8 +14,6 @@ public class arblibJNI {
   public final static native long arblib_gr_poly_coeff0_ptr(long jarg1, GenericRingPolynomial jarg1_);
   public final static native int arblib_gr_poly_length(long jarg1, GenericRingPolynomial jarg1_);
   public final static native long arblib_gr_fraction_domain_ctx(long jarg1, GenericRing jarg1_);
-  public final static native void arblib_gr_fraction_numerator_acb_poly(long jarg1, ComplexPolynomial jarg1_, long jarg2, long jarg3, GenericRing jarg3_);
-  public final static native void arblib_gr_fraction_denominator_acb_poly(long jarg1, ComplexPolynomial jarg1_, long jarg2, long jarg3, GenericRing jarg3_);
   public final static native int arblib_gr_set_other(long jarg1, long jarg2, long jarg3, GenericRing jarg3_, long jarg4, GenericRing jarg4_);
   public final static native int gr_poly_set_coeff_scalar(long jarg1, GenericRingPolynomial jarg1_, int jarg2, long jarg3, long jarg4, GenericRing jarg4_);
   public final static native int arblib_gr_poly_set_coeff_from_other(long jarg1, GenericRingPolynomial jarg1_, int jarg2, long jarg3, long jarg4, GenericRing jarg4_, long jarg5, GenericRing jarg5_);
