@@ -71,7 +71,6 @@
     arblib.gr_ctx_init_gr_fraction(ctx, domain, 0);
     return ctx;
   }
-
 %}
 
 %typemap(javaimports) gr_poly_struct %{

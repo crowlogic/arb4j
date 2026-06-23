@@ -242,3 +242,55 @@ Java_arblib_arblibJNI_Complex_1imag_1set (JNIEnv *jenv, jclass jcls, jlong jarg1
 }
 #endif
 
+
+/* ===== Debug heap interceptor (proof-of-principle) =====================
+ *
+ * Hooks FLINT's allocator via __flint_set_memory_functions. Each hook
+ * prints a line to stderr (with flush) and dispatches to the system
+ * function. Activated by Java calling arblib_debug_heap_enable(). */
+
+#include <flint/flint.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+void * arblib_debug_malloc(size_t size)
+{
+    void *p = malloc(size);
+    fprintf(stderr, "[arb4j heap] malloc(%zu) = %p\n", size, p);
+    fflush(stderr);
+    return p;
+}
+
+void * arblib_debug_calloc(size_t n, size_t size)
+{
+    void *p = calloc(n, size);
+    fprintf(stderr, "[arb4j heap] calloc(%zu, %zu) = %p\n", n, size, p);
+    fflush(stderr);
+    return p;
+}
+
+void * arblib_debug_realloc(void * ptr, size_t size)
+{
+    void *np = realloc(ptr, size);
+    fprintf(stderr, "[arb4j heap] realloc(%p, %zu) = %p\n", ptr, size, np);
+    fflush(stderr);
+    return np;
+}
+
+void arblib_debug_free(void * ptr)
+{
+    fprintf(stderr, "[arb4j heap] free(%p)\n", ptr);
+    fflush(stderr);
+    free(ptr);
+}
+
+int arblib_debug_heap_enable(void)
+{
+    __flint_set_memory_functions(&arblib_debug_malloc,
+                                 &arblib_debug_calloc,
+                                 &arblib_debug_realloc,
+                                 &arblib_debug_free);
+    fprintf(stderr, "[arb4j heap] interceptor installed\n");
+    fflush(stderr);
+    return 1;
+}

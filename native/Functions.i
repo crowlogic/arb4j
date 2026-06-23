@@ -49,12 +49,18 @@ slong arb_poly_degree(const arb_poly_t poly)
  * declarations.
  */
 
+int              arblib_debug_heap_enable(void);
+
 void *           arblib_gr_poly_coeff0_ptr(gr_poly_t poly);
 slong            arblib_gr_poly_length(gr_poly_t poly);
 gr_ctx_struct *  arblib_gr_fraction_domain_ctx(gr_ctx_t fraction_ctx);
 int              arblib_gr_set_other(void * res, const void * x, gr_ctx_t x_ctx, gr_ctx_t res_ctx);
 int              gr_poly_set_coeff_scalar(gr_poly_t poly, slong n, const void * x, gr_ctx_t ctx);
 int              arblib_gr_poly_set_coeff_from_other(gr_poly_t target, slong n, const void * src_elem, gr_ctx_t src_ctx, gr_ctx_t target_ctx);
+void             gr_vec_init(gr_vec_t vec, slong len, gr_ctx_t ctx);
+void             gr_vec_clear(gr_vec_t vec, gr_ctx_t ctx);
+slong            arblib_gr_vec_length(gr_vec_t vec);
+void *           arblib_gr_vec_entry_ptr(gr_vec_t vec, slong i, gr_ctx_t ctx);
 
 %{
 #include <flint/gr.h>
@@ -74,6 +80,17 @@ slong arblib_gr_poly_length(gr_poly_t poly)
 gr_ctx_struct * arblib_gr_fraction_domain_ctx(gr_ctx_t fraction_ctx)
 {
     return ((gr_ctx_struct **) fraction_ctx)[0];
+}
+
+/* Out-of-line forwarders for the gr_vec_* inline helpers. */
+slong arblib_gr_vec_length(gr_vec_t vec)
+{
+    return vec->length;
+}
+
+void * arblib_gr_vec_entry_ptr(gr_vec_t vec, slong i, gr_ctx_t ctx)
+{
+    return (void *) ((char *) vec->entries + i * ctx->sizeof_elem);
 }
 
 /* Out-of-line forwarder for gr_set_other (which is GR_INLINE in gr.h). */

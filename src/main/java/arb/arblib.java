@@ -17,6 +17,10 @@ public class arblib {
     return arblibJNI.arb_poly_degree(RealPolynomial.getCPtr(poly), poly);
   }
 
+  public static int arblib_debug_heap_enable() {
+    return arblibJNI.arblib_debug_heap_enable();
+  }
+
   public static SWIGTYPE_p_void arblib_gr_poly_coeff0_ptr(GenericRingPolynomial poly) {
     long cPtr = arblibJNI.arblib_gr_poly_coeff0_ptr(GenericRingPolynomial.getCPtr(poly), poly);
     return (cPtr == 0) ? null : new SWIGTYPE_p_void(cPtr, false);
@@ -41,6 +45,23 @@ public class arblib {
 
   public static int arblib_gr_poly_set_coeff_from_other(GenericRingPolynomial target, int n, SWIGTYPE_p_void src_elem, GenericRing src_ctx, GenericRing target_ctx) {
     return arblibJNI.arblib_gr_poly_set_coeff_from_other(GenericRingPolynomial.getCPtr(target), target, n, SWIGTYPE_p_void.getCPtr(src_elem), GenericRing.getCPtr(src_ctx), src_ctx, GenericRing.getCPtr(target_ctx), target_ctx);
+  }
+
+  public static void gr_vec_init(GenericRingVector vec, int len, GenericRing ctx) {
+    arblibJNI.gr_vec_init(GenericRingVector.getCPtr(vec), vec, len, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static void gr_vec_clear(GenericRingVector vec, GenericRing ctx) {
+    arblibJNI.gr_vec_clear(GenericRingVector.getCPtr(vec), vec, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int arblib_gr_vec_length(GenericRingVector vec) {
+    return arblibJNI.arblib_gr_vec_length(GenericRingVector.getCPtr(vec), vec);
+  }
+
+  public static SWIGTYPE_p_void arblib_gr_vec_entry_ptr(GenericRingVector vec, int i, GenericRing ctx) {
+    long cPtr = arblibJNI.arblib_gr_vec_entry_ptr(GenericRingVector.getCPtr(vec), vec, i, GenericRing.getCPtr(ctx), ctx);
+    return (cPtr == 0) ? null : new SWIGTYPE_p_void(cPtr, false);
   }
 
   public static void acb_rgamma(Complex y, Complex x, int prec) {

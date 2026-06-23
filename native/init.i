@@ -32,6 +32,9 @@ jlong bufferAddress (jobject buffer);
 
 void arb_add_error_ulp(arb_t x, slong n);
 
+/* Defined in complex.c. */
+int arblib_debug_heap_enable(void);
+
 void arb_pow_si(arb_t res, const arb_t x, slong y, slong prec);
 
 typedef arb_ptr* arb_vec;
@@ -76,10 +79,7 @@ jint JNI_OnLoad (JavaVM *vm, void *reserved)
     return -1;
   }
 
-  //__flint_set_memory_functions(&allocate, &callocate, &reallocate, &deallocate);
-
   return JNI_VERSION_10;
 }
-
 
 %}

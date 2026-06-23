@@ -87,7 +87,6 @@ public class GenericRing {
     return ctx;
   }
 
-
   public void setData(String value) {
     arblibJNI.GenericRing_data_set(swigCPtr, this, value);
   }
