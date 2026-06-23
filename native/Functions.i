@@ -50,6 +50,7 @@ slong arb_poly_degree(const arb_poly_t poly)
  */
 
 int              arblib_debug_heap_enable(void);
+void             gr_ctx_init_fmpz(gr_ctx_t ctx);
 
 void *           arblib_gr_poly_coeff0_ptr(gr_poly_t poly);
 slong            arblib_gr_poly_length(gr_poly_t poly);

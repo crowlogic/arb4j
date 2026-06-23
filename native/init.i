@@ -79,6 +79,9 @@ jint JNI_OnLoad (JavaVM *vm, void *reserved)
     return -1;
   }
 
+  /* Heap interceptor is available via Java arblib.arblib_debug_heap_enable();
+   * not enabled by default — it prints every flint_malloc/free to stderr. */
+
   return JNI_VERSION_10;
 }
 

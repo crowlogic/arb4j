@@ -21,6 +21,10 @@ public class arblib {
     return arblibJNI.arblib_debug_heap_enable();
   }
 
+  public static void gr_ctx_init_fmpz(GenericRing ctx) {
+    arblibJNI.gr_ctx_init_fmpz(GenericRing.getCPtr(ctx), ctx);
+  }
+
   public static SWIGTYPE_p_void arblib_gr_poly_coeff0_ptr(GenericRingPolynomial poly) {
     long cPtr = arblibJNI.arblib_gr_poly_coeff0_ptr(GenericRingPolynomial.getCPtr(poly), poly);
     return (cPtr == 0) ? null : new SWIGTYPE_p_void(cPtr, false);

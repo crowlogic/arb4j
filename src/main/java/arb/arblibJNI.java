@@ -12,6 +12,7 @@ public class arblibJNI {
   public final static native int acb_poly_degree(long jarg1, ComplexPolynomial jarg1_);
   public final static native int arb_poly_degree(long jarg1, RealPolynomial jarg1_);
   public final static native int arblib_debug_heap_enable();
+  public final static native void gr_ctx_init_fmpz(long jarg1, GenericRing jarg1_);
   public final static native long arblib_gr_poly_coeff0_ptr(long jarg1, GenericRingPolynomial jarg1_);
   public final static native int arblib_gr_poly_length(long jarg1, GenericRingPolynomial jarg1_);
   public final static native long arblib_gr_fraction_domain_ctx(long jarg1, GenericRing jarg1_);
