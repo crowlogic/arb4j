@@ -42,7 +42,7 @@ import arb.documentation.TheArb4jLibrary;
  *   P(n+1) = (x − α(n))·P(n) − β(n)·P(n−1)
  * </pre>
  *
- * <h2>Recurrence</h2>
+ * <h2>Recurrence and access</h2>
  *
  * The σ-table is built bottom-up by
  *
@@ -51,10 +51,10 @@ import arb.documentation.TheArb4jLibrary;
  *   σ(j, k) := σ(j−1, k+1) − α(j−1)·σ(j−1, k) − β(j−1)·σ(j−2, k)    j ≥ 1
  * </pre>
  *
- * with {@code σ(−1, k) := 0}. The k-reach of σ(j) is exactly {@code 2M − j}
- * when α/β/h are needed up to index M; the warmer in {@link #warmTo(int)}
- * fills the trapezoid in dependency order so every later read is a cache
- * hit.
+ * with {@code σ(−1, k) := 0}. Reads of α(n), β(n), h(n), σ(j, k) populate
+ * every cell their definition requires, in dependency order, then return the
+ * requested element. There is no separate population stage; the dependency
+ * graph is the algorithm.
  *
  * @param <E> phantom element type — used only to distinguish OPS over
  *            different rings at compile time
@@ -83,20 +83,17 @@ public class RingOrthogonalPolynomialMomentFunctional<E> implements
   /** Moments supplied by the caller; not owned by this instance. */
   public final MomentSequence<E> m;
 
-  /** Triangular σ-table: {@code sigma[j][k]} is σ(j, k) when populated. */
-  private GenericRingPolynomial[][] sigma;
+  /** σ-table: {@code sigma[j][k]} is σ(j, k) when populated, else null. */
+  private GenericRingPolynomial[][] sigma  = new GenericRingPolynomial[0][];
 
   /** h(n) = σ(n, n), one ring element per index. */
-  private GenericRingPolynomial[]   h;
+  private GenericRingPolynomial[]   h      = new GenericRingPolynomial[0];
 
   /** α(n), one ring element per index. */
-  private GenericRingPolynomial[]   alpha;
+  private GenericRingPolynomial[]   alpha  = new GenericRingPolynomial[0];
 
   /** β(n), one ring element per index; β(0) := 0. */
-  private GenericRingPolynomial[]   beta;
-
-  /** Highest index for which α(M), β(M), h(M) are populated. */
-  private int                       warmedTo = -1;
+  private GenericRingPolynomial[]   beta   = new GenericRingPolynomial[0];
 
   /**
    * Allocate the OPS over the supplied ring. The phantom type parameter
@@ -111,109 +108,143 @@ public class RingOrthogonalPolynomialMomentFunctional<E> implements
     this.m    = m;
   }
 
-  /**
-   * Ensure the σ-table and α/β/h arrays are populated up to index {@code M}.
-   * Idempotent — calling with a smaller {@code M} is a no-op; calling with a
-   * larger one extends in place.
-   *
-   * <p>The k-reach needed to compute α(M) and β(M) is {@code σ(M, M+1)},
-   * which requires {@code σ(0, K)} for {@code K = 2M + 1}. The warmer
-   * materialises every cell in dependency order so each subsequent read is
-   * a cache hit.</p>
-   */
-  public void warmTo(int M)
+  // ------------------------------------------------------------------
+  // Public accessors — each populates exactly the cells its definition
+  // requires, then returns. No notion of warm-up; the dependency graph
+  // is the algorithm.
+  // ------------------------------------------------------------------
+
+  /** Recurrence coefficient α(n) ∈ {@link #ring}. */
+  public GenericRingPolynomial alpha(int n)
   {
-    if (M <= warmedTo) return;
-
-    final int K = 2 * M + 2;
-    final int J = M + 1;
-    growToCapacity(J, K);
-
-    // Row 0: moments from the supplier.
-    for (int k = 0; k < K; k++)
-    {
-      if (sigma[0][k] == null)
-      {
-        sigma[0][k] = GenericRingPolynomial.in(ring);
-        m.evaluate(k, sigma[0][k]);
-      }
-    }
-
-    // Walk j from 1 upward.
-    for (int j = 1; j <= J - 1; j++)
-    {
-      ensureRowCoefficients(j - 1);
-      final int kMax = K - j - 1;
-      for (int k = 0; k <= kMax; k++)
-      {
-        if (sigma[j][k] != null) continue;
-        sigma[j][k] = GenericRingPolynomial.in(ring);
-        GenericRingPolynomial t1 = GenericRingPolynomial.in(ring);
-        arblib.gr_poly_mul(t1, alpha[j - 1], sigma[j - 1][k], ring);
-        arblib.gr_poly_sub(sigma[j][k], sigma[j - 1][k + 1], t1, ring);
-        if (j >= 2)
-        {
-          arblib.gr_poly_mul(t1, beta[j - 1], sigma[j - 2][k], ring);
-          arblib.gr_poly_sub(sigma[j][k], sigma[j][k], t1, ring);
-        }
-      }
-    }
-    ensureRowCoefficients(M);
-    warmedTo = M;
+    ensureAlpha(n);
+    return alpha[n];
   }
 
-  /**
-   * Materialise h(n), α(n), β(n) at index {@code n} from the σ(n, *) row,
-   * assuming σ(n, *) and all lower rows are already filled.
-   */
-  private void ensureRowCoefficients(int n)
+  /** Recurrence coefficient β(n) ∈ {@link #ring}; β(0) is the ring's zero. */
+  public GenericRingPolynomial beta(int n)
   {
-    if (h[n] == null)
+    ensureBeta(n);
+    return beta[n];
+  }
+
+  /** Self-inner-product h(n) = σ(n, n). */
+  public GenericRingPolynomial h(int n)
+  {
+    ensureH(n);
+    return h[n];
+  }
+
+  /** σ(j, k) at any cell of the trapezoid. */
+  public GenericRingPolynomial sigma(int j, int k)
+  {
+    ensureSigma(j, k);
+    return sigma[j][k];
+  }
+
+  // ------------------------------------------------------------------
+  // Cell builders. Each is idempotent — if the cell is populated, return.
+  // ------------------------------------------------------------------
+
+  private void ensureSigma(int j, int k)
+  {
+    growToCapacity(j + 1, k + 1);
+    if (sigma[j][k] != null) return;
+    sigma[j][k] = GenericRingPolynomial.in(ring);
+    if (j == 0)
     {
-      h[n] = GenericRingPolynomial.in(ring);
-      arblib.gr_poly_set(h[n], sigma[n][n], ring);
+      m.evaluate(k, sigma[0][k]);
+      return;
     }
-    if (alpha[n] == null)
+    // σ(j, k) = σ(j−1, k+1) − α(j−1)·σ(j−1, k) − β(j−1)·σ(j−2, k)
+    GenericRingPolynomial sJm1Kp1 = pullSigma(j - 1, k + 1);
+    GenericRingPolynomial sJm1K   = pullSigma(j - 1, k);
+    GenericRingPolynomial aJm1    = pullAlpha(j - 1);
+    GenericRingPolynomial t       = GenericRingPolynomial.in(ring);
+    arblib.gr_poly_mul(t, aJm1, sJm1K, ring);
+    arblib.gr_poly_sub(sigma[j][k], sJm1Kp1, t, ring);
+    if (j >= 2)
     {
-      alpha[n] = GenericRingPolynomial.in(ring);
-      arblib.gr_poly_div(alpha[n], sigma[n][n + 1], h[n], ring);
-      if (n >= 1)
-      {
-        GenericRingPolynomial tmp = GenericRingPolynomial.in(ring);
-        arblib.gr_poly_div(tmp, sigma[n - 1][n], h[n - 1], ring);
-        arblib.gr_poly_sub(alpha[n], alpha[n], tmp, ring);
-      }
+      GenericRingPolynomial bJm1  = pullBeta(j - 1);
+      GenericRingPolynomial sJm2K = pullSigma(j - 2, k);
+      arblib.gr_poly_mul(t, bJm1, sJm2K, ring);
+      arblib.gr_poly_sub(sigma[j][k], sigma[j][k], t, ring);
     }
-    if (beta[n] == null)
+    arblib.gr_poly_clear(t, ring);
+  }
+
+  private void ensureH(int n)
+  {
+    growToCapacity(n + 1, n + 1);
+    if (h[n] != null) return;
+    h[n] = GenericRingPolynomial.in(ring);
+    GenericRingPolynomial sNN = pullSigma(n, n);
+    arblib.gr_poly_set(h[n], sNN, ring);
+  }
+
+  private void ensureAlpha(int n)
+  {
+    growToCapacity(n + 1, n + 2);
+    if (alpha[n] != null) return;
+    // α(n) = σ(n, n+1)/h(n) − σ(n−1, n)/h(n−1)         (n ≥ 1)
+    // α(0) = σ(0, 1)/h(0)                              (n = 0)
+    alpha[n] = GenericRingPolynomial.in(ring);
+    GenericRingPolynomial sNNp1 = pullSigma(n, n + 1);
+    GenericRingPolynomial hN    = pullH(n);
+    arblib.gr_poly_div(alpha[n], sNNp1, hN, ring);
+    if (n >= 1)
     {
-      beta[n] = GenericRingPolynomial.in(ring);
-      if (n == 0)
-        arblib.gr_poly_zero(beta[0], ring);
-      else
-        arblib.gr_poly_div(beta[n], h[n], h[n - 1], ring);
+      GenericRingPolynomial sNm1N = pullSigma(n - 1, n);
+      GenericRingPolynomial hNm1  = pullH(n - 1);
+      GenericRingPolynomial tmp   = GenericRingPolynomial.in(ring);
+      arblib.gr_poly_div(tmp, sNm1N, hNm1, ring);
+      arblib.gr_poly_sub(alpha[n], alpha[n], tmp, ring);
+      arblib.gr_poly_clear(tmp, ring);
     }
   }
+
+  private void ensureBeta(int n)
+  {
+    growToCapacity(n + 1, n + 1);
+    if (beta[n] != null) return;
+    beta[n] = GenericRingPolynomial.in(ring);
+    if (n == 0)
+    {
+      arblib.gr_poly_zero(beta[0], ring);
+      return;
+    }
+    GenericRingPolynomial hN   = pullH(n);
+    GenericRingPolynomial hNm1 = pullH(n - 1);
+    arblib.gr_poly_div(beta[n], hN, hNm1, ring);
+  }
+
+  // ------------------------------------------------------------------
+  // Internal pulls — call the appropriate ensure*, then return the cell.
+  // Distinct from the public accessors only in that they do not re-enter
+  // grow logic (grow already happened in the outer ensure call).
+  // ------------------------------------------------------------------
+
+  private GenericRingPolynomial pullSigma(int j, int k) { ensureSigma(j, k); return sigma[j][k]; }
+  private GenericRingPolynomial pullAlpha(int n)        { ensureAlpha(n);    return alpha[n];   }
+  private GenericRingPolynomial pullBeta (int n)        { ensureBeta(n);     return beta[n];    }
+  private GenericRingPolynomial pullH    (int n)        { ensureH(n);        return h[n];       }
+
+  // ------------------------------------------------------------------
+  // Storage growth
+  // ------------------------------------------------------------------
 
   private void growToCapacity(int J, int K)
   {
-    if (sigma == null)
-    {
-      sigma = new GenericRingPolynomial[J + 1][];
-      for (int j = 0; j <= J; j++) sigma[j] = new GenericRingPolynomial[K];
-      h     = new GenericRingPolynomial[J + 1];
-      alpha = new GenericRingPolynomial[J + 1];
-      beta  = new GenericRingPolynomial[J + 1];
-      return;
-    }
-    if (sigma.length >= J + 1 && sigma[0].length >= K) return;
-
-    int newJ = Math.max(sigma.length,    J + 1);
-    int newK = Math.max(sigma[0].length, K);
+    int curJ = sigma.length;
+    int curK = curJ == 0 ? 0 : sigma[0].length;
+    if (curJ >= J && curK >= K) return;
+    int newJ = Math.max(curJ, J);
+    int newK = Math.max(curK, K);
     GenericRingPolynomial[][] s2 = new GenericRingPolynomial[newJ][];
     for (int j = 0; j < newJ; j++)
     {
       s2[j] = new GenericRingPolynomial[newK];
-      if (j < sigma.length)
+      if (j < curJ)
         System.arraycopy(sigma[j], 0, s2[j], 0, sigma[j].length);
     }
     GenericRingPolynomial[] h2     = new GenericRingPolynomial[newJ];
@@ -222,46 +253,25 @@ public class RingOrthogonalPolynomialMomentFunctional<E> implements
     System.arraycopy(h,     0, h2,     0, h.length);
     System.arraycopy(alpha, 0, alpha2, 0, alpha.length);
     System.arraycopy(beta,  0, beta2,  0, beta.length);
-    sigma = s2;
-    h     = h2;
-    alpha = alpha2;
-    beta  = beta2;
-  }
-
-  /** Recurrence coefficient α(n). */
-  public GenericRingPolynomial alpha(int n)
-  {
-    warmTo(n);
-    return alpha[n];
-  }
-
-  /** Recurrence coefficient β(n); β(0) is the ring's zero. */
-  public GenericRingPolynomial beta(int n)
-  {
-    warmTo(n);
-    return beta[n];
-  }
-
-  /** Self-inner-product h(n) = σ(n, n). */
-  public GenericRingPolynomial h(int n)
-  {
-    warmTo(n);
-    return h[n];
-  }
-
-  /** σ(j, k) at any populated cell of the trapezoid. */
-  public GenericRingPolynomial sigma(int j, int k)
-  {
-    warmTo(Math.max(j, k));
-    return sigma[j][k];
+    sigma = s2; h = h2; alpha = alpha2; beta = beta2;
   }
 
   @Override
   public void close()
   {
-    sigma = null;
-    h     = null;
-    alpha = null;
-    beta  = null;
+    if (sigma != null)
+    {
+      for (GenericRingPolynomial[] row : sigma)
+        if (row != null)
+          for (GenericRingPolynomial cell : row)
+            if (cell != null) arblib.gr_poly_clear(cell, ring);
+    }
+    if (h != null)
+      for (GenericRingPolynomial p : h) if (p != null) arblib.gr_poly_clear(p, ring);
+    if (alpha != null)
+      for (GenericRingPolynomial p : alpha) if (p != null) arblib.gr_poly_clear(p, ring);
+    if (beta != null)
+      for (GenericRingPolynomial p : beta) if (p != null) arblib.gr_poly_clear(p, ring);
+    sigma = null; h = null; alpha = null; beta = null;
   }
 }

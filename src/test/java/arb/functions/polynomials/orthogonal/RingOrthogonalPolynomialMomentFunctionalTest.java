@@ -48,7 +48,6 @@ public class RingOrthogonalPolynomialMomentFunctionalTest extends
     try ( RingOrthogonalPolynomialMomentFunctional<Object> ops =
             new RingOrthogonalPolynomialMomentFunctional<>(ring, moments) )
     {
-      ops.warmTo(4);
       for (int n = 0; n <= 4; n++)
       {
         GenericRingPolynomial alpha = ops.alpha(n);
@@ -81,7 +80,6 @@ public class RingOrthogonalPolynomialMomentFunctionalTest extends
     try ( RingOrthogonalPolynomialMomentFunctional<Object> ops =
             new RingOrthogonalPolynomialMomentFunctional<>(field, moments) )
     {
-      ops.warmTo(2);
       for (int n = 0; n <= 2; n++)
       {
         GenericRingPolynomial alpha = ops.alpha(n);
