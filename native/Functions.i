@@ -194,6 +194,7 @@ void acb_poly_exp_series(acb_poly_t f, const acb_poly_t h, slong n, slong prec);
 void acb_poly_mullow(acb_poly_t res, const acb_poly_t poly1, const acb_poly_t poly2, slong n, slong prec);
 
 void acb_hypgeom_si(acb_t res, const acb_t z, slong prec);
+void acb_hypgeom_erfc(acb_t res, const acb_t z, slong prec);
 
 void acb_hypgeom_si_series(acb_poly_t res, const acb_poly_t z, slong len, slong prec);
 

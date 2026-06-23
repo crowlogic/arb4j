@@ -208,6 +208,10 @@ public class arblib {
     arblibJNI.acb_hypgeom_si(Complex.getCPtr(res), res, Complex.getCPtr(z), z, prec);
   }
 
+  public static void acb_hypgeom_erfc(Complex res, Complex z, int prec) {
+    arblibJNI.acb_hypgeom_erfc(Complex.getCPtr(res), res, Complex.getCPtr(z), z, prec);
+  }
+
   public static void acb_hypgeom_si_series(ComplexPolynomial res, ComplexPolynomial z, int len, int prec) {
     arblibJNI.acb_hypgeom_si_series(ComplexPolynomial.getCPtr(res), res, ComplexPolynomial.getCPtr(z), z, len, prec);
   }
