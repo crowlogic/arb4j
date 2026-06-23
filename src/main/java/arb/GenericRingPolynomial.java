@@ -68,6 +68,30 @@ public class GenericRingPolynomial {
     return this;
   }
 
+  /**
+   * Set the n-th coefficient of this polynomial to the value of an
+   * {@link ComplexPolynomial} interpreted as an element of
+   * {@code polynomialsOver(complexBalls(…))} — the supplied {@code domain}
+   * ring — lifted into the ring of this polynomial via
+   * {@code gr_set_other}.
+   *
+   * <p>This is the canonical way to lift a {@link ComplexPolynomial} into a
+   * polynomial-over-fraction-field carrier: the conversion is done by FLINT
+   * via the universal cross-ring set operation, no Java-side splice.</p>
+   *
+   * @param n              coefficient index
+   * @param numerator      source value, an element of {@code domain}
+   * @param domain         the source ring (must equal
+   *                       {@code polynomialsOver(complexBalls(…))})
+   * @param ring           the ring of {@code this}
+   */
+  public GenericRingPolynomial setCoeff(int n, ComplexPolynomial numerator, GenericRing domain, GenericRing ring)
+  {
+    SWIGTYPE_p_void src = new SWIGTYPE_p_void(ComplexPolynomial.getCPtr(numerator), false);
+    arblib.arblib_gr_poly_set_coeff_from_other(this, n, src, domain, ring);
+    return this;
+  }
+
   /** Set this polynomial to {@code src} in the given ring. */
   public GenericRingPolynomial set(GenericRingPolynomial src, GenericRing ring)
   {

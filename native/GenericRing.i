@@ -24,6 +24,10 @@
   /**
    * ℂ via acb ball arithmetic at the requested working precision.
    * Wraps {@code gr_ctx_init_complex_acb}.
+   *
+   * @deprecated prefer {@code new GenericFraction<Complex>(...)} or other
+   *             specifically-typed subclasses of {@link GenericRing} where
+   *             the element type is encoded in Java generics.
    */
   public static GenericRing complexBalls(int prec)
   {
@@ -56,13 +60,10 @@
 
   /**
    * The fraction field of the supplied integral domain. Wraps
-   * {@code gr_ctx_init_gr_fraction}. For example,
-   * {@code fractionFieldOf(polynomialsOver(complexBalls(prec)))} is ℂ(v) —
-   * the field of rational functions over ℂ.
+   * {@code gr_ctx_init_gr_fraction}.
    *
-   * @param domain  an integral domain ring; the fraction field is well-defined
-   *                only for integral domains and the underlying FLINT call may
-   *                fail otherwise.
+   * @deprecated prefer {@code new GenericFraction<T>(domain)} where the
+   *             element type {@code T} is encoded in Java generics.
    */
   public static GenericRing fractionFieldOf(GenericRing domain)
   {
@@ -136,6 +137,30 @@
   public GenericRingPolynomial setCoeff(int n, int x, GenericRing ring)
   {
     arblib.gr_poly_set_coeff_si(this, n, x, ring);
+    return this;
+  }
+
+  /**
+   * Set the n-th coefficient of this polynomial to the value of an
+   * {@link ComplexPolynomial} interpreted as an element of
+   * {@code polynomialsOver(complexBalls(…))} — the supplied {@code domain}
+   * ring — lifted into the ring of this polynomial via
+   * {@code gr_set_other}.
+   *
+   * <p>This is the canonical way to lift a {@link ComplexPolynomial} into a
+   * polynomial-over-fraction-field carrier: the conversion is done by FLINT
+   * via the universal cross-ring set operation, no Java-side splice.</p>
+   *
+   * @param n              coefficient index
+   * @param numerator      source value, an element of {@code domain}
+   * @param domain         the source ring (must equal
+   *                       {@code polynomialsOver(complexBalls(…))})
+   * @param ring           the ring of {@code this}
+   */
+  public GenericRingPolynomial setCoeff(int n, ComplexPolynomial numerator, GenericRing domain, GenericRing ring)
+  {
+    SWIGTYPE_p_void src = new SWIGTYPE_p_void(ComplexPolynomial.getCPtr(numerator), false);
+    arblib.arblib_gr_poly_set_coeff_from_other(this, n, src, domain, ring);
     return this;
   }
 

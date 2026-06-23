@@ -39,6 +39,10 @@ public class GenericRing {
   /**
    * ℂ via acb ball arithmetic at the requested working precision.
    * Wraps {@code gr_ctx_init_complex_acb}.
+   *
+   * @deprecated prefer {@code new GenericFraction<Complex>(...)} or other
+   *             specifically-typed subclasses of {@link GenericRing} where
+   *             the element type is encoded in Java generics.
    */
   public static GenericRing complexBalls(int prec)
   {
@@ -71,13 +75,10 @@ public class GenericRing {
 
   /**
    * The fraction field of the supplied integral domain. Wraps
-   * {@code gr_ctx_init_gr_fraction}. For example,
-   * {@code fractionFieldOf(polynomialsOver(complexBalls(prec)))} is ℂ(v) —
-   * the field of rational functions over ℂ.
+   * {@code gr_ctx_init_gr_fraction}.
    *
-   * @param domain  an integral domain ring; the fraction field is well-defined
-   *                only for integral domains and the underlying FLINT call may
-   *                fail otherwise.
+   * @deprecated prefer {@code new GenericFraction<T>(domain)} where the
+   *             element type {@code T} is encoded in Java generics.
    */
   public static GenericRing fractionFieldOf(GenericRing domain)
   {

@@ -54,6 +54,9 @@ slong            arblib_gr_poly_length(gr_poly_t poly);
 gr_ctx_struct *  arblib_gr_fraction_domain_ctx(gr_ctx_t fraction_ctx);
 void             arblib_gr_fraction_numerator_acb_poly(acb_poly_t out, void * fraction_elem, gr_ctx_t fraction_ctx);
 void             arblib_gr_fraction_denominator_acb_poly(acb_poly_t out, void * fraction_elem, gr_ctx_t fraction_ctx);
+int              arblib_gr_set_other(void * res, const void * x, gr_ctx_t x_ctx, gr_ctx_t res_ctx);
+int              gr_poly_set_coeff_scalar(gr_poly_t poly, slong n, const void * x, gr_ctx_t ctx);
+int              arblib_gr_poly_set_coeff_from_other(gr_poly_t target, slong n, const void * src_elem, gr_ctx_t src_ctx, gr_ctx_t target_ctx);
 
 %{
 #include <flint/gr.h>
@@ -89,6 +92,43 @@ void arblib_gr_fraction_denominator_acb_poly(acb_poly_t out,
 {
     gr_ctx_struct * domain = arblib_gr_fraction_domain_ctx(fraction_ctx);
     acb_poly_set(out, (acb_poly_struct *) ((char *) fraction_elem + domain->sizeof_elem));
+}
+
+/* Out-of-line forwarder for gr_set_other (which is GR_INLINE in gr.h). */
+int arblib_gr_set_other(void * res, const void * x, gr_ctx_t x_ctx, gr_ctx_t res_ctx)
+{
+    return gr_set_other((gr_ptr) res, (gr_srcptr) x, x_ctx, res_ctx);
+}
+
+/* Convert src_elem (an element of src_ctx) into target_ctx via gr_set_other
+ * and plant it at coefficient n of target (a gr_poly_t in target_ctx). The
+ * intermediate target_ctx element is allocated inline at the n-th coefficient
+ * slot of target after growing target to length n+1 — no separate transient
+ * allocation. */
+int arblib_gr_poly_set_coeff_from_other(gr_poly_t target,
+                                        slong n,
+                                        const void * src_elem,
+                                        gr_ctx_t src_ctx,
+                                        gr_ctx_t target_ctx)
+{
+    gr_poly_fit_length(target, n + 1, target_ctx);
+    int status = GR_SUCCESS;
+    if (target->length <= n)
+    {
+        /* Initialise newly-exposed coefficients to zero. */
+        for (slong k = target->length; k <= n; k++)
+        {
+            gr_ptr slot = (gr_ptr) ((char *) target->coeffs + k * target_ctx->sizeof_elem);
+            status |= gr_zero(slot, target_ctx);
+        }
+        target->length = n + 1;
+    }
+    gr_ptr slot = (gr_ptr) ((char *) target->coeffs + n * target_ctx->sizeof_elem);
+    status |= gr_set_other(slot, (gr_srcptr) src_elem, src_ctx, target_ctx);
+    /* Normalise: if the just-set coefficient happens to be exactly zero and
+     * is at the leading position, drop trailing zeros so length is correct. */
+    _gr_poly_normalise(target, target_ctx);
+    return status;
 }
 %}
 

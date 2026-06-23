@@ -39,6 +39,18 @@ public class arblib {
     arblibJNI.arblib_gr_fraction_denominator_acb_poly(ComplexPolynomial.getCPtr(out), out, SWIGTYPE_p_void.getCPtr(fraction_elem), GenericRing.getCPtr(fraction_ctx), fraction_ctx);
   }
 
+  public static int arblib_gr_set_other(SWIGTYPE_p_void res, SWIGTYPE_p_void x, GenericRing x_ctx, GenericRing res_ctx) {
+    return arblibJNI.arblib_gr_set_other(SWIGTYPE_p_void.getCPtr(res), SWIGTYPE_p_void.getCPtr(x), GenericRing.getCPtr(x_ctx), x_ctx, GenericRing.getCPtr(res_ctx), res_ctx);
+  }
+
+  public static int gr_poly_set_coeff_scalar(GenericRingPolynomial poly, int n, SWIGTYPE_p_void x, GenericRing ctx) {
+    return arblibJNI.gr_poly_set_coeff_scalar(GenericRingPolynomial.getCPtr(poly), poly, n, SWIGTYPE_p_void.getCPtr(x), GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int arblib_gr_poly_set_coeff_from_other(GenericRingPolynomial target, int n, SWIGTYPE_p_void src_elem, GenericRing src_ctx, GenericRing target_ctx) {
+    return arblibJNI.arblib_gr_poly_set_coeff_from_other(GenericRingPolynomial.getCPtr(target), target, n, SWIGTYPE_p_void.getCPtr(src_elem), GenericRing.getCPtr(src_ctx), src_ctx, GenericRing.getCPtr(target_ctx), target_ctx);
+  }
+
   public static void acb_rgamma(Complex y, Complex x, int prec) {
     arblibJNI.acb_rgamma(Complex.getCPtr(y), y, Complex.getCPtr(x), x, prec);
   }
