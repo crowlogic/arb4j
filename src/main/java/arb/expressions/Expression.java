@@ -3424,7 +3424,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitVarInsn(Opcodes.ALOAD, elementSlot);
     mv.visitTypeInsn(Opcodes.CHECKCAST, fieldInternal);
     mv.visitVarInsn(Opcodes.LLOAD, factorialSlot);
-    mv.visitInsn(Opcodes.L2I); // truncate to int for div(int,int,X)
+    mv.visitInsn(Opcodes.L2I); // cast to int for div(int,int,X)
     mv.visitVarInsn(Opcodes.ILOAD, 3); // bits
     mv.visitVarInsn(Opcodes.ALOAD, elementSlot);
     mv.visitTypeInsn(Opcodes.CHECKCAST, fieldInternal); // cast Object to Field

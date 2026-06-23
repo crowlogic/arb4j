@@ -126,26 +126,11 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   public String                                   accumulatorFieldName;
 
-  /** Aitken-Δ² previous-partial-sum field name (s_{n-1}); used only for Σ{..∞}. */
-  public String                                   aitkenS1FieldName;
+  /** Convergence test: |term|, stored as a {@link Real}. */
+  public String                                   convergenceTermMagFieldName;
 
-  /** Aitken-Δ² previous-previous partial-sum field name (s_{n-2}); used only for Σ{..∞}. */
-  public String                                   aitkenS2FieldName;
-
-  /** Aitken-Δ² scratch field for the accelerated estimate ŝ_n. */
-  public String                                   aitkenHatSFieldName;
-
-  /** Aitken-Δ² scratch field for first difference s_n − s_{n-1}. */
-  public String                                   aitkenDiff1FieldName;
-
-  /** Aitken-Δ² scratch field for second difference s_n − 2·s_{n-1} + s_{n-2}. */
-  public String                                   aitkenDiff2FieldName;
-
-  /** Aitken convergence test: |ŝ_n|, stored as a {@link Real}. */
-  public String                                   aitkenAbsHatFieldName;
-
-  /** Aitken convergence test: |ŝ_n − s_n|, stored as a {@link Real}. */
-  public String                                   aitkenAbsGapFieldName;
+  /** Convergence test: threshold = 2^(-bits), stored as a {@link Real}. */
+  public String                                   convergenceThresholdFieldName;
 
 
   /**
@@ -419,16 +404,11 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     assignFieldNamesIfNecessary(resultType);
     declareIndexVariableField();
 
-    boolean aitken = upperLimit != null && upperLimit.isPositiveInfinity() && "add".equals(operation);
-    if (aitken)
+    boolean infiniteSum = upperLimit != null && upperLimit.isPositiveInfinity() && "add".equals(operation);
+    if (infiniteSum)
     {
-      aitkenS1FieldName     = expression.newIntermediateVariable("aitkenS1",     generatedType);
-      aitkenS2FieldName     = expression.newIntermediateVariable("aitkenS2",     generatedType);
-      aitkenHatSFieldName   = expression.newIntermediateVariable("aitkenHatS",   generatedType);
-      aitkenDiff1FieldName  = expression.newIntermediateVariable("aitkenDiff1",  generatedType);
-      aitkenDiff2FieldName  = expression.newIntermediateVariable("aitkenDiff2",  generatedType);
-      aitkenAbsHatFieldName = expression.newIntermediateVariable("aitkenAbsHat", Real.class);
-      aitkenAbsGapFieldName = expression.newIntermediateVariable("aitkenAbsGap", Real.class);
+      convergenceTermMagFieldName   = expression.newIntermediateVariable("convergenceTermMag",   Real.class);
+      convergenceThresholdFieldName = expression.newIntermediateVariable("convergenceThreshold", Real.class);
     }
 
     propagateInputToOperand(mv);
@@ -440,7 +420,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     compareIndexToUpperLimit(mv);
     jumpToIfGreaterThan(mv, endLoop);
     generateInnerLoop(mv);
-    if (aitken) emitAitkenConvergenceCheck(mv);
+    if (infiniteSum) emitConvergenceCheck(mv);
     jumpTo(mv, beginLoop);
     designateLabel(mv, endLoop);
     assignResult(mv, resultType);
@@ -448,143 +428,40 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   }
 
   /**
-   * Emit the inline Aitken-Δ² update + convergence test after one iteration's
-   * accumulation. Predicate from {@code docs/AitkenShanksPadeIdentification.tex}:
-   *
-   * <pre>
-   *   diff1 := s_n − s_{n-1}
-   *   diff2 := diff1 − s_{n-1} + s_{n-2}    (= s_n − 2·s_{n-1} + s_{n-2})
-   *   ŝ_n   := s_n − diff1² / diff2
-   *   s_{n-2} := s_{n-1}
-   *   s_{n-1} := s_n
-   * </pre>
-   *
-   * Type-polymorphic via {@code generatedType}: emits {@code sub/add/mul/div/set}
-   * descriptors that match the operand's codomain. Types lacking those methods
-   * throw {@code NoSuchMethodError} at runtime. The convergence test against the
-   * accumulated result uses the standard ball-arithmetic comparison provided by
-   * the operand type (extended subsequently as needed).
+   * Emit convergence check for infinite series accumulation.
+   * Stop when |term| <= 2^(-bits).
    */
-  protected void emitAitkenConvergenceCheck(MethodVisitor mv)
+  protected void emitConvergenceCheck(MethodVisitor mv)
   {
     if (Expression.traceNodes)
     {
-      logger.debug(String.format("%s.emitAitkenConvergenceCheck(generatedType=%s, s1=%s, s2=%s, hatS=%s, diff1=%s, diff2=%s, absHat=%s, absGap=%s)",
+      logger.debug(String.format("%s.emitConvergenceCheck(generatedType=%s, termMag=%s, threshold=%s)",
                                  getClass().getSimpleName(), generatedType.getSimpleName(),
-                                 aitkenS1FieldName, aitkenS2FieldName, aitkenHatSFieldName,
-                                 aitkenDiff1FieldName, aitkenDiff2FieldName,
-                                 aitkenAbsHatFieldName, aitkenAbsGapFieldName));
+                                 convergenceTermMagFieldName, convergenceThresholdFieldName));
       System.err.flush();
     }
-    final String sig3 = Compiler.getMethodDescriptor(generatedType, generatedType, int.class, generatedType);
-    final String sigSet = Compiler.getMethodDescriptor(generatedType, generatedType);
-
-    // diff1 := s_n.sub(s_{n-1}, bits, diff1)
-    loadIntermediateResultVariable(mv);
-    loadFieldFromThis(mv, aitkenS1FieldName, generatedType);
+    
+    // termMag := operandValue.abs(bits, termMag)
+    loadOperandValue(mv);
     loadBitsParameterOntoStack(mv);
-    loadFieldFromThis(mv, aitkenDiff1FieldName, generatedType);
-    invokeMethod(mv, generatedType, "sub", sig3, false);
+    loadFieldFromThis(mv, convergenceTermMagFieldName, Real.class);
+    invokeMethod(mv, generatedType, "abs", Compiler.getMethodDescriptor(Real.class, int.class, Real.class), false);
     pop(mv);
-
-    // diff2 := diff1.sub(s_{n-1}, bits, diff2).add(s_{n-2}, bits, diff2)
-    loadFieldFromThis(mv, aitkenDiff1FieldName, generatedType);
-    loadFieldFromThis(mv, aitkenS1FieldName, generatedType);
+    
+    // threshold := 1 * 2^(-bits)
+    loadFieldFromThis(mv, convergenceThresholdFieldName, Real.class);
+    invokeMethod(mv, Real.class, "one", Compiler.getMethodDescriptor(Real.class), false);
     loadBitsParameterOntoStack(mv);
-    loadFieldFromThis(mv, aitkenDiff2FieldName, generatedType);
-    invokeMethod(mv, generatedType, "sub", sig3, false);
-    loadFieldFromThis(mv, aitkenS2FieldName, generatedType);
-    loadBitsParameterOntoStack(mv);
-    loadFieldFromThis(mv, aitkenDiff2FieldName, generatedType);
-    invokeMethod(mv, generatedType, "add", sig3, false);
+    mv.visitInsn(INEG);
+    loadFieldFromThis(mv, convergenceThresholdFieldName, Real.class);
+    invokeMethod(mv, Real.class, "mul2e", Compiler.getMethodDescriptor(Real.class, int.class, Real.class), false);
     pop(mv);
-
-    // hatS := diff1.mul(diff1, bits, hatS).div(diff2, bits, hatS)
-    loadFieldFromThis(mv, aitkenDiff1FieldName, generatedType);
-    loadFieldFromThis(mv, aitkenDiff1FieldName, generatedType);
-    loadBitsParameterOntoStack(mv);
-    loadFieldFromThis(mv, aitkenHatSFieldName, generatedType);
-    invokeMethod(mv, generatedType, "mul", sig3, false);
-    loadFieldFromThis(mv, aitkenDiff2FieldName, generatedType);
-    loadBitsParameterOntoStack(mv);
-    loadFieldFromThis(mv, aitkenHatSFieldName, generatedType);
-    invokeMethod(mv, generatedType, "div", sig3, false);
-    pop(mv);
-
-    // hatS := s_n.sub(hatS, bits, hatS)
-    loadIntermediateResultVariable(mv);
-    loadFieldFromThis(mv, aitkenHatSFieldName, generatedType);
-    loadBitsParameterOntoStack(mv);
-    loadFieldFromThis(mv, aitkenHatSFieldName, generatedType);
-    invokeMethod(mv, generatedType, "sub", sig3, false);
-    pop(mv);
-
-    // s_{n-2}.set(s_{n-1})
-    loadFieldFromThis(mv, aitkenS2FieldName, generatedType);
-    loadFieldFromThis(mv, aitkenS1FieldName, generatedType);
-    invokeMethod(mv, generatedType, "set", sigSet, false);
-    pop(mv);
-
-    // s_{n-1}.set(s_n)
-    loadFieldFromThis(mv, aitkenS1FieldName, generatedType);
-    loadIntermediateResultVariable(mv);
-    invokeMethod(mv, generatedType, "set", sigSet, false);
-    pop(mv);
-
-    // Convergence test:
-    //   absHat := |ŝ_n|      (Real)
-    //   absGap := |ŝ_n − s_n| (Real)
-    //   if absGap ≤ absHat · 2^(-bits): break
-    final String sigAbs = Compiler.getMethodDescriptor(Real.class, int.class, Real.class);
-    final String sigDiff = Compiler.getMethodDescriptor(generatedType, generatedType, int.class, generatedType);
-
-    // absHat = hatS.abs(bits, aitkenAbsHat)
-    loadFieldFromThis(mv, aitkenHatSFieldName, generatedType);
-    loadBitsParameterOntoStack(mv);
-    loadFieldFromThis(mv, aitkenAbsHatFieldName, Real.class);
-    invokeMethod(mv, generatedType, "abs", sigAbs, false);
-    pop(mv);
-
-    // gap container: reuse diff1 to hold (ŝ_n − s_n)
-    loadFieldFromThis(mv, aitkenHatSFieldName, generatedType);
-    loadIntermediateResultVariable(mv);
-    loadBitsParameterOntoStack(mv);
-    loadFieldFromThis(mv, aitkenDiff1FieldName, generatedType);
-    invokeMethod(mv, generatedType, "sub", sigDiff, false);
-    pop(mv);
-    // absGap = diff1.abs(bits, aitkenAbsGap)
-    loadFieldFromThis(mv, aitkenDiff1FieldName, generatedType);
-    loadBitsParameterOntoStack(mv);
-    loadFieldFromThis(mv, aitkenAbsGapFieldName, Real.class);
-    invokeMethod(mv, generatedType, "abs", sigAbs, false);
-    pop(mv);
-
-    // tol := absHat.mul2e(-bits, absHat)   (overwrites absHat)
-    loadFieldFromThis(mv, aitkenAbsHatFieldName, Real.class);
-    loadBitsParameterOntoStack(mv);
-    mv.visitInsn(org.objectweb.asm.Opcodes.INEG);
-    loadFieldFromThis(mv, aitkenAbsHatFieldName, Real.class);
-    invokeMethod(mv, Real.class, "mul2e",
-                 Compiler.getMethodDescriptor(Real.class, int.class, Real.class), false);
-    pop(mv);
-
-    // Pop the Integer left on the stack by incrementIndex() before the
-    // conditional jump, so both jumps to endLoop reach it with an empty
-    // stack. The top-of-loop branch (compareIndexToUpperLimit + IFGT)
-    // arrives at endLoop with stack empty; we must match.
-    pop(mv);
-
-    // if absGap.compareTo(tol) <= 0: jump endLoop
-    loadFieldFromThis(mv, aitkenAbsGapFieldName, Real.class);
-    loadFieldFromThis(mv, aitkenAbsHatFieldName, Real.class);
-    invokeMethod(mv, Real.class, "compareTo",
-                 Compiler.getMethodDescriptor(int.class, Real.class), false);
-    jumpToIfLessThanOrEquals(mv, endLoop);
-
-    // Restore the Integer (the index) on the stack so the unconditional
-    // jumpTo(beginLoop) reaches beginLoop with the same stack shape it
-    // had at first entry.
-    loadIndexVariable(mv);
+    
+    // if termMag <= threshold, break (jumpTo endLoop)
+    loadFieldFromThis(mv, convergenceTermMagFieldName, Real.class);
+    loadFieldFromThis(mv, convergenceThresholdFieldName, Real.class);
+    invokeMethod(mv, Real.class, "compareTo", Compiler.getMethodDescriptor(int.class, Real.class), false);
+    mv.visitJumpInsn(IFLE, endLoop);
   }
 
 
