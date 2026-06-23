@@ -778,24 +778,7 @@
     return result;
   }
 
-  /**
-   * Partial-fraction decomposition of the rational function {@code numerator/denominator}.
-   *
-   * @return a {@link PartialFraction} holding the polynomial quotient, the poles
-   *         (roots of the denominator), and the corresponding residues.
-   * @throws ArithmeticException if root isolation fails.
-   */
-  public static PartialFraction partialFractions(ComplexPolynomial numerator,
-                                                  ComplexPolynomial denominator,
-                                                  int prec)
-  {
-    PartialFraction pf = new PartialFraction();
-    int n = arblib.arb4j_partial_fraction_decompose(pf,
-                                                     numerator,
-                                                     denominator,
-                                                     prec);
-    if (n < 0)
-      throw new ArithmeticException("partial fraction decomposition failed");
-    return pf;
-  }
+  /* PartialFraction helper removed; partial-fraction expansion now lives in the
+     caller (e.g. bonanzai's RoughHestonSchwingerPricer), built on the certified
+     ComplexPolynomial.roots(...) + derivative(...) primitives. */
 %};
