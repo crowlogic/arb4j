@@ -98,6 +98,9 @@ typedef unsigned long int mp_limb_t;
 %rename (ComplexMatrix) acb_mat_struct;
 %rename (RealMatrix) arb_mat_struct;
 %rename (RandomState) flint_rand_struct;
+%rename (GenericRing) gr_ctx_struct;
+%rename (GenericRingPolynomial) gr_poly_struct;
+%rename (GenericRingVector) gr_vec_struct;
 %typemap(javafinalize) dirichlet_prime_group_struct ""
 %typemap(javafinalize) dirichlet_char_struct ""
 %typemap(javafinalize) dirichlet_group_struct ""
@@ -156,6 +159,8 @@ typedef unsigned long int mp_limb_t;
 %include "ComplexPolynomial.i"
 
 %include "PartialFraction.i"
+
+%include "GenericRing.i"
 
 %rename (coeffs) coeffsNative;
 

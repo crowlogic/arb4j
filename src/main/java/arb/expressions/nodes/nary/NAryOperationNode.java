@@ -129,6 +129,21 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   public String                                   accumulatorFieldName;
 
+  /** Aitken-Δ² previous-partial-sum field name (s_{n-1}); used only for Σ{..∞}. */
+  public String                                   aitkenS1FieldName;
+
+  /** Aitken-Δ² previous-previous partial-sum field name (s_{n-2}); used only for Σ{..∞}. */
+  public String                                   aitkenS2FieldName;
+
+  /** Aitken-Δ² scratch field for the accelerated estimate ŝ_n. */
+  public String                                   aitkenHatSFieldName;
+
+  /** Aitken-Δ² scratch field for first difference s_n − s_{n-1}. */
+  public String                                   aitkenDiff1FieldName;
+
+  /** Aitken-Δ² scratch field for second difference s_n − 2·s_{n-1} + s_{n-2}. */
+  public String                                   aitkenDiff2FieldName;
+
 
   /**
    * Bytecode-level internal name of the owning {@link Expression}, captured once
@@ -391,6 +406,16 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     assignFieldNamesIfNecessary(resultType);
     declareIndexVariableField();
 
+    boolean aitken = upperLimit != null && upperLimit.isPositiveInfinity() && "add".equals(operation);
+    if (aitken)
+    {
+      aitkenS1FieldName    = expression.newIntermediateVariable("aitkenS1",    generatedType);
+      aitkenS2FieldName    = expression.newIntermediateVariable("aitkenS2",    generatedType);
+      aitkenHatSFieldName  = expression.newIntermediateVariable("aitkenHatS",  generatedType);
+      aitkenDiff1FieldName = expression.newIntermediateVariable("aitkenDiff1", generatedType);
+      aitkenDiff2FieldName = expression.newIntermediateVariable("aitkenDiff2", generatedType);
+    }
+
     propagateInputToOperand(mv);
     initializeResultVariable(mv, resultType);
     setIndexToTheLowerLimit(mv);
@@ -400,11 +425,89 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     compareIndexToUpperLimit(mv);
     jumpToIfGreaterThan(mv, endLoop);
     generateInnerLoop(mv);
+    if (aitken) emitAitkenConvergenceCheck(mv);
     jumpTo(mv, beginLoop);
     designateLabel(mv, endLoop);
     assignResult(mv, resultType);
     return mv;
   }
+
+  /**
+   * Emit the inline Aitken-Δ² update + convergence test after one iteration's
+   * accumulation. Predicate from {@code docs/AitkenShanksPadeIdentification.tex}:
+   *
+   * <pre>
+   *   diff1 := s_n − s_{n-1}
+   *   diff2 := diff1 − s_{n-1} + s_{n-2}    (= s_n − 2·s_{n-1} + s_{n-2})
+   *   ŝ_n   := s_n − diff1² / diff2
+   *   s_{n-2} := s_{n-1}
+   *   s_{n-1} := s_n
+   * </pre>
+   *
+   * Type-polymorphic via {@code generatedType}: emits {@code sub/add/mul/div/set}
+   * descriptors that match the operand's codomain. Types lacking those methods
+   * throw {@code NoSuchMethodError} at runtime. The convergence test against the
+   * accumulated result uses the standard ball-arithmetic comparison provided by
+   * the operand type (extended subsequently as needed).
+   */
+  protected void emitAitkenConvergenceCheck(MethodVisitor mv)
+  {
+    final String sig3 = Compiler.getMethodDescriptor(generatedType, generatedType, int.class, generatedType);
+    final String sigSet = Compiler.getMethodDescriptor(generatedType, generatedType);
+
+    // diff1 := s_n.sub(s_{n-1}, bits, diff1)
+    loadIntermediateResultVariable(mv);
+    loadFieldFromThis(mv, aitkenS1FieldName, generatedType);
+    loadBitsParameterOntoStack(mv);
+    loadFieldFromThis(mv, aitkenDiff1FieldName, generatedType);
+    invokeMethod(mv, generatedType, "sub", sig3, false);
+    pop(mv);
+
+    // diff2 := diff1.sub(s_{n-1}, bits, diff2).add(s_{n-2}, bits, diff2)
+    loadFieldFromThis(mv, aitkenDiff1FieldName, generatedType);
+    loadFieldFromThis(mv, aitkenS1FieldName, generatedType);
+    loadBitsParameterOntoStack(mv);
+    loadFieldFromThis(mv, aitkenDiff2FieldName, generatedType);
+    invokeMethod(mv, generatedType, "sub", sig3, false);
+    loadFieldFromThis(mv, aitkenS2FieldName, generatedType);
+    loadBitsParameterOntoStack(mv);
+    loadFieldFromThis(mv, aitkenDiff2FieldName, generatedType);
+    invokeMethod(mv, generatedType, "add", sig3, false);
+    pop(mv);
+
+    // hatS := diff1.mul(diff1, bits, hatS).div(diff2, bits, hatS)
+    loadFieldFromThis(mv, aitkenDiff1FieldName, generatedType);
+    loadFieldFromThis(mv, aitkenDiff1FieldName, generatedType);
+    loadBitsParameterOntoStack(mv);
+    loadFieldFromThis(mv, aitkenHatSFieldName, generatedType);
+    invokeMethod(mv, generatedType, "mul", sig3, false);
+    loadFieldFromThis(mv, aitkenDiff2FieldName, generatedType);
+    loadBitsParameterOntoStack(mv);
+    loadFieldFromThis(mv, aitkenHatSFieldName, generatedType);
+    invokeMethod(mv, generatedType, "div", sig3, false);
+    pop(mv);
+
+    // hatS := s_n.sub(hatS, bits, hatS)
+    loadIntermediateResultVariable(mv);
+    loadFieldFromThis(mv, aitkenHatSFieldName, generatedType);
+    loadBitsParameterOntoStack(mv);
+    loadFieldFromThis(mv, aitkenHatSFieldName, generatedType);
+    invokeMethod(mv, generatedType, "sub", sig3, false);
+    pop(mv);
+
+    // s_{n-2}.set(s_{n-1})
+    loadFieldFromThis(mv, aitkenS2FieldName, generatedType);
+    loadFieldFromThis(mv, aitkenS1FieldName, generatedType);
+    invokeMethod(mv, generatedType, "set", sigSet, false);
+    pop(mv);
+
+    // s_{n-1}.set(s_n)
+    loadFieldFromThis(mv, aitkenS1FieldName, generatedType);
+    loadIntermediateResultVariable(mv);
+    invokeMethod(mv, generatedType, "set", sigSet, false);
+    pop(mv);
+  }
+
 
   /**
    * Registers the {@code arb.Integer} index variable as an intermediate field on
@@ -489,8 +592,17 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   protected void generateUpperLimit(MethodVisitor mv)
   {
     upperLimitFieldName = expression.newIntermediateVariable("upperLimit", Integer.class);
-    upperLimit.generate(loadFieldFromThis(mv, upperLimitFieldName, Integer.class), Integer.class);
-    pop(invokeSetMethod(mv, Integer.class, Integer.class));
+    if (upperLimit.isPositiveInfinity())
+    {
+      loadFieldFromThis(mv, upperLimitFieldName, Integer.class);
+      mv.visitLdcInsn(java.lang.Integer.MAX_VALUE);
+      pop(invokeMethod(mv, Integer.class, "set", Compiler.getMethodDescriptor(Integer.class, int.class), false));
+    }
+    else
+    {
+      upperLimit.generate(loadFieldFromThis(mv, upperLimitFieldName, Integer.class), Integer.class);
+      pop(invokeSetMethod(mv, Integer.class, Integer.class));
+    }
   }
 
   protected void generateInnerLoop(MethodVisitor mv)
