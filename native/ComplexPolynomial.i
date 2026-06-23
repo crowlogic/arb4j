@@ -651,7 +651,7 @@
 
   /**
    * Isolate all complex roots of this polynomial via {@code acb_poly_find_roots}
-   * (Durand–Kerner/Aberth with verified inclusions). The returned vector has one
+   * (Aberth–Ehrlich with verified inclusions). The returned vector has one
    * entry per root (degree entries); roots are unordered. Uses internally
    * computed initial approximations and the default iteration cap.
    *
@@ -669,6 +669,81 @@
       throw new ArithmeticException("acb_poly_find_roots isolated only " + found + " of " + deg
                                     + " roots at " + prec + " bits");
     return r;
+  }
+
+  /**
+   * Unique polynomial of degree {@code xs.dim - 1} that interpolates the
+   * given (xs, ys) pairs, computed via barycentric Lagrange interpolation in
+   * complex ball arithmetic ({@code acb_poly_interpolate_barycentric}).
+   *
+   * @param xs  vector of {@code n} distinct interpolation nodes
+   * @param ys  vector of {@code n} target values, {@code ys[k] = p(xs[k])}
+   * @param prec working precision in bits
+   * @return a freshly-allocated {@link ComplexPolynomial} of length {@code n}
+   */
+  public static ComplexPolynomial interpolate(Complex xs, Complex ys, int prec)
+  {
+    assert xs.dim == ys.dim : "xs/ys length mismatch: " + xs.dim + " vs " + ys.dim;
+    ComplexPolynomial out = new ComplexPolynomial();
+    arblib.acb_poly_interpolate_barycentric(out, xs, ys, xs.dim, prec);
+    return out;
+  }
+
+  /**
+   * Convergence-bounded root isolation: starting from a working precision of
+   * {@code max(64, 2*bits)}, call {@link #roots(int)} and require both
+   * conditions to hold for the returned vector before accepting it:
+   * <ul>
+   *   <li>every root is isolated
+   *       ({@code acb_poly_find_roots} returns {@code deg});</li>
+   *   <li>every returned ball {@code r[i]} has
+   *       {@code r[i].relAccuracyBits() >= bits}.</li>
+   * </ul>
+   * On failure the working precision is doubled and the call is retried.
+   * No tolerance constant is chosen by hand: the certified-isolation count
+   * and the per-root relative-accuracy bits are the only stop predicates.
+   *
+   * @param bits requested certified relative accuracy in bits
+   * @return a {@link Complex} vector of the {@code degree()} roots, each
+   *         ball satisfying {@code relAccuracyBits() >= bits}
+   * @throws ArithmeticException if the working precision exceeds
+   *         {@code 64 * bits} without satisfying both predicates (which
+   *         indicates the input polynomial is non-squarefree or numerically
+   *         degenerate at the requested target)
+   */
+  public Complex rootsAtBits(int bits)
+  {
+    int deg = degree();
+    int prec = Math.max(64, 2 * bits);
+    int hardCeiling = Math.max(4096, 64 * bits);
+    while (prec <= hardCeiling)
+    {
+      Complex r = Complex.newVector(deg);
+      int found = acb_poly_find_roots(r, this, null, 0, prec);
+      if (found == deg)
+      {
+        boolean allAccurate = true;
+        for (int i = 0; i < deg; i++)
+        {
+          Complex ri = r.get(i);
+          // An exact ball (zero radius) carries infinite relative accuracy;
+          // acb_rel_accuracy_bits returns -1 for it. Either condition suffices.
+          if (!ri.isExact() && ri.relAccuracyBits() < bits)
+          {
+            allAccurate = false;
+            break;
+          }
+        }
+        if (allAccurate)
+        {
+          return r;
+        }
+      }
+      prec *= 2;
+    }
+    throw new ArithmeticException("acb_poly_find_roots: could not certify " + deg
+                                  + " roots to " + bits + " relative bits at working prec "
+                                  + (hardCeiling / 2) + "; polynomial may be non-squarefree");
   }
 
   @Override
@@ -778,24 +853,7 @@
     return result;
   }
 
-  /**
-   * Partial-fraction decomposition of the rational function {@code numerator/denominator}.
-   *
-   * @return a {@link PartialFraction} holding the polynomial quotient, the poles
-   *         (roots of the denominator), and the corresponding residues.
-   * @throws ArithmeticException if root isolation fails.
-   */
-  public static PartialFraction partialFractions(ComplexPolynomial numerator,
-                                                  ComplexPolynomial denominator,
-                                                  int prec)
-  {
-    PartialFraction pf = new PartialFraction();
-    int n = arblib.arb4j_partial_fraction_decompose(pf,
-                                                     numerator,
-                                                     denominator,
-                                                     prec);
-    if (n < 0)
-      throw new ArithmeticException("partial fraction decomposition failed");
-    return pf;
-  }
+  /* PartialFraction helper removed; partial-fraction expansion now lives in the
+     caller (e.g. bonanzai's RoughHestonSchwingerPricer), built on the certified
+     ComplexPolynomial.roots(...) + derivative(...) primitives. */
 %};

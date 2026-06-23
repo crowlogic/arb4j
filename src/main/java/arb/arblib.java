@@ -2739,6 +2739,10 @@ public class arblib {
     return arblibJNI.acb_poly_find_roots(Complex.getCPtr(roots), roots, ComplexPolynomial.getCPtr(poly), poly, Complex.getCPtr(initial), initial, maxiter, prec);
   }
 
+  public static void acb_poly_interpolate_barycentric(ComplexPolynomial poly, Complex xs, Complex ys, int n, int prec) {
+    arblibJNI.acb_poly_interpolate_barycentric(ComplexPolynomial.getCPtr(poly), poly, Complex.getCPtr(xs), xs, Complex.getCPtr(ys), ys, n, prec);
+  }
+
   public static void acb_poly_evaluate(Complex y, ComplexPolynomial f, Complex x, int prec) {
     arblibJNI.acb_poly_evaluate(Complex.getCPtr(y), y, ComplexPolynomial.getCPtr(f), f, Complex.getCPtr(x), x, prec);
   }
@@ -3274,30 +3278,6 @@ public class arblib {
 
   public static void arb_atanh(Real z, Real x, int prec) {
     arblibJNI.arb_atanh(Real.getCPtr(z), z, Real.getCPtr(x), x, prec);
-  }
-
-  public static void arb4j_partial_fraction_init(PartialFraction pf) {
-    arblibJNI.arb4j_partial_fraction_init(PartialFraction.getCPtr(pf), pf);
-  }
-
-  public static void arb4j_partial_fraction_clear(PartialFraction pf) {
-    arblibJNI.arb4j_partial_fraction_clear(PartialFraction.getCPtr(pf), pf);
-  }
-
-  public static int arb4j_partial_fraction_decompose(PartialFraction pf, ComplexPolynomial P, ComplexPolynomial Q, int prec) {
-    return arblibJNI.arb4j_partial_fraction_decompose(PartialFraction.getCPtr(pf), pf, ComplexPolynomial.getCPtr(P), P, ComplexPolynomial.getCPtr(Q), Q, prec);
-  }
-
-  public static void arb4j_partial_fraction_evaluate(Complex res, PartialFraction pf, Complex z, int prec) {
-    arblibJNI.arb4j_partial_fraction_evaluate(Complex.getCPtr(res), res, PartialFraction.getCPtr(pf), pf, Complex.getCPtr(z), z, prec);
-  }
-
-  public static void arb4j_partial_fraction_get_pole(Complex res, PartialFraction pf, int i) {
-    arblibJNI.arb4j_partial_fraction_get_pole(Complex.getCPtr(res), res, PartialFraction.getCPtr(pf), pf, i);
-  }
-
-  public static void arb4j_partial_fraction_get_residue(Complex res, PartialFraction pf, int i) {
-    arblibJNI.arb4j_partial_fraction_get_residue(Complex.getCPtr(res), res, PartialFraction.getCPtr(pf), pf, i);
   }
 
   public static void gr_ctx_init_complex_acb(GenericRing ctx, int prec) {

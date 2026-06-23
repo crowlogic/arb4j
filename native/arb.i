@@ -158,7 +158,6 @@ typedef unsigned long int mp_limb_t;
 
 %include "ComplexPolynomial.i"
 
-%include "PartialFraction.i"
 
 %include "GenericRing.i"
 
