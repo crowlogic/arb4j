@@ -8,6 +8,9 @@
 
 package arb;
 
+  import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+  import arb.documentation.TheArb4jLibrary;
+
 public class GenericRing {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
@@ -21,11 +24,6 @@ public class GenericRing {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  @SuppressWarnings({"deprecation", "removal"})
-  protected void finalize() {
-    delete();
-  }
-
   public synchronized void delete() {
     if (swigCPtr != 0) {
       if (swigCMemOwn) {
@@ -34,6 +32,58 @@ public class GenericRing {
       }
       swigCPtr = 0;
     }
+  }
+
+  static { System.loadLibrary("arblib"); }
+
+  /**
+   * ℂ via acb ball arithmetic at the requested working precision.
+   * Wraps {@code gr_ctx_init_complex_acb}.
+   */
+  public static GenericRing complexBalls(int prec)
+  {
+    GenericRing ctx = new GenericRing();
+    arblib.gr_ctx_init_complex_acb(ctx, prec);
+    return ctx;
+  }
+
+  /**
+   * ℝ via arb ball arithmetic at the requested working precision.
+   * Wraps {@code gr_ctx_init_real_arb}.
+   */
+  public static GenericRing realBalls(int prec)
+  {
+    GenericRing ctx = new GenericRing();
+    arblib.gr_ctx_init_real_arb(ctx, prec);
+    return ctx;
+  }
+
+  /**
+   * The univariate polynomial ring {@code base[x]}. Wraps
+   * {@code gr_ctx_init_gr_poly}.
+   */
+  public static GenericRing polynomialsOver(GenericRing base)
+  {
+    GenericRing ctx = new GenericRing();
+    arblib.gr_ctx_init_gr_poly(ctx, base);
+    return ctx;
+  }
+
+  /**
+   * The fraction field of the supplied integral domain. Wraps
+   * {@code gr_ctx_init_gr_fraction}. For example,
+   * {@code fractionFieldOf(polynomialsOver(complexBalls(prec)))} is ℂ(v) —
+   * the field of rational functions over ℂ.
+   *
+   * @param domain  an integral domain ring; the fraction field is well-defined
+   *                only for integral domains and the underlying FLINT call may
+   *                fail otherwise.
+   */
+  public static GenericRing fractionFieldOf(GenericRing domain)
+  {
+    GenericRing ctx = new GenericRing();
+    arblib.gr_ctx_init_gr_fraction(ctx, domain, 0);
+    return ctx;
   }
 
   public void setData(String value) {

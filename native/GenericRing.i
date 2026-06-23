@@ -8,6 +8,168 @@
  * to Java. SWIG generates the JNI thunks and Java wrappers automatically.
  */
 
+/* IMPORTANT: javacode/javaimports/javafinalize typemaps must be declared
+ * BEFORE the struct they decorate is parsed, otherwise SWIG silently ignores
+ * them and emits a bare wrapper with no factory methods or ops. */
+
+%typemap(javaimports) gr_ctx_struct %{
+  import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+  import arb.documentation.TheArb4jLibrary;
+%}
+%typemap(javafinalize) gr_ctx_struct ""
+
+%typemap(javacode) gr_ctx_struct %{
+  static { System.loadLibrary("arblib"); }
+
+  /**
+   * ℂ via acb ball arithmetic at the requested working precision.
+   * Wraps {@code gr_ctx_init_complex_acb}.
+   */
+  public static GenericRing complexBalls(int prec)
+  {
+    GenericRing ctx = new GenericRing();
+    arblib.gr_ctx_init_complex_acb(ctx, prec);
+    return ctx;
+  }
+
+  /**
+   * ℝ via arb ball arithmetic at the requested working precision.
+   * Wraps {@code gr_ctx_init_real_arb}.
+   */
+  public static GenericRing realBalls(int prec)
+  {
+    GenericRing ctx = new GenericRing();
+    arblib.gr_ctx_init_real_arb(ctx, prec);
+    return ctx;
+  }
+
+  /**
+   * The univariate polynomial ring {@code base[x]}. Wraps
+   * {@code gr_ctx_init_gr_poly}.
+   */
+  public static GenericRing polynomialsOver(GenericRing base)
+  {
+    GenericRing ctx = new GenericRing();
+    arblib.gr_ctx_init_gr_poly(ctx, base);
+    return ctx;
+  }
+
+  /**
+   * The fraction field of the supplied integral domain. Wraps
+   * {@code gr_ctx_init_gr_fraction}. For example,
+   * {@code fractionFieldOf(polynomialsOver(complexBalls(prec)))} is ℂ(v) —
+   * the field of rational functions over ℂ.
+   *
+   * @param domain  an integral domain ring; the fraction field is well-defined
+   *                only for integral domains and the underlying FLINT call may
+   *                fail otherwise.
+   */
+  public static GenericRing fractionFieldOf(GenericRing domain)
+  {
+    GenericRing ctx = new GenericRing();
+    arblib.gr_ctx_init_gr_fraction(ctx, domain, 0);
+    return ctx;
+  }
+%}
+
+%typemap(javaimports) gr_poly_struct %{
+  import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+  import arb.documentation.TheArb4jLibrary;
+%}
+%typemap(javafinalize) gr_poly_struct ""
+
+%typemap(javacode) gr_poly_struct %{
+  static { System.loadLibrary("arblib"); }
+
+  /**
+   * Construct a fresh, initialised polynomial in the given ring.
+   * Wraps {@code gr_poly_init}.
+   */
+  public static GenericRingPolynomial in(GenericRing ring)
+  {
+    GenericRingPolynomial p = new GenericRingPolynomial();
+    arblib.gr_poly_init(p, ring);
+    return p;
+  }
+
+  /** Set this polynomial to 0 in the given ring. */
+  public GenericRingPolynomial zero(GenericRing ring)
+  {
+    arblib.gr_poly_zero(this, ring);
+    return this;
+  }
+
+  /** Set this polynomial to 1 in the given ring. */
+  public GenericRingPolynomial one(GenericRing ring)
+  {
+    arblib.gr_poly_one(this, ring);
+    return this;
+  }
+
+  /** Set the n-th coefficient of this polynomial to the integer x. */
+  public GenericRingPolynomial setCoeff(int n, int x, GenericRing ring)
+  {
+    arblib.gr_poly_set_coeff_si(this, n, x, ring);
+    return this;
+  }
+
+  /** Set this polynomial to {@code src} in the given ring. */
+  public GenericRingPolynomial set(GenericRingPolynomial src, GenericRing ring)
+  {
+    arblib.gr_poly_set(this, src, ring);
+    return this;
+  }
+
+  /** Negate this polynomial into {@code result}. */
+  public GenericRingPolynomial neg(GenericRing ring, GenericRingPolynomial result)
+  {
+    arblib.gr_poly_neg(result, this, ring);
+    return result;
+  }
+
+  /** {@code result = this + other}. */
+  public GenericRingPolynomial add(GenericRingPolynomial other, GenericRing ring, GenericRingPolynomial result)
+  {
+    arblib.gr_poly_add(result, this, other, ring);
+    return result;
+  }
+
+  /** {@code result = this - other}. */
+  public GenericRingPolynomial sub(GenericRingPolynomial other, GenericRing ring, GenericRingPolynomial result)
+  {
+    arblib.gr_poly_sub(result, this, other, ring);
+    return result;
+  }
+
+  /** {@code result = this * other}. */
+  public GenericRingPolynomial mul(GenericRingPolynomial other, GenericRing ring, GenericRingPolynomial result)
+  {
+    arblib.gr_poly_mul(result, this, other, ring);
+    return result;
+  }
+
+  /** {@code result = this / divisor} — valid only when the ring is a field
+   * (e.g. {@link GenericRing#fractionFieldOf}) or the division is exact. */
+  public GenericRingPolynomial div(GenericRingPolynomial divisor, GenericRing ring, GenericRingPolynomial result)
+  {
+    arblib.gr_poly_div(result, this, divisor, ring);
+    return result;
+  }
+
+  /** {@code result = d(this)/dx}. */
+  public GenericRingPolynomial derivative(GenericRing ring, GenericRingPolynomial result)
+  {
+    arblib.gr_poly_derivative(result, this, ring);
+    return result;
+  }
+
+  /** Degree of this polynomial (= {@code length - 1}). */
+  public int degree()
+  {
+    return Math.max(0, getLength() - 1);
+  }
+%}
+
 /* Layout-mirroring struct declarations + length-1-array typedefs, identical
  * to the FLINT header. SWIG needs these so it can parse function signatures
  * involving gr_ctx_t / gr_poly_t / gr_vec_t. */
@@ -48,18 +210,6 @@ typedef struct
 gr_vec_struct;
 
 typedef gr_vec_struct gr_vec_t[1];
-
-%typemap(javaimports) gr_ctx_struct %{
-  import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-  import arb.documentation.TheArb4jLibrary;
-%}
-%typemap(javafinalize) gr_ctx_struct ""
-
-%typemap(javaimports) gr_poly_struct %{
-  import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-  import arb.documentation.TheArb4jLibrary;
-%}
-%typemap(javafinalize) gr_poly_struct ""
 
 /* Ring-context constructors (from <flint/gr.h>) */
 void gr_ctx_init_complex_acb(gr_ctx_t ctx, slong prec);

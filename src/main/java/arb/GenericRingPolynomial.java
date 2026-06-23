@@ -8,6 +8,9 @@
 
 package arb;
 
+  import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+  import arb.documentation.TheArb4jLibrary;
+
 public class GenericRingPolynomial {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
@@ -21,11 +24,6 @@ public class GenericRingPolynomial {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  @SuppressWarnings({"deprecation", "removal"})
-  protected void finalize() {
-    delete();
-  }
-
   public synchronized void delete() {
     if (swigCPtr != 0) {
       if (swigCMemOwn) {
@@ -34,6 +32,96 @@ public class GenericRingPolynomial {
       }
       swigCPtr = 0;
     }
+  }
+
+  static { System.loadLibrary("arblib"); }
+
+  /**
+   * Construct a fresh, initialised polynomial in the given ring.
+   * Wraps {@code gr_poly_init}.
+   */
+  public static GenericRingPolynomial in(GenericRing ring)
+  {
+    GenericRingPolynomial p = new GenericRingPolynomial();
+    arblib.gr_poly_init(p, ring);
+    return p;
+  }
+
+  /** Set this polynomial to 0 in the given ring. */
+  public GenericRingPolynomial zero(GenericRing ring)
+  {
+    arblib.gr_poly_zero(this, ring);
+    return this;
+  }
+
+  /** Set this polynomial to 1 in the given ring. */
+  public GenericRingPolynomial one(GenericRing ring)
+  {
+    arblib.gr_poly_one(this, ring);
+    return this;
+  }
+
+  /** Set the n-th coefficient of this polynomial to the integer x. */
+  public GenericRingPolynomial setCoeff(int n, int x, GenericRing ring)
+  {
+    arblib.gr_poly_set_coeff_si(this, n, x, ring);
+    return this;
+  }
+
+  /** Set this polynomial to {@code src} in the given ring. */
+  public GenericRingPolynomial set(GenericRingPolynomial src, GenericRing ring)
+  {
+    arblib.gr_poly_set(this, src, ring);
+    return this;
+  }
+
+  /** Negate this polynomial into {@code result}. */
+  public GenericRingPolynomial neg(GenericRing ring, GenericRingPolynomial result)
+  {
+    arblib.gr_poly_neg(result, this, ring);
+    return result;
+  }
+
+  /** {@code result = this + other}. */
+  public GenericRingPolynomial add(GenericRingPolynomial other, GenericRing ring, GenericRingPolynomial result)
+  {
+    arblib.gr_poly_add(result, this, other, ring);
+    return result;
+  }
+
+  /** {@code result = this - other}. */
+  public GenericRingPolynomial sub(GenericRingPolynomial other, GenericRing ring, GenericRingPolynomial result)
+  {
+    arblib.gr_poly_sub(result, this, other, ring);
+    return result;
+  }
+
+  /** {@code result = this * other}. */
+  public GenericRingPolynomial mul(GenericRingPolynomial other, GenericRing ring, GenericRingPolynomial result)
+  {
+    arblib.gr_poly_mul(result, this, other, ring);
+    return result;
+  }
+
+  /** {@code result = this / divisor} — valid only when the ring is a field
+   * (e.g. {@link GenericRing#fractionFieldOf}) or the division is exact. */
+  public GenericRingPolynomial div(GenericRingPolynomial divisor, GenericRing ring, GenericRingPolynomial result)
+  {
+    arblib.gr_poly_div(result, this, divisor, ring);
+    return result;
+  }
+
+  /** {@code result = d(this)/dx}. */
+  public GenericRingPolynomial derivative(GenericRing ring, GenericRingPolynomial result)
+  {
+    arblib.gr_poly_derivative(result, this, ring);
+    return result;
+  }
+
+  /** Degree of this polynomial (= {@code length - 1}). */
+  public int degree()
+  {
+    return Math.max(0, getLength() - 1);
   }
 
   public void setCoeffsNative(SWIGTYPE_p_void value) {
