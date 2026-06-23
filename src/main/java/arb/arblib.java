@@ -3300,4 +3300,84 @@ public class arblib {
     arblibJNI.arb4j_partial_fraction_get_residue(Complex.getCPtr(res), res, PartialFraction.getCPtr(pf), pf, i);
   }
 
+  public static void gr_ctx_init_complex_acb(GenericRing ctx, int prec) {
+    arblibJNI.gr_ctx_init_complex_acb(GenericRing.getCPtr(ctx), ctx, prec);
+  }
+
+  public static void gr_ctx_init_real_arb(GenericRing ctx, int prec) {
+    arblibJNI.gr_ctx_init_real_arb(GenericRing.getCPtr(ctx), ctx, prec);
+  }
+
+  public static void gr_ctx_init_gr_poly(GenericRing ctx, GenericRing base_ring) {
+    arblibJNI.gr_ctx_init_gr_poly(GenericRing.getCPtr(ctx), ctx, GenericRing.getCPtr(base_ring), base_ring);
+  }
+
+  public static void gr_ctx_init_gr_fraction(GenericRing ctx, GenericRing domain, int flags) {
+    arblibJNI.gr_ctx_init_gr_fraction(GenericRing.getCPtr(ctx), ctx, GenericRing.getCPtr(domain), domain, flags);
+  }
+
+  public static void gr_poly_init(GenericRingPolynomial poly, GenericRing ctx) {
+    arblibJNI.gr_poly_init(GenericRingPolynomial.getCPtr(poly), poly, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static void gr_poly_init2(GenericRingPolynomial poly, int len, GenericRing ctx) {
+    arblibJNI.gr_poly_init2(GenericRingPolynomial.getCPtr(poly), poly, len, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static void gr_poly_clear(GenericRingPolynomial poly, GenericRing ctx) {
+    arblibJNI.gr_poly_clear(GenericRingPolynomial.getCPtr(poly), poly, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int gr_poly_set(GenericRingPolynomial res, GenericRingPolynomial src, GenericRing ctx) {
+    return arblibJNI.gr_poly_set(GenericRingPolynomial.getCPtr(res), res, GenericRingPolynomial.getCPtr(src), src, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int gr_poly_zero(GenericRingPolynomial poly, GenericRing ctx) {
+    return arblibJNI.gr_poly_zero(GenericRingPolynomial.getCPtr(poly), poly, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int gr_poly_one(GenericRingPolynomial poly, GenericRing ctx) {
+    return arblibJNI.gr_poly_one(GenericRingPolynomial.getCPtr(poly), poly, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int gr_poly_neg(GenericRingPolynomial res, GenericRingPolynomial src, GenericRing ctx) {
+    return arblibJNI.gr_poly_neg(GenericRingPolynomial.getCPtr(res), res, GenericRingPolynomial.getCPtr(src), src, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int gr_poly_add(GenericRingPolynomial res, GenericRingPolynomial poly1, GenericRingPolynomial poly2, GenericRing ctx) {
+    return arblibJNI.gr_poly_add(GenericRingPolynomial.getCPtr(res), res, GenericRingPolynomial.getCPtr(poly1), poly1, GenericRingPolynomial.getCPtr(poly2), poly2, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int gr_poly_sub(GenericRingPolynomial res, GenericRingPolynomial poly1, GenericRingPolynomial poly2, GenericRing ctx) {
+    return arblibJNI.gr_poly_sub(GenericRingPolynomial.getCPtr(res), res, GenericRingPolynomial.getCPtr(poly1), poly1, GenericRingPolynomial.getCPtr(poly2), poly2, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int gr_poly_mul(GenericRingPolynomial res, GenericRingPolynomial poly1, GenericRingPolynomial poly2, GenericRing ctx) {
+    return arblibJNI.gr_poly_mul(GenericRingPolynomial.getCPtr(res), res, GenericRingPolynomial.getCPtr(poly1), poly1, GenericRingPolynomial.getCPtr(poly2), poly2, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int gr_poly_div(GenericRingPolynomial Q, GenericRingPolynomial A, GenericRingPolynomial B, GenericRing ctx) {
+    return arblibJNI.gr_poly_div(GenericRingPolynomial.getCPtr(Q), Q, GenericRingPolynomial.getCPtr(A), A, GenericRingPolynomial.getCPtr(B), B, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int gr_poly_derivative(GenericRingPolynomial res, GenericRingPolynomial poly, GenericRing ctx) {
+    return arblibJNI.gr_poly_derivative(GenericRingPolynomial.getCPtr(res), res, GenericRingPolynomial.getCPtr(poly), poly, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int gr_poly_set_coeff_si(GenericRingPolynomial poly, int n, int x, GenericRing ctx) {
+    return arblibJNI.gr_poly_set_coeff_si(GenericRingPolynomial.getCPtr(poly), poly, n, x, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int gr_poly_set_coeff_fmpz(GenericRingPolynomial poly, int n, long x, GenericRing ctx) {
+    return arblibJNI.gr_poly_set_coeff_fmpz(GenericRingPolynomial.getCPtr(poly), poly, n, x, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int gr_poly_evaluate(SWIGTYPE_p_void res, GenericRingPolynomial poly, SWIGTYPE_p_void x, GenericRing ctx) {
+    return arblibJNI.gr_poly_evaluate(SWIGTYPE_p_void.getCPtr(res), GenericRingPolynomial.getCPtr(poly), poly, SWIGTYPE_p_void.getCPtr(x), GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int gr_poly_roots(GenericRingVector roots, GenericRingVector mult, GenericRingPolynomial poly, int flags, GenericRing ctx) {
+    return arblibJNI.gr_poly_roots(GenericRingVector.getCPtr(roots), roots, GenericRingVector.getCPtr(mult), mult, GenericRingPolynomial.getCPtr(poly), poly, flags, GenericRing.getCPtr(ctx), ctx);
+  }
+
 }

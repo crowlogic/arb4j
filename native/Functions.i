@@ -13,6 +13,9 @@
 #include <flint/qqbar.h>
 #include <flint/arb_fmpz_poly.h>
 #include <flint/arith.h>
+#include <flint/gr.h>
+#include <flint/gr_poly.h>
+#include <flint/gr_vec.h>
 #include <X11/Xlib.h>
 #include <X11/X.h>
 #include <unistd.h>
