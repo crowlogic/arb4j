@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import arb.*;
 import arb.Integer;
 import arb.Real;
-import arb.functions.ConvergentSeriesAccumulator;
 import arb.exceptions.CompilerException;
 import arb.expressions.*;
 import arb.expressions.Context;
@@ -125,8 +124,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   public String                                   operandValueFieldName;
 
-  public boolean                                  optimallyTruncated = false;
-
   public String                                   accumulatorFieldName;
 
   /** Aitken-Δ² previous-partial-sum field name (s_{n-1}); used only for Σ{..∞}. */
@@ -143,6 +140,12 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   /** Aitken-Δ² scratch field for second difference s_n − 2·s_{n-1} + s_{n-2}. */
   public String                                   aitkenDiff2FieldName;
+
+  /** Aitken convergence test: |ŝ_n|, stored as a {@link Real}. */
+  public String                                   aitkenAbsHatFieldName;
+
+  /** Aitken convergence test: |ŝ_n − s_n|, stored as a {@link Real}. */
+  public String                                   aitkenAbsGapFieldName;
 
 
   /**
@@ -380,7 +383,21 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   public MethodVisitor combine(MethodVisitor mv)
   {
-    return invokeMethod(mv, generatedType, operation, getMethodDescriptor(generatedType, generatedType, int.class), false);
+    final Class<?> argType = operandCoDomainType();
+    return invokeMethod(mv, generatedType, operation, getMethodDescriptor(generatedType, argType, int.class), false);
+  }
+
+  /**
+   * The operand sub-expression's coDomainType — the type its generated
+   * {@code evaluate(...)} writes into its trailing result-buffer argument.
+   * Falls back to {@link #generatedType} when the operand sub-expression is
+   * not bound (no-operand n-ary nodes).
+   */
+  protected Class<?> operandCoDomainType()
+  {
+    return (operandExpression != null && operandExpression.coDomainType != null)
+         ? operandExpression.coDomainType
+         : generatedType;
   }
 
   protected void compareIndexToUpperLimit(MethodVisitor mv)
@@ -397,10 +414,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    if (optimallyTruncated)
-    {
-      return generateOptimallyTruncatedAccumulation(mv, resultType);
-    }
     resultType = assignTypes(resultType);
 
     assignFieldNamesIfNecessary(resultType);
@@ -409,11 +422,13 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     boolean aitken = upperLimit != null && upperLimit.isPositiveInfinity() && "add".equals(operation);
     if (aitken)
     {
-      aitkenS1FieldName    = expression.newIntermediateVariable("aitkenS1",    generatedType);
-      aitkenS2FieldName    = expression.newIntermediateVariable("aitkenS2",    generatedType);
-      aitkenHatSFieldName  = expression.newIntermediateVariable("aitkenHatS",  generatedType);
-      aitkenDiff1FieldName = expression.newIntermediateVariable("aitkenDiff1", generatedType);
-      aitkenDiff2FieldName = expression.newIntermediateVariable("aitkenDiff2", generatedType);
+      aitkenS1FieldName     = expression.newIntermediateVariable("aitkenS1",     generatedType);
+      aitkenS2FieldName     = expression.newIntermediateVariable("aitkenS2",     generatedType);
+      aitkenHatSFieldName   = expression.newIntermediateVariable("aitkenHatS",   generatedType);
+      aitkenDiff1FieldName  = expression.newIntermediateVariable("aitkenDiff1",  generatedType);
+      aitkenDiff2FieldName  = expression.newIntermediateVariable("aitkenDiff2",  generatedType);
+      aitkenAbsHatFieldName = expression.newIntermediateVariable("aitkenAbsHat", Real.class);
+      aitkenAbsGapFieldName = expression.newIntermediateVariable("aitkenAbsGap", Real.class);
     }
 
     propagateInputToOperand(mv);
@@ -452,6 +467,15 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
    */
   protected void emitAitkenConvergenceCheck(MethodVisitor mv)
   {
+    if (Expression.traceNodes)
+    {
+      logger.debug(String.format("%s.emitAitkenConvergenceCheck(generatedType=%s, s1=%s, s2=%s, hatS=%s, diff1=%s, diff2=%s, absHat=%s, absGap=%s)",
+                                 getClass().getSimpleName(), generatedType.getSimpleName(),
+                                 aitkenS1FieldName, aitkenS2FieldName, aitkenHatSFieldName,
+                                 aitkenDiff1FieldName, aitkenDiff2FieldName,
+                                 aitkenAbsHatFieldName, aitkenAbsGapFieldName));
+      System.err.flush();
+    }
     final String sig3 = Compiler.getMethodDescriptor(generatedType, generatedType, int.class, generatedType);
     final String sigSet = Compiler.getMethodDescriptor(generatedType, generatedType);
 
@@ -506,6 +530,61 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     loadIntermediateResultVariable(mv);
     invokeMethod(mv, generatedType, "set", sigSet, false);
     pop(mv);
+
+    // Convergence test:
+    //   absHat := |ŝ_n|      (Real)
+    //   absGap := |ŝ_n − s_n| (Real)
+    //   if absGap ≤ absHat · 2^(-bits): break
+    final String sigAbs = Compiler.getMethodDescriptor(Real.class, int.class, Real.class);
+    final String sigDiff = Compiler.getMethodDescriptor(generatedType, generatedType, int.class, generatedType);
+
+    // absHat = hatS.abs(bits, aitkenAbsHat)
+    loadFieldFromThis(mv, aitkenHatSFieldName, generatedType);
+    loadBitsParameterOntoStack(mv);
+    loadFieldFromThis(mv, aitkenAbsHatFieldName, Real.class);
+    invokeMethod(mv, generatedType, "abs", sigAbs, false);
+    pop(mv);
+
+    // gap container: reuse diff1 to hold (ŝ_n − s_n)
+    loadFieldFromThis(mv, aitkenHatSFieldName, generatedType);
+    loadIntermediateResultVariable(mv);
+    loadBitsParameterOntoStack(mv);
+    loadFieldFromThis(mv, aitkenDiff1FieldName, generatedType);
+    invokeMethod(mv, generatedType, "sub", sigDiff, false);
+    pop(mv);
+    // absGap = diff1.abs(bits, aitkenAbsGap)
+    loadFieldFromThis(mv, aitkenDiff1FieldName, generatedType);
+    loadBitsParameterOntoStack(mv);
+    loadFieldFromThis(mv, aitkenAbsGapFieldName, Real.class);
+    invokeMethod(mv, generatedType, "abs", sigAbs, false);
+    pop(mv);
+
+    // tol := absHat.mul2e(-bits, absHat)   (overwrites absHat)
+    loadFieldFromThis(mv, aitkenAbsHatFieldName, Real.class);
+    loadBitsParameterOntoStack(mv);
+    mv.visitInsn(org.objectweb.asm.Opcodes.INEG);
+    loadFieldFromThis(mv, aitkenAbsHatFieldName, Real.class);
+    invokeMethod(mv, Real.class, "mul2e",
+                 Compiler.getMethodDescriptor(Real.class, int.class, Real.class), false);
+    pop(mv);
+
+    // Pop the Integer left on the stack by incrementIndex() before the
+    // conditional jump, so both jumps to endLoop reach it with an empty
+    // stack. The top-of-loop branch (compareIndexToUpperLimit + IFGT)
+    // arrives at endLoop with stack empty; we must match.
+    pop(mv);
+
+    // if absGap.compareTo(tol) <= 0: jump endLoop
+    loadFieldFromThis(mv, aitkenAbsGapFieldName, Real.class);
+    loadFieldFromThis(mv, aitkenAbsHatFieldName, Real.class);
+    invokeMethod(mv, Real.class, "compareTo",
+                 Compiler.getMethodDescriptor(int.class, Real.class), false);
+    jumpToIfLessThanOrEquals(mv, endLoop);
+
+    // Restore the Integer (the index) on the stack so the unconditional
+    // jumpTo(beginLoop) reaches beginLoop with the same stack shape it
+    // had at first entry.
+    loadIndexVariable(mv);
   }
 
 
@@ -522,49 +601,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
    * {@code close()} method will call {@code close()} on it automatically,
    * releasing its native ARB memory without any manual effort.
    */
-  protected MethodVisitor generateOptimallyTruncatedAccumulation(MethodVisitor mv, Class<?> resultType)
-  {
-    assert "add".equals(operation) : String.format("the ~ convergence specifier applies only to Σ, not %s(%s)",
-                                                   symbol,
-                                                   operation);
-    resultType = assignTypes(resultType);
-    assignFieldNamesIfNecessary(resultType);
-    assert Real.class.equals(generatedType) : String.format("the ~ convergence specifier requires a Real codomain, not %s",
-                                                                generatedType);
-    declareIndexVariableField();
-
-    if (accumulatorFieldName == null)
-    {
-      accumulatorFieldName = expression.newIntermediateVariable("accumulator",
-                                                                ConvergentSeriesAccumulator.class);
-    }
-
-    propagateInputToOperand(mv);
-    initializeResultVariable(mv, resultType);
-    setIndexToTheLowerLimit(mv);
-    generateUpperLimit(mv);
-
-    loadFieldFromThis(mv, accumulatorFieldName, ConvergentSeriesAccumulator.class);
-    loadOperand(mv);
-    loadIndexVariable(mv);
-    loadFieldFromThis(mv, upperLimitFieldName, Integer.class);
-    loadBitsParameterOntoStack(mv);
-    loadIntermediateResultVariable(mv);
-    invokeMethod(mv,
-                 ConvergentSeriesAccumulator.class,
-                 "accumulate",
-                 getMethodDescriptor(Real.class,
-                                     Function.class,
-                                     Integer.class,
-                                     Integer.class,
-                                     int.class,
-                                     Real.class),
-                 false);
-    pop(mv);
-    assignResult(mv, resultType);
-    return mv;
-  }
-
   protected void declareIndexVariableField()
   {
     assert indexVariableFieldName != null : "indexVariableFieldName must be set before declareIndexVariableField";
@@ -607,13 +643,14 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   protected void generateInnerLoop(MethodVisitor mv)
   {
+    final Class<?> operandType = operandCoDomainType();
     loadIntermediateResultVariable(mv);
     loadOperand(mv);
     loadIndexVariable(mv);
     loadBitsParameterOntoStack(mv);
     loadOperandValue(mv);
     evaluateOperand(mv);
-    cast(mv, generatedType);
+    cast(mv, operandType);
     loadBitsParameterOntoStack(mv);
     combine(mv);
     pop(mv);
@@ -697,15 +734,17 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   protected void loadOperandValue(MethodVisitor mv)
   {
+    final Class<?> fieldType = operandCoDomainType();
     if (Expression.traceNodes)
     {
-      logger.debug(String.format("%s.loadOperandValue(operandValueFieldName=%s, generatedType=%s) expression=%s\n",
+      logger.debug(String.format("%s.loadOperandValue(operandValueFieldName=%s, fieldType=%s, generatedType=%s) expression=%s\n",
                                  getClass().getSimpleName(),
                                  operandValueFieldName,
+                                 fieldType,
                                  generatedType,
                                  expression));
     }
-    loadFieldFromThis(mv, operandValueFieldName, generatedType);
+    loadFieldFromThis(mv, operandValueFieldName, fieldType);
   }
 
   /**
@@ -909,7 +948,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     expression.require('=');
     parseLowerLimit();
     parseUpperLimit();
-    optimallyTruncated = expression.nextCharacterIs('~');
 
     parseMultisumIndices();
 
@@ -1429,7 +1467,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     nAryOperationNode.functionInternalName            = newExpression.internalName();
     nAryOperationNode.operandFunctionFieldName        = this.operandFunctionFieldName;
     nAryOperationNode.operandMapping                  = (FunctionMapping<Integer, S, Sequence<S>>) (FunctionMapping<?, ?, ?>) this.operandMapping;
-    nAryOperationNode.optimallyTruncated              = this.optimallyTruncated;
     newExpression.registerReferencedFunction(this.operandFunctionFieldName, this.operandMapping);
     return nAryOperationNode;
   }
@@ -1463,13 +1500,12 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                                           operandExpression,
                                                           lowerLimit,
                                                           upperLimit);
-    return String.format("%s%s{%s=%s…%s%s}",
+    return String.format("%s%s{%s=%s…%s}",
                          symbol,
                          operandExpression,
                          indexVariableFieldName,
                          lowerLimit,
-                         upperLimit,
-                         optimallyTruncated ? "~" : "");
+                         upperLimit);
   }
 
   @Override
