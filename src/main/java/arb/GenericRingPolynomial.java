@@ -135,6 +135,23 @@ public class GenericRingPolynomial {
     return result;
   }
 
+  /**
+   * {@code (quotient, remainder) = divrem(this, divisor)} in the given ring.
+   * Quotient and remainder are written into {@code quotient} and
+   * {@code remainder} respectively; {@code this} is left unchanged. Use this
+   * when both quotient and remainder are needed (e.g. reading the leading
+   * quadratic from κ_M's polynomial quotient in the Schwinger–Hermite
+   * call-price assembly).
+   */
+  public GenericRingPolynomial divrem(GenericRingPolynomial divisor,
+                                      GenericRing ring,
+                                      GenericRingPolynomial quotient,
+                                      GenericRingPolynomial remainder)
+  {
+    arblib.gr_poly_divrem(quotient, remainder, this, divisor, ring);
+    return quotient;
+  }
+
   /** {@code result = d(this)/dx}. */
   public GenericRingPolynomial derivative(GenericRing ring, GenericRingPolynomial result)
   {

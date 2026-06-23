@@ -181,6 +181,23 @@
     return result;
   }
 
+  /**
+   * {@code (quotient, remainder) = divrem(this, divisor)} in the given ring.
+   * Quotient and remainder are written into {@code quotient} and
+   * {@code remainder} respectively; {@code this} is left unchanged. Use this
+   * when both quotient and remainder are needed (e.g. reading the leading
+   * quadratic from κ_M's polynomial quotient in the Schwinger–Hermite
+   * call-price assembly).
+   */
+  public GenericRingPolynomial divrem(GenericRingPolynomial divisor,
+                                      GenericRing ring,
+                                      GenericRingPolynomial quotient,
+                                      GenericRingPolynomial remainder)
+  {
+    arblib.gr_poly_divrem(quotient, remainder, this, divisor, ring);
+    return quotient;
+  }
+
   /** {@code result = d(this)/dx}. */
   public GenericRingPolynomial derivative(GenericRing ring, GenericRingPolynomial result)
   {
@@ -261,6 +278,7 @@ int gr_poly_add(gr_poly_t res, const gr_poly_t poly1, const gr_poly_t poly2, gr_
 int gr_poly_sub(gr_poly_t res, const gr_poly_t poly1, const gr_poly_t poly2, gr_ctx_t ctx);
 int gr_poly_mul(gr_poly_t res, const gr_poly_t poly1, const gr_poly_t poly2, gr_ctx_t ctx);
 int gr_poly_div(gr_poly_t Q, const gr_poly_t A, const gr_poly_t B, gr_ctx_t ctx);
+int gr_poly_divrem(gr_poly_t Q, gr_poly_t R, const gr_poly_t A, const gr_poly_t B, gr_ctx_t ctx);
 int gr_poly_derivative(gr_poly_t res, const gr_poly_t poly, gr_ctx_t ctx);
 
 int gr_poly_set_coeff_si(gr_poly_t poly, slong n, slong x, gr_ctx_t ctx);

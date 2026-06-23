@@ -908,6 +908,7 @@ public class arblibJNI {
   public final static native int gr_poly_sub(long jarg1, GenericRingPolynomial jarg1_, long jarg2, GenericRingPolynomial jarg2_, long jarg3, GenericRingPolynomial jarg3_, long jarg4, GenericRing jarg4_);
   public final static native int gr_poly_mul(long jarg1, GenericRingPolynomial jarg1_, long jarg2, GenericRingPolynomial jarg2_, long jarg3, GenericRingPolynomial jarg3_, long jarg4, GenericRing jarg4_);
   public final static native int gr_poly_div(long jarg1, GenericRingPolynomial jarg1_, long jarg2, GenericRingPolynomial jarg2_, long jarg3, GenericRingPolynomial jarg3_, long jarg4, GenericRing jarg4_);
+  public final static native int gr_poly_divrem(long jarg1, GenericRingPolynomial jarg1_, long jarg2, GenericRingPolynomial jarg2_, long jarg3, GenericRingPolynomial jarg3_, long jarg4, GenericRingPolynomial jarg4_, long jarg5, GenericRing jarg5_);
   public final static native int gr_poly_derivative(long jarg1, GenericRingPolynomial jarg1_, long jarg2, GenericRingPolynomial jarg2_, long jarg3, GenericRing jarg3_);
   public final static native int gr_poly_set_coeff_si(long jarg1, GenericRingPolynomial jarg1_, int jarg2, int jarg3, long jarg4, GenericRing jarg4_);
   public final static native int gr_poly_set_coeff_fmpz(long jarg1, GenericRingPolynomial jarg1_, int jarg2, long jarg3, long jarg4, GenericRing jarg4_);

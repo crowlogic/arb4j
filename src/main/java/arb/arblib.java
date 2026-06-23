@@ -3395,6 +3395,10 @@ public class arblib {
     return arblibJNI.gr_poly_div(GenericRingPolynomial.getCPtr(Q), Q, GenericRingPolynomial.getCPtr(A), A, GenericRingPolynomial.getCPtr(B), B, GenericRing.getCPtr(ctx), ctx);
   }
 
+  public static int gr_poly_divrem(GenericRingPolynomial Q, GenericRingPolynomial R, GenericRingPolynomial A, GenericRingPolynomial B, GenericRing ctx) {
+    return arblibJNI.gr_poly_divrem(GenericRingPolynomial.getCPtr(Q), Q, GenericRingPolynomial.getCPtr(R), R, GenericRingPolynomial.getCPtr(A), A, GenericRingPolynomial.getCPtr(B), B, GenericRing.getCPtr(ctx), ctx);
+  }
+
   public static int gr_poly_derivative(GenericRingPolynomial res, GenericRingPolynomial poly, GenericRing ctx) {
     return arblibJNI.gr_poly_derivative(GenericRingPolynomial.getCPtr(res), res, GenericRingPolynomial.getCPtr(poly), poly, GenericRing.getCPtr(ctx), ctx);
   }
