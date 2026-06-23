@@ -1458,6 +1458,8 @@ void acb_poly_product_roots(acb_poly_t poly, acb_srcptr xs, slong n, slong prec)
 
 slong acb_poly_find_roots(acb_ptr roots, const acb_poly_t poly, acb_srcptr initial, slong maxiter, slong prec);
 
+void acb_poly_interpolate_barycentric(acb_poly_t poly, acb_srcptr xs, acb_srcptr ys, slong n, slong prec);
+
 void acb_poly_evaluate(acb_t y, const acb_poly_t f, const acb_t x, slong prec);
  
 void acb_poly_evaluate2(acb_t y, acb_t z, const acb_poly_t f, const acb_t x, slong prec);

@@ -2739,6 +2739,10 @@ public class arblib {
     return arblibJNI.acb_poly_find_roots(Complex.getCPtr(roots), roots, ComplexPolynomial.getCPtr(poly), poly, Complex.getCPtr(initial), initial, maxiter, prec);
   }
 
+  public static void acb_poly_interpolate_barycentric(ComplexPolynomial poly, Complex xs, Complex ys, int n, int prec) {
+    arblibJNI.acb_poly_interpolate_barycentric(ComplexPolynomial.getCPtr(poly), poly, Complex.getCPtr(xs), xs, Complex.getCPtr(ys), ys, n, prec);
+  }
+
   public static void acb_poly_evaluate(Complex y, ComplexPolynomial f, Complex x, int prec) {
     arblibJNI.acb_poly_evaluate(Complex.getCPtr(y), y, ComplexPolynomial.getCPtr(f), f, Complex.getCPtr(x), x, prec);
   }

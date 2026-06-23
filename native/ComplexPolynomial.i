@@ -672,6 +672,24 @@
   }
 
   /**
+   * Unique polynomial of degree {@code xs.dim - 1} that interpolates the
+   * given (xs, ys) pairs, computed via barycentric Lagrange interpolation in
+   * complex ball arithmetic ({@code acb_poly_interpolate_barycentric}).
+   *
+   * @param xs  vector of {@code n} distinct interpolation nodes
+   * @param ys  vector of {@code n} target values, {@code ys[k] = p(xs[k])}
+   * @param prec working precision in bits
+   * @return a freshly-allocated {@link ComplexPolynomial} of length {@code n}
+   */
+  public static ComplexPolynomial interpolate(Complex xs, Complex ys, int prec)
+  {
+    assert xs.dim == ys.dim : "xs/ys length mismatch: " + xs.dim + " vs " + ys.dim;
+    ComplexPolynomial out = new ComplexPolynomial();
+    arblib.acb_poly_interpolate_barycentric(out, xs, ys, xs.dim, prec);
+    return out;
+  }
+
+  /**
    * Convergence-bounded root isolation: starting from a working precision of
    * {@code max(64, 2*bits)}, call {@link #roots(int)} and require both
    * conditions to hold for the returned vector before accepting it:
