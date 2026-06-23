@@ -75,6 +75,31 @@ public class MuntzPadeFunctional implements
     this.name = name;
   }
 
+  /**
+   * Evaluate κ_M(t, v) at a SPECIFIED Padé order M (no adaptive M-loop).
+   * Delegates to {@link MuntzPadeApproximant#evaluateAtM} after binding
+   * {@code v} on the internal approximant.
+   *
+   * @param v       perturbation point
+   * @param M       Padé order (M ≥ 2)
+   * @param t       evaluation point in the α-power "z = t^α" sense
+   * @param bits    working precision
+   * @param result  output ball
+   * @return        {@code result}
+   */
+  public Complex evaluateAtM(Complex v, int M, Complex t, int bits, Complex result)
+  {
+    if (approximant == null)
+    {
+      approximant = new MuntzPadeApproximant(α, a, v, bits);
+    }
+    else
+    {
+      approximant.rebind(v, bits);
+    }
+    return approximant.evaluateAtM(M, t, bits, result);
+  }
+
   @Override
   public ComplexFunction evaluate(Complex v, int order, int bits, ComplexFunction result)
   {

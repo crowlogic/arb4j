@@ -169,6 +169,44 @@ public final class MuntzPadeApproximant implements
   }
 
   /**
+   * Evaluate κ_M(t, v) at a SPECIFIED M, without the internal adaptive M-loop
+   * of {@link #evaluate(Complex, int, int, Complex)}. The Schwinger PFE
+   * extractor needs κ_M as a function of v at a fixed M so it can sample at
+   * chosen v-nodes and reconstruct the partial-fraction data.
+   *
+   * <p>Side effects: warms the OPS σ-table cache to {@code M} and writes the
+   * registered Padé sequences {@code Φnum, Φden, Φ} for that {@code M} at the
+   * currently-bound {@code v}.
+   *
+   * @param M       Padé order (M ≥ 2 is the meaningful range)
+   * @param t       evaluation point (the Schwinger pricer uses {@code t = T})
+   * @param bits    working precision
+   * @param result  output buffer
+   * @return        {@code result}
+   */
+  public Complex evaluateAtM(int M, Complex t, int bits, Complex result)
+  {
+    if (closed) throw new IllegalStateException("closed");
+    if (cachedBits < 0)
+    {
+      cachedBits = bits;
+    }
+    else if (bits > cachedBits)
+    {
+      context.invalidateAllCaches();
+      cachedBits = bits;
+    }
+    t.pow(α, bits, z);
+    try ( Integer Mi = new Integer() )
+    {
+      Mi.set(M);
+      ops.warmTo(M, bits);
+      Φ.evaluate(Mi, 1, bits, null).evaluate(z, 1, bits, result);
+    }
+    return result;
+  }
+
+  /**
    * Rebind this approximant to a new perturbation point {@code v} (and working
    * precision) without recompiling. The perturbation point enters the assembled
    * sequences only through the runtime variable {@code v} registered in
