@@ -98,6 +98,72 @@ public class RealPolynomialTest extends
 
   }
 
+  /**
+   * Assert that exact division (x² - 1) / (x - 1) = x + 1, and that the
+   * three-argument {@link RealPolynomial#div(RealPolynomial, int, RealPolynomial)}
+   * leaves no remainder state behind.
+   */
+  public void testExactDivision()
+  {
+    try ( RealPolynomial dividend = new RealPolynomial(3); RealPolynomial divisor = new RealPolynomial(2);
+          RealPolynomial quotient = new RealPolynomial())
+    {
+      dividend.set(0, -1);
+      dividend.set(2, 1);
+      divisor.set(0, -1);
+      divisor.set(1, 1);
+      dividend.div(divisor, 128, quotient);
+      assertEquals("x + 1", quotient.toString());
+      assertEquals(1.0, quotient.get(0).doubleValue());
+      assertEquals(1.0, quotient.get(1).doubleValue());
+    }
+  }
+
+  /**
+   * Assert that exact division of a polynomial that does not divide evenly
+   * throws {@link arb.exceptions.ArbException}: (x² + 1) / (x - 1) has a
+   * non-zero remainder.
+   */
+  public void testExactDivisionThrowsOnNonZeroRemainder()
+  {
+    try ( RealPolynomial dividend = new RealPolynomial(3); RealPolynomial divisor = new RealPolynomial(2);
+          RealPolynomial quotient = new RealPolynomial())
+    {
+      dividend.set(0, 1);
+      dividend.set(2, 1);
+      divisor.set(0, -1);
+      divisor.set(1, 1);
+      try
+      {
+        dividend.div(divisor, 128, quotient);
+        fail("expected ArbException for inexact division");
+      }
+      catch (arb.exceptions.ArbException expected)
+      {
+        assertTrue(expected.getMessage().contains("not exact"));
+      }
+    }
+  }
+
+  /**
+   * Assert that divrem (x² + 1) = (x - 1)·(x + 1) + 2 writes both the
+   * quotient x + 1 and the remainder 2 into the supplied destinations.
+   */
+  public void testDivisionWithRemainder()
+  {
+    try ( RealPolynomial dividend = new RealPolynomial(3); RealPolynomial divisor = new RealPolynomial(2);
+          RealPolynomial quotient = new RealPolynomial(); RealPolynomial remainder = new RealPolynomial())
+    {
+      dividend.set(0, 1);
+      dividend.set(2, 1);
+      divisor.set(0, -1);
+      divisor.set(1, 1);
+      dividend.div(divisor, 128, quotient, remainder);
+      assertEquals("x + 1", quotient.toString());
+      assertEquals(2.0, remainder.get(0).doubleValue());
+    }
+  }
+
   public static void testIdentity()
   {
     try ( RealPolynomial eye = new RealPolynomial())
