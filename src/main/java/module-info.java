@@ -45,6 +45,7 @@ module arb4j
   exports arb.expressions.nodes.unary;
   exports arb.algebra;
   exports arb.geometry;
+  exports arb.applications.options;
   exports arb.exceptions;
   exports arb.functions;
   exports arb.functions.algebraic;
@@ -58,7 +59,6 @@ module arb4j
   exports arb.functions.real;
   exports arb.functions.complex;
   exports arb.functions.integer;
-  exports arb.series;
   exports arb.space.bornological;
   exports arb.space.topological;
   exports arb.measure;
