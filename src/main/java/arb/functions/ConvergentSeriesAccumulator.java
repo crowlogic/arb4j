@@ -90,7 +90,7 @@ public final class ConvergentSeriesAccumulator implements
     }
     sum.sub(previous, bits, gap);
     previous.set(sum);
-    return converged(gap, sum.abs(bits, magnitude), bits);
+    return converged(gap, sum.abs(bits, magnitude), sum.getRad(), bits);
   }
 
   /**
@@ -115,7 +115,10 @@ public final class ConvergentSeriesAccumulator implements
     }
     sum.sub(previousComplex, bits, gapComplex).abs(bits, gap);
     previousComplex.set(sum);
-    return converged(gap, sum.abs(bits, magnitude), bits);
+    Magnitude reRad = sum.re().getRad();
+    Magnitude imRad = sum.im().getRad();
+    Magnitude radius = reRad.compareTo(imRad) >= 0 ? reRad : imRad;
+    return converged(gap, sum.abs(bits, magnitude), radius, bits);
   }
 
   /**
@@ -137,14 +140,9 @@ public final class ConvergentSeriesAccumulator implements
    * @param bits      the working precision in bits
    * @return {@code true} when either criterion holds
    */
-  private boolean converged(Real gap, Real magnitude, int bits)
+  private boolean converged(Real gap, Real magnitude, Magnitude radius, int bits)
   {
-    if (gap.getMagnitude(termBound).compareTo(magnitude.getRad()) <= 0)
-    {
-      return true;
-    }
-    magnitude.mul2e(-bits, tolerance);
-    return gap.compareTo(tolerance) <= 0;
+    return gap.getMagnitude(termBound).compareTo(radius) <= 0;
   }
 
   @Override
