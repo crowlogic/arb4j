@@ -574,6 +574,21 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     // arrives at endLoop with stack empty; we must match.
     pop(mv);
 
+    // Guard: only consult the convergence test when ŝ_n is finite. The second
+    // difference diff2 = s_n − 2·s_{n-1} + s_{n-2} is exactly the first
+    // difference of consecutive terms, which vanishes whenever the term
+    // sequence has a local extremum (e.g. Σ xᵏ/k! at x = n, where the n-th and
+    // (n-1)-th terms are equal). At those indices diff1²/diff2 divides by a
+    // ball containing zero, so ŝ_n carries an infinite radius. A non-finite ŝ_n
+    // is meaningless as a convergence estimate; skip the break and accumulate
+    // another term rather than terminating on the resulting garbage. The
+    // s_{n-1}/s_{n-2} history was already advanced above, so the next iteration
+    // resumes cleanly.
+    Label continueLoop = new Label();
+    loadFieldFromThis(mv, aitkenHatSFieldName, generatedType);
+    invokeMethod(mv, generatedType, "isFinite", Compiler.getMethodDescriptor(boolean.class), false);
+    mv.visitJumpInsn(IFEQ, continueLoop);
+
     // if absGap.compareTo(tol) <= 0: jump endLoop
     loadFieldFromThis(mv, aitkenAbsGapFieldName, Real.class);
     loadFieldFromThis(mv, aitkenAbsHatFieldName, Real.class);
@@ -584,6 +599,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     // Restore the Integer (the index) on the stack so the unconditional
     // jumpTo(beginLoop) reaches beginLoop with the same stack shape it
     // had at first entry.
+    designateLabel(mv, continueLoop);
     loadIndexVariable(mv);
   }
 
