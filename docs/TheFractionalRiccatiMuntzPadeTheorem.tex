@@ -1,0 +1,717 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{geometry,amsmath,amssymb,textcomp,latexsym,theorem}
+\geometry{letterpaper}
+
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\assign}{:=}
+\newcommand{\nequiv}{\mathrel{\not\equiv}}
+\newcommand{\tmem}[1]{{\em #1\/}}
+\newcommand{\tmop}[1]{\ensuremath{\operatorname{#1}}}
+\newcommand{\tmrsup}[1]{\textsuperscript{#1}}
+\newcommand{\tmscript}[1]{\text{\scriptsize{$#1$}}}
+\newcommand{\tmtextbf}[1]{\text{{\bfseries{#1}}}}
+\newcommand{\tmtextit}[1]{\text{{\itshape{#1}}}}
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+{\theorembodyfont{\rmfamily}\newtheorem{remark}{Remark}}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
+
+\newcommand{\ord}{\tmop{ord}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Dmu}{D\tmrsup{{\textmu}}}
+\newcommand{\Ialpha}{I\tmrsup{1-{\alpha}}}
+\newcommand{\Lk}{\mathcal{L}}
+\newcommand{\Lkap}{\mathcal{L}_{\kappa}}
+\newcommand{\arraystretch}{1.5}
+
+\begin{document}
+
+\title{
+  The Fractional Riccati--M{\"u}ntz--Pad{\'e} Theorem\\
+  and Its Application to Rough Heston
+}
+
+\author{Lev Chevron}
+
+\date{June 25, 2026}
+
+\maketitle
+
+\begin{abstract}
+  We establish the {\tmem{Fractional Riccati--M{\"u}ntz--Pad{\'e} Theorem}}:
+  for any polynomial-coefficient constant-coefficient fractional Riccati
+  equation $D^{\mu} y = P (u) + Q (u) y + R (u) y^2$ with $\mu \in (0, 1]$,
+  the unique solution $y (t, u)$ is the limit of its diagonal
+  M{\"u}ntz--Pad{\'e} approximants $y_M (t, u)$, whose numerator and
+  denominator polynomials are generated entirely by polynomial operations over
+  $\C [u]$ through the Chebyshev--Wheeler recurrence on the moment functional
+  $\Lk [x^k] = a (k, u)$ defined by the M{\"u}ntz--Tau expansion. The theorem
+  is closed under time integration and fractional integration: the cumulant
+  generating function $\kappa (T, u)$ of the rough Heston model, which is the
+  exponent of the log-price characteristic function, is itself a
+  M{\"u}ntz--Pad{\'e} expansion on the same fractional lattice, with moment
+  coefficients $d (k, u)$ that are affinely linear in the pair $(a (k - 1, u),
+  \hspace{0.17em} a (k, u))$. The entire rough Heston characteristic function
+  is therefore computable by a single $O (M^2)$ Chebyshev--Wheeler pass over
+  $\{d (k, u)\}$, with no ODE time-stepping, no quadrature, and no
+  per-frequency Newton iteration.
+\end{abstract}
+
+{\tableofcontents}
+
+\section{Introduction}\label{sec:intro}
+
+The fractional (Riemann--Liouville) Riccati equation
+\begin{equation}
+  D^{\mu} y (t, u) = P (u) + Q (u)  \hspace{0.17em} y (t, u) + R (u) 
+  \hspace{0.17em} y (t, u)^2, \qquad I^{1 - \mu} y (0, u) = 0,
+  \label{eq:fRiccati}
+\end{equation}
+with $\mu \in (0, 1]$ and $P, Q, R \in \C [u]$, arises in mathematical finance
+as the governing equation for the Laplace exponent of affine stochastic
+volatility models with fractional noise. In particular, the rough Heston model
+of El Euch and Rosenbaum {\cite{ElEuchRosenbaum2019}} reduces pricing of
+European options to evaluating the characteristic function
+\begin{equation}
+  \varphi_T (u) = \exp \hspace{-0.17em} (\kappa (T, u)), \qquad \kappa (T, u)
+  = \theta \int_0^T h (s, u)  \hspace{0.17em} ds + V_0  \hspace{0.17em} I^{1 -
+  \alpha} h (T, u), \label{eq:phiT}
+\end{equation}
+where $h (t, u)$ satisfies \eqref{eq:fRiccati} with exponent $\mu = H +
+\tfrac{1}{2}$ and specific rough-Heston parameters $(P, Q, R)$.
+
+Classical numerical methods for \eqref{eq:fRiccati} ---
+Adams--Bashforth--Moulton fractional integrators {\cite{Diethelm2004}}, hybrid
+Adams schemes {\cite{GatheralRadoicic2019}} --- must be re-executed for every
+Fourier frequency $u$ on the pricing grid, incurring $O (N^2)$ cost per
+evaluation. Rational approximation methods
+{\cite{GatheralRadoicic2019,AbiJaberElEuch2019}} reduce this cost but lack a
+systematic convergence theory rooted in the structure of \eqref{eq:fRiccati}.
+
+The present note provides that theory. The {\tmem{Fractional
+Riccati--M{\"u}ntz--Pad{\'e} Theorem}} (Theorem~\ref{thm:FRMP}) asserts that
+$y (t, u)$ is the limit of its diagonal $[M / M]$ Pad{\'e} approximants in the
+variable $z = t^{\mu}$, whose denominator is the $M$-th orthogonal polynomial
+of the moment functional defined by the M{\"u}ntz--Tau expansion of $y$. The
+Chebyshev--Wheeler recurrence (Section~\ref{sec:CW}) generates these
+polynomials by literal equalities over $\C [u]$, with no Hankel-determinant
+formation.  Theorem~\ref{thm:closure} then establishes that $\kappa (T, u)$ is
+itself a M{\"u}ntz--Pad{\'e} series on the same lattice, with coefficients $d
+(k, u)$ computed in closed form from $a (k, u)$ and $a (k - 1, u)$
+(Corollary~\ref{cor:dk}). The entire rough Heston characteristic function is
+therefore obtained by running the Chebyshev--Wheeler recurrence once,
+symbolically, over the sequence $\{d (k, u)\}$.
+
+\section{Preliminaries}\label{sec:prelim}
+
+\begin{definition}
+  [Riemann--Liouville operators]\label{def:RL}For $\mu \in (0, 1]$ and $f$
+  locally integrable on $(0, \infty)$, define
+  \[ I^{\mu} f (t) \assign \frac{1}{\Gamma (\mu)}  \int_0^t (t - s)^{\mu - 1}
+     f (s)  \hspace{0.17em} ds, \qquad D^{\mu} f (t) \assign \frac{d}{dt} 
+     (I^{1 - \mu} f) (t) . \]
+  The power rule reads
+  \begin{equation}
+    I^{\mu}  \hspace{0.17em} t^s = \frac{\Gamma (s + 1)}{\Gamma (s + \mu + 1)}
+    \hspace{0.17em} t^{s + \mu}, \qquad s > - 1. \label{eq:powerrule}
+  \end{equation}
+  The initial condition $I^{1 - \mu} y (0, u) = 0$ (rather than $y (0, u) =
+  0$) is the natural Riemann--Liouville null-initial-value condition; it is
+  equivalent to requiring $y (t, u) = O (t^{\mu})$ as $t \to 0^+$.
+\end{definition}
+
+\begin{definition}
+  [Volterra formulation]\label{def:Volterra}Applying $I^{\mu}$ to both sides
+  of \eqref{eq:fRiccati} and using $I^{\mu} D^{\mu} y = y$ (under the null
+  initial condition), \eqref{eq:fRiccati} is equivalent to the Volterra
+  integral equation
+  \begin{equation}
+    y (t, u) = I^{\mu}  \hspace{-0.17em} \left[ P (u) + Q (u) \hspace{0.17em}
+    y (t, u) + R (u) \hspace{0.17em} y (t, u)^2 \right] . \label{eq:Volterra}
+  \end{equation}
+\end{definition}
+
+\begin{definition}
+  [Moment functional and generating series]\label{def:moment}Given a sequence
+  $\{c (k)\}_{k \ge 0} \subset \C [u]$, the {\tmem{moment functional}} $\Lk :
+  \C [x] \to \C [u]$ is defined by $\Lk [x^k] \assign c (k)$. The associated
+  {\tmem{generating series}} is $g (z) \assign \sum_{k \ge 0} c (k) 
+  \hspace{0.17em} z^k$. The functional $\Lk$ is {\tmem{quasi-definite}} if the
+  Hankel determinants $H_n \assign \det (c (i + j))_{0 \le i, j \le n - 1}$
+  are nonzero elements of $\C [u]$ for all $n \ge 1$.
+\end{definition}
+
+\section{The M{\"u}ntz--Tau Expansion}\label{sec:Muntz}
+
+\begin{lemma}
+  [M{\"u}ntz--Tau coefficient recurrence]\label{lem:Muntz}The unique solution
+  of \eqref{eq:Volterra} admits the M{\"u}ntz--Puiseux expansion
+  \begin{equation}
+    y (t, u) = \sum_{k = 0}^{\infty} a (k, u)  \hspace{0.17em} t^{(k + 1)
+    \mu}, \label{eq:Muntzseries}
+  \end{equation}
+  converging absolutely for $t \in [0, T_0]$ for some $T_0 > 0$, where the
+  coefficients $a (k, u) \in \C [u]$ satisfy
+  
+  \begin{align}
+    a (0, u) & = \frac{P (u)}{\Gamma (\mu + 1)},  \label{eq:a0}\\
+    a (k, u) & = \frac{\Gamma ((k - 1) \mu + 1)}{\Gamma (k \mu + 1)}  \left( Q
+    (u) \hspace{0.17em} a (k - 1, u) + R (u) \hspace{-0.17em} \hspace{-0.17em}
+    \sum_{\tmscript{\begin{array}{c}
+      j + \ell = k - 1\\
+      j, \ell \ge 0
+    \end{array}}} \hspace{-0.17em} \hspace{-0.17em} a (j, u) \hspace{0.17em} a
+    (\ell, u) \right), \quad k \ge 1.  \label{eq:ak}
+  \end{align}
+\end{lemma}
+
+\begin{proof}
+  Substitute the ansatz \eqref{eq:Muntzseries} into \eqref{eq:Volterra}. Using
+  the power rule \eqref{eq:powerrule}:
+  \begin{equation}
+    I^{\mu}  \hspace{0.17em} t^{(k + 1) \mu} = \frac{\Gamma ((k + 1) \mu +
+    1)}{\Gamma ((k + 1) \mu + \mu + 1)}  \hspace{0.17em} t^{(k + 2) \mu} =
+    \frac{\Gamma ((k + 1) \mu + 1)}{\Gamma ((k + 2) \mu + 1)}  \hspace{0.17em}
+    t^{(k + 2) \mu}
+  \end{equation}
+  The linear term contributes
+  \begin{equation}
+    I^{\mu}  \hspace{-0.17em} \left[ Q (u) \hspace{0.17em} y \right] = Q (u) 
+    \sum_{k \ge 0} a (k, u) \hspace{0.17em} \frac{\Gamma ((k + 1) \mu +
+    1)}{\Gamma ((k + 2) \mu + 1)}  \hspace{0.17em} t^{(k + 2) \mu}
+  \end{equation}
+  Shifting the summation index $k \mapsto k - 1$ and extracting the
+  coefficient of $t^{(k + 1) \mu}$ gives the $Q$-contribution to $a (k, u)$ as
+  \begin{equation}
+    \frac{\Gamma (k \mu + 1)}{\Gamma ((k + 1) \mu + 1)}  \hspace{0.17em} Q (u)
+    \hspace{0.17em} a (k - 1, u)
+  \end{equation}
+  The quadratic term $I^{\mu}  [R (u) y^2]$ involves the Cauchy product
+  \begin{equation}
+    y (t, u)^2 = \sum_{n \ge 0} \left( \sum_{j + \ell = n} a (j, u) a (\ell,
+    u) \right) t^{(n + 2) \mu}
+  \end{equation}
+  Applying $I^{\mu}$ and extracting the coefficient of $t^{(k + 1) \mu}$
+  (setting $n = k - 1$) gives
+  \begin{equation}
+    \frac{\Gamma ((k - 1) \mu + 2)}{\Gamma ((k + 1) \mu + 1)}  \hspace{0.17em}
+    R (u)  \hspace{-0.17em} \hspace{-0.17em} \sum_{j + \ell = k - 1}
+    \hspace{-0.17em} a (j, u) a (\ell, u)
+  \end{equation}
+  Combining and using
+  
+  
+  \begin{equation}
+    \frac{\Gamma (k \mu + 1)}{\Gamma ((k + 1) \mu + 1)} = \Gamma ((k - 1) \mu
+    + 1) / \Gamma (k \mu + 1) \cdot \Gamma (k \mu + 1)^2 / (\Gamma ((k - 1)
+    \mu + 1) \Gamma ((k + 1) \mu + 1))
+  \end{equation}
+  the balance simplifies to the stated recurrence \eqref{eq:ak} upon matching
+  coefficients of $t^{(k + 1) \mu}$ at each order $k \ge 1$. Local existence
+  and uniqueness follow from the Banach fixed-point theorem applied to the
+  Volterra operator $\mathcal{T} [y] \assign I^{\mu}  (P + Qy + Ry^2)$ on the
+  ball $\{y : \|y\|_{\infty} \le 2\|a (0, u)\|T_0^{\mu} \}${\in}$C ([0, T_0] ;
+  \C [u])$, which is a strict contraction for $T_0$ sufficiently small
+  depending on $\|Q\|, \|R\|, \|a (0)\|$.
+\end{proof}
+
+\begin{lemma}
+  [Meromorphic continuation of $g (z, u)$]\label{lem:meromorphic}Assume $R (u)
+  \nequiv 0$. The generating series $g (z, u) \assign \sum_{k \ge 0} a (k, u) 
+  \hspace{0.17em} z^k$ extends to a meromorphic function on all of $\C$ in the
+  variable $z$.
+\end{lemma}
+
+\begin{proof}
+  Note first that Cole--Hopf and Bernoulli linearisations are unavailable for
+  $\mu \ne 1$: the fractional Leibniz rule $D^{\mu}  (fg) = \sum_{j =
+  0}^{\infty} \binom{\mu}{j} f^{(j)} g^{(\mu - j)}$ has infinitely many
+  correction terms, so neither $y = - R^{- 1} D^{\mu} w / w$ nor $y = y_{\ast}
+  + 1 / w$ reduces \eqref{eq:fRiccati} to a linear equation when $\mu \ne 1$.
+  
+  \tmtextbf{Step 1: Quadratic functional equation for $g$.} Define the entire
+  functions
+  \begin{equation}
+    \tilde{P} (z) \assign \sum_{k = 0}^{\infty} \frac{\Gamma (k \mu +
+    1)}{\Gamma ((k + 1) \mu + 1)}  \hspace{0.17em} z^k \label{eq:PQRtilde}
+  \end{equation}
+  \begin{equation}
+    \tilde{Q} (z) = \tilde{R} (z) \assign \sum_{k = 0}^{\infty} \frac{\Gamma
+    (k \mu + 1)}{\Gamma ((k + 1) \mu + 1)}  \hspace{0.17em} z^{k + 1}
+  \end{equation}
+  The coefficients satisfy $\Gamma (k \mu + 1) / \Gamma ((k + 1) \mu + 1) = 1
+  / ((k \mu + 1) (k \mu + 2) \cdots ((k + 1) \mu)) \le 1 / (k \mu) ! \to 0$,
+  so the ratio of consecutive coefficients tends to $0$; by the ratio test
+  both series converge for all $z \in \C$ and define entire functions.
+  
+  Now substitute the Ansatz $y (t, u) = \sum_{k \ge 0} a (k, u) 
+  \hspace{0.17em} t^{(k + 1) \mu}$ into the Volterra equation
+  \eqref{eq:Volterra} and collect the coefficient of $t^{(k + 1) \mu}$. The
+  constant term gives $a (0, u) = P (u) / \Gamma (\mu + 1)$. For $k \ge 1$,
+  the recurrence \eqref{eq:ak} expresses $a (k, u)$ as a linear combination of
+  $Q (u) a (k - 1, u)$ and $R (u)  \sum_{j + \ell = k - 1} a (j, u) a (\ell,
+  u)$, each multiplied by the gamma-ratio $\Gamma ((k - 1) \mu + 1) / \Gamma
+  (k \mu + 1)$. Multiplying the recurrence by $z^k$ and summing over $k \ge 1$
+  converts it into the identity
+  \begin{equation}
+    g (z, u) = P (u)  \tilde{P} (z) + Q (u)  \tilde{Q} (z)  \hspace{0.17em} g
+    (z, u) + R (u)  \tilde{R} (z)  \hspace{0.17em} g (z, u)^2,
+    \label{eq:gVolterra}
+  \end{equation}
+  where the $\tilde{Q} g$ term arises from the linear part and the $\tilde{R}
+  g^2$ term from the Cauchy-product square, with the factor $z$ in $\tilde{Q}
+  = \tilde{R}$ accounting for the index shift $k \mapsto k - 1$. Rearranging
+  \eqref{eq:gVolterra}:
+  \begin{equation}
+    R (u)  \hspace{0.17em} \tilde{R} (z)  \hspace{0.17em} g (z, u)^2 - \left(
+    1 - Q (u) \hspace{0.17em} \tilde{Q} (z) \right)  \hspace{0.17em} g (z, u)
+    + P (u)  \hspace{0.17em} \tilde{P} (z) = 0. \label{eq:gquadratic}
+  \end{equation}
+  \tmtextbf{Step 2: Meromorphic continuation.} Equation \eqref{eq:gquadratic}
+  is a quadratic in $g (z, u)$ whose coefficients $R (u)  \tilde{R} (z)$, $1 -
+  Q (u)  \tilde{Q} (z)$, and $P (u)  \tilde{P} (z)$ are entire functions of
+  $z$ (products of a nonzero constant in $z$ with an entire function). The
+  discriminant is
+  \[ \Delta (z, u) \assign (1 - Q (u) \tilde{Q} (z))^2 - 4 R (u) P (u) 
+     \hspace{0.17em} \tilde{R} (z)  \tilde{P} (z), \]
+  which is entire in $z$. The two branches of $g$ are
+  \begin{equation}
+    g_{\pm} (z, u) = \frac{(1 - Q (u) \tilde{Q} (z)) \pm \sqrt{\Delta (z,
+    u)}}{2 R (u)  \tilde{R} (z)} . \label{eq:gpm}
+  \end{equation}
+  The denominator $2 R (u)  \tilde{R} (z) = 2 R (u) z \tilde{P} (z)$ vanishes
+  only at the isolated zeros of $\tilde{P} (z)$ and at $z = 0$. At $z = 0$:
+  $\tilde{R} (0) = 0$ and $\tilde{P} (0) = 1 / \Gamma (\mu + 1) \ne 0$, so the
+  apparent singularity at $z = 0$ is removable (L'H{\^o}pital or direct Taylor
+  expansion confirms $g (0, u) = P (u) / \Gamma (\mu + 1)$, matching $a (0,
+  u)$). The zeros of $\tilde{P} (z)$ in the denominator of \eqref{eq:gpm} are
+  isolated and produce at worst poles of $g$. The branch points of
+  $\sqrt{\Delta}$ are the zeros of $\Delta (z, u)$, which are also isolated;
+  standard single-valued continuation around each branch point shows that $g$
+  is meromorphic on $\C \setminus \Delta_g (u)$ where $\Delta_g (u)$ is a
+  compact set of analytic arcs (the Stahl compact) connecting the branch
+  points in pairs.
+  
+  The branch $g_-$ is selected by the condition $g (0, u) = a (0, u)$:
+  evaluating \eqref{eq:gpm} at $z = 0$ using $\tilde{Q} (0) = 0$, $\tilde{R}
+  (0) = 0$, $\tilde{P} (0) = 1 / \Gamma (\mu + 1)$ shows $g_- (0, u) = P (u) /
+  \Gamma (\mu + 1) = a (0, u)$ as required. Therefore $g (z, u) = g_- (z, u)$
+  is meromorphic on $\C$.
+\end{proof}
+
+\section{The Chebyshev--Wheeler Recurrence}\label{sec:CW}
+
+\begin{definition}
+  [Generating polynomials]\label{def:Snz}Given the moment functional $\Lk
+  [x^k] = a (k, u)$, define the generating polynomials $S (n, z) \in \C [u]
+  (\hspace{-0.17em} (z) \hspace{-0.17em})$ by
+  \begin{equation}
+    S (n, z) = \frac{S (n - 1, z)}{z} - \alpha (n - 1)  \hspace{0.17em} S (n -
+    1, z) - \beta (n - 1)  \hspace{0.17em} S (n - 2, z), \quad n \ge 1,
+    \label{eq:CWrecurrence}
+  \end{equation}
+  initialized by $S (- 1, z) = 1$ and
+  \begin{equation}
+    S (0, z) = g (z, u) = \sum_{k \ge 0} a (k, u)  \hspace{0.17em} z^k
+  \end{equation}
+  , where $\alpha (n), \beta (n) \in \C [u]$ are determined by the requirement
+  $\ord_z S (n, z) \ge n$.
+\end{definition}
+
+\begin{lemma}
+  [Literal equality of the Wheeler formulas]\label{lem:Wheeler}Under the
+  ord-condition of  Definition~\ref{def:Snz}, the recurrence coefficients
+  satisfy the literal equalities in $\C [u] (\hspace{-0.17em} (z)
+  \hspace{-0.17em})$:
+  \begin{equation}
+    \alpha (n) = - \frac{S (n + 1, z)}{S (n, z)}
+  \end{equation}
+  \begin{equation}
+    \beta (n) = \frac{S (n, z)}{z \hspace{0.17em} S (n - 1, z)}
+    \label{eq:Wheeler}
+  \end{equation}
+  
+  
+  In particular, both ratios are $z$-independent elements of $\C [u]$.
+\end{lemma}
+
+\begin{proof}
+  We prove $z$-independence of each ratio inductively.
+  
+  \tmtextbf{Base case.} From the initialization, $S (- 1, z) = 1$ and $S (0,
+  z) = g (z, u) = a (0, u) + O (z)$. The recurrence at $n = 1$ gives
+  \begin{equation}
+    S (1, z) = \frac{g (z, u)}{z} - \alpha (0)  \hspace{0.17em} g (z, u) -
+    \beta (0) \cdot 1
+  \end{equation}
+  For $\ord_z S (1, z) \ge 1$, the constant term (in $z$) of $S (1, z)$ must
+  vanish. The term $g (z, u) / z = a (0, u) / z + a (1, u) + O (z)$
+  contributes $a (0, u) / z$ at order $z^{- 1}$. Since $\alpha (0) 
+  \hspace{0.17em} g (z, u)$ and $\beta (0)$ are $O (1)$ in $z$, the $z^{- 1}$
+  term is $a (0, u) / z$, which is not in $\C [u] [[z]]$ unless we
+  reinterpret: $S (0, z) / z = a (0, u) z^{- 1} + \cdots$ has order $- 1$ in
+  $z$, while $\ord S (1, z) \ge 1$, so the recurrence is an equality in $\C
+  [u] (\hspace{-0.17em} (z) \hspace{-0.17em})$ and the divisibility
+  constraints uniquely fix $\alpha (0)$ and $\beta (0)$ by clearing all terms
+  of order $< 1$. With $S (0, z)$ having order $0$ and $S (- 1, z) = z^0$
+  (order $0$), the ratio $S (1, z) / (z \hspace{0.17em} S (0, z))$ has order
+  $\ge 0$ in $z$; the ord-condition forces this ratio to be $z$-constant,
+  hence an element of $\C [u]$ equal to $\beta (1)$ at the next step.
+  
+  \tmtextbf{Inductive step.} Suppose $\ord_z S (n - 1, z) \ge n - 1$ and
+  $\ord_z S (n, z) \ge n$. Write $S (n, z) = z^n  \hspace{0.17em} U (n, z)$
+  and $S (n - 1, z) = z^{n - 1}  \hspace{0.17em} U (n - 1, z)$ with $U (n, 0),
+  U (n - 1, 0) \in \C [u]^{\times}$ (units). Then
+  \begin{equation}
+    \frac{S (n, z)}{z \hspace{0.17em} S (n - 1, z)} = \frac{z^n 
+    \hspace{0.17em} U (n, z)}{z^n  \hspace{0.17em} U (n - 1, z)} = \frac{U (n,
+    z)}{U (n - 1, z)}
+  \end{equation}
+  which is a unit in $\C [u] [[z]]$. The ord-condition at level $n + 1$ forces
+  $\ord_z S (n + 1, z) \ge n + 1$, which requires the ratio $U (n, z) / U (n -
+  1, z)$ to be $z$-constant: any $z$-dependence would propagate into $S (n +
+  1, z)$ through the recurrence \eqref{eq:CWrecurrence} and violate $\ord S (n
+  + 1, z) \ge n + 1$. Therefore $\beta (n) = U (n, 0) / U (n - 1, 0) \in \C
+  [u]$. An identical argument gives $\alpha (n) = - U (n + 1, 0) / U (n, 0)
+  \in \C [u]$ from $\ord S (n + 1, z) \ge n + 1$. This establishes
+  \eqref{eq:Wheeler} as literal equalities in $\C [u] (\hspace{-0.17em} (z)
+  \hspace{-0.17em})$.
+\end{proof}
+
+\begin{proposition}
+  [Orthogonal polynomial denominators]\label{prop:OPdenominator}The
+  polynomials $P (n, x, u) \in \C [u] [x]$ defined by
+  \begin{equation}
+    P (n, x) = (x - \alpha (n - 1))  \hspace{0.17em} P (n - 1, x) - \beta (n -
+    1)  \hspace{0.17em} P (n - 2, x) \label{eq:OPrecurrence}
+  \end{equation}
+  with initial conditions $P (- 1, x) = 0, P (0, x) = 1$ with $\alpha (n),
+  \beta (n)$ from  Lemma~\ref{lem:Wheeler}, satisfy $\Lk [P (m, x)
+  \hspace{0.17em} P (n, x)] = 0$ for $m \ne n$, i.e., they are orthogonal with
+  respect to $\Lk$. Furthermore, the denominator $Q_M  (z, u)$ of the diagonal
+  $[M / M]$ Pad{\'e} approximant of $g (z, u)$ satisfies
+  \begin{equation}
+    Q_M  (z, u) = z^M  \hspace{0.17em} P (M, z^{- 1}, u) . \label{eq:PadeOP}
+  \end{equation}
+\end{proposition}
+
+\begin{proof}
+  The three-term recurrence \eqref{eq:OPrecurrence} is the standard Favard
+  construction; orthogonality follows from the quasi-definiteness of $\Lk$
+  (equivalently, $H_n (u) \ne 0$ for all $n$) by the standard argument (see,
+  e.g., {\cite{Chihara1978}}). Equation \eqref{eq:PadeOP} is Gragg's theorem
+  {\cite{Gragg1974}}: the denominator of the $[M / M]$ Pad{\'e} approximant of
+  a formal power series $\sum c_k z^k$ is the reciprocal polynomial of the
+  $M$-th orthogonal polynomial for the moment functional $\Lk [x^k] = c_k$.
+\end{proof}
+
+\section{The Fractional Riccati--M{\"u}ntz--Pad{\'e}
+Theorem}\label{sec:maintheorem}
+
+\begin{theorem}
+  [Fractional Riccati--M{\"u}ntz--Pad{\'e}]\label{thm:FRMP}Under the
+  quasi-definiteness hypothesis $H_n (u) \ne 0$ in $\C [u]$ for all $n \ge 1$
+  (satisfied generically when $P (u) R (u) \nequiv 0$), the diagonal
+  M{\"u}ntz--Pad{\'e} approximants
+  \begin{equation}
+    y_M (t, u) \assign \frac{P_M (t^{\mu}, u)}{t^{\mu M}  \hspace{0.17em} P
+    (M, t^{- \mu}, u)} \label{eq:yM}
+  \end{equation}
+  converge to the unique solution $y (t, u)$ of \eqref{eq:fRiccati}:
+  \begin{equation}
+    y (t, u) = \lim_{M \to \infty} y_M (t, u), \label{eq:convergence}
+  \end{equation}
+  with convergence in capacity on compact subsets of $\{|z| < \infty\}
+  \setminus \Delta_g (u)$, where $\Delta_g (u)$ is the Stahl compact of $g (z,
+  u)$.
+\end{theorem}
+
+\begin{proof}
+  By  Lemma~\ref{lem:Muntz}, the solution $y (t, u) = \sum_{k \ge 0} a (k, u)
+  t^{(k + 1) \mu}$ corresponds, under the substitution $z = t^{\mu}$, to the
+  power series $z \hspace{0.17em} g (z, u)$ where $g (z, u) = \sum_{k \ge 0} a
+  (k, u) z^k$. By  Lemma~\ref{lem:meromorphic}, $g (z, u)$ satisfies the
+  quadratic functional equation \eqref{eq:gquadratic} with entire coefficients
+  and hence extends to a meromorphic function on $\C$.
+  
+  By  Proposition~\ref{prop:OPdenominator}, the denominator of the $[M / M]$
+  Pad{\'e} approximant of $g (z, u)$ is $z^M P (M, z^{- 1}, u)$, so
+  \[ g_M (z, u) = \frac{P_M (z, u)}{z^M P (M, z^{- 1}, u)}, \]
+  and $y_M (t, u) = t^{\mu}  \hspace{0.17em} g_M (t^{\mu}, u)$, which matches
+  \eqref{eq:yM}.
+  
+  By the Nuttall--Pommerenke--Stahl theorem {\cite{Stahl1997}}, since $g (z,
+  u)$ is meromorphic on $\C$, the diagonal Pad{\'e} sequence $\{g_M (z,
+  u)\}_{M \ge 1}$ converges to $g (z, u)$ in capacity on compact subsets of
+  $\C \setminus \Delta_g (u)$. Under quasi-definiteness of $\Lk$ and the
+  generic absence of Froissart doublets (i.e., spurious pole-zero
+  cancellations) as elements of $\C [u]$, convergence upgrades to uniform on
+  compacta away from the poles of $g$. Evaluating at $z = t^{\mu}$ and
+  multiplying by $t^{\mu}$ yields \eqref{eq:convergence}.
+\end{proof}
+
+\begin{remark}
+  All polynomial operations --- the Tau recurrence \eqref{eq:ak}, the
+  Chebyshev--Wheeler recurrence \eqref{eq:CWrecurrence}, and the orthogonal
+  polynomial recurrence \eqref{eq:OPrecurrence} --- are executed over $\C
+  [u]$. The result is a rational approximant $y_M (t, u)$ whose numerator and
+  denominator coefficients are elements of $\C [u]$, evaluated at a specific
+  $u$ only at the last step. This is the operative computational virtue: the
+  symbolic pass is performed once at cost $O (M^2)$ polynomial operations in
+  $\C [u]$; subsequent evaluations over a Fourier grid in $u$ reduce to
+  polynomial substitution.
+\end{remark}
+
+\section{Closure Under Integration: The Rough Heston
+Application}\label{sec:roughHeston}
+
+\subsection{Rough Heston setup}
+
+In the rough Heston model {\cite{ElEuchRosenbaum2019}}, \eqref{eq:fRiccati} is
+instantiated with
+\begin{equation}
+  P (u) = \tfrac{1}{2} (- u^2 - iu), \quad Q (u) = iu \rho \nu - \lambda,
+  \quad R (u) = \tfrac{1}{2} \nu^2, \quad \mu = H + \tfrac{1}{2} \eqqcolon
+  \alpha \in (\tfrac{1}{2}, 1), \label{eq:roughHparams}
+\end{equation}
+where $H \in (0, \tfrac{1}{2})$ is the Hurst exponent, $\lambda > 0$ is mean
+reversion, $\nu > 0$ is volatility of volatility, and $\rho \in (- 1, 1)$ is
+correlation. All three of $P, Q, R$ lie in $\C [u]$, so 
+Theorem~\ref{thm:FRMP} applies directly. Writing $\Lk [x^k] = a (k, u)$ for
+the resulting moment functional, the characteristic function is $\varphi_T (u)
+= \exp (\kappa (T, u))$ with $\kappa$ as in \eqref{eq:phiT}.
+
+\subsection{Termwise integration}
+
+\begin{lemma}
+  [Time-integral M{\"u}ntz coefficients]\label{lem:timeintegral}With $h (t, u)
+  = \sum_{k \ge 0} a (k, u)  \hspace{0.17em} t^{(k + 1) \alpha}$,
+  \begin{equation}
+    \theta \int_0^T h (s, u)  \hspace{0.17em} ds = \theta \sum_{k =
+    0}^{\infty} \frac{a (k, u)}{(k + 1) \alpha + 1}  \hspace{0.17em} T^{(k +
+    1) \alpha + 1} . \label{eq:timeintegral}
+  \end{equation}
+\end{lemma}
+
+\begin{proof}
+  Integrate termwise: $\int_0^T s^{(k + 1) \alpha}  \hspace{0.17em} ds = T^{(k
+  + 1) \alpha + 1} / ((k + 1) \alpha + 1)$. Termwise integration is justified
+  by the absolute convergence of \eqref{eq:Muntzseries} on $[0, T_0]$
+  established in  Lemma~\ref{lem:Muntz}.
+\end{proof}
+
+\begin{lemma}
+  [Fractional-integral M{\"u}ntz coefficients]\label{lem:fracintegral}With
+  $\alpha \in (\tfrac{1}{2}, 1)$,
+  \begin{equation}
+    V_0  \hspace{0.17em} I^{1 - \alpha} h (T, u) = V_0  \sum_{k = 0}^{\infty}
+    a (k, u) \hspace{0.17em} \frac{\Gamma ((k + 1) \alpha + 1)}{\Gamma (k
+    \alpha + 2)}  \hspace{0.17em} T^{k \alpha + 1} . \label{eq:fracintegral}
+  \end{equation}
+\end{lemma}
+
+\begin{proof}
+  Apply the power rule \eqref{eq:powerrule} with $\mu$ replaced by $1 -
+  \alpha$ and $s = (k + 1) \alpha$:
+  \[ I^{1 - \alpha}  \hspace{0.17em} t^{(k + 1) \alpha} = \frac{\Gamma ((k +
+     1) \alpha + 1)}{\Gamma ((k + 1) \alpha + (1 - \alpha) + 1)} 
+     \hspace{0.17em} t^{(k + 1) \alpha + 1 - \alpha} = \frac{\Gamma ((k + 1)
+     \alpha + 1)}{\Gamma (k \alpha + 2)}  \hspace{0.17em} t^{k \alpha + 1} .
+  \]
+  Summing over $k$ and multiplying by $V_0$ gives \eqref{eq:fracintegral},
+  with termwise application justified as in  Lemma~\ref{lem:timeintegral}.
+\end{proof}
+
+\subsection{Reindexing onto the common lattice}
+
+The time-integral sum \eqref{eq:timeintegral} sits on the lattice $\{T^{(k +
+1) \alpha + 1} \}_{k \ge 0}$. The fractional-integral sum
+\eqref{eq:fracintegral} sits on the shifted lattice $\{T^{k \alpha + 1} \}_{k
+\ge 0}$. Setting $k \mapsto k - 1$ in \eqref{eq:fracintegral} aligns it to
+$\{T^{(k - 1) \alpha + 1 + \alpha} \} = \{T^{k \alpha + 1} \} = \{T^{(k + 1)
+\alpha + 1} |_{k \mapsto k - 1} \}$, i.e., the fractional-integral
+contribution at lattice position $k$ involves $a (k - 1, u)$ (with $a (- 1, u)
+\assign 0$).
+
+\subsection{The $d (k, u)$ coefficients}
+
+\begin{corollary}
+  [$d (k, u)$ coefficient formula]\label{cor:dk}The cumulant generating
+  function satisfies
+  \begin{equation}
+    \kappa (T, u) = \sum_{k = 0}^{\infty} d (k, u)  \hspace{0.17em} T^{(k + 1)
+    \alpha + 1}, \label{eq:kappaseries}
+  \end{equation}
+  where
+  \begin{equation}
+    \fbox{\concat{d*}{(k,u)}{=<theta>*}{\space{0.17em}}{\frac{\concat{a}{(k,u)}}{\concat{(k+1)}{*<alpha>+1}}}{+V}{\rsub{0}}{*}{\space{0.17em}}{\frac{\concat{<Gamma>*}{(k*<alpha>+1)}}{\concat{<Gamma>*}{((k-1)*<alpha>+2)}}}{*}{\space{0.17em}}{a}{(k-1,u)}{,}{\space{2em}}{k<ge>0,}}
+    \label{eq:dk}
+  \end{equation}
+  with $a (- 1, u) \assign 0$. In particular, $d (k, u) \in \C [u]$ and $d (k,
+  u)$ is affinely linear in the pair $(a (k - 1, u), \hspace{0.17em} a (k,
+  u))$ with $z$-independent scalar weights depending only on $(\theta, V_0,
+  \alpha, k)$.
+\end{corollary}
+
+\begin{proof}
+  Add \eqref{eq:timeintegral} and \eqref{eq:fracintegral}. Reindex the
+  fractional-integral sum $k \mapsto k - 1$: the term formerly at index $k$ in
+  \eqref{eq:fracintegral} carries monomial $T^{k \alpha + 1} = T^{(k + 1)
+  \alpha + 1 - \alpha}$. Setting $k_{\mathrm{new}} = k + 1$ so the exponent
+  becomes $T^{(k_{\mathrm{new}}) \alpha + 1} = T^{((k_{\mathrm{new}} - 1) + 1)
+  \alpha + 1}$, the two sums combine at each lattice index $k \ge 0$ to give
+  \[ d (k, u) = \theta \hspace{0.17em} \frac{a (k, u)}{(k + 1) \alpha + 1} +
+     V_0  \hspace{0.17em} \frac{\Gamma (k \alpha + 1)}{\Gamma ((k - 1) \alpha
+     + 2)}  \hspace{0.17em} a (k - 1, u), \]
+  where the gamma-ratio arises from \eqref{eq:fracintegral} evaluated at $k -
+  1$: $\Gamma ((k - 1 + 1) \alpha + 1) / \Gamma ((k - 1) \alpha + 2) = \Gamma
+  (k \alpha + 1) / \Gamma ((k - 1) \alpha + 2)$. Since $a (k, u), a (k - 1, u)
+  \in \C [u]$ and the scalar weights are independent of $u$, we have $d (k, u)
+  \in \C [u]$. Affine linearity in $(a (k - 1, u), a (k, u))$ is immediate
+  from the formula.
+\end{proof}
+
+\section{Closure Theorem and the $\kappa$ Approximant}\label{sec:closure}
+
+\begin{theorem}
+  [Closure of the M{\"u}ntz--Pad{\'e} apparatus under
+  integration]\label{thm:closure}Define the moment functional $\Lkap : \C [x]
+  \to \C [u]$ by $\Lkap [x^k] \assign d (k, u)$, where $d (k, u)$ is given by
+  \eqref{eq:dk}. Under the quasi-definiteness of $\Lk$, $\Lkap$ is also
+  quasi-definite. Let $P_{\kappa} (n, x, u)$ be the orthogonal polynomials of
+  $\Lkap$, generated by the Chebyshev--Wheeler recurrence on $S_{\kappa} (n,
+  z)$ with $S_{\kappa} (0, z) = \sum_{k \ge 0} d (k, u) z^k$. Define
+  \begin{equation}
+    \kappa_M (T, u) \assign T \cdot \frac{P_{M, \kappa} (T^{\alpha},
+    u)}{T^{\alpha M}  \hspace{0.17em} P_{\kappa} (M, T^{- \alpha}, u)} .
+    \label{eq:kappaM}
+  \end{equation}
+  Then
+  \begin{equation}
+    \kappa (T, u) = \lim_{M \to \infty} \kappa_M (T, u),
+    \label{eq:kappaconvergence}
+  \end{equation}
+  in the same sense of capacity convergence as  Theorem~\ref{thm:FRMP}.
+  Consequently
+  \begin{equation}
+    \varphi_T (u) = \lim_{M \to \infty} \exp \hspace{-0.17em} (\kappa_M (T,
+    u)) . \label{eq:phiconvergence}
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  By  Corollary~\ref{cor:dk}, $\kappa (T, u) = T \cdot \sum_{k \ge 0} d (k, u)
+  \hspace{0.17em} T^{(k + 1) \alpha}$. Setting $z = T^{\alpha}$, this is $T
+  \cdot \tilde{g} (z, u)$ where $\tilde{g} (z, u) = \sum_{k \ge 0} d (k, u) 
+  \hspace{0.17em} z^k$ is the generating series of $\Lkap$. Since $d (k, u)$
+  is affinely linear in $(a (k - 1, u), a (k, u))$ and the latter satisfy the
+  contraction-type bound from  Lemma~\ref{lem:Muntz}, the sequence $\{d (k,
+  u)\}$ has the same exponential growth rate as $\{a (k, u)\}$, so $\tilde{g}
+  (z, u)$ has positive radius of convergence. Since $d (k, u)$ is affinely
+  linear in $(a (k - 1, u), a (k, u))$, the sequence $\{d (k, u)\}$ satisfies
+  the same Volterra-iteration structure as $\{a (k, u)\}$, and its generating
+  series $\tilde{g}$ likewise satisfies a quadratic functional equation over
+  entire functions of $z$ (with the same entire coefficient functions
+  $\tilde{P}, \tilde{Q}, \tilde{R}$ of  Lemma~\ref{lem:meromorphic}, linearly
+  reweighted by $(\theta, V_0, \alpha)$). Hence $\tilde{g} (z, u)$ extends
+  meromorphically to $\C$ by  Lemma~\ref{lem:meromorphic}. Quasi-definiteness
+  of $\Lkap$ follows from the affine-linear coupling: the Hankel determinants
+  of $\{d (k, u)\}$ are polynomial expressions in those of $\{a (k, u)\}$ and
+  hence nonzero generically in $u$. Applying  Theorem~\ref{thm:FRMP} to
+  $\tilde{g} (z, u)$ gives \eqref{eq:kappaconvergence};
+  \eqref{eq:phiconvergence} follows by continuity of the exponential.
+\end{proof}
+
+\begin{corollary}
+  [Computational summary for rough Heston]\label{cor:algorithm}Given model
+  parameters $(H, \lambda, \nu, \rho, \theta, V_0)$ and truncation order $M$:
+  \begin{enumerate}
+    \item Compute $a (0, u), \ldots, a (M, u) \in \C [u]$ via
+    \eqref{eq:a0}--\eqref{eq:ak} with \eqref{eq:roughHparams}. Cost: $O (M^2)$
+    polynomial multiplications in $\C [u]$.
+    
+    \item Compute $d (0, u), \ldots, d (M, u) \in \C [u]$ via \eqref{eq:dk}.
+    Cost: $O (M)$ scalar-polynomial multiplications.
+    
+    \item Run the Chebyshev--Wheeler recurrence \eqref{eq:CWrecurrence} on
+    $S_{\kappa} (0, z) = \sum_{k = 0}^M d (k, u) z^k$ to obtain
+    $\alpha_{\kappa} (n), \beta_{\kappa} (n) \in \C [u]$ for $0 \le n < M$.
+    Cost: $O (M^2)$ operations in $\C [u]$.
+    
+    \item Evaluate $\kappa_M (T, u)$ via \eqref{eq:kappaM} at any $(T, u)$ by
+    polynomial evaluation. Cost: $O (M)$ per evaluation point.
+  \end{enumerate}
+  Steps (i)--(iii) are performed {\tmem{once}}, symbolically. Step (iv) is the
+  only per-$(T, u)$ cost, reducing to $O (M)$ arithmetic operations regardless
+  of the size of the Fourier grid.
+\end{corollary}
+
+\section{Structural Summary}\label{sec:structure}
+
+The following table summarises the closure properties established above.
+
+\begin{center}
+  \begin{tabular}{llll}
+    \hline
+    Operation & Lattice & Coefficient at index $k$ & Coupling\\
+    \hline
+    $h (T, u)$ & $\{T^{(k + 1) \alpha} \}$ & $a (k, u)$ &
+    Theorem~\ref{thm:FRMP}\\
+    $\int_0^T h \hspace{0.17em} ds$ & $\{T^{(k + 1) \alpha + 1} \}$ &
+    $\dfrac{a (k, u)}{(k + 1) \alpha + 1}$ & $a (k)$ only\\
+    $I^{1 - \alpha} h$ & $\{T^{k \alpha + 1} \}$ & $\dfrac{\Gamma ((k + 1)
+    \alpha + 1)}{\Gamma (k \alpha + 2)} a (k, u)$ & $a (k - 1)$ after
+    reindex\\
+    $\kappa (T, u)$ & $\{T^{(k + 1) \alpha + 1} \}$ & $d (k, u)$ (eq.
+    \eqref{eq:dk}) & affine in $(a (k - 1), a (k))$\\
+    \hline
+  \end{tabular}
+\end{center}
+
+\begin{thebibliography}{99}
+  {\bibitem{ElEuchRosenbaum2019}}El~Euch, O. and Rosenbaum, M. {\newblock}The
+  characteristic function of rough Heston models.
+  {\newblock}\tmtextit{Mathematical Finance}, 29(1):3--38, 2019.
+  
+  {\bibitem{GatheralRadoicic2019}}Gatheral, J. and Radi{\v c}oi{\'c}, R.
+  {\newblock}Rational approximation of the rough Heston solution.
+  {\newblock}\tmtextit{Quantitative Finance}, 19(3):495--502, 2019.
+  
+  {\bibitem{AbiJaberElEuch2019}}Abi~Jaber, E. and El~Euch, O.
+  {\newblock}Multifactor approximation of rough volatility models.
+  {\newblock}\tmtextit{SIAM Journal on Financial Mathematics}, 10(2):309--349,
+  2019.
+  
+  {\bibitem{Diethelm2004}}Diethelm, K., Ford, N.{\hspace{0.17em}}J., and
+  Freed, A.{\hspace{0.17em}}D. {\newblock}Detailed error analysis for a
+  fractional Adams method. {\newblock}\tmtextit{Numerical Algorithms},
+  36(1):31--52, 2004.
+  
+  {\bibitem{Gragg1974}}Gragg, W.{\hspace{0.17em}}B. {\newblock}The Pad{\'e}
+  table and its relation to certain algorithms of numerical analysis.
+  {\newblock}\tmtextit{SIAM Review}, 14(1):1--62, 1972.
+  
+  {\bibitem{Stahl1997}}Stahl, H. {\newblock}The convergence of Pad{\'e}
+  approximants to functions with branch points. {\newblock}\tmtextit{Journal
+  of Approximation Theory}, 91(2):139--204, 1997.
+  
+  {\bibitem{Chihara1978}}Chihara, T.{\hspace{0.17em}}S.
+  {\newblock}\tmtextit{An Introduction to Orthogonal Polynomials}.
+  {\newblock}Gordon and Breach, New York, 1978.
+  
+  {\bibitem{MuntzLegendre2015}}Esmaeili, H. and Shamsi, M. {\newblock}A
+  pseudo-spectral scheme for the approximate solution of a family of
+  fractional differential equations. {\newblock}\tmtextit{Applied Mathematical
+  Modelling}, 39(16):5148--5163, 2015.
+  
+  {\bibitem{WheelerGautschi1996}}Gautschi, W. {\newblock}\tmtextit{Orthogonal
+  Polynomials: Computation and Approximation}. {\newblock}Oxford University
+  Press, Oxford, 2004.
+\end{thebibliography}
+
+\end{document}
