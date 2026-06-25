@@ -445,9 +445,9 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
    */
   protected void resetConvergenceAccumulator(MethodVisitor mv)
   {
-    if (!Real.class.equals(generatedType))
+    if (!Real.class.equals(generatedType) && !Complex.class.equals(generatedType))
     {
-      throw new CompilerException(String.format("Σ{a..∞} convergence is only supported for a Real-valued accumulation, not %s, in %s",
+      throw new CompilerException(String.format("Σ{a..∞} convergence is only supported for a Real- or Complex-valued accumulation, not %s, in %s",
                                                 generatedType,
                                                 expression));
     }
@@ -484,7 +484,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     loadIntermediateResultVariable(mv);
     loadBitsParameterOntoStack(mv);
     invokeMethod(mv, ConvergentSeriesAccumulator.class, "converged",
-                 Compiler.getMethodDescriptor(boolean.class, Real.class, int.class), false);
+                 Compiler.getMethodDescriptor(boolean.class, generatedType, int.class), false);
     mv.visitJumpInsn(IFNE, endLoop);
 
     loadIndexVariable(mv);
