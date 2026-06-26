@@ -18,6 +18,7 @@
  */
 
 #include "pade_resolvent.h"
+#include <stdio.h>
 
 /* ─── init ─────────────────────────────────────────────────────────────── */
 
@@ -61,6 +62,13 @@ void pade_resolvent_init(pade_resolvent_t ctx,
   arb_clear(neg_a0);
 
   ctx->degree = 1;
+  ctx->debug_mode = 0;
+}
+
+void pade_resolvent_set_debug(pade_resolvent_t ctx,
+                              int              toggle)
+{
+  ctx->debug_mode = toggle;
 }
 
 /* ─── clear ─────────────────────────────────────────────────────────────── */
@@ -95,6 +103,18 @@ void pade_resolvent_step(pade_resolvent_t ctx,
                          const arb_t      beta,
                          slong            prec)
 {
+  if (ctx->debug_mode)
+  {
+    printf("\n============================================================\n");
+    printf("[DEBUG] EXECUTION START | Target Degree M = %ld | Prec = %ld bits\n", ctx->degree + 1, prec);
+    printf("[DEBUG] ALPHA_M: ");
+    arb_printd(alpha, 15);
+    printf("\n[DEBUG] BETA_M : ");
+    arb_printd(beta, 15);
+    printf("\n");
+    fflush(stdout);
+  }
+
   /* ── Denominator Q ─────────────────────────────────────────────────── */
 
   /* T1 = alpha * z * Q_curr */
@@ -113,6 +133,14 @@ void pade_resolvent_step(pade_resolvent_t ctx,
   arb_poly_swap(ctx->Q_prev, ctx->Q_curr);
   arb_poly_swap(ctx->Q_curr, ctx->T3);
 
+  if (ctx->debug_mode)
+  {
+    printf("[DEBUG] DENOMINATOR Q_M(z) COMPUTED:\n");
+    arb_poly_printd(ctx->Q_curr, 15);
+    printf("\n");
+    fflush(stdout);
+  }
+
   /* ── Numerator P ───────────────────────────────────────────────────── */
 
   arb_poly_shift_left(ctx->T1, ctx->P_curr, 1);
@@ -127,6 +155,14 @@ void pade_resolvent_step(pade_resolvent_t ctx,
   arb_poly_swap(ctx->P_prev, ctx->P_curr);
   arb_poly_swap(ctx->P_curr, ctx->T3);
 
+  if (ctx->debug_mode)
+  {
+    printf("[DEBUG] NUMERATOR P_M(z) COMPUTED:\n");
+    arb_poly_printd(ctx->P_curr, 15);
+    printf("\n");
+    fflush(stdout);
+  }
+
   ctx->degree++;
 }
 
@@ -137,13 +173,41 @@ void pade_resolvent_evaluate(arb_t                  res,
                               const arb_t            z,
                               slong                  prec)
 {
+  if (ctx->debug_mode)
+  {
+    printf("\n------------------------------------------------------------\n");
+    printf("[DEBUG] EVALUATING RESOLVENT AT POINT Z:\n");
+    arb_printd(z, 15);
+    printf("\n");
+    fflush(stdout);
+  }
+
   arb_t num, den;
   arb_init(num);
   arb_init(den);
 
   arb_poly_evaluate(num, ctx->P_curr, z, prec);
   arb_poly_evaluate(den, ctx->Q_curr, z, prec);
+
+  if (ctx->debug_mode)
+  {
+    printf("[DEBUG] NUMERATOR EVALUATED TO   : ");
+    arb_printd(num, 15);
+    printf("\n[DEBUG] DENOMINATOR EVALUATED TO : ");
+    arb_printd(den, 15);
+    printf("\n");
+    fflush(stdout);
+  }
+
   arb_div(res, num, den, prec);
+
+  if (ctx->debug_mode)
+  {
+    printf("[DEBUG] FINAL RATIONAL RESULT    : ");
+    arb_printd(res, 15);
+    printf("\n------------------------------------------------------------\n");
+    fflush(stdout);
+  }
 
   arb_clear(num);
   arb_clear(den);
@@ -151,31 +215,45 @@ void pade_resolvent_evaluate(arb_t                  res,
 
 /* ─── extract_poles ─────────────────────────────────────────────────────── */
 
-void pade_resolvent_extract_poles(acb_ptr                roots,
+slong pade_resolvent_extract_poles(acb_ptr                roots,
                                   const pade_resolvent_t ctx,
+                                  slong                  maxiter,
                                   slong                  prec)
 {
+  if (ctx->debug_mode)
+  {
+    printf("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
+    printf("[DEBUG] INITIATING COMPLEX POLE EXTRACTION ON Q_M(z)\n");
+    printf("[DEBUG] Q_curr Degree : %ld | Max Iterations: %ld\n", arb_poly_degree(ctx->Q_curr), maxiter);
+    fflush(stdout);
+  }
+
   acb_poly_t Q_complex;
   acb_poly_init(Q_complex);
-
-  slong len = arb_poly_length(ctx->Q_curr);
-  arb_t c;
-  arb_init(c);
-  for (slong i = 0; i < len; i++)
-  {
-    arb_poly_get_coeff_arb(c, ctx->Q_curr, i);
-    acb_poly_set_coeff_arb(Q_complex, i, c);
-  }
-  arb_clear(c);
+  acb_poly_set_arb_poly(Q_complex, ctx->Q_curr);
 
   /*
    * Hand off to Arb's certified complex root finder.
    * The caller must pre-allocate roots[0..degree-1].
    * NULL initial guesses and maxiter = 0 use Arb defaults.
    */
-  acb_poly_find_roots(roots, Q_complex, NULL, 0, prec);
+  slong isolated = acb_poly_find_roots(roots, Q_complex, NULL, maxiter, prec);
+
+  if (ctx->debug_mode)
+  {
+    printf("[DEBUG] ROOT ISOLATION COMPLETE. Safely Extracted: %ld / %ld\n", isolated, arb_poly_degree(ctx->Q_curr));
+    for (slong i = 0; i < isolated; i++)
+    {
+      printf("[DEBUG] ROOT [%ld] : ", i);
+      acb_printd(roots + i, 15);
+      printf("\n");
+    }
+    printf("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
+    fflush(stdout);
+  }
 
   acb_poly_clear(Q_complex);
+  return isolated;
 }
 
 /* ─── standalone smoke test (compile with -DPADE_RESOLVENT_MAIN) ─────────── */

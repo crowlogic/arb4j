@@ -51,6 +51,7 @@ typedef struct
   arb_poly_t T3;
 
   slong      degree;
+  int        debug_mode;
 } pade_resolvent_struct;
 
 typedef pade_resolvent_struct pade_resolvent_t[1];
@@ -71,6 +72,12 @@ extern "C" {
 void pade_resolvent_init(pade_resolvent_t ctx,
                          const arb_t     c0,
                          const arb_t     alpha0);
+
+/*
+ * Enable/disable verbose debug output.
+ */
+void pade_resolvent_set_debug(pade_resolvent_t ctx,
+                              int              toggle);
 
 /*
  * Releases all arb_poly allocations owned by ctx.
@@ -103,9 +110,10 @@ void pade_resolvent_evaluate(arb_t            res,
  * The caller must pre-allocate roots as an array of exactly
  * arb_poly_degree(ctx->Q_curr) acb elements.
  */
-void pade_resolvent_extract_poles(acb_ptr                roots,
-                                  const pade_resolvent_t ctx,
-                                  slong                  prec);
+slong pade_resolvent_extract_poles(acb_ptr                roots,
+                                   const pade_resolvent_t ctx,
+                                   slong                  maxiter,
+                                   slong                  prec);
 
 #ifdef __cplusplus
 }
