@@ -226,7 +226,15 @@ public class MuntzPadeCumulantGenerator implements
   private final arb.Complex             best      = new arb.Complex();
   private final arb.ComplexPolynomial   dk        = new arb.ComplexPolynomial();
   private final arb.Integer             kIdx      = new arb.Integer();
-
+ 
+  public arb.Complex padeSummation(arb.Complex v, int maxOrder, int bits, arb.Complex res)
+  {
+    try ( GeneralizedPadeSummation summation = new GeneralizedPadeSummation(term, 0))
+    {
+      return summation.evaluate(v, maxOrder, bits, res);
+    }
+  }
+ 
   @Override
   public arb.Complex evaluate(arb.Complex v, int order, int bits, arb.Complex res)
   {
