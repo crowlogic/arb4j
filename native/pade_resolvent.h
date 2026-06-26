@@ -2,9 +2,20 @@
 #define PADE_RESOLVENT_H
 
 /*
- * Zero-allocation Maclaurin-Pade resolvent engine.
+ * Zero-allocation Maclaurin-Padé resolvent engine.
  *
- * Computes the diagonal [M/M] Pade approximant of the formal Maclaurin series
+ * Part of the C foundation for the fractional Riccati / Müntz-Padé stack:
+ *   MuntzPadeApproximant / RiccatiMuntzPadeFunctional /
+ *   OrthogonalPolynomialMomentFunctionalSequence
+ *
+ * Related issues:
+ *   #1016  Replace Hankel bordered-inverse with Chebyshev OPS recurrence
+ *   #1021  OrthogonalPolynomialMomentFunctionalSequence implementation
+ *   #1054  Continued-fraction / Padé-diagonal convergence for ∞ accumulations
+ *   #1015  Padé expander
+ *   #1011  Fractional Riccati solver via Müntz-Padé expansion
+ *
+ * Computes the diagonal [M/M] Padé approximant of the formal Maclaurin series
  * whose Jacobi recurrence coefficients alpha_k, beta_k are supplied
  * one step at a time.  The recurrence is the RECIPROCAL form:
  *

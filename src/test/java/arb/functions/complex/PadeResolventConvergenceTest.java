@@ -22,6 +22,15 @@ import junit.framework.TestCase;
  *
  * which evaluates the rational approximant near z = 0 (the Maclaurin side).
  *
+ * <h2>Related issues</h2>
+ * <ul>
+ *   <li>#1016 Replace Hankel bordered-inverse with Chebyshev OPS recurrence</li>
+ *   <li>#1021 OrthogonalPolynomialMomentFunctionalSequence implementation</li>
+ *   <li>#1054 Continued-fraction / Padé-diagonal convergence for ∞ accumulations</li>
+ *   <li>#1015 Padé expander</li>
+ *   <li>#1011 Fractional Riccati solver via Müntz-Padé expansion</li>
+ * </ul>
+ *
  * <h2>Covered properties</h2>
  * <ol>
  *   <li>The initial condition y(0) = 0 is satisfied exactly regardless of μ.

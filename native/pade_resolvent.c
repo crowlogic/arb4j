@@ -1,12 +1,20 @@
 /*
- * Zero-allocation O(N) Maclaurin-Pade resolvent engine.
+ * Zero-allocation O(N) Maclaurin-Padé resolvent engine.
  *
- * See pade_resolvent.h for the mathematical background and API contract.
+ * See pade_resolvent.h for the mathematical background, API contract, and
+ * related issue references (#1016, #1021, #1054, #1015, #1011).
  *
  * Build (standalone smoke test):
  *   clang -O3 -DPADE_RESOLVENT_MAIN -o pade_resolvent_test \
  *         native/pade_resolvent.c -I<flint>/include -I<flint>/include/flint \
  *         -lflint
+ *
+ * Fixes five defects in the prior draft (see commit message for details):
+ *   1. Reciprocal domain: (1 - α·z)·W_M not (z - α)·W_M  — avoids 1/z blow-up
+ *   2. Zero heap traffic: arb_poly_swap recycles storage; init/clear once only
+ *   3. O(N) per step: shift_left + scalar_mul replace FFT poly_mul
+ *   4. P_{-1} singularity: M=0→1 unrolled manually in pade_resolvent_init
+ *   5. Correct API: arb_poly_scalar_mul (not arb_poly_scalar_mul_arb)
  */
 
 #include "pade_resolvent.h"
