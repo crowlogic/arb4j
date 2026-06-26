@@ -36,4 +36,40 @@ public class GeneralizedPadeSummationTest
        assertTrue("imaginary part should remain zero", Math.abs(res.im().doubleValue()) < 1e-12);
      }
    }
+
+   @Test
+   public void resumsJetTermsProvidedByFunctionEvaluate()
+   {
+     try ( Complex v = new Complex();
+           Complex res = new Complex();
+           ComplexFunction function = new ComplexFunction()
+           {
+             @Override
+             public Complex evaluate(Complex t, int order, int bits, Complex result)
+             {
+               if (result == null)
+               {
+                 result = Complex.newVector(order);
+               }
+               else if (result.size() != order)
+               {
+                 result.become(Complex.newVector(order));
+               }
+               for (int k = 0; k < order; k++)
+               {
+                 Complex term = result.get(k);
+                 term.set((k % 2 == 0 ? 1.0 : -1.0) / (k + 1));
+               }
+               return result;
+             }
+           };
+           GeneralizedPadeSummation summation = new GeneralizedPadeSummation(function) )
+     {
+       v.zero();
+       summation.evaluate(v, 20, 128, res);
+       double value = res.re().doubleValue();
+       assertTrue("expected the function-jet summation to converge to ln(2)", Math.abs(value - Math.log(2.0)) < 1e-8);
+       assertTrue("imaginary part should remain zero", Math.abs(res.im().doubleValue()) < 1e-12);
+     }
+   }
 }
