@@ -382,10 +382,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    if (upperLimit != null && upperLimit.isPositiveInfinity())
-    {
-      return generateInfiniteSeriesAccumulation(mv, resultType);
-    }
     if (optimallyTruncated)
     {
       return generateOptimallyTruncatedAccumulation(mv, resultType);
@@ -408,46 +404,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     designateLabel(mv, endLoop);
     assignResult(mv, resultType);
     return mv;
-  }
-
-  protected MethodVisitor generateInfiniteSeriesAccumulation(MethodVisitor mv, Class<?> resultType)
-  {
-   assert "add".equals(operation) : String.format("the infinite-bound accumulation specifier applies only to Σ, not %s(%s)",
-                                                   symbol,
-                                                   operation);
-   resultType = assignTypes(resultType);
-   assignFieldNamesIfNecessary(resultType);
-   assert Real.class.equals(generatedType) : String.format("the infinite-bound accumulation specifier requires a Real codomain, not %s",
-                                                            generatedType);
-   declareIndexVariableField();
-
-   if (accumulatorFieldName == null)
-   {
-     accumulatorFieldName = expression.newIntermediateVariable("accumulator",
-                                                               PadeSeriesAccumulator.class);
-   }
-
-   propagateInputToOperand(mv);
-   initializeResultVariable(mv, resultType);
-   setIndexToTheLowerLimit(mv);
-
-   loadFieldFromThis(mv, accumulatorFieldName, PadeSeriesAccumulator.class);
-   loadOperand(mv);
-   loadIndexVariable(mv);
-   loadBitsParameterOntoStack(mv);
-   loadIntermediateResultVariable(mv);
-   invokeMethod(mv,
-                PadeSeriesAccumulator.class,
-                "accumulate",
-                getMethodDescriptor(Real.class,
-                                    Function.class,
-                                    Integer.class,
-                                    int.class,
-                                    Real.class),
-                false);
-   pop(mv);
-   assignResult(mv, resultType);
-   return mv;
   }
 
   /**
