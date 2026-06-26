@@ -228,7 +228,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   /** System property {@code arb4j.evaluateGuard} (default {@code true}).
    *  When {@code false}, the generated {@code evaluate()} emits no re-entrancy
    *  guard (the evaluating-boolean check, throw, try/finally wrapper). */
-  private static final boolean    evaluateGuardEnabled              = Boolean.valueOf(System.getProperty("arb4j.evaluateGuard", "false"));
+  private static final boolean    evaluateGuardEnabled              = Boolean.valueOf(System.getProperty("arb4j.evaluateGuard", "true"));
 
   public static boolean           saveGraphs                        = Boolean.valueOf(System.getProperty("arb4j.saveGraphs", "false"));
 
