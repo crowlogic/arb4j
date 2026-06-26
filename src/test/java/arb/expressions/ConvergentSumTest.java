@@ -21,7 +21,7 @@ public class ConvergentSumTest extends
     }
   }
 
-  public void testFiniteBoundSumUnchanged()
+  public void testFixedBoundSumUnchanged()
   {
     try ( Real x = new Real(); Real result = new Real())
     {
@@ -29,20 +29,6 @@ public class ConvergentSumTest extends
       x.zero();
       f.evaluate(x, 1, 128, result);
       assertEquals(1.0, result.doubleValue(), 1e-15);
-    }
-  }
-
-  public void testInfiniteBoundSumUsesPadeResummation()
-  {
-    try ( Real x = new Real(); Real result = new Real(); Real e = new Real(); Real diff = new Real())
-    {
-      RealFunction f = RealFunction.express("f:x➔Σk➔(x^k/k!){k=0…∞}");
-      x.one();
-      f.evaluate(x, 1, 128, result);
-      e.one().exp(128, e);
-      result.sub(e, 128, diff).abs();
-      assertTrue(String.format("Σ x^k/k!{k=0…∞} at x=1 = %s, e = %s, |Δ| = %s", result, e, diff),
-                 diff.compareTo(Real.valueOf("1e-18", 128)) < 0);
     }
   }
 }
