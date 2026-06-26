@@ -193,11 +193,11 @@ public class MuntzPadeCumulantGenerator implements
     // Single-term sequence for incremental accumulation in adaptive evaluate().
     this.term = ComplexFunctionSequence.express("term:k➔v➔d(k)(v)*T^(k*μ+1)", context);
 
-    // Closed-form (fixed-N) alternative compiled under the name ΦClosed so that
-    // the adaptive `this` instance can claim the name `Φ` in the context —
+    // Closed-form infinite-sum alternative compiled under the name ΦClosed so
+    // that the adaptive `this` instance can claim the name `Φ` in the context —
     // letting downstream expressions like φ:v➔exp(Φ(v)) dispatch to the
     // adaptive evaluate().
-    this.Φ    = ComplexFunction.express("ΦClosed:v➔Σk➔d(k)(v)*T^(k*μ+1){k=0..N}", context);
+    this.Φ    = ComplexFunction.express("ΦClosed:v➔Σk➔d(k)(v)*T^(k*μ+1){k=0..∞}", context);
 
     // Register THIS instance under Φ so downstream compiled expressions that
     // reference Φ(v) hit the adaptive incremental evaluate().
@@ -238,40 +238,7 @@ public class MuntzPadeCumulantGenerator implements
   @Override
   public arb.Complex evaluate(arb.Complex v, int order, int bits, arb.Complex res)
   {
-    threshold.one().mul2e(-bits / 2, threshold);
-    bestMag.posInf();
-    sum.zero();
-
-    for (int n = 0; true; n++)
-    {
-      kIdx.set(n);
-      d.evaluate(kIdx, 1, bits, dk);
-      dk.evaluate(v, 1, bits, addition);
-      μ.mul(n, bits, expo).add(1, bits, expo);
-      T.pow(expo, bits, tpow);
-      addition.mul(tpow, bits, addition);
-      sum.add(addition, bits, sum);
-      addition.abs(bits, addMag);
-
-      if (n == 0)
-      {
-        best.set(sum);
-        continue;
-      }
-      if (addMag.compareTo(threshold) <= 0)
-      {
-        return res.set(sum);
-      }
-      if (addMag.compareTo(bestMag) < 0)
-      {
-        bestMag.set(addMag);
-        best.set(sum);
-      }
-      else
-      {
-        return res.set(best);
-      }
-    }
+    return Φ.evaluate(v, order, bits, res);
   }
 
   @Override

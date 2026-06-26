@@ -129,7 +129,13 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   public String                                   accumulatorFieldName;
 
+  public String                                   toleranceFieldName;
 
+  public String                                   termMagnitudeFieldName;
+
+  public String                                   iterationFieldName;
+  
+ 
   /**
    * Bytecode-level internal name of the owning {@link Expression}, captured once
    * at construction. Used as the {@code owner} argument to ASM
@@ -391,6 +397,11 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     assignFieldNamesIfNecessary(resultType);
     declareIndexVariableField();
 
+    if (isPositiveInfinityUpperBound())
+    {
+      return generateInfiniteAccumulation(mv, resultType);
+    }
+
     propagateInputToOperand(mv);
     initializeResultVariable(mv, resultType);
     setIndexToTheLowerLimit(mv);
@@ -460,6 +471,113 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     pop(mv);
     assignResult(mv, resultType);
     return mv;
+  }
+
+  protected boolean isPositiveInfinityUpperBound()
+  {
+    return upperLimit != null && upperLimit.isPositiveInfinity();
+  }
+
+  protected MethodVisitor generateInfiniteAccumulation(MethodVisitor mv, Class<?> resultType)
+  {
+    if (!Real.class.equals(generatedType) && !Complex.class.equals(generatedType))
+    {
+      throw new CompilerException(String.format("infinite accumulation requires a Real or Complex codomain, not %s",
+                                                generatedType));
+    }
+
+    resultType = assignTypes(resultType);
+    assignFieldNamesIfNecessary(resultType);
+    declareIndexVariableField();
+    declareInfiniteAccumulationFields();
+
+    propagateInputToOperand(mv);
+    initializeResultVariable(mv, resultType);
+    setIndexToTheLowerLimit(mv);
+    initializeInfiniteAccumulationState(mv);
+
+    designateLabel(mv, beginLoop);
+    generateInfiniteInnerLoop(mv);
+    jumpTo(mv, beginLoop);
+    designateLabel(mv, endLoop);
+    assignResult(mv, resultType);
+    return mv;
+  }
+
+  protected void declareInfiniteAccumulationFields()
+  {
+    if (toleranceFieldName == null)
+    {
+      toleranceFieldName = expression.newIntermediateVariable("tolerance", Real.class);
+    }
+    if (termMagnitudeFieldName == null)
+    {
+      termMagnitudeFieldName = expression.newIntermediateVariable("termMagnitude", Real.class);
+    }
+    if (iterationFieldName == null)
+    {
+      iterationFieldName = expression.newIntermediateVariable("iterations", Integer.class);
+    }
+  }
+
+  protected void generateInfiniteInnerLoop(MethodVisitor mv)
+  {
+    loadIntermediateResultVariable(mv);
+    loadOperand(mv);
+    loadIndexVariable(mv);
+    loadBitsParameterOntoStack(mv);
+    loadOperandValue(mv);
+    evaluateOperand(mv);
+    cast(mv, generatedType);
+    loadBitsParameterOntoStack(mv);
+    combine(mv);
+    pop(mv);
+
+    loadFieldFromThis(mv, operandValueFieldName, generatedType);
+    loadBitsParameterOntoStack(mv);
+    loadFieldFromThis(mv, termMagnitudeFieldName, Real.class);
+    invokeMethod(mv, generatedType, "abs", getMethodDescriptor(Real.class, generatedType, int.class, Real.class), false);
+    loadFieldFromThis(mv, toleranceFieldName, Real.class);
+    invokeMethod(mv, Real.class, "compareTo", getMethodDescriptor(int.class, Real.class), false);
+    jumpToIfLessThanOrEquals(mv, endLoop);
+
+    incrementIteration(mv);
+    loadFieldFromThis(mv, iterationFieldName, Integer.class);
+    mv.visitLdcInsn(1_000_000);
+    invokeMethod(mv, Integer.class, "compareTo", getMethodDescriptor(int.class, Integer.class), false);
+    mv.visitJumpInsn(IFGE, endLoop);
+
+    incrementIndex(mv);
+  }
+
+  protected void initializeInfiniteAccumulationState(MethodVisitor mv)
+  {
+    loadFieldFromThis(mv, toleranceFieldName, Real.class);
+    invokeMethod(mv, Real.class, "one", getMethodDescriptor(Real.class), false);
+    pop(mv);
+
+    loadFieldFromThis(mv, toleranceFieldName, Real.class);
+    loadBitsParameterOntoStack(mv);
+    mv.visitLdcInsn(2);
+    mv.visitInsn(IDIV);
+    mv.visitInsn(INEG);
+    loadFieldFromThis(mv, toleranceFieldName, Real.class);
+    invokeMethod(mv, Real.class, "mul2e", getMethodDescriptor(Real.class, int.class, Real.class), false);
+    pop(mv);
+
+    loadFieldFromThis(mv, iterationFieldName, Integer.class);
+    mv.visitLdcInsn(0);
+    invokeMethod(mv, Integer.class, "set", getMethodDescriptor(Integer.class, int.class), false);
+    pop(mv);
+  }
+
+  protected void incrementIteration(MethodVisitor mv)
+  {
+    loadFieldFromThis(mv, iterationFieldName, Integer.class);
+    mv.visitLdcInsn(1);
+    loadFieldFromThis(mv, iterationFieldName, Integer.class);
+    invokeMethod(mv, Integer.class, "add", getMethodDescriptor(Integer.class, int.class, Integer.class), false);
+    pop(mv);
   }
 
   protected void declareIndexVariableField()
