@@ -151,7 +151,15 @@
 		<directory>build</directory>
 		<outputDirectory>build/classes</outputDirectory>
 		<testOutputDirectory>build/test-classes</testOutputDirectory>
-
+		<resources>
+			<resource>
+				<directory>${project.basedir}</directory>
+				<includes>
+					<include>libarblib.so</include>
+				</includes>
+				<targetPath>.</targetPath>
+			</resource>
+		</resources>
 
 		<plugins>
 			<plugin>

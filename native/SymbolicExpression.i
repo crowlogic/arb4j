@@ -264,7 +264,7 @@ import arb.documentation.TheArb4jLibrary;
     
   static
   {
-    System.loadLibrary("arblib");
+    NativeLibraryLoader.load("arblib");
   }
  
  

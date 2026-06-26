@@ -34,7 +34,7 @@ public class PointValueCache implements
 {
   static
   {
-    System.loadLibrary("arblib");
+    NativeLibraryLoader.load("arblib");
   }
 
   Complex[][][]         points;

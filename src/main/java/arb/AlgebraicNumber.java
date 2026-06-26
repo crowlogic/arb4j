@@ -498,7 +498,7 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
   }
   static
   {
-    System.loadLibrary("arblib");
+    NativeLibraryLoader.load("arblib");
   }
  
  

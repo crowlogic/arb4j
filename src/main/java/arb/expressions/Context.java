@@ -140,7 +140,7 @@ public class Context implements
 
   static
   {
-    System.loadLibrary("arblib");
+    NativeLibraryLoader.load("arblib");
   }
 
   // Lazy: a generated <init> allocates a Context that its parent's initialize

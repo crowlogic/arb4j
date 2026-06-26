@@ -490,7 +490,7 @@ public class RationalFunction implements RealFunction,NamedField<RationalFunctio
   
   static
   {
-    System.loadLibrary("arblib");
+    NativeLibraryLoader.load("arblib");
   }
 
   @SuppressWarnings("unlikely-arg-type")

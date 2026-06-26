@@ -54,7 +54,7 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
     }
   }
 
-  static { System.loadLibrary( "arblib" ); }
+  static { NativeLibraryLoader.load("arblib"); }
 
   public RealMatrix set(int i, int j, Integer l)
   {

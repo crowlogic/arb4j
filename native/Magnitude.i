@@ -117,7 +117,7 @@ import static arb.arblib.*;
    
   static
   {
-   System.loadLibrary("arblib");
+   NativeLibraryLoader.load("arblib");
   }
  
   public static final int BYTES = 16;

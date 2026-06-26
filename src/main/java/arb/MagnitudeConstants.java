@@ -15,7 +15,7 @@ public class MagnitudeConstants
 
   static
   {
-    System.loadLibrary("arblib");
+    NativeLibraryLoader.load("arblib");
   }
 
   public static Magnitude log10mag;

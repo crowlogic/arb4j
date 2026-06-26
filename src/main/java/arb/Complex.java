@@ -64,7 +64,7 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
     }
   }
 
-  static { System.loadLibrary( "arblib" ); }
+  static { NativeLibraryLoader.load("arblib"); }
 
   public ComplexPolynomial mul(Complex s, int prec, ComplexPolynomial r)
   {

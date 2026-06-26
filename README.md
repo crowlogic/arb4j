@@ -10,6 +10,8 @@ arithmetic operations.
 ### What is the Expression Compiler in arb4j?
 arb4j's Expression Compiler is an eloquent fucking thing indeed. Here's why:
 
+Native bindings are built as a self-contained `libarblib.so` shared object. When that library is packaged inside the jar, arb4j extracts it to a temporary location and loads it automatically; for local development builds, the project-root copy is still picked up via `java.library.path` when present.
+
 ## Direct Transmutation: Math → Bytecode
 
 ## Self-Aware AST
