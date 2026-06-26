@@ -158,15 +158,8 @@ void pade_resolvent_extract_poles(acb_ptr                roots,
   acb_poly_t Q_complex;
   acb_poly_init(Q_complex);
 
-  slong len = arb_poly_length(ctx->Q_curr);
-  arb_t c;
-  arb_init(c);
-  for (slong i = 0; i < len; i++)
-  {
-    arb_poly_get_coeff_arb(c, ctx->Q_curr, i);
-    acb_poly_set_coeff_arb(Q_complex, i, c);
-  }
-  arb_clear(c);
+  /* Lift the real denominator Q_curr into the complex plane in one shot. */
+  acb_poly_set_arb_poly(Q_complex, ctx->Q_curr);
 
   /*
    * Hand off to Arb's certified complex root finder.
@@ -186,27 +179,46 @@ void pade_resolvent_extract_poles(acb_ptr                roots,
 #include "flint/flint.h"
 
 /*
- * Smoke test: verify the Pade resolvent against the classical
+ * Smoke test: verify the Padé resolvent against the classical Gauss
+ * continued fraction
  *
  *   tanh(z) = z / (1 + z^2/3 / (1 + z^2/5 / (1 + ...)))
  *
- * Stieltjes J-fraction.  The Jacobi coefficients for the moment functional
- * of tanh are:
+ * Dividing through by z and applying the standard equivalence transformation
+ * r_k = 1/(2k+1) turns the partial numerators z^2 with denominators (2k+1)
+ * into the engine's RECIPROCAL J-fraction normal form
  *
- *   alpha_k = 0  (tanh is odd => all diagonal Jacobi coefficients vanish)
- *   beta_k  = k(k+1) / ((2k-1)(2k+1)),  k = 1, 2, 3, ...
+ *   F(z) = tanh(z)/z = c0 / (1 - b1 z^2 / (1 - b2 z^2 / (1 - ...)))
  *
- *   beta_1 = 1*2/(1*3) = 2/3
- *   beta_2 = 2*3/(3*5) = 2/5
- *   beta_3 = 3*4/(5*7) = 12/35
+ * whose Jacobi coefficients are
  *
- * The [M/M] Pade of z*F(z) where F(z) = tanh(z)/z gives P_M/Q_M.
- * We compare R_5(0.5) against the high-precision reference
- * tanh(0.5) = 0.46211715726000975850231848364...
+ *   c0       = 1
+ *   alpha_k  = 0                      (tanh is odd => zero diagonal)
+ *   beta_k   = -1 / ((2k-1)(2k+1)),   k = 1, 2, 3, ...
  *
- * Expected output with M = 5 and prec = 256:
- *   |R_5(0.5) - tanh(0.5)| < 1e-20
+ *   beta_1 = -1/(1*3) = -1/3
+ *   beta_2 = -1/(3*5) = -1/15
+ *   beta_3 = -1/(5*7) = -1/35
+ *   beta_4 = -1/(7*9) = -1/63
+ *
+ * The sign is negative because the engine recurrence subtracts beta z^2 while
+ * the tanh Gauss fraction adds its partial numerators.  R_M = P_curr/Q_curr is
+ * then the [M-1/M] convergent of tanh(z)/z, so we compare R(0.5) against the
+ * high-precision reference tanh(0.5)/0.5 = 0.92423431452001951700...
+ *
+ * Eight steps drive |R(0.5) - tanh(0.5)/0.5| below 1e-15 at prec = 256.
  */
+/*
+ * Set x = p / q exactly to prec bits.  arb_set_str does NOT parse "p/q"
+ * fraction syntax (it returns nonzero and leaves the ball indeterminate),
+ * so rational coefficients must be assembled with an explicit division.
+ */
+static void arb_set_rational_si(arb_t x, slong p, slong q, slong prec)
+{
+  arb_set_si(x, p);
+  arb_div_si(x, x, q, prec);
+}
+
 static int pade_resolvent_smoke_test(slong prec)
 {
   pade_resolvent_t ctx;
@@ -221,38 +233,33 @@ static int pade_resolvent_smoke_test(slong prec)
   arb_init(ref);
   arb_init(err);
 
-  /* c0 = a_1 = 1  (first Müntz moment of tanh: tanh(t) ~ t for small t) */
+  /* c0 = m_0 = 1  (tanh(t)/t -> 1 as t -> 0) */
   arb_one(c0);
 
-  /* alpha_0 = 0  (diagonal coefficient at M=0) */
+  /* alpha_0 = 0  (diagonal coefficient at M=0; tanh is odd) */
   arb_zero(alpha);
 
   pade_resolvent_init(ctx, c0, alpha);
 
-  /* Steps M = 2, 3, 4, 5 using the tanh J-fraction beta coefficients */
-  /* beta_1 = 2/3 */
-  arb_set_str(beta, "2/3", prec);
+  /*
+   * Advance the J-fraction with the tanh reciprocal coefficients
+   *   alpha_k = 0,  beta_k = -1/((2k-1)(2k+1)),  k = 1 .. STEPS.
+   */
   arb_zero(alpha);
-  pade_resolvent_step(ctx, alpha, beta, prec);
+  const slong STEPS = 8;
+  for (slong k = 1; k <= STEPS; k++)
+  {
+    arb_set_rational_si(beta, -1, (2 * k - 1) * (2 * k + 1), prec);
+    pade_resolvent_step(ctx, alpha, beta, prec);
+  }
 
-  /* beta_2 = 2/5 */
-  arb_set_str(beta, "2/5", prec);
-  pade_resolvent_step(ctx, alpha, beta, prec);
-
-  /* beta_3 = 12/35 */
-  arb_set_str(beta, "12/35", prec);
-  pade_resolvent_step(ctx, alpha, beta, prec);
-
-  /* beta_4 = 4*5/(7*9) = 20/63 */
-  arb_set_str(beta, "20/63", prec);
-  pade_resolvent_step(ctx, alpha, beta, prec);
-
-  /* Evaluate R_5(0.5) */
+  /* Evaluate R(0.5) */
   arb_set_str(z, "0.5", prec);
   pade_resolvent_evaluate(res, ctx, z, prec);
 
-  /* Reference: tanh(0.5) */
+  /* Reference: tanh(0.5)/0.5 (the function this J-fraction reconstructs) */
   arb_tanh(ref, z, prec);
+  arb_div(ref, ref, z, prec);
 
   /* Error */
   arb_sub(err, res, ref, prec);
@@ -260,14 +267,14 @@ static int pade_resolvent_smoke_test(slong prec)
 
   arb_t threshold;
   arb_init(threshold);
-  arb_set_str(threshold, "1e-10", prec);
+  arb_set_str(threshold, "1e-15", prec);
 
   if (arb_lt(err, threshold))
   {
-    flint_printf("pade_resolvent smoke test PASSED: |R_5(0.5) - tanh(0.5)| < 1e-10\n");
-    flint_printf("  R_5(0.5) = ");
+    flint_printf("pade_resolvent smoke test PASSED: |R(0.5) - tanh(0.5)/0.5| < 1e-15\n");
+    flint_printf("  R(0.5)        = ");
     arb_printn(res, 20, 0);
-    flint_printf("\n  tanh(0.5) = ");
+    flint_printf("\n  tanh(0.5)/0.5 = ");
     arb_printn(ref, 20, 0);
     flint_printf("\n  error = ");
     arb_printn(err, 5, 0);
@@ -277,9 +284,9 @@ static int pade_resolvent_smoke_test(slong prec)
   else
   {
     flint_printf("pade_resolvent smoke test FAILED\n");
-    flint_printf("  R_5(0.5) = ");
+    flint_printf("  R(0.5)        = ");
     arb_printn(res, 20, 0);
-    flint_printf("\n  tanh(0.5) = ");
+    flint_printf("\n  tanh(0.5)/0.5 = ");
     arb_printn(ref, 20, 0);
     flint_printf("\n  error = ");
     arb_printn(err, 10, 0);
