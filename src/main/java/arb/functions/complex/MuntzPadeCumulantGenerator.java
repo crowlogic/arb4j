@@ -229,7 +229,7 @@ public class MuntzPadeCumulantGenerator implements
  
   public arb.Complex padeSummation(arb.Complex v, int maxOrder, int bits, arb.Complex res)
   {
-    try ( GeneralizedPadeSummation summation = new GeneralizedPadeSummation(term, 0))
+    try ( GeneralizedPadeSummation summation = new GeneralizedPadeSummation(this, term, 0))
     {
       return summation.evaluate(v, maxOrder, bits, res);
     }

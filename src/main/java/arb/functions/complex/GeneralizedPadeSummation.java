@@ -9,13 +9,14 @@ import arb.functions.integer.ComplexFunctionSequence;
 import arb.series.ComplexEpsilonTable;
 
 /**
- * Resum a series of {@link ComplexFunction} terms compiled from an expression in a
- * {@link Context} via Wynn's epsilon table (diagonal Padé approximants).
+ * Resum the sequence of derivative functions belonging to an analytic
+ * {@link ComplexFunction} via Wynn's epsilon table (diagonal Padé approximants).
  *
  * <p>
  * The summation is driven by a compiled {@link ComplexFunctionSequence} whose
- * {@code k}-th term is a function of the runtime argument {@code v}. The class
- * evaluates the sequence term-by-term, feeds the partial sums into a
+ * {@code k}-th entry is the {@code k}-th derivative function of the underlying
+ * function with respect to the expansion variable. The class evaluates the
+ * derivative sequence term-by-term, feeds the running partial sums into a
  * {@link ComplexEpsilonTable}, and returns the best diagonal Padé estimate.
  *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -25,22 +26,34 @@ public final class GeneralizedPadeSummation implements
                                            ComplexFunction,
                                            AutoCloseable
 {
-   private final ComplexFunctionSequence terms;
+   private final ComplexFunction          function;
+   private final ComplexFunctionSequence  derivatives;
    private final int                      startIndex;
 
-   public GeneralizedPadeSummation(ComplexFunctionSequence terms)
+   public GeneralizedPadeSummation(ComplexFunctionSequence derivatives)
    {
-     this(terms, 0);
+     this(derivatives, 0);
    }
 
-   public GeneralizedPadeSummation(ComplexFunctionSequence terms, int startIndex)
+   public GeneralizedPadeSummation(ComplexFunctionSequence derivatives, int startIndex)
    {
-     if (terms == null)
-       throw new IllegalArgumentException("terms must not be null");
+     this(null, derivatives, startIndex);
+   }
+
+   public GeneralizedPadeSummation(ComplexFunction function, ComplexFunctionSequence derivatives)
+   {
+     this(function, derivatives, 0);
+   }
+
+   public GeneralizedPadeSummation(ComplexFunction function, ComplexFunctionSequence derivatives, int startIndex)
+   {
+     if (derivatives == null)
+       throw new IllegalArgumentException("derivatives must not be null");
      if (startIndex < 0)
        throw new IllegalArgumentException("startIndex must be non-negative, got " + startIndex);
-     this.terms      = terms;
-     this.startIndex = startIndex;
+     this.function    = function;
+     this.derivatives = derivatives;
+     this.startIndex  = startIndex;
    }
 
    public static GeneralizedPadeSummation express(String expression, Context context)
@@ -50,7 +63,7 @@ public final class GeneralizedPadeSummation implements
 
    public static GeneralizedPadeSummation express(String name, String expression, Context context)
    {
-     return new GeneralizedPadeSummation(ComplexFunctionSequence.express(name, expression, context));
+     return new GeneralizedPadeSummation(null, ComplexFunctionSequence.express(name, expression, context));
    }
 
    @Override
@@ -80,8 +93,8 @@ public final class GeneralizedPadeSummation implements
        return table.limit((n, workBits, partialSum) ->
        {
          index.set(n);
-         ComplexFunction term = terms.evaluate(index, 1, workBits, null);
-         term.evaluate(v, 1, workBits, termValue);
+         ComplexFunction derivative = derivatives.evaluate(index, 1, workBits, null);
+         derivative.evaluate(v, 1, workBits, termValue);
          running.add(termValue, workBits, running);
          partialSum.set(running);
          return partialSum;
@@ -96,6 +109,6 @@ public final class GeneralizedPadeSummation implements
    @Override
    public void close()
    {
-     // Nothing to own; the compiled term sequence remains owned by the caller.
+     // Nothing to own; the underlying function and derivative sequence remain owned by the caller.
    }
 }
