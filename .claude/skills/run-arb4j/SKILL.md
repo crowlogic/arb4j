@@ -24,12 +24,19 @@ and `Makefile`). The driver scripts live in `.claude/skills/run-arb4j/`.
 ## Prerequisites
 
 This container already had the toolchain (verified `swig` 4.4.0, `clang`
-21.1.8, `mvn` 3.9.12, `java` 26.0.1, and `libflint.so.22`/`libmpfr`/`libgmp`
-that `libarblib.so` links against). On a fresh Ubuntu box the equivalent is:
+21.1.8, `mvn` 3.9.12, `java` 26.0.1). **No FLINT/MPFR/GMP install is needed**:
+`libarblib.so` is a prebuilt, committed, statically-linked binary (FLINT/MPFR/GMP
+linked statically into it), so there is no runtime dependency on system math
+libraries. On a fresh Ubuntu box the equivalent is just the JDK, Maven, and (only
+if you intend to rebuild the native lib after a SWIG `.i` change) the C
+toolchain:
 
 ```bash
-# core build + run: Java 26, SWIG, clang, FLINT 3.3+ (arb is folded into FLINT 3.x)
-sudo apt-get install -y openjdk-26-jdk swig clang libflint-dev
+# build + run the Java side: Java 26 + Maven is enough — the committed .so is used as-is
+sudo apt-get install -y openjdk-26-jdk maven
+# ONLY if you edit a SWIG interface file (native/*.i) and must relink the .so;
+# the first such build fetches+builds GMP/MPFR/FLINT 3.3.1 statically itself:
+sudo apt-get install -y clang swig libxdo-dev
 # only for the JavaFX GUI screenshot path (shot.sh):
 sudo apt-get install -y xvfb x11-apps imagemagick
 ```
@@ -46,18 +53,25 @@ export LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
 
 ## Build
 
-Two steps: `make` builds the native `libarblib.so` (SWIG + clang) at the repo
-root; `mvn` compiles the Java into `build/classes` and writes the dependency
-classpath to `class.path`. Both are idempotent — re-running when up to date
-is a no-op.
+`libarblib.so` is **prebuilt and committed** (statically-linked
+FLINT/MPFR/GMP), so the normal path is a **single `mvn` step** — no `make`:
 
 ```bash
-make
 mvn -q install -Dmaven.test.skip=true
 ```
 
-`run.sh` auto-runs both if `libarblib.so`, `class.path`, or `build/classes`
-is missing, so for the agent path you usually don't invoke them directly.
+This compiles the Java into `build/classes` and writes the dependency classpath
+to `class.path`. You only need `make` when you **edit a SWIG interface file
+(`native/*.i`)**; it reruns SWIG + clang and relinks the `.so` (fetching and
+building GMP/MPFR/FLINT 3.3.1 statically into `~/.cache/arb4j` the first time):
+
+```bash
+make   # ONLY after a native/*.i change
+```
+
+`run.sh` auto-runs `mvn` if `class.path` or `build/classes` is missing, and only
+falls back to `make` if the committed `libarblib.so` is absent — so for the agent
+path you usually don't invoke either directly.
 
 ## Run (agent path) — compile + run a Java program
 

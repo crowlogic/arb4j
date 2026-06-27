@@ -31,17 +31,22 @@ This rule applies even when the alternative seems clumsy. The expression compile
 ## Build environment (non-obvious requirements)
 
 - **Java 26** is required (`--enable-preview` is used by the launchers). Set `JAVA_HOME=/usr/lib/jvm/java-26-openjdk-amd64`.
-- **FLINT 3.3+** is required. Debian trixie ships 3.1.3; the Makefile and `README.md` document `-D` defines and `sed` patches needed for 3.1/3.2.
+- **No FLINT install is needed.** `libarblib.so` is a **prebuilt, committed, statically-linked** binary (FLINT/MPFR/GMP are linked statically into it) tracked at `src/main/resources/native/libarblib.so`, with a repo-root `libarblib.so` symlink to it; it is also packaged into the jar at `native/libarblib.so`. Building and running need only this committed `.so` — there is no runtime dependency on a system `libflint`/`libmpfr`/`libgmp`.
 - **UTF-8 locale is mandatory** — several source files have Unicode names (`σField.java`, `RiemannζFunction.java`, `RiemannξFunction.java`). Without `LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8`, `javac` fails with `Invalid filename: ??Field.java`.
-- **Two-step build**: `make` runs SWIG + clang to produce `libarblib.so` at the project root; `mvn` consumes that .so via `-Djava.library.path=${project.basedir}` (set automatically by the surefire plugin and the `bin/*` wrappers).
+- **`make` is only needed when the SWIG interface files (`native/*.i`) change.** It runs SWIG + clang to regenerate `arb_wrap.c` and relink `libarblib.so` (fetching and building GMP/MPFR/FLINT statically into `~/.cache/arb4j` the first time — a slow, one-off step). For all ordinary Java work the committed `.so` is already current, so just run `mvn`, which consumes the `.so` via `-Djava.library.path=${project.basedir}` (set automatically by the surefire plugin and the `bin/*` wrappers).
 
 ## Common commands
 
 ```bash
-# Full build (native lib + jar)
-make clean && make && mvn install -Dmaven.test.skip=true
+# Ordinary build (the committed static libarblib.so is already current)
+mvn install -Dmaven.test.skip=true
 
-# Run all tests (Java 26 + libarblib.so must already be built)
+# Rebuild the native lib — ONLY needed after editing a SWIG interface file
+# (native/*.i). Fetches+builds GMP/MPFR/FLINT statically into ~/.cache/arb4j
+# on first run, then relinks libarblib.so.
+make && mvn install -Dmaven.test.skip=true
+
+# Run all tests (Java 26; the committed libarblib.so is used as-is)
 mvn test
 
 # Run a single test method

@@ -23,10 +23,15 @@ cd "$ROOT"
 SRC="${1:-$SKILL_DIR/Smoke.java}"
 [ -f "$SRC" ] || { echo "driver: no such file: $SRC" >&2; exit 2; }
 
-# Build artifacts if missing. make → libarblib.so; mvn → build/classes + class.path.
-if [ ! -f libarblib.so ] || [ ! -f class.path ] || [ ! -d build/classes ]; then
-  echo "driver: build artifacts missing, building (make && mvn install -Dmaven.test.skip=true)…" >&2
+# The native libarblib.so is prebuilt & committed (statically-linked
+# FLINT/MPFR/GMP), so it normally just exists — only run `make` (which rebuilds
+# FLINT etc.) if it is genuinely absent. The Java artifacts are cheap to (re)make.
+if [ ! -f libarblib.so ]; then
+  echo "driver: libarblib.so missing, rebuilding native lib (make)…" >&2
   make >&2
+fi
+if [ ! -f class.path ] || [ ! -d build/classes ]; then
+  echo "driver: Java artifacts missing, building (mvn install -Dmaven.test.skip=true)…" >&2
   mvn -q install -Dmaven.test.skip=true >&2
 fi
 

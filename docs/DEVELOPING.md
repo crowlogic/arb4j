@@ -74,7 +74,20 @@ See `DEBUGGING.md` for full details on debug flags and workflows.
 
 ## Native Library
 
-`libarblib.so` is built locally from `native/` (see `Makefile`: `make` produces it via `swig` + `clang` against `libflint` and `libxdo`). It is not committed. **Once built, do not delete it** — a fresh build takes around 30 minutes, so keep the file in the project root across iterations. `make clean` removes it; avoid that unless you actually need to regenerate.
+`libarblib.so` is a **prebuilt, committed, statically-linked** binary — GMP, MPFR
+and FLINT are linked statically into it, so there is **no** runtime dependency on
+a system `libflint`/`libmpfr`/`libgmp` and **no FLINT install is required** to
+build or run. It is tracked in git at `src/main/resources/native/libarblib.so`
+(packaged into the jar at `native/libarblib.so`), with a repo-root `libarblib.so`
+symlink to that same file so `-Djava.library.path=.` and the jar load an
+identical binary.
+
+You only need to **rebuild** it when a SWIG interface file (`native/*.i`) changes:
+`make` reruns SWIG + clang to regenerate `arb_wrap.c` and relink the `.so`. The
+first `make` fetches and builds GMP/MPFR/FLINT statically into `~/.cache/arb4j`
+(cached for subsequent runs), which takes a while — so do not run `make clean`
+or delete the `.so` unless you actually changed a `.i` file. For all ordinary
+Java work the committed `.so` is already current; just use `mvn`.
 
 ## Git
 

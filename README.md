@@ -307,7 +307,7 @@ TeXmacs formats of the same document respectively.
 
 ```bash
 sudo apt-get update
-sudo apt-get install -y openjdk-26-jdk-headless maven clang swig libflint-dev libxdo-dev
+sudo apt-get install -y openjdk-26-jdk-headless maven
 ```
 
 **Java 26** is required. Set:
@@ -315,7 +315,14 @@ sudo apt-get install -y openjdk-26-jdk-headless maven clang swig libflint-dev li
 export JAVA_HOME=/usr/lib/jvm/java-26-openjdk-amd64
 ```
 
-**FLINT 3.3+** is required. The SWIG interface files target the FLINT 3.3 API. FLINT 3.0–3.2 temporarily renamed `flint_rand_struct` → `flint_rand_s`, `flint_rand_init` → `flint_randinit`, etc., and removed the `stride` field from `arb_mat_struct`/`acb_mat_struct`. FLINT 3.3 reverted all of these back to the original names. If your distro ships FLINT 3.1 or 3.2 (e.g., Debian trixie ships 3.1.3), you need to either install FLINT 3.3+ from source or apply the workarounds in the FLINT 3.1/3.2 section below.
+**No FLINT install is required.** `libarblib.so` is a prebuilt, committed,
+statically-linked binary (FLINT/MPFR/GMP are linked statically into it), tracked
+at `src/main/resources/native/libarblib.so` and packaged into the jar at
+`native/libarblib.so`. Building and running the library need only this committed
+`.so` plus the JDK and Maven above. You only need the native toolchain
+(`clang swig libxdo-dev`) if you intend to **rebuild** the `.so` after editing a
+SWIG interface file — see [Build](#build); the first such rebuild fetches and
+builds GMP/MPFR/FLINT 3.3.1 statically into `~/.cache/arb4j` automatically.
 
 **UTF-8 locale** — source files use Unicode in filenames (`σField.java`, `RiemannζFunction.java`, `RiemannξFunction.java`). Without a UTF-8 locale, `javac` fails with `Invalid filename: ??Field.java`.
 ```bash
@@ -328,33 +335,37 @@ export LC_ALL=en_US.UTF-8
 
 ### Build
 
+Ordinary build and test — the committed static `libarblib.so` is already current,
+so **no `make` is needed**:
+
 ```bash
 export JAVA_HOME=/usr/lib/jvm/java-26-openjdk-amd64 LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
-make clean && make
 mvn test
 ```
 
-`libarblib.so` is built into the project root and, when present, is copied into the jar under `native/libarblib.so`. The runtime loader will prefer the packaged copy and fall back to `${project.basedir}` when that path is available.
-
-### FLINT 3.1/3.2 Workarounds
-
-If you are stuck on FLINT 3.1 or 3.2 and cannot upgrade to 3.3+, the following workarounds are needed after `swig` generates `arb_wrap.c`:
+You only need to rebuild the native library **when a SWIG interface file
+(`native/*.i`) changes**. Then, with `clang swig libxdo-dev` installed:
 
 ```bash
-# Patch out stride field access (removed in 3.1, restored in 3.3)
-sed -i 's/if (arg1) (arg1)->stride = arg2;/\/\/ stride removed in FLINT 3.1-3.2/' native/arb_wrap.c
-sed -i 's/result = (long) ((arg1)->stride);/result = 0; \/\/ stride removed in FLINT 3.1-3.2/' native/arb_wrap.c
-
-# Compile with name remapping defines
-clang -g -O3 -fPIC -shared -Wno-int-conversion \
-    -Dflint_rand_struct=flint_rand_s \
-    -Dflint_rand_init=flint_randinit \
-    -Dflint_rand_clear=flint_randclear \
-    -Dflint_rand_set_seed=flint_randseed \
-    native/arb_wrap.c native/complex.c native/ml.c \
-    -I${JAVA_HOME}/include -I${JAVA_HOME}/include/linux -I/usr/include/flint \
-    -olibarblib.so -lflint -lxdo
+make            # reruns SWIG + clang, relinks libarblib.so (statically linked
+                # FLINT/MPFR/GMP, built once into ~/.cache/arb4j)
+mvn test
 ```
+
+`libarblib.so` lives at `src/main/resources/native/libarblib.so` (with a
+repo-root `libarblib.so` symlink to it) and is packaged into the jar under
+`native/libarblib.so`. The runtime loader prefers the `${project.basedir}` copy
+via `-Djava.library.path=.` and falls back to the packaged jar resource.
+
+### FLINT version (no system FLINT used)
+
+You do not need any system FLINT. When a SWIG `.i` change forces a rebuild,
+`make` downloads and builds **FLINT 3.3.1** (plus GMP and MPFR) from source as
+static `.a` libraries under `~/.cache/arb4j` and links them statically into
+`libarblib.so`. The resulting binary has no dynamic FLINT/MPFR/GMP dependency, so
+the version your distro ships is irrelevant. (The historical FLINT 3.1/3.2
+`flint_rand_*`/`stride` renames are pinned away by the fixed 3.3.1 build and the
+`sed` patches in the Makefile's SWIG step; no manual workaround is needed.)
 
 ### Troubleshooting
 
@@ -362,8 +373,6 @@ clang -g -O3 -fPIC -shared -Wno-int-conversion \
 |---|---|
 | `mvn: command not found` | `sudo apt-get install -y maven` |
 | `Invalid filename: ??Field.java` | Set `LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8` and generate the locale |
-| `flint_rand_struct` undeclared | You have FLINT 3.1/3.2 — upgrade to 3.3+ or apply the workarounds above |
-| `no member named 'stride'` | Same — FLINT 3.1/3.2 issue |
-| `java.lang.UnsatisfiedLinkError: no arblib` | `libarblib.so` is missing from the checkout and the packaged jar resource — run `make` or ensure a tracked `libarblib.so` is present |
+| `java.lang.UnsatisfiedLinkError: no arblib` | The committed `libarblib.so` is missing from the checkout and the packaged jar resource — restore `src/main/resources/native/libarblib.so` (and the repo-root symlink) from git, or run `make` to rebuild it |
 | `release version 26 not supported` | `export JAVA_HOME=/usr/lib/jvm/java-26-openjdk-amd64` |
 
