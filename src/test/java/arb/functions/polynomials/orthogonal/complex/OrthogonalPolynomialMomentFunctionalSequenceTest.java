@@ -12,25 +12,33 @@ import junit.framework.TestCase;
  * concrete subclass
  * {@link FractionalRicattiOrthogonalPolynomialMomentFunctionalSequence}.
  *
- * <h2>Oracle: tanh J-fraction</h2>
+ * <h2>Oracle: tanh moment-functional J-fraction</h2>
  *
- * The classical tanh Stieltjes J-fraction
+ * The moment functional of this OPS has moment sequence m(k) = a(k+1), the
+ * Müntz–Tau / Taylor coefficients of tanh from the fractional Riccati μ=1,
+ * P=1, Q=0, R=−1 (a(1)=1, a(3)=−1/3, a(5)=2/15, …). Its moment generating
+ * series is therefore
  *
  * <pre>
- *   tanh(z) = z / (1 + z²/3 / (1 + z²/5 / (1 + ⋯ )))
+ *   Σ_{k≥0} m(k) wᵏ = tanh(z)/z = 1 − z²/3 + 2z⁴/15 − ⋯ ,   w = z².
  * </pre>
  *
- * has the Jacobi coefficients
+ * The monic OPS of this series has the Jacobi coefficients
  *
  * <pre>
  *   α_j = 0  for all j  (symmetric functional — tanh is odd)
- *   β_j = j(j+1) / ((2j−1)(2j+1))
- *       : β_1 = 2/3,  β_2 = 2/5,  β_3 = 12/35
+ *   β_j = −1 / ((2j−1)(2j+1))
+ *       : β_1 = −1/3,  β_2 = −1/15,  β_3 = −1/35
  * </pre>
  *
- * These are exactly the Jacobi coefficients of the moment functional whose
- * moment sequence is the Müntz–Tau basis of tanh from the fractional Riccati
- * μ=1, P=1, Q=0, R=−1.
+ * (Note: these differ from the Jacobi coefficients of the continued fraction
+ * tanh(z) = z/(1 + z²/3/(1 + z²/5/⋯)) expanded directly in z; that arrangement
+ * has β_j = j(j+1)/((2j−1)(2j+1)). This OPS is the J-fraction of the moment
+ * series tanh(z)/z in w = z², not of tanh(z) in z.) The values above are
+ * verified three ways: (i) directly from the Hankel/σ-table recurrence on the
+ * tanh moments, (ii) the J-fraction Σ m_k wᵏ built from these α,β reproduces
+ * tanh, and (iii) they match — up to the R = ±1 sign — the β produced by the
+ * reference modified-Chebyshev map for the y′ = 1 + y² (tan) case.
  *
  * <p>
  * Covered:
@@ -41,9 +49,9 @@ import junit.framework.TestCase;
  *       warmed index.</li>
  *   <li>The diagonal Jacobi coefficients α(j) are all zero for the symmetric
  *       tanh functional (regression guard for the α two-term correction).</li>
- *   <li>β(1) = 2/3 and β(2) = 2/5 match the tanh J-fraction oracle to 10
- *       digits, confirming that the σ-table recurrence produces the correct
- *       off-diagonal Jacobi entries.</li>
+ *   <li>β(1) = −1/3 and β(2) = −1/15 match the tanh moment-functional J-fraction
+ *       oracle to 10 digits, confirming that the σ-table recurrence produces
+ *       the correct off-diagonal Jacobi entries.</li>
  * </ol>
  *
  * @author Stephen Crowley ©2024-2026
@@ -139,14 +147,17 @@ public class OrthogonalPolynomialMomentFunctionalSequenceTest extends
   }
 
   /**
-   * β(1) must equal 2/3 and β(2) must equal 2/5 (tanh J-fraction oracle)
-   * when evaluated at v = 1, to at least 10 decimal digits.
+   * β(1) must equal −1/3 and β(2) must equal −1/15 (tanh moment-functional
+   * J-fraction oracle) when evaluated at v = 1, to at least 10 decimal digits.
    *
    * <p>
    * These values are the first two off-diagonal Jacobi entries of the moment
-   * functional whose moments are the Müntz–Tau basis of tanh. The C engine
-   * smoke test ({@code native/pade_resolvent.c}) uses the same oracle; this
-   * test verifies the Java σ-table produces the same Jacobi input.
+   * functional whose moments are the Müntz–Tau basis of tanh — i.e. the
+   * J-fraction of the series Σ m_k wᵏ = tanh(z)/z (w = z²), with closed form
+   * β_j = −1/((2j−1)(2j+1)). They reproduce tanh through the J-fraction and
+   * match — up to the R = ±1 sign — the reference modified-Chebyshev map for
+   * the tan (y′ = 1 + y²) case; this test verifies the Java σ-table produces
+   * the same Jacobi input.
    */
   public void testBetaCoefficientsMatchTanhJFraction()
   {
@@ -157,22 +168,22 @@ public class OrthogonalPolynomialMomentFunctionalSequenceTest extends
       ops.warmTo(3, BITS);
       v.set("1", BITS);
 
-      // β(1) = 2/3
+      // β(1) = −1/3
       n.set(1);
       ComplexPolynomial β1poly = ops.β.evaluate(n, 1, BITS, null);
       assertNotNull("β(1) must not be null", β1poly);
       Complex β1v = new Complex();
       β1poly.evaluate(v, 1, BITS, β1v);
-      assertEquals("β(1)(v=1) real must equal 2/3", 2.0 / 3.0, β1v.re().doubleValue(), 1e-10);
+      assertEquals("β(1)(v=1) real must equal -1/3", -1.0 / 3.0, β1v.re().doubleValue(), 1e-10);
       assertEquals("β(1)(v=1) imag must be 0", 0.0, β1v.im().doubleValue(), 1e-10);
 
-      // β(2) = 2/5
+      // β(2) = −1/15
       n.set(2);
       ComplexPolynomial β2poly = ops.β.evaluate(n, 1, BITS, null);
       assertNotNull("β(2) must not be null", β2poly);
       Complex β2v = new Complex();
       β2poly.evaluate(v, 1, BITS, β2v);
-      assertEquals("β(2)(v=1) real must equal 2/5", 2.0 / 5.0, β2v.re().doubleValue(), 1e-10);
+      assertEquals("β(2)(v=1) real must equal -1/15", -1.0 / 15.0, β2v.re().doubleValue(), 1e-10);
       assertEquals("β(2)(v=1) imag must be 0", 0.0, β2v.im().doubleValue(), 1e-10);
     }
   }
