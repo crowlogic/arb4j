@@ -55,7 +55,7 @@ $(FLINT_STATIC): $(FLINT_TARBALL)
 libarblib.so: $(SOURCES) $(FLINT_STATIC)
 	clang $(CFLAGS) $(SOURCES) $(C_INCLUDES) \
 	  -L$(FLINT_PREFIX)/lib -olibarblib.so \
-	  -Wl,-Bstatic -lflint -Wl,-Bdynamic -lxdo
+	  -Wl,-Bstatic -lflint -Wl,-Bdynamic -lmpfr -lgmp -lxdo
 
 clean:
 	rm -rf libarblib.so *.o native/arb_wrap.c build/*
