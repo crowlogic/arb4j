@@ -2584,7 +2584,32 @@ import arb.utensils.Utensils;
          
   public Real set(String string, int prec)
   {
-    arblib.arb_set_str(this, string.replaceAll("±", "+/-"), prec);
+    String normalized = string.replaceAll("±", "+/-");
+    // arb_set_str does not parse rational fractions such as "1/2" (it returns
+    // nonzero and leaves nan). Handle the pure p/q form here by dividing the two
+    // parsed halves at the requested precision, yielding a correctly-rounded
+    // enclosing ball. The "+/-" ball-radius separator also contains '/', so it
+    // is excluded; anything that is not a clean p/q (e.g. a ball literal) falls
+    // through to arb_set_str unchanged.
+    if (!normalized.contains("+/-"))
+    {
+      int slash = normalized.indexOf('/');
+      if (slash >= 0 && normalized.indexOf('/', slash + 1) < 0)
+      {
+        String numerator   = normalized.substring(0, slash);
+        String denominator = normalized.substring(slash + 1);
+        try ( Real denom = new Real())
+        {
+          if (arblib.arb_set_str(this, numerator, prec) == 0 && arblib.arb_set_str(denom, denominator, prec) == 0)
+          {
+            div(denom, prec, this);
+            bits = prec;
+            return this;
+          }
+        }
+      }
+    }
+    arblib.arb_set_str(this, normalized, prec);
     bits = prec;
     return this;
   }
