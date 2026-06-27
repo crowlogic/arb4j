@@ -98,16 +98,26 @@ $(FLINT_STATIC): $(FLINT_TARBALL) $(MPFR_STATIC)
 	  make -j$$(nproc) && \
 	  make install
 
-libarblib.so: $(SOURCES) $(FLINT_STATIC)
+# The single canonical native library lives under src/main/resources so Maven
+# packages it into the jar at native/libarblib.so via standard resource
+# processing. The repo-root libarblib.so is a symlink to it, so dev runs
+# (-Djava.library.path=.) and the packaged jar load the exact same binary.
+SO_RESOURCE = src/main/resources/native/libarblib.so
+
+$(SO_RESOURCE): $(SOURCES) $(FLINT_STATIC)
+	mkdir -p $(dir $(SO_RESOURCE))
 	clang $(CFLAGS) $(SOURCES) $(C_INCLUDES) \
 	  -L$(FLINT_PREFIX)/lib -L$(MPFR_PREFIX)/lib -L$(GMP_PREFIX)/lib \
-	  -olibarblib.so \
+	  -o$(SO_RESOURCE) \
 	  -Wl,-Bstatic -lflint -lmpfr -lgmp \
 	  -Wl,-Bdynamic -lxdo
-	strip libarblib.so
+	strip $(SO_RESOURCE)
+
+libarblib.so: $(SO_RESOURCE)
+	ln -sf $(SO_RESOURCE) libarblib.so
 
 clean:
-	rm -rf libarblib.so *.o native/arb_wrap.c build/*
+	rm -rf libarblib.so $(SO_RESOURCE) *.o native/arb_wrap.c build/*
 
 test:
 	mvn test

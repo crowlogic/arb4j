@@ -152,12 +152,17 @@
 		<outputDirectory>build/classes</outputDirectory>
 		<testOutputDirectory>build/test-classes</testOutputDirectory>
 		<resources>
+			<!--
+			  Standard resource processing: everything under src/main/resources
+			  is packaged into the jar preserving its layout. The native library
+			  src/main/resources/native/libarblib.so therefore lands at
+			  native/libarblib.so in the jar (the path NativeLibraryLoader
+			  extracts), and css/png/logback are packaged too. The repo-root
+			  libarblib.so is a symlink to this same file, so the dev
+			  -Djava.library.path=. binary and the packaged binary are identical.
+			-->
 			<resource>
-				<directory>${project.basedir}</directory>
-				<includes>
-					<include>libarblib.so</include>
-				</includes>
-				<targetPath>native</targetPath>
+				<directory>src/main/resources</directory>
 			</resource>
 		</resources>
 
