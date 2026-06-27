@@ -12,7 +12,7 @@ public class RealConstants
 {
   static
   {
-    System.loadLibrary("arblib");
+    NativeLibraryLoader.load("arblib");
   }
 
   public static final int           prec       = 256;

@@ -44,7 +44,7 @@ public class IntegerPolynomial implements Named,AutoCloseable,Ring<IntegerPolyno
     }
   }
 
-  static { System.loadLibrary( "arblib" ); }
+  static { NativeLibraryLoader.load("arblib"); }
 
   /**
    * Evaluate this polynomial at a {@link ComplexFraction} point via Horner's

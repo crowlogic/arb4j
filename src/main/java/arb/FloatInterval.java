@@ -17,7 +17,7 @@ public class FloatInterval implements AutoCloseable, Interval<Float> {
 
  static
  {
-   System.loadLibrary( "arblib" );
+   NativeLibraryLoader.load("arblib");
  }
  
  /**

@@ -314,7 +314,7 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
   
   public int bits = 128;
 
-  static { System.loadLibrary("arblib"); }
+  static { NativeLibraryLoader.load("arblib"); }
 
   public RealPolynomial(Real real)
   {

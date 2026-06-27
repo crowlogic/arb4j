@@ -182,7 +182,7 @@ public class Real implements Cloneable,Becomable<Real>,Domain<Real>,Serializable
     return res.set(this).mul(that, prec, res);
   }
   
-  static { System.loadLibrary( "arblib" ); }
+  static { NativeLibraryLoader.load("arblib"); }
 
   public Real θ( int bits, Real result )
   {

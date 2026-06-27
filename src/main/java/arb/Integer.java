@@ -142,7 +142,7 @@ public class Integer implements
 
   static
   {
-    System.loadLibrary("arblib");
+    NativeLibraryLoader.load("arblib");
   }
 
   public static Integer express(String expression)

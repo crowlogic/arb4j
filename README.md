@@ -334,7 +334,7 @@ make clean && make
 mvn test
 ```
 
-`libarblib.so` is built into the project root. The Maven surefire plugin sets `java.library.path` to `${project.basedir}` automatically.
+`libarblib.so` is built into the project root and, when present, is copied into the jar under `native/libarblib.so`. The runtime loader will prefer the packaged copy and fall back to `${project.basedir}` when that path is available.
 
 ### FLINT 3.1/3.2 Workarounds
 
@@ -364,6 +364,6 @@ clang -g -O3 -fPIC -shared -Wno-int-conversion \
 | `Invalid filename: ??Field.java` | Set `LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8` and generate the locale |
 | `flint_rand_struct` undeclared | You have FLINT 3.1/3.2 — upgrade to 3.3+ or apply the workarounds above |
 | `no member named 'stride'` | Same — FLINT 3.1/3.2 issue |
-| `java.lang.UnsatisfiedLinkError: no arblib` | `libarblib.so` is missing from project root — run `make` |
+| `java.lang.UnsatisfiedLinkError: no arblib` | `libarblib.so` is missing from the checkout and the packaged jar resource — run `make` or ensure a tracked `libarblib.so` is present |
 | `release version 26 not supported` | `export JAVA_HOME=/usr/lib/jvm/java-26-openjdk-amd64` |
 
