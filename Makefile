@@ -2,6 +2,11 @@ BASEDIR=$(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 VERSION=$(shell $(BASEDIR)/bin/arb4jVersion)
 SOURCES=native/arb_wrap.c native/complex.c native/ml.c native/pade_resolvent.c
 JAVA_HOME=$(shell readlink -f `which javac` | sed "s:bin/javac::")
+# FLINT must be built with -fPIC for static linking into shared library:
+# cd /tmp && wget https://github.com/flintlib/flint/releases/download/v3.3.1/flint-3.3.1.tar.gz
+# tar -xzf flint-3.3.1.tar.gz && cd flint-3.3.1
+# CFLAGS="-fPIC" ./configure --prefix=/tmp/flint-install-static-pic --enable-static --disable-shared --disable-pthread
+# make -j4 && make install
 C_INCLUDES=-I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/linux -I/tmp/flint-install-static-pic/include -I/tmp/flint-install-static-pic/include/flint
 CFLAGS=-g -O3 -fPIC -shared -Wno-int-conversion \
   -Dflint_rand_struct=flint_rand_s \
@@ -23,6 +28,8 @@ native/arb_wrap.c: $(shell find native -name "*.i")
 	sed -i 's|result = (long) ((arg1)->stride);|result = 0; // stride removed in FLINT 3.1-3.2|g' native/arb_wrap.c
 
 libarblib.so: $(SOURCES)
+	# Static link FLINT (compiled with -fPIC) to avoid runtime libflint.so dependency
+	# GMP/MPFR are dynamically linked as they are standard system libraries
 	clang $(CFLAGS) $(SOURCES) $(C_INCLUDES) -olibarblib.so -L/tmp/flint-install-static-pic/lib -L/usr/lib -Wl,-Bstatic -lflint -Wl,-Bdynamic -lgmp -lmpfr 
 
 clean:
