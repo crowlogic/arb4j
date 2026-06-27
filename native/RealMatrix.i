@@ -26,7 +26,7 @@ import arb.utensils.text.tables.TextTable;
 %typemap(javainterfaces) arb_mat_struct "AutoCloseable,Iterable<Real>,Ring<RealMatrix>,Becomable<RealMatrix>"
 
 %typemap(javacode) arb_mat_struct %{
-  static { System.loadLibrary( "arblib" ); }
+  static { NativeLibraryLoader.load("arblib"); }
 
   public RealMatrix set(int i, int j, Integer l)
   {

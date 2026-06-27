@@ -287,7 +287,7 @@ import arb.functions.real.RealFunction;
   
   public int bits = 128;
 
-  static { System.loadLibrary("arblib"); }
+  static { NativeLibraryLoader.load("arblib"); }
 
   public RealPolynomial(Real real)
   {

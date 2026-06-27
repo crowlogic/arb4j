@@ -478,7 +478,7 @@ import arb.functions.NullaryFunction;
   }
   static
   {
-    System.loadLibrary("arblib");
+    NativeLibraryLoader.load("arblib");
   }
  
  

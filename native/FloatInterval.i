@@ -12,7 +12,7 @@ import arb.Interval;
 
  static
  {
-   System.loadLibrary( "arblib" );
+   NativeLibraryLoader.load("arblib");
  }
  
  /**

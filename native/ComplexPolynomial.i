@@ -211,7 +211,7 @@
 
   public int bits;
 
-  static { System.loadLibrary("arblib"); }
+  static { NativeLibraryLoader.load("arblib"); }
 
   public ComplexPolynomial divisor;
 

@@ -39,7 +39,7 @@ import arb.functions.complex.ComplexNullaryFunction;
 %typemap(javainterfaces) acb_struct "Becomable<Complex>,Domain<Complex>,NamedField<Complex>,Comparable<Complex>,Iterable<Complex>,Serializable,Lockable<Complex>,IntFunction<Complex>,Assignable<Complex>"
 
 %typemap(javacode) acb_struct %{
-  static { System.loadLibrary( "arblib" ); }
+  static { NativeLibraryLoader.load("arblib"); }
 
   public ComplexPolynomial mul(Complex s, int prec, ComplexPolynomial r)
   {

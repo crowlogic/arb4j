@@ -28,7 +28,7 @@ import arb.utensils.text.tables.TextTable;
 
   static 
   { 
-	System.loadLibrary("arblib"); 
+	NativeLibraryLoader.load("arblib"); 
   }
 
   public ComplexMatrix set(int i, int j, Integer l) 

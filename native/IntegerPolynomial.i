@@ -18,7 +18,7 @@ import arb.expressions.Context;
 %typemap(javainterfaces) fmpz_poly_struct "Named,AutoCloseable,Ring<IntegerPolynomial>,Function<Integer,Integer>,ReifiedFunction"
 
 %typemap(javacode) fmpz_poly_struct %{
-  static { System.loadLibrary( "arblib" ); }
+  static { NativeLibraryLoader.load("arblib"); }
 
   /**
    * Evaluate this polynomial at a {@link ComplexFraction} point via Horner's

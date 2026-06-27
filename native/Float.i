@@ -45,7 +45,7 @@ import arb.utensils.Utensils;
 	
   static
   {
-    System.loadLibrary("arblib");
+    NativeLibraryLoader.load("arblib");
   }
 
   @Override
