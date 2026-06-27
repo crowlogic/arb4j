@@ -1,0 +1,53 @@
+name: Publish release jar to GitHub Packages
+
+# Builds arb4j and deploys the jar (plus the attached -sources and -javadoc
+# jars) to GitHub Packages, the Maven repository hosted at
+# https://maven.pkg.github.com/crowlogic/arb4j. The committed, statically
+# linked src/main/resources/native/libarblib.so is used as-is, so no FLINT /
+# GMP / MPFR build is required on the runner.
+#
+# Triggers:
+#   * publishing a GitHub Release    -> deploys the release version
+#   * pushing a tag matching v*      -> deploys whatever the pom version is
+#   * manual workflow_dispatch       -> on-demand publish
+
+on:
+  release:
+    types: [published]
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out HEAD
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+          # Writes a ~/.m2/settings.xml <server> with id `github` matching the
+          # <distributionManagement> repository id in pom.xml. Credentials are
+          # read from the MAVEN_USERNAME / MAVEN_PASSWORD env vars below.
+          server-id: github
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+
+      - name: Build and deploy to GitHub Packages
+        env:
+          # The source tree contains Unicode-named files (e.g. σField.java);
+          # a UTF-8 locale is mandatory or javac rejects the filenames.
+          LANG: C.UTF-8
+          LC_ALL: C.UTF-8
+          MAVEN_USERNAME: ${{ github.actor }}
+          MAVEN_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+        run: mvn --batch-mode --no-transfer-progress deploy
