@@ -288,6 +288,17 @@ public class Context implements
   public <D, R, F extends Function<? extends D, ? extends R>> void injectFunctionReferences(F f)
   {
     Class<?> functionClass = f.getClass();
+    // Determine f's name in this context so we can detect mutual recursion.
+    String targetFunctionName = null;
+    for (var e : functions.entrySet())
+    {
+      if (e.getValue().instance == f)
+      {
+        targetFunctionName = e.getKey();
+        break;
+      }
+    }
+    final String finalTargetName = targetFunctionName;
     functions.forEach((functionName, functionMapping) ->
     {
       if (functionMapping.instance == null)
@@ -299,6 +310,17 @@ public class Context implements
       // the recursion re-enters f and clobbers its scratch fields. Left null
       // here, generateSelfReference's `new <Self>()` fills it at initialize.
       if (functionMapping.instance == f)
+      {
+        return;
+      }
+      // Skip peers that are in the same SCC as f (any cycle length). Wiring
+      // the shared context singleton into f.<peer> would alias f.<peer> to an
+      // instance whose `evaluating` flag can be true when f's own evaluate()
+      // is running — firing the re-entrancy guard. The generated initialize()
+      // method allocates a FRESH instance for each such peer, so leaving the
+      // field null here is correct.
+      if (finalTargetName != null
+          && Expression.isTransitivelyReachable(functionMapping, finalTargetName, new java.util.HashSet<>()))
       {
         return;
       }
@@ -366,6 +388,52 @@ public class Context implements
   protected <D, R, F extends Function<? extends D, ? extends R>> void injectContextReference(F f)
   {
     setFieldValue(f.getClass(), f, "context", this);
+  }
+
+  /**
+   * Allocates a fresh instance of the function registered under {@code name}.
+   * Used by the generated {@code initialize()} bytecode for forward-declared
+   * peers — functions that were declared via {@code ctx.declare(...)} but not
+   * yet expressed when the calling expression was compiled.
+   *
+   * <p>
+   * A fresh instance (own {@code evaluating} flag, shared context and cache) is
+   * required so that each evaluation level in a mutually-recursive cluster uses
+   * a distinct instance and the re-entrancy guard cannot fire.
+   *
+   * @param name the function name registered in this context
+   * @return a fresh instance of the named function's concrete class, or
+   *         {@code null} if the mapping has no instance yet
+   */
+  public Function<?, ?> allocateFreshPeer(String name)
+  {
+    FunctionMapping<?, ?, ?> mapping = functions.get(name);
+    if (mapping == null || mapping.instance == null)
+    {
+      return null;
+    }
+    try
+    {
+      Function<?, ?> fresh = (Function<?, ?>) mapping.instance.getClass().getDeclaredConstructor().newInstance();
+      injectContextReference(fresh);
+      // Share the canonical instance's IndexCache so this cluster member
+      // memoizes into the same table as the context singleton — without this
+      // each fresh peer has its own empty cache and q(n) is recomputed
+      // exponentially across all evaluation levels.
+      for (java.lang.reflect.Field field : mapping.instance.getClass().getFields())
+      {
+        if (field.getName().equals("cache"))
+        {
+          field.set(fresh, field.get(mapping.instance));
+          break;
+        }
+      }
+      return fresh;
+    }
+    catch (ReflectiveOperationException e)
+    {
+      return null;
+    }
   }
 
   /**

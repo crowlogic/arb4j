@@ -1068,97 +1068,145 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
+  /**
+   * Returns true if following the reference graph from {@code from} eventually
+   * reaches a function named {@code target}. Used to detect all cycle lengths
+   * in a mutually-recursive cluster at expression-compile time.
+   */
+  static boolean isTransitivelyReachable(FunctionMapping<?, ?, ?> from, String target, Set<String> visited)
+  {
+    if (from == null || from.expression == null)
+    {
+      return false;
+    }
+    for (var entry : from.expression.getReferencedFunctions().entrySet())
+    {
+      String name = entry.getKey();
+      if (name.equals(target))
+      {
+        return true;
+      }
+      if (visited.add(name) && isTransitivelyReachable(entry.getValue(), target, visited))
+      {
+        return true;
+      }
+    }
+    return false;
+  }
+
   protected void constructReferencedFunctionInstanceIfItIsNull(MethodVisitor mv, FunctionMapping<?, ?, ?> mapping)
   {
     assert mapping != null : "mapping shan't be null";
-    boolean isSelfRef    = mapping.functionName != null && functionName != null && functionName.equals(mapping.functionName);
-    // Also wire mappings that have a live instance but no defining expression
-    // (e.g. Context.registerSequence("B", bops)); otherwise an inner
-    // self-recursive instance never gets that field set (injection only runs
-    // on the externally-instantiated outer instance, not on the ones
-    // generateSelfReference allocates).
-    boolean hasSomething = mapping.expression != null || mapping.instance != null;
-    if (!isSelfRef && hasSomething)
+    boolean isSelfRef        = mapping.functionName != null && functionName != null && functionName.equals(mapping.functionName);
+    boolean hasSomething     = mapping.expression != null || mapping.instance != null;
+    // A forward-declared peer: ctx.declare("f",...) was called but express("f",...)
+    // hasn't run yet when this expression was compiled. The concrete class is
+    // unknown at compile time, so we emit a runtime call to allocateFreshPeer
+    // rather than a bytecode `new`.
+    boolean isForwardDeclared = !hasSomething;
+
+    if (!isSelfRef && (hasSomething || isForwardDeclared))
     {
-      // Bytecode-only path: use the mapping's already-known generated-class
-      // internal name. ASM's new/invokespecial accept name strings; resolving
-      // the Class<?> here would force eager compilation of the dependency
-      // and break mutual recursion across mappings (a ↔ S in the fractional
-      // Riccati Müntz recurrence, issue #982). The class is resolved lazily
-      // by the JVM when the opcode first executes — by which point the outer
-      // compile chain has defined every class in the recursive cluster.
-      String typeInternalName   = mapping.functionInternalName();
       String fieldDescriptor    = mapping.functionFieldDescriptor();
       String contextTypeDesc    = Type.getDescriptor(Context.class);
       var    alreadyInitialized = new Label();
-      var    needsAllocation    = new Label();
 
-      // 1. if (this.<field> != null) skip → field already populated, done.
-      loadThisOntoStack(mv).visitFieldInsn(GETFIELD, internalName(), mapping.functionName, fieldDescriptor);
-      mv.visitJumpInsn(Opcodes.IFNONNULL, alreadyInitialized);
-
-      // 2. Try the context's canonical instance:
-      // Function f = this.context.lookupFunctionInstance("<name>");
-      // if (f != null) { this.<field> = (FieldType) f; goto done; }
-      // This avoids allocating a second instance whose own field-injection
-      // never runs (e.g. σfunc creating a fresh `new m()` whose `a` field
-      // stays null because σ has no `a` field of its own to propagate from).
-      loadThisOntoStack(mv);
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
-      mv.visitLdcInsn(mapping.functionName);
-      mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                         Type.getInternalName(Context.class),
-                         "lookupFunctionInstance",
-                         "(Ljava/lang/String;)Larb/functions/Function;",
-                         false);
-      duplicateTopOfTheStack(mv);
-      mv.visitJumpInsn(Opcodes.IFNULL, needsAllocation);
-      // Stack: this, function. Cast and store.
-      mv.visitTypeInsn(Opcodes.CHECKCAST, typeInternalName);
-      putField(mv, internalName(), mapping.functionName, fieldDescriptor);
-      mv.visitJumpInsn(Opcodes.GOTO, alreadyInitialized);
-
-      // 3. Fallback: context has no instance yet (mutual-recursion mid-bootstrap).
-      // Allocate a fresh one, propagate context, run context-level injection.
-      mv.visitLabel(needsAllocation);
-      mv.visitInsn(Opcodes.POP); // discard the dup'd null
-      mv.visitInsn(Opcodes.POP); // discard the `this` we loaded for the eventual PUTFIELD
-      loadThisOntoStack(mv);
-      generateNewObjectInstruction(mv, typeInternalName);
-      duplicateTopOfTheStack(mv);
-      invokeDefaultConstructor(mv, typeInternalName);
-      putField(mv, internalName(), mapping.functionName, fieldDescriptor);
-      // Propagate the parent's context field into the new instance's context
-      // field so the new instance's own initialize() sees the live, populated
-      // Context. Without this, the new instance keeps its field-initializer
-      // default (an empty `new Context()`), which has no functions or
-      // variables registered, and every nested function reference (e.g. He)
-      // remains null at runtime.
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, internalName(), mapping.functionName, fieldDescriptor);
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
-      mv.visitFieldInsn(PUTFIELD, typeInternalName, "context", contextTypeDesc);
-
-      // Share this instance's memoization cache with the freshly-constructed
-      // member when the two are MUTUALLY recursive and both cache: such members
-      // form one strongly-connected cluster that shares a single IndexCache by
-      // design (see generateSelfReference / IndexCache.invalidating). Without
-      // this, a member built here (the no-context construction path) memoizes
-      // into a PRIVATE cache, so its recurrence — e.g. the Müntz convolution
-      // a(j)·a(k-1-j) — never hits the shared table, rebuilds instance chains on
-      // every evaluation, and leaks their native ComplexPolynomial fields (arb
-      // has no finalizer). A one-way reference to an independent cached sequence
-      // is NOT mutually recursive, so it correctly keeps its own cache.
-      if (shouldCache() && mapping.expression != null && mapping.expression.shouldCache()
-                    && mapping.expression.getReferencedFunctions().containsKey(functionName))
+      if (isForwardDeclared)
       {
+        // Forward-declared peer (declared but not yet expressed at compile time).
+        // Emit: if (this.f == null) { this.f = (FType) this.context.allocateFreshPeer("f"); }
+        // At runtime, allocateFreshPeer looks up the now-instantiated class and
+        // returns a fresh instance (own `evaluating` flag, shared context & cache).
+        loadThisOntoStack(mv).visitFieldInsn(GETFIELD, internalName(), mapping.functionName, fieldDescriptor);
+        mv.visitJumpInsn(Opcodes.IFNONNULL, alreadyInitialized);
+        loadThisOntoStack(mv); // for PUTFIELD
         loadThisOntoStack(mv);
-        mv.visitFieldInsn(GETFIELD, internalName(), mapping.functionName, fieldDescriptor);
-        loadThisOntoStack(mv);
-        mv.visitFieldInsn(GETFIELD, internalName(), "cache", Type.getDescriptor(IndexCache.class));
-        mv.visitFieldInsn(PUTFIELD, typeInternalName, "cache", Type.getDescriptor(IndexCache.class));
+        mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
+        mv.visitLdcInsn(mapping.functionName);
+        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                           Type.getInternalName(Context.class),
+                           "allocateFreshPeer",
+                           "(Ljava/lang/String;)Larb/functions/Function;",
+                           false);
+        mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(mapping.functionClass));
+        putField(mv, internalName(), mapping.functionName, fieldDescriptor);
+      }
+      else
+      {
+        // Bytecode-only path: use the mapping's already-known generated-class
+        // internal name. ASM's new/invokespecial accept name strings; resolving
+        // the Class<?> here would force eager compilation of the dependency
+        // and break mutual recursion across mappings. The class is resolved
+        // lazily by the JVM when the opcode first executes — by which point the
+        // outer compile chain has defined every class in the recursive cluster.
+        String typeInternalName = mapping.functionInternalName();
+        // Detect if the peer is in the same SCC as this expression (any cycle
+        // length, not just 2). For all such peers we must allocate a FRESH
+        // instance so each evaluation level owns its own `evaluating` flag and
+        // the re-entrancy guard cannot fire.
+        boolean isMutuallyRecursive = isTransitivelyReachable(mapping, functionName, new HashSet<>());
+        var     needsAllocation     = new Label();
+
+        // 1. if (this.<field> != null) skip → field already populated, done.
+        loadThisOntoStack(mv).visitFieldInsn(GETFIELD, internalName(), mapping.functionName, fieldDescriptor);
+        mv.visitJumpInsn(Opcodes.IFNONNULL, alreadyInitialized);
+
+        if (isMutuallyRecursive)
+        {
+          // Recursive peer: allocate via allocateFreshPeer so the fresh instance
+          // shares the context singleton's IndexCache — without this, each
+          // evaluation level gets its own empty cache and q(n) is recomputed
+          // O(2^n) times instead of being memoized.
+          // if (this.g == null) { this.g = (GType) context.allocateFreshPeer("g"); }
+          loadThisOntoStack(mv); // for PUTFIELD
+          loadThisOntoStack(mv);
+          mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
+          mv.visitLdcInsn(mapping.functionName);
+          mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                             Type.getInternalName(Context.class),
+                             "allocateFreshPeer",
+                             "(Ljava/lang/String;)Larb/functions/Function;",
+                             false);
+          mv.visitTypeInsn(Opcodes.CHECKCAST, typeInternalName);
+          putField(mv, internalName(), mapping.functionName, fieldDescriptor);
+        }
+        else
+        {
+          // 2. Try the context's canonical instance (only for non-recursive peers):
+          // Function f = this.context.lookupFunctionInstance("<name>");
+          // if (f != null) { this.<field> = (FieldType) f; goto done; }
+          loadThisOntoStack(mv);
+          loadThisOntoStack(mv);
+          mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
+          mv.visitLdcInsn(mapping.functionName);
+          mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                             Type.getInternalName(Context.class),
+                             "lookupFunctionInstance",
+                             "(Ljava/lang/String;)Larb/functions/Function;",
+                             false);
+          duplicateTopOfTheStack(mv);
+          mv.visitJumpInsn(Opcodes.IFNULL, needsAllocation);
+          // Stack: this, function. Cast and store.
+          mv.visitTypeInsn(Opcodes.CHECKCAST, typeInternalName);
+          putField(mv, internalName(), mapping.functionName, fieldDescriptor);
+          mv.visitJumpInsn(Opcodes.GOTO, alreadyInitialized);
+
+          // 3. Fallback when context has no instance yet.
+          mv.visitLabel(needsAllocation);
+          mv.visitInsn(Opcodes.POP); // discard the dup'd null
+          mv.visitInsn(Opcodes.POP); // discard `this` for the PUTFIELD
+          loadThisOntoStack(mv);
+          generateNewObjectInstruction(mv, typeInternalName);
+          duplicateTopOfTheStack(mv);
+          invokeDefaultConstructor(mv, typeInternalName);
+          putField(mv, internalName(), mapping.functionName, fieldDescriptor);
+          // Propagate the parent's context field.
+          loadThisOntoStack(mv);
+          mv.visitFieldInsn(GETFIELD, internalName(), mapping.functionName, fieldDescriptor);
+          loadThisOntoStack(mv);
+          mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
+          mv.visitFieldInsn(PUTFIELD, typeInternalName, "context", contextTypeDesc);
+        }
       }
 
       mv.visitLabel(alreadyInitialized);
@@ -1233,10 +1281,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (shouldCache())
     {
       String signature = "L" + Type.getInternalName(IndexCache.class) + "<" + Type.getDescriptor(coDomainType) + ">;";
-      // Not final: generateSelfReference shares this cache into the allocated
-      // self-instance so a recursive chain memoizes once instead of
-      // recomputing at every level.
-      cw.visitField(Opcodes.ACC_PRIVATE, "cache", Type.getDescriptor(IndexCache.class), signature, null);
+      // Public (not private): generateSelfReference shares this cache into the
+      // allocated self-instance so a recursive chain memoizes once instead of
+      // recomputing at every level, using a cross-class PUTFIELD that requires
+      // public visibility.
+      cw.visitField(Opcodes.ACC_PUBLIC, "cache", Type.getDescriptor(IndexCache.class), signature, null);
     }
     if (shouldCacheValueBacking())
     {
@@ -3966,7 +4015,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       instantiateAndInjectReferencedFunctions(instance);
       injectContextFunctionAndVariableReferences(instance);
       populateSourceExpressionBackPointer(instance);
-      backfillMutuallyRecursiveReferences(instance);
     }
     finally
     {
