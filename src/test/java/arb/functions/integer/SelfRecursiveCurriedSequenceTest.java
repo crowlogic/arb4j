@@ -313,7 +313,7 @@ public class SelfRecursiveCurriedSequenceTest extends
   }
 
   /**
-   * Bonanzai rough-Heston Riccati shape, arb4j-only: three external referenced
+   * Rough-Heston Riccati shape, arb4j-only: three external referenced
    * functions {@code p, q, r}, the Real Context variable {@code μ}, gamma
    * function {@code Γ} applied to {@code k·μ+1} and {@code (k-1)·μ+1}, and
    * the recurrence {@code a:k➔v➔when(k=1, p(v)/Γ(μ+1), else,
@@ -324,7 +324,7 @@ public class SelfRecursiveCurriedSequenceTest extends
    * Γ(k+1)=k!, ratio = (k-1)!/k! = 1/k. So a(1)(v)=v, a(2)(v)=(1/2)·(v·v+v·S(2)(v)),
    * S(2)(v)=sum(j=1..0,...) = 0 (empty sum), thus a(2)(v)=v·v/2. With v=2, a(2)(2)=2.
    */
-  public static void testBonanzaiShapeWithExternalFunctionsAndGammaAndMu()
+  public static void testRiccatiShapeWithExternalFunctionsAndGammaAndMu()
   {
     Context ctx = new Context();
     Real μ      = new Real();
