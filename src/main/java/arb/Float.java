@@ -68,7 +68,7 @@ public class Float implements AutoCloseable,Comparable<Float>,NamedField<Float> 
 	
   static
   {
-    System.loadLibrary("arblib");
+    NativeLibraryLoader.load("arblib");
   }
 
   @Override

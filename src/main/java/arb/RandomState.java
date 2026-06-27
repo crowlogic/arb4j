@@ -34,7 +34,7 @@ public class RandomState implements AutoCloseable {
 
  static
  {
-   System.loadLibrary( "arblib" );
+   NativeLibraryLoader.load("arblib");
  }
 
   @Override

@@ -620,7 +620,7 @@ public class Fraction implements Becomable<Fraction>,AutoCloseable,NamedField<Fr
   
   static
   {
-    System.loadLibrary("arblib");
+    NativeLibraryLoader.load("arblib");
   }
 
   public Complex add(Complex that, int bits, Complex result)

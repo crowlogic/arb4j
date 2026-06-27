@@ -54,7 +54,7 @@ public class ComplexMatrix implements AutoCloseable, Iterable<Complex>, Ring<Com
 
   static 
   { 
-	System.loadLibrary("arblib"); 
+	NativeLibraryLoader.load("arblib"); 
   }
 
   public ComplexMatrix set(int i, int j, Integer l) 

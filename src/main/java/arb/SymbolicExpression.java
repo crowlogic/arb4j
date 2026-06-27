@@ -282,7 +282,7 @@ public class SymbolicExpression implements AutoCloseable,Typesettable {
     
   static
   {
-    System.loadLibrary("arblib");
+    NativeLibraryLoader.load("arblib");
   }
  
  
