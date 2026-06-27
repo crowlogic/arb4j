@@ -21,6 +21,46 @@
 		<argLine></argLine>
 	</properties>
 
+	<profiles>
+		<profile>
+			<id>sync-tws-api</id>
+			<properties>
+				<tws.api.source.dir>${project.basedir}/../tws-api</tws.api.source.dir>
+				<tws.api.artifact.name>tws-api.jar</tws.api.artifact.name>
+				<bonanza.project.dir>${project.basedir}/../Bonanza</bonanza.project.dir>
+				<bonanza.lib.dir>lib</bonanza.lib.dir>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<version>3.1.0</version>
+						<executions>
+							<execution>
+								<id>sync-tws-api-jar</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<configuration>
+									<executable>bash</executable>
+									<arguments>
+										<argument>${project.basedir}/scripts/sync-tws-api.sh</argument>
+										<argument>${tws.api.source.dir}</argument>
+										<argument>${tws.api.artifact.name}</argument>
+										<argument>${bonanza.project.dir}</argument>
+										<argument>${bonanza.lib.dir}</argument>
+									</arguments>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 	<repositories>
 		<repository>
 			<id>central</id>
