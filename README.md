@@ -387,3 +387,41 @@ dynamic dependencies.
 | `java.lang.UnsatisfiedLinkError: no arblib` | The committed `libarblib.so` is missing from the checkout and the packaged jar resource — restore `src/main/resources/native/libarblib.so` (and the repo-root symlink) from git, or run `make` to rebuild it |
 | `release version 26 not supported` | `export JAVA_HOME=/usr/lib/jvm/java-26-openjdk-amd64` |
 
+### Releases (GitHub Packages)
+
+Released jars are published to **GitHub Packages**, the Maven repository at
+`https://maven.pkg.github.com/crowlogic/arb4j`. The
+[`Publish release jar`](.github/workflows/release.yml) workflow runs `mvn deploy`
+— uploading the `arb4j` jar together with its attached `-sources` and `-javadoc`
+jars — whenever a GitHub Release is published, a `v*` tag is pushed, or the
+workflow is dispatched manually. Deploy credentials come from the run's
+`GITHUB_TOKEN`; no extra secret is needed.
+
+To **publish a release** push a tag (or click *Run workflow*):
+
+```bash
+git tag v1.1.1
+git push origin v1.1.1
+```
+
+To **consume** the published artifact, add the repository and dependency to your
+own `pom.xml`. GitHub Packages requires authentication even for reads, so put a
+[personal access token](https://github.com/settings/tokens) with the
+`read:packages` scope in a `<server>` entry of your `~/.m2/settings.xml` whose
+`<id>` matches the `<repository>` id below:
+
+```xml
+<repository>
+  <id>github-arb4j</id>
+  <url>https://maven.pkg.github.com/crowlogic/arb4j</url>
+</repository>
+```
+
+```xml
+<dependency>
+  <groupId>org.arblib</groupId>
+  <artifactId>arb4j</artifactId>
+  <version>1.1.1</version>
+</dependency>
+```
+

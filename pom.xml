@@ -36,6 +36,24 @@
 		</repository>
 	</repositories>
 
+	<!--
+	  Publish target for `mvn deploy`. GitHub Packages hosts the released
+	  arb4j jar (plus the attached -sources and -javadoc jars) as a Maven
+	  repository at https://maven.pkg.github.com/crowlogic/arb4j. The `github`
+	  id matches the server entry that actions/setup-java writes into
+	  ~/.m2/settings.xml in .github/workflows/release.yml, where the username
+	  is the workflow actor and the password is the run's GITHUB_TOKEN.
+	  Downstream consumers add the same URL as a <repository> and authenticate
+	  with a personal access token carrying the read:packages scope.
+	-->
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>GitHub crowlogic/arb4j Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/crowlogic/arb4j</url>
+		</repository>
+	</distributionManagement>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.vineflower</groupId>
