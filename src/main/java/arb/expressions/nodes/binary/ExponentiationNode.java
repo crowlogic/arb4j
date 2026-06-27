@@ -307,7 +307,8 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     }
 
     if ((Integer.class.equals(left.type()) && Fraction.class.equals(right.type()))
-                  || (Fraction.class.equals(left.type()) && Integer.class.equals(right.type())))
+                  || (Fraction.class.equals(left.type()) && Integer.class.equals(right.type()))
+                  || (Fraction.class.equals(left.type()) && Fraction.class.equals(right.type())))
 
     {
       return type = AlgebraicNumber.class;

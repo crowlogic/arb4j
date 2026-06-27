@@ -200,7 +200,12 @@ public final class MuntzPadeApproximant implements
         mapping.instance.invalidateLocalCache();
       }
     }
-    cachedBits = -1;
+    // Leave cachedBits untouched: it records the precision at which the
+    // surviving v-independent caches (σ-table, Müntz a, m) still hold. Resetting
+    // it to -1 would make evaluate's `cachedBits < 0` branch silently adopt a
+    // higher requested precision without rebuilding those caches, returning a
+    // stale lower-precision result. Keeping it lets `bits > cachedBits` fire a
+    // full invalidation when a precision increase actually needs one.
     return this;
   }
 
