@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 import arb.XDO;
+import arb.NativeLibraryLoader;
 import arb.arblib;
 import arb.applications.expressor.EmacsKeybindingsEventHandler;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -54,7 +55,7 @@ public class WindowManager
   }
   static
   {
-    System.loadLibrary("arblib");
+    NativeLibraryLoader.load("arblib");
   }
 
   public static final String MORE_CONDUCIVE_STYLESHEET = ".scroll-bar .thumb {\n"

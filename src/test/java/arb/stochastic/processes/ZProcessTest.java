@@ -1,6 +1,7 @@
 package arb.stochastic.processes;
 
 import arb.Complex;
+import arb.NativeLibraryLoader;
 import arb.RealConstants;
 import arb.functions.RealBivariateToComplexFunction;
 import arb.functions.RealToComplexFunction;
@@ -17,7 +18,7 @@ public class ZProcessTest extends
 
   public void testZProcessGainFunction()
   {
-    System.loadLibrary("arblib");
+    NativeLibraryLoader.load("arblib");
     ZProcess                       Zprocess            = new ZProcess();
     RealBivariateToComplexFunction gainFunction        = Zprocess.gainFunction();
     RealToComplexFunction          gainAtHalfFrequency = gainFunction.evaluate(RealConstants.half, 128);

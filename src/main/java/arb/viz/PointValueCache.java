@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 
 import arb.Complex;
+import arb.NativeLibraryLoader;
 import arb.ComplexMatrix;
 import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -34,7 +35,7 @@ public class PointValueCache implements
 {
   static
   {
-    System.loadLibrary("arblib");
+    NativeLibraryLoader.load("arblib");
   }
 
   Complex[][][]         points;
