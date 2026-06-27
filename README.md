@@ -320,9 +320,11 @@ statically-linked binary (FLINT/MPFR/GMP are linked statically into it), tracked
 at `src/main/resources/native/libarblib.so` and packaged into the jar at
 `native/libarblib.so`. Building and running the library need only this committed
 `.so` plus the JDK and Maven above. You only need the native toolchain
-(`clang swig libxdo-dev`) if you intend to **rebuild** the `.so` after editing a
-SWIG interface file — see [Build](#build); the first such rebuild fetches and
-builds GMP/MPFR/FLINT 3.3.1 statically into `~/.cache/arb4j` automatically.
+(`clang swig` plus the X11 dev headers `libx11-dev libxtst-dev libxinerama-dev
+libxi-dev libxkbcommon-dev libxfixes-dev`) if you intend to **rebuild** the `.so`
+after editing a SWIG interface file — see [Build](#build); the first such rebuild
+fetches and builds GMP/MPFR/FLINT 3.3.1 **and libxdo (xdotool)** statically into
+`~/.cache/arb4j` automatically.
 
 **UTF-8 locale** — source files use Unicode in filenames (`σField.java`, `RiemannζFunction.java`, `RiemannξFunction.java`). Without a UTF-8 locale, `javac` fails with `Invalid filename: ??Field.java`.
 ```bash
@@ -344,11 +346,13 @@ mvn test
 ```
 
 You only need to rebuild the native library **when a SWIG interface file
-(`native/*.i`) changes**. Then, with `clang swig libxdo-dev` installed:
+(`native/*.i`) changes**. Then, with `clang swig` and the X11 dev headers
+(`libx11-dev libxtst-dev libxinerama-dev libxi-dev libxkbcommon-dev
+libxfixes-dev`) installed:
 
 ```bash
 make            # reruns SWIG + clang, relinks libarblib.so (statically linked
-                # FLINT/MPFR/GMP, built once into ~/.cache/arb4j)
+                # FLINT/MPFR/GMP + libxdo, built once into ~/.cache/arb4j)
 mvn test
 ```
 
@@ -366,6 +370,13 @@ static `.a` libraries under `~/.cache/arb4j` and links them statically into
 the version your distro ships is irrelevant. (The historical FLINT 3.1/3.2
 `flint_rand_*`/`stride` renames are pinned away by the fixed 3.3.1 build and the
 `sed` patches in the Makefile's SWIG step; no manual workaround is needed.)
+
+**libxdo is statically linked too.** xdotool ships no `.a`, so `make` builds
+`libxdo.a` from the pinned xdotool source into `~/.cache/arb4j` and links it
+statically, exactly like FLINT/MPFR/GMP. The runtime therefore no longer needs
+`libxdo.so.3` (which broke loading on hosts where it was absent); only the stable
+system X11 libs (`libX11`, `libXtst`, `libXinerama`, `libxkbcommon`) remain as
+dynamic dependencies.
 
 ### Troubleshooting
 

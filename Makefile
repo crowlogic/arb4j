@@ -35,9 +35,20 @@ FLINT_TARBALL := $(CACHE)/flint-$(FLINT_VERSION).tar.gz
 FLINT_URL     := https://github.com/flintlib/flint/releases/download/v$(FLINT_VERSION)/flint-$(FLINT_VERSION).tar.gz
 FLINT_SRCDIR  := $(CACHE)/flint-$(FLINT_VERSION)-src
 
+# xdotool ships no static .a, so (like GMP/MPFR/FLINT) we build libxdo.a from
+# source and link it statically. Its X11 transitive deps (libX11/libXtst/
+# libXinerama) stay dynamic — those are stable system libs, unlike libxdo.so.3.
+XDO_VERSION := 3.20211022.1
+XDO_PREFIX  := $(CACHE)/xdotool-$(XDO_VERSION)
+XDO_STATIC  := $(XDO_PREFIX)/lib/libxdo.a
+XDO_TARBALL := $(CACHE)/xdotool-$(XDO_VERSION).tar.gz
+XDO_URL     := https://github.com/jordansissel/xdotool/releases/download/v$(XDO_VERSION)/xdotool-$(XDO_VERSION).tar.gz
+XDO_SRCDIR  := $(CACHE)/xdotool-$(XDO_VERSION)-src
+
 C_INCLUDES=-I$(JAVA_HOME)include -I$(JAVA_HOME)include/linux \
            -I$(FLINT_PREFIX)/include -I$(FLINT_PREFIX)/include/flint \
-           -I$(MPFR_PREFIX)/include -I$(GMP_PREFIX)/include
+           -I$(MPFR_PREFIX)/include -I$(GMP_PREFIX)/include \
+           -I$(XDO_PREFIX)/include
 
 all: libarblib.so
 
@@ -98,19 +109,39 @@ $(FLINT_STATIC): $(FLINT_TARBALL) $(MPFR_STATIC)
 	  make -j$$(nproc) && \
 	  make install
 
+$(XDO_TARBALL):
+	mkdir -p $(CACHE)
+	curl -L --fail -o $@ $(XDO_URL)
+
+$(XDO_STATIC): $(XDO_TARBALL)
+	mkdir -p $(XDO_SRCDIR)
+	tar -xzf $(XDO_TARBALL) -C $(XDO_SRCDIR) --strip-components=1
+	mkdir -p $(XDO_PREFIX)/lib $(XDO_PREFIX)/include
+	cd $(XDO_SRCDIR) && \
+	  clang -fPIC -O2 -c xdo.c -o xdo.o && \
+	  clang -fPIC -O2 -c xdo_search.c -o xdo_search.o && \
+	  ar rcs $(XDO_STATIC) xdo.o xdo_search.o && \
+	  cp xdo.h xdo_version.h $(XDO_PREFIX)/include/
+	# native/complex.c ships its own xdo_activate_window (with an inverted,
+	# 1-on-success return convention the Java side relies on). When libxdo was
+	# linked dynamically that local strong symbol shadowed the library's; with
+	# static linking both definitions collide. Localize the archive's copy so
+	# complex.c's version remains the sole global one, preserving behavior.
+	objcopy --localize-symbol=xdo_activate_window $(XDO_STATIC)
+
 # The single canonical native library lives under src/main/resources so Maven
 # packages it into the jar at native/libarblib.so via standard resource
 # processing. The repo-root libarblib.so is a symlink to it, so dev runs
 # (-Djava.library.path=.) and the packaged jar load the exact same binary.
 SO_RESOURCE = src/main/resources/native/libarblib.so
 
-$(SO_RESOURCE): $(SOURCES) $(FLINT_STATIC)
+$(SO_RESOURCE): $(SOURCES) $(FLINT_STATIC) $(XDO_STATIC)
 	mkdir -p $(dir $(SO_RESOURCE))
 	clang $(CFLAGS) $(SOURCES) $(C_INCLUDES) \
-	  -L$(FLINT_PREFIX)/lib -L$(MPFR_PREFIX)/lib -L$(GMP_PREFIX)/lib \
+	  -L$(FLINT_PREFIX)/lib -L$(MPFR_PREFIX)/lib -L$(GMP_PREFIX)/lib -L$(XDO_PREFIX)/lib \
 	  -o$(SO_RESOURCE) \
-	  -Wl,-Bstatic -lflint -lmpfr -lgmp \
-	  -Wl,-Bdynamic -lxdo
+	  -Wl,-Bstatic -lflint -lmpfr -lgmp -lxdo \
+	  -Wl,-Bdynamic -Wl,--as-needed -lX11 -lXtst -lXinerama -lxkbcommon
 	strip $(SO_RESOURCE)
 
 libarblib.so: $(SO_RESOURCE)
