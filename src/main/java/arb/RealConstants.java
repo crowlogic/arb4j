@@ -44,6 +44,10 @@ public class RealConstants
   public static Real oneQuarter    = next().identity().div(4, prec);
   public static Real threeQuarters = next().set(3).div(4, prec);
 
+  /** Alias of {@link #posInf}: the {@code ∞}/{@code inf}/{@code infty} literal
+   *  in the expression language loads {@code RealConstants.infinity}. */
+  public static Real infinity      = posInf;
+
   static
   {
     constants.lock();

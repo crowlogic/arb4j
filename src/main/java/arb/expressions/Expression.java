@@ -1144,7 +1144,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         // length, not just 2). For all such peers we must allocate a FRESH
         // instance so each evaluation level owns its own `evaluating` flag and
         // the re-entrancy guard cannot fire.
-        boolean isMutuallyRecursive = isTransitivelyReachable(mapping, functionName, new HashSet<>());
+        // Detect if the peer is in the same SCC as this expression (any cycle
+        // length, not just 2). For all such peers we must allocate a FRESH
+        // instance so each evaluation level owns its own `evaluating` flag and
+        // the re-entrancy guard cannot fire. Σ/Π operand sub-expressions carry a
+        // null functionName but are referenced by their owner under className(),
+        // so fall back to className() for the cycle test — otherwise a recursive
+        // reference nested inside a sum operand is missed and aliases the same
+        // instance, tripping the guard.
+        String  ownerName           = functionName != null ? functionName : className();
+        boolean isMutuallyRecursive = isTransitivelyReachable(mapping, ownerName, new HashSet<>());
         var     needsAllocation     = new Label();
 
         // 1. if (this.<field> != null) skip → field already populated, done.
