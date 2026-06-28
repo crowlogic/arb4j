@@ -63,6 +63,7 @@ module arb4j
   exports arb.space.topological;
   exports arb.measure;
   exports arb.stochastic.processes;
+  exports arb.stochastic.processes.heston;
   exports arb.utensils;
   exports arb.viz;
 }
