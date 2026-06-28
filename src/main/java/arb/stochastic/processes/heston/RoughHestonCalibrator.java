@@ -20,10 +20,14 @@ import arb.expressions.Context;
  * <p>
  * The six parameters are indexed {@link #LAMBDA}=λ, {@link #THETA}=θ,
  * {@link #NU}=ν, {@link #V0}=V₀, {@link #RHO}=ρ, {@link #MU}=μ; any subset is
- * free and the rest fixed. One {@link RoughHestonOptionPricer} is built per
- * strike and repriced by mutating its parameter handles and calling
- * {@link RoughHestonOptionPricer#invalidate()} — no recompilation. Puts are
- * priced from calls by parity (S₀=1, r=0: P = C − 1 + K).
+ * free and the rest fixed. A SINGLE {@link RoughHestonOptionPricer} is compiled
+ * once and repriced for every option by mutating its parameter handles and its
+ * maturity {@code φ.T}, then calling {@link RoughHestonOptionPricer#invalidate()}
+ * — the pricing machinery (≈70 generated classes) is compiled exactly once for
+ * the whole calibration, never per option. The options are priced strictly
+ * sequentially (each result is read out before the next is priced), so one
+ * pricer's mutable variable state suffices and no two options' states ever need
+ * to coexist. Puts are priced from calls by parity (S₀=1, r=0: P = C − 1 + K).
  *
  * <p>
  * The damped Gauss–Newton step solves {@code (JᵀJ + μ·diag(JᵀJ)) δ = −Jᵀr} via
@@ -77,7 +81,7 @@ public final class RoughHestonCalibrator implements
   final List<Option>              options;
   final int[]                     free;
   final Real                      p;        // dim-6 working parameters
-  final RoughHestonOptionPricer[] pricers;  // one fresh solver instance per option
+  final RoughHestonOptionPricer   pricer;   // compiled once; repriced per option by mutating params + T
   final List<Real>                owned = new ArrayList<>();
 
   public int                      maxIter    = 80;
@@ -95,9 +99,13 @@ public final class RoughHestonCalibrator implements
     this.p       = Real.newVector(6);
     for (int k = 0; k < 6; k++)
       this.p.get(k).set(initialParams.get(k));
-    this.pricers = new RoughHestonOptionPricer[options.size()];
-    for (int i = 0; i < options.size(); i++)
-      this.pricers[i] = buildPricer(options.get(i).T, initialParams);
+    // Compile the pricing machinery exactly ONCE. Every option is priced through
+    // this single instance by mutating its parameter handles and its maturity
+    // φ.T before each (sequential) price/sensitivity call — see priceAll/jacobian.
+    // The initial maturity is arbitrary (the first option's); it is overwritten
+    // per option. This is the whole point: the ≈70 generated classes are defined
+    // once for the calibration, not once per option (issue #1073).
+    this.pricer = buildPricer(options.isEmpty() ? RealConstants.one : options.get(0).T, initialParams);
   }
 
   private RoughHestonOptionPricer buildPricer(Real T, Real p6)
@@ -134,15 +142,16 @@ public final class RoughHestonCalibrator implements
     {
       for (int i = 0; i < options.size(); i++)
       {
-        RoughHestonOptionPricer pr = pricers[i];
+        Option                  o  = options.get(i);
+        RoughHestonOptionPricer pr = pricer;
         pr.φ.λ.set(p6.get(LAMBDA));
         pr.φ.θ.set(p6.get(THETA));
         pr.φ.ν.set(p6.get(NU));
         pr.φ.V0.set(p6.get(V0));
         pr.φ.ρ.set(p6.get(RHO));
         pr.φ.μ.set(p6.get(MU));
+        pr.φ.T.set(o.T);
         pr.invalidate();
-        Option o = options.get(i);
         pr.call(o.K, bits, price);
         if (o.call)
           model.get(i, 0).set(price);
@@ -307,15 +316,16 @@ public final class RoughHestonCalibrator implements
     {
       for (int i = 0; i < options.size(); i++)
       {
-        RoughHestonOptionPricer pr = pricers[i];
+        Option                  o  = options.get(i);
+        RoughHestonOptionPricer pr = pricer;
         pr.φ.λ.set(p6.get(LAMBDA));
         pr.φ.θ.set(p6.get(THETA));
         pr.φ.ν.set(p6.get(NU));
         pr.φ.V0.set(p6.get(V0));
         pr.φ.ρ.set(p6.get(RHO));
         pr.φ.μ.set(p6.get(MU));
+        pr.φ.T.set(o.T);
         pr.invalidate();
-        Option o = options.get(i);
         for (int j = 0; j < free.length; j++)
         {
           pr.callSensitivity(NAMES[free[j]], o.K, bits, deriv);
@@ -403,8 +413,7 @@ public final class RoughHestonCalibrator implements
   @Override
   public void close()
   {
-    for (RoughHestonOptionPricer pr : pricers)
-      pr.close();
+    pricer.close();
     for (Real r : owned)
       r.close();
   }
