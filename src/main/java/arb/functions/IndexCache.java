@@ -70,20 +70,39 @@ public final class IndexCache<C>
    */
   public boolean             ownsValues;
 
-  private final ArrayList<C> nonneg = new ArrayList<>();
-  private final ArrayList<C> neg    = new ArrayList<>();
+  /**
+   * Two-dimensional backing store keyed by {@code (order, index)}. The outer
+   * list is indexed by the evaluation {@code order} (derivative/Taylor order);
+   * each element is the per-index list for that order — one for non-negative
+   * indices, one for negative. A value computed at a given order is therefore
+   * cached in a slot distinct from the same index at any other order, so a
+   * re-entrant {@link Function#peek peek} for order N never returns a result
+   * that was produced for a different order (which would have the wrong shape:
+   * an order-1 scalar vs. an order-N jet). The single-argument {@link #get(int)}
+   * / {@link #put(int,Object)} operate on the canonical value order ({@code 1}).
+   */
+  private final ArrayList<ArrayList<C>> nonnegByOrder = new ArrayList<>();
+  private final ArrayList<ArrayList<C>> negByOrder    = new ArrayList<>();
 
-  /** @return the cached value at {@code index}, or {@code null} if not cached. */
+  /** @return the cached value at {@code index} for the canonical value order
+   *          ({@code 1}), or {@code null} if not cached. */
   public C get(int index)
   {
-    C v;
-    if (index >= 0)
-      v = index < nonneg.size() ? nonneg.get(index) : null;
-    else
-    {
-      int i = -index - 1;
-      v = i < neg.size() ? neg.get(i) : null;
-    }
+    return get(index, 1);
+  }
+
+  /**
+   * @param index signed index — may be negative
+   * @param order evaluation order the value was computed at
+   * @return the cached value at {@code (index, order)}, or {@code null} if not
+   *         cached.
+   */
+  public C get(int index, int order)
+  {
+    ArrayList<ArrayList<C>> byOrder = index >= 0 ? nonnegByOrder : negByOrder;
+    int                     i       = index >= 0 ? index : -index - 1;
+    ArrayList<C>            list    = (order >= 0 && order < byOrder.size()) ? byOrder.get(order) : null;
+    C                       v       = (list != null && i < list.size()) ? list.get(i) : null;
     if (v == null)
       MISSES++;
     else
@@ -92,25 +111,35 @@ public final class IndexCache<C>
   }
 
   /**
-   * Store {@code value} at {@code index}, growing the relevant backing list with
-   * {@code null} padding as needed.
+   * Store {@code value} at {@code index} for the canonical value order
+   * ({@code 1}), growing the backing list with {@code null} padding as needed.
    *
    * @return {@code value} (for call-site chaining)
    */
   public C put(int index, C value)
   {
-    if (index >= 0)
-      set(nonneg, index, value);
-    else
-      set(neg, -index - 1, value);
-    return value;
+    return put(index, 1, value);
   }
 
-  private static <C> void set(ArrayList<C> list, int i, C value)
+  /**
+   * Store {@code value} at {@code (index, order)}, growing both the per-order
+   * and per-index backing lists with {@code null} padding as needed.
+   *
+   * @return {@code value} (for call-site chaining)
+   */
+  public C put(int index, int order, C value)
   {
+    ArrayList<ArrayList<C>> byOrder = index >= 0 ? nonnegByOrder : negByOrder;
+    int                     i       = index >= 0 ? index : -index - 1;
+    if (order < 0)
+      order = 0;
+    while (byOrder.size() <= order)
+      byOrder.add(new ArrayList<>());
+    ArrayList<C> list = byOrder.get(order);
     while (list.size() <= i)
       list.add(null);
     list.set(i, value);
+    return value;
   }
 
   /**
@@ -130,11 +159,11 @@ public final class IndexCache<C>
   {
     if (ownsValues)
     {
-      closeEntries(nonneg);
-      closeEntries(neg);
+      closeEntries(nonnegByOrder);
+      closeEntries(negByOrder);
     }
-    nonneg.clear();
-    neg.clear();
+    nonnegByOrder.clear();
+    negByOrder.clear();
   }
 
   /**
@@ -158,39 +187,45 @@ public final class IndexCache<C>
    */
   public void invalidateEntries(boolean propagate)
   {
-    invalidateEntries(nonneg, propagate);
-    invalidateEntries(neg, propagate);
+    invalidateEntries(nonnegByOrder, propagate);
+    invalidateEntries(negByOrder, propagate);
   }
 
-  private static void invalidateEntries(ArrayList<?> list, boolean propagate)
+  private static void invalidateEntries(ArrayList<? extends ArrayList<?>> byOrder, boolean propagate)
   {
-    for (int i = 0; i < list.size(); i++)
+    for (ArrayList<?> list : byOrder)
     {
-      if (list.get(i) instanceof Function<?, ?> entry)
+      for (int i = 0; i < list.size(); i++)
       {
-        if (propagate)
-          entry.invalidateCache();
-        else
-          entry.invalidateLocalCache();
+        if (list.get(i) instanceof Function<?, ?> entry)
+        {
+          if (propagate)
+            entry.invalidateCache();
+          else
+            entry.invalidateLocalCache();
+        }
       }
     }
   }
 
-  private static void closeEntries(ArrayList<?> list)
+  private static void closeEntries(ArrayList<? extends ArrayList<?>> byOrder)
   {
-    for (int i = 0; i < list.size(); i++)
+    for (ArrayList<?> list : byOrder)
     {
-      if (list.get(i) instanceof AutoCloseable entry)
+      for (int i = 0; i < list.size(); i++)
       {
-        try
+        if (list.get(i) instanceof AutoCloseable entry)
         {
-          entry.close();
-        }
-        catch (Exception e)
-        {
-          // arb value close() does not throw — surface the impossible loudly
-          // rather than hide a corrupted dispose.
-          throw new RuntimeException("failed to close cached entry during cache invalidation", e);
+          try
+          {
+            entry.close();
+          }
+          catch (Exception e)
+          {
+            // arb value close() does not throw — surface the impossible loudly
+            // rather than hide a corrupted dispose.
+            throw new RuntimeException("failed to close cached entry during cache invalidation", e);
+          }
         }
       }
     }
@@ -198,6 +233,14 @@ public final class IndexCache<C>
 
   public boolean isEmpty()
   {
-    return nonneg.isEmpty() && neg.isEmpty();
+    return allEmpty(nonnegByOrder) && allEmpty(negByOrder);
+  }
+
+  private static boolean allEmpty(ArrayList<? extends ArrayList<?>> byOrder)
+  {
+    for (ArrayList<?> list : byOrder)
+      if (!list.isEmpty())
+        return false;
+    return true;
   }
 }

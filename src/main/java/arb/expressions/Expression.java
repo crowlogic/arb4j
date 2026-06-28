@@ -228,7 +228,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   /** System property {@code arb4j.evaluateGuard} (default {@code true}).
    *  When {@code false}, the generated {@code evaluate()} emits no re-entrancy
    *  guard (the evaluating-boolean check, throw, try/finally wrapper). */
-  private static final boolean    evaluateGuardEnabled              = Boolean.valueOf(System.getProperty("arb4j.evaluateGuard", "false"));
+  private static final boolean    evaluateGuardEnabled              = Boolean.valueOf(System.getProperty("arb4j.evaluateGuard", "true"));
 
   public static boolean           saveGraphs                        = Boolean.valueOf(System.getProperty("arb4j.saveGraphs", "false"));
 
@@ -1952,12 +1952,41 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
+  /**
+   * Issue #1014: for reified-functional codomains (ComplexPolynomial,
+   * RealPolynomial, RationalFunction, ComplexRationalFunction) the generated
+   * {@code evaluate(...)} needs a destination instance to land the computed
+   * polynomial/rational into. Callers commonly pass null (matching the contract
+   * of generated-functional codomains, where the method constructs and returns
+   * a fresh inner class instance). For reified results we restore that contract
+   * by allocating a fresh instance of {@code coDomainType} when the result
+   * parameter is null and writing it back into slot 4 so downstream
+   * {@code result.set(...)} calls — including the cache-hit copy in
+   * {@link #generateCachePeek} — see a non-null target. Idempotent: a second
+   * call sees the now-non-null result and does nothing.
+   */
+  protected void generateReifiedNullResultAllocation(MethodVisitor mv)
+  {
+    if (isReifiedFunctional())
+    {
+      Label resultIsNonNull = new Label();
+      Compiler.loadResultParameter(mv);
+      mv.visitJumpInsn(Opcodes.IFNONNULL, resultIsNonNull);
+      Compiler.generateNewObjectInstruction(mv, coDomainType);
+      duplicateTopOfTheStack(mv);
+      Compiler.invokeDefaultConstructor(mv, coDomainType);
+      mv.visitVarInsn(Opcodes.ASTORE, 4);
+      designateLabel(mv, resultIsNonNull);
+    }
+  }
+
   protected void generateCachePeek(MethodVisitor mv)
   {
     Label cacheMiss = new Label();
     loadThisAndFieldOntoStack(mv, "cache", IndexCache.class);
     loadInputParameterChecked(mv);
-    invokeStaticMethod(mv, Function.class, "peek", Object.class, IndexCache.class, arb.Integer.class);
+    mv.visitVarInsn(Opcodes.ILOAD, 2); // order — the cache is keyed by (index, order)
+    invokeStaticMethod(mv, Function.class, "peek", Object.class, IndexCache.class, arb.Integer.class, int.class);
     cast(mv, coDomainType);
     duplicateTopOfTheStack(mv);
     jumpToIfNull(mv, cacheMiss);
@@ -2008,13 +2037,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       // dup so we can poke a copy of the reference and return one
       mv.visitInsn(Opcodes.DUP);
 
-      // poke(cache, index, functionInstance) — keys-map is local cacheArrayListSlot,
-      // key is local cacheIndexSlot, value is the dup'd reference on stack
+      // poke(cache, index, order, functionInstance) — keys-map is local
+      // cacheArrayListSlot, key is local cacheIndexSlot, order is slot 2, value
+      // is the dup'd reference on stack
       mv.visitVarInsn(Opcodes.ALOAD, cacheArrayListSlot);
       mv.visitInsn(Opcodes.SWAP); // stack: cache, functionInstance
       mv.visitVarInsn(Opcodes.ALOAD, cacheIndexSlot);
       mv.visitInsn(Opcodes.SWAP); // stack: cache, index, functionInstance
-      Compiler.invokeStaticMethod(mv, Function.class, "poke", Object.class, IndexCache.class, arb.Integer.class, Object.class);
+      mv.visitVarInsn(Opcodes.ILOAD, 2); // order
+      mv.visitInsn(Opcodes.SWAP); // stack: cache, index, order, functionInstance
+      Compiler.invokeStaticMethod(mv, Function.class, "poke", Object.class, IndexCache.class, arb.Integer.class, int.class, Object.class);
       mv.visitInsn(Opcodes.POP); // discard poke return value
 
       // return the original functionInstance still on the stack (under the dup)
@@ -2042,11 +2074,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     Compiler.generateVirtualMethodInvocation(mv, coDomainType, "set", coDomainType, coDomainType);
     mv.visitInsn(Opcodes.POP); // discard set() return value
 
-    // poke(cache, index, freshCopy)
+    // poke(cache, index, order, freshCopy)
     mv.visitVarInsn(Opcodes.ALOAD, cacheArrayListSlot);
     mv.visitVarInsn(Opcodes.ALOAD, cacheIndexSlot);
+    mv.visitVarInsn(Opcodes.ILOAD, 2); // order
     mv.visitVarInsn(Opcodes.ALOAD, freshCopySlot);
-    Compiler.invokeStaticMethod(mv, Function.class, "poke", Object.class, IndexCache.class, arb.Integer.class, Object.class);
+    Compiler.invokeStaticMethod(mv, Function.class, "poke", Object.class, IndexCache.class, arb.Integer.class, int.class, Object.class);
     mv.visitInsn(Opcodes.POP); // discard poke return value
 
     // return result
@@ -2456,6 +2489,21 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     designateLabel(mv, startLabel);
     Compiler.annotateWithOverride(mv);
 
+    // Re-entrancy model: the guard protects evaluate_body, which clobbers this
+    // instance's scratch fields and therefore must never be re-entered. A cache
+    // *read*, by contrast, depends on and mutates no instance state, so it is
+    // safe to serve re-entrantly. We therefore peek the (index, order)-keyed
+    // cache HERE, ahead of the guard: a re-entrant call that asks for an
+    // already-computed value returns it immediately, while a re-entrant call
+    // that misses (a genuine attempt to recompute mid-flight) falls through to
+    // the guard and is rejected. The peek runs for every order — the cache is
+    // keyed by order so an order-N read never collides with an order-M entry.
+    if (shouldCache())
+    {
+      generateReifiedNullResultAllocation(mv);
+      generateCachePeek(mv);
+    }
+
     if (evaluateGuardEnabled)
     {
       // Same-thread re-entry guard. ACC_SYNCHRONIZED on the method handles
@@ -2542,27 +2590,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     designateLabel(mv, startLabel);
 
-    // Issue #1014: for reified-functional codomains (ComplexPolynomial,
-    // RealPolynomial, RationalFunction, ComplexRationalFunction) the
-    // generated evaluate(...) needs a destination instance to land the
-    // computed polynomial/rational into. Callers commonly pass null
-    // (matching the contract of generated-functional codomains, where the
-    // method constructs and returns a fresh inner class instance). For
-    // reified results we restore that contract by allocating a fresh
-    // instance of coDomainType when the result parameter is null and
-    // writing it back into slot 4 so downstream `result.set(...)` calls
-    // see a non-null target.
-    if (isReifiedFunctional())
-    {
-      Label resultIsNonNull = new Label();
-      Compiler.loadResultParameter(mv);
-      mv.visitJumpInsn(Opcodes.IFNONNULL, resultIsNonNull);
-      Compiler.generateNewObjectInstruction(mv, coDomainType);
-      duplicateTopOfTheStack(mv);
-      Compiler.invokeDefaultConstructor(mv, coDomainType);
-      mv.visitVarInsn(Opcodes.ASTORE, 4);
-      designateLabel(mv, resultIsNonNull);
-    }
+    generateReifiedNullResultAllocation(mv);
 
     if (needsInitializer())
     {
@@ -2594,7 +2622,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (cache)
     {
-      generateCachePeek(mv);
+      // The cache *peek* is emitted in evaluate() ahead of the re-entrancy guard
+      // (a cache read touches no per-instance scratch state, so it is safe to
+      // serve re-entrantly); evaluate_body only needs the *poke* setup.
       generateCachePokePrologue(mv);
     }
     if (cacheValueBacking)
@@ -3363,17 +3393,26 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "derivativeCache", arrayListDescriptor);
     mv.visitLabel(cacheNotNull);
 
-    // --- Ensure derivativeCache[0] = this ---
-    // if (derivativeCache.isEmpty()) derivativeCache.add(this)
+    // --- Ensure derivativeCache[0] = fresh instance (not 'this'!) ---
+    // Seeding with 'this' would cause re-entrant evaluate() when the loop calls
+    // derivativeCache.get(0).evaluate(...) while the outer evaluate() is still running.
+    // Instead allocate a new instance of the same class, share the context, and seed it.
+    // if (derivativeCache.isEmpty()) derivativeCache.add(new SameClass(context))
     loadThisOntoStack(mv);
     mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "derivativeCache", arrayListDescriptor);
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, arrayListInternal, "size", "()I", false);
     Label cacheNotEmpty = new Label();
     mv.visitJumpInsn(Opcodes.IFNE, cacheNotEmpty);
     loadThisOntoStack(mv);
-    mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "derivativeCache", arrayListDescriptor);
-    loadThisOntoStack(mv);
-    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, arrayListInternal, "add", "(Ljava/lang/Object;)Z", false);
+    mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "derivativeCache", arrayListDescriptor); // [list]
+    mv.visitTypeInsn(Opcodes.NEW, internalName());                                               // [list, uninit]
+    mv.visitInsn(Opcodes.DUP);                                                                   // [list, uninit, uninit]
+    mv.visitMethodInsn(Opcodes.INVOKESPECIAL, internalName(), "<init>", "()V", false);           // [list, fresh]
+    mv.visitInsn(Opcodes.DUP);                                                                   // [list, fresh, fresh]
+    loadThisOntoStack(mv);                                                                        // [list, fresh, fresh, this]
+    mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "context", Type.getDescriptor(Context.class)); // [list, fresh, fresh, ctx]
+    mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "context", Type.getDescriptor(Context.class)); // [list, fresh]
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, arrayListInternal, "add", "(Ljava/lang/Object;)Z", false); // [bool]
     mv.visitInsn(Opcodes.POP); // discard boolean return
     mv.visitLabel(cacheNotEmpty);
 
@@ -4025,59 +4064,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
 
     return instance;
-  }
-
-  /**
-   * Back-fill cross-references on previously-instantiated members of this
-   * sequence's SCC. When the second sequence in a mutual cycle (e.g. f ↔ g)
-   * is instantiated, the FIRST sequence's reference to the SECOND was set to
-   * {@code null} at first-instantiate time (the FunctionMapping had no
-   * instance yet). Walk every other context member that has a declared field
-   * named {@code this.functionName} and assign our {@code instance} into it
-   * if currently null.
-   */
-  protected void backfillMutuallyRecursiveReferences(F selfInstance)
-  {
-    if (context == null || functionName == null)
-      return;
-    for (var otherEntry : context.functions.entrySet())
-    {
-      String otherName = otherEntry.getKey();
-      if (otherName == null || otherName.equals(functionName))
-        continue;
-      Object otherInstance = otherEntry.getValue().instance;
-      if (otherInstance == null || otherInstance == selfInstance)
-        continue;
-      // Find the field without throwing: most peers in the context do not
-      // reference us, so getField(functionName) would throw NoSuchFieldException
-      // — filling a stack trace — for every non-referencing peer. Scan the
-      // public fields (what getField resolves anyway) and skip when absent.
-      java.lang.reflect.Field field = null;
-      for (var candidate : otherInstance.getClass().getFields())
-      {
-        if (candidate.getName().equals(functionName))
-        {
-          field = candidate;
-          break;
-        }
-      }
-      if (field == null)
-      {
-        // The other class doesn't reference us — not in our SCC, nothing to do.
-        continue;
-      }
-      try
-      {
-        if (field.get(otherInstance) == null)
-        {
-          field.set(otherInstance, selfInstance);
-        }
-      }
-      catch (IllegalAccessException ignored)
-      {
-        // Field isn't accessible — skip; codegen will surface any real failure.
-      }
-    }
   }
 
   /**

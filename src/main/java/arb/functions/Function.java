@@ -47,6 +47,23 @@ public interface Function<D, CO> extends
   }
 
   /**
+   * Memoization peek keyed by both signed {@code int} index and evaluation
+   * {@code order}. A value computed at one order is cached in a slot distinct
+   * from the same index at another order, so this peek can run for every order
+   * (including before the re-entrancy guard) without ever returning a result of
+   * the wrong shape.
+   *
+   * @param cache memoization cache; never {@code null} for generated classes
+   * @param n     signed integer index — may be negative
+   * @param order evaluation order
+   * @return the cached value if present, otherwise {@code null}
+   */
+  static <C> C peek(IndexCache<C> cache, arb.Integer n, int order)
+  {
+    return cache.get(n.getSignedValue(), order);
+  }
+
+  /**
    * Memoization poke over an {@link IndexCache} keyed by signed {@code int}
    * index. See {@link #peek(IndexCache, arb.Integer)} for the rationale.
    *
@@ -55,6 +72,17 @@ public interface Function<D, CO> extends
   static <C> C poke(IndexCache<C> cache, arb.Integer n, C value)
   {
     return cache.put(n.getSignedValue(), value);
+  }
+
+  /**
+   * Memoization poke keyed by both signed {@code int} index and evaluation
+   * {@code order}. See {@link #peek(IndexCache, arb.Integer, int)}.
+   *
+   * @return the inserted value (for chaining)
+   */
+  static <C> C poke(IndexCache<C> cache, arb.Integer n, int order, C value)
+  {
+    return cache.put(n.getSignedValue(), order, value);
   }
 
   /**
