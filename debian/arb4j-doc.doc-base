@@ -1,9 +1,0 @@
-Document: arb4j
-Title: arb4j API Documentation
-Author: Stephen Crowley
-Abstract: Javadoc API for the arb4j arbitrary-precision ball arithmetic library.
-Section: Programming/Java
-
-Format: HTML
-Index: /usr/share/doc/arb4j/api/index.html
-Files: /usr/share/doc/arb4j/api/*
