@@ -52,6 +52,17 @@
 			<name>GitHub crowlogic/arb4j Apache Maven Packages</name>
 			<url>https://maven.pkg.github.com/crowlogic/arb4j</url>
 		</repository>
+		<!--
+		  GitHub Packages serves releases and snapshots from the same URL, but
+		  Maven routes -SNAPSHOT versions through <snapshotRepository>. Without
+		  this entry `mvn deploy` of a SNAPSHOT aborts asking for an alt
+		  snapshot deployment repository. Snapshots may be overwritten freely.
+		-->
+		<snapshotRepository>
+			<id>github</id>
+			<name>GitHub crowlogic/arb4j Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/crowlogic/arb4j</url>
+		</snapshotRepository>
 	</distributionManagement>
 
 	<dependencies>
