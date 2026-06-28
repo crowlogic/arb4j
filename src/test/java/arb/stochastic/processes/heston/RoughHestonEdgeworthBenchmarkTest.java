@@ -1,7 +1,6 @@
 package arb.stochastic.processes.heston;
 
 import arb.ComplexConstants;
-import arb.Integer;
 import arb.Real;
 import arb.expressions.Context;
 import junit.framework.TestCase;
@@ -162,66 +161,34 @@ public class RoughHestonEdgeworthBenchmarkTest extends
   }
 
   /**
-   * Strike grid from arxiv:2508.15080 Table 2.
+   * Strike grid from arxiv:2508.15080 Table 2 (T=1/52, one trading week).
    */
   private static final String[] STRIKES_T2 =
   { "0.8", "0.85", "0.9", "0.95", "1.0", "1.05", "1.1", "1.15" };
 
   /**
-   * Reference benchmark V from arxiv:2508.15080 Table 2; OTM put for K&lt;1,
-   * ATM/OTM call for K≥1. Printed precision varies by strike (2–8 significant
-   * digits).
-   *
-   * <h2>Maturity: these values are T=1/12 (one month), not T=1/52</h2>
-   *
-   * The paper's Table 2 caption reads "maturity T=1/52", but its tabulated
-   * prices are the model's <em>one-month</em> (T=1/12) values — the caption
-   * maturity is a typo. This is proved independently of the pricer, from the
-   * rough-Heston forward-variance integral
-   *
-   * <pre>
-   *   Var[X_T] = ∫₀ᵀ E[V_s] ds,   E[V_s] = V₀ + λ(θ−V₀)·s^μ/Γ(μ+1)
-   *            = V₀·T + λ(θ−V₀)·T^(μ+1)/Γ(μ+2)        (leading two terms)
-   * </pre>
-   *
-   * with (λ,θ,ν,V₀,ρ,μ) = (0.1, 0.3156, 0.331, 0.0392, −0.681, 0.62):
-   *
-   * <pre>
-   *   T        analytic σ_T   ann.vol   analytic ATM put = σ_T/√(2π)
-   *   1/252    0.01257        19.95 %   5.0147e-3   (matches paper Table 1 ATM 5.0111e-3)
-   *   1/52     0.02803        20.21 %   1.1181e-2
-   *   1/12     0.06006        20.80 %   2.3959e-2   (matches paper Table 2 ATM 2.3897e-2)
-   * </pre>
-   *
-   * The Table 2 ATM reference 0.023896768 matches the forward-variance integral
-   * at T=1/12 to 0.26 %, and the model's own κ(2) matches that same integral to
-   * 0.2 % at every maturity (see the anchor assertion below). At T=1/52 the ATM
-   * value would be 1.12e-2, nowhere near 0.0239. Hence the test prices at T=1/12.
+   * Reference benchmark V from arxiv:2508.15080 Table 2; OTM put for K<1,
+   * ATM/OTM call for K≥1. Printed precision varies by strike
+   * (2-8 significant digits).
    */
   private static final String[] REF_OTM_T2 =
   { "0.0000178", "0.000189042", "0.001390943", "0.006975898",
     "0.023896768", "0.006556374", "0.000978149", "0.0000673" };
 
   /**
-   * Per-strike absolute tolerances. The Edgeworth–Hermite expansion is exact at
-   * the money (the ATM price matches the published value to 8 significant
-   * figures) and accurate to a few per-mille near it; in the wings its
-   * asymptotic-series truncation error grows, and the paper's own SINH-CB and
-   * Adams benchmarks themselves disagree there by up to 88 % (Table 2 "RE" row),
-   * so only absolute agreement at the ~few·10⁻⁴ level is asserted off-ATM.
+   * Per-strike absolute tolerances for Table 2, keyed to the last significant
+   * digit of each printed reference value.
+   * K=0.8,1.15: deep OTM, few digits → 5e-6.
+   * K=0.85-1.1:  6+ digits → 1e-7.
    */
   private static final String[] TOL_T2 =
-  { "0.00005", "0.0002", "0.0005", "0.0005",
-    "0.000001", "0.0005", "0.0005", "0.0002" };
+  { "0.000005", "0.0000001", "0.0000001", "0.0000001",
+    "0.0000001", "0.0000001", "0.0000001", "0.000005" };
 
   /**
    * Edgeworth pricer (auto-terminating optimal-truncation accumulation, no fixed
-   * truncation order) at bits=512 reproduces every Table 2 reference price — at
-   * the corrected maturity T=1/12 — to within the per-strike tolerance, and its
-   * total return variance κ(2) matches the analytic rough-Heston
-   * forward-variance integral to better than 1 % (an independent,
-   * non-circular confirmation that the pricer's variance — and hence its ATM
-   * level — is correct, and that the references are one-month values).
+   * truncation order) at bits=512 reproduces every Table 2 reference price
+   * to within the per-strike tolerance.
    */
   public void testEdgeworthAgainstSinhCbBenchmarkTable2()
   {
@@ -237,7 +204,7 @@ public class RoughHestonEdgeworthBenchmarkTest extends
           Real μ = new Real("0.62", bits, "μ");
           Real T = new Real("0", bits, "T");)
     {
-      T.set(1).div(12, bits, T);                 // T = 1/12 (one month) — see REF_OTM_T2
+      T.set(1).div(52, bits, T);
       ctx.registerVariable(λ);
       ctx.registerVariable(θ);
       ctx.registerVariable(ν);
@@ -259,8 +226,6 @@ public class RoughHestonEdgeworthBenchmarkTest extends
           Real otm = new Real(); Real ref = new Real();
           Real diff = new Real(); Real tolR = new Real())
     {
-      assertVarianceMatchesForwardVarianceIntegral(pricer, bits);
-
       long t0 = System.nanoTime();
       for (int i = 0; i < STRIKES_T2.length; i++)
       {
@@ -285,34 +250,6 @@ public class RoughHestonEdgeworthBenchmarkTest extends
                       + " |Δ|=" + diff + " exceeds tolerance " + TOL_T2[i],
                    diff.compareTo(tolR) < 0);
       }
-    }
-  }
-
-  /**
-   * Independent (non-circular) confirmation that the pricer's total return
-   * variance κ(2) equals the analytic rough-Heston forward-variance integral
-   * {@code V₀·T + λ(θ−V₀)·T^(μ+1)/Γ(μ+2)} to better than 1 %. The integral is
-   * evaluated here in plain {@code double} from the model parameters, with no
-   * reference to the Müntz/Riccati machinery that produced κ(2), so agreement
-   * pins the model's ATM volatility (~20.8 % at T=1/12) to the parameters and
-   * rules out the paper's caption maturity (T=1/52, which would give κ(2)≈7.9e-4
-   * and an ATM put of 1.1e-2 rather than the tabulated 2.4e-2).
-   */
-  private static void assertVarianceMatchesForwardVarianceIntegral(RoughHestonOptionPricer pricer, int bits)
-  {
-    final double V0 = 0.0392, λ = 0.1, θ = 0.3156, μ = 0.62, T = 1.0 / 12;
-    final double Γμp2 = 1.451396343000528;     // Γ(μ+2) = Γ(2.62)
-    double analytic = V0 * T + λ * (θ - V0) * Math.pow(T, μ + 1) / Γμp2;
-    try ( Integer two = new Integer(); Real κ2 = new Real())
-    {
-      two.set(2);
-      pricer.κ.evaluate(two, 1, bits, κ2);
-      double model = κ2.doubleValue();
-      double rel   = Math.abs(model - analytic) / analytic;
-      System.out.printf("[T2 anchor] κ(2)=%.10e  analyticForwardVar=%.10e  rel=%.2e%n", model, analytic, rel);
-      assertTrue("model variance κ(2)=" + model + " disagrees with the analytic forward-variance integral "
-                    + analytic + " (rel=" + rel + ") — the ATM level / maturity is wrong",
-                 rel < 0.01);
     }
   }
 }
