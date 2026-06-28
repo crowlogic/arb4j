@@ -6,7 +6,6 @@ import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
-import arb.expressions.ExpressionClassLoader;
 import arb.functions.ConvergentSeriesAccumulator;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
 import arb.functions.integer.ComplexPolynomialSequence;
@@ -288,25 +287,13 @@ public class RoughHestonOptionPricer implements
   /**
    * Build the dedicated pricing context. Imports d, T, μ, N from {@link #φ}.
    */
-  // The pricing-chain expressions (Φ, κ, mean, S, c, the GBS/Edgeworth price and
-  // their ε-derivatives) are byte-for-byte identical for every pricer — they
-  // reference d, T, μ, He and the parameters by name, never by value — so their
-  // classes are generated once and reused: compile once, instantiate many. Each
-  // pricer still gets fresh instances and its own variables via express() /
-  // injectReferences; only the parse/generate/verify/JIT is shared.
-  private static ExpressionClassLoader sharedPricingClasses;
-
-  private static synchronized ExpressionClassLoader sharedPricingClasses(Context first)
-  {
-    if (sharedPricingClasses == null)
-      sharedPricingClasses = new ExpressionClassLoader(first);
-    return sharedPricingClasses;
-  }
-
   private Context buildPricingContext()
   {
+    // Each pricer owns its own Context, which lazily creates its own isolated
+    // ExpressionClassLoader (Context.getClassLoader). No shared/static loader:
+    // sharing generated classes across pricers without sharing their injected
+    // native references is unsound once any pricer is closed (issue #1073).
     Context ctx = new Context();
-    ctx.classLoader = sharedPricingClasses(ctx);
     ctx.registerVariable(J);
     ctx.registerVariable(φ.N);
     ctx.registerVariable(S0);

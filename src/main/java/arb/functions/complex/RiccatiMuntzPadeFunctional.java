@@ -10,7 +10,6 @@ import arb.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
-import arb.expressions.ExpressionClassLoader;
 import arb.functions.ComplexFunctional;
 import arb.functions.Jacobian;
 import arb.functions.integer.*;
@@ -261,34 +260,13 @@ public class RiccatiMuntzPadeFunctional extends
          R);
   }
 
-  /**
-   * Compiled classes for one coefficient set, reused across every functional
-   * built from the same expressions. The bytecode of P/Q/R/D/{@code a}/aoperand
-   * depends only on the coefficient expressions (they reference the coefficients
-   * and parameters by name), so a second functional with the same expressions
-   * reuses the classes the first compiled — compile once, instantiate many.
-   * {@code express()} still produces fresh instances and {@code injectReferences}
-   * still wires each instance's own variables; only the class definition (parse,
-   * generate, verify, JIT) is shared.
-   */
-  private static final java.util.concurrent.ConcurrentHashMap<String, ExpressionClassLoader> COMPILED_BY_COEFFICIENTS = new java.util.concurrent.ConcurrentHashMap<>();
-
-  /**
-   * Point {@code context} at the shared class loader for this coefficient set so
-   * the expressions below reuse already-defined classes instead of recompiling
-   * them. Returns {@code context} for use in the constructor-delegation argument
-   * list, where it is evaluated before the {@code express(...)} arguments.
-   */
-  static Context shareCompiledClasses(Context context, String pExpr, String qExpr, String rExpr)
-  {
-    String key = pExpr + " :: " + qExpr + " :: " + rExpr;
-    context.classLoader = COMPILED_BY_COEFFICIENTS.computeIfAbsent(key, k -> new ExpressionClassLoader(context));
-    return context;
-  }
-
+  // Use the given Context's own lazily-created ExpressionClassLoader; never
+  // point context.classLoader at a shared/static loader. Context↔ClassLoader is
+  // 1:1, so aliasing one loader across distinct Contexts merges their class
+  // space and injected native references — unsound once any is closed (#1073).
   public RiccatiMuntzPadeFunctional(Context context, Real μ, String pExpr, String qExpr, String rExpr)
   {
-    this(shareCompiledClasses(context, pExpr, qExpr, rExpr),
+    this(context,
          μ,
          ComplexPolynomialNullaryFunction.express("P", pExpr, context),
          ComplexPolynomialNullaryFunction.express("Q", qExpr, context),
