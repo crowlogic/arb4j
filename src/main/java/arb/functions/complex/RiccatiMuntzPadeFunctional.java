@@ -2,6 +2,7 @@ package arb.functions.complex;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +11,9 @@ import arb.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
+import arb.expressions.Expression;
 import arb.functions.ComplexFunctional;
+import arb.functions.Function;
 import arb.functions.Jacobian;
 import arb.functions.integer.*;
 
@@ -69,6 +72,30 @@ public class RiccatiMuntzPadeFunctional extends
 
   @SuppressWarnings("unused")
   private static final Logger              log                         = LoggerFactory.getLogger(RiccatiMuntzPadeFunctional.class);
+
+  private static final class Prototype
+  {
+    final Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction> p;
+    final Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction> q;
+    final Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction> r;
+    final Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction> discriminant;
+    final Expression<arb.Integer, ComplexPolynomial, ComplexPolynomialSequence> a;
+
+    Prototype(Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction> p,
+              Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction> q,
+              Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction> r,
+              Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction> discriminant,
+              Expression<arb.Integer, ComplexPolynomial, ComplexPolynomialSequence> a)
+    {
+      this.p = p;
+      this.q = q;
+      this.r = r;
+      this.discriminant = discriminant;
+      this.a = a;
+    }
+  }
+
+  private static final Map<String, Prototype> prototypes = new ConcurrentHashMap<>();
 
   /** Documentation-only string of the equation in standard form. */
   public static final String               FRACTIONAL_RICCATI_EQUATION = "t➔Đ^(μ)y(t;v)=t➔p(v)+q(v)*y(t;v)+r(v)*y(t;v)²";
@@ -156,6 +183,81 @@ public class RiccatiMuntzPadeFunctional extends
     // the caller signals a parameter change, but the very first evaluate must
     // also see populated p, q, r — hence the eager refresh at construction.
     refreshPolynomials(bits);
+  }
+
+  private static Prototype prototype(String pExpr, String qExpr, String rExpr)
+  {
+    return prototypes.computeIfAbsent(pExpr + "\u0000" + qExpr + "\u0000" + rExpr,
+                                      ignored ->
+                                      {
+                                        Context prototypeContext = new Context().disableLommelPolynomials();
+                                        prototypeContext.registerVariable(ComplexPolynomial.named("p"));
+                                        prototypeContext.registerVariable(ComplexPolynomial.named("q"));
+                                        prototypeContext.registerVariable(ComplexPolynomial.named("r"));
+                                        Real μ = new Real();
+                                        μ.setName("μ");
+                                        prototypeContext.registerVariable(μ);
+
+                                        Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction> pExpression =
+                                            (Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction>) Function.parseAndRegister(pExpr,
+                                                                                                                                                                        prototypeContext,
+                                                                                                                                                                        Object.class,
+                                                                                                                                                                        ComplexPolynomial.class,
+                                                                                                                                                                        ComplexPolynomialNullaryFunction.class,
+                                                                                                                                                                        "P",
+                                                                                                                                                                        true);
+                                        pExpression.compile();
+
+                                        Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction> qExpression =
+                                            (Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction>) Function.parseAndRegister(qExpr,
+                                                                                                                                                                        prototypeContext,
+                                                                                                                                                                        Object.class,
+                                                                                                                                                                        ComplexPolynomial.class,
+                                                                                                                                                                        ComplexPolynomialNullaryFunction.class,
+                                                                                                                                                                        "Q",
+                                                                                                                                                                        true);
+                                        qExpression.compile();
+
+                                        Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction> rExpression =
+                                            (Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction>) Function.parseAndRegister(rExpr,
+                                                                                                                                                                        prototypeContext,
+                                                                                                                                                                        Object.class,
+                                                                                                                                                                        ComplexPolynomial.class,
+                                                                                                                                                                        ComplexPolynomialNullaryFunction.class,
+                                                                                                                                                                        "R",
+                                                                                                                                                                        true);
+                                        rExpression.compile();
+
+                                        ComplexFunctionSequence.declare("a", prototypeContext);
+                                        Expression<arb.Integer, ComplexPolynomial, ComplexPolynomialSequence> aExpression =
+                                            (Expression<arb.Integer, ComplexPolynomial, ComplexPolynomialSequence>) Function.parseAndRegister("a:k➔v➔when(k=1,p(v)/Γ(μ+1),else,(Γ((k-1)*μ+1)/Γ(k*μ+1))*(q(v)*a(k-1)(v)+r(v)*∑j➔a(j)(v)*a(k-1-j)(v){j=1..k-2}))",
+                                                                                                                                                                        prototypeContext,
+                                                                                                                                                                        arb.Integer.class,
+                                                                                                                                                                        ComplexPolynomial.class,
+                                                                                                                                                                        ComplexPolynomialSequence.class,
+                                                                                                                                                                        "a",
+                                                                                                                                                                        true);
+                                        aExpression.compile();
+
+                                        Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction> discriminantExpression =
+                                            (Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction>) Function.parseAndRegister("D:Q()² − 4·P()·R()",
+                                                                                                                                                                        prototypeContext,
+                                                                                                                                                                        Object.class,
+                                                                                                                                                                        ComplexPolynomial.class,
+                                                                                                                                                                        ComplexPolynomialNullaryFunction.class,
+                                                                                                                                                                        "D",
+                                                                                                                                                                        true);
+                                        discriminantExpression.compile();
+
+                                        return new Prototype(pExpression, qExpression, rExpression, discriminantExpression, aExpression);
+                                      });
+  }
+
+  private static <D, C, F extends Function<? extends D, ? extends C>> F instantiatePrototype(Expression<D, C, F> expression, Context context)
+  {
+    F instance = expression.instantiate();
+    context.injectReferences(instance);
+    return instance;
   }
 
   /**
@@ -264,14 +366,28 @@ public class RiccatiMuntzPadeFunctional extends
   // point context.classLoader at a shared/static loader. Context↔ClassLoader is
   // 1:1, so aliasing one loader across distinct Contexts merges their class
   // space and injected native references — unsound once any is closed (#1073).
+  private RiccatiMuntzPadeFunctional(Context context, Real μ, Prototype prototype)
+  {
+    this.context = context.disableLommelPolynomials();
+    initializeFractionalExponent(context, μ);
+
+    // Allocate polynomial variables once, register in context.
+    context.registerVariable(p = ComplexPolynomial.named("p"));
+    context.registerVariable(q = ComplexPolynomial.named("q"));
+    context.registerVariable(r = ComplexPolynomial.named("r"));
+
+    this.P = instantiatePrototype(prototype.p, context);
+    this.Q = instantiatePrototype(prototype.q, context);
+    this.R = instantiatePrototype(prototype.r, context);
+    this.discriminant = instantiatePrototype(prototype.discriminant, context);
+    this.a = instantiatePrototype(prototype.a, context);
+
+    refreshPolynomials(bits);
+  }
+
   public RiccatiMuntzPadeFunctional(Context context, Real μ, String pExpr, String qExpr, String rExpr)
   {
-    this(context,
-         μ,
-         ComplexPolynomialNullaryFunction.express("P", pExpr, context),
-         ComplexPolynomialNullaryFunction.express("Q", qExpr, context),
-         ComplexPolynomialNullaryFunction.express("R", rExpr, context));
-
+    this(context, μ, prototype(pExpr, qExpr, rExpr));
   }
 
   @SuppressWarnings("resource")
