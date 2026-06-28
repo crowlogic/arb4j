@@ -23,6 +23,16 @@ permissions:
   contents: read
   packages: write
 
+# Publishing a GitHub Release also creates the matching v* tag, so the
+# `release: published` and `push: tags: v*` triggers both fire for the same
+# version. Without this guard they race and the loser fails with a 409 from
+# GitHub Packages (release versions cannot be overwritten). Collapsing both
+# runs into one concurrency group, cancelling any already-in-progress peer,
+# guarantees exactly one deploy per ref.
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   publish:
     runs-on: ubuntu-latest
