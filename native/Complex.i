@@ -1097,6 +1097,35 @@ import arb.functions.complex.ComplexNullaryFunction;
     result.bits = bits;
     return result;
   }
+
+  /**
+   * The complex error function erf(this) via {@code acb_hypgeom_erf}.
+   *
+   * @param prec working precision in bits
+   * @param res  where to store the result (may alias this)
+   * @return res
+   */
+  public Complex erf(int prec, Complex res)
+  {
+    arblib.acb_hypgeom_erf(res, this, prec);
+    res.bits = prec;
+    return res;
+  }
+
+  /**
+   * The complex complementary error function erfc(this) = 1 − erf(this) via
+   * {@code acb_hypgeom_erfc}.
+   *
+   * @param prec working precision in bits
+   * @param res  where to store the result (may alias this)
+   * @return res
+   */
+  public Complex erfc(int prec, Complex res)
+  {
+    arblib.acb_hypgeom_erfc(res, this, prec);
+    res.bits = prec;
+    return res;
+  }
     
   public ComplexRationalFunction
          ascendingFactorial(Integer n, int bits, ComplexRationalFunction result)

@@ -1182,6 +1182,14 @@ public class arblib {
     arblibJNI.acb_hypgeom_rising(Complex.getCPtr(y), y, Complex.getCPtr(x), x, Complex.getCPtr(n), n, prec);
   }
 
+  public static void acb_hypgeom_erf(Complex res, Complex z, int prec) {
+    arblibJNI.acb_hypgeom_erf(Complex.getCPtr(res), res, Complex.getCPtr(z), z, prec);
+  }
+
+  public static void acb_hypgeom_erfc(Complex res, Complex z, int prec) {
+    arblibJNI.acb_hypgeom_erfc(Complex.getCPtr(res), res, Complex.getCPtr(z), z, prec);
+  }
+
   public static void acb_poly_pow_ui(ComplexPolynomial res, ComplexPolynomial poly, long exp, int prec) {
     arblibJNI.acb_poly_pow_ui(ComplexPolynomial.getCPtr(res), res, ComplexPolynomial.getCPtr(poly), poly, exp, prec);
   }
@@ -2186,10 +2194,6 @@ public class arblib {
 
   public static void arb_hypgeom_erfcinv(Real res, Real z, int prec) {
     arblibJNI.arb_hypgeom_erfcinv(Real.getCPtr(res), res, Real.getCPtr(z), z, prec);
-  }
-
-  public static void acb_hypgeom_erf(Complex res, Complex z, int prec) {
-    arblibJNI.acb_hypgeom_erf(Complex.getCPtr(res), res, Complex.getCPtr(z), z, prec);
   }
 
   public static void arb_hypgeom_erf(Real res, Real z, int prec) {

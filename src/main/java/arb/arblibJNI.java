@@ -334,6 +334,8 @@ public class arblibJNI {
   public final static native void acb_poly_add(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_, long jarg3, ComplexPolynomial jarg3_, int jarg4);
   public final static native void acb_hypgeom_rising_ui(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, int jarg4);
   public final static native void acb_hypgeom_rising(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
+  public final static native void acb_hypgeom_erf(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
+  public final static native void acb_hypgeom_erfc(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
   public final static native void acb_poly_pow_ui(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_, long jarg3, int jarg4);
   public final static native void acb_div_fmpz(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, int jarg4);
   public final static native void acb_poly_scalar_div(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_, long jarg3, Complex jarg3_, int jarg4);
@@ -585,7 +587,6 @@ public class arblibJNI {
   public final static native void acb_dirichlet_xi(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
   public final static native void arb_hypgeom_erfinv(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_hypgeom_erfcinv(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
-  public final static native void acb_hypgeom_erf(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
   public final static native void arb_hypgeom_erf(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_hypgeom_erfc(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_hypgeom_m(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, Real jarg3_, long jarg4, Real jarg4_, int jarg5, int jarg6);

@@ -664,6 +664,9 @@ void acb_poly_add(acb_poly_t res, const acb_poly_t poly1,
 void acb_hypgeom_rising_ui(acb_t y, const acb_t x, ulong n, slong prec);
 void acb_hypgeom_rising(acb_t y, const acb_t x, const acb_t n, slong prec);
 
+void acb_hypgeom_erf(acb_t res, const acb_t z, slong prec);
+void acb_hypgeom_erfc(acb_t res, const acb_t z, slong prec);
+
 void acb_poly_pow_ui(acb_poly_t res, const acb_poly_t poly, ulong exp, slong prec);
 
 void acb_div_fmpz(acb_t z, const acb_t x, const fmpz_t c, slong prec);
