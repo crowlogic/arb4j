@@ -62,7 +62,7 @@ public class ComplexEpsilonTableTest extends
       denom.set(1.0, -2.0);
       ComplexConstants.one.div(denom, bits, lim); // lim = 1/(1-2i), exact
       tol.one().mul2e(-bits / 2, tol);
-      t.limit((idx, b, res) -> complexGeometricPartial(idx, b, res), 0, 30, bits, out);
+      t.limit((idx, b, res) -> complexGeometricPartial(idx, b, res), 0, bits, out);
       d.set(out);
       d.sub(lim, bits, d);
       d.abs(bits, mag);

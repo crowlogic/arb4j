@@ -52,9 +52,15 @@ public final class RealEpsilonTable extends
     x.abs(bits, result);
   }
 
-  /** Resum the partial sums delivered by a compiled {@link RealSequence}. */
-  public Real limit(RealSequence partials, int startIndex, int maxOrder, int bits, Real result)
+  @Override
+  protected void resizeVector(int newCapacity)
   {
-    return limit((idx, b, res) -> partials.evaluate(idx, b, res), startIndex, maxOrder, bits, result);
+    e.resize(newCapacity);
+  }
+
+  /** Resum the partial sums delivered by a compiled {@link RealSequence}. */
+  public Real limit(RealSequence partials, int startIndex, int bits, Real result)
+  {
+    return limit((idx, b, res) -> partials.evaluate(idx, b, res), startIndex, bits, result);
   }
 }

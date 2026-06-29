@@ -6,7 +6,6 @@ import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
-import arb.functions.ConvergentSeriesAccumulator;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
 import arb.functions.integer.ComplexPolynomialSequence;
 import arb.functions.integer.RealFunctionSequence;
@@ -14,6 +13,7 @@ import arb.functions.integer.RealSequence;
 import arb.functions.polynomials.orthogonal.real.ProbabilistHermitePolynomials;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealNullaryFunction;
+import arb.series.RealEpsilonTable;
 
 /**
  * Rough-Heston European option pricer built from compiled expressions over the
@@ -29,13 +29,6 @@ public class RoughHestonOptionPricer implements
   private static final String                    DEFAULT_S0 = "1.0";
   private static final String                    DEFAULT_K  = "1.0";
   private static final String                    DEFAULT_rr = "0.0";
-  private static final int                       SEED_N     = 8;
-
-  /** Müntz order used for cumulant accumulation in {@link #call}. The Müntz
-   *  coefficients a_k are order-invariant, so this is set well past cumulant
-   *  convergence for the rough-Heston regime; the Edgeworth order J is what is
-   *  adaptively (optimally) truncated, not N. */
-  private static final int                       CUMULANT_ORDER = 48;
 
   /** Underlying CGF (and Müntz–Padé d-sequence via {@code φ.cgf.d}). */
   public final RoughHestonCharacteristicFunction φ;
@@ -102,7 +95,7 @@ public class RoughHestonOptionPricer implements
   /** Edgeworth–Hermite truncation order J — the adaptively (optimally) truncated
    *  density-correction order. An {@code arb.Integer} so the live order flows into
    *  the price chain without recompile; registered in {@link #φ}'s context. */
-  public final Integer                           J = Integer.named("J").set(SEED_N);
+  public final Integer                           J = Integer.named("J");
 
   /** Leading (Black–Scholes) call value C(k) of the price, as a callable function. */
   public RealFunction                            blackScholes;
@@ -157,7 +150,6 @@ public class RoughHestonOptionPricer implements
       this.K = K;
     }
 
-    this.φ.N.set(SEED_N);
     this.He = new ProbabilistHermitePolynomials(128);
 
     registerJInCfContext();
@@ -284,11 +276,33 @@ public class RoughHestonOptionPricer implements
     return call(K, bits, dst);
   }
 
-  /** Price the call with the adaptive Edgeworth truncation. */
+  /**
+   * Price the call using Wynn-ε resummation of the Edgeworth–Hermite partial
+   * sums. For each trial order {@code n = 3, 4, 5, …}, sets both the Müntz
+   * truncation {@link #φ}{@code .N} and the Edgeworth order {@link #J} to
+   * {@code n}, evaluates the fixed-J price, and feeds the result into a
+   * {@link RealEpsilonTable}. The table applies the Wynn-ε algorithm to the
+   * partial-sum sequence and terminates when consecutive diagonal Padé
+   * approximants agree within {@code 2^(-bits/2)}, with no hard upper bound on
+   * the order.
+   */
   public Real call(Real strike, int bits, Real dst)
   {
     prepareForEvaluation(strike, bits);
-    return priceAdaptive.evaluate(kLog, 1, bits, dst);
+    try (RealEpsilonTable table = new RealEpsilonTable(16, bits))
+    {
+      return table.limit(
+          (order, b, res) -> {
+            φ.N.set(order);
+            J.set(order);
+            pricingContext.invalidateAllCaches();
+            return priceExpr.evaluate(kLog, 1, b, res);
+          },
+          3,
+          bits + 256,
+          bits,
+          dst);
+    }
   }
 
   /** Price the analytic sensitivity with respect to a model parameter. */
@@ -298,13 +312,15 @@ public class RoughHestonOptionPricer implements
     return callSensitivityForStrike(strike, bits, dst);
   }
 
-  /** Evaluate the already-seeded sensitivity at one strike. */
+  /**
+   * Evaluate the already-seeded sensitivity at one strike. Runs the
+   * Wynn-ε pricer to determine the convergence order (which sets {@link #φ}{@code .N}
+   * and {@link #J}), then evaluates the analytic sensitivity at those orders.
+   */
   public Real callSensitivityForStrike(Real strike, int bits, Real dst)
   {
-    prepareForEvaluation(strike, bits);
     if (priceTruncationScratch == null) priceTruncationScratch = new Real();
-    priceAdaptive.evaluate(kLog, 1, bits, priceTruncationScratch);
-    J.set(priceOptimalTruncationOrder());
+    call(strike, bits, priceTruncationScratch);
     return priceSensitivity.evaluate(kLog, 1, bits, dst);
   }
 
@@ -312,41 +328,7 @@ public class RoughHestonOptionPricer implements
   {
     if (kLog == null) kLog = new Real();
     strike.div(S0, bits, kLog).log(bits, kLog);
-    φ.N.set(CUMULANT_ORDER);
-    J.set(CUMULANT_ORDER);
   }
-
-  /** Read the truncation order recorded by the adaptive price accumulator. */
-  private int priceOptimalTruncationOrder()
-  {
-    ConvergentSeriesAccumulator acc = priceAccumulator();
-    return acc.truncationOrder;
-  }
-
-  private ConvergentSeriesAccumulator priceAccumulator()
-  {
-    try
-    {
-      if (priceAccumulatorField == null)
-      {
-        for (java.lang.reflect.Field f : priceAdaptive.getClass().getFields())
-        {
-          if (ConvergentSeriesAccumulator.class.equals(f.getType()))
-          {
-            priceAccumulatorField = f;
-            break;
-          }
-        }
-      }
-      return (ConvergentSeriesAccumulator) priceAccumulatorField.get(priceAdaptive);
-    }
-    catch (ReflectiveOperationException | NullPointerException e)
-    {
-      throw new IllegalStateException("adaptive price expression has no ConvergentSeriesAccumulator field to read the truncation order from", e);
-    }
-  }
-
-  private java.lang.reflect.Field priceAccumulatorField;
   private Real                    priceTruncationScratch;
 
   /** Invalidate the pricing caches after a model-parameter change. */
