@@ -54,9 +54,15 @@ public final class ComplexEpsilonTable extends
     x.abs(bits, result);
   }
 
-  /** Resum the partial sums delivered by a compiled {@link ComplexSequence}. */
-  public Complex limit(ComplexSequence partials, int startIndex, int maxOrder, int bits, Complex result)
+  @Override
+  protected void resizeVector(int newCapacity)
   {
-    return limit((idx, b, res) -> partials.evaluate(idx, b, res), startIndex, maxOrder, bits, result);
+    e.resize(newCapacity);
+  }
+
+  /** Resum the partial sums delivered by a compiled {@link ComplexSequence}. */
+  public Complex limit(ComplexSequence partials, int startIndex, int bits, Complex result)
+  {
+    return limit((idx, b, res) -> partials.evaluate(idx, b, res), startIndex, bits, result);
   }
 }

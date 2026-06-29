@@ -77,7 +77,7 @@ public class RealEpsilonTableTest extends
           Real out = new Real(); Real lim = new Real("-1", bits); Real diff = new Real(); Real tol = new Real())
     {
       tol.one().mul2e(-bits / 2, tol);
-      t.limit((idx, b, res) -> geometricPartial(2.0, idx, b, res), 0, 30, bits, out);
+      t.limit((idx, b, res) -> geometricPartial(2.0, idx, b, res), 0, bits, out);
       out.sub(lim, bits, diff); diff.abs();
       assertTrue("driver resums geometric(2) to -1, got " + out, diff.compareTo(tol) < 0);
     }

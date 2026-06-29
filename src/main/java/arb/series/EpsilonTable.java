@@ -57,6 +57,13 @@ public abstract class EpsilonTable<X extends Field<X>> implements
   /** Allocate an {@code X} vector of the given dimension. */
   protected abstract X newVector(int capacity);
 
+  /**
+   * Grow the anti-diagonal vector {@link #e} to {@code newCapacity} elements
+   * in-place. Called by {@link #next} when the vector is too small. Concrete
+   * subclasses delegate to the type-specific {@code resize(int)} method.
+   */
+  protected abstract void resizeVector(int newCapacity);
+
   /** The field's multiplicative-identity constant (1), for the reciprocal — not owned. */
   protected abstract X one();
 
@@ -92,6 +99,8 @@ public abstract class EpsilonTable<X extends Field<X>> implements
    */
   public X next(X sum, int bits, X dst)
   {
+    if (n >= e.dim())
+      resizeVector(Math.max(2 * e.dim(), n + 1));
     X en = e.get(n);
     en.set(sum); // value-copy into the contiguous vector slot
     try ( X t1 = newVector(1); X t = newVector(1); X d = newVector(1);
@@ -126,29 +135,30 @@ public abstract class EpsilonTable<X extends Field<X>> implements
   }
 
   /**
-   * Resum the series whose partial sums {@code partials} supplies for indices
-   * {@code startIndex..maxOrder}: feed each into a fresh sweep of this table, keep
-   * the diagonal estimate at the global smallest successive change, and stop when
-   * consecutive estimates agree within {@code 2^(-bits/2)} or a raw partial sum is
-   * non-finite. The resummed value is written to {@code result}.
+   * Resum the series whose partial sums {@code partials} supplies starting at
+   * {@code startIndex}: feed each into a fresh sweep of this table, keep the
+   * diagonal estimate at the global smallest successive change, and stop when
+   * consecutive estimates agree within {@code 2^(-bits/2)} or a raw partial sum
+   * is non-finite. The resummed value is written to {@code result}.
    */
-  public final X limit(TermSupplier<X> partials, int startIndex, int maxOrder, int bits, X result)
+  public final X limit(TermSupplier<X> partials, int startIndex, int bits, X result)
   {
-    return limit(partials, startIndex, maxOrder, bits, bits, result);
+    return limit(partials, startIndex, bits, bits, result);
   }
 
   /**
-   * As {@link #limit(TermSupplier, int, int, int, Field)} but with the
-   * intermediate working precision {@code workBits} (the precision at which the
-   * partial sums are evaluated and the ε-recurrence is run) decoupled from
-   * {@code thresholdBits} (the requested output precision that sets the stop test
-   * {@code 2^(-thresholdBits/2)}). When the partial sums of a divergent asymptotic
-   * series reach magnitude 2^M before they cancel, evaluating them at the output
-   * precision leaves only (output−M) valid bits feeding the recurrence; raising
-   * {@code workBits} above M+output restores a correct resummed value at the
-   * requested output precision without inflating the request.
+   * As {@link #limit(TermSupplier, int, int, Field)} but with the intermediate
+   * working precision {@code workBits} (the precision at which the partial sums
+   * are evaluated and the ε-recurrence is run) decoupled from
+   * {@code thresholdBits} (the requested output precision that sets the stop
+   * test {@code 2^(-thresholdBits/2)}). When the partial sums of a divergent
+   * asymptotic series reach magnitude 2^M before they cancel, evaluating them
+   * at the output precision leaves only (output−M) valid bits feeding the
+   * recurrence; raising {@code workBits} above M+output restores a correct
+   * resummed value at the requested output precision without inflating the
+   * request.
    */
-  public final X limit(TermSupplier<X> partials, int startIndex, int maxOrder, int workBits, int thresholdBits, X result)
+  public final X limit(TermSupplier<X> partials, int startIndex, int workBits, int thresholdBits, X result)
   {
     n           = 0;
     cellUpdates = 0;
@@ -159,7 +169,7 @@ public abstract class EpsilonTable<X extends Field<X>> implements
       threshold.one().mul2e(-thresholdBits / 2, threshold);
       bestMag.posInf();
       boolean started = false;
-      for (int idx = startIndex; idx <= maxOrder; idx++)
+      for (int idx = startIndex; ; idx++)
       {
         partials.term(idx, workBits, cur);
         if (!isFinite(cur))
