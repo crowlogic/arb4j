@@ -221,6 +221,6 @@ public final class MuntzPadeApproximant implements
     v.close();
     if (Φ       != null) Φ.close();
     if (ops     != null) ops.close();
-    if (context != null) context.close();
+    if (context != null) context.closeOwnedInstances();
   }
 }

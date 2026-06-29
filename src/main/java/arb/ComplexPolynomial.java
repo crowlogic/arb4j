@@ -249,6 +249,13 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
     return result;
   }
 
+  public ComplexPolynomial exp(int order, int bits, ComplexPolynomial result)
+  {
+    arblib.acb_poly_exp_series(result, this, order, bits);
+    result.bits = bits;
+    return result;
+  }
+
   public ComplexPolynomial set(Real real)
   {
     setLength(1);
