@@ -124,6 +124,7 @@ public class RoughHestonCharacteristicFunction implements
   public final ComplexFunction φ;
 
   private final boolean ownsParameters;
+  private final boolean ownsContext;
 
   // ─────────────────────────────────────────────────────────────────────
   // No-arg / JShell-friendly constructor
@@ -148,8 +149,9 @@ public class RoughHestonCharacteristicFunction implements
     this.cgf = buildCgf(context, a);
     this.N   = cgf.N;
     this.φ   = ComplexFunction.express("φ:v➔exp(Φ(v))", context);
-
+ 
     this.ownsParameters = true;
+    this.ownsContext    = true;
   }
 
   public RoughHestonCharacteristicFunction()
@@ -183,8 +185,9 @@ public class RoughHestonCharacteristicFunction implements
     this.cgf = buildCgf(context, a);
     this.N   = cgf.N;
     this.φ   = ComplexFunction.express("φ:v➔exp(Φ(v))", context);
-
+ 
     this.ownsParameters = false;
+    this.ownsContext    = false;
   }
 
   /**
@@ -231,6 +234,7 @@ public class RoughHestonCharacteristicFunction implements
     if (φ        != null) φ.close();
     if (cgf      != null) cgf.close();
     if (riccati  != null) riccati.close();
+    if (ownsContext && context != null) context.close();
     if (ownsParameters)
       Utensils.close(λ, θ, ν, V0, ρ, T, μ);
   }

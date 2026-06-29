@@ -359,6 +359,7 @@ public class RoughHestonOptionPricer implements
     if (φ != null) φ.close();
     if (κ != null) κ.close();
     if (dκ != null) dκ.close();
+    if (pricingContext != null) pricingContext.close();
     if (ownsParameters)
     {
       if (S0 != null) S0.close();
