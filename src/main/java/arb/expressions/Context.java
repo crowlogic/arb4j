@@ -410,6 +410,7 @@ public class Context implements
     FunctionMapping<?, ?, ?> mapping = functions.get(name);
     if (mapping == null)
     {
+      System.err.println("allocateFreshPeer: no mapping for " + name);
       return null;
     }
     Class<?> concreteClass = null;
@@ -420,6 +421,7 @@ public class Context implements
     }
     else if (mapping.expression != null)
     {
+      System.err.println("allocateFreshPeer: mapping=" + name + " expression=" + mapping.expression.className() + " compiled=" + mapping.expression.compiledClass + " inProgress=" + mapping.expression.compileInProgress);
       if (mapping.expression.compiledClass == null)
       {
         mapping.expression.compile();
@@ -432,6 +434,7 @@ public class Context implements
     }
     if (concreteClass == null)
     {
+      System.err.println("allocateFreshPeer: no concrete class for " + name + " mapping=" + mapping + " expr=" + mapping.expression + " instance=" + mapping.instance + " functionClass=" + mapping.functionClass);
       return null;
     }
     try
