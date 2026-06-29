@@ -218,8 +218,7 @@ public class RoughHestonOptionPricer implements
   /** Register J in the CF context so compiled expressions can see it. */
   private void registerJInCfContext()
   {
-    if (φ.context.getVariable("J") == null)
-      φ.context.registerVariable(J);
+assert false : "all this code is shit and must go. what the fuck dont u understand about that?";
   }
 
   /**
@@ -348,8 +347,7 @@ public class RoughHestonOptionPricer implements
   /** Select the sensitivity parameter and refresh the affected caches. */
   public void seedParameterDerivative(String param, int bits)
   {
-    φ.riccati.parameterDerivative(param, bits);
-    pricingContext.invalidateAllCaches();
+    assert false : "all notions of seeding are invalid. i told you not to try to revive this stupid cache shit and instead to consider the multivariate polynomials or other thinfs that would make this invalidation shit totally unnecessary";
   }
 
 
