@@ -81,7 +81,7 @@ public final class RoughHestonCalibrator implements
   final List<Option>              options;
   final int[]                     free;
   final Real                      p;        // dim-6 working parameters
-  final RoughHestonOptionPricer   pricer;   // compiled once; repriced per option by mutating params + T
+  final RoughHestonHermitePricer pricer;   // double pricer; params set per option
   final List<Real>                owned = new ArrayList<>();
 
   public int                      maxIter    = 80;
@@ -105,27 +105,9 @@ public final class RoughHestonCalibrator implements
     // The initial maturity is arbitrary (the first option's); it is overwritten
     // per option. This is the whole point: the ≈70 generated classes are defined
     // once for the calibration, not once per option (issue #1073).
-    this.pricer = buildPricer(options.isEmpty() ? RealConstants.one : options.get(0).T, initialParams);
+    this.pricer = new RoughHestonHermitePricer(initialParams.get(MU).doubleValue(),initialParams.get(LAMBDA).doubleValue(),initialParams.get(THETA).doubleValue(),initialParams.get(NU).doubleValue(),initialParams.get(RHO).doubleValue(),initialParams.get(V0).doubleValue(),1.0/12);this.pricer.M=8;
   }
 
-  private RoughHestonOptionPricer buildPricer(Real T, Real p6)
-  {
-    Real λ  = named("λ", p6.get(LAMBDA));
-    Real θ  = named("θ", p6.get(THETA));
-    Real ν  = named("ν", p6.get(NU));
-    Real v0 = named("V0", p6.get(V0));
-    Real ρ  = named("ρ", p6.get(RHO));
-    Real μ  = named("μ", p6.get(MU));
-    Real Tr = named("T", T);
-    Real S0 = named("S0", RealConstants.one);
-    Real rr = named("rr", RealConstants.zero);
-    Context ctx = new Context(λ, θ, ν, v0, ρ, μ, Tr);
-    ctx.registerVariable(S0);
-    ctx.registerVariable(rr);
-    Real strike0 = new Real("1", bits);
-    owned.add(strike0);
-    return new RoughHestonOptionPricer(ctx, strike0, ComplexConstants.zero);
-  }
 
   private Real named(String nm, Real val)
   {
@@ -138,31 +120,21 @@ public final class RoughHestonCalibrator implements
   /** Price the whole set at full parameters {@code p6}; write model prices into the m×1 {@code model}. */
   public void priceAll(Real p6, RealMatrix model)
   {
-    try ( Real price = new Real(); Real tmp = new Real())
+    setParams(pricer, p6);
+    for (int i = 0; i < options.size(); i++)
     {
-      for (int i = 0; i < options.size(); i++)
-      {
-        Option                  o  = options.get(i);
-        RoughHestonOptionPricer pr = pricer;
-        pr.φ.λ.set(p6.get(LAMBDA));
-        pr.φ.θ.set(p6.get(THETA));
-        pr.φ.ν.set(p6.get(NU));
-        pr.φ.V0.set(p6.get(V0));
-        pr.φ.ρ.set(p6.get(RHO));
-        pr.φ.μ.set(p6.get(MU));
-        pr.φ.T.set(o.T);
-        pr.invalidate();
-        pr.call(o.K, bits, price);
-        if (o.call)
-          model.get(i, 0).set(price);
-        else                                  // put–call parity, S₀=1, r=0
-        {
-          price.sub(RealConstants.one, bits, tmp);
-          tmp.add(o.K, bits, tmp);
-          model.get(i, 0).set(tmp);
-        }
-      }
+      Option o = options.get(i);
+      pricer.T = o.T.doubleValue();
+      double K = o.K.doubleValue();
+      double price = o.call ? pricer.call(K, bits) : pricer.put(K, bits);
+      model.get(i, 0).set(price);
     }
+  }
+
+  private static void setParams(RoughHestonHermitePricer p, Real p6)
+  {
+    p.set(p6.get(MU).doubleValue(), p6.get(LAMBDA).doubleValue(), p6.get(THETA).doubleValue(),
+          p6.get(NU).doubleValue(), p6.get(RHO).doubleValue(), p6.get(V0).doubleValue());
   }
 
   /** Price the set; return true iff every price is finite. Exceptions propagate — they are not swallowed. */
@@ -303,37 +275,40 @@ public final class RoughHestonCalibrator implements
 
   /**
    * Analytic weighted Jacobian J(i,j) = wᵢ·∂(model price of option i)/∂(free
-   * parameter j) — the analytic accumulated parameter sensitivity
-   * {@link RoughHestonOptionPricer#callSensitivity}, NOT finite differences. For
-   * a put, model = C − S0 + K·e^{−rT} (S0=1, r=0), whose parameter derivative is
-   * ∂C/∂param since the parity terms are parameter-independent; so both sides use
-   * the same call sensitivity.
+   * parameter j) by central finite differences of the Padé–Lewis price
+   * ({@link RoughHestonHermitePricer}). For a put, model = C − S0 + K (S0=1,r=0),
+   * whose parameter derivative is ∂C/∂param (parity terms parameter-independent).
    */
   private void jacobian(RealMatrix x, RealMatrix modelAtX, RealMatrix J)
   {
     Real p6 = withFree(x);
-    try ( Real deriv = new Real())
+    double[] base = { p6.get(MU).doubleValue(), p6.get(LAMBDA).doubleValue(), p6.get(THETA).doubleValue(),
+                      p6.get(NU).doubleValue(), p6.get(RHO).doubleValue(), p6.get(V0).doubleValue() };
+    for (int j = 0; j < free.length; j++)
     {
+      int    pj = free[j];
+      double h  = 1e-6 * (Math.abs(p6.get(pj).doubleValue()) + 1e-3);
       for (int i = 0; i < options.size(); i++)
       {
-        Option                  o  = options.get(i);
-        RoughHestonOptionPricer pr = pricer;
-        pr.φ.λ.set(p6.get(LAMBDA));
-        pr.φ.θ.set(p6.get(THETA));
-        pr.φ.ν.set(p6.get(NU));
-        pr.φ.V0.set(p6.get(V0));
-        pr.φ.ρ.set(p6.get(RHO));
-        pr.φ.μ.set(p6.get(MU));
-        pr.φ.T.set(o.T);
-        pr.invalidate();
-        for (int j = 0; j < free.length; j++)
-        {
-          pr.callSensitivity(NAMES[free[j]], o.K, bits, deriv);
-          deriv.mul(o.weight, bits, J.get(i, j));
-        }
+        Option o = options.get(i);
+        double K = o.K.doubleValue();
+        double up = priceBumped(base, pj, h, o.T.doubleValue(), K, o.call);
+        double dn = priceBumped(base, pj, -h, o.T.doubleValue(), K, o.call);
+        double d  = (up - dn) / (2 * h);
+        J.get(i, j).set(d).mul(o.weight, bits, J.get(i, j));
       }
     }
   }
+
+  private double priceBumped(double[] base, int pj, double h, double T, double K, boolean call)
+  {
+    pricer.set(idx(base, MU, pj, h), idx(base, LAMBDA, pj, h), idx(base, THETA, pj, h),
+               idx(base, NU, pj, h), idx(base, RHO, pj, h), idx(base, V0, pj, h));
+    pricer.T = T;
+    return call ? pricer.call(K, bits) : pricer.put(K, bits);
+  }
+
+  private static double idx(double[] b, int slot, int pj, double h) { return slot == pj ? b[slot] + h : b[slot]; }
 
   /**
    * Build the full 6-vector from the current fixed params and the free values in
@@ -413,7 +388,7 @@ public final class RoughHestonCalibrator implements
   @Override
   public void close()
   {
-    pricer.close();
+
     for (Real r : owned)
       r.close();
   }
