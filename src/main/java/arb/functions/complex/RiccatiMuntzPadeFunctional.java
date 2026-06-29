@@ -185,7 +185,7 @@ public class RiccatiMuntzPadeFunctional extends
     refreshPolynomials(bits);
   }
 
-  private static Prototype prototype(String pExpr, String qExpr, String rExpr)
+  private static Prototype prototype(String pExpr, String qExpr, String rExpr, Context liveContext)
   {
     return prototypes.computeIfAbsent(pExpr + "\u0000" + qExpr + "\u0000" + rExpr,
                                       ignored ->
@@ -197,6 +197,11 @@ public class RiccatiMuntzPadeFunctional extends
                                         Real μ = new Real();
                                         μ.setName("μ");
                                         prototypeContext.registerVariable(μ);
+
+                                        if (liveContext != null)
+                                        {
+                                          prototypeContext.mergeFrom(liveContext, Context.ConflictPolicy.PREFER_THIS);
+                                        }
 
                                         Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction> pExpression =
                                             (Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction>) Function.parseAndRegister(pExpr,
@@ -395,7 +400,7 @@ public class RiccatiMuntzPadeFunctional extends
 
   public RiccatiMuntzPadeFunctional(Context context, Real μ, String pExpr, String qExpr, String rExpr)
   {
-    this(context, μ, prototype(pExpr, qExpr, rExpr));
+    this(context, μ, prototype(pExpr, qExpr, rExpr, context));
   }
 
   @SuppressWarnings("resource")
