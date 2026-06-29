@@ -147,8 +147,11 @@ $(SO_RESOURCE): $(SOURCES) $(FLINT_STATIC) $(XDO_STATIC)
 libarblib.so: $(SO_RESOURCE)
 	ln -sf $(SO_RESOURCE) libarblib.so
 
+# NEVER delete the committed, prebuilt libarblib.so ($(SO_RESOURCE)) nor the
+# repo-root symlink to it: it is a tracked binary that the entire build/test
+# depends on and is expensive to relink. `clean` removes only build artifacts.
 clean:
-	rm -rf libarblib.so $(SO_RESOURCE) *.o native/arb_wrap.c build/*
+	rm -rf *.o native/arb_wrap.c build/*
 
 test:
 	mvn test
