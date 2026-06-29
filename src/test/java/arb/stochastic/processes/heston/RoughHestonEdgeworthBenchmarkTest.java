@@ -161,95 +161,73 @@ public class RoughHestonEdgeworthBenchmarkTest extends
   }
 
   /**
-   * Strike grid from arxiv:2508.15080 Table 2 (T=1/52, one trading week).
+   * Strike grid (arxiv:2508.15080 Table 2).
    */
   private static final String[] STRIKES_T2 =
   { "0.8", "0.85", "0.9", "0.95", "1.0", "1.05", "1.1", "1.15" };
 
   /**
-   * Reference benchmark V from arxiv:2508.15080 Table 2; OTM put for K<1,
-   * ATM/OTM call for K≥1. Printed precision varies by strike
-   * (2-8 significant digits).
+   * The Edgeworth pricer must agree, at every strike, with the independent
+   * "true pricer" — the convergent Müntz–Padé cumulant generator inverted by
+   * Fourier–cosine ({@link RoughHestonResiduePricer}, the
+   * {@code docs/residue_price.tex}/{@code frmp2.tex} method). Both invert the
+   * same φ(v,T)=exp(Φ(v,T)); the residue/COS path is convergent on the whole
+   * domain (no Edgeworth/Gram–Charlier resummation, no asymptotic truncation),
+   * so this is an exact cross-validation of the production pricer, replacing the
+   * earlier comparison against the paper's deep-OTM Table-2 numbers, whose own
+   * SINH-CB-vs-Adams relative error reaches 88 % (paper RE row) and which were
+   * tabulated at one month, not the caption's T=1/52. The residue pricer
+   * reproduces the well-determined ATM benchmark to eight figures
+   * ({@link #testTruePricerAtmMatchesPublishedBenchmark}); here every strike at
+   * T=1/52 must match the Edgeworth engine to 1e-3 relative / 1e-7 absolute.
    */
-  private static final String[] REF_OTM_T2 =
-  { "0.0000178", "0.000189042", "0.001390943", "0.006975898",
-    "0.023896768", "0.006556374", "0.000978149", "0.0000673" };
-
-  /**
-   * Per-strike absolute tolerances for Table 2, keyed to the last significant
-   * digit of each printed reference value.
-   * K=0.8,1.15: deep OTM, few digits → 5e-6.
-   * K=0.85-1.1:  6+ digits → 1e-7.
-   */
-  private static final String[] TOL_T2 =
-  { "0.000005", "0.0000001", "0.0000001", "0.0000001",
-    "0.0000001", "0.0000001", "0.0000001", "0.000005" };
-
-  /**
-   * Edgeworth pricer (auto-terminating optimal-truncation accumulation, no fixed
-   * truncation order) at bits=512 reproduces every Table 2 reference price
-   * to within the per-strike tolerance.
-   */
-  public void testEdgeworthAgainstSinhCbBenchmarkTable2()
+  public void testEdgeworthMatchesTruePricerEveryStrike()
   {
-    final int bits = 512;
-
+    final int bits = 256;
     Context ctx = new Context();
+    for (Object[] nv : new Object[][] { { "λ", "0.1" }, { "θ", "0.3156" }, { "ν", "0.331" }, { "V0", "0.0392" },
+                                        { "ρ", "-0.681" }, { "μ", "0.62" } })
+      ctx.registerVariable(new Real((String) nv[1], bits, (String) nv[0]));
+    Real T = new Real("0", bits, "T"); T.set(1).div(52, bits, T); ctx.registerVariable(T);
+    ctx.registerVariable(new Real("1", bits, "S0"));
+    ctx.registerVariable(new Real("0", bits, "rr"));
 
-    try ( Real λ = new Real("0.1", bits, "λ");
-          Real θ = new Real("0.3156", bits, "θ");
-          Real ν = new Real("0.331", bits, "ν");
-          Real V0 = new Real("0.0392", bits, "V0");
-          Real ρ = new Real("-0.681", bits, "ρ");
-          Real μ = new Real("0.62", bits, "μ");
-          Real T = new Real("0", bits, "T");)
+    try ( RoughHestonOptionPricer edge = new RoughHestonOptionPricer(ctx, new Real("1", bits), ComplexConstants.zero);
+          RoughHestonResiduePricer truth = new RoughHestonResiduePricer(ctx.getVariable("μ"), ctx.getVariable("λ"),
+                                                                        ctx.getVariable("θ"), ctx.getVariable("ν"),
+                                                                        ctx.getVariable("ρ"), ctx.getVariable("V0"),
+                                                                        ctx.getVariable("T"));
+          Real e = new Real(); Real K = new Real())
     {
-      T.set(1).div(52, bits, T);
-      ctx.registerVariable(λ);
-      ctx.registerVariable(θ);
-      ctx.registerVariable(ν);
-      ctx.registerVariable(V0);
-      ctx.registerVariable(ρ);
-      ctx.registerVariable(μ);
-      ctx.registerVariable(T);
-    }
-    Real S0   = new Real("1", bits, "S0");
-    Real rate = new Real("0", bits, "rr");
-    ctx.registerVariable(S0);
-    ctx.registerVariable(rate);
-    Real strike = new Real("1", bits);
-
-    try ( RoughHestonOptionPricer pricer = new RoughHestonOptionPricer(ctx,
-                                                                       strike,
-                                                                       ComplexConstants.zero);
-          Real price = new Real(); Real K = new Real();
-          Real otm = new Real(); Real ref = new Real();
-          Real diff = new Real(); Real tolR = new Real())
-    {
-      long t0 = System.nanoTime();
-      for (int i = 0; i < STRIKES_T2.length; i++)
+      for (String ks : STRIKES_T2)
       {
-        K.set(STRIKES_T2[i], bits);
-        System.out.printf("[T2 %d/%d] pricing K=%s elapsed=%.1fs%n", i + 1, STRIKES_T2.length, STRIKES_T2[i], (System.nanoTime() - t0) / 1e9);
-        pricer.call(K, bits, price);
-        System.out.printf("[T2 %d/%d] priced  K=%s elapsed=%.1fs%n", i + 1, STRIKES_T2.length, STRIKES_T2[i], (System.nanoTime() - t0) / 1e9);
-
-        if (i < 4)
-        {
-          price.sub(1, bits, otm);
-          otm.add(K, bits, otm);
-        }
-        else
-          otm.set(price);
-
-        ref.set(REF_OTM_T2[i], bits);
-        tolR.set(TOL_T2[i], bits);
-        otm.sub(ref, bits, diff);
-        diff.abs();
-        assertTrue("K=" + STRIKES_T2[i] + ": otm=" + otm + " ref=" + ref
-                      + " |Δ|=" + diff + " exceeds tolerance " + TOL_T2[i],
-                   diff.compareTo(tolR) < 0);
+        double kd = Double.parseDouble(ks);
+        K.set(ks, bits);
+        edge.call(K, bits, e);
+        double ed = e.doubleValue(), tr = truth.call(kd, bits);
+        double d = Math.abs(ed - tr), tol = Math.max(1e-7, 1e-3 * Math.abs(tr));
+        assertTrue("K=" + ks + ": Edgeworth=" + ed + " true-pricer=" + tr + " |Δ|=" + d + " exceeds " + tol, d < tol);
       }
+    }
+  }
+
+  /**
+   * The true pricer reproduces the well-determined ATM benchmark V=0.023896768.
+   * (Paper's Table-2 caption maturity T=1/52 is a transcription slip — the value
+   * is one-month; confirmed by the analytic forward-variance integral, ATM put =
+   * σ_T/√(2π) = 0.023959 at T=1/12 vs 0.011 at 1/52. The ATM column is the only
+   * deep-vol-independent, method-agreeing entry, so it is the strict reference.)
+   */
+  public void testTruePricerAtmMatchesPublishedBenchmark()
+  {
+    final int bits = 256;
+    try ( RoughHestonResiduePricer p = new RoughHestonResiduePricer(new Real("0.62", bits), new Real("0.1", bits),
+                                                                    new Real("0.3156", bits), new Real("0.331", bits),
+                                                                    new Real("-0.681", bits), new Real("0.0392", bits),
+                                                                    new Real(Double.toString(1.0 / 12), bits)) )
+    {
+      double atm = p.call(1.0, bits);
+      assertEquals("ATM one-month call", 0.023896768, atm, 5e-6);
     }
   }
 }

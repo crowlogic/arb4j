@@ -813,6 +813,32 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
     return result;
   }
 
+  /**
+   * Power series exponential: result = exp(this) truncated to {@code order}
+   * terms, via {@code acb_poly_exp_series}. With Φ the cumulant generating
+   * polynomial Φ(z)=Σ κ_j z^j/j!, exp(Φ) is the moment generating series whose
+   * j-th coefficient times j! is the j-th moment E[X^j].
+   *
+   * @param order number of series terms to retain
+   * @param bits  working precision in bits
+   * @param result preallocated polynomial to hold exp(this); may alias this
+   * @return result, containing the exponential series
+   */
+  public ComplexPolynomial exp(int order, int bits, ComplexPolynomial result)
+  {
+    if (result == this)
+    {
+      try (ComplexPolynomial buffer = new ComplexPolynomial())
+      {
+        arblib.acb_poly_exp_series(buffer, this, order, bits);
+        result.set(buffer);
+      }
+      return result;
+    }
+    arblib.acb_poly_exp_series(result, this, order, bits);
+    return result;
+  }
+
   public void setCoeffsNative(Complex value) {
     arblibJNI.ComplexPolynomial_coeffsNative_set(swigCPtr, this, Complex.getCPtr(value), value);
   }
