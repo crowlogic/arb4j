@@ -118,51 +118,50 @@ public final class MuntzPadeApproximant implements
 
     t.pow(α, bits, z);
     try ( Real    threshold = new Real();
-          Real    diffMag   = new Real();
-          Real    bestMag   = new Real();
-          Complex prev      = new Complex();
-          Complex curr      = new Complex();
-          Complex best      = new Complex();
-          Complex diff      = new Complex();
-          Integer M         = new Integer() )
+          Real    previousDiffMag = new Real();
+          Real    currentDiffMag  = new Real();
+          Real    denominator     = new Real();
+          Real    bound           = new Real();
+          Complex prev            = new Complex();
+          Complex curr            = new Complex();
+          Complex diff            = new Complex();
+          Integer M               = new Integer() )
     {
-      // Half-precision target: bit-exact agreement at `bits` is unreachable
-      // because the OPS h(j) underflows precision at some M*, so the
-      // neighbour-diff floors above 2^-bits and then climbs as precision is
-      // lost (eventually α=σ/h would divide by an arb-zero h(j)).
-      threshold.one().mul2e(-bits / 2, threshold);
-      bestMag.posInf();
-      M.set(2);
-      // Fill the σ-table caches bottom-up first; a top-down read of the cyclic
-      // {σ,α,β,h} recurrence otherwise memoises a partial ∅ and later divides by
-      // it. Cheap and idempotent once σfunc is memoised (re-calls are cache hits).
-      ops.warmTo(2, bits);
+      threshold.one().mul2e(-bits, threshold);
+      M.set(1);
+      ops.warmTo(1, bits);
       Φ.evaluate(M, 1, bits, null).evaluate(z, 1, bits, prev);
-      best.set(prev);
-      // Unbounded by design: the diff descends monotonically to that floor
-      // then stops shrinking, so one exit below always fires at finite M.
+      M.set(2);
+      ops.warmTo(2, bits);
+      Φ.evaluate(M, 1, bits, null).evaluate(z, 1, bits, curr);
+      curr.sub(prev, bits, diff).abs(bits, previousDiffMag);
+      prev.set(curr);
+      int nondecreasingDiffs = 0;
       for (int m = 3;; m++)
       {
         M.set(m);
         ops.warmTo(m, bits);
         Φ.evaluate(M, 1, bits, null).evaluate(z, 1, bits, curr);
-        curr.sub(prev, bits, diff).abs(bits, diffMag);
-        if (diffMag.compareTo(threshold) <= 0)
+        curr.sub(prev, bits, diff).abs(bits, currentDiffMag);
+        if (currentDiffMag.compareTo(previousDiffMag) < 0)
         {
-          return result.set(curr);
-        }
-        if (diffMag.compareTo(bestMag) < 0)
-        {
-          bestMag.set(diffMag);
-          best.set(curr);
+          previousDiffMag.sub(currentDiffMag, bits, denominator);
+          currentDiffMag.mul(currentDiffMag, bits, bound).div(denominator, bits, bound);
+          if (bound.compareTo(threshold) < 0)
+          {
+            return result.set(curr);
+          }
+          nondecreasingDiffs = 0;
         }
         else
         {
-          // Diff stopped shrinking: we hit the precision floor. The previous
-          // iterate is closest to the limit — return it, stopping before the
-          // h(j)→0 division a few M further on.
-          return result.set(best);
+          nondecreasingDiffs++;
+          if (nondecreasingDiffs >= 3)
+          {
+            throw new ArithmeticException("diagonal Padé estimate did not contract");
+          }
         }
+        previousDiffMag.set(currentDiffMag);
         prev.set(curr);
       }
     }
