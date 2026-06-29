@@ -560,7 +560,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * path.
    */
   boolean                                                 compileInProgress             = false;
-  private transient Thread                                 compileThread;
 
   public Expression(Class<? extends D> domain, Class<? extends C> coDomain, Class<? extends F> function)
   {
@@ -1028,29 +1027,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // the partially-built state of the in-progress compile.
     if (compileInProgress)
     {
-      if (compileThread == Thread.currentThread())
-      {
-        return this;
-      }
-      synchronized (this)
-      {
-        while (compileInProgress && compiledClass == null)
-        {
-          try
-          {
-            wait();
-          }
-          catch (InterruptedException e)
-          {
-            Thread.currentThread().interrupt();
-            throw new CompilerException("interrupted while waiting for " + className + " to finish compiling", e);
-          }
-        }
-      }
       return this;
     }
     compileInProgress = true;
-    compileThread = Thread.currentThread();
     try
     {
       if (context == null)
@@ -1086,11 +1065,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     finally
     {
       compileInProgress = false;
-      compileThread = null;
-      synchronized (this)
-      {
-        notifyAll();
-      }
     }
   }
 
@@ -1665,7 +1639,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // from the original.
     copy.variablesDeclared = false;
     copy.compileInProgress = false;
-    copy.compileThread = null;
     return copy;
   }
 
