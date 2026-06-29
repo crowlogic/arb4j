@@ -16,7 +16,7 @@ import arb.documentation.TheArb4jLibrary;
 public class RoughHestonHermitePricer implements
                                       AutoCloseable
 {
-  double mu, lam, th, nu, rho, V0;
+  final double mu, lam, th, nu, rho, V0;
   public double T;
   public int    M = 16;
 
@@ -50,13 +50,12 @@ public class RoughHestonHermitePricer implements
   /** Call price S0=1, r=0, via Lewis inversion of φ_M=exp(Φ_M) on Im v = -1/2. */
   public double call(double K, int bits)
   {
-    double k=Math.log(K), gam=-0.5, du=0.02, U=300, I=0;
-    for(double t=-U;t<=U;t+=du){double[] p=phiM(t,gam);double er=Math.exp(p[0]);if(er<1e-18&&Math.abs(t)>5)continue;double pr=er*Math.cos(p[1]),pi=er*Math.sin(p[1]);
+    double k=Math.log(K), gam=-0.5, du=0.01, U=400, I=0;
+    for(double t=-U;t<=U;t+=du){double[] p=phiM(t,gam);double er=Math.exp(p[0]);double pr=er*Math.cos(p[1]),pi=er*Math.sin(p[1]);
       double ekr=Math.exp(gam*k),e_r=ekr*Math.cos(-t*k),e_i=ekr*Math.sin(-t*k);double nr=e_r*pr-e_i*pi,ni=e_r*pi+e_i*pr;
       double dr=t*t-gam*(gam+1),di=t*(2*gam+1);double dn=dr*dr+di*di;I+=(nr*dr+ni*di)/dn*du;}
     return 1-K*(I/(2*Math.PI));
   }
-  public void set(double mu2,double lam2,double th2,double nu2,double rho2,double V02){this.mu=mu2;this.lam=lam2;this.th=th2;this.nu=nu2;this.rho=rho2;this.V0=V02;}
   public double put(double K,int bits){return call(K,bits)-1+K;}
   @Override public void close(){}
 }

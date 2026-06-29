@@ -6,6 +6,7 @@ import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
+import arb.functions.ConvergentSeriesAccumulator;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
 import arb.functions.integer.ComplexPolynomialSequence;
 import arb.functions.integer.RealFunctionSequence;
@@ -13,7 +14,6 @@ import arb.functions.integer.RealSequence;
 import arb.functions.polynomials.orthogonal.real.ProbabilistHermitePolynomials;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealNullaryFunction;
-
 
 /**
  * European call/put option pricer under the rough Heston model via a full
@@ -146,10 +146,6 @@ public class RoughHestonOptionPricer implements
   /** Leading (Black–Scholes) call value C(k) of the price, as a callable function. */
   public RealFunction                            blackScholes;
 
-   private ComplexPolynomialNullaryFunction       Φ;
-   private ComplexPolynomialNullaryFunction       dΦ;
-   private int                                    adaptiveTruncationOrder;
-
   /** Analytic Ċ(k) = ∂C/∂param: the leading-term sensitivity, built by the chain
    *  rule through mean=κ(1), variance=κ(2), standard deviation with the exact dκ.
    *  The active parameter is selected by {@link #seedParameterDerivative}. */
@@ -230,30 +226,55 @@ public class RoughHestonOptionPricer implements
     // ∂Φ = Σ_k T^{kμ+1}·dd(k), each a single ring-level sum of the coefficient
     // polynomials. The cumulants and their sensitivities are read off as the
     // point-derivatives κ_m = Re((−i)^m·Φ^{(m)}(0)) — no coefficient access (#1022).
-    this.Φ  = ComplexPolynomialNullaryFunction.express("Φ", "Σk➔T^(k*μ+1)*d(k){k=0..N}", pricingContext);
-    this.dΦ = ComplexPolynomialNullaryFunction.express("dΦ", "Σk➔T^(k*μ+1)*dd(k){k=0..N}", pricingContext);
-    this.κ  = new RoughHestonCumulantSequence(this.Φ);
-    this.dκ = new RoughHestonCumulantSequence(this.dΦ);
+    ComplexPolynomialNullaryFunction Φ  = ComplexPolynomialNullaryFunction.express("Φ", "Σk➔T^(k*μ+1)*d(k){k=0..N}", pricingContext);
+    ComplexPolynomialNullaryFunction dΦ = ComplexPolynomialNullaryFunction.express("dΦ", "Σk➔T^(k*μ+1)*dd(k){k=0..N}", pricingContext);
+    this.κ  = new RoughHestonCumulantSequence(Φ);
+    this.dκ = new RoughHestonCumulantSequence(dΦ);
     pricingContext.registerFunction("κ", κ);
     pricingContext.registerFunction("dκ", dκ);
+    // The cumulants the whole price chain reads are κε(m) = κ(m) + ε·dκ(m). At
+    // ε=0 this is the forward price; ∂(anything built on these)/∂ε at ε=0 is its
+    // ∂/∂param by the chain rule, the active parameter chosen by seeding dκ. The
+    // compiler then differentiates GBS, ΔCseq, the price — everything except the
+    // self-referential c — automatically; c gets the hand-written dc recurrence.
     this.mScalar   = RealNullaryFunction.express("mean", "κ(1)+ε*dκ(1)", pricingContext);
     this.σ2Scalar  = RealNullaryFunction.express("variance", "κ(2)+ε*dκ(2)", pricingContext);
     this.σScalar   = RealNullaryFunction.express("stdev", "sqrt(κ(2)+ε*dκ(2))", pricingContext);
     this.S         = RealSequence.express("S", "k➔(κ(k)+ε*dκ(k))/(stdev()^k*Γ(k+1))", pricingContext);
     this.c         = RealSequence.express("c", "n➔when(n=0,1,n<3,0,else,(1/n)*Σk➔k*S(k)*c(n-k){k=3..n})", pricingContext);
-    this.priceExpr               = buildPriceFunction(false);
-    this.priceAdaptive           = buildPriceFunction(true);
-    this.blackScholes            = buildBlackScholesCallFunction();
-    this.blackScholesSensitivity = buildBlackScholesSensitivityFunction();
-    this.blackScholesPut         = buildBlackScholesPutFunction();
-    this.blackScholesPutSensitivity = buildBlackScholesPutSensitivityFunction();
-    this.ΔCseq = RealFunctionSequence.express("ΔCseq:j➔k➔0", pricingContext);
-    this.priceSensitivity = buildSensitivityFunction();
-    pricingContext.registerFunction("GBS", this.blackScholes);
-    pricingContext.registerFunction("C", this.blackScholes);
-    pricingContext.registerFunction("Ψ", this.blackScholesSensitivity);
-    pricingContext.registerFunction("U", this.blackScholesPut);
-    pricingContext.registerFunction("Ω", this.blackScholesPutSensitivity);
+    this.priceExpr               = compilePriceExpression(pricingContext);
+    this.blackScholes            = RealFunction.express("C:k➔GBS(k)", pricingContext);
+    // Ψ = ∂C/∂param by the chain rule through mean=κ(1), variance=κ(2), σ=√κ(2)
+    // with the exact cumulant derivatives dκ; ∂d1/∂param and ∂d2/∂param inlined.
+    RealFunction.express("β1:k➔(dκ(1)+dκ(2))/stdev() - d1(k)*dκ(2)/(2*stdev()^2)", pricingContext);
+    RealFunction.express("β2:k➔β1(k)-dκ(2)/(2*stdev())", pricingContext);
+    this.blackScholesSensitivity = RealFunction.express("Ψ:k➔S0*exp(mean()+variance()/2)*((dκ(1)+dκ(2)/2)*NCDF(d1(k))+nGauss(d1(k))*β1(k)) - S0*exp(k-rr*T)*nGauss(d2(k))*β2(k)", pricingContext);
+    this.blackScholesPut            = RealFunction.express("U:k➔C(k) - S0*exp(mean()+variance()/2) + S0*exp(k-rr*T)", pricingContext);
+    this.blackScholesPutSensitivity = RealFunction.express("Ω:k➔Ψ(k) - S0*exp(mean()+variance()/2)*(dκ(1)+dκ(2)/2)", pricingContext);
+
+    // Analytic sensitivity of the Edgeworth-Hermite price partial sum Π_J = the
+    // hand-written ε-derivative of each piece (the AST differentiator cannot
+    // propagate ε through the nullary mean()/variance()/stdev()). With κε in the
+    // chain, ∂GBS/∂ε = Ψ. The cumulant standardisation derivatives dstdev, dS and
+    // the self-referential Blinnikov–Moessner dc are the linearised recurrences;
+    // the Hermite-correction derivative uses ∂zStar/∂ε = dzStar, ∂zσ/∂ε = dzσ, and
+    // the probabilist-Hermite identity −x·Heₙ+n·Heₙ₋₁ = −Heₙ₊₁ which collapses
+    // ∂(nGauss(z)·Heₙ(z))/∂ε to −nGauss(z)·Heₙ₊₁(z)·dz. dΠ's accumulation
+    // over J is the analytic ∂(price)/∂param.
+    RealNullaryFunction.express("dstdev", "dκ(2)/(2*stdev())", pricingContext);
+    RealSequence.express("dS", "k➔dκ(k)/(stdev()^k*Γ(k+1)) - S(k)*k*dstdev()/stdev()", pricingContext);
+    RealSequence.express("dc", "n➔when(n<3,0,else,(1/n)*Σk➔k*(dS(k)*c(n-k)+S(k)*dc(n-k)){k=3..n})", pricingContext);
+    RealFunction.express("dzStar:k➔-dκ(1)/stdev() - (k-rr*T-mean())*dstdev()/stdev()^2", pricingContext);
+    RealFunction.express("dzσ:k➔dzStar(k)-dstdev()", pricingContext);
+    RealFunctionSequence.express("dhermiteOne:j➔k➔-nGauss(zStar(k))*He(j)(zStar(k))*dzStar(k)", pricingContext);
+    RealFunctionSequence.express("dΔA:j➔k➔Σi➔(Γ(j+1)/(Γ(i+1)*Γ(j-i+1)))*("
+                  + "(j-i)*stdev()^(j-i-1)*dstdev()*when(i=0,NCDF(-zσ(k)),else,nGauss(zσ(k))*He(i-1)(zσ(k)))"
+                  + " - stdev()^(j-i)*nGauss(zσ(k))*He(i)(zσ(k))*dzσ(k)){i=0..j}",
+                                 pricingContext);
+    RealFunctionSequence.express("dΔCseq:j➔k➔(dκ(1)+dκ(2)/2)*(ΔCseq(j)(k)+exp(k-rr*T)*hermiteOne(j)(k))"
+                  + " + exp(mean()+variance()/2)*dΔA(j)(k) - exp(k-rr*T)*dhermiteOne(j)(k)",
+                                 pricingContext);
+    this.priceSensitivity = RealFunction.express("dΠ:k➔Ψ(k)+S0*Σj➔(dc(j)*ΔCseq(j)(k)+c(j)*dΔCseq(j)(k)){j=3..J}", pricingContext);
   }
 
   /** Register J in the CF context so compiled expressions can see it. */
@@ -295,279 +316,28 @@ public class RoughHestonOptionPricer implements
   }
 
   /** Compile the Edgeworth call-price formula in {@code context}. */
-  private RealFunction buildPriceFunction(boolean adaptive)
+  private RealFunction compilePriceExpression(Context context)
   {
-    return new RealFunction()
-    {
-      @Override
-      public Real evaluate(Real x, int order, int bits, Real result)
-      {
-        evaluateSeriesPrice(x, bits, adaptive, result);
-        return result;
-      }
-
-      @Override
-      public String getName()
-      {
-        return adaptive ? "ΠAdaptive" : "ΠPricer";
-      }
-    };
-  }
-
-  private RealFunction buildSensitivityFunction()
-  {
-    return new RealFunction()
-    {
-      @Override
-      public Real evaluate(Real x, int order, int bits, Real result)
-      {
-        evaluateSeriesSensitivity(x, bits, result);
-        return result;
-      }
-
-      @Override
-      public String getName()
-      {
-        return "dΠ";
-      }
-    };
-  }
-
-  private RealFunction buildBlackScholesCallFunction()
-  {
-    return new RealFunction()
-    {
-      @Override
-      public Real evaluate(Real x, int order, int bits, Real result)
-      {
-        if (result == null) result = new Real();
-        double kLog = x.doubleValue();
-        try ( Real mean = new Real(); Real variance = new Real() )
-        {
-          mScalar.evaluate(0, bits, mean);
-          σ2Scalar.evaluate(0, bits, variance);
-          double mu = mean.doubleValue();
-          double v = variance.doubleValue();
-          double sigma = Math.sqrt(Math.max(v, 0.0));
-          double d1 = (kLog + mu + 0.5 * v) / sigma;
-          double d2 = d1 - sigma;
-          double nd1 = normalCdf(d1);
-          double nd2 = normalCdf(d2);
-          double spot = S0.doubleValue();
-          double discount = Math.exp(-rr.doubleValue() * φ.T.doubleValue());
-          double price = spot * Math.exp(mu + 0.5 * v) * nd1 - spot * Math.exp(kLog - rr.doubleValue() * φ.T.doubleValue()) * nd2;
-          result.set(Double.toString(price), bits);
-        }
-        return result;
-      }
-
-      @Override
-      public String getName()
-      {
-        return "GBS";
-      }
-    };
-  }
-
-  private RealFunction buildBlackScholesSensitivityFunction()
-  {
-    return new RealFunction()
-    {
-      @Override
-      public Real evaluate(Real x, int order, int bits, Real result)
-      {
-        if (result == null) result = new Real();
-        double kLog = x.doubleValue();
-        try ( Real mean = new Real(); Real variance = new Real(); Real dMean = new Real(); Real dVariance = new Real() )
-        {
-          mScalar.evaluate(0, bits, mean);
-          σ2Scalar.evaluate(0, bits, variance);
-          Integer idx1 = new Integer(); idx1.set(1);
-          Integer idx2 = new Integer(); idx2.set(2);
-          dκ.evaluate(idx1, 1, bits, dMean);
-          dκ.evaluate(idx2, 1, bits, dVariance);
-          double mu = mean.doubleValue();
-          double v = variance.doubleValue();
-          double sigma = Math.sqrt(Math.max(v, 0.0));
-          double dMu = dMean.doubleValue();
-          double dV = dVariance.doubleValue();
-          double d1 = (kLog + mu + 0.5 * v) / sigma;
-          double d2 = d1 - sigma;
-          double nd1 = normalCdf(d1);
-          double pdf1 = normalPdf(d1);
-          double pdf2 = normalPdf(d2);
-          double spot = S0.doubleValue();
-          double forward = spot * Math.exp(mu + 0.5 * v);
-          double strike = spot * Math.exp(kLog - rr.doubleValue() * φ.T.doubleValue());
-          double d1_dv = 0.5 / sigma - d1 / (2.0 * Math.max(v, 1e-30));
-          double d2_dv = d1_dv - 0.5 / sigma;
-          double sensitivity = dMu * forward * nd1 + dV * (0.5 * forward * nd1 + forward * pdf1 * d1_dv - strike * pdf2 * d2_dv);
-          result.set(Double.toString(sensitivity), bits);
-        }
-        return result;
-      }
-
-      @Override
-      public String getName()
-      {
-        return "Ψ";
-      }
-    };
-  }
-
-  private RealFunction buildBlackScholesPutFunction()
-  {
-    return new RealFunction()
-    {
-      @Override
-      public Real evaluate(Real x, int order, int bits, Real result)
-      {
-        if (result == null) result = new Real();
-        try ( Real call = new Real(); Real mean = new Real(); Real variance = new Real() )
-        {
-          blackScholes.evaluate(x, order, bits, call);
-          mScalar.evaluate(0, bits, mean);
-          σ2Scalar.evaluate(0, bits, variance);
-          double mu = mean.doubleValue();
-          double v = variance.doubleValue();
-          double spot = S0.doubleValue();
-          double forward = spot * Math.exp(mu + 0.5 * v);
-          double put = call.doubleValue() - forward + spot * Math.exp(x.doubleValue() - rr.doubleValue() * φ.T.doubleValue());
-          result.set(Double.toString(put), bits);
-        }
-        return result;
-      }
-
-      @Override
-      public String getName()
-      {
-        return "U";
-      }
-    };
-  }
-
-  private RealFunction buildBlackScholesPutSensitivityFunction()
-  {
-    return new RealFunction()
-    {
-      @Override
-      public Real evaluate(Real x, int order, int bits, Real result)
-      {
-        if (result == null) result = new Real();
-        try ( Real sensitivity = new Real(); Real mean = new Real(); Real variance = new Real(); Real dMean = new Real(); Real dVariance = new Real() )
-        {
-          blackScholesSensitivity.evaluate(x, order, bits, sensitivity);
-          mScalar.evaluate(0, bits, mean);
-          σ2Scalar.evaluate(0, bits, variance);
-          Integer idx1 = new Integer(); idx1.set(1);
-          Integer idx2 = new Integer(); idx2.set(2);
-          dκ.evaluate(idx1, 1, bits, dMean);
-          dκ.evaluate(idx2, 1, bits, dVariance);
-          double mu = mean.doubleValue();
-          double v = variance.doubleValue();
-          double spot = S0.doubleValue();
-          double forwardSensitivity = spot * Math.exp(mu + 0.5 * v) * (dMean.doubleValue() + 0.5 * dVariance.doubleValue());
-          double putSensitivity = sensitivity.doubleValue() - forwardSensitivity;
-          result.set(Double.toString(putSensitivity), bits);
-        }
-        return result;
-      }
-
-      @Override
-      public String getName()
-      {
-        return "Ω";
-      }
-    };
-  }
-
-  private static double normalCdf(double x)
-  {
-    return 0.5 * (1.0 + erf(x / Math.sqrt(2.0)));
-  }
-
-  private static double normalPdf(double x)
-  {
-    return Math.exp(-0.5 * x * x) / Math.sqrt(2.0 * Math.PI);
-  }
-
-  private static double erf(double x)
-  {
-    double sign = x < 0.0 ? -1.0 : 1.0;
-    x = Math.abs(x);
-    double t = 1.0 / (1.0 + 0.3275911 * x);
-    double y = 1.0 - (((((1.061405429 * t - 1.453152027) * t + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t) * Math.exp(-x * x);
-    return sign * y;
-  }
-
-  private void evaluateSeriesPrice(Real x, int bits, boolean adaptive, Real result)
-  {
-    if (result == null) result = new Real();
-    double logStrike = x.doubleValue();
-    double price = evaluateFourierPrice(logStrike, bits, 0.0);
-    result.set(Double.toString(price), bits);
-    adaptiveTruncationOrder = adaptive ? Math.max(1, Math.min(24, J.getSignedValue() > 0 ? J.getSignedValue() : 8)) : J.getSignedValue();
-  }
-
-  private void evaluateSeriesSensitivity(Real x, int bits, Real result)
-  {
-    if (result == null) result = new Real();
-    double logStrike = x.doubleValue();
-    double h = 1e-6;
-    double pPlus = evaluateFourierPrice(logStrike, bits, h);
-    double pMinus = evaluateFourierPrice(logStrike, bits, -h);
-    double sensitivity = (pPlus - pMinus) / (2.0 * h);
-    result.set(Double.toString(sensitivity), bits);
-  }
-
-  private double evaluateFourierPrice(double logStrike, int bits, double epsilon)
-  {
-    double oldEps = ε.doubleValue();
-    try ( Real epsScratch = new Real();
-          Complex u = new Complex();
-          Complex expTerm = new Complex();
-          Complex oneOverIu = new Complex();
-          Complex integrand = new Complex();
-          Complex tmp = new Complex();
-          Complex denom = new Complex(); )
-    {
-      Complex phi = new Complex();
-      Complex phiShift = new Complex();
-      ε.set(Double.toString(epsilon), bits);
-      epsScratch.set(Double.toString(epsilon), bits);
-      double maxU = 50.0;
-      int steps = 200;
-      double h = maxU / steps;
-      double sumP1 = 0.0;
-      double sumP2 = 0.0;
-      Complex psiMinusI = new Complex();
-      φ.evaluate(new Complex(0.0, -1.0), 0, bits, psiMinusI);
-      for (int i = 1; i <= steps; i++)
-      {
-        double uVal = i * h;
-        u.set(0.0, uVal);
-        phi = φ.evaluate(u, 0, bits, phi);
-        phiShift = φ.evaluate(new Complex(uVal, -1.0), 0, bits, phiShift);
-        expTerm.set(Math.cos(uVal * logStrike), -Math.sin(uVal * logStrike));
-        oneOverIu.set(0.0, 1.0 / uVal);
-        integrand.set(phi).mul(oneOverIu, bits, tmp);
-        integrand.mul(expTerm, bits, integrand);
-        sumP2 += integrand.re().doubleValue() * h;
-        denom.set(0.0, uVal).mul(psiMinusI, bits, tmp);
-        integrand.set(phiShift).div(denom, bits, tmp);
-        integrand.mul(expTerm, bits, integrand);
-        sumP1 += integrand.re().doubleValue() * h;
-      }
-      double p1 = 0.5 + sumP1 / (Math.PI * psiMinusI.re().doubleValue());
-      double p2 = 0.5 + sumP2 / Math.PI;
-      double discount = Math.exp(-rr.doubleValue() * φ.T.doubleValue());
-      double spot = S0.doubleValue();
-      return Math.max(0.0, discount * spot * (p1 - Math.exp(logStrike) * p2));
-    }
-    finally
-    {
-      ε.set(Double.toString(oldEps), bits);
-    }
+    RealFunction.express("zStar:k➔(k-rr*T-mean())/stdev()", context);
+    RealFunction.express("zσ:k➔((k-rr*T-mean())/stdev())-stdev()", context);
+    RealFunction.express("d1:k➔(-k+rr*T+mean()+variance())/stdev()", context);
+    RealFunction.express("d2:k➔((-k+rr*T+mean()+variance())/stdev())-stdev()", context);
+    RealFunction.express("nGauss:x➔exp((-x²)/2)/sqrt(2*π)", context);
+    RealFunction.express("NCDF:x➔½*erfc((-x)/sqrt(2))", context);
+    RealFunction.express("GBS:k➔S0*exp(mean()+variance()/2)*NCDF(d1(k))-S0*exp(k-rr*T)*NCDF(d2(k))", context);
+    RealFunctionSequence.express("hermiteOne:j➔k➔nGauss(zStar(k))*He(j-1)(zStar(k))", context);
+    this.ΔCseq = RealFunctionSequence.express("ΔCseq:j➔k➔exp(mean()+variance()/2)*Σi➔((Γ(j+1)/(Γ(i+1)*Γ(j-i+1)))*stdev()^(j-i)*"
+                  + "when(i=0,NCDF(-zσ(k)),else,nGauss(zσ(k))*He(i-1)(zσ(k)))){i=0..j}-exp(k-rr*T)*hermiteOne(j)(k)",
+                                 context);
+    // Optimally-truncated production price (used by call): the ~ accumulator
+    // stops the asymptotic Edgeworth–Hermite series at its smallest-term order
+    // J_Π and records it, so the parameter sensitivity can be summed to the SAME
+    // order the price was truncated at.
+    this.priceAdaptive = RealFunction.express("ΠAdaptive:k➔GBS(k)+S0*Σj➔(c(j)*ΔCseq(j)(k)){j=3..J~}", context);
+    // Raw J-truncated partial sum (plain Σ{j=3..J}, no optimal truncation): its
+    // ε-derivative is dΠ term-for-term, so callSensitivity sums dΠ to the J_Π
+    // read off priceAdaptive.
+    return RealFunction.express("ΠPricer:k➔GBS(k)+S0*Σj➔(c(j)*ΔCseq(j)(k)){j=3..J}", context);
   }
 
   private static Real required(Context ctx, String name)
@@ -628,7 +398,7 @@ public class RoughHestonOptionPricer implements
     if (kLog == null) kLog = new Real();
     strike.div(S0, bits, kLog).log(bits, kLog);
     φ.N.set(CUMULANT_ORDER);
-    J.set(8);
+    J.set(CUMULANT_ORDER);
     return priceAdaptive.evaluate(kLog, 1, bits, dst);
   }
 
@@ -660,7 +430,7 @@ public class RoughHestonOptionPricer implements
     if (kLog == null) kLog = new Real();
     strike.div(S0, bits, kLog).log(bits, kLog);
     φ.N.set(CUMULANT_ORDER);
-    J.set(8);
+    J.set(CUMULANT_ORDER);
     // The Edgeworth–Hermite series is asymptotic, so the price Π self-truncates
     // at its optimal (smallest-term) order J_Π via its ~ accumulator. The finite
     // difference of the price differentiates Π_{J_Π}, so the analytic derivative
@@ -682,10 +452,30 @@ public class RoughHestonOptionPricer implements
    */
   private int priceOptimalTruncationOrder()
   {
-    return adaptiveTruncationOrder;
+    try
+    {
+      if (priceAccumulatorField == null)
+      {
+        for (java.lang.reflect.Field f : priceAdaptive.getClass().getFields())
+        {
+          if (ConvergentSeriesAccumulator.class.equals(f.getType()))
+          {
+            priceAccumulatorField = f;
+            break;
+          }
+        }
+      }
+      ConvergentSeriesAccumulator acc = (ConvergentSeriesAccumulator) priceAccumulatorField.get(priceAdaptive);
+      return acc.truncationOrder;
+    }
+    catch (ReflectiveOperationException | NullPointerException e)
+    {
+      throw new IllegalStateException("adaptive price expression has no ConvergentSeriesAccumulator field to read the truncation order from", e);
+    }
   }
 
-  private Real priceTruncationScratch;
+  private java.lang.reflect.Field priceAccumulatorField;
+  private Real                    priceTruncationScratch;
 
   /**
    * Invalidate the caches after a model-parameter change (λ/θ/ν/V₀/ρ/μ) so the
