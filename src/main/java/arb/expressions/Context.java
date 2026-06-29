@@ -408,61 +408,24 @@ public class Context implements
   public Function<?, ?> allocateFreshPeer(String name)
   {
     FunctionMapping<?, ?, ?> mapping = functions.get(name);
-    if (mapping == null)
+    if (mapping == null || mapping.instance == null)
     {
-      log.debug("allocateFreshPeer: no mapping for {}", name);
-      return null;
-    }
-    Class<?> concreteClass = null;
-    Function<?, ?> canonical = mapping.instance;
-    if (canonical != null)
-    {
-      concreteClass = canonical.getClass();
-    }
-    else if (mapping.expression != null)
-    {
-      log.debug("allocateFreshPeer: mapping={} expression={} compiled={} inProgress={}",
-                name,
-                mapping.expression.className(),
-                mapping.expression.compiledClass,
-                mapping.expression.compileInProgress);
-      if (mapping.expression.compiledClass == null)
-      {
-        mapping.expression.compile();
-      }
-      concreteClass = mapping.expression.compiledClass;
-    }
-    else if (mapping.functionClass != null && !mapping.functionClass.isInterface())
-    {
-      concreteClass = mapping.functionClass;
-    }
-    if (concreteClass == null)
-    {
-      log.debug("allocateFreshPeer: no concrete class for {} mapping={} expr={} instance={} functionClass={}",
-                name,
-                mapping,
-                mapping.expression,
-                mapping.instance,
-                mapping.functionClass);
       return null;
     }
     try
     {
-      Function<?, ?> fresh = (Function<?, ?>) concreteClass.getDeclaredConstructor().newInstance();
+      Function<?, ?> fresh = (Function<?, ?>) mapping.instance.getClass().getDeclaredConstructor().newInstance();
       injectContextReference(fresh);
       // Share the canonical instance's IndexCache so this cluster member
       // memoizes into the same table as the context singleton — without this
       // each fresh peer has its own empty cache and q(n) is recomputed
       // exponentially across all evaluation levels.
-      if (canonical != null)
+      for (java.lang.reflect.Field field : mapping.instance.getClass().getFields())
       {
-        for (java.lang.reflect.Field field : concreteClass.getFields())
+        if (field.getName().equals("cache"))
         {
-          if (field.getName().equals("cache"))
-          {
-            field.set(fresh, field.get(canonical));
-            break;
-          }
+          field.set(fresh, field.get(mapping.instance));
+          break;
         }
       }
       return fresh;

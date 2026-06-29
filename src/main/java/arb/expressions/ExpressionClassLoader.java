@@ -47,12 +47,6 @@ public class ExpressionClassLoader extends
 
   public ExpressionClassLoader(Context context)
   {
-    this(context, Thread.currentThread().getContextClassLoader());
-  }
-
-  private ExpressionClassLoader(Context context, ClassLoader parent)
-  {
-    super(parent == null ? ExpressionClassLoader.class.getClassLoader() : parent);
     assert context != null : "context shan't be null";
     this.context = context;
   }
@@ -121,15 +115,6 @@ public class ExpressionClassLoader extends
     if (Expression.trace)
     {
       log.debug("findClass('{}') in Context#{}", name, System.identityHashCode(context));
-    }
-
-    try
-    {
-      return getParent().loadClass(name);
-    }
-    catch (ClassNotFoundException ignored)
-    {
-      // Fall through to the generated-expression handling below.
     }
 
     Class<?> already = compiledClasses.get(name);
