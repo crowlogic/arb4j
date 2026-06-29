@@ -1,6 +1,5 @@
 package arb.stochastic.processes.heston;
 
-import arb.Complex;
 import arb.ComplexPolynomial;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
