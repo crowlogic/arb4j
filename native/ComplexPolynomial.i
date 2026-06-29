@@ -220,7 +220,24 @@
     arblib.acb_poly_pow_ui(result,this,in.getUnsignedValue(), bits);
     return result;
   }
-
+ 
+  public ComplexPolynomial exp(int order, int bits, ComplexPolynomial result)
+  {
+    if (result == this)
+    {
+      try (ComplexPolynomial buffer = new ComplexPolynomial())
+      {
+        arblib.acb_poly_exp_series(buffer, this, order, bits);
+        result.set(buffer);
+      }
+      result.bits = bits;
+      return result;
+    }
+    arblib.acb_poly_exp_series(result, this, order, bits);
+    result.bits = bits;
+    return result;
+  }
+ 
   public ComplexPolynomial set(Real real)
   {
     setLength(1);
