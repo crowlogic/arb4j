@@ -408,24 +408,49 @@ public class Context implements
   public Function<?, ?> allocateFreshPeer(String name)
   {
     FunctionMapping<?, ?, ?> mapping = functions.get(name);
-    if (mapping == null || mapping.instance == null)
+    if (mapping == null)
+    {
+      return null;
+    }
+    Class<?> concreteClass = null;
+    Function<?, ?> canonical = mapping.instance;
+    if (canonical != null)
+    {
+      concreteClass = canonical.getClass();
+    }
+    else if (mapping.expression != null)
+    {
+      if (mapping.expression.compiledClass == null)
+      {
+        mapping.expression.compile();
+      }
+      concreteClass = mapping.expression.compiledClass;
+    }
+    else if (mapping.functionClass != null && !mapping.functionClass.isInterface())
+    {
+      concreteClass = mapping.functionClass;
+    }
+    if (concreteClass == null)
     {
       return null;
     }
     try
     {
-      Function<?, ?> fresh = (Function<?, ?>) mapping.instance.getClass().getDeclaredConstructor().newInstance();
+      Function<?, ?> fresh = (Function<?, ?>) concreteClass.getDeclaredConstructor().newInstance();
       injectContextReference(fresh);
       // Share the canonical instance's IndexCache so this cluster member
       // memoizes into the same table as the context singleton — without this
       // each fresh peer has its own empty cache and q(n) is recomputed
       // exponentially across all evaluation levels.
-      for (java.lang.reflect.Field field : mapping.instance.getClass().getFields())
+      if (canonical != null)
       {
-        if (field.getName().equals("cache"))
+        for (java.lang.reflect.Field field : concreteClass.getFields())
         {
-          field.set(fresh, field.get(mapping.instance));
-          break;
+          if (field.getName().equals("cache"))
+          {
+            field.set(fresh, field.get(canonical));
+            break;
+          }
         }
       }
       return fresh;
