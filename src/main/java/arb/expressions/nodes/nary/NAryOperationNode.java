@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import arb.*;
 import arb.Integer;
 import arb.Real;
+import arb.functions.ConvergentSeriesAccumulator;
 import arb.exceptions.CompilerException;
 import arb.expressions.*;
 import arb.expressions.Context;
@@ -123,6 +124,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   public FunctionMapping<Integer, R, Sequence<R>> operandMapping;
 
   public String                                   operandValueFieldName;
+
+  public boolean                                  optimallyTruncated = false;
 
   public String                                   accumulatorFieldName;
 
@@ -379,9 +382,9 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    if ("add".equals(operation) && upperLimit.isPositiveInfinity())
+    if (optimallyTruncated)
     {
-      return generateInfiniteSum(mv, resultType);
+      return generateOptimallyTruncatedAccumulation(mv, resultType);
     }
     resultType = assignTypes(resultType);
 
@@ -416,36 +419,43 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
    * {@code close()} method will call {@code close()} on it automatically,
    * releasing its native ARB memory without any manual effort.
    */
-  protected MethodVisitor generateInfiniteSum(MethodVisitor mv, Class<?> resultType)
+  protected MethodVisitor generateOptimallyTruncatedAccumulation(MethodVisitor mv, Class<?> resultType)
   {
+    assert "add".equals(operation) : String.format("the ~ convergence specifier applies only to Σ, not %s(%s)",
+                                                   symbol,
+                                                   operation);
     resultType = assignTypes(resultType);
     assignFieldNamesIfNecessary(resultType);
-    assert Real.class.equals(generatedType) || Complex.class.equals(generatedType) || ComplexPolynomial.class.equals(generatedType)
-           : String.format("Σ{k=lo..∞} requires a Real, Complex, or ComplexPolynomial codomain, not %s", generatedType);
+    assert Real.class.equals(generatedType) : String.format("the ~ convergence specifier requires a Real codomain, not %s",
+                                                                generatedType);
     declareIndexVariableField();
 
     if (accumulatorFieldName == null)
     {
-      accumulatorFieldName = expression.newIntermediateVariable("padeSeries", DiagonalPadeSeries.class);
+      accumulatorFieldName = expression.newIntermediateVariable("accumulator",
+                                                                ConvergentSeriesAccumulator.class);
     }
 
     propagateInputToOperand(mv);
     initializeResultVariable(mv, resultType);
     setIndexToTheLowerLimit(mv);
+    generateUpperLimit(mv);
 
-    loadFieldFromThis(mv, accumulatorFieldName, DiagonalPadeSeries.class);
+    loadFieldFromThis(mv, accumulatorFieldName, ConvergentSeriesAccumulator.class);
     loadOperand(mv);
     loadIndexVariable(mv);
+    loadFieldFromThis(mv, upperLimitFieldName, Integer.class);
     loadBitsParameterOntoStack(mv);
     loadIntermediateResultVariable(mv);
     invokeMethod(mv,
-                 DiagonalPadeSeries.class,
-                 "evaluate",
-                 getMethodDescriptor(generatedType,
+                 ConvergentSeriesAccumulator.class,
+                 "accumulate",
+                 getMethodDescriptor(Real.class,
                                      Function.class,
                                      Integer.class,
+                                     Integer.class,
                                      int.class,
-                                     generatedType),
+                                     Real.class),
                  false);
     pop(mv);
     assignResult(mv, resultType);
@@ -787,6 +797,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     expression.require('=');
     parseLowerLimit();
     parseUpperLimit();
+    optimallyTruncated = expression.nextCharacterIs('~');
 
     parseMultisumIndices();
 
@@ -1306,6 +1317,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     nAryOperationNode.functionInternalName            = newExpression.internalName();
     nAryOperationNode.operandFunctionFieldName        = this.operandFunctionFieldName;
     nAryOperationNode.operandMapping                  = (FunctionMapping<Integer, S, Sequence<S>>) (FunctionMapping<?, ?, ?>) this.operandMapping;
+    nAryOperationNode.optimallyTruncated              = this.optimallyTruncated;
     newExpression.registerReferencedFunction(this.operandFunctionFieldName, this.operandMapping);
     return nAryOperationNode;
   }
@@ -1339,12 +1351,13 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                                           operandExpression,
                                                           lowerLimit,
                                                           upperLimit);
-    return String.format("%s%s{%s=%s…%s}",
+    return String.format("%s%s{%s=%s…%s%s}",
                          symbol,
                          operandExpression,
                          indexVariableFieldName,
                          lowerLimit,
-                         upperLimit);
+                         upperLimit,
+                         optimallyTruncated ? "~" : "");
   }
 
   @Override
