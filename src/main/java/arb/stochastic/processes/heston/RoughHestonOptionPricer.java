@@ -7,10 +7,13 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
-import arb.functions.integer.*;
+import arb.functions.integer.ComplexPolynomialSequence;
+import arb.functions.integer.RealFunctionSequence;
+import arb.functions.integer.RealSequence;
 import arb.functions.polynomials.orthogonal.real.ProbabilistHermitePolynomials;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealNullaryFunction;
+import arb.series.RealEpsilonTable;
 
 /**
  * Rough-Heston European option pricer built from compiled expressions over the
@@ -284,8 +287,21 @@ assert false : "all this code is shit and must go. what the fuck dont u understa
    */
   public Real call(Real strike, int bits, Real dst)
   {
-  assert false : "implement this properly. no epislon table bullshit. no cache warmup. no asymptotic dudvergent shit";
-  return null;
+    prepareForEvaluation(strike, bits);
+    try (RealEpsilonTable table = new RealEpsilonTable(16, bits))
+    {
+      return table.limit(
+          (order, b, res) -> {
+            φ.N.set(order);
+            J.set(order);
+            pricingContext.invalidateAllCaches();
+            return priceExpr.evaluate(kLog, 1, b, res);
+          },
+          3,
+          bits + 256,
+          bits,
+          dst);
+    }
   }
 
   /** Price the analytic sensitivity with respect to a model parameter. */
