@@ -12,6 +12,35 @@ When debugging or diagnosing a problem, do not speculate. This applies to every 
 
 Words like "suspicion", "I bet", "probably", "my guess is", "likely", "might be", "could be" are banned from any token stream the user sees, including reasoning. If a step in a causal chain isn't directly verified, verify it before claiming it. State only what evidence supports. The cost of guessing in a JVM-bytecode + native-arb stack is wasted hours chasing the wrong cause — a tool gives the answer in seconds.
 
+## Cardinal rule: ALL CODE IS PERMANENT — there is no such thing as a throwaway probe
+
+Every line of code written for this repository is permanent and belongs in the
+repository. The concepts of a "throwaway probe", "scratch program", "temporary
+reproducer", "one-off script", "disposable test harness", or any equivalent are
+**forbidden** — they do not exist here. Do not write code with the intent to
+delete it, do not `.gitignore` it, and do not stash it in `/tmp`.
+
+The words "throwaway", "throw-away", "probe" (as a noun for scratch code),
+"scratch", "disposable", "temporary" (applied to code/scripts/tests), and every
+derivative are banned from source, comments, tests, scripts, commit messages,
+issues, PRs, and reasoning.
+
+Concretely:
+
+- When asked to create unit tests, create **unit tests** — permanent classes
+  under `src/test/java/...`, committed. Never a "probe" or "throwing code". ❌
+- Verification programs, reproducers, and experiments that work out math are
+  **permanent** and live under `scripts/` (committed) — never `/tmp`, never
+  deleted. ❌ (see the existing tracked `scripts/*.arb`, `scripts/*.py`.)
+- Do not write a program "just to check something" and throw it away. If it was
+  worth writing, it is worth committing where the next contributor can re-run it.
+- Never rely on `.gitignore` to make a piece of code vanish. If code exists, it
+  is tracked.
+
+If you catch yourself reaching for a "quick probe to verify X", stop: write it
+as a permanent, committed artifact (a real test or a tracked `scripts/` file)
+from the start.
+
 ## Cardinal rule: NEVER manipulate expression strings programmatically
 
 Expression strings (the bodies passed to `*.express(...)`, `*.compile(...)`, `*.declare(...)`) are LITERAL source code that the compiler parses into AST → bytecode. They must always be **string literals** at the call site.
