@@ -7,16 +7,16 @@ import junit.framework.TestCase;
 public class ConvergentSumTest extends
                                TestCase
 {
-  public void testOptimallyTruncatedConvergentSum()
+  public void testConvergentInfiniteSum()
   {
     try ( Real x = new Real(); Real result = new Real(); Real e = new Real(); Real diff = new Real())
     {
-      RealFunction f = RealFunction.express("f:x➔Σk➔(x^k/k!){k=0…40~}");
+      RealFunction f = RealFunction.express("f:x➔Σk➔(x^k/k!){k=0…∞}");
       x.one();
       f.evaluate(x, 1, 128, result);
       e.one().exp(128, e);
       result.sub(e, 128, diff).abs();
-      assertTrue(String.format("Σ x^k/k!{k=0…40~} at x=1 = %s, e = %s, |Δ| = %s", result, e, diff),
+      assertTrue(String.format("Σ x^k/k!{k=0…∞} at x=1 = %s, e = %s, |Δ| = %s", result, e, diff),
                  diff.compareTo(Real.valueOf("1e-18", 128)) < 0);
     }
   }
