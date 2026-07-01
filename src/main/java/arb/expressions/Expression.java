@@ -2750,17 +2750,32 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       propagateContext(mv, functional);
       // Also propagate the `context` field itself so the functional's own
-      // initialize() — and any subsequent runtime lookups it performs via
-      // {@link Context#lookupFunctionInstance} — see the same live, populated
-      // Context. Without this, the freshly-allocated functional keeps its
-      // field-initializer default (`new Context()`) which has no functions
-      // registered, so transitive references like `m → a` resolve to null.
+      // wiring pass sees the same live, populated Context. Without this, the
+      // freshly-allocated functional keeps its field-initializer default
+      // (`new Context()`) which has no functions registered, so transitive
+      // references like `m → a` resolve to null.
       // Stack on entry: [..., funcRef] → exit: [..., funcRef]
       String contextTypeDesc = Type.getDescriptor(Context.class);
       duplicateTopOfTheStack(mv); // [..., funcRef, funcRef]
       loadThisOntoStack(mv); // [..., funcRef, funcRef, this]
       mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc); // [..., funcRef, funcRef, ctx]
       mv.visitFieldInsn(PUTFIELD, functional.internalName(), "context", contextTypeDesc); // [..., funcRef]
+
+      // Wire-all at allocation (issue #1055): a functional element is a fresh
+      // instance allocated per evaluate(), so the deterministic injection pass
+      // that Expression#instantiate performs for canonical instances runs here
+      // for it — one Context#wireFunctionReferences call that copies every
+      // canonical peer instance into the element's public fields before its
+      // initialize() asserts them non-null. No per-name lookup, no lazy `new`.
+      duplicateTopOfTheStack(mv); // [..., funcRef, funcRef]
+      loadThisOntoStack(mv); // [..., funcRef, funcRef, this]
+      mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc); // [..., funcRef, funcRef, ctx]
+      swap(mv); // [..., funcRef, ctx, funcRef]
+      mv.visitMethodInsn(Opcodes.INVOKESTATIC,
+                         Type.getInternalName(Context.class),
+                         "wireFunctionReferences",
+                         "(Larb/expressions/Context;Larb/functions/Function;)V",
+                         false); // [..., funcRef]
     }
 
     invokeInitializationMethod(mv, functional);
@@ -3999,22 +4014,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     instance = newInstance();
 
-    // Publish the canonical instance to its FunctionMapping BEFORE the
-    // referenced-function allocation pass runs: a peer in a mutually-recursive
-    // cluster instantiated during instantiateAndInjectReferencedFunctions
-    // wires its own fields from the Context registry, and the registry must
-    // already hold this instance for the back-reference to resolve
-    // (allocate-all-then-wire-all, issue #1055).
-    FunctionMapping<D, C, F> owningMapping = functionMapping;
-    if (owningMapping == null && context != null && functionName != null)
-    {
-      owningMapping = context.getFunctionMapping(functionName);
-    }
-    if (owningMapping != null && owningMapping.instance == null)
-    {
-      owningMapping.instance = instance;
-    }
-
     // Mark the mapping mid-instantiate: a sub-expression that references the
     // owning sequence (e.g. Σ's operand body) would otherwise re-enter
     // instantiate() and overwrite `instance` with a ghost. The guard makes
@@ -4030,10 +4029,23 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       instantiateAndInjectReferencedFunctions(instance);
       injectContextFunctionAndVariableReferences(instance);
       populateSourceExpressionBackPointer(instance);
-      // Wire-all: copy this canonical instance into every already-allocated
-      // peer whose matching field is still null — the peers that referenced
-      // this function while it was still forward-declared. One deterministic
-      // pass, host-side; the generated initialize() only asserts non-null.
+      // Wire-all (issue #1055): publish the canonical instance to its
+      // FunctionMapping, then copy it into every already-allocated peer whose
+      // matching field is still null — the peers that referenced this function
+      // while it was still forward-declared. Publication happens here, AFTER
+      // the referenced-function allocation pass, because an earlier
+      // publication short-circuits FunctionMapping#instantiate mid-cluster and
+      // derails the recursive compile ordering. One deterministic host-side
+      // pass; the generated initialize() only asserts non-null.
+      FunctionMapping<D, C, F> owningMapping = functionMapping;
+      if (owningMapping == null && context != null && functionName != null)
+      {
+        owningMapping = context.getFunctionMapping(functionName);
+      }
+      if (owningMapping != null && owningMapping.instance == null)
+      {
+        owningMapping.instance = instance;
+      }
       if (context != null && functionName != null && owningMapping != null && owningMapping.instance == instance)
       {
         context.wireNewInstanceIntoPeers(functionName, instance);
