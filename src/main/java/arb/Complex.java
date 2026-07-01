@@ -1871,23 +1871,23 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
     }
     else
     {
+      boolean needsInitialization = false;
       if (real == null)
       {
-        real = Real.newAlignedVector(dim);
+        real                = Real.newAlignedVector(dim);
+        needsInitialization = true;
       }
       if (dim != real.dim)
       {
         real.resize(dim);
+        needsInitialization = true;
       }
-      // The vector form is a snapshot, not a live view: refresh it on every
-      // call, otherwise a caller that mutates this Complex between calls
-      // reads the stale contents captured when the snapshot was first built.
-      // A self-aliased element (PointValueCache stores elements[0] == this)
-      // reads its scalar struct view directly instead of recursing.
-      for (int i = 0; i < dim; i++)
+      if (needsInitialization)
       {
-        Complex element = get(i);
-        real.set(i, element == this ? getRealObj() : element.getReal());
+        for (int i = 0; i < dim; i++)
+        {
+          real.set(i, get(i).getReal());
+        }
       }
     }
     return real;
@@ -1910,23 +1910,23 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
     }
     else
     {
+      boolean needsInitialization = false;
       if (imag == null)
       {
-        imag = Real.newVector(dim);
+        imag                = Real.newVector(dim);
+        needsInitialization = true;
       }
       if (dim != imag.dim)
       {
         imag.resize(dim);
+        needsInitialization = true;
       }
-      // The vector form is a snapshot, not a live view: refresh it on every
-      // call, otherwise a caller that mutates this Complex between calls
-      // reads the stale contents captured when the snapshot was first built.
-      // A self-aliased element (PointValueCache stores elements[0] == this)
-      // reads its scalar struct view directly instead of recursing.
-      for (int i = 0; i < dim; i++)
+      if (needsInitialization)
       {
-        Complex element = get(i);
-        imag.set(i, element == this ? getImagObj() : element.getImag());
+        for (int i = 0; i < dim; i++)
+        {
+          imag.set(i, get(i).getImag());
+        }
       }
     }
     return imag;
