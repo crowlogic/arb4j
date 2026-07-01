@@ -101,6 +101,7 @@ public class Compiler
     typePrefixes.put(Real.class, "ℝ");
     typePrefixes.put(Complex.class, "ℂ");
     typePrefixes.put(Integer.class, "ℤ");
+    typePrefixes.put(Magnitude.class, "mag");
     typePrefixes.put(RealPolynomial.class, "Xℝ");
     typePrefixes.put(ComplexPolynomial.class, "Xℂ");
     typePrefixes.put(RealMatrix.class, "ℝᵐˣⁿ");
@@ -108,7 +109,6 @@ public class Compiler
     typePrefixes.put(RationalFunction.class, "ℚ");
     typePrefixes.put(ComplexRationalFunction.class, "ℚℂ");
     typePrefixes.put(Fraction.class, "q");
-    typePrefixes.put(DiagonalPadeSeries.class, "Σ");
     typePrefixes.put(LommelPolynomial.class, "XR");
     typePrefixes.put(RationalHypergeometricFunction.class, "ℚF");
     typePrefixes.put(RealHypergeometricPolynomialFunction.class, "XℝF");

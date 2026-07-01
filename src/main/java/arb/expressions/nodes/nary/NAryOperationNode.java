@@ -124,8 +124,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   public String                                   operandValueFieldName;
 
-  public String                                   accumulatorFieldName;
-
 
   /**
    * Bytecode-level internal name of the owning {@link Expression}, captured once
@@ -379,9 +377,14 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    if ("add".equals(operation) && upperLimit.isPositiveInfinity())
+    if (upperLimit.isPositiveInfinity())
     {
-      return generateInfiniteSum(mv, resultType);
+      if ("add".equals(operation))
+      {
+        return generateInfiniteSum(mv, resultType);
+      }
+      throw new CompilerException(String.format("An unbounded upper limit {k=lo..∞} is only supported for the Σ (sum) operator, not '%s'",
+                                                symbol));
     }
     resultType = assignTypes(resultType);
 
@@ -420,36 +423,164 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     resultType = assignTypes(resultType);
     assignFieldNamesIfNecessary(resultType);
-    assert Real.class.equals(generatedType) || Complex.class.equals(generatedType) || ComplexPolynomial.class.equals(generatedType)
-           : String.format("Σ{k=lo..∞} requires a Real, Complex, or ComplexPolynomial codomain, not %s", generatedType);
+    boolean real    = Real.class.equals(generatedType);
+    boolean complex = Complex.class.equals(generatedType);
+    if (!real && !complex)
+    {
+      throw new CompilerException(String.format("Σ{k=lo..∞} convergent summation is implemented only for Real and Complex codomains, not %s",
+                                                generatedType));
+    }
     declareIndexVariableField();
 
-    if (accumulatorFieldName == null)
+    // Intermediate reference cells for the convergence certificate. Each is a
+    // registered intermediate variable, so the compiler-emitted close() disposes
+    // its native memory automatically. termMag holds |just-added term|; radMag
+    // (Complex only) holds the Euclidean ball radius of the running partial sum;
+    // lastMag and growthCount detect a non-convergent (growing) series.
+    if (termMagFieldName == null)
     {
-      accumulatorFieldName = expression.newIntermediateVariable("padeSeries", DiagonalPadeSeries.class);
+      termMagFieldName   = expression.newIntermediateVariable("termMag", Magnitude.class);
+      lastMagFieldName   = expression.newIntermediateVariable("lastMag", Magnitude.class);
+      growthCountFieldName = expression.newIntermediateVariable("growthCount", Integer.class);
+      growthLimitFieldName = expression.newIntermediateVariable("growthLimit", Integer.class);
+      if (complex)
+      {
+        radMagFieldName = expression.newIntermediateVariable("radMag", Magnitude.class);
+      }
     }
 
     propagateInputToOperand(mv);
     initializeResultVariable(mv, resultType);
     setIndexToTheLowerLimit(mv);
 
-    loadFieldFromThis(mv, accumulatorFieldName, DiagonalPadeSeries.class);
-    loadOperand(mv);
-    loadIndexVariable(mv);
-    loadBitsParameterOntoStack(mv);
-    loadIntermediateResultVariable(mv);
-    invokeMethod(mv,
-                 DiagonalPadeSeries.class,
-                 "evaluate",
-                 getMethodDescriptor(generatedType,
-                                     Function.class,
-                                     Integer.class,
-                                     int.class,
-                                     generatedType),
-                 false);
+    // lastMag = +∞ so the first term is never counted as "growing"; growthCount = 0;
+    // growthLimit = MAXIMUM_CONSECUTIVE_GROWTHS (the divergence witness threshold).
+    pop(invokeMethod(loadFieldFromThis(mv, lastMagFieldName, Magnitude.class), Magnitude.class, "infinite", getMethodDescriptor(Magnitude.class), false));
+    generateSetIntegerField(mv, growthCountFieldName, 0);
+    generateSetIntegerField(mv, growthLimitFieldName, MAXIMUM_CONSECUTIVE_GROWTHS);
+
+    designateLabel(mv, beginLoop);
+    generateInnerLoop(mv);
+    // generateInnerLoop's incrementIndex leaves the index reference on the stack
+    // (the bounded loop consumes it at the top via compareIndexToUpperLimit). The
+    // unbounded loop has no such comparison, so discard it to keep the operand
+    // stack empty across the convergence check and the back-edge.
     pop(mv);
+    generateConvergenceExit(mv, real);
+    generateDivergenceWitness(mv);
+    jumpTo(mv, beginLoop);
+    designateLabel(mv, endLoop);
     assignResult(mv, resultType);
     return mv;
+  }
+
+  /**
+   * Number of consecutive iterations over which the just-added term magnitude
+   * may increase before the series is declared non-convergent. A single increase
+   * can be ball-arithmetic rounding noise; three consecutive increases is a
+   * witness that the terms are not shrinking into the partial sum's radius.
+   */
+  protected static final int MAXIMUM_CONSECUTIVE_GROWTHS = 3;
+
+  protected String termMagFieldName;
+  protected String radMagFieldName;
+  protected String lastMagFieldName;
+  protected String growthCountFieldName;
+  protected String growthLimitFieldName;
+
+  /**
+   * Emits {@code this.<field>.set(<value>)} for an {@code arb.Integer} field,
+   * discarding the returned reference.
+   */
+  protected void generateSetIntegerField(MethodVisitor mv, String fieldName, int value)
+  {
+    loadFieldFromThis(mv, fieldName, Integer.class);
+    mv.visitLdcInsn(value);
+    pop(invokeMethod(mv, Integer.class, "set", getMethodDescriptor(Integer.class, int.class), false));
+  }
+
+  /**
+   * Emits the inline convergence exit for the {@code Σ{k=lo..∞}} loop. The
+   * just-added term sits in the operand-value field and the running partial sum
+   * in the result field. When the magnitude of the term is within the certified
+   * ball radius of the partial sum, adding further terms cannot tighten the
+   * enclosure, so the loop jumps to {@link #endLoop}. The comparison is chosen at
+   * generation time from the codomain type (no {@code instanceof} survives into
+   * the bytecode): a {@link Real} uses its radius directly, a {@link Complex}
+   * uses the Euclidean ball radius {@code hypot(re.rad, im.rad)}. The requested
+   * precision does not enter this criterion.
+   */
+  protected void generateConvergenceExit(MethodVisitor mv, boolean real)
+  {
+    // termMag = |term|
+    loadOperandValue(mv);
+    loadFieldFromThis(mv, termMagFieldName, Magnitude.class);
+    invokeMethod(mv, generatedType, "absUpperBound", getMethodDescriptor(Magnitude.class, Magnitude.class), false);
+    // radius of the running partial sum
+    loadIntermediateResultVariable(mv);
+    if (real)
+    {
+      invokeMethod(mv, Real.class, "getRad", getMethodDescriptor(Magnitude.class), false);
+    }
+    else
+    {
+      loadFieldFromThis(mv, radMagFieldName, Magnitude.class);
+      invokeMethod(mv, Complex.class, "hypotenuseLength", getMethodDescriptor(Magnitude.class, Magnitude.class), false);
+    }
+    // if |term| <= radius: converged
+    invokeMethod(mv, Magnitude.class, "compareTo", getMethodDescriptor(int.class, Magnitude.class), false);
+    jumpToIfLessThanOrEquals(mv, endLoop);
+  }
+
+  /**
+   * Emits the inline divergence witness: if the term magnitude increases for
+   * {@link #MAXIMUM_CONSECUTIVE_GROWTHS} consecutive iterations the series is
+   * declared non-convergent and an {@link ArithmeticException} is thrown — the
+   * loop never stops at an arbitrary iteration ceiling. Otherwise the growth
+   * counter is reset and {@code lastMag} advanced to the current term magnitude.
+   */
+  protected void generateDivergenceWitness(MethodVisitor mv)
+  {
+    Label notGrowing      = new Label();
+    Label throwDivergence = new Label();
+    Label afterWitness    = new Label();
+
+    // if termMag <= lastMag: not growing
+    loadFieldFromThis(mv, termMagFieldName, Magnitude.class);
+    loadFieldFromThis(mv, lastMagFieldName, Magnitude.class);
+    invokeMethod(mv, Magnitude.class, "compareTo", getMethodDescriptor(int.class, Magnitude.class), false);
+    jumpToIfLessThanOrEquals(mv, notGrowing);
+
+    // growing: growthCount.increment(); if growthCount >= growthLimit throw
+    pop(invokeMethod(loadFieldFromThis(mv, growthCountFieldName, Integer.class), Integer.class, "increment", getMethodDescriptor(Integer.class), false));
+    loadFieldFromThis(mv, growthCountFieldName, Integer.class);
+    loadFieldFromThis(mv, growthLimitFieldName, Integer.class);
+    invokeMethod(mv, Integer.class, "compareTo", getMethodDescriptor(int.class, Integer.class), false);
+    mv.visitJumpInsn(IFGE, throwDivergence);
+    jumpTo(mv, afterWitness);
+
+    designateLabel(mv, throwDivergence);
+    generateThrow(mv, "Σ{k=lo..∞} terms are not decreasing into the partial sum radius; the series does not converge");
+
+    designateLabel(mv, notGrowing);
+    generateSetIntegerField(mv, growthCountFieldName, 0);
+
+    designateLabel(mv, afterWitness);
+    // lastMag.set(termMag)
+    loadFieldFromThis(mv, lastMagFieldName, Magnitude.class);
+    loadFieldFromThis(mv, termMagFieldName, Magnitude.class);
+    pop(invokeMethod(mv, Magnitude.class, "set", getMethodDescriptor(Magnitude.class, Magnitude.class), false));
+  }
+
+  /** Emits {@code throw new ArithmeticException(message)}. */
+  protected void generateThrow(MethodVisitor mv, String message)
+  {
+    String exceptionType = Type.getInternalName(ArithmeticException.class);
+    mv.visitTypeInsn(NEW, exceptionType);
+    mv.visitInsn(DUP);
+    mv.visitLdcInsn(message);
+    mv.visitMethodInsn(INVOKESPECIAL, exceptionType, "<init>", "(Ljava/lang/String;)V", false);
+    mv.visitInsn(ATHROW);
   }
 
   protected void declareIndexVariableField()
