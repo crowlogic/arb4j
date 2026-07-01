@@ -3101,7 +3101,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // state (index cache / value-backing / static precision) without cascading
     // to referenced producers. A parameter rebind uses it to refresh the caches
     // that depend on the changed variable while preserving the upstream caches
-    // that do not (see MuntzPadeApproximant.rebind, which keeps the v-independent
+    // that do not (see MuntzPadeFunctional.evaluate, which keeps the v-independent
     // σ-table while dropping the v-dependent αv/βv/hv/Pn/Φ caches).
     if (hasStaticNodes || shouldCache() || shouldCacheValueBacking())
     {

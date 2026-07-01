@@ -16,8 +16,8 @@ import junit.framework.TestCase;
  * The functional is a two-level curried object:
  * 
  * <pre>
- *   functional.evaluate(v, ...) → MuntzPadeApproximant  (curried on v)
- *   approximant.evaluate(t, ...) → Complex               (value at t)
+ *   functional.evaluate(v, ...) → ComplexFunction        (parameterised on v)
+ *   function.evaluate(t, ...)   → Complex                (value at t)
  * </pre>
  * 
  * Because P, Q, R are all constant in v, the parameter v is a dummy zero here.
