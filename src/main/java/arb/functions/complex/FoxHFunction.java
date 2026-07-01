@@ -276,9 +276,8 @@ public class FoxHFunction implements
   {
     requireInPrincipalSector(z, prec);
 
-    // Adaptive residue-series accumulation, modeled directly on
-    // RoughHestonOptionPricer.call.  The compiled H expression has its inner
-    // sum upper bound bound to the context-registered Integer N; growing N
+    // Adaptive residue-series accumulation.  The compiled H expression has its
+    // inner sum upper bound bound to the context-registered Integer N; growing N
     // simply re-evaluates with more residue terms.  Both the per-(j,ν)
     // residue term and the auxiliary u(j)(ν) are N-independent, so this is
     // pure accumulation with no cache invalidation.
