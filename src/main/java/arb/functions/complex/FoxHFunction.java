@@ -268,9 +268,6 @@ public class FoxHFunction implements
    * H(z). The arb ball returned has its radius enlarged by a proven upper
    * bound on the truncation tail of the Slater series.
    */
-  /** Largest residue-series order ever needed before bailing out. */
-  private static final int CONVERGENCE_CEILING = 256;
-
   /** Initial order for the residue series; doubled each iteration on no convergence. */
   private static final int SEED_ORDER = 8;
 
@@ -279,9 +276,8 @@ public class FoxHFunction implements
   {
     requireInPrincipalSector(z, prec);
 
-    // Adaptive residue-series accumulation, modeled directly on
-    // RoughHestonOptionPricer.call.  The compiled H expression has its inner
-    // sum upper bound bound to the context-registered Integer N; growing N
+    // Adaptive residue-series accumulation.  The compiled H expression has its
+    // inner sum upper bound bound to the context-registered Integer N; growing N
     // simply re-evaluates with more residue terms.  Both the per-(j,ν)
     // residue term and the auxiliary u(j)(ν) are N-independent, so this is
     // pure accumulation with no cache invalidation.
@@ -298,7 +294,7 @@ public class FoxHFunction implements
       prev.zero();
 
       boolean firstIter = true;
-      for (int Nnow = SEED_ORDER; Nnow <= CONVERGENCE_CEILING; Nnow *= 2)
+      for (int Nnow = SEED_ORDER;; Nnow *= 2)
       {
         N.set(Nnow);
         H.evaluate(z, order, prec, curr);
