@@ -2,6 +2,9 @@ package arb.stochastic.processes.heston;
 
 import arb.Complex;
 import arb.ComplexConstants;
+import arb.ComplexMatrix;
+import arb.ComplexPolynomial;
+import arb.Integer;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -230,6 +233,162 @@ public class RoughHestonCharacteristicFunction implements
     if (var == null)
       throw new IllegalArgumentException("Context is missing required variable '" + name + "'");
     return var;
+  }
+
+  /**
+   * The {@code v}-Taylor coefficients {@code c_n = [vⁿ]Φ(v,T)} of the cumulant
+   * generating function, summed to convergence at the model maturity {@code T}.
+   *
+   * <p>Because Φ(v,T)=Σ_k d_k(v)·T^{kμ+1} and each {@code [vⁿ]d_k(v)} is a fixed
+   * ball, the coefficient series {@code Σ_k [vⁿ]d_k(v)·T^{kμ+1}} is a scalar
+   * absolutely-convergent series (the Müntz lattice weights carry Γ-ratio decay);
+   * it is summed until the added term falls below the working-precision floor.
+   * No Padé-in-z resummation is required at the model maturity — the raw Müntz
+   * series converges there (verified: per-term magnitude decays geometrically).
+   *
+   * @param upTo highest {@code v}-power to return (result has {@code upTo+1} elements)
+   * @param bits working precision
+   * @return a {@code Complex} vector {@code c} with {@code c.get(n) = [vⁿ]Φ(v,T)}
+   */
+  public Complex cumulantTaylorCoefficients(int upTo, int bits)
+  {
+    Complex c = Complex.newVector(upTo + 1);
+    c.zero();
+    Real     floor = new Real().one().mul2e(-bits, new Real());
+    try ( Complex term = new Complex(); Real Tk = new Real(); Real mag = new Real();
+          Integer kk = new Integer(); Real exponent = new Real();
+          ComplexPolynomial dk = new ComplexPolynomial() )
+    {
+      int    stable = 0;
+      for (int k = 0; stable < 3; k++)
+      {
+        kk.set(k);
+        d.evaluate(kk, 1, bits, dk);
+        // T^{kμ+1}
+        μ.mul(k, bits, exponent).add(1, bits, exponent);
+        T.pow(exponent, bits, Tk);
+        double maxTerm = 0;
+        for (int n = 1; n <= upTo && n < dk.getLength(); n++)
+        {
+          dk.get(n).mul(Tk, bits, term);
+          c.get(n).add(term, bits, c.get(n));
+          term.abs(bits, mag);
+          maxTerm = Math.max(maxTerm, mag.doubleValue());
+        }
+        stable = (mag.compareTo(floor) <= 0 && maxTerm == mag.doubleValue()) ? stable + 1 : 0;
+        if (k > 8 && maxTerm < floor.doubleValue())
+          stable++;
+        if (k > 2000)
+          throw new ArithmeticException("cumulant Taylor series failed to converge at T=" + T);
+      }
+    }
+    floor.close();
+    return c;
+  }
+
+  /**
+   * The {@code [2M+2 / 2M]} Padé-in-{@code v} surrogate of the cumulant
+   * generating function Φ(v,T), split by one Euclidean division into
+   *
+   * <pre>
+   *   Φ_M(v) = −½σ_T²·v² − i·μ_T·v + ρ(v),   ρ = P/D,   deg P &lt; deg D = 2M
+   * </pre>
+   *
+   * (docs/single-series-pricing.md §3.1). The Padé denominator {@code D} is the
+   * solution of the Toeplitz system built from the {@code v}-Taylor coefficients
+   * {@code c_n} (with {@code D(0)=1}); the numerator {@code N} is the convolution
+   * {@code D·c}; and one {@link ComplexPolynomial#div(ComplexPolynomial,int,ComplexPolynomial)}
+   * yields the quotient (from which {@code σ_T² = −2·quo₂}, {@code μ_T = i·quo₁})
+   * and the remainder {@code P}. The poles {@code u_j} are the roots of {@code D};
+   * the residues {@code A_j = P(u_j)/D'(u_j)}.
+   *
+   * <p>{@code σ_T² > 0} is verified (refuse the input otherwise — never silently
+   * patch, §3.1).
+   *
+   * @param M    Padé half-order; the denominator has degree {@code 2M}
+   * @param bits working precision
+   * @return the surrogate {@code (σ_T², μ_T, u, A)}
+   */
+  public RoughHestonPartialFractionExpansion partialFractionExpansion(int M, int bits)
+  {
+    final int L  = 2 * M + 2;
+    final int Nd = 2 * M;
+    Complex   c  = cumulantTaylorCoefficients(L + Nd, bits);
+
+    try ( ComplexMatrix A = ComplexMatrix.newMatrix(Nd, Nd);
+          ComplexMatrix rhs = ComplexMatrix.newMatrix(Nd, 1);
+          ComplexMatrix bsol = ComplexMatrix.newMatrix(Nd, 1);
+          Complex neg = new Complex(); Complex acc = new Complex(); Complex t = new Complex();
+          Complex two = new Complex(); Complex sigma2 = new Complex(); Complex muT = new Complex();
+          ComplexPolynomial D = new ComplexPolynomial();
+          ComplexPolynomial N = new ComplexPolynomial();
+          ComplexPolynomial quo = new ComplexPolynomial() )
+    {
+      // Denominator: Σ_{j=1}^{Nd} b_j c_{L+i-j} = −c_{L+i},  i=1..Nd,  b_0=1
+      for (int i = 1; i <= Nd; i++)
+      {
+        for (int j = 1; j <= Nd; j++)
+        {
+          int idx = L + i - j;
+          A.set(i - 1, j - 1, idx >= 0 ? c.get(idx) : ComplexConstants.zero);
+        }
+        c.get(L + i).negate(neg);
+        rhs.set(i - 1, 0, neg);
+      }
+      A.solve(rhs, bits, bsol);
+
+      D.setLength(Nd + 1);
+      D.set(0, ComplexConstants.one);
+      for (int j = 1; j <= Nd; j++)
+        D.set(j, bsol.get(j - 1, 0));
+
+      // Numerator a_i = Σ_{j=0}^{min(i,Nd)} b_j c_{i-j}
+      N.setLength(L + 1);
+      for (int i = 0; i <= L; i++)
+      {
+        acc.zero();
+        for (int j = 0; j <= Math.min(i, Nd); j++)
+        {
+          D.get(j).mul(c.get(i - j), bits, t);
+          acc.add(t, bits, acc);
+        }
+        N.set(i, acc);
+      }
+
+      // N = quo·D + P
+      N.div(D, bits, quo);
+      ComplexPolynomial P = quo.remainder;
+
+      two.set(2, 0);
+      quo.get(2).mul(two, bits, sigma2).negate(sigma2);       // σ_T² = −2·quo₂
+      quo.get(1).mul(ComplexConstants.imaginaryUnit, bits, muT); // μ_T = i·quo₁
+
+      Real σT2 = new Real().set(sigma2.re());
+      if (σT2.sign() <= 0)
+        throw new ArithmeticException("σ_T² must be strictly positive; got " + σT2
+                                      + " (refusing the input — never silently patch, §3.1)");
+      Real μTr = new Real().set(muT.re());
+
+      // Poles = roots of D; residues A_j = P(u_j)/D'(u_j)
+      Complex poles = D.roots(bits);
+      Complex residues = Complex.newVector(poles.dim);
+      try ( ComplexPolynomial Dp = new ComplexPolynomial();
+            Complex pv = new Complex(); Complex dpv = new Complex() )
+      {
+        D.differentiate(bits, Dp);
+        for (int j = 0; j < poles.dim; j++)
+        {
+          P.evaluate(poles.get(j), 1, bits, pv);
+          Dp.evaluate(poles.get(j), 1, bits, dpv);
+          pv.div(dpv, bits, residues.get(j));
+        }
+      }
+      return new RoughHestonPartialFractionExpansion(M, σT2, μTr, poles, residues);
+    }
+    finally
+    {
+      c.close();
+    }
   }
 
 
