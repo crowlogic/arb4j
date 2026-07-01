@@ -513,15 +513,15 @@ Measured against the proven construction above (not against any source text):
    price must not depend on it. §2–§7 use only **Euclidean division** (always
    valid) and **(H)** (a contour exists — necessary for finiteness). A3 is
    discarded entirely.
-3. **Heuristic truncation (`arb.functions.ConvergentSeriesAccumulator`).** It
-   stops when `|term| ≤ 2^{-bits/2}` and otherwise returns a min-term "best"
+3. **Heuristic truncation (formerly `arb.functions.ConvergentSeriesAccumulator`) — removed.**
+   It stopped when `|term| ≤ 2^{-bits/2}` and otherwise returned a min-term "best"
    partial sum. Neither is a verified tail enclosure: for any series whose
    terms shrink-then-grow it can stop early and return a ball that does **not**
-   contain the truth, and the "best" return is a forbidden fallback. The
-   geometric majorant (7.2) makes truncation sound and retires this class
-   entirely — along with the `~` sigil, Aitken-Δ², `optimallyTruncated`, and
-   the SCC generation-time dispatch (all accelerations/special-cases, none an
-   enclosure).
+   contain the truth, and the "best" return is a forbidden fallback. It — along
+   with the `~` sigil, Aitken-Δ², `optimallyTruncated`, and the SCC
+   generation-time dispatch — is now deleted. The unbounded `Σ{k=0..∞}` compiles
+   inline with the verified ball-radius exit (`|term| ≤ rad(partialSum)`); the
+   geometric majorant (7.2) is the pricer's own a-priori tail bound.
 
 ---
 
@@ -557,12 +557,12 @@ Compiles to one expression of shape `n ➔ q(n)·(T₁(n) − T₀(n)) {n=0..∞
 machinery), summed by the verified `Σ{..∞}`.
 
 **Delete:** the multi-index price assembly; Assumption A3 / Prop *strip* and
-the pole-list rotation/multinomial lemmas; `ConvergentSeriesAccumulator`'s
-`2^{-bits/2}` stop and `best` return; the `~` sigil, Aitken-Δ²,
-`optimallyTruncated`, SCC dispatch. `MuntzPadeCumulantGenerator` need not
-return: the cgf is `Σ{k=0..∞}d_k(v)z^k` and the price is the new
-`Σ{n=0..∞}` of (6.5) — two ordinary infinite sums sharing one verified-tail
-primitive.
+the pole-list rotation/multinomial lemmas. Already deleted:
+`ConvergentSeriesAccumulator`'s `2^{-bits/2}` stop and `best` return; the `~`
+sigil; and `MuntzPadeCumulantGenerator`. The cgf is now the ordinary
+`Σ{k=0..∞}d_k(v)z^k` (compiled directly by `RoughHestonCharacteristicFunction`)
+and the price is the new `Σ{n=0..∞}` of (6.5) — two ordinary infinite sums,
+the price sharing one verified-tail primitive.
 
 **The one new primitive:** a `Σ{..∞}` whose convergence test consults an
 a-priori majorant $\tau(N)\downarrow0$ attached to the summand, not the

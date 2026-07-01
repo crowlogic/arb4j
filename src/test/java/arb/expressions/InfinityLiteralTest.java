@@ -11,8 +11,8 @@ import junit.framework.TestCase;
  * Locks in the {@code ∞}/{@code inf}/{@code infty} literal: the expression
  * compiler emits a field load of {@code RealConstants.infinity}, which must
  * exist and equal {@code +∞}. A convergent geometric series summed to the
- * {@code ∞} bound with the {@code ~} optimal-truncation specifier evaluates to
- * its closed form Σₖ 2⁻ᵏ = 2.
+ * {@code ∞} bound evaluates to its closed form Σₖ 2⁻ᵏ = 2, the compiler
+ * supplying the least order whose tail lies within the certified radius.
  */
 public class InfinityLiteralTest extends
                                  TestCase

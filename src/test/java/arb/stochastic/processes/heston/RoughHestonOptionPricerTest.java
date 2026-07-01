@@ -74,7 +74,7 @@ public class RoughHestonOptionPricerTest extends
       // but the Müntz coefficients a(k) and the cgf d(k) cache values keyed by
       // their input — invalidate so they recompute against the new ν.
       pricer.φ.riccati.invalidateCache();
-      pricer.φ.cgf.d.invalidateCache();
+      pricer.φ.d.invalidateCache();
 
       pricer.call(bits, price);
 

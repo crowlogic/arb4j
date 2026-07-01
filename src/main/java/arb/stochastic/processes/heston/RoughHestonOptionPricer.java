@@ -27,7 +27,7 @@ public class RoughHestonOptionPricer implements
   private static final String                    DEFAULT_K  = "1.0";
   private static final String                    DEFAULT_rr = "0.0";
 
-  /** Underlying CGF (and Müntz–Padé d-sequence via {@code φ.cgf.d}). */
+  /** Underlying CGF (and Müntz–Padé d-sequence via {@code φ.d}). */
   public final RoughHestonCharacteristicFunction φ;
 
   /** Spot price. */
@@ -72,13 +72,13 @@ public class RoughHestonOptionPricer implements
   /** Compiled raw J-truncated Edgeworth partial sum: k (log-moneyness) → Π_J(k),
    *  a plain {@code Σ{j=3..J}} (no optimal truncation), so its ε-derivative is
    *  exactly {@link #priceSensitivity} term-for-term. {@link #call} prices via the
-   *  optimally-truncated {@link #priceAdaptive}; this raw form drives the
+   *  {@link #priceAdaptive}; this raw form drives the
    *  term-by-term sensitivity validation. */
   public RealFunction                            priceExpr;
 
-  /** Optimally-truncated production price: k → Π(k), a {@code Σ{j=3..J~}} whose ~
-   *  accumulator stops at the asymptotic series' smallest-term order J_Π and
-   *  records it. {@link #call} and the sensitivity-truncation alignment use this. */
+  /** Production price: k → Π(k), a {@code Σ{j=3..∞}} infinite series whose inline
+   *  convergence exit stops as soon as the term is within the partial sum's
+   *  certified radius. {@link #call} and the sensitivity alignment use this. */
   public RealFunction                            priceAdaptive;
 
   /** Hermite density-correction sequence ΔCseq(j)(k); captured for its ε-derivative. */
@@ -93,6 +93,11 @@ public class RoughHestonOptionPricer implements
    *  density-correction order. An {@code arb.Integer} so the live order flows into
    *  the price chain without recompile; registered in {@link #φ}'s context. */
   public final Integer                           J = Integer.named("J");
+
+  /** Edgeworth cumulant partial-sum order for this pricer's own fixed-order
+   *  {@code Σ{k=0..N}} cumulant expressions. Owned by the pricer, independent of
+   *  the characteristic function's self-converging CGF. */
+  public final Integer                           N = Integer.named("N").set(5);
 
   /** Leading (Black–Scholes) call value C(k) of the price, as a callable function. */
   public RealFunction                            blackScholes;
@@ -225,13 +230,13 @@ assert false : "all this code is shit and must go. what the fuck dont u understa
   {
     Context ctx = new Context();
     ctx.registerVariable(J);
-    ctx.registerVariable(φ.N);
+    ctx.registerVariable(N);
     ctx.registerVariable(S0);
     ctx.registerVariable(rr);
     ctx.registerVariable(φ.T);
     ctx.registerVariable(φ.μ);
     ctx.registerFunction("He", He);
-    ctx.registerFunction("d", φ.cgf.d);
+    ctx.registerFunction("d", φ.d);
     φ.riccati.parameterDerivative("ν", 128);
     ctx.registerFunction("dd",
                          ComplexPolynomialSequence.express("dd:k➔v➔when(k=0,w(0)*da(1)(v),else,u(k)*da(k)(v)+w(k)*da(k+1)(v))", φ.context));
@@ -254,7 +259,7 @@ assert false : "all this code is shit and must go. what the fuck dont u understa
     this.ΔCseq = RealFunctionSequence.express("ΔCseq:j➔k➔exp(mean()+variance()/2)*Σi➔((Γ(j+1)/(Γ(i+1)*Γ(j-i+1)))*stdev()^(j-i)*"
                   + "when(i=0,NCDF(-zσ(k)),else,nGauss(zσ(k))*He(i-1)(zσ(k)))){i=0..j}-exp(k-rr*T)*hermiteOne(j)(k)",
                                  context);
-    this.priceAdaptive = RealFunction.express("ΠAdaptive:k➔GBS(k)+S0*Σj➔(c(j)*ΔCseq(j)(k)){j=3..J~}", context);
+    this.priceAdaptive = RealFunction.express("ΠAdaptive:k➔GBS(k)+S0*Σj➔(c(j)*ΔCseq(j)(k)){j=3..∞}", context);
     return RealFunction.express("ΠPricer:k➔GBS(k)+S0*Σj➔(c(j)*ΔCseq(j)(k)){j=3..J}", context);
   }
 
@@ -319,7 +324,7 @@ assert false : "all this code is shit and must go. what the fuck dont u understa
   {
     pricingContext.invalidateAllCaches();
     φ.riccati.invalidateCache();
-    φ.cgf.d.invalidateCache();
+    φ.d.invalidateCache();
   }
 
   /** Invalidate only the maturity-dependent pricing state. */
@@ -348,6 +353,7 @@ assert false : "all this code is shit and must go. what the fuck dont u understa
       if (rr != null) rr.close();
     }
     if (J  != null) J.close();
+    if (N  != null) N.close();
     if (kLog != null) kLog.close();
     if (priceTruncationScratch != null) priceTruncationScratch.close();
   }

@@ -355,19 +355,20 @@ instead of routing it through cycle-detection scaffolding.
 
 ---
 
-## 7. The infinite-sum gap (the live work)
+## 7. The infinite-sum gap — resolved
 
 The system already parses `∞` (it is a numeric literal, resolving to the runtime
 infinity constant) and already represents an unbounded upper limit in the AST.
-What it lacks is a compiler that *does the right thing* with it. The bounded
-`Σ{k=a..b}` compiles to a clean counted loop. The unbounded case has only a
-half-built stand-in: a `~` suffix that hands the whole loop to a Java-level
-accumulator object using a wrong tolerance (half the requested precision) and a
-forbidden "keep the best partial" fallback, and only for real sums.
+It now also has a compiler that *does the right thing* with it. The bounded
+`Σ{k=a..b}` compiles to a clean counted loop; the unbounded `Σ{k=a..∞}` compiles
+to the *same* counted-loop skeleton with an inline convergence exit. The old `~`
+suffix and its Java-level accumulator object (wrong `2^(-bits/2)` tolerance, a
+forbidden "keep the best partial" fallback, real-only) are deleted; `~` no longer
+parses.
 
-The correct design follows directly from the architecture's own principles:
+The shipped design follows directly from the architecture's own principles:
 
-- **It belongs inline in the loop**, not in a side object — same counted-loop
+- **It is inline in the loop**, not in a side object — same counted-loop
   skeleton, with a convergence exit added.
 - **The criterion is pure ball arithmetic**, available only to ball types: stop
   when the magnitude of the just-added term is within the *radius* of the partial
@@ -378,6 +379,8 @@ The correct design follows directly from the architecture's own principles:
 - **It is type-directed, not type-special-cased**: the generator emits the
   real-radius comparison for a real codomain and the complex-radius comparison
   for a complex one, with no runtime branch in the result.
+- **Divergence fails loud**: if the terms do not shrink into the radius the loop
+  throws, with no fixed iteration ceiling.
 - **Exact-type infinite sums are a genuinely different question** — there is no
   radius, so the ball criterion cannot apply — and the honest position is that
   the exact case is unresolved and must not be force-fit to either a fake
@@ -482,10 +485,8 @@ the design already gives for free is the thing that stinks.
 *Best:* allocate every instance in the cluster, wire the peer pointers (`a.S = S; S.a = a`), share caches, and let the **existing lazy, memoized `evaluate`** compute each value once on demand. Mutual recursion needs nothing the DAG case doesn't already have — two pointer assignments instead of one.
 *Why it stinks:* it re-implements, laboriously and with a new failure mode, what construct-downward + memoized evaluation already does for free. It treats a cycle as a categorically special structure requiring graph theory and a hand-rolled evaluation schedule, when "allocate-all-then-wire-all" makes a cycle and a DAG **identical** to the constructor. It is the canonical symptom of not trusting the recursion machinery — and it even leaks the project's own banned vocabulary ("curried") into comments and a runtime error string, which is the tell that the misconception is baked in.
 
-**`ConvergentSeriesAccumulator` and the `~` sigil.**
-*Now:* `Σ{k=a..b~}` hands the loop to a separate Java object that runs its own loop with tolerance `2^(-bits/2)`, keeps a "best" partial as a fallback, and only handles real sums.
-*Best:* `∞` is just a different termination test on the *same* counted loop; the convergence exit is inline — stop when `|term| ≤ rad(partialSum)` — and it is type-directed for Real and Complex with no side object.
-*Why it stinks:* it is a **parallel evaluator** (a second place the sum is computed, which can disagree with the primary one), its tolerance is a **fabricated number** unrelated to the certified ball radius, and its "keep the best" branch is a **forbidden fallback** — transparent degradation in a library whose entire reason to exist is non-degraded verified answers.
+**`ConvergentSeriesAccumulator` and the `~` sigil — resolved.**
+*Shipped:* `~` no longer parses; `∞` is the sole infinite-series notation. `Σ{k=a..∞}` compiles to the *same* counted loop as the bounded case with an inline convergence exit — stop when `|term| ≤ rad(partialSum)` — type-directed for Real and Complex, no side object, `bits` absent from the criterion. The `ConvergentSeriesAccumulator` side object, its `2^(-bits/2)` tolerance, and its "keep the best" fallback are deleted. Divergence throws (no fixed iteration ceiling). The sum is now computed in exactly one place.
 
 ### 9.3 Open — genuinely unresolved; neither clean nor stink yet
 

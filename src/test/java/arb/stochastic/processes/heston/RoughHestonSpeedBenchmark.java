@@ -82,7 +82,7 @@ public class RoughHestonSpeedBenchmark
     {
       pricer.φ.ν.set(0);
       pricer.φ.riccati.invalidateCache();
-      pricer.φ.cgf.d.invalidateCache();
+      pricer.φ.d.invalidateCache();
       Real price = new Real();
       pricer.call(bits, price);
       System.out.printf("%nnu=0 -> GBS: price=%s%n", price);

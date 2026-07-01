@@ -2,13 +2,11 @@ package arb.stochastic.processes.heston;
 
 import arb.Complex;
 import arb.ComplexConstants;
-import arb.Integer;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.functions.complex.ComplexFunction;
-import arb.functions.complex.MuntzPadeCumulantGenerator;
 import arb.functions.integer.ComplexPolynomialSequence;
 import arb.functions.integer.RealSequence;
 import arb.utensils.Utensils;
@@ -40,12 +38,12 @@ import arb.utensils.Utensils;
  *   w_k = V₀ · Γ((k+1)μ + 1) / Γ(kμ + 2)
  *   a_0(v) := 0
  *
- *   φ_N(v, T) = exp(Φ_N(v, T))
+ *   φ(v, T) = exp(Φ(v, T))
  * </pre>
  *
- * Implemented by composing {@link MuntzPadeCumulantGenerator} with the
- * rough-Heston-specific weights u and w, then wrapping the resulting CGF
- * in {@code exp}.
+ * Φ is compiled directly as the infinite series {@code Σk➔d(k)(v)·T^(k*μ+1){k=0..∞}},
+ * whose inline convergence exit supplies the least order whose tail lies within
+ * the certified ball radius, then wrapped in {@code exp}.
  *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
@@ -63,7 +61,6 @@ public class RoughHestonCharacteristicFunction implements
   private static final String DEFAULT_ρ    = "-0.7";
   private static final String DEFAULT_μ    = "0.6";
   private static final String DEFAULT_T    = "1.0";
-  private static final int    DEFAULT_N    = 5;
   private static final int    DEFAULT_PREC = 128;
 
   /** Mean-reversion speed of the variance. */
@@ -91,24 +88,27 @@ public class RoughHestonCharacteristicFunction implements
   public final ComplexPolynomialSequence a;
 
   /**
-   * General Müntz-lattice cumulant generator. Built from the rough-Heston
-   * lattice weights
-   *
-   * <pre>
-   *   u: k ➔ θ*λ / (k*μ + 1)
-   *   w: k ➔ V0 * Γ((k+1)*μ + 1) / Γ(k*μ + 2)
-   * </pre>
-   *
-   * and the Riccati Müntz coefficient sequence {@code a}. Exposes the cumulant
-   * {@code Φ(v, T) = Σ_{k=0..N} d_k(v) T^{kμ+1}}.
+   * Consolidated cumulant coefficient sequence
+   * {@code d : k ➔ v ➔ u(k)·a(k)(v) + w(k)·a(k+1)(v)} (with {@code a(0)(v) := 0}),
+   * registered in the context and summed by {@link #Φ}.
    */
-  public final MuntzPadeCumulantGenerator cgf;
+  public final ComplexPolynomialSequence d;
 
   /**
-   * Müntz truncation order of the cumulant series, owned by {@link #cgf}. Mutate
-   * via {@code N.set(...)} to change the truncation without recompile.
+   * The cumulant generating function, compiled directly as the infinite Müntz
+   * series
+   *
+   * <pre>
+   *   Φ(v, T) = Σ_{k=0..∞} d_k(v) · T^{kμ+1}
+   *   d_k(v) = u_k · a_k(v) + w_k · a_{k+1}(v),   a_0(v) := 0
+   * </pre>
+   *
+   * from the rough-Heston lattice weights u, w and the Riccati Müntz coefficient
+   * sequence {@code a}. Registered as {@code Φ} in the context so the exp wrapper
+   * can call it. Its inline convergence exit supplies the least order whose tail
+   * lies within the certified ball radius — the order is never an input.
    */
-  public final Integer N;
+  public final ComplexFunction Φ;
 
   /**
    * Compiled characteristic function:
@@ -117,9 +117,8 @@ public class RoughHestonCharacteristicFunction implements
    *   φ(v) = exp(Φ(v, T))
    * </pre>
    *
-   * with Φ supplied by {@link #cgf}. A single compiled expression — no per-call
-   * Java arithmetic. {@code N} is the {@link #cgf}'s truncation order; mutate
-   * via {@link #setN}.
+   * with Φ supplied by {@link #Φ}. A single compiled expression — no per-call
+   * Java arithmetic.
    */
   public final ComplexFunction φ;
 
@@ -145,8 +144,8 @@ public class RoughHestonCharacteristicFunction implements
     this.μ       = riccati.α;
     this.a       = riccati.a;
 
-    this.cgf = buildCgf(context, a);
-    this.N   = cgf.N;
+    this.Φ   = buildCgf(context, a);
+    this.d   = (ComplexPolynomialSequence) context.lookupFunctionInstance("d");
     this.φ   = ComplexFunction.express("φ:v➔exp(Φ(v))", context);
 
     this.ownsParameters = true;
@@ -180,29 +179,39 @@ public class RoughHestonCharacteristicFunction implements
     this.μ       = riccati.α;
     this.a       = riccati.a;
 
-    this.cgf = buildCgf(context, a);
-    this.N   = cgf.N;
+    this.Φ   = buildCgf(context, a);
+    this.d   = (ComplexPolynomialSequence) context.lookupFunctionInstance("d");
     this.φ   = ComplexFunction.express("φ:v➔exp(Φ(v))", context);
 
     this.ownsParameters = false;
   }
 
   /**
-   * Wire the rough-Heston-specific lattice weights and hand them to the general
-   * {@link MuntzPadeCumulantGenerator}. The CGF registers itself as {@code Φ}
-   * in the context so the exp wrapper above can call it.
+   * Wire the rough-Heston-specific lattice weights, the consolidated coefficient
+   * sequence {@code d}, and express the cumulant generating function directly as
+   * the infinite Müntz series
+   *
+   * <pre>
+   *   Φ : v ➔ Σk➔d(k)(v)·T^(k*μ+1) {k=0..∞}
+   * </pre>
+   *
+   * registered as {@code Φ} in the context so the exp wrapper can call it. The
+   * {@code a(0)(v) := 0} convention is enforced via {@code when(k=0, …)}.
    */
-  private static MuntzPadeCumulantGenerator buildCgf(Context context,
-                                                     ComplexPolynomialSequence a)
+  private static ComplexFunction buildCgf(Context context,
+                                          ComplexPolynomialSequence a)
   {
-    RealSequence u = RealSequence.express("u:k➔θ*λ/(k*μ+1)", context);
-    RealSequence w = RealSequence.express("w:k➔V0*Γ((k+1)*μ+1)/Γ(k*μ+2)", context);
-    return new MuntzPadeCumulantGenerator(context, a, u, w, DEFAULT_N);
+    if (context.getFunctionMapping("a") == null)
+      context.registerFunction("a", a);
+    RealSequence.express("u:k➔θ*λ/(k*μ+1)", context);
+    RealSequence.express("w:k➔V0*Γ((k+1)*μ+1)/Γ(k*μ+2)", context);
+    ComplexPolynomialSequence.express("d:k➔v➔when(k=0,w(0)*a(1)(v),else,u(k)*a(k)(v)+w(k)*a(k+1)(v))", context);
+    return ComplexFunction.express("Φ:v➔Σk➔d(k)(v)*T^(k*μ+1){k=0..∞}", context);
   }
 
   // ─────────────────────────────────────────────────────────────────────
-  // evaluate: φ_N(u, T) = exp( Σ_{k=0..N} d_k(u) · T^(k·μ + 1) )  via cgf.Φ
-  //   d_k(u) = κθ · a_k(u)/(kμ+1) + V_0 · Γ((k+1)μ+1)/Γ(kμ+2) · a_{k+1}(u),  a_0 ≡ 0
+  // evaluate: φ(v, T) = exp( Σ_{k=0..∞} d_k(v) · T^(k·μ + 1) )  via Φ
+  //   d_k(v) = θλ · a_k(v)/(kμ+1) + V_0 · Γ((k+1)μ+1)/Γ(kμ+2) · a_{k+1}(v),  a_0 ≡ 0
   // ─────────────────────────────────────────────────────────────────────
 
   @Override
@@ -229,7 +238,7 @@ public class RoughHestonCharacteristicFunction implements
   public void close()
   {
     if (φ        != null) φ.close();
-    if (cgf      != null) cgf.close();
+    if (Φ        != null) Φ.close();
     if (riccati  != null) riccati.close();
     if (ownsParameters)
       Utensils.close(λ, θ, ν, V0, ρ, T, μ);
