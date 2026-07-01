@@ -3280,4 +3280,130 @@ public class arblib {
     arblibJNI.arb_atanh(Real.getCPtr(z), z, Real.getCPtr(x), x, prec);
   }
 
+  public static GenericRing arb4j_ctx_alloc() {
+    long cPtr = arblibJNI.arb4j_ctx_alloc();
+    return (cPtr == 0) ? null : new GenericRing(cPtr, false);
+  }
+
+  public static void arb4j_ctx_free(GenericRing ctx) {
+    arblibJNI.arb4j_ctx_free(GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static void arb4j_ctx_init_real(GenericRing ctx, int prec) {
+    arblibJNI.arb4j_ctx_init_real(GenericRing.getCPtr(ctx), ctx, prec);
+  }
+
+  public static void arb4j_ctx_init_complex(GenericRing ctx, int prec) {
+    arblibJNI.arb4j_ctx_init_complex(GenericRing.getCPtr(ctx), ctx, prec);
+  }
+
+  public static void arb4j_ctx_clear(GenericRing ctx) {
+    arblibJNI.arb4j_ctx_clear(GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static void arb4j_mpoly_ctx_init(GenericRing ctx, GenericRing base, int nvars, int ord) {
+    arblibJNI.arb4j_mpoly_ctx_init(GenericRing.getCPtr(ctx), ctx, GenericRing.getCPtr(base), base, nvars, ord);
+  }
+
+  public static void arb4j_mpoly_ctx_clear(GenericRing ctx) {
+    arblibJNI.arb4j_mpoly_ctx_clear(GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int arb4j_mpoly_ctx_set_gen_names(GenericRing ctx, String[] names) {
+    return arblibJNI.arb4j_mpoly_ctx_set_gen_names(GenericRing.getCPtr(ctx), ctx, names);
+  }
+
+  public static GenericMultivariatePolynomial arb4j_mpoly_alloc() {
+    long cPtr = arblibJNI.arb4j_mpoly_alloc();
+    return (cPtr == 0) ? null : new GenericMultivariatePolynomial(cPtr, false);
+  }
+
+  public static void arb4j_mpoly_free(GenericMultivariatePolynomial poly) {
+    arblibJNI.arb4j_mpoly_free(GenericMultivariatePolynomial.getCPtr(poly), poly);
+  }
+
+  public static void arb4j_mpoly_init(GenericMultivariatePolynomial poly, GenericRing ctx) {
+    arblibJNI.arb4j_mpoly_init(GenericMultivariatePolynomial.getCPtr(poly), poly, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static void arb4j_mpoly_clear(GenericMultivariatePolynomial poly, GenericRing ctx) {
+    arblibJNI.arb4j_mpoly_clear(GenericMultivariatePolynomial.getCPtr(poly), poly, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int arb4j_mpoly_set(GenericMultivariatePolynomial dst, GenericMultivariatePolynomial src, GenericRing ctx) {
+    return arblibJNI.arb4j_mpoly_set(GenericMultivariatePolynomial.getCPtr(dst), dst, GenericMultivariatePolynomial.getCPtr(src), src, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int arb4j_mpoly_set_si(GenericMultivariatePolynomial poly, long value, GenericRing ctx) {
+    return arblibJNI.arb4j_mpoly_set_si(GenericMultivariatePolynomial.getCPtr(poly), poly, value, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int arb4j_mpoly_zero(GenericMultivariatePolynomial poly, GenericRing ctx) {
+    return arblibJNI.arb4j_mpoly_zero(GenericMultivariatePolynomial.getCPtr(poly), poly, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int arb4j_mpoly_one(GenericMultivariatePolynomial poly, GenericRing ctx) {
+    return arblibJNI.arb4j_mpoly_one(GenericMultivariatePolynomial.getCPtr(poly), poly, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int arb4j_mpoly_gen(GenericMultivariatePolynomial poly, int var, GenericRing ctx) {
+    return arblibJNI.arb4j_mpoly_gen(GenericMultivariatePolynomial.getCPtr(poly), poly, var, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int arb4j_mpoly_is_zero(GenericMultivariatePolynomial poly, GenericRing ctx) {
+    return arblibJNI.arb4j_mpoly_is_zero(GenericMultivariatePolynomial.getCPtr(poly), poly, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int arb4j_mpoly_is_one(GenericMultivariatePolynomial poly, GenericRing ctx) {
+    return arblibJNI.arb4j_mpoly_is_one(GenericMultivariatePolynomial.getCPtr(poly), poly, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int arb4j_mpoly_is_gen(GenericMultivariatePolynomial poly, int var, GenericRing ctx) {
+    return arblibJNI.arb4j_mpoly_is_gen(GenericMultivariatePolynomial.getCPtr(poly), poly, var, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int arb4j_mpoly_equal(GenericMultivariatePolynomial a, GenericMultivariatePolynomial b, GenericRing ctx) {
+    return arblibJNI.arb4j_mpoly_equal(GenericMultivariatePolynomial.getCPtr(a), a, GenericMultivariatePolynomial.getCPtr(b), b, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int arb4j_mpoly_add(GenericMultivariatePolynomial res, GenericMultivariatePolynomial a, GenericMultivariatePolynomial b, GenericRing ctx) {
+    return arblibJNI.arb4j_mpoly_add(GenericMultivariatePolynomial.getCPtr(res), res, GenericMultivariatePolynomial.getCPtr(a), a, GenericMultivariatePolynomial.getCPtr(b), b, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int arb4j_mpoly_sub(GenericMultivariatePolynomial res, GenericMultivariatePolynomial a, GenericMultivariatePolynomial b, GenericRing ctx) {
+    return arblibJNI.arb4j_mpoly_sub(GenericMultivariatePolynomial.getCPtr(res), res, GenericMultivariatePolynomial.getCPtr(a), a, GenericMultivariatePolynomial.getCPtr(b), b, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int arb4j_mpoly_mul(GenericMultivariatePolynomial res, GenericMultivariatePolynomial a, GenericMultivariatePolynomial b, GenericRing ctx) {
+    return arblibJNI.arb4j_mpoly_mul(GenericMultivariatePolynomial.getCPtr(res), res, GenericMultivariatePolynomial.getCPtr(a), a, GenericMultivariatePolynomial.getCPtr(b), b, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int arb4j_mpoly_set_str(GenericMultivariatePolynomial poly, String str, GenericRing ctx) {
+    return arblibJNI.arb4j_mpoly_set_str(GenericMultivariatePolynomial.getCPtr(poly), poly, str, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static String arb4j_mpoly_get_str(GenericMultivariatePolynomial poly, GenericRing ctx) {
+    return arblibJNI.arb4j_mpoly_get_str(GenericMultivariatePolynomial.getCPtr(poly), poly, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int arb4j_mpoly_set_coeff_si(GenericMultivariatePolynomial poly, long coefficient, java.nio.LongBuffer exponents, GenericRing ctx) {
+    return arblibJNI.arb4j_mpoly_set_coeff_si(GenericMultivariatePolynomial.getCPtr(poly), poly, coefficient, exponents, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int arb4j_mpoly_set_coeff_real(GenericMultivariatePolynomial poly, Real coefficient, java.nio.LongBuffer exponents, GenericRing ctx) {
+    return arblibJNI.arb4j_mpoly_set_coeff_real(GenericMultivariatePolynomial.getCPtr(poly), poly, Real.getCPtr(coefficient), coefficient, exponents, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int arb4j_mpoly_set_coeff_complex(GenericMultivariatePolynomial poly, Complex coefficient, java.nio.LongBuffer exponents, GenericRing ctx) {
+    return arblibJNI.arb4j_mpoly_set_coeff_complex(GenericMultivariatePolynomial.getCPtr(poly), poly, Complex.getCPtr(coefficient), coefficient, exponents, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int arb4j_mpoly_get_coeff_real(Real coefficient, GenericMultivariatePolynomial poly, java.nio.LongBuffer exponents, GenericRing ctx) {
+    return arblibJNI.arb4j_mpoly_get_coeff_real(Real.getCPtr(coefficient), coefficient, GenericMultivariatePolynomial.getCPtr(poly), poly, exponents, GenericRing.getCPtr(ctx), ctx);
+  }
+
+  public static int arb4j_mpoly_get_coeff_complex(Complex coefficient, GenericMultivariatePolynomial poly, java.nio.LongBuffer exponents, GenericRing ctx) {
+    return arblibJNI.arb4j_mpoly_get_coeff_complex(Complex.getCPtr(coefficient), coefficient, GenericMultivariatePolynomial.getCPtr(poly), poly, exponents, GenericRing.getCPtr(ctx), ctx);
+  }
+
 }

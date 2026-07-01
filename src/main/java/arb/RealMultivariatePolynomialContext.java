@@ -1,8 +1,5 @@
 package arb;
 
-import java.lang.foreign.Arena;
-import java.lang.foreign.MemorySegment;
-
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 
@@ -12,13 +9,12 @@ import arb.documentation.TheArb4jLibrary;
  */
 public class RealMultivariatePolynomialContext implements AutoCloseable
 {
-  final Arena         arena          = Arena.ofConfined();
-  final MemorySegment baseContext    = arena.allocate(GrMpolyNative.GR_CTX_LAYOUT);
-  final MemorySegment polynomialRing = arena.allocate(GrMpolyNative.GR_CTX_LAYOUT);
-  final int           bits;
-  final int           numberOfVariables;
-  final MultivariateOrder order;
-  boolean             closed;
+  final GenericRing baseContext    = GrMpolyNative.newContext();
+  final GenericRing polynomialRing = GrMpolyNative.newContext();
+  final int                      bits;
+  final int                      numberOfVariables;
+  final MultivariateOrder        order;
+  boolean                        closed;
 
   public RealMultivariatePolynomialContext(int numberOfVariables, int bits)
   {
@@ -66,7 +62,7 @@ public class RealMultivariatePolynomialContext implements AutoCloseable
     return new RealMultivariatePolynomial(this);
   }
 
-  MemorySegment nativeContext()
+  GenericRing nativeContext()
   {
     ensureOpen();
     return polynomialRing;
@@ -88,7 +84,8 @@ public class RealMultivariatePolynomialContext implements AutoCloseable
       closed = true;
       GrMpolyNative.clearPolynomialContext(polynomialRing);
       GrMpolyNative.clearBaseContext(baseContext);
-      arena.close();
+      GrMpolyNative.freeContext(polynomialRing);
+      GrMpolyNative.freeContext(baseContext);
     }
   }
 }

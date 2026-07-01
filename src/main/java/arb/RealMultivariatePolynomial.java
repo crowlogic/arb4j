@@ -1,7 +1,5 @@
 package arb;
 
-import java.lang.foreign.Arena;
-import java.lang.foreign.MemorySegment;
 import java.util.Objects;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -14,14 +12,13 @@ import arb.documentation.TheArb4jLibrary;
 public class RealMultivariatePolynomial implements AutoCloseable
 {
   final RealMultivariatePolynomialContext context;
-  final Arena                             arena = Arena.ofConfined();
-  final MemorySegment                     polynomial;
+  final GenericMultivariatePolynomial        polynomial;
   boolean                                 closed;
 
   RealMultivariatePolynomial(RealMultivariatePolynomialContext context)
   {
     this.context    = context;
-    this.polynomial = arena.allocate(GrMpolyNative.GR_MPOLY_LAYOUT);
+    this.polynomial = GrMpolyNative.newPolynomial();
     GrMpolyNative.initPolynomial(polynomial,
                                  context.nativeContext());
   }
@@ -131,9 +128,8 @@ public class RealMultivariatePolynomial implements AutoCloseable
     validateExponents(exponents);
     GrMpolyNative.setCoefficient(polynomial,
                                  exponents,
-                                 Real.getCPtr(coefficient),
-                                 context.nativeContext(),
-                                 true);
+                                 coefficient,
+                                 context.nativeContext());
     return this;
   }
 
@@ -141,7 +137,7 @@ public class RealMultivariatePolynomial implements AutoCloseable
   {
     ensureOpen();
     validateExponents(exponents);
-    GrMpolyNative.getCoefficient(Real.getCPtr(result),
+    GrMpolyNative.getCoefficient(result,
                                  polynomial,
                                  exponents,
                                  context.nativeContext());
@@ -215,7 +211,7 @@ public class RealMultivariatePolynomial implements AutoCloseable
       closed = true;
       GrMpolyNative.clearPolynomial(polynomial,
                                     context.nativeContext());
-      arena.close();
+      GrMpolyNative.freePolynomial(polynomial);
     }
   }
 

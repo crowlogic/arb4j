@@ -177,3 +177,5 @@ typedef unsigned long int mp_limb_t;
 
 %include "TypesAndStructures.i"
 
+%include "GrMpoly.i"
+
