@@ -1068,99 +1068,23 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
-  protected void constructReferencedFunctionInstanceIfItIsNull(MethodVisitor mv, FunctionMapping<?, ?, ?> mapping)
+  protected void assertReferencedFunctionInstanceIsNotNull(MethodVisitor mv, FunctionMapping<?, ?, ?> mapping)
   {
     assert mapping != null : "mapping shan't be null";
-    boolean isSelfRef        = mapping.functionName != null && functionName != null && functionName.equals(mapping.functionName);
-    boolean hasSomething     = mapping.expression != null || mapping.instance != null;
-    // A forward-declared peer: ctx.declare("f",...) was called but express("f",...)
-    // hasn't run yet when this expression was compiled. The concrete class is
-    // unknown at compile time, so we emit a runtime lookup of the context's
-    // canonical instance rather than a bytecode `new`.
-    boolean isForwardDeclared = !hasSomething;
+    boolean isSelfRef = mapping.functionName != null && functionName != null && functionName.equals(mapping.functionName);
 
-    if (!isSelfRef && (hasSomething || isForwardDeclared))
+    if (!isSelfRef)
     {
-      String fieldDescriptor    = mapping.functionFieldDescriptor();
-      String contextTypeDesc    = Type.getDescriptor(Context.class);
-      var    alreadyInitialized = new Label();
-
-      if (isForwardDeclared)
-      {
-        // Forward-declared peer (declared but not yet expressed at compile time).
-        // Emit: if (this.f == null) { this.f = (FType) this.context.lookupFunctionInstance("f"); }
-        // At runtime the context holds the by-then instantiated canonical
-        // singleton — the ONE instance whose cache memoises this function.
-        loadThisOntoStack(mv).visitFieldInsn(GETFIELD, internalName(), mapping.functionName, fieldDescriptor);
-        mv.visitJumpInsn(Opcodes.IFNONNULL, alreadyInitialized);
-        loadThisOntoStack(mv); // for PUTFIELD
-        loadThisOntoStack(mv);
-        mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
-        mv.visitLdcInsn(mapping.functionName);
-        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                           Type.getInternalName(Context.class),
-                           "lookupFunctionInstance",
-                           "(Ljava/lang/String;)Larb/functions/Function;",
-                           false);
-        mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(mapping.functionClass));
-        putField(mv, internalName(), mapping.functionName, fieldDescriptor);
-      }
-      else
-      {
-        // Bytecode-only path: use the mapping's already-known generated-class
-        // internal name. ASM's new/invokespecial accept name strings; resolving
-        // the Class<?> here would force eager compilation of the dependency
-        // and break mutual recursion across mappings. The class is resolved
-        // lazily by the JVM when the opcode first executes — by which point the
-        // outer compile chain has defined every class in the recursive cluster.
-        String typeInternalName = mapping.functionInternalName();
-        var    needsAllocation  = new Label();
-
-        // 1. if (this.<field> != null) skip → field already populated, done.
-        loadThisOntoStack(mv).visitFieldInsn(GETFIELD, internalName(), mapping.functionName, fieldDescriptor);
-        mv.visitJumpInsn(Opcodes.IFNONNULL, alreadyInitialized);
-
-        // 2. Try the context's canonical instance — the ONE instance whose
-        // cache memoises this function, including for peers in a recursive
-        // cluster: a re-entrant evaluate() on it is served from the cache
-        // ahead of the guard, and the dependency-order fill-on-miss keeps the
-        // guard from ever firing on a genuine recompute.
-        // Function f = this.context.lookupFunctionInstance("<name>");
-        // if (f != null) { this.<field> = (FieldType) f; goto done; }
-        loadThisOntoStack(mv);
-        loadThisOntoStack(mv);
-        mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
-        mv.visitLdcInsn(mapping.functionName);
-        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                           Type.getInternalName(Context.class),
-                           "lookupFunctionInstance",
-                           "(Ljava/lang/String;)Larb/functions/Function;",
-                           false);
-        duplicateTopOfTheStack(mv);
-        mv.visitJumpInsn(Opcodes.IFNULL, needsAllocation);
-        // Stack: this, function. Cast and store.
-        mv.visitTypeInsn(Opcodes.CHECKCAST, typeInternalName);
-        putField(mv, internalName(), mapping.functionName, fieldDescriptor);
-        mv.visitJumpInsn(Opcodes.GOTO, alreadyInitialized);
-
-        // 3. Fallback when context has no instance yet.
-        mv.visitLabel(needsAllocation);
-        mv.visitInsn(Opcodes.POP); // discard the dup'd null
-        mv.visitInsn(Opcodes.POP); // discard `this` for the PUTFIELD
-        loadThisOntoStack(mv);
-        generateNewObjectInstruction(mv, typeInternalName);
-        duplicateTopOfTheStack(mv);
-        invokeDefaultConstructor(mv, typeInternalName);
-        putField(mv, internalName(), mapping.functionName, fieldDescriptor);
-        // Propagate the parent's context field.
-        loadThisOntoStack(mv);
-        mv.visitFieldInsn(GETFIELD, internalName(), mapping.functionName, fieldDescriptor);
-        loadThisOntoStack(mv);
-        mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
-        mv.visitFieldInsn(PUTFIELD, typeInternalName, "context", contextTypeDesc);
-      }
-
-      mv.visitLabel(alreadyInitialized);
+      // Deterministic allocate-all-then-wire-all (issue #1055): the Expression
+      // that emits this bytecode knows which canonical instance belongs in this
+      // field, and the host-side wiring — FunctionMapping allocation in
+      // Expression#instantiate followed by Context#injectReferences and
+      // Context#wireNewInstanceIntoPeers — populates it before initialize()
+      // ever runs. Generated code never reaches back into the Context at
+      // runtime (no lookupFunctionInstance, no lazy `new Peer()` fallback);
+      // it only asserts that the wiring pass has already happened.
+      String fieldDescriptor = mapping.functionFieldDescriptor();
+      Compiler.addNullCheckForField(loadThisOntoStack(mv), internalName(), mapping.functionName, fieldDescriptor);
     }
   }
 
@@ -3243,12 +3167,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public void generateReferencedFunctionInstances(MethodVisitor mv)
   {
-    // Phase 1: allocate-all. For every referenced function f registered on
-    // this expression, emit `if (this.<f> == null) this.<f> = new <f>()` and
-    // propagate this.context onto the freshly allocated instance. After this
-    // loop every direct peer field is non-null and shares this.context with
-    // the parent.
-    getReferencedFunctions().values().forEach(mapping -> constructReferencedFunctionInstanceIfItIsNull(mv, mapping));
+    // Deterministic allocate-all-then-wire-all (issue #1055): every referenced
+    // function's canonical instance was allocated and injected host-side
+    // (Expression#instantiate → Context#injectReferences /
+    // Context#wireNewInstanceIntoPeers) before initialize() runs, so the
+    // generated code only asserts that each peer field is non-null.
+    getReferencedFunctions().values().forEach(mapping -> assertReferencedFunctionInstanceIsNotNull(mv, mapping));
     // #1027: wirePeerReferencesIntoReferencedFunctionInstances was the
     // emitter of the malformed PUTFIELD <peer>.<h> instructions whose
     // <h> field did not exist on <peer>'s compiled class, producing the
@@ -4075,6 +3999,22 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     instance = newInstance();
 
+    // Publish the canonical instance to its FunctionMapping BEFORE the
+    // referenced-function allocation pass runs: a peer in a mutually-recursive
+    // cluster instantiated during instantiateAndInjectReferencedFunctions
+    // wires its own fields from the Context registry, and the registry must
+    // already hold this instance for the back-reference to resolve
+    // (allocate-all-then-wire-all, issue #1055).
+    FunctionMapping<D, C, F> owningMapping = functionMapping;
+    if (owningMapping == null && context != null && functionName != null)
+    {
+      owningMapping = context.getFunctionMapping(functionName);
+    }
+    if (owningMapping != null && owningMapping.instance == null)
+    {
+      owningMapping.instance = instance;
+    }
+
     // Mark the mapping mid-instantiate: a sub-expression that references the
     // owning sequence (e.g. Σ's operand body) would otherwise re-enter
     // instantiate() and overwrite `instance` with a ghost. The guard makes
@@ -4090,6 +4030,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       instantiateAndInjectReferencedFunctions(instance);
       injectContextFunctionAndVariableReferences(instance);
       populateSourceExpressionBackPointer(instance);
+      // Wire-all: copy this canonical instance into every already-allocated
+      // peer whose matching field is still null — the peers that referenced
+      // this function while it was still forward-declared. One deterministic
+      // pass, host-side; the generated initialize() only asserts non-null.
+      if (context != null && functionName != null && owningMapping != null && owningMapping.instance == instance)
+      {
+        context.wireNewInstanceIntoPeers(functionName, instance);
+      }
     }
     finally
     {

@@ -267,16 +267,55 @@ public class Context implements
   }
 
   /**
-   * Phase-two wiring helper invoked from generated {@code initialize()} bytecode:
-   * returns the canonical {@link FunctionMapping#instance} for
+   * Returns the canonical {@link FunctionMapping#instance} for
    * {@code functionName}, or {@code null} when the registry has no entry or the
-   * entry has not yet been instantiated. The generated code uses a {@code null}
-   * return as a fallback signal to allocate a fresh operand.
+   * entry has not yet been instantiated. Host-side wiring only — generated
+   * bytecode never calls back into the Context (issue #1055).
    */
   public Function<?, ?> lookupFunctionInstance(String functionName)
   {
     FunctionMapping<?, ?, ?> mapping = functions.get(functionName);
     return mapping == null ? null : mapping.instance;
+  }
+
+  /**
+   * Wire-all pass of the deterministic allocate-all-then-wire-all protocol
+   * (issue #1055): copies the freshly allocated canonical instance named
+   * {@code functionName} into every already-instantiated peer's matching public
+   * field that is still {@code null} — the peers that were instantiated while
+   * this function was still forward-declared (the {@code a ↔ S} shape of a
+   * mutually-recursive cluster). Matching is by name AND assignable type via
+   * {@link #findAssignableField}, and only {@code null} fields are filled, so
+   * self-aliases installed by {@code generateSelfReference} and previously
+   * wired references are never clobbered.
+   */
+  public void wireNewInstanceIntoPeers(String functionName, Function<?, ?> newInstance)
+  {
+    assert functionName != null : "functionName shan't be null";
+    assert newInstance != null : "newInstance shan't be null";
+    functions.forEach((peerName, peerMapping) ->
+    {
+      if (peerMapping.instance == null || peerMapping.instance == newInstance)
+      {
+        return;
+      }
+      java.lang.reflect.Field field = findAssignableField(peerMapping.getInstanceFields(), functionName, newInstance.getClass());
+      if (field == null)
+      {
+        return;
+      }
+      try
+      {
+        if (field.get(peerMapping.instance) == null)
+        {
+          field.set(peerMapping.instance, newInstance);
+        }
+      }
+      catch (IllegalAccessException iae)
+      {
+        Utensils.wrapOrThrow("failed to wire function field " + functionName + " on " + peerMapping.instance.getClass().getName(), iae);
+      }
+    });
   }
 
   @SuppressWarnings("unchecked")
@@ -810,6 +849,15 @@ public class Context implements
       expressionString = expressionString.substring(colonIndex + 1);
     }
     mapping.expressionString = expressionString;
+
+    // Wire-all (issue #1055): a function registered after peers referencing it
+    // by name were already instantiated (the forward-declared shape) must be
+    // copied into those peers' still-null fields; idempotent for instances
+    // that Expression#instantiate already wired.
+    if (function != null && mapping.instance == function)
+    {
+      wireNewInstanceIntoPeers(functionName, function);
+    }
 
     if (Expression.trace)
     {
