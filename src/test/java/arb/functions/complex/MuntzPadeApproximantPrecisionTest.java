@@ -142,4 +142,23 @@ public class MuntzPadeApproximantPrecisionTest extends
       assertTrue("64-bit eval correct to ~half-precision floor (err=" + err + ")", err < 1e-12);
     }
   }
+
+  /**
+   * Regression: the approximant must stop at the best previous iterate once the
+   * σ-table recurrence reaches the precision floor instead of throwing.
+   */
+  public void testLargePointStopsAtBestPreviousIterate()
+  {
+    try ( RiccatiMuntzPadeFunctional eq = tanhFunctional(128))
+    {
+      ComplexFunction approx = eq.evaluate(ZERO_V, 1, 128, null);
+      Complex         t      = new Complex();
+      Complex         r      = new Complex();
+
+      t.set("33/10", 128);
+      approx.evaluate(t, 1, 128, r);
+      double err = errVsTanh(r, RealNullaryFunction.express("tanh(33/10)"), 300);
+      assertTrue("large-t evaluation should match tanh(3.3) within the target tolerance (err=" + err + ")", err < 1e-12);
+    }
+  }
 }

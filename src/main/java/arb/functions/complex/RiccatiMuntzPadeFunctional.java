@@ -123,11 +123,6 @@ public class RiccatiMuntzPadeFunctional extends
 
     initializeFractionalExponent(context, α);
 
-    // Allocate polynomial variables once, register in context.
-    // Guard with getVariable so that if the caller's context already has p, q,
-    // or r bound (e.g. a ComplexPolynomial registered upstream), we reuse the
-    // existing instance rather than throwing CompilerException on re-registration.
-    // refreshPolynomials will immediately overwrite the content in either case.
     context.registerVariable(p = ComplexPolynomial.named("p"));
 
     context.registerVariable(q = ComplexPolynomial.named("q"));
@@ -140,21 +135,10 @@ public class RiccatiMuntzPadeFunctional extends
     // Declare the Müntz coefficient sequence
     ComplexFunctionSequence.declare("a", context);
 
-    // Compile the full recurrence. p(v), q(v), r(v) use the
-    // variable-as-function call bridge: p, q, r are ComplexPolynomial
-    // variables registered in context whose runtime class implements
-    // ComplexFunction
     a = ComplexPolynomialSequence.express("a:k➔v➔when(k=1,p(v)/Γ(μ+1),else,(Γ((k-1)*μ+1)/Γ(k*μ+1))*(q(v)*a(k-1)(v)+r(v)*∑j➔a(j)(v)*a(k-1-j)(v){j=1..k-2}))",
                                           context);
 
-    // Issue #1014/#1015: prime the polynomial coefficient variables p, q, r
-    // by evaluating the user-supplied nullary functions P, Q, R into them so
-    // the recurrence has live operands on first use. Without this, the
-    // expression body's references to p, q, r see the freshly-allocated
-    // (length-0) polynomials registered above and the entire aₖ(v) sequence
-    // evaluates to the zero polynomial. invalidateCache() repeats this whenever
-    // the caller signals a parameter change, but the very first evaluate must
-    // also see populated p, q, r — hence the eager refresh at construction.
+
     refreshPolynomials(bits);
   }
 

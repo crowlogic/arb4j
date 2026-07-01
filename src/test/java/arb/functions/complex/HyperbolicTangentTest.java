@@ -98,7 +98,7 @@ public class HyperbolicTangentTest extends
       assertEquals("y(2) should equal tanh(2)", expected, evalAt(eq, "2"), 1e-12);
     }
   }
-
+ 
   /** Odd symmetry: tanh(-t) = -tanh(t). */
   public void testTanhOddSymmetry()
   { 

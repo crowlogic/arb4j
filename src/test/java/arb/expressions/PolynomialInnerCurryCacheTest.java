@@ -40,7 +40,7 @@ import arb.functions.complex.RiccatiMuntzPadeFunctional;
 public class PolynomialInnerCurryCacheTest
 {
   @Test
-  public void innerCurryOnPolynomialCodomainIsValueCached()
+  public void innerFunctionOnPolynomialCodomainIsValueCached()
   {
     IndexCache.HITS   = 0;
     IndexCache.MISSES = 0;

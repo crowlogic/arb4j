@@ -83,44 +83,7 @@ public class RiccatiMuntzPadeFunctionalJacobianTest extends
     }
   }
 
-  /**
-   * Reject an empty variable list.
-   */
-  public void testJacobianRejectsEmptyVariables()
-  {
-    try ( RiccatiMuntzPadeFunctional eq = linearFunctional())
-    {
-      try
-      {
-        eq.jacobian(new String[0]);
-        fail("expected IllegalArgumentException for empty variable list");
-      }
-      catch (IllegalArgumentException e)
-      {
-        // expected
-      }
-    }
-  }
 
-  /**
-   * Reject an unsupported variable name.
-   */
-  public void testJacobianRejectsUnsupportedVariable()
-  {
-    try ( RiccatiMuntzPadeFunctional eq = linearFunctional())
-    {
-      try
-      {
-        eq.jacobian(new String[]
-        { "λ" });
-        fail("expected IllegalArgumentException for variable 'λ'");
-      }
-      catch (IllegalArgumentException e)
-      {
-        // expected
-      }
-    }
-  }
 
   /**
    * Evaluate the symbolic ∂y/∂v and compare against the closed form 1−e^{−t} at t

@@ -2,6 +2,7 @@ package arb.functions.complex;
 
 import arb.*;
 import arb.Integer;
+import arb.exceptions.DivisionByZeroException;
 import arb.expressions.Context;
 import arb.functions.integer.ComplexFunctionSequence;
 import arb.functions.integer.ComplexPolynomialSequence;
@@ -144,7 +145,18 @@ public final class MuntzPadeApproximant implements
       for (int m = 3;; m++)
       {
         M.set(m);
-        ops.warmTo(m, bits);
+        try
+        {
+          ops.warmTo(m, bits);
+        }
+        catch (DivisionByZeroException e)
+        {
+          // The σ-table / Jacobi recurrence eventually reaches the precision floor
+          // at this working precision: h(j) becomes the zero polynomial and the
+          // next Padé iterate cannot be formed. Stop and return the best iterate
+          // seen so far instead of throwing on the degenerate step.
+          return result.set(best);
+        }
         Φ.evaluate(M, 1, bits, null).evaluate(z, 1, bits, curr);
         curr.sub(prev, bits, diff).abs(bits, diffMag);
         if (diffMag.compareTo(threshold) <= 0)
