@@ -725,7 +725,7 @@ public class Context implements
   {
     // Hidden classes (Java 15+ lambdas / LambdaMetafactory output) have
     // Class.descriptorString() forms like
-    //   Larb/.../MuntzPadeApproximant$$Lambda.0x000000000f19d628;
+    //   Larb/.../MuntzPadeFunctional$$Lambda.0x000000000f19d628;
     // which include a '.' between the host class and the hex suffix. That form
     // is legal in MethodHandle/MethodType descriptors but illegal in a normal
     // class-file constant pool, so emitting it as a field descriptor for the

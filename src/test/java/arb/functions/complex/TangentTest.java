@@ -24,8 +24,8 @@ import junit.framework.TestCase;
  * The functional is the same two-level indexed object used by the tanh oracle:
  *
  * <pre>
- *   functional.evaluate(v, ...) → MuntzPadeApproximant  (parameterised on v)
- *   approximant.evaluate(t, ...) → Complex               (value at t)
+ *   functional.evaluate(v, ...) → ComplexFunction        (parameterised on v)
+ *   function.evaluate(t, ...)   → Complex                (value at t)
  * </pre>
  *
  * Because P, Q, R are all constant in v, the parameter v is a dummy zero here.

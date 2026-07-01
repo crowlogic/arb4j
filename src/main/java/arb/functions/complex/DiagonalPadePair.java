@@ -51,7 +51,7 @@ public final class DiagonalPadePair implements
    * Allocate a (P, Q) pair of Padé order M with capacity M+1 each. The parent
    * Context is optional; pass null to start with an empty sub-Context. The
    * polynomials start zero-length; the producer (typically a Chebyshev
-   * recurrence in {@link MuntzPadeApproximant}, or any equivalent solver of
+   * recurrence in {@link MuntzPadeFunctional}, or any equivalent solver of
    * the diagonal Padé normal equations) fills them via {@link #set}.
    */
   public DiagonalPadePair(int M)

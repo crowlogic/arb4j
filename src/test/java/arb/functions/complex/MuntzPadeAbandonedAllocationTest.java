@@ -27,7 +27,7 @@ import junit.framework.TestCase;
  * asserts the sweep abandoned <em>zero</em> owned arb objects. If the
  * close-on-invalidate discipline regresses, the count climbs and this fails.
  */
-public class MuntzPadeApproximantAbandonedAllocationTest extends
+public class MuntzPadeAbandonedAllocationTest extends
                                                           TestCase
 {
   static final int bits = 128;
