@@ -114,21 +114,21 @@ public class u implements RealSequence, Typesettable, AutoCloseable, Initializab
 
    @Override
    public void invalidateCache() {
-      if (!this.cache.invalidating) {
-         this.cache.invalidating = true;
+      if (!this.invalidatingCache) {
+         this.invalidatingCache = true;
          this.staticPrecision = -1;
          this.cache.clear();
-         this.cache.invalidating = false;
+         this.invalidatingCache = false;
       }
    }
 
    @Override
    public void invalidateLocalCache() {
-      if (!this.cache.invalidating) {
-         this.cache.invalidating = true;
+      if (!this.invalidatingCache) {
+         this.invalidatingCache = true;
          this.staticPrecision = -1;
          this.cache.clear();
-         this.cache.invalidating = false;
+         this.invalidatingCache = false;
       }
    }
 

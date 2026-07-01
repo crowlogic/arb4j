@@ -102,10 +102,8 @@ public final class MuntzPadeApproximant implements
     // freely across different t at the same precision).
     //
     // A freshly-constructed approximant has EMPTY caches, so there is nothing
-    // to invalidate on its first evaluation — and invalidating would needlessly
-    // recurse through any shared upstream self-recursive sequence (e.g. the
-    // Riccati Müntz coefficient sequence a), whose per-level instance chain can
-    // be arbitrarily deep. Only a genuine precision INCREASE on an
+    // to invalidate on its first evaluation — invalidating would be pure
+    // redundancy. Only a genuine precision INCREASE on an
     // already-populated cache must rebuild.
     if (cachedBits < 0)
     {
@@ -134,10 +132,10 @@ public final class MuntzPadeApproximant implements
       threshold.one().mul2e(-bits / 2, threshold);
       bestMag.posInf();
       M.set(2);
-      // Fill the σ-table caches bottom-up first; a top-down read of the cyclic
-      // {σ,α,β,h} recurrence otherwise memoises a partial ∅ and later divides by
-      // it. Cheap and idempotent once σfunc is memoised (re-calls are cache hits).
-      ops.warmTo(2, bits);
+      // The generated evaluate() wrappers fill the (index, order)-keyed caches
+      // in dependency order on a miss — lowest index first — so the cyclic
+      // {σ,α,β,h} recurrence populates itself on demand with every recompute
+      // reading only cache hits.
       Φ.evaluate(M, 1, bits, null).evaluate(z, 1, bits, prev);
       best.set(prev);
       // Unbounded by design: the diff descends monotonically to that floor
@@ -147,7 +145,7 @@ public final class MuntzPadeApproximant implements
         M.set(m);
         try
         {
-          ops.warmTo(m, bits);
+          Φ.evaluate(M, 1, bits, null).evaluate(z, 1, bits, curr);
         }
         catch (DivisionByZeroException e)
         {
@@ -157,7 +155,6 @@ public final class MuntzPadeApproximant implements
           // seen so far instead of throwing on the degenerate step.
           return result.set(best);
         }
-        Φ.evaluate(M, 1, bits, null).evaluate(z, 1, bits, curr);
         curr.sub(prev, bits, diff).abs(bits, diffMag);
         if (diffMag.compareTo(threshold) <= 0)
         {

@@ -2,7 +2,6 @@ package arb.functions.polynomials.orthogonal;
 
 import static arb.utensils.Utensils.wrapOrThrow;
 
-import java.util.List;
 
 import arb.*;
 import arb.Integer;
@@ -41,13 +40,6 @@ public abstract class RecurrentlyGeneratedOrthogonalPolynomialSequence<R, V, E e
                                                                       OrthogonalPolynomialSequence<R, V, E> implements
                                                                       Initializable
 {
-
-  @Override
-  public List<E> enumerate(int i, int j)
-  {
-    assert false : "TODO: fill the cache entry if its not there";
-    return null;
-  }
 
   @Override
   public String toString()

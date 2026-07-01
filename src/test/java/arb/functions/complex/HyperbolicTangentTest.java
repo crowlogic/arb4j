@@ -98,6 +98,21 @@ public class HyperbolicTangentTest extends
       assertEquals("y(2) should equal tanh(2)", expected, evalAt(eq, "2"), 1e-12);
     }
   }
+
+  /**
+   * tanh(3.5) ≈ 0.99817789761119870... — regression guard for the
+   * {@code DivisionByZeroException} that a top-down read of a partially-∅
+   * cyclic {σ,α,β,h} cache formerly threw for t ≥ 3.3; the dependency-order
+   * fill-on-miss in the generated evaluate() wrappers removes it.
+   */
+  public void testTanhAtThreePointFive()
+  {
+    try ( RiccatiMuntzPadeFunctional eq = makeTanhFunctional())
+    {
+      double expected = RealNullaryFunction.express("tanh(3.5)").evaluate().doubleValue();
+      assertEquals("y(3.5) should equal tanh(3.5)", expected, evalAt(eq, "3.5"), 1e-10);
+    }
+  }
  
   /** Odd symmetry: tanh(-t) = -tanh(t). */
   public void testTanhOddSymmetry()

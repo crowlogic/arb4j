@@ -159,8 +159,8 @@ public class a implements ComplexPolynomialSequence, Typesettable, AutoCloseable
 
    @Override
    public void invalidateCache() {
-      if (!this.cache.invalidating) {
-         this.cache.invalidating = true;
+      if (!this.invalidatingCache) {
+         this.invalidatingCache = true;
          this.cache.clear();
          if (this.a != null) {
             this.a.invalidateCache();
@@ -170,16 +170,16 @@ public class a implements ComplexPolynomialSequence, Typesettable, AutoCloseable
             this.aoperandF0001.invalidateCache();
          }
 
-         this.cache.invalidating = false;
+         this.invalidatingCache = false;
       }
    }
 
    @Override
    public void invalidateLocalCache() {
-      if (!this.cache.invalidating) {
-         this.cache.invalidating = true;
+      if (!this.invalidatingCache) {
+         this.invalidatingCache = true;
          this.cache.clear();
-         this.cache.invalidating = false;
+         this.invalidatingCache = false;
       }
    }
 
@@ -203,9 +203,7 @@ public class a implements ComplexPolynomialSequence, Typesettable, AutoCloseable
             throw new AssertionError("μ is null");
          } else {
             if (this.a == null) {
-               this.a = new a();
-               this.a.context = this.context;
-               this.a.cache = this.cache;
+               this.a = this;
             }
 
             if (this.a.p == null) {

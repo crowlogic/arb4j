@@ -39,21 +39,6 @@ public final class IndexCache<C>
   public static long         HITS   = 0, MISSES = 0;
 
   /**
-   * Reentrancy flag for {@code invalidateCache()}, keyed on the cache rather than
-   * the function instance. A self-referential sequence (the Müntz {@code a}/{@code aoperand}
-   * cluster) is evaluated through a chain of <em>distinct</em> instances — one per
-   * recursion level for scratch isolation — that all <em>share this one cache</em>
-   * (the parent stores {@code child.cache = this.cache} during initialization). A
-   * per-instance flag cannot stop an N-deep walk over distinct instances; a flag on
-   * the shared cache collapses it to a single visit: the first instance clears the
-   * cache and sets this flag, every other chain member sees it set and returns. This
-   * is the minimal, collection-free form of "invalidate each cluster once" — not a
-   * visited list. For genuinely independent caches (mutual recursion between
-   * different sequences) each cache carries its own flag and is cleared exactly once.
-   */
-  public boolean             invalidating;
-
-  /**
    * Set by the generating sequence when this cache <em>exclusively owns</em> its
    * entries: a value sequence stores deep copies and its cache-hit path returns a
    * copy ({@code result.set(cached)}), so no consumer ever aliases a cached

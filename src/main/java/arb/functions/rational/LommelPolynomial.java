@@ -33,6 +33,7 @@ public class LommelPolynomial implements
   {
     v.close();
     n.close();
+    lastN.close();
   }
 
   static
@@ -55,13 +56,22 @@ public class LommelPolynomial implements
 
   boolean                                                                     initialized = false;
 
+  private final Integer                                                       lastN       = new Integer();
+
   @Override
   public RationalFunction evaluate(Object t, int order, int bits, RationalFunction res)
   {
-    if (!initialized)
+    // The generated nullary hoists every n-dependent subexpression (the pFq
+    // series in particular) into its initialize(), so an instance is only
+    // valid for the value of n it was initialized at. When the caller mutates
+    // n (the R(n,v;z) sequence sets it before each call), instantiate afresh
+    // so the hoisted state is rebuilt for the new index instead of serving
+    // the stale series of the previous one.
+    if (!initialized || !n.equals(lastN))
     {
       context.injectReferences(nullaryFunction = expression.instantiate());
       initialized = true;
+      lastN.set(n);
     }
     return nullaryFunction.evaluate(null, order, bits, res);
   }

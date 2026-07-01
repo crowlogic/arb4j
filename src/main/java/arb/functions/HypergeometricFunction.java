@@ -96,6 +96,7 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>, C extends N
     this.constantArgFunc = constantArg;
     this.argIsConstant   = true;
 
+    initialized = false;
     initializeContext(elementType);
     compile(elementType, nullaryFunctionType);
     return this;
@@ -125,6 +126,7 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>, C extends N
     this.inputDependentArgFunc = inputDependentArg;
     this.argIsConstant         = false;
 
+    initialized = false;
     initializeContext(elementType);
     compile(elementType, nullaryFunctionType);
     return this;
@@ -142,6 +144,7 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>, C extends N
     this.constantArgFunc = constantArg;
     this.argIsConstant   = true;
 
+    initialized = false;
     initializeContext(elementType);
     compile(elementType, nullaryFunctionType);
     return this;
@@ -159,6 +162,7 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>, C extends N
     this.inputDependentArgFunc = inputDependentArg;
     this.argIsConstant         = false;
 
+    initialized = false;
     initializeContext(elementType);
     compile(elementType, nullaryFunctionType);
     return this;

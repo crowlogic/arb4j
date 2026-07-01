@@ -288,17 +288,6 @@ public class Context implements
   public <D, R, F extends Function<? extends D, ? extends R>> void injectFunctionReferences(F f)
   {
     Class<?> functionClass = f.getClass();
-    // Determine f's name in this context so we can detect mutual recursion.
-    String targetFunctionName = null;
-    for (var e : functions.entrySet())
-    {
-      if (e.getValue().instance == f)
-      {
-        targetFunctionName = e.getKey();
-        break;
-      }
-    }
-    final String finalTargetName = targetFunctionName;
     functions.forEach((functionName, functionMapping) ->
     {
       if (functionMapping.instance == null)
@@ -306,21 +295,10 @@ public class Context implements
         return;
       }
       // Never alias f.<name> = f: a function's own field of its own type is
-      // the recursive-call receiver and must be a *different* instance, or
-      // the recursion re-enters f and clobbers its scratch fields. Left null
-      // here, generateSelfReference's `new <Self>()` fills it at initialize.
+      // filled by generateSelfReference at initialize, which aliases `this` —
+      // a re-entrant evaluate() is served from the (index, order)-keyed cache
+      // ahead of the re-entrancy guard, so one instance memoises once.
       if (functionMapping.instance == f)
-      {
-        return;
-      }
-      // Skip peers that are in the same SCC as f (any cycle length). Wiring
-      // the shared context singleton into f.<peer> would alias f.<peer> to an
-      // instance whose `evaluating` flag can be true when f's own evaluate()
-      // is running — firing the re-entrancy guard. The generated initialize()
-      // method allocates a FRESH instance for each such peer, so leaving the
-      // field null here is correct.
-      if (finalTargetName != null
-          && Expression.isTransitivelyReachable(functionMapping, finalTargetName, new java.util.HashSet<>()))
       {
         return;
       }
@@ -360,8 +338,8 @@ public class Context implements
   {
     // Flat, non-propagating pass over every instance this Context owns — each
     // drops only its OWN hoisted state (index cache / value-backing / static
-    // precision). Because the manifest already contains every instance (the
-    // outer functions AND every per-level child), propagation would be pure
+    // precision). Because the manifest already contains every instance,
+    // propagation would be pure
     // redundancy: a propagating invalidateCache() on each registered function
     // re-cleared every shared node once per path to it (profiling a calibration
     // showed ~65% of wall-clock in this cascade, the same reference-graph
@@ -388,52 +366,6 @@ public class Context implements
   protected <D, R, F extends Function<? extends D, ? extends R>> void injectContextReference(F f)
   {
     setFieldValue(f.getClass(), f, "context", this);
-  }
-
-  /**
-   * Allocates a fresh instance of the function registered under {@code name}.
-   * Used by the generated {@code initialize()} bytecode for forward-declared
-   * peers — functions that were declared via {@code ctx.declare(...)} but not
-   * yet expressed when the calling expression was compiled.
-   *
-   * <p>
-   * A fresh instance (own {@code evaluating} flag, shared context and cache) is
-   * required so that each evaluation level in a mutually-recursive cluster uses
-   * a distinct instance and the re-entrancy guard cannot fire.
-   *
-   * @param name the function name registered in this context
-   * @return a fresh instance of the named function's concrete class, or
-   *         {@code null} if the mapping has no instance yet
-   */
-  public Function<?, ?> allocateFreshPeer(String name)
-  {
-    FunctionMapping<?, ?, ?> mapping = functions.get(name);
-    if (mapping == null || mapping.instance == null)
-    {
-      return null;
-    }
-    try
-    {
-      Function<?, ?> fresh = (Function<?, ?>) mapping.instance.getClass().getDeclaredConstructor().newInstance();
-      injectContextReference(fresh);
-      // Share the canonical instance's IndexCache so this cluster member
-      // memoizes into the same table as the context singleton — without this
-      // each fresh peer has its own empty cache and q(n) is recomputed
-      // exponentially across all evaluation levels.
-      for (java.lang.reflect.Field field : mapping.instance.getClass().getFields())
-      {
-        if (field.getName().equals("cache"))
-        {
-          field.set(fresh, field.get(mapping.instance));
-          break;
-        }
-      }
-      return fresh;
-    }
-    catch (ReflectiveOperationException e)
-    {
-      return null;
-    }
   }
 
   /**
@@ -492,9 +424,9 @@ public class Context implements
     {
       if (mapping.instance == f || (mapping.instance != null && mapping.instance.getClass() == compiledClass))
       {
-        // Prime the cache via the mapping if we can; the cache is keyed
-        // on the mapping's eventual instance class, which is what we just
-        // matched on.
+        // Resolve the fields via the mapping if we can; the fields array is
+        // keyed on the mapping's eventual instance class, which is what we
+        // just matched on.
         try
         {
           resolvedFields = mapping.instance == null ? compiledClass.getFields() : mapping.getInstanceFields();
@@ -730,11 +662,10 @@ public class Context implements
   }
 
   /**
-   * Names whose body references themselves (self-edge in the unfiltered function
-   * reference graph). The codegen-order graph in {@link #functionReferenceGraph}
-   * explicitly filters self-edges out so the topological sort terminates; this
-   * set preserves them so {@link #isInCycle} can correctly report a single
-   * self-recursive sequence as cyclic.
+   * Names whose defining expression references themselves (self-edge in the
+   * unfiltered function reference graph). The codegen-order graph in
+   * {@link #functionReferenceGraph} explicitly filters self-edges out so the
+   * topological sort terminates; this set preserves them.
    */
   public final Set<String>            selfReferential              = new HashSet<>();
 
@@ -760,253 +691,6 @@ public class Context implements
       }
 
       functionReferenceGraph.put(functionName, dependency);
-    }
-    sccByName = null; // invalidate cached SCC partition
-  }
-
-  /**
-   * Cached strongly-connected-component partition of
-   * {@link #functionReferenceGraph}. Each registered function name maps to the
-   * (possibly singleton) set of names that are mutually recursive with it.
-   */
-  private Map<String, Set<String>> sccByName;
-
-  /**
-   * @return the set of function names mutually recursive with {@code name}
-   *         (including {@code name} itself), or a singleton set containing
-   *         just {@code name} if it isn't in a cycle. Never null.
-   */
-  public Set<String> sccOf(String name)
-  {
-    if (sccByName == null)
-    {
-      synchronized (this)
-      {
-        if (sccByName == null)
-        {
-          if (functionReferenceGraph.isEmpty())
-          {
-            populateFunctionReferenceGraph();
-          }
-          Map<String, Set<String>> map = new HashMap<>();
-          for (Set<String> scc : Utensils.stronglyConnectedComponents(functionReferenceGraph))
-          {
-            for (String member : scc)
-            {
-              map.put(member, scc);
-            }
-          }
-          sccByName = map;
-        }
-      }
-    }
-    Set<String> scc = sccByName.get(name);
-    return scc != null ? scc : Collections.singleton(name);
-  }
-
-  /**
-   * True iff {@code name} is in a non-trivial SCC (mutually recursive with at
-   * least one other name) OR is self-recursive (its body references itself).
-   * The self-edge is tracked in {@link #selfReferential} because
-   * {@link #functionReferenceGraph} filters self-edges for the codegen-order pass.
-   */
-  public boolean isInCycle(String name)
-  {
-    // Force graph population so selfReferential is up to date.
-    sccOf(name);
-    Set<String> scc = sccByName != null ? sccByName.get(name) : null;
-    if (scc != null && scc.size() > 1)
-      return true;
-    return selfReferential.contains(name);
-  }
-
-  /**
-   * Per-curried-member k-extent providers. Key: function name (e.g. {@code "σ"}).
-   * Value: {@code (topIdx, j) -> kMax}, returning the maximum inner index that
-   * the recurrence reaches when populating outer index {@code j} given that the
-   * caller's top-level request is at {@code topIdx}.
-   */
-  private final Map<String, java.util.function.IntBinaryOperator> kExtentProviders = new HashMap<>();
-
-  /**
-   * Register the k-extent calculation for a curried sequence in this Context.
-   * Required before {@link #warmToBottomUp} can warm a curried SCC member.
-   *
-   * @param name     the outer sequence's name (e.g. {@code "σ"})
-   * @param provider {@code (topIdx, j) -> kMax}
-   * @return this for chaining
-   */
-  public Context setKExtentProvider(String name, java.util.function.IntBinaryOperator provider)
-  {
-    kExtentProviders.put(name, provider);
-    return this;
-  }
-
-  private final ThreadLocal<Boolean> warming = ThreadLocal.withInitial(() -> Boolean.FALSE);
-
-  /**
-   * Bottom-up warmer for a mutually-recursive integer-domain sequence cluster.
-   * Iterates {@code i = 0..idx}; at each {@code i}, evaluates every SCC member
-   * at {@code i} so its index cache is populated in dependency order. Curried
-   * members get their inner sequence warmed to the k-extent reported by the
-   * provider registered via {@link #setKExtentProvider}.
-   *
-   * <p>
-   * Idempotent. Honors precision: a higher-bits call routes through each
-   * member's own precision guard.
-   *
-   * @param name target SCC member that's about to be evaluated at {@code idx}
-   * @param idx  the index the caller wants ready
-   * @param bits the precision
-   */
-  public void warmToBottomUp(String name, int idx, int bits)
-  {
-    Set<String> scc    = sccOf(name);
-    boolean     cyclic = scc.size() > 1 || selfReferential.contains(name);
-    if (!cyclic)
-      return;
-
-    if (warming.get())
-      return;
-    warming.set(true);
-    try
-    {
-      List<String> order = sccWarmOrder(scc);
-      try ( Integer i = new Integer())
-      {
-        for (int ii = 0; ii <= idx; ii++)
-        {
-          i.set(ii);
-          for (String member : order)
-          {
-            FunctionMapping<?, ?, ?> m = functions.get(member);
-            if (m == null || m.instance == null)
-              continue;
-            warmMember(m, i, ii, idx, bits);
-          }
-        }
-      }
-    }
-    finally
-    {
-      warming.set(false);
-    }
-  }
-
-  /**
-   * Dependency order in which to warm the members of a mutually-recursive cluster
-   * at a fixed index. The indexed sequence members (those with a k-extent
-   * provider) carry the recurrence and, within the bottom-up index loop, read
-   * only lower indices that are already cached — so they are warmed first. Every
-   * remaining value member is then warmed only after the cluster members it
-   * references at the same index, so an algebraic read-off such as
-   * {@code α(j)=σ(j)(j+1)/h(j)} is never evaluated before {@code σ} and {@code h}
-   * are cached at that index. Evaluating it out of order forces an on-demand
-   * re-entry that memoises a partial (∅) value and then divides by it — the
-   * {@code DivisionByZeroException} seen on non-symmetric moment functionals.
-   */
-  private List<String> sccWarmOrder(Set<String> scc)
-  {
-    List<String> order     = new ArrayList<>();
-    Set<String>  remaining = new LinkedHashSet<>(scc);
-    for (String member : scc)
-      if (kExtentProviders.containsKey(member))
-      {
-        order.add(member);
-        remaining.remove(member);
-      }
-    boolean progress = true;
-    while (!remaining.isEmpty() && progress)
-    {
-      progress = false;
-      for (Iterator<String> it = remaining.iterator(); it.hasNext();)
-      {
-        String     member = it.next();
-        Dependency dep    = functionReferenceGraph.get(member);
-        boolean    ready  = true;
-        if (dep != null)
-          for (String d : dep.dependsOn)
-            if (scc.contains(d) && remaining.contains(d))
-            {
-              ready = false;
-              break;
-            }
-        if (ready)
-        {
-          order.add(member);
-          it.remove();
-          progress = true;
-        }
-      }
-    }
-    order.addAll(remaining);                 // any residual value-value cycle: stable fallback
-    return order;
-  }
-
-  @SuppressWarnings({ "unchecked", "rawtypes" })
-  private void warmMember(FunctionMapping<?, ?, ?> m, Integer i, int ii, int idx, int bits)
-  {
-    Object instance = m.instance;
-    Object outer    = ((Function) instance).evaluate(i, 1, bits, null);
-    if (outer instanceof Sequence)
-    {
-      java.util.function.IntBinaryOperator provider = kExtentProviders.get(m.functionName);
-      if (provider == null)
-      {
-        throw new CompilerException(String.format("warmToBottomUp(%s, idx=%d): %s is curried and in a mutually-recursive cluster, but no k-extent provider is registered. "
-                      + "Call context.setKExtentProvider(\"%s\", (topIdx, j) -> ...) returning the max inner index reached when populating outer index j given top-level request topIdx.",
-                                                  m.functionName,
-                                                  idx,
-                                                  m.functionName,
-                                                  m.functionName));
-      }
-      Sequence innerSeq = (Sequence) outer;
-      int      kMax     = provider.applyAsInt(idx, ii);
-      try ( Integer k = new Integer())
-      {
-        for (int kk = 0; kk <= kMax; kk++)
-        {
-          k.set(kk);
-          // evaluate(...,null) returns a fresh OWNED copy whose only purpose is
-          // to populate the cache (the cache pokes its own separate copy). The
-          // returned copy is ours; discarding it without close() leaks its native
-          // memory on every warmed cell — and warmTo runs per order per
-          // evaluation, which is what made the calibration grow without bound.
-          closeWarmCopy(innerSeq.evaluate(k, 1, bits, null));
-        }
-      }
-      // `outer`/innerSeq is the cached inner sequence, returned by reference —
-      // shared, not a copy, so it must NOT be closed here.
-    }
-    else
-    {
-      // Non-curried (value) member: the evaluate above returned the warm copy.
-      closeWarmCopy(outer);
-    }
-  }
-
-  /**
-   * Dispose a value returned solely to warm a cache. Closes an owned value copy;
-   * leaves a {@link Sequence} (a by-reference cached inner sequence, not a copy)
-   * untouched. Ownership here is structural — a value codomain such as
-   * {@code ComplexPolynomial} is itself a {@code Function}, so {@code Function}
-   * membership says nothing about it; only {@code Sequence} membership marks the
-   * shared-by-reference case.
-   */
-  private static void closeWarmCopy(Object warmed)
-  {
-    if (warmed instanceof Sequence)
-      return;
-    if (warmed instanceof AutoCloseable closeable)
-    {
-      try
-      {
-        closeable.close();
-      }
-      catch (Exception e)
-      {
-        throw new RuntimeException("failed to close cache-warming copy", e);
-      }
     }
   }
 
