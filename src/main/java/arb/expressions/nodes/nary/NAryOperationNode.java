@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import arb.*;
 import arb.Integer;
 import arb.Real;
-import arb.functions.ConvergentSeriesAccumulator;
 import arb.exceptions.CompilerException;
 import arb.expressions.*;
 import arb.expressions.Context;
@@ -125,9 +124,11 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   public String                                   operandValueFieldName;
 
-  public boolean                                  optimallyTruncated = false;
+  /** Generated {@code Real} field holding the {@code 2^-bits} convergence target. */
+  public String                                   toleranceFieldName;
 
-  public String                                   accumulatorFieldName;
+  /** Generated {@code Real} field holding {@code |term|} of the current summand. */
+  public String                                   absTermFieldName;
 
 
   /**
@@ -382,9 +383,9 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    if (optimallyTruncated)
+    if (upperLimit.isPositiveInfinity())
     {
-      return generateOptimallyTruncatedAccumulation(mv, resultType);
+      return generateConvergentSum(mv, resultType);
     }
     resultType = assignTypes(resultType);
 
@@ -407,59 +408,105 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   }
 
   /**
-   * Registers the {@code arb.Integer} index variable as an intermediate field on
-   * the generated class. The generated field name (e.g. {@code jℤ0003}) is stored
-   * in {@link #indexVariableGeneratedFieldName}; it is distinct from the logical
-   * index name in {@link #indexVariableFieldName} (e.g. {@code j}) which the
-   * operand expression uses to reference it.
-   *
-   * <p>
-   * Because the field is registered through
-   * {@link Expression#newIntermediateVariable}, the compiler-emitted
-   * {@code close()} method will call {@code close()} on it automatically,
-   * releasing its native ARB memory without any manual effort.
+   * Emits the {@code {n=n₀..∞}} sum. This is the <em>identical</em> loop as the
+   * finite {@link #generate} case — {@code result += operand(index); index++} —
+   * with only the <em>loop-termination criterion</em> changed: instead of
+   * comparing the index against a fixed upper bound, the loop stops once the
+   * summand {@code |f(n)|} has fallen to the {@code 2^-bits} precision floor, or
+   * once it stops shrinking (the precision floor has been reached). Every
+   * infinite sum is, by contract, convergent; a divergent series is a modelling
+   * error detected at construction time, never a runtime branch here.
    */
-  protected MethodVisitor generateOptimallyTruncatedAccumulation(MethodVisitor mv, Class<?> resultType)
+  protected MethodVisitor generateConvergentSum(MethodVisitor mv, Class<?> resultType)
   {
-    assert "add".equals(operation) : String.format("the ~ convergence specifier applies only to Σ, not %s(%s)",
-                                                   symbol,
-                                                   operation);
+    if (!"add".equals(operation))
+    {
+      throw new CompilerException(String.format("%s with an ∞ upper limit must be a sum (Σ), not %s(%s)",
+                                                symbol,
+                                                symbol,
+                                                operation));
+    }
     resultType = assignTypes(resultType);
     assignFieldNamesIfNecessary(resultType);
-    assert Real.class.equals(generatedType) : String.format("the ~ convergence specifier requires a Real codomain, not %s",
-                                                                generatedType);
     declareIndexVariableField();
-
-    if (accumulatorFieldName == null)
-    {
-      accumulatorFieldName = expression.newIntermediateVariable("accumulator",
-                                                                ConvergentSeriesAccumulator.class);
-    }
+    declareConvergenceFields();
 
     propagateInputToOperand(mv);
     initializeResultVariable(mv, resultType);
     setIndexToTheLowerLimit(mv);
-    generateUpperLimit(mv);
-
-    loadFieldFromThis(mv, accumulatorFieldName, ConvergentSeriesAccumulator.class);
-    loadOperand(mv);
-    loadIndexVariable(mv);
-    loadFieldFromThis(mv, upperLimitFieldName, Integer.class);
-    loadBitsParameterOntoStack(mv);
-    loadIntermediateResultVariable(mv);
-    invokeMethod(mv,
-                 ConvergentSeriesAccumulator.class,
-                 "accumulate",
-                 getMethodDescriptor(Real.class,
-                                     Function.class,
-                                     Integer.class,
-                                     Integer.class,
-                                     int.class,
-                                     Real.class),
-                 false);
+    generateConvergenceTarget(mv);
+    designateLabel(mv, beginLoop);
+    generateInnerLoop(mv);
     pop(mv);
+    generateConvergenceTest(mv);
+    jumpTo(mv, beginLoop);
+    designateLabel(mv, endLoop);
     assignResult(mv, resultType);
     return mv;
+  }
+
+  /**
+   * Declares the {@code Real} scratch fields the {@code {..∞}} termination test
+   * uses: the {@code 2^-bits} tolerance, and the current/previous summand
+   * magnitudes. Registered as intermediate variables so the compiler-emitted
+   * {@code close()} releases their native memory.
+   */
+  protected void declareConvergenceFields()
+  {
+    if (toleranceFieldName == null)
+    {
+      toleranceFieldName = expression.newIntermediateVariable("tolerance", Real.class);
+    }
+    if (absTermFieldName == null)
+    {
+      absTermFieldName = expression.newIntermediateVariable("absTerm", Real.class);
+    }
+  }
+
+  /**
+   * Emits {@code tolerance = 2^-bits} once, before the loop: the summand
+   * magnitude below which the tail contributes nothing at the working precision.
+   */
+  protected void generateConvergenceTarget(MethodVisitor mv)
+  {
+    // tolerance = 1 ; tolerance = tolerance · 2^(-bits)
+    loadFieldFromThis(mv, toleranceFieldName, Real.class);
+    invokeMethod(mv, Real.class, "one", getMethodDescriptor(Real.class), false);
+    loadBitsParameterOntoStack(mv);
+    mv.visitInsn(INEG);
+    loadFieldFromThis(mv, toleranceFieldName, Real.class);
+    invokeMethod(mv, Real.class, "mul2e", getMethodDescriptor(Real.class, int.class, Real.class), false);
+    pop(mv);
+  }
+
+  /**
+   * Emits the loop-termination criterion evaluated once per iteration on the
+   * just-added summand held in {@link #operandValueFieldName}: stop once the
+   * term magnitude has fallen to the {@code 2^-bits} precision floor.
+   *
+   * <pre>
+   *   absTerm = |term|
+   *   if (absTerm ≤ tolerance) break;
+   * </pre>
+   *
+   * Every infinite sum is convergent by contract, so its terms necessarily fall
+   * below any positive tolerance; a divergent series is a modelling error caught
+   * at construction time, never here.
+   */
+  protected void generateConvergenceTest(MethodVisitor mv)
+  {
+    // absTerm = |term|
+    loadFieldFromThis(mv, operandValueFieldName, generatedType);
+    loadBitsParameterOntoStack(mv);
+    loadFieldFromThis(mv, absTermFieldName, Real.class);
+    invokeMethod(mv, generatedType, "abs", getMethodDescriptor(Real.class, int.class, Real.class), false);
+    pop(mv);
+
+    // if (absTerm ≤ tolerance) break;
+    loadFieldFromThis(mv, absTermFieldName, Real.class);
+    loadFieldFromThis(mv, toleranceFieldName, Real.class);
+    invokeMethod(mv, Real.class, "compareTo", getMethodDescriptor(int.class, Real.class), false);
+    jumpToIfLessThanOrEquals(mv, endLoop);
   }
 
   protected void declareIndexVariableField()
@@ -797,7 +844,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     expression.require('=');
     parseLowerLimit();
     parseUpperLimit();
-    optimallyTruncated = expression.nextCharacterIs('~');
 
     parseMultisumIndices();
 
@@ -1317,7 +1363,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     nAryOperationNode.functionInternalName            = newExpression.internalName();
     nAryOperationNode.operandFunctionFieldName        = this.operandFunctionFieldName;
     nAryOperationNode.operandMapping                  = (FunctionMapping<Integer, S, Sequence<S>>) (FunctionMapping<?, ?, ?>) this.operandMapping;
-    nAryOperationNode.optimallyTruncated              = this.optimallyTruncated;
     newExpression.registerReferencedFunction(this.operandFunctionFieldName, this.operandMapping);
     return nAryOperationNode;
   }
@@ -1351,13 +1396,12 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                                           operandExpression,
                                                           lowerLimit,
                                                           upperLimit);
-    return String.format("%s%s{%s=%s…%s%s}",
+    return String.format("%s%s{%s=%s…%s}",
                          symbol,
                          operandExpression,
                          indexVariableFieldName,
                          lowerLimit,
-                         upperLimit,
-                         optimallyTruncated ? "~" : "");
+                         upperLimit);
   }
 
   @Override
