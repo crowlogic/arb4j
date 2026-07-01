@@ -114,42 +114,7 @@ public class OrthogonalPolynomialMomentFunctionalSequence extends
     this.h = context.getFunctionMapping("h").instantiate();
     this.α = context.getFunctionMapping("α").instantiate();
 
-    // Declare the k-reach of σ's 3-term recurrence to the generic warmer.
-    // σ(j)(k) = σ(j-1)(k+1) — α(j-1)·σ(j-1)(k) − β(j-1)·σ(j-2)(k): +1 in k per j-step.
-    // To materialise σ(M)(M+1) the lowest level needs k up to 2M+1; +1 covers it.
-    context.setKExtentProvider("σ", (topIdx, j) -> 2 * topIdx + 2 - j);
-
     p0.one(); // P(0, x) = 1; p1 set lazily in initialize()
-  }
-
-  /**
-   * Populate the σ-table caches bottom-up through index {@code M} so every later
-   * top-down read of σ(j)(k), h(j), α(j), β(j) is a cache hit on a fully computed
-   * value.
-   *
-   * <p>
-   * The cluster {σ,α,β,h} is mutually recursive (α(j)=σ(j)(j+1)/h(j); σ references
-   * α(j-1)). Evaluated on demand, computing α(j) before α(j-1) is cached drives
-   * the σ recurrence into α(j-1) <em>while α(j) is still in flight on the same
-   * instance</em>, corrupting its scratch and memoising a partial ∅ that a later
-   * read divides by → {@code DivisionByZeroException: ∅}.
-   *
-   * <p>
-   * Filling strictly bottom-up removes that: at step j the σ(j) cells are
-   * materialised by direct σ evaluation (α not in flight) using the already
-   * cached α(&lt;j)/β(&lt;j)/σ(&lt;j); then h(j), α(j), β(j) are pure cache reads
-   * of σ(j). No instance is re-entered cold and no partial value is cached. With
-   * σfunc memoised (see {@code Expression.shouldCache}) this is O(M²) and
-   * idempotent — re-calls are cache hits.
-   */
-  /**
-   * Generic bottom-up warmer: delegate to {@link Context#warmToBottomUp}, which
-   * detects the {σ,h,α,β} SCC and walks it in dependency order. The σ k-extent
-   * is supplied via the {@code setKExtentProvider} call in the constructor.
-   */
-  public void warmTo(int M, int bits)
-  {
-    context.warmToBottomUp("β", M, bits);
   }
 
   /** Set p1 = x − α(0), then delegate to the parent. */

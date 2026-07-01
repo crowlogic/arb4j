@@ -1068,32 +1068,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
-  /**
-   * Returns true if following the reference graph from {@code from} eventually
-   * reaches a function named {@code target}. Used to detect all cycle lengths
-   * in a mutually-recursive cluster at expression-compile time.
-   */
-  static boolean isTransitivelyReachable(FunctionMapping<?, ?, ?> from, String target, Set<String> visited)
-  {
-    if (from == null || from.expression == null)
-    {
-      return false;
-    }
-    for (var entry : from.expression.getReferencedFunctions().entrySet())
-    {
-      String name = entry.getKey();
-      if (name.equals(target))
-      {
-        return true;
-      }
-      if (visited.add(name) && isTransitivelyReachable(entry.getValue(), target, visited))
-      {
-        return true;
-      }
-    }
-    return false;
-  }
-
   protected void constructReferencedFunctionInstanceIfItIsNull(MethodVisitor mv, FunctionMapping<?, ?, ?> mapping)
   {
     assert mapping != null : "mapping shan't be null";
@@ -1101,8 +1075,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     boolean hasSomething     = mapping.expression != null || mapping.instance != null;
     // A forward-declared peer: ctx.declare("f",...) was called but express("f",...)
     // hasn't run yet when this expression was compiled. The concrete class is
-    // unknown at compile time, so we emit a runtime call to allocateFreshPeer
-    // rather than a bytecode `new`.
+    // unknown at compile time, so we emit a runtime lookup of the context's
+    // canonical instance rather than a bytecode `new`.
     boolean isForwardDeclared = !hasSomething;
 
     if (!isSelfRef && (hasSomething || isForwardDeclared))
@@ -1114,9 +1088,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       if (isForwardDeclared)
       {
         // Forward-declared peer (declared but not yet expressed at compile time).
-        // Emit: if (this.f == null) { this.f = (FType) this.context.allocateFreshPeer("f"); }
-        // At runtime, allocateFreshPeer looks up the now-instantiated class and
-        // returns a fresh instance (own `evaluating` flag, shared context & cache).
+        // Emit: if (this.f == null) { this.f = (FType) this.context.lookupFunctionInstance("f"); }
+        // At runtime the context holds the by-then instantiated canonical
+        // singleton — the ONE instance whose cache memoises this function.
         loadThisOntoStack(mv).visitFieldInsn(GETFIELD, internalName(), mapping.functionName, fieldDescriptor);
         mv.visitJumpInsn(Opcodes.IFNONNULL, alreadyInitialized);
         loadThisOntoStack(mv); // for PUTFIELD
@@ -1125,7 +1099,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         mv.visitLdcInsn(mapping.functionName);
         mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                            Type.getInternalName(Context.class),
-                           "allocateFreshPeer",
+                           "lookupFunctionInstance",
                            "(Ljava/lang/String;)Larb/functions/Function;",
                            false);
         mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(mapping.functionClass));
@@ -1140,82 +1114,50 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         // lazily by the JVM when the opcode first executes — by which point the
         // outer compile chain has defined every class in the recursive cluster.
         String typeInternalName = mapping.functionInternalName();
-        // Detect if the peer is in the same SCC as this expression (any cycle
-        // length, not just 2). For all such peers we must allocate a FRESH
-        // instance so each evaluation level owns its own `evaluating` flag and
-        // the re-entrancy guard cannot fire.
-        // Detect if the peer is in the same SCC as this expression (any cycle
-        // length, not just 2). For all such peers we must allocate a FRESH
-        // instance so each evaluation level owns its own `evaluating` flag and
-        // the re-entrancy guard cannot fire. Σ/Π operand sub-expressions carry a
-        // null functionName but are referenced by their owner under className(),
-        // so fall back to className() for the cycle test — otherwise a recursive
-        // reference nested inside a sum operand is missed and aliases the same
-        // instance, tripping the guard.
-        String  ownerName           = functionName != null ? functionName : className();
-        boolean isMutuallyRecursive = isTransitivelyReachable(mapping, ownerName, new HashSet<>());
-        var     needsAllocation     = new Label();
+        var    needsAllocation  = new Label();
 
         // 1. if (this.<field> != null) skip → field already populated, done.
         loadThisOntoStack(mv).visitFieldInsn(GETFIELD, internalName(), mapping.functionName, fieldDescriptor);
         mv.visitJumpInsn(Opcodes.IFNONNULL, alreadyInitialized);
 
-        if (isMutuallyRecursive)
-        {
-          // Recursive peer: allocate via allocateFreshPeer so the fresh instance
-          // shares the context singleton's IndexCache — without this, each
-          // evaluation level gets its own empty cache and q(n) is recomputed
-          // O(2^n) times instead of being memoized.
-          // if (this.g == null) { this.g = (GType) context.allocateFreshPeer("g"); }
-          loadThisOntoStack(mv); // for PUTFIELD
-          loadThisOntoStack(mv);
-          mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
-          mv.visitLdcInsn(mapping.functionName);
-          mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                             Type.getInternalName(Context.class),
-                             "allocateFreshPeer",
-                             "(Ljava/lang/String;)Larb/functions/Function;",
-                             false);
-          mv.visitTypeInsn(Opcodes.CHECKCAST, typeInternalName);
-          putField(mv, internalName(), mapping.functionName, fieldDescriptor);
-        }
-        else
-        {
-          // 2. Try the context's canonical instance (only for non-recursive peers):
-          // Function f = this.context.lookupFunctionInstance("<name>");
-          // if (f != null) { this.<field> = (FieldType) f; goto done; }
-          loadThisOntoStack(mv);
-          loadThisOntoStack(mv);
-          mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
-          mv.visitLdcInsn(mapping.functionName);
-          mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                             Type.getInternalName(Context.class),
-                             "lookupFunctionInstance",
-                             "(Ljava/lang/String;)Larb/functions/Function;",
-                             false);
-          duplicateTopOfTheStack(mv);
-          mv.visitJumpInsn(Opcodes.IFNULL, needsAllocation);
-          // Stack: this, function. Cast and store.
-          mv.visitTypeInsn(Opcodes.CHECKCAST, typeInternalName);
-          putField(mv, internalName(), mapping.functionName, fieldDescriptor);
-          mv.visitJumpInsn(Opcodes.GOTO, alreadyInitialized);
+        // 2. Try the context's canonical instance — the ONE instance whose
+        // cache memoises this function, including for peers in a recursive
+        // cluster: a re-entrant evaluate() on it is served from the cache
+        // ahead of the guard, and the dependency-order fill-on-miss keeps the
+        // guard from ever firing on a genuine recompute.
+        // Function f = this.context.lookupFunctionInstance("<name>");
+        // if (f != null) { this.<field> = (FieldType) f; goto done; }
+        loadThisOntoStack(mv);
+        loadThisOntoStack(mv);
+        mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
+        mv.visitLdcInsn(mapping.functionName);
+        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                           Type.getInternalName(Context.class),
+                           "lookupFunctionInstance",
+                           "(Ljava/lang/String;)Larb/functions/Function;",
+                           false);
+        duplicateTopOfTheStack(mv);
+        mv.visitJumpInsn(Opcodes.IFNULL, needsAllocation);
+        // Stack: this, function. Cast and store.
+        mv.visitTypeInsn(Opcodes.CHECKCAST, typeInternalName);
+        putField(mv, internalName(), mapping.functionName, fieldDescriptor);
+        mv.visitJumpInsn(Opcodes.GOTO, alreadyInitialized);
 
-          // 3. Fallback when context has no instance yet.
-          mv.visitLabel(needsAllocation);
-          mv.visitInsn(Opcodes.POP); // discard the dup'd null
-          mv.visitInsn(Opcodes.POP); // discard `this` for the PUTFIELD
-          loadThisOntoStack(mv);
-          generateNewObjectInstruction(mv, typeInternalName);
-          duplicateTopOfTheStack(mv);
-          invokeDefaultConstructor(mv, typeInternalName);
-          putField(mv, internalName(), mapping.functionName, fieldDescriptor);
-          // Propagate the parent's context field.
-          loadThisOntoStack(mv);
-          mv.visitFieldInsn(GETFIELD, internalName(), mapping.functionName, fieldDescriptor);
-          loadThisOntoStack(mv);
-          mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
-          mv.visitFieldInsn(PUTFIELD, typeInternalName, "context", contextTypeDesc);
-        }
+        // 3. Fallback when context has no instance yet.
+        mv.visitLabel(needsAllocation);
+        mv.visitInsn(Opcodes.POP); // discard the dup'd null
+        mv.visitInsn(Opcodes.POP); // discard `this` for the PUTFIELD
+        loadThisOntoStack(mv);
+        generateNewObjectInstruction(mv, typeInternalName);
+        duplicateTopOfTheStack(mv);
+        invokeDefaultConstructor(mv, typeInternalName);
+        putField(mv, internalName(), mapping.functionName, fieldDescriptor);
+        // Propagate the parent's context field.
+        loadThisOntoStack(mv);
+        mv.visitFieldInsn(GETFIELD, internalName(), mapping.functionName, fieldDescriptor);
+        loadThisOntoStack(mv);
+        mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
+        mv.visitFieldInsn(PUTFIELD, typeInternalName, "context", contextTypeDesc);
       }
 
       mv.visitLabel(alreadyInitialized);
@@ -1290,11 +1232,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (shouldCache())
     {
       String signature = "L" + Type.getInternalName(IndexCache.class) + "<" + Type.getDescriptor(coDomainType) + ">;";
-      // Public (not private): generateSelfReference shares this cache into the
-      // allocated self-instance so a recursive chain memoizes once instead of
-      // recomputing at every level, using a cross-class PUTFIELD that requires
-      // public visibility.
-      cw.visitField(Opcodes.ACC_PUBLIC, "cache", Type.getDescriptor(IndexCache.class), signature, null);
+      // Private: an IndexCache caches exactly one function and belongs to
+      // exactly one instance — recursion memoises on this same instance via
+      // the cache peek ahead of the re-entrancy guard, so no cross-class
+      // PUTFIELD ever shares it.
+      cw.visitField(Opcodes.ACC_PRIVATE, "cache", Type.getDescriptor(IndexCache.class), signature, null);
     }
     if (shouldCacheValueBacking())
     {
@@ -2025,6 +1967,148 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
+   * On a cache miss at index {@code k}, fill the {@code (index, order)}-keyed
+   * cache in dependency order — lowest index first — before the re-entrancy
+   * guard is taken, so that by the time {@code k}'s recompute runs every read
+   * of a lower index is a cache hit served re-entrantly by the peek emitted
+   * ahead of the guard in {@link #generateEvaluationMethod}. This is what
+   * makes a self- or mutually-recursive sequence evaluable on a single
+   * instance, memoised once, in O(k): the recompute never re-enters
+   * {@code evaluate_body} because every value it reads is already cached.
+   *
+   * <p>
+   * Emitted code (conceptually):
+   *
+   * <pre>
+   * if (!this.evaluating)
+   * {
+   *   int k = in.getSignedValue();
+   *   if (k &gt; 0)
+   *   {
+   *     Integer i = new Integer();
+   *     C scratch = new C(); // null for interface (generated functional) codomains
+   *     for (int ii = 0; ii &lt; k; ii++)
+   *     {
+   *       try
+   *       {
+   *         this.evaluate(i.set(ii), order, bits, scratch);
+   *       }
+   *       catch (Throwable belowRecurrenceBase)
+   *       {
+   *         // index below the recurrence's base — not in the fill's reach
+   *       }
+   *     }
+   *     scratch.close();
+   *     i.close();
+   *   }
+   * }
+   * </pre>
+   *
+   * <p>
+   * Each fill iteration is individually caught-and-skipped: an index below the
+   * recurrence's base (e.g. {@code a(0)} of a base-1 recurrence, whose
+   * recompute descends to {@code a(-1)} and is rejected by the guard) is
+   * simply not part of the table. This defers rather than decides — the fill
+   * never changes the final result, only which entries get pre-cached; any
+   * index the requested recompute genuinely reads is evaluated on the real
+   * path, where a genuine failure still propagates.
+   *
+   * <p>
+   * A re-entrant miss ({@code evaluating} already true) skips the fill and
+   * falls through to the guard, which rejects the genuine attempt to recompute
+   * mid-flight.
+   */
+  protected void generateDependencyOrderCacheFill(MethodVisitor mv)
+  {
+    String integerInternal   = Type.getInternalName(arb.Integer.class);
+    String integerDescriptor = Type.getDescriptor(arb.Integer.class);
+    Label  skipFill          = new Label();
+    int    kSlot             = 5;
+    int    indexSlot         = 6;
+    int    scratchSlot       = 7;
+    int    counterSlot       = 8;
+
+    if (evaluateGuardEnabled)
+    {
+      loadThisOntoStack(mv);
+      mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "evaluating", "Z");
+      mv.visitJumpInsn(Opcodes.IFNE, skipFill);
+    }
+    // int k = in.getSignedValue();
+    loadInputParameterChecked(mv);
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, integerInternal, "getSignedValue", "()I", false);
+    mv.visitVarInsn(Opcodes.ISTORE, kSlot);
+    // if (k <= 0) skip;
+    mv.visitVarInsn(Opcodes.ILOAD, kSlot);
+    mv.visitJumpInsn(Opcodes.IFLE, skipFill);
+    // Integer i = new Integer();
+    mv.visitTypeInsn(Opcodes.NEW, integerInternal);
+    duplicateTopOfTheStack(mv);
+    mv.visitMethodInsn(Opcodes.INVOKESPECIAL, integerInternal, "<init>", "()V", false);
+    mv.visitVarInsn(Opcodes.ASTORE, indexSlot);
+    // C scratch = new C(); — the fill calls write into it, the cache pokes its
+    // own copy. Interface (generated functional) codomains take null instead:
+    // their cache-hit and poke paths never touch the result parameter.
+    if (coDomainType.isInterface())
+    {
+      mv.visitInsn(Opcodes.ACONST_NULL);
+    }
+    else
+    {
+      mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(coDomainType));
+      duplicateTopOfTheStack(mv);
+      mv.visitMethodInsn(Opcodes.INVOKESPECIAL, Type.getInternalName(coDomainType), "<init>", "()V", false);
+    }
+    mv.visitVarInsn(Opcodes.ASTORE, scratchSlot);
+    // for (int ii = 0; ii < k; ii++) try { this.evaluate(i.set(ii), order, bits, scratch); } catch (Throwable t) {}
+    Label loopCondition = new Label();
+    Label loopEnd       = new Label();
+    Label tryStart      = new Label();
+    Label tryEnd        = new Label();
+    Label skippedIndex  = new Label();
+    Label loopIncrement = new Label();
+    mv.visitTryCatchBlock(tryStart, tryEnd, skippedIndex, "java/lang/Throwable");
+    mv.visitInsn(Opcodes.ICONST_0);
+    mv.visitVarInsn(Opcodes.ISTORE, counterSlot);
+    mv.visitLabel(loopCondition);
+    mv.visitVarInsn(Opcodes.ILOAD, counterSlot);
+    mv.visitVarInsn(Opcodes.ILOAD, kSlot);
+    mv.visitJumpInsn(Opcodes.IF_ICMPGE, loopEnd);
+    mv.visitLabel(tryStart);
+    loadThisOntoStack(mv);
+    mv.visitVarInsn(Opcodes.ALOAD, indexSlot);
+    mv.visitVarInsn(Opcodes.ILOAD, counterSlot);
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, integerInternal, "set", "(I)" + integerDescriptor, false);
+    mv.visitVarInsn(Opcodes.ILOAD, 2); // order — the cache is keyed by (index, order)
+    mv.visitVarInsn(Opcodes.ILOAD, 3); // bits
+    mv.visitVarInsn(Opcodes.ALOAD, scratchSlot);
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, internalName(), "evaluate", Compiler.evaluationMethodDescriptor, false);
+    mv.visitInsn(Opcodes.POP);
+    mv.visitLabel(tryEnd);
+    mv.visitJumpInsn(Opcodes.GOTO, loopIncrement);
+    // An index below the recurrence's base is not in the fill's reach — the
+    // guard (or the arithmetic itself) rejects it. Skipping it defers rather
+    // than decides: any index the requested recompute genuinely reads is
+    // evaluated on the real path, where a genuine failure still propagates.
+    mv.visitLabel(skippedIndex);
+    mv.visitInsn(Opcodes.POP); // discard the thrown Throwable
+    mv.visitLabel(loopIncrement);
+    mv.visitIincInsn(counterSlot, 1);
+    mv.visitJumpInsn(Opcodes.GOTO, loopCondition);
+    mv.visitLabel(loopEnd);
+    // scratch.close(); (owned value scratch only — a functional scratch is null)
+    if (!coDomainType.isInterface() && AutoCloseable.class.isAssignableFrom(coDomainType))
+    {
+      mv.visitVarInsn(Opcodes.ALOAD, scratchSlot);
+      invokeCloseMethod(mv, coDomainType);
+    }
+    // i.close();
+    mv.visitVarInsn(Opcodes.ALOAD, indexSlot);
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, integerInternal, "close", "()V", false);
+    mv.visitLabel(skipFill);
+  }
+
+  /**
    * After rootNode.generate() / generateFunctionalElement has left the computed
    * result on the stack: poke into the cache and return.
    *
@@ -2511,6 +2595,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       generateReifiedNullResultAllocation(mv);
       generateCachePeek(mv);
+      generateDependencyOrderCacheFill(mv);
     }
 
     if (evaluateGuardEnabled)
@@ -3030,48 +3115,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     var     mv          = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, methodName, "()V", null, null);
     mv.visitCode();
     boolean cached      = shouldCache();
-    // Reentrancy flag keyed on the SHARED identity of the cluster:
-    //
-    //  - cache-bearing class: a self-referential sequence (the Müntz a/aoperand
-    //    cluster) is evaluated through an N-deep chain of DISTINCT instances —
-    //    one per recursion level for scratch isolation — that all SHARE one
-    //    IndexCache (the parent stores child.cache = this.cache, see
-    //    generateNestedFunctionInstanceCacheSharing below). A per-instance flag
-    //    cannot stop a walk over distinct instances and overflows the stack at
-    //    large order. The flag on the shared cache collapses the whole chain to a
-    //    single visit: the first instance clears the one shared cache and sets
-    //    cache.invalidating, every other chain member (reached via the self-edge
-    //    or the operand bridge) sees it set and returns. This is the minimal,
-    //    collection-free form of "invalidate each cluster once" the same way
-    //    close() uses `closed`. Mutually-recursive sequences with independent
-    //    caches each carry their own flag and are cleared exactly once.
-    //
-    //  - cacheless class: per-instance invalidatingCache over a finite ref graph.
+    // Per-instance reentrancy flag: each instance owns exactly one cache (no
+    // cache sharing, no per-level instance chains), so the same `closed`-style
+    // boolean that terminates close() over a cyclic reference graph terminates
+    // the invalidation walk — every cache is cleared exactly once.
     var notInvalidating = new Label();
-    if (cached)
-    {
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "cache", Type.getDescriptor(IndexCache.class));
-      mv.visitFieldInsn(Opcodes.GETFIELD, Type.getInternalName(IndexCache.class), "invalidating", "Z");
-      mv.visitJumpInsn(Opcodes.IFEQ, notInvalidating);
-      mv.visitInsn(Opcodes.RETURN);
-      mv.visitLabel(notInvalidating);
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "cache", Type.getDescriptor(IndexCache.class));
-      mv.visitInsn(Opcodes.ICONST_1);
-      mv.visitFieldInsn(Opcodes.PUTFIELD, Type.getInternalName(IndexCache.class), "invalidating", "Z");
-    }
-    else
-    {
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "invalidatingCache", "Z");
-      mv.visitJumpInsn(Opcodes.IFEQ, notInvalidating);
-      mv.visitInsn(Opcodes.RETURN);
-      mv.visitLabel(notInvalidating);
-      loadThisOntoStack(mv);
-      mv.visitInsn(Opcodes.ICONST_1);
-      mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "invalidatingCache", "Z");
-    }
+    loadThisOntoStack(mv);
+    mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "invalidatingCache", "Z");
+    mv.visitJumpInsn(Opcodes.IFEQ, notInvalidating);
+    mv.visitInsn(Opcodes.RETURN);
+    mv.visitLabel(notInvalidating);
+    loadThisOntoStack(mv);
+    mv.visitInsn(Opcodes.ICONST_1);
+    mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "invalidatingCache", "Z");
     if (hasStaticNodes)
     {
       // this.staticPrecision = -1
@@ -3103,8 +3159,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         // k, so any change to another Context variable (e.g. v in the Müntz a/S
         // recurrence) must drop every entry, otherwise a(k) returns the previous
         // v's value at the same k. clear() also closes the owned value copies,
-        // freeing their native memory. One clear of the shared cache drops every
-        // level of a self-referential chain at once.
+        // freeing their native memory.
         generateVirtualMethodInvocation(mv, IndexCache.class, "clear", void.class);
       }
     }
@@ -3141,20 +3196,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         mv.visitLabel(skip);
       }
     }
-    // release the reentrancy flag (shared-cache flag for a cluster, else per-instance)
-    if (cached)
-    {
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(Opcodes.GETFIELD, internalName(), "cache", Type.getDescriptor(IndexCache.class));
-      mv.visitInsn(Opcodes.ICONST_0);
-      mv.visitFieldInsn(Opcodes.PUTFIELD, Type.getInternalName(IndexCache.class), "invalidating", "Z");
-    }
-    else
-    {
-      loadThisOntoStack(mv);
-      mv.visitInsn(Opcodes.ICONST_0);
-      mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "invalidatingCache", "Z");
-    }
+    // release the per-instance reentrancy flag
+    loadThisOntoStack(mv);
+    mv.visitInsn(Opcodes.ICONST_0);
+    mv.visitFieldInsn(Opcodes.PUTFIELD, internalName(), "invalidatingCache", "Z");
     mv.visitInsn(Opcodes.RETURN);
     mv.visitMaxs(0, 0);
     mv.visitEnd();
@@ -3219,45 +3264,27 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     // Self-reference codegen for recursive functions.
     //
-    // Emit the same null-guarded pattern used for non-self refs: if the field
-    // already holds a non-null reference (because injection wired it), keep
-    // that reference; otherwise allocate a fresh instance as the fallback.
+    // The recursive-call receiver is THIS instance: a re-entrant evaluate()
+    // is served from the (index, order)-keyed cache ahead of the re-entrancy
+    // guard, and the dependency-order fill-on-miss guarantees every value a
+    // recompute reads is already cached — so a single instance memoises once
+    // with no per-level instance chain and no cache sharing.
     FunctionMapping<?, ?, ?> mapping = getReferencedFunctions().get(functionName);
     if (mapping == null && context != null)
     {
       mapping = context.getFunctionMapping(functionName);
     }
     assert mapping != null : "no function mapping for " + functionName + " in " + context.toStringExtended();
-    String fieldDescriptor            = mapping.functionFieldDescriptor();
-    String nestedFunctionInternalName = mapping.functionInternalName();
-    String contextTypeDesc            = Type.getDescriptor(Context.class);
-    Label  alreadyAssigned            = new Label();
+    String fieldDescriptor = mapping.functionFieldDescriptor();
+    Label  alreadyAssigned = new Label();
 
     // if (this.<self> != null) goto alreadyAssigned;
     loadThisOntoStack(mv).visitFieldInsn(GETFIELD, internalName(), functionName, fieldDescriptor);
     mv.visitJumpInsn(IFNONNULL, alreadyAssigned);
-    // this.<self> = new <Self>();
+    // this.<self> = this;
     loadThisOntoStack(mv);
-    constructNewObject(mv, nestedFunctionInternalName);
-    invokeDefaultConstructor(duplicateTopOfTheStack(mv), nestedFunctionInternalName);
+    loadThisOntoStack(mv);
     putField(mv, internalName(), functionName, fieldDescriptor);
-    // this.<self>.context = this.context; — share the parent's context so
-    // the new instance's initialize() sees the live, populated Context.
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(GETFIELD, internalName(), functionName, fieldDescriptor);
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
-    mv.visitFieldInsn(PUTFIELD, nestedFunctionInternalName, "context", contextTypeDesc);
-    // this.<self>.cache = this.cache; — share the memoization map so a deep
-    // recursive chain reuses results instead of going O(N) deep on the stack.
-    if (shouldCache())
-    {
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, internalName(), functionName, fieldDescriptor);
-      loadThisOntoStack(mv);
-      mv.visitFieldInsn(GETFIELD, internalName(), "cache", Type.getDescriptor(IndexCache.class));
-      mv.visitFieldInsn(PUTFIELD, nestedFunctionInternalName, "cache", Type.getDescriptor(IndexCache.class));
-    }
     mv.visitLabel(alreadyAssigned);
     initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv), internalName(), functionName, functionName, context.variableClassStream());
     return mv;

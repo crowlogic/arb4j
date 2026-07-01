@@ -134,8 +134,8 @@ public class dd implements ComplexPolynomialSequence, Typesettable, AutoCloseabl
 
    @Override
    public void invalidateCache() {
-      if (!this.cache.invalidating) {
-         this.cache.invalidating = true;
+      if (!this.invalidatingCache) {
+         this.invalidatingCache = true;
          this.cache.clear();
          if (this.u != null) {
             this.u.invalidateCache();
@@ -149,16 +149,16 @@ public class dd implements ComplexPolynomialSequence, Typesettable, AutoCloseabl
             this.da.invalidateCache();
          }
 
-         this.cache.invalidating = false;
+         this.invalidatingCache = false;
       }
    }
 
    @Override
    public void invalidateLocalCache() {
-      if (!this.cache.invalidating) {
-         this.cache.invalidating = true;
+      if (!this.invalidatingCache) {
+         this.invalidatingCache = true;
          this.cache.clear();
-         this.cache.invalidating = false;
+         this.invalidatingCache = false;
       }
    }
 
