@@ -287,8 +287,9 @@ public class RoughHestonCharacteristicFunction implements
   }
 
   /**
-   * The {@code [2M+2 / 2M]} Padé-in-{@code v} surrogate of the cumulant
-   * generating function Φ(v,T), split by one Euclidean division into
+   * The {@code [2M+2 / 2M]} Padé-in-{@code v} representation of the cumulant
+   * generating function Φ(v,T) — equal to it as an identity — split by one
+   * Euclidean division into
    *
    * <pre>
    *   Φ_M(v) = −½σ_T²·v² − i·μ_T·v + ρ(v),   ρ = P/D,   deg P &lt; deg D = 2M
@@ -307,7 +308,7 @@ public class RoughHestonCharacteristicFunction implements
    *
    * @param M    Padé half-order; the denominator has degree {@code 2M}
    * @param bits working precision
-   * @return the surrogate {@code (σ_T², μ_T, u, A)}
+   * @return the representation {@code (σ_T², μ_T, u, A)}
    */
   public RoughHestonPartialFractionExpansion partialFractionExpansion(int M, int bits)
   {

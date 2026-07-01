@@ -9,7 +9,7 @@ import junit.framework.TestCase;
 
 /**
  * Certifies {@link RoughHestonCharacteristicFunction#partialFractionExpansion(int, int)},
- * the model→surrogate bridge of {@code docs/single-series-pricing.md} §3.1: the
+ * the model→representation identity of {@code docs/single-series-pricing.md} §3.1: the
  * {@code [2M+2/2M]} Padé-in-{@code v} split
  *
  * <pre>
@@ -21,7 +21,7 @@ import junit.framework.TestCase;
  * <ol>
  * <li>{@code σ_T² > 0} — the Lewis–Gaussian variance is strictly positive, so
  * the pricing contour of §2 exists (the method throws otherwise); and</li>
- * <li>the surrogate reproduces the model cumulant generating function Φ(v,T) at
+ * <li>the representation reproduces the model cumulant generating function Φ(v,T) at
  * an interior point to Padé accuracy — an exact self-consistency check against
  * the directly-summed Müntz–lattice Taylor series (no numerical integration).</li>
  * </ol>
@@ -30,8 +30,8 @@ import junit.framework.TestCase;
  *      {@link TheArb4jLibrary}
  */
 @SuppressWarnings("resource")
-public class RoughHestonSurrogateTest extends
-                                      TestCase
+public class RoughHestonRepresentationTest extends
+                                           TestCase
 {
   static final int bits = 400;
 
@@ -48,16 +48,16 @@ public class RoughHestonSurrogateTest extends
   }
 
   /**
-   * (2) The surrogate Φ_M(v) = −½σ_T²v² − iμ_T v + Σ A_j/(v−u_j) reproduces the
+   * (2) The representation Φ_M(v) = −½σ_T²v² − iμ_T v + Σ A_j/(v−u_j) reproduces the
    * model cgf Φ(v,T) = Σ_n c_n vⁿ at an interior point v=0.3, to Padé accuracy.
    */
-  public void testSurrogateReproducesModelCumulant()
+  public void testRepresentationReproducesModelCumulant()
   {
     int M = 4;
     try ( var cf = new RoughHestonCharacteristicFunction();
           var pfe = cf.partialFractionExpansion(M, bits);
           Complex c = cf.cumulantTaylorCoefficients(4 * M + 2, bits);
-          Complex v = new Complex(); Complex direct = new Complex(); Complex sur = new Complex();
+          Complex v = new Complex(); Complex direct = new Complex(); Complex repr = new Complex();
           Complex vpow = new Complex(); Complex term = new Complex(); Complex diff = new Complex();
           Complex den = new Complex(); Real diffMag = new Real() )
     {
@@ -73,34 +73,34 @@ public class RoughHestonSurrogateTest extends
         vpow.mul(v, bits, vpow);
       }
 
-      // surrogate: −½σ_T² v² − i μ_T v + Σ_j A_j/(v − u_j), centred so
+      // representation: −½σ_T² v² − i μ_T v + Σ_j A_j/(v − u_j), centred so
       // Φ_M(0)=0 (the model cgf satisfies Φ(0)=0; the Euclidean quotient's real
       // constant is absorbed into ρ(0) and cancels under this centring).
-      sur.zero();
-      Complex sur0 = new Complex();
+      repr.zero();
+      Complex repr0 = new Complex();
       try ( Complex t = new Complex() )
       {
         v.mul(v, bits, t).mul(pfe.σT2, bits, t);       // σ_T² v²
         t.mul2e(-1, t);                                 // ½
-        sur.sub(t, bits, sur);                          // −½σ_T² v²
+        repr.sub(t, bits, repr);                        // −½σ_T² v²
         v.mul(pfe.μT, bits, t).mul(ComplexConstants.imaginaryUnit, bits, t);
-        sur.sub(t, bits, sur);                          // − i μ_T v
+        repr.sub(t, bits, repr);                        // − i μ_T v
         for (int j = 0; j < pfe.u.dim; j++)
         {
           v.sub(pfe.u.get(j), bits, den);
           pfe.A.get(j).div(den, bits, t);
-          sur.add(t, bits, sur);
+          repr.add(t, bits, repr);
           // ρ(0) contribution = A_j/(0 − u_j)
           pfe.u.get(j).negate(den);
           pfe.A.get(j).div(den, bits, t);
-          sur0.add(t, bits, sur0);
+          repr0.add(t, bits, repr0);
         }
       }
-      sur.sub(sur0, bits, sur);                          // Φ_M(v) − Φ_M(0)
-      sur0.close();
+      repr.sub(repr0, bits, repr);                       // Φ_M(v) − Φ_M(0)
+      repr0.close();
 
-      sur.sub(direct, bits, diff).abs(bits, diffMag);
-      assertTrue("surrogate must match model cgf at v=0.3 (got |Δ|=" + diffMag + ")",
+      repr.sub(direct, bits, diff).abs(bits, diffMag);
+      assertTrue("representation must match model cgf at v=0.3 (got |Δ|=" + diffMag + ")",
                  diffMag.doubleValue() < 1e-8);
     }
   }

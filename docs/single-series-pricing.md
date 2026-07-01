@@ -46,13 +46,13 @@ $$
 Two distinct claims must never be conflated; the present source conflates them
 and that is part of why it is "not known to produce the correct answer."
 
-- **(U) Unconditional.** *For any rational surrogate exponent
+- **(U) Unconditional.** *For any rational exponent
   $\Phi_M(v)=\text{(polynomial)}+\text{(proper rational)}$ with strictly
-  negative quadratic symbol, the price under the surrogate
+  negative quadratic symbol, the price under
   $\phi_M=e^{\Phi_M}$ is exactly the single series of §6, with the verified
   error bound of §7.* This is a theorem of complex analysis; it depends on
   nothing about rough Heston, nothing about Padé, and no pole locations.
-- **(C) Conditional.** *That surrogate $\phi_M$ approximates the true rough
+- **(C) Conditional.** *That the diagonal Padé representation $\phi_M$ converges to the true rough
   Heston $\phi_T$.* This is the El Euch–Rosenbaum analyticity of $\Phi$ plus
   Stahl convergence of the diagonal Padé of the Müntz series
   $\widetilde\Phi(z;v)=\sum_k d_k(v)z^k$ ($z=T^{\mu}$, $\mu=H+\tfrac12$). It is
@@ -63,7 +63,7 @@ The user's instruction — single sum, no assumed poles — is precisely the
 demand to deliver **(U)** cleanly and stop smuggling **(C)**'s asymptotic
 pole-location claims into the price formula. Everything below proves **(U)**.
 
-The only structural input used about the surrogate is:
+The only structural input used about the representation is:
 
 > **(H) A contour exists.** There is $c\in(1,p^{*})$ with $\phi_M(-iw)$ finite
 > on $\Re w=c$, where $p^{*}=$ critical moment. Equivalently the proper part of
@@ -71,7 +71,7 @@ The only structural input used about the surrogate is:
 
 (H) is *necessary*: without it the price integral (2.1) diverges (moment
 explosion). It is the genuine, checkable integrability condition. It is **not**
-the assertion that the surrogate has $2M$ simple poles all in the lower
+the assertion that the representation has $2M$ simple poles all in the lower
 half-plane — that assertion (the present `frmp.tex` Assumption A3) is never
 used here.
 
@@ -294,7 +294,7 @@ inspection.) The map sends
 |---|---|
 | left half-plane $\{\Re w<c\}$ (where $\psi$ is analytic) | open unit disk $\{|\zeta|<1\}$ |
 | contour $\{\Re w=c\}$ | unit circle $\{|\zeta|=1\}$, minus $\zeta=1\leftrightarrow w=\infty$ |
-| right half-plane $\{\Re w>c\}$ (all surrogate poles) | exterior $\{|\zeta|>1\}$ |
+| right half-plane $\{\Re w>c\}$ (all representation poles) | exterior $\{|\zeta|>1\}$ |
 
 **Lemma 5.1 ($R_0>1$).** *Every pole $\hat u$ of $\psi$ (with $\Re\hat u\ge p^{*}>c$)
 satisfies $|\zeta(\hat u)|>1$, and $R_0:=\inf_{\hat u}|\zeta(\hat u)|>1$.*
@@ -354,7 +354,7 @@ $$
 From (5.1), $\zeta(w)^n=\sum_{k=0}^n\binom nk(2\kappa)^k(w-q)^{-k}$, so each
 $T^{(\delta)}_n$ is a finite combination of the atoms (4.2) at the **three
 fixed nodes** $\{0,1,q\}$ — the payoff poles and the single Cayley pole, all
-chosen by us, none from the surrogate. Equivalently, the node recurrence
+chosen by us, none from the representation. Equivalently, the node recurrence
 (Appendix B.2) advances them without re-expanding:
 
 $$
@@ -380,7 +380,7 @@ C_M=Ke^{-rT}\sum_{n=0}^{\infty}q_n\big(T^{(1)}_n-T^{(0)}_n\big),
 $$
 
 One index. Coefficients $q_n$ by (6.2); kernel terms by (6.3)–(6.4). The only
-special function is `erfc`. The surrogate enters **only** through $\{q_n\}$;
+special function is `erfc`. The representation enters **only** through $\{q_n\}$;
 the nodes $z_0,z_1,z_q$ are fixed by $\sigma_T,\xi,c,\kappa$ alone.
 
 ---
@@ -440,7 +440,7 @@ compliance with "prove it on its domain, deliver a verified ball."
 
 ## 7.3 End-to-end numerical certificate (the decisive test against truth)
 
-A concrete rational surrogate was built with $\sigma_T^2=0.6$,
+A concrete rational representation was built with $\sigma_T^2=0.6$,
 $\mu_T=\tfrac12\sigma_T^2$, $S_0=100,K=110,rT=0.03$, and an arbitrary proper
 part $r(w)=\sum B_j/(w-\hat u_j)$ with four poles at $\Re\hat u_j\in\{2.5,4.1\}$
 (so $p^{*}=2.5$), contour $c=1.7\in(1,p^{*})$, $\kappa=1$. The **truth** was the
@@ -574,7 +574,7 @@ change that retires the whole heuristic tower.
 **Validate** the implementation the way §7.3 validates the math: (i) exact
 Black–Scholes on $r\equiv0$ to full precision; (ii) cross-check against the
 defining contour integral (2.1) by independent quadrature on random admissible
-surrogates; (iii) confirm geometric coefficient decay and that the certified
+representations; (iii) confirm geometric coefficient decay and that the certified
 ball (7.2) actually contains the quadrature value. Agreement with the present
 source is **not** a validation criterion.
 
@@ -609,5 +609,5 @@ gives $nq_n=\sum_{m=1}^n m r_m q_{n-m}$. $\blacksquare$
 Truth = quadrature of (2.1); series = (6.5) with (6.1)–(6.3). Independent
 quadrature of (4.1) and (4.2) confirmed Lemmas 4.1–4.2 to $\le7\times10^{-16}$.
 Key correctness guards a reimplementation must reproduce: the inverse-map sign
-(5.2); nodes $\{0,1,q\}$ are fixed (never the surrogate poles); $|q_n|$ decays
+(5.2); nodes $\{0,1,q\}$ are fixed (never the representation poles); $|q_n|$ decays
 at rate $R^{-1}<1$; the certified ball (7.2) encloses the quadrature value.

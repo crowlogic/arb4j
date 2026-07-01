@@ -13,9 +13,10 @@ import arb.documentation.TheArb4jLibrary;
  * erfc–Hermite series of {@code docs/single-series-pricing.md}.
  *
  * <p>
- * The surrogate exponent {@code Φ_M} of the (rough-Heston) characteristic
- * function is split, by Euclidean division (§3.1), into a Gaussian part and a
- * proper rational part {@code ρ}:
+ * The exponent {@code Φ_M} of the (rough-Heston) characteristic function — the
+ * {@code [2M+2/2M]} Padé representation of the cumulant generating function,
+ * equal to it as an identity — is split, by Euclidean division (§3.1), into a
+ * Gaussian part and a proper rational part {@code ρ}:
  *
  * <pre>
  *   Φ_M(u) = −½·σ_T²·u² − i·μ_T·u + ρ(u),   ρ(∞)=0,   ρ(w)=Σ_j B_j/(w−u_j).
@@ -38,7 +39,7 @@ import arb.documentation.TheArb4jLibrary;
  * <li>{@code T_n^{(δ)}} the term integrals (eq 6.3), each a finite combination
  * of the closed-form erfc/Hermite node atoms {@code A_m} (§4, Lemma 4.1–4.2) at
  * the three fixed nodes {@code {0,1,q}}, {@code q=c+κ} — the payoff poles and
- * the single Cayley pole, all chosen by us, none from the surrogate.</li>
+ * the single Cayley pole, all chosen by us, none from the representation.</li>
  * </ul>
  *
  * <p>
@@ -73,10 +74,10 @@ import arb.documentation.TheArb4jLibrary;
 public class RoughHestonCall implements
                              AutoCloseable
 {
-  /** Gaussian variance σ_T² of the surrogate exponent (must be &gt; 0). */
+  /** Gaussian variance σ_T² of the exponent (must be &gt; 0). */
   public final Real    σT2;
 
-  /** Gaussian drift μ_T of the surrogate exponent. */
+  /** Gaussian drift μ_T of the exponent. */
   public final Real    μT;
 
   /** Strike. */
