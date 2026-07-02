@@ -1,0 +1,1 @@
+make all types that can be put into a Context keep track of which Contexts they are registered in and deregistered themselves in their close methods so that dead references to idiotically closed objects do not remain in the context being treated as if they are valid
