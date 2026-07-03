@@ -44,14 +44,17 @@ import arb.functions.real.RealNullaryFunction;
  *
  * <h2>Cumulants from the Müntz–Padé d-sequence</h2>
  *
- * The cumulant generating polynomial is the single ring-level sum
+ * The cumulant generating polynomial is the single ring-level convergent sum
  *
  * <pre>
- *   Φ = Σ_{k=0..N} T^(k·μ+1) · d(k)
+ *   Φ = Σ_{k=0..∞} T^(k·μ+1) · d(k)
  * </pre>
  *
  * of the coefficient polynomials d(k) supplied by
- * {@link arb.functions.complex.MuntzPadeCumulantGenerator}, and the cumulants
+ * {@link arb.functions.complex.MuntzPadeCumulantGenerator}, terminating when
+ * the summand's norm falls to the 2^-bits precision floor — the Müntz order is
+ * whatever the convergence of the series delivers at the working precision,
+ * never a fixed ceiling — and the cumulants
  * are the point-derivatives κ_m = Re((−ⅈ)^m · Φ^{(m)}(0)) — no coefficient
  * access. Every step — κ, the matching Gaussian mean/variance/stdev, the
  * standardized cumulants S(k), the weights c(n), and the price Π(k) — is a
@@ -86,18 +89,6 @@ public class RoughHestonEdgeworthCallPrice implements
   private static final String                    DEFAULT_S0     = "1.0";
   private static final String                    DEFAULT_K      = "1.0";
   private static final String                    DEFAULT_rr     = "0.0";
-
-  /**
-   * Müntz order used for cumulant accumulation. The Müntz coefficients a_k —
-   * and hence the cumulants κ_m — are order-invariant: growing N only
-   * accumulates more terms of the convergent cumulant sum, it never changes an
-   * already-computed value. It is set once, well past cumulant convergence for
-   * the rough-Heston regime. It bounds nothing on the Edgeworth side: the
-   * Edgeworth order J in {@link #call(Real, int, Real)} grows until the
-   * expansion itself terminates it — either by convergence or by passing its
-   * optimal truncation point — never by a fixed ceiling.
-   */
-  private static final int                       MUNTZ_ORDER = 48;
 
   /** Underlying CGF (and Müntz–Padé d-sequence via {@code φ.cgf.d}). */
   public final RoughHestonCharacteristicFunction φ;
@@ -175,7 +166,6 @@ public class RoughHestonEdgeworthCallPrice implements
   public RoughHestonEdgeworthCallPrice(Complex v)
   {
     this.φ = new RoughHestonCharacteristicFunction(v);
-    this.φ.N.set(MUNTZ_ORDER);
 
     this.S0             = new Real(DEFAULT_S0, 128).setName("S0");
     this.rr             = new Real(DEFAULT_rr, 128).setName("rr");
@@ -197,7 +187,6 @@ public class RoughHestonEdgeworthCallPrice implements
       throw new IllegalArgumentException("K must not be null");
 
     this.φ = new RoughHestonCharacteristicFunction(context, v);
-    this.φ.N.set(MUNTZ_ORDER);
 
     this.S0             = required(context, "S0");
     this.rr             = required(context, "rr");
@@ -216,11 +205,14 @@ public class RoughHestonEdgeworthCallPrice implements
    */
   private void compileCumulantAndPriceChain()
   {
-    // CGF polynomial Φ = Σ_k T^{kμ+1}·d(k) — a single ring-level sum of the
-    // coefficient polynomials. The cumulants are read off as the
-    // point-derivatives κ_m = Re((−i)^m·Φ^{(m)}(0)) — no coefficient access (#1022).
+    // CGF polynomial Φ = Σ_k T^{kμ+1}·d(k) — a single ring-level convergent
+    // sum of the coefficient polynomials, terminating when the summand's norm
+    // falls to the 2^-bits precision floor: the Müntz order is whatever the
+    // convergence of the series delivers at the working precision — there is
+    // no fixed ceiling. The cumulants are read off as the point-derivatives
+    // κ_m = Re((−i)^m·Φ^{(m)}(0)) — no coefficient access (#1022).
     ComplexPolynomialNullaryFunction Φ = ComplexPolynomialNullaryFunction.express("Φ",
-                                                                                  "Σk➔T^(k*μ+1)*d(k){k=0..N}",
+                                                                                  "Σk➔T^(k*μ+1)*d(k){k=0..∞}",
                                                                                   pricingContext);
     this.κ = new RoughHestonCumulantSequence(Φ);
     pricingContext.registerFunction("κ", κ);
@@ -245,7 +237,6 @@ public class RoughHestonEdgeworthCallPrice implements
   {
     Context ctx = new Context();
     ctx.registerVariable(J);
-    ctx.registerVariable(φ.N);
     ctx.registerVariable(S0);
     ctx.registerVariable(rr);
     ctx.registerVariable(φ.T);

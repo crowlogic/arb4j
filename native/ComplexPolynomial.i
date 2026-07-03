@@ -27,6 +27,34 @@
 	    return arblib.acb_poly_degree(this);
 	  }
 	  
+	/**
+	 * The magnitude of this polynomial: the maximum over its coefficients of
+	 * {@link Complex#abs(int, Real)} — the ∞-norm of the coefficient vector.
+	 * This is the |term| the compiler's convergent {@code {k=n₀..∞}} summation
+	 * loop tests against its 2^-bits tolerance when the summands are
+	 * polynomial-valued.
+	 *
+	 * @param bits   working precision
+	 * @param result receives the norm
+	 * @return result
+	 */
+	public Real abs(int bits, Real result)
+	  {
+	    result.zero();
+	    int length = getLength();
+	    try ( Real coefficientMagnitude = new Real())
+	    {
+	      for (int i = 0; i < length; i++)
+	      {
+	        get(i).abs(bits, coefficientMagnitude);
+	        if (coefficientMagnitude.compareTo(result) > 0)
+	        {
+	          result.set(coefficientMagnitude);
+	        }
+	      }
+	    }
+	    return result;
+	  }
 	  
 	public ComplexPolynomial div(Real s, int prec, ComplexPolynomial res)
 	{
