@@ -21,8 +21,8 @@ import junit.framework.TestCase;
  * ({@code p(−ⅈ)=½(1−1)=0}), every {@code aₖ(0)=aₖ(−ⅈ)=0}, so {@code Φ=0} and
  * {@code φ=1} — exactly, for any truncation N and any working precision. These
  * are therefore structural-exact assertions, not regime-dependent ones, and do
- * not depend on any pricing approximation (in particular not on the asymptotic
- * Edgeworth pricer, which is not the exact solution).
+ * not depend on any pricing approximation (in particular not on the
+ * Edgeworth price, which is not the exact solution).
  *
  * @author Stephen Crowley ©2026
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
