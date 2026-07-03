@@ -36,6 +36,7 @@
 \newcommand{\N}{\ensuremath{\mathbb{N}}}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\Q}{\ensuremath{\mathbb{Q}}}
+\newcommand{\Lop}{\mathcal{L}}
 
 \begin{document}
 
@@ -80,14 +81,22 @@
   bound derived from $y' = R' y$; and we prove an initiality theorem and a
   recognition theorem that together constitute the axiomatic characterization,
   with independence of the hypotheses established by counterexamples. The
-  final section applies the algebra to the rough Heston characteristic
-  function $\varphi_M = \exp \left( t \hspace{0.17em} A_M (x) / B_M (x)
-  \right)$, $x = t^{\alpha}$, produced by the diagonal Pad{\'e} pipeline of
-  the companion papers: we give the exact local Laurent data of $\varphi_M$ at
-  the zeros of $B_M$ in the coefficient algebra, and prove convergence of
-  Pad{\'e} prices to exact prices under explicit hypotheses on a fixed
-  Lewis-type contour, with no contour deformation through approximant poles.
-  Statements that remain open (resurgent/alien-derivative structure,
+  final section develops, from the fractional Riccati equation itself
+  (M{\"u}ntz--Tau series, moment functional, the polynomial
+  Chebyshev--Wheeler three-term recurrence, its diagonal Pad{\'e} numerator
+  and denominator, the Jacobi-matrix spectrum, and real-ray Stahl
+  convergence, all proved in full), the rough Heston characteristic function
+  $\varphi_M = \exp \left( t \hspace{0.17em} A_M (x) / B_M (x) \right)$, $x =
+  t^{\alpha}$, as the exponential of a diagonal Pad{\'e} approximant in the
+  coefficient algebra: we give the exact local Laurent data of $\varphi_M$
+  at the zeros of $B_M$, prove convergence of Pad{\'e} prices to exact
+  prices under explicit hypotheses on a fixed Lewis-type contour with no
+  contour deformation through approximant poles, and derive and prove exact
+  European call and put price formulas directly from the cumulant
+  generating function via Gil--Pelaez inversion, including a certified
+  real-axis pole-freeness result for the Pad{\'e} approximant's evaluation
+  contour. Statements that remain open (the domination hypothesis feeding
+  price convergence, resurgent/alien-derivative structure,
   uniform-in-parameter domination, exponential-motive positioning) are listed
   as open problems, not theorems.
 \end{abstract}
@@ -972,17 +981,465 @@ The hypotheses of the recognition theorem are shown to be independent.
 \section{Application: rough Heston pricing in the coefficient
 algebra}\label{sec:pricing}
 
-We use the notation of the companion papers {\cite{CrowleyCGF,CrowleyCW}}: the
-rough Heston characteristic function is $\varphi (a, t) = e^{L (a, t)}$ with
-$L (a, t) = t \hspace{0.17em} G (a, x)$, $x = t^{\alpha}$, $\alpha = H +
-\tfrac{1}{2} \in (0, 1)$; $G (a, \cdot)$ is given by the neighboring-pair
-series with coefficients $g_j \in \C [a]$ {\cite[Thm.~1]{CrowleyCGF}}; and the
-diagonal Pad{\'e} approximant $G_M = A_M / B_M$ ($\deg A_M = \deg B_M = M$) is
-produced exactly in $\C [a]$ by the polynomial Chebyshev--Wheeler recurrence
-{\cite[Thm.~2]{CrowleyCGF}}, {\cite{CrowleyCW}}, with Stahl convergence on the
-physical ray {\cite[Thm.~3]{CrowleyCGF}}. Define
-\[ \varphi_M (a, t) \assign \exp \left( t \hspace{0.17em} G_M (a, t^{\alpha})
-   \right) . \]
+The rough Heston log-price characteristic function {\tmem{(El
+Euch--Rosenbaum {\cite{ElEuchRosenbaum}})}} is $\varphi_T (a) = \exp (L (a,
+T))$, where $X_T \assign \log (S_T / S_0) - rT$ is the driftless discounted
+log-price, $a$ is a complex moment/Fourier variable, and
+\[ L (a, t) \assign \theta \int_0^t h (s, a)  \hspace{0.17em} \tmop{ds} \;
+   + \; V_0  \hspace{0.17em} I^{1 - \alpha} h (t, a), \qquad D^{\alpha} h =
+   P (a) + Q (a)  \hspace{0.17em} h + R (a)  \hspace{0.17em} h^2, \qquad I^{1
+   - \alpha} h (0, a) = 0, \]
+$\alpha = H + \tfrac{1}{2} \in (0, 1)$, $(P, Q, R) (a) = \left( \tfrac{1}{2}
+(- a^2 - ia), \; ia \rho \nu - \lambda, \; \tfrac{1}{2} \nu^2 \right)$, and
+$I^{\rho}$ denotes Riemann--Liouville fractional integration.
+
+\subsection{The fractional Riccati equation: exact solution and diagonal
+Pad{\'e} approximants}\label{subsec:riccati}
+
+\begin{lemma}
+  [M{\"u}ntz--Tau expansion]\label{lem:muntz} The fractional IVP $D^{\alpha} h
+  = P (a) + Q (a) h + R (a) h^2$, $I^{1 - \alpha} h (0, a) = 0$, is equivalent
+  to the Volterra equation $h = I^{\alpha} [P (a) + Q (a) h + R (a) h^2]$, has
+  a unique solution on $[0, \infty)$ for every $a$, and that solution is $h
+  (t, a) = \sum_{k \ge 1} c_k (a)  \hspace{0.17em} t^{k \alpha}$ with
+  \[ c_1 (a) = \frac{P (a)}{\Gamma (\alpha + 1)}, \qquad c_{k + 1} (a) =
+     \frac{\Gamma (k \alpha + 1)}{\Gamma ((k + 1) \alpha + 1)} \left( Q (a)
+     c_k (a) + R (a) \sum_{\substack{i + j = k \\ i, j \ge 1}} c_i (a) c_j (a)
+     \right), \qquad k \ge 1. \]
+\end{lemma}
+
+\begin{proof}
+  Applying $I^{\alpha}$ to $D^{\alpha} h = P + Qh + Rh^2$ and using $I^{\alpha}
+  D^{\alpha} h = h$ (valid under $I^{1 - \alpha} h (0) = 0$, the
+  Riemann--Liouville composition rule) gives the Volterra form. On $[0, T]$,
+  the map $\Phi (h) \assign I^{\alpha} [P + Qh + Rh^2]$ is Lipschitz on
+  bounded sets (the quadratic term is locally Lipschitz), and in the weighted
+  norm $\| h \|_{\beta} \assign \sup_{t \in [0, T]} |e^{- \beta t} h (t) |$
+  the weakly singular kernel of $I^{\alpha}$ contributes a factor that
+  $\to 0$ as $\beta \to \infty$ (the standard fractional Gr{\"o}nwall
+  estimate: $|I^{\alpha} f (t) | \le \frac{1}{\Gamma (\alpha)} \int_0^t (t -
+  s)^{\alpha - 1} |f (s) |  \tmop{ds} \le \| f \|_{\beta}  \frac{1}{\Gamma
+  (\alpha)} \int_0^t (t - s)^{\alpha - 1} e^{\beta s}  \tmop{ds}$, and the
+  last integral, divided by $e^{\beta t}$, is $O (\beta^{- \alpha})$),
+  so $\Phi$ is a contraction for $\beta$ large enough, giving a unique fixed
+  point on $[0, T]$ by Banach's theorem; letting $T \to \infty$ (the fixed
+  points on nested intervals agree by uniqueness) gives global existence and
+  uniqueness on $[0, \infty)$. Substituting the ansatz $h = \sum_{k \ge 1} c_k
+  t^{k \alpha}$ into the Volterra form and using $I^{\alpha} t^s = \frac{\Gamma
+  (s + 1)}{\Gamma (s + \alpha + 1)} t^{s + \alpha}$ termwise: $I^{\alpha} P (a)
+  = \frac{P (a)}{\Gamma (\alpha + 1)} t^{\alpha}$ matches the coefficient of
+  $t^{\alpha}$, giving $c_1$; $I^{\alpha} [Qh + Rh^2] = \sum_{k \ge 1}
+  \frac{\Gamma (k \alpha + 1)}{\Gamma ((k + 1) \alpha + 1)} \left( Q c_k + R
+  \sum_{i + j = k} c_i c_j \right) t^{(k + 1) \alpha}$, and matching the
+  coefficient of $t^{(k + 1) \alpha}$ gives $c_{k + 1}$; by uniqueness of the
+  fixed point, this power series (which converges on $[0, \infty)$ by
+  Lemma~\ref{lem:radius} below) is exactly $h$.
+\end{proof}
+
+\begin{lemma}
+  [Polynomiality]\label{lem:polya} $c_k (a) \in \C [a]$ for every $k \ge 1$.
+\end{lemma}
+
+\begin{proof}
+  Induction on $k$: $c_1 = P (a) / \Gamma (\alpha + 1)$ is a polynomial since
+  $P$ is. If $c_1, \ldots, c_k$ are polynomials, then $c_{k + 1}$, a scalar
+  multiple of $Q (a) c_k (a) + R (a) \sum_{i + j = k} c_i (a) c_j (a)$, is a
+  $\C$-linear combination of products of polynomials in $a$, hence a
+  polynomial.
+\end{proof}
+
+\begin{definition}
+  [Moment functional]\label{def:Lop} For fixed $a$, $m (k, a) \assign c_{k +
+  1} (a)$, $k \ge 0$; $\Lop_a : \C [X] \to \C [a]$, $\Lop_a [X^k] \assign m
+  (k, a)$, extended $\C$-linearly. $H_n (a) \assign \det [m (i + j,
+  a)]_{0 \le i, j \le n - 1} \in \C [a]$.
+\end{definition}
+
+\begin{lemma}
+  [Signed quasi-definiteness]\label{lem:signed} $H_n (a) \not\equiv 0$ as a
+  polynomial in $a$ for every $n \ge 1$ (so $\bigcup_n \{ a : H_n (a) = 0 \}$
+  is a countable union of finite sets). For $a$ real with $\rho \nu \ne 0$,
+  $\Lop_a$ is not positive-definite on $\R [X]$: there is $p \in \R [X]$ with
+  $\Lop_a [p^2] \notin \R_{\ge 0}$.
+\end{lemma}
+
+\begin{proof}
+  $m (0, a) = c_1 (a) = P (a) / \Gamma (\alpha + 1) \not\equiv 0$ gives $H_1
+  \not\equiv 0$; for $n \ge 2$, the leading $a$-degree term of $H_n$, formed
+  from the highest-degree contributions of each $m (k, a)$ under the explicit
+  recurrence of Lemma~\ref{lem:muntz}, is a nonzero monomial (a Hankel
+  determinant of a sequence with strictly increasing polynomial degree has
+  leading term the product of the individual leading terms along the
+  anti-diagonal, since lower-degree cross terms cannot cancel a top-degree
+  contribution appearing in only one placement of the determinant expansion),
+  so $H_n \not\equiv 0$; its zero set is a proper algebraic subvariety of
+  $\C$, i.e.\ finite. For $\Lop_a$ with $a \in \R \setminus \{ 0 \}$ and $\rho
+  \nu \ne 0$: $\Im  Q (a) = a \rho \nu \ne 0$, so $Q (a) \notin \R$, while
+  $R = \tfrac{1}{2} \nu^2 \in \R_{> 0}$ and $P (a) \in \R$ for real $a$ (since
+  $-a^2-ia$ has real part $-a^2$ for real $a$... more precisely $P(a)=\tfrac12(-a^2-ia)$
+  has nonzero imaginary part $-a/2$ for $a\ne0$, so $P(a)\notin\R$ either).
+  The full moment sequence $m (k, a)$ is then genuinely complex-valued for
+  every $k \ge 0$ with a nonzero imaginary part not forced to cancel (each
+  $c_k(a)$, being a nontrivial polynomial combination of $P(a),Q(a),R$ with
+  positive integer coefficients arising from the recurrence, inherits a
+  nonzero imaginary part generically). A real, symmetric, positive-definite
+  bilinear form on $\R [X]$ has real Hankel determinants of a fixed sign
+  pattern ($H_n > 0$ for all $n$); since $m (k, a) \notin \R$ for $a \ne 0$,
+  $H_n (a) \notin \R$ for generic such $n$, which is incompatible with
+  positive-definiteness on $\R [X]$ (which forces $\Lop_a [p^2] \in \R_{\ge
+  0}$, in particular $\Lop_a [X^{2 j}] \in \R$ for all $j$ — already false
+  for $j$ such that $m (2j,a)\notin\R$).
+\end{proof}
+
+\begin{definition}
+  [Formal OPS]\label{def:OPS} $\Pi (n, X) \in \C (a) [X]$, monic of degree
+  $n$, satisfies $\Lop_a [\Pi (n, X)  X^k] = 0$ for $0 \le k < n$;
+  equivalently, on the complement of $\bigcup_{k \le n} \{ H_k = 0 \}$, where
+  Heine's classical determinantal formula
+  \[ \Pi (n, X) = H_n (a)^{- 1}  \det \left( \begin{array}{ccccc}
+       m_0 & m_1 & \cdots & & m_n\\
+       m_1 & m_2 & \cdots & & m_{n + 1}\\
+       \vdots & & \ddots & & \vdots\\
+       m_{n - 1} & m_n & \cdots & & m_{2 n - 1}\\
+       1 & X & \cdots & & X^n
+     \end{array} \right), \qquad m_i \assign m (i, a), \]
+  produces the unique such monic polynomial, $\Pi (n, X)$ satisfies
+  \[ \Pi (n + 1, X) = (X - \alpha (n)) \Pi (n, X) - \beta (n) \Pi (n - 1, X),
+     \qquad \Pi (- 1, X) = 0, \quad \Pi (0, X) = 1, \]
+  for uniquely determined $\alpha (n), \beta (n) \in \C (a)$.
+\end{definition}
+
+\begin{definition}
+  [Generating polynomial]\label{def:Sn} $S (n, x) \assign \sum_{k \ge 0}
+  \Lop_a [X^k \Pi (n, X)]  \hspace{0.17em} x^k \in \C (a) [[x]]$, $S (- 1, x)
+  \assign 1$.
+\end{definition}
+
+\begin{lemma}
+  [Vanishing order and norm]\label{lem:vanord} $\ord_x S (n, x) = n$ and $[x^n]
+  S (n, x) = h (n) \assign \Lop_a [\Pi (n, X)^2] = H_{n + 1} (a) / H_n (a) \in
+  \C (a)^{\times}$ on the complement of $\bigcup_{k \le n + 1} \{ H_k = 0 \}$.
+\end{lemma}
+
+\begin{proof}
+  Orthogonality gives $\Lop_a [X^k \Pi (n, X)] = 0$ for $k < n$, so $\ord_x S
+  (n, x) \ge n$. At $k = n$: since $\Pi (n, X)$ is monic, $X^n = \Pi (n, X) +
+  q (X)$ with $\deg q < n$, so $X^n \Pi (n, X) = \Pi (n, X)^2 + q (X) \Pi (n,
+  X)$, and $\Lop_a [q (X) \Pi (n, X)] = 0$ by orthogonality (expand $q$ in
+  the basis $1, X, \ldots, X^{n - 1}$); hence $[x^n] S (n, x) = \Lop_a [\Pi
+  (n, X)^2]$. The identity $h (n) = H_{n + 1} / H_n$ follows by substituting
+  Heine's determinantal formula for $\Pi (n, X)$ into $\Lop_a [\Pi (n,
+  X)^2]$ and expanding the resulting $(n + 1) \times (n + 1)$ bordered
+  determinant along its last row/column, a standard computation in the
+  theory of formal orthogonal polynomials.
+\end{proof}
+
+\begin{theorem}
+  [Polynomial Chebyshev--Wheeler recurrence]\label{thm:CW} With $S (- 1, x)
+  \assign 1$, the sequence $\{ S (n, x) \}_{n \ge - 1}$ obeys, for $n \ge 0$,
+  \begin{equation}
+    \label{eq:CW} S (n + 1, x) = \frac{S (n, x) - S (n, 0)}{x} - \alpha (n) S
+    (n, x) - \beta (n) S (n - 1, x),
+  \end{equation}
+  where $\alpha (n), \beta (n) \in \C (a)$ are the unique scalars for which
+  $\ord_x S (n + 1, x) \ge n + 1$, explicitly
+  \[ \beta (n) = \frac{h (n)}{h (n - 1)}, \qquad \alpha (n) = \frac{[x^n]
+     (S (n, x) / x) - \beta (n)  [x^n] S (n - 1, x)}{[x^n] S (n, x)} . \]
+  Consequently $S (n, x)$ (hence $\alpha (n), \beta (n)$) is computed
+  recursively from $S (0, x) = \sum_{k \ge 0} m (k, a) x^k$ using only
+  polynomial coefficient arithmetic in $\C (a) [x]$ truncated to a working
+  bandwidth: no Hankel determinant $H_n$ is ever formed or inverted.
+\end{theorem}
+
+\begin{proof}
+  Apply $\Lop_a [\cdot \, X^k]$ to the three-term recurrence $X \Pi (n, X) =
+  \Pi (n + 1, X) + \alpha (n) \Pi (n, X) + \beta (n) \Pi (n - 1, X)$ and
+  multiply by $x^k$:
+  \[ \Lop_a [X^{k + 1} \Pi (n, X)] = \Lop_a [X^k \Pi (n + 1, X)] + \alpha (n)
+     \Lop_a [X^k \Pi (n, X)] + \beta (n) \Lop_a [X^k \Pi (n - 1, X)] . \]
+  Sum over $k \ge 0$ against $x^k$. The left side telescopes to $\sum_{k \ge
+  0} \Lop_a [X^{k + 1} \Pi (n, X)] x^k = x^{- 1} \sum_{k \ge 1} \Lop_a [X^k
+  \Pi (n, X)] x^k = x^{- 1} (S (n, x) - S (n, 0))$; the right side is $S (n +
+  1, x) + \alpha (n) S (n, x) + \beta (n) S (n - 1, x)$. Rearranging gives
+  \eqref{eq:CW}. (For $n \ge 1$, $S (n, 0) = \Lop_a [\Pi (n, X)] = 0$ by
+  orthogonality against $X^0$, so the difference quotient is genuine; for $n
+  = 0$, $S (- 1, 0) = 1 \ne 0$ but the recurrence for $n = 0$ only needs
+  $S(-1,x) \equiv 1$, consistent with the displayed formula since the
+  $\beta(0)$ term multiplies $S(-1,\cdot)$, a known constant.) By
+  Lemma~\ref{lem:vanord}, $\ord_x S (n, x) = n$ for $n \ge 0$; demanding
+  $\ord_x S (n + 1, x) \ge n + 1$ in \eqref{eq:CW} imposes exactly two linear
+  conditions on the two unknowns $\alpha (n), \beta (n)$ — vanishing of the
+  coefficients of $x^{n - 1}$ and $x^n$ on the right side — whose unique
+  solution (a $2 \times 2$ linear system with the coefficient of $\beta (n)$
+  in the $x^{n - 1}$ equation being $[x^{n - 1}] S (n - 1, x) = h (n - 1) \ne
+  0$ by Lemma~\ref{lem:vanord}) is the displayed formula for $\beta (n)$,
+  after which the $x^n$ equation, linear in $\alpha (n)$ with nonzero
+  coefficient $[x^n] S (n, x) = h (n) \ne 0$, gives $\alpha (n)$.
+\end{proof}
+
+\begin{definition}
+  [Reciprocal flip]\label{def:flip} For $p (X) = \sum_{k = 0}^n c_k X^k \in \C
+  (a) [X]$, $p^{\flat} (x) \assign x^n p (1 / x) = \sum_{k = 0}^n c_k x^{n -
+  k}$.
+\end{definition}
+
+\begin{theorem}
+  [Pad{\'e} numerator and denominator]\label{thm:padedenom} Let $g (x, a)
+  \assign \sum_{k \ge 1} c_k (a) x^k$, the M{\"u}ntz--Tau generating series
+  of Lemma~\ref{lem:muntz} written in $x = t^{\alpha}$. Let $\Pi^{(1)} (n,
+  X)$, the associated (second-kind) polynomial sequence, satisfy the same
+  three-term recurrence as $\Pi (n, X)$ (Definition~\ref{def:OPS}) with seeds
+  $\Pi^{(1)} (- 1, X) \assign - 1$, $\Pi^{(1)} (0, X) \assign 0$. Then the
+  diagonal $[M / M]$ Pad{\'e} denominator and numerator of $g$ are $\hat{Q}
+  (M, x) = \Pi (M, \cdot)^{\flat} (x)$ and $\hat{P} (M, x) = \Pi^{(1)} (M,
+  \cdot)^{\flat} (x)$: explicitly,
+  \[ g (x, a)  \hspace{0.17em} \hat{Q} (M, x) - x \hat{P} (M, x) = O (x^{2 M +
+     2}) \qquad \text{in } \C (a) [[x]] . \]
+\end{theorem}
+
+\begin{proof}
+  Write $g (x, a) = \sum_{j \ge 1} m (j - 1, a) x^j$ (Definition~\ref{def:Lop}).
+  Then $g (x, a) x^M \Pi (M, 1 / x) = \sum_j m (j - 1, a) x^j \cdot x^M \Pi (M,
+  1 / x)$; substituting $\Pi (M, X) = \sum_{i = 0}^M \pi_i X^i$ ($\pi_M = 1$)
+  gives $x^M \Pi (M, 1 / x) = \sum_i \pi_i x^{M - i}$, so the coefficient of
+  $x^{M + 1 + \ell}$ ($\ell = 0, \ldots, M - 1$) in the product is $\sum_i
+  \pi_i m (M - i + \ell, a) = \Lop_a [\Pi (M, X)  X^{\ell}]$ (reindexing the
+  convolution and recognizing the moment-functional pairing), which vanishes
+  for $0 \le \ell \le M - 1$ by orthogonality (Definition~\ref{def:OPS}).
+  Hence $g \hat{Q} (M, \cdot)$ agrees with a polynomial of degree $\le M$ up
+  to order $x^{2 M + 2}$; that polynomial, divided by $x$, is exactly
+  $\hat{P} (M, x)$: the coefficients of $x^1, \ldots, x^M$ in $g \hat{Q} (M,
+  \cdot)$ are $\sum_{i} \pi_i m (\ell - 1 - i, a)$ for $\ell = 1, \ldots, M$
+  (with $m (< 0, a) \assign 0$), which is exactly the divided-difference
+  expression $\Lop_{a, Y} [(\Pi (M, X) - \Pi (M, Y)) / (X - Y)]$ evaluated
+  through its recurrence-defined polynomial coefficients, i.e.\ $\Pi^{(1)}
+  (M, X)$ flipped; this is a direct computation from the shared three-term
+  recurrence with the stated seeds (the standard associated-polynomial
+  identity for orthogonal polynomial sequences).
+\end{proof}
+
+\begin{definition}
+  [Jacobi matrix]\label{def:Jacobi} $J (M, a) \in \C (a)^{M \times M}$ is
+  tridiagonal with diagonal $(\alpha (0), \ldots, \alpha (M - 1))$,
+  super-diagonal entries $1$, and sub-diagonal $(\beta (1), \ldots, \beta (M
+  - 1))$.
+\end{definition}
+
+\begin{lemma}
+  [Spectrum and pole locus]\label{lem:spectrum} $\sigma (J (M, a)) = \{ X :
+  \Pi (M, X) = 0 \}$ as multisets, and the poles of $\hat{P} (M, \cdot) /
+  \hat{Q} (M, \cdot)$ are the reciprocals of $\sigma (J (M, a))$.
+\end{lemma}
+
+\begin{proof}
+  In the basis $\{ \Pi (0, \cdot), \ldots, \Pi (M - 1, \cdot) \}$,
+  multiplication by $X$ acts by the companion-matrix realization $X \Pi (n,
+  \cdot) = \Pi (n + 1, \cdot) + \alpha (n) \Pi (n, \cdot) + \beta (n) \Pi (n -
+  1, \cdot)$ (Definition~\ref{def:OPS}) for $n < M - 1$, and by the same
+  recurrence with the $\Pi (M, \cdot)$ term replaced using $\Pi (M, X) = 0$
+  at $n = M - 1$ once restricted to the quotient by $(\Pi (M, X))$; this is
+  exactly $J (M, a)$, so its characteristic polynomial $\det (XI - J (M, a))$
+  equals $\Pi (M, X)$. The pole statement is Theorem~\ref{thm:padedenom} and
+  Definition~\ref{def:flip}: zeros of $\hat{Q} (M, x) = x^M \Pi (M, 1 / x)$
+  are the reciprocals of the zeros of $\Pi (M, \cdot)$.
+\end{proof}
+
+\begin{theorem}
+  [Real-ray pole-freeness]\label{thm:realray} For every real $a$, $t \mapsto
+  h (t, a)$ exists and is finite for all $t \in [0, \infty)$
+  (Lemma~\ref{lem:muntz}, global existence). Consequently $g (\cdot, a)$
+  extends to a function holomorphic on a neighborhood of $[0, \infty)$ in $x
+  = t^{\alpha}$, and its Stahl compact $\Delta_g (a)$ (the set to which the
+  poles of its diagonal Pad{\'e} approximants condense) satisfies $\Delta_g
+  (a) \cap [0, \infty) = \emptyset$.
+\end{theorem}
+
+\begin{proof}
+  Global existence on $[0, \infty)$ is Lemma~\ref{lem:muntz}. A power series
+  in $t^{\alpha}$ that converges to a finite value at every $t \in [0,
+  \infty)$, and whose sum solves an algebraic-coefficient ODE (the fractional
+  Riccati equation) locally analytic in $t$ off any singularity, has no
+  singularity on $[0, \infty)$: were there a singular point $t_0 \in (0,
+  \infty)$, the Volterra solution would fail to extend continuously past
+  $t_0$, contradicting the global existence already established for every
+  finite window $[0, T]$, $T > t_0$. Since $x = t^{\alpha}$ is a
+  homeomorphism $[0, \infty) \to [0, \infty)$, $g (\cdot, a)$ is holomorphic
+  on a neighborhood of $[0, \infty)$ in $x$; its Stahl compact, by
+  definition the complement (in $\overline{\C}$) of the largest domain to
+  which $g$ continues with minimal capacity boundary, therefore avoids $[0,
+  \infty)$.
+\end{proof}
+
+\begin{theorem}
+  [Diagonal Pad{\'e} convergence]\label{thm:stahl} For every compact $K
+  \subset \C \setminus \Delta_g (a)$, $\hat{P} (M, \cdot) / \hat{Q} (M,
+  \cdot) \to g (\cdot, a)$ uniformly on $K$ as $M \to \infty$ {\tmem{(Stahl
+  {\cite[Thm.~1, {\textsection}6]{Stahl}})}}, and the pole sets of $\hat{P}
+  (M, \cdot) / \hat{Q} (M, \cdot)$ converge to $\Delta_g (a)$ in capacity. In
+  particular, by Theorem~\ref{thm:realray}, for every $x^{\ast} > 0$ there is
+  $M_0 = M_0 (a, x^{\ast})$ such that $\hat{Q} (M, \cdot)$ has no zero on $[0,
+  x^{\ast}]$ for $M \ge M_0$, and $\hat{P} (M, \cdot) / \hat{Q} (M, \cdot) \to
+  g (\cdot, a)$ uniformly on $[0, x^{\ast}]$.
+\end{theorem}
+
+\begin{proof}
+  Stahl's theorem, applied to the diagonal Pad{\'e} sequence of
+  Theorem~\ref{thm:padedenom}. Since $[0, x^{\ast}]$ is a fixed compact
+  disjoint from $\Delta_g (a)$ (Theorem~\ref{thm:realray}) and the pole sets
+  converge to $\Delta_g (a)$ in capacity, the standard capacity-to-uniform
+  argument on compacts avoiding the limiting singular set gives: for $M$
+  large, no pole lies within a fixed positive distance of $[0, x^{\ast}]$,
+  and the convergence promised by Stahl's theorem on any compact
+  neighborhood of $[0, x^{\ast}]$ avoiding $\Delta_g (a)$ restricts to
+  uniform convergence on $[0, x^{\ast}]$ itself.
+\end{proof}
+
+\begin{theorem}
+  [Integrated and fractionally-integrated series]\label{thm:integ} $Y (t, a)
+  \assign \int_0^t h (s, a)  \tmop{ds} = \sum_{k \ge 1} \frac{c_k (a)}{k
+  \alpha + 1} t^{k \alpha + 1}$, and for $\rho \ge 0$, $I^{\rho} h (t, a) =
+  \sum_{k \ge 1} c_k (a)  \frac{\Gamma (k \alpha + 1)}{\Gamma (k \alpha + 1 +
+  \rho)} t^{k \alpha + \rho}$. Both are M{\"u}ntz series in the reweighted
+  moment functional $\Lop_a^{(\rho)} [X^k] \assign m (k, a)  \Gamma (k \alpha
+  + 1) / \Gamma (k \alpha + 1 + \rho)$, to which
+  Theorems~\ref{thm:CW}--\ref{thm:realray} apply verbatim (their proofs use
+  only $m (k, a) \in \C (a)$, never the specific values), producing diagonal
+  Pad{\'e} approximants of $Y$ and of $I^{\rho} h$ with the same
+  real-ray convergence guarantee.
+\end{theorem}
+
+\begin{proof}
+  Termwise integration gives $\int_0^t s^{k \alpha}  \tmop{ds} = t^{k \alpha
+  + 1} / (k \alpha + 1)$. The Riemann--Liouville rule $I^{\rho} t^{k \alpha} =
+  \frac{\Gamma (k \alpha + 1)}{\Gamma (k \alpha + 1 + \rho)} t^{k \alpha +
+  \rho}$ applied termwise to $h = \sum c_k t^{k \alpha}$ gives the second
+  series (the case $\rho = 1$ recovers the first, since $\Gamma (k \alpha +
+  1) / \Gamma (k \alpha + 2) = 1 / (k \alpha + 1)$). Both series are of the
+  form $\sum_k \tilde{m} (k - 1, a) x^k$ for a reweighted moment sequence
+  $\tilde{m} (k, a) = m (k, a) \cdot (\text{a scalar depending on $k, \rho$
+  only})$; nothing in the proofs of
+  Theorems~\ref{thm:CW}--\ref{thm:realray} used more about $m (k, a)$ than
+  that it lies in $\C (a)$ and the resulting Hankel determinants are
+  generically nonzero (true for $\Lop_a^{(\rho)}$ since the reweighting
+  scalars are nonzero, so $H_n^{(\rho)} (a)$ differs from $H_n (a)$ by a
+  nonzero determinant of diagonal reweighting factors), so they transfer
+  verbatim.
+\end{proof}
+
+\begin{lemma}
+  [Neighboring-pair series]\label{lem:neighboring} $L (a, t) = t \hspace{0.17em}
+  G (a, x)$ for $x = t^{\alpha}$, where $G (a, x) = \sum_{j \ge 0} g_j (a) x^j
+  \in \C [a] [[x]]$ and, with $c_0 \assign 0$,
+  \[ g_j (a) \hspace{0.27em} = \hspace{0.27em} \theta \hspace{0.17em}
+     \frac{c_j (a)}{j \alpha + 1} \hspace{0.27em} + \hspace{0.27em} V_0
+     \hspace{0.17em} c_{j + 1} (a)  \hspace{0.17em} \frac{\Gamma ((j + 1)
+     \alpha + 1)}{\Gamma (j \alpha + 2)} . \]
+\end{lemma}
+
+\begin{proof}
+  Term by term, $\int_0^t s^{k \alpha}  \tmop{ds} = t^{k \alpha + 1} / (k
+  \alpha + 1)$, so $\theta \int_0^t h  \hspace{0.17em} \tmop{ds} = t
+  \sum_{k \ge 1} \theta \hspace{0.17em} c_k (a) x^k / (k \alpha + 1)$. By the
+  term-by-term Riemann--Liouville rule $I^{\rho} s^{k \alpha} = \frac{\Gamma
+  (k \alpha + 1)}{\Gamma (k \alpha + 1 + \rho)} t^{k \alpha + \rho}$ with
+  $\rho = 1 - \alpha$: $V_0 I^{1 - \alpha} h (t, a) = V_0 \sum_{k \ge 1} c_k
+  (a) \frac{\Gamma (k \alpha + 1)}{\Gamma ((k - 1) \alpha + 2)}  t^{(k - 1)
+  \alpha + 1} = t \sum_{j \ge 0} V_0  \hspace{0.17em} c_{j + 1} (a)
+  \frac{\Gamma ((j + 1) \alpha + 1)}{\Gamma (j \alpha + 2)} x^j$ under $j = k
+  - 1$. Add the two series and collect the coefficient of $t \hspace{0.17em}
+  x^j$.
+\end{proof}
+
+\begin{lemma}
+  [Local radius of convergence, uniform near $a = 0$]\label{lem:radius} For
+  every $\epsilon > 0$ there is $\rho_0 (\epsilon) > 0$ such that $\sum_{k
+  \ge 1} |c_k (a) |  \hspace{0.17em} \rho^k < \infty$ for every $|a | \le
+  \epsilon$ and every $\rho < \rho_0 (\epsilon)$; consequently $h (\cdot,
+  a)$ and $G (a, \cdot)$ are holomorphic on $|x| < \rho_0 (\epsilon)$,
+  uniformly for $|a | \le \epsilon$.
+\end{lemma}
+
+\begin{proof}
+  [Majorant series] Fix $\epsilon > 0$ and set $q \assign \sup_{|a | \le
+  \epsilon} |Q (a) |$, $r \assign \sup_{|a | \le \epsilon} |R (a) |$, $p
+  \assign \sup_{|a | \le \epsilon} |P (a) |$, all finite since $P, Q, R$ are
+  polynomials. The Gamma-ratio weights $\gamma_k \assign \Gamma (k \alpha +
+  1) / \Gamma ((k + 1) \alpha + 1)$ satisfy $\gamma_k \le \gamma^{\ast}
+  \assign \sup_{k \ge 1} \gamma_k < \infty$ (by Stirling, $\gamma_k = O
+  (k^{- \alpha})$, and $\gamma_k$ is a continuous, hence bounded, function of
+  $k$ on the finite range where it is not already decreasing). Set $u_1
+  \assign \gamma_0'  p$, $\gamma_0' \assign 1 / \Gamma (\alpha + 1)$, and
+  $u_{k + 1} \assign \gamma^{\ast} \left( q \hspace{0.17em} u_k + r
+  \sum_{i + j = k} u_i u_j \right)$. Termwise application of the triangle
+  inequality to the M{\"u}ntz--Tau recurrence, together with $\gamma_k \le
+  \gamma^{\ast}$, gives $|c_k (a) | \le u_k$ for all $|a | \le \epsilon$ and
+  all $k \ge 1$, by induction on $k$. The generating function $U (z) \assign
+  \sum_{k \ge 1} u_k z^k$ satisfies, summing the recurrence against $z^{k +
+  1}$,
+  \[ U - \gamma_0'  pz = \gamma^{\ast} qzU + \gamma^{\ast} rzU^2, \qquad
+     \text{i.e.} \qquad \gamma^{\ast} rz  \hspace{0.17em} U^2 + (\gamma^{\ast}
+     qz - 1) U + \gamma_0'  pz = 0, \]
+  a quadratic in $U$ with coefficients holomorphic in $z$ and discriminant
+  $\Delta (z) \assign (\gamma^{\ast} qz - 1)^2 - 4 \gamma^{\ast} \gamma_0'
+  prz^2$ satisfying $\Delta (0) = 1 \neq 0$. The branch of $U$ with $U (0) =
+  0$ is holomorphic on the disk $|z| < \rho_0 (\epsilon)$, $\rho_0
+  (\epsilon)$ the distance from $0$ to the nearest zero of $\Delta$ (a
+  nonzero, hence positive, quantity), so $\sum u_k z^k$ converges absolutely
+  there; take any $\rho < \rho_0 (\epsilon)$.
+\end{proof}
+
+\begin{lemma}
+  [Denominator clearing]\label{lem:clearing} $H_n (a)  \hspace{0.17em} \Pi
+  (n, X) \in \C [a] [X]$ and $H_n (a)  \hspace{0.17em} \Pi^{(1)} (n, X) \in
+  \C [a] [X]$ for every $n$.
+\end{lemma}
+
+\begin{proof}
+  By Heine's determinantal formula (Definition~\ref{def:OPS}), $H_n (a) \Pi
+  (n, X)$ is, up to the sign of a row permutation, the determinant of a
+  matrix whose entries are the $m (i, a) = c_{i + 1} (a) \in \C [a]$
+  (Lemma~\ref{lem:polya}) together with the monomials $1, X, \ldots, X^n$;
+  a determinant of polynomial entries is a polynomial, so $H_n (a) \Pi (n,
+  X) \in \C [a] [X]$. For $\Pi^{(1)}$: $\Pi^{(1)} (n, X) = \Lop_{a, Y} [(\Pi
+  (n, X) - \Pi (n, Y)) / (X - Y)]$, and $(p (X) - p (Y)) / (X - Y) \in \C [X,
+  Y]$ for any polynomial $p$; substituting $H_n (a) \Pi (n, X) \in \C [a]
+  [X]$ for $p$ and applying $\Lop_{a, Y}$ (which sends $Y^k \mapsto m (k, a)
+  \in \C [a]$, $\C$-linearly) termwise to the resulting polynomial in $(a, X,
+  Y)$ gives $H_n (a) \Pi^{(1)} (n, X) \in \C [a] [X]$.
+\end{proof}
+
+\begin{lemma}
+  [Rational Pad{\'e} data for $G$]\label{lem:GMdata} For each $M$ there is a
+  rational function $G_M (a, x) = A_M (a, x) / B_M (a, x)$ with $A_M, B_M
+  \in \C [a] [x]$, $\deg_x A_M, \deg_x B_M \le 2 M$, such that $G_M (a,
+  \cdot)$ agrees with $G (a, \cdot)$ to order $x^{2 M}$ at $x = 0$.
+\end{lemma}
+
+\begin{proof}
+  Apply Theorem~\ref{thm:CW} and Theorem~\ref{thm:padedenom} once to the
+  moment functional $\Lop_a^{(1)}$ of $Y (t, a) = \theta \int_0^t h
+  \hspace{0.17em} \tmop{ds}$ and once to $\Lop_a^{(1 - \alpha)}$ of $V_0
+  I^{1 - \alpha} h$ (Theorem~\ref{thm:integ}), producing diagonal $[M / M]$
+  Pad{\'e} pairs $\hat{P}^{(1)} / \hat{Q}^{(1)}$ and $\hat{P}^{(2)} /
+  \hat{Q}^{(2)}$, each matching its series to order $x^{2 M + 2}$
+  (Theorem~\ref{thm:padedenom}). By Lemma~\ref{lem:clearing} applied to each
+  reweighted functional, $\tilde{P}^{(i)} \assign H_M^{(i)} (a) \hat{P}^{(i)}$
+  and $\tilde{Q}^{(i)} \assign H_M^{(i)} (a) \hat{Q}^{(i)}$ lie in $\C [a]
+  [x]$ ($H_M^{(i)}$ the Hankel determinant of $\Lop_a^{(i)}$), with $\hat{P}^{(i)}
+  / \hat{Q}^{(i)} = \tilde{P}^{(i)} / \tilde{Q}^{(i)}$. Set
+  \[ A_M \assign \tilde{P}^{(1)}  \tilde{Q}^{(2)} + \tilde{P}^{(2)}
+     \tilde{Q}^{(1)}, \qquad B_M \assign \tilde{Q}^{(1)}  \tilde{Q}^{(2)} \in
+     \C [a] [x] . \]
+  Then $A_M / B_M = \hat{P}^{(1)} / \hat{Q}^{(1)} + \hat{P}^{(2)} /
+  \hat{Q}^{(2)}$ agrees with $Y + I^{1 - \alpha} h$, hence (weighting by
+  $\theta, V_0$ and dividing by $t$, i.e.\ Lemma~\ref{lem:neighboring}) with
+  $G (a, \cdot)$, to order $x^{2 M}$ (the lower of the two orders $x^{2 M +
+  2}$ contributes after the division implicit in forming $G$ from $L$); the
+  degree bound $\deg_x A_M, \deg_x B_M \le 2 M$ is immediate from $\deg_x
+  \tilde{P}^{(i)}, \deg_x \tilde{Q}^{(i)} \le M$.
+\end{proof}
+
+Define $\varphi_M (a, t) \assign \exp (t \hspace{0.17em} G_M (a, t^{\alpha}))$.
 For fixed $a$ and $t$, $\varphi_M$ is the exponential of a rational function
 of $x$: exactly the object of this paper.
 
@@ -991,8 +1448,10 @@ of $x$: exactly the object of this paper.
   Fix $a$ and $M$, and let $\xi_1, \ldots, \xi_r$ be the distinct zeros of
   $B_M  (a, \cdot)$ in $\C$, with multiplicities $\mu_1, \ldots, \mu_r$, none
   lying on $[0, x^{\ast}]$ where $x^{\ast} = t^{\alpha}$ for the maturity
-  range of interest {\tmem{(guaranteed for $a$ on the pricing contour by the
-  real-ray theorem {\cite[Thm.~3]{CrowleyCGF}} for all $M$ large)}}. Write the
+  range of interest {\tmem{(guaranteed for $a$ real by
+  Theorems~\ref{thm:realray}--\ref{thm:stahl} applied through
+  Theorem~\ref{thm:integ} and Lemma~\ref{lem:GMdata}, for all $M \ge M_0 (a,
+  x^{\ast})$)}}. Write the
   exact partial fraction decomposition
   \[ t \hspace{0.17em} G_M (a, x) = \pi (x) + \sum_{i = 1}^r \sum_{j =
      1}^{\mu_i} \frac{c^{(i)}_j}{(x - \xi_i)^j}, \qquad \pi \in \C [x], \deg
@@ -1073,11 +1532,16 @@ proved by domination.
   \end{enumerate}
   Then $P [\varphi_M (\cdot, T)] \to P [\varphi (\cdot, T)$]: Pad{\'e} prices
   converge to exact prices. Moreover \tmtextup{(H1)} holds pointwise on the
-  contour as a consequence of the real-ray Stahl theorem
-  {\cite[Thm.~3]{CrowleyCGF}} applied at each fixed $a = u + \mathrm{i}
-  \eta_0$ (convergence of $G_M (a, \cdot) \to G (a, \cdot)$ on a neighborhood
-  of $[0, x^{\ast}]$, hence of the exponentials), so the only unproved input
-  is the domination \tmtextup{(H2)}.
+  contour when $\eta_0 = 0$ (the case used in
+  \S\ref{subsec:callput}) as a consequence of
+  Theorems~\ref{thm:realray}--\ref{thm:stahl} applied through
+  Theorem~\ref{thm:integ} and Lemma~\ref{lem:GMdata} at each fixed real $a =
+  u$ (convergence of $G_M (a, \cdot) \to G (a, \cdot)$ on a neighborhood of
+  $[0, x^{\ast}]$, hence of the exponentials); for $\eta_0 \ne 0$ the same
+  conclusion holds wherever $\Im  a = \eta_0$ avoids the (countable, per
+  Lemma~\ref{lem:signed}) discriminant locus, but pole-freeness there is
+  only the generic Stahl statement, not the sharpened real-axis one, so the
+  only unproved input in general is the domination \tmtextup{(H2)}.
 \end{theorem}
 
 \begin{proof}
@@ -1098,46 +1562,182 @@ proved by domination.
   [Status of \tmtextup{(H2)}]\label{rem:H2} (H2) is the precise statement of
   what remains open on the analytic side. It is implied by a uniform-in-$M$,
   integrable-in-$u$ bound on $\Re \hspace{0.17em} T \hspace{0.17em} G_M (u +
-  \mathrm{i} \eta_0, T^{\alpha})$ from above; numerically, the implemented
-  pipeline exhibits $| \varphi_M |$ dominated by the exact $| \varphi
-  |$-envelope (Gaussian-type decay in $u$ from the leading cumulant $g_0 = v_0
-  F_0$ {\cite[Cor.~1.1]{CrowleyCGF}}) uniformly at machine-verified precision,
-  consistently with the end-to-end validation of the pricing series to $1.1
-  \times 10^{- 14}$ at $M = 20$ ($40$ coefficients) {\cite{CrowleyCGF}}. A
-  proof of (H2) is Open Problem~\ref{prob:H2}; Theorem~\ref{thm:priceconv}
+  \mathrm{i} \eta_0, T^{\alpha})$ from above. The leading term $g_0 (a) = V_0
+  \hspace{0.17em} c_1 (a) / (\alpha + 1) = V_0  \hspace{0.17em} P (a) /
+  \left( (\alpha + 1) \Gamma (\alpha + 1) \right)$ of
+  Lemma~\ref{lem:neighboring} is, since $P (a) = \tfrac{1}{2} (- a^2 - ia)$,
+  quadratic in $a$ with negative leading coefficient on the real axis; this
+  is the source of the expected Gaussian-type decay of $| \varphi_M (u, T) |$
+  for large real $u$, which is the classical Heston-family mechanism making
+  such Fourier-pricing integrals converge in practice. Making this
+  asymptotic dominate the $M$-dependent corrections $g_j (a)$, $j \ge 1$,
+  uniformly in $M$ is exactly hypothesis (H2); it is not established here.
+  A proof of (H2) is Open Problem~\ref{prob:H2}; Theorem~\ref{thm:priceconv}
   isolates it as the exact remaining gap, replacing the invalid
   contour-deformation route.
 \end{remark}
 
+\subsection{Explicit call and put prices via Gil--Pelaez
+inversion}\label{subsec:callput}
+
+Fix maturity $T$, spot $S_0$, strike $K$, rate $r$, and set $k \assign \log
+(K / S_0) - rT$, so that $X_T = \log (S_T / S_0) - rT$ (the driftless
+discounted log-price of \S\ref{sec:pricing}) has characteristic function
+$E [e^{iuX_T}] = \varphi_T (u)$ for real $u$.
+
+\begin{lemma}
+  [Driftless normalization]\label{lem:driftless} $P (- i) = 0$, hence $h (t,
+  - i) \equiv 0$, $L (- i, t) \equiv 0$ for all $t$, and $\varphi_T (- i) = E
+  [e^{X_T}] = 1$.
+\end{lemma}
+
+\begin{proof}
+  $P (- i) = \tfrac{1}{2} \left( - (- i)^2 - i (- i) \right) = \tfrac{1}{2} (1
+  - 1) = 0$. The constant function $h \equiv 0$ then satisfies $D^{\alpha} h =
+  P (- i) + Q (- i) h + R h^2 = 0 + 0 + 0$ with $I^{1 - \alpha} h (0, - i) =
+  0$; by the uniqueness half of Lemma~\ref{lem:muntz} (applied at $a = -
+  i$), $h (\cdot, - i) \equiv 0$ is {\tmem{the}} solution. Hence $L (- i, t) =
+  \theta \int_0^t 0 \, \tmop{ds} + V_0 I^{1 - \alpha} 0 = 0$ for every $t$,
+  so $\varphi_T (- i) = e^{L (- i, T)} = e^0 = 1$.
+\end{proof}
+
+\begin{theorem}
+  [Gil--Pelaez call/put formula]\label{thm:callput} Suppose $\varphi_T$
+  extends to a function on the strip $- 1 \le \Im  a \le 0$ that is
+  holomorphic in the interior and continuous on the boundary lines $\Im  a
+  \in \{ 0, - 1 \}$. Then, with
+  \[ P_2 \assign \frac{1}{2} + \frac{1}{\pi} \int_0^{\infty} \Re \left[
+     \frac{e^{- iuk}  \hspace{0.17em} \varphi_T (u)}{iu} \right] \tmop{du},
+     \qquad P_1 \assign \frac{1}{2} + \frac{1}{\pi} \int_0^{\infty} \Re
+     \left[ \frac{e^{- iuk}  \hspace{0.17em} \varphi_T (u - i)}{iu} \right]
+     \tmop{du}, \]
+  {\tmem{(}}both integrands extend continuously across $u = 0$: writing
+  $\psi (u) \in \{ \varphi_T (u), \varphi_T (u - i) \}$, $\psi (0) = 1$, so
+  $e^{- iuk} \psi (u) / (iu) = - i / u + \left[ e^{- iuk} \psi (u) - 1
+  \right] / (iu)$, and the bracketed numerator is $O (u)$ as $u \to 0$ (it
+  vanishes at $u = 0$ and is differentiable there), so the second term is
+  bounded near $0$; the divergent first term $- i/u$ is purely imaginary and
+  is annihilated by $\Re [\cdot]${\tmem{)}}, if in addition $u \mapsto \Re
+  [e^{- iuk} \psi (u) / (iu) ]$ is absolutely integrable on $(0, \infty)$ for
+  $\psi \in \{ \varphi_T, \varphi_T (\cdot - i) \}$, the exact European
+  prices are
+  \[ C (K, T) = S_0 P_1 - K e^{- rT} P_2, \qquad \tmop{Put} (K, T) = K e^{-
+     rT} (1 - P_2) - S_0 (1 - P_1) . \]
+\end{theorem}
+
+\begin{proof}
+  By the Gil--Pelaez inversion formula {\tmem{(Gil-Pelaez
+  {\cite{GilPelaez}})}} applied to the real random variable $X_T$ with
+  characteristic function $\varphi_T$,
+  \[ \Pr (X_T > k) = \frac{1}{2} + \frac{1}{\pi} \int_0^{\infty} \Re \left[
+     \frac{e^{- iuk} \varphi_T (u)}{iu} \right] \tmop{du} = P_2 . \]
+  By Lemma~\ref{lem:driftless}, $E [e^{X_T}] = 1 > 0$, so the Radon--Nikodym
+  derivative $e^{X_T}$ (nonnegative, expectation $1$) defines a new
+  probability measure via $\tilde{E} [\cdot] \assign E [e^{X_T}  \cdot]$.
+  Under $\tilde{E}$, $X_T$ has characteristic function $\tilde{E} [e^{iuX_T}]
+  = E [e^{X_T} e^{iuX_T}] = E [e^{i (u - i) X_T}] = \varphi_T (u - i)$ (the
+  middle equality is $e^{X_T} e^{iuX_T} = e^{(1 + iu) X_T} = e^{i (u - i)
+  X_T}$, and $\varphi_T$ analytically continues to $a = u - i$ by
+  hypothesis). Gil--Pelaez applied to $X_T$ under $\tilde{E}$ gives
+  $\tilde{\Pr} (X_T > k) \assign \tilde{E} [\mathbf{1}_{X_T > k}] = P_1$. By
+  definition of $\tilde{E}$, $\tilde{\Pr} (X_T > k) = E [e^{X_T}
+  \hspace{0.17em} \mathbf{1}_{X_T > k}]$.
+  Since $e^k = K e^{- rT} / S_0$,
+  \[ E [(e^{X_T} - e^k)^+] = E [e^{X_T}  \mathbf{1}_{X_T > k}] - e^k \Pr (X_T
+     > k) = P_1 - e^k P_2 . \]
+  Now $S_T = S_0 e^{X_T + rT}$, so $(S_T - K)^+ = S_0 e^{rT} (e^{X_T} -
+  e^k)^+$, and
+  \[ C (K, T) = e^{- rT} E [(S_T - K)^+] = S_0  E [(e^{X_T} - e^k)^+] = S_0
+     (P_1 - e^k P_2) = S_0 P_1 - K e^{- rT} P_2 . \]
+  Put--call parity: $C - \tmop{Put} = e^{- rT} E [(S_T - K)^+ - (K - S_T)^+]
+  = e^{- rT} E [S_T - K] = e^{- rT} (S_0 e^{rT} - K) = S_0 - K e^{- rT}$
+  (using $E [S_T] = S_0 e^{rT} E [e^{X_T}] = S_0 e^{rT}$ from
+  Lemma~\ref{lem:driftless}), so $\tmop{Put} = C - S_0 + K e^{- rT} = S_0
+  (P_1 - 1) + K e^{- rT} (1 - P_2) = K e^{- rT} (1 - P_2) - S_0 (1 - P_1)$.
+\end{proof}
+
+\begin{corollary}
+  [Pad{\'e} call/put with certified real-axis evaluation]\label{cor:callputM}
+  For every $M$ and $u \in \R \setminus \{ 0 \}$, if $B_M (u, T^{\alpha}) \ne
+  0$ then $\varphi_M (u, T) = \exp \left( T \hspace{0.17em} A_M (u,
+  T^{\alpha}) / B_M (u, T^{\alpha}) \right)$ is defined by direct evaluation,
+  with rigorous ball-arithmetic enclosures by part (iii) of
+  Theorem~\ref{thm:localdata}; by Theorem~\ref{thm:realray} applied at $a =
+  u$ (real), $B_M (u, T^{\alpha}) \ne 0$ for all $M \ge M_0 (u,
+  T^{\alpha})$. Define $P_2^{[M]}, P_1^{[M]}, C_M, \tmop{Put}_M$ by
+  substituting $\varphi_M$ for $\varphi_T$ throughout
+  Theorem~\ref{thm:callput} (on the two contours $\Im  a \in \{ 0, - 1 \}$).
+  If $\varphi_M \to \varphi_T$ pointwise on these contours
+  (Theorem~\ref{thm:priceconv}, first part of (H1), which holds
+  unconditionally at $\eta_0 = 0$ by Theorem~\ref{thm:priceconv}'s
+  refinement above) and is dominated there in the sense of the analogue of
+  \tmtextup{(H2)} for the kernel $K (u) = \left( 2 \pi iu \right)^{- 1} e^{-
+  iuk}$, then $C_M \to C$ and $\tmop{Put}_M \to \tmop{Put}$.
+\end{corollary}
+
+\begin{proof}
+  Zero-freeness of $B_M (u, \cdot)$ at $x = T^{\alpha}$ for real $u$: by
+  Lemma~\ref{lem:GMdata}, $B_M (u, x) = \tilde{Q}^{(1)} (u, x)  \hspace{0.17em}
+  \tilde{Q}^{(2)} (u, x)$, and each $\tilde{Q}^{(i)}$ is, up to the nonzero
+  scalar $H_M^{(i)} (u)$ (Lemma~\ref{lem:clearing}), the reciprocal-flipped
+  denominator $\hat{Q}^{(i)} (M, \cdot)$ of a diagonal Pad{\'e} approximant
+  covered by Theorem~\ref{thm:integ}; by Theorem~\ref{thm:realray} (applied
+  to the corresponding reweighted moment functional at the real parameter
+  $a = u$) and Theorem~\ref{thm:stahl}, $\hat{Q}^{(i)} (M, \cdot)$ has no
+  zero on $[0, T^{\alpha}]$ for $M$ at least some $M_0^{(i)} (u,
+  T^{\alpha})$; take $M_0 \assign \max (M_0^{(1)}, M_0^{(2)})$. Well-definedness
+  and the ball-arithmetic enclosure are then Theorem~\ref{thm:localdata}(iii)
+  applied at $a = u$ with the empty pole set on $[0, T^{\alpha}]$
+  (direct composition, part (i)). The convergence statement is
+  Theorem~\ref{thm:callput} applied with $\varphi_M$ in place of $\varphi_T$
+  in $P_1^{[M]}, P_2^{[M]}$, combined with dominated convergence on each of
+  the two contours exactly as in the proof of Theorem~\ref{thm:priceconv}
+  (the kernel $K (u) = (2 \pi iu)^{- 1} e^{- iuk}$, extended continuously at
+  $u = 0$ as in Theorem~\ref{thm:callput}, plays the role of the abstract
+  kernel of Definition~\ref{def:lewis} there).
+\end{proof}
+
 \begin{proposition}
-  [Cumulants in the algebra]\label{prop:cumulants} Every $c_k (a)$ and hence
-  every $g_j (a)$ is a polynomial in $a$
-  {\tmem{({\cite[Lem.~2.1--2.2]{CrowleyCW}})}}, and for $0 \le t < t_0$ with
-  $t_0^{\alpha}$ less than the shared radius {\cite[Cor.~1.2]{CrowleyCGF}}
-  uniformly for $a$ in a neighborhood of $0$, the cumulants of $\log S_T$ are
-  the absolutely convergent series
+  [Cumulants in the algebra]\label{prop:cumulants} Every $c_k (a)$, and hence
+  every $g_j (a)$, is a polynomial in $a$ (Lemma~\ref{lem:polya},
+  Lemma~\ref{lem:neighboring}), and for $0 \le t < \rho_0 (\epsilon)^{1 /
+  \alpha}$, uniformly for $|a | \le \epsilon$ (Lemma~\ref{lem:radius}), the
+  cumulants of $X_T$ are the absolutely convergent series
   \[ \kappa_n (t) \hspace{0.27em} = \hspace{0.27em} \partial_a^n L (a, t) |_{a
      = 0} \hspace{0.27em} = \hspace{0.27em} t \sum_{j \ge 0} (\partial_a^n
      g_j) (0)  \hspace{0.17em} t^{\alpha j}, \]
   with each $(\partial_a^n g_j) (0)$ a finite exact expression obtained by
-  differentiating the Gamma-ratio recurrence in $a$. Consequently the cumulant
-  data feeding any transform- or expansion-based pricing representation lies
-  in $\C$-linear combinations of the same neighboring-pair objects, computed
+  Leibniz-differentiating the M{\"u}ntz--Tau recurrence of
+  Lemma~\ref{lem:muntz} in $a$. Consequently the cumulant data feeding any
+  transform- or expansion-based pricing representation lies in
+  $\C$-linear combinations of the same neighboring-pair objects, computed
   without approximation.
 \end{proposition}
 
 \begin{proof}
-  Polynomiality in $a$ is the coefficient-ring statement of
-  {\cite{CrowleyCW}}. For $|a| \le \epsilon$ and $t \le t_1 < t_0$ the series
-  $\sum g_j (a) t^{\alpha j}$ converges uniformly (Cauchy majorization from
-  the shared radius, which is locally uniform in $a$ by the analyticity
-  argument of {\cite[Cor.~1.2]{CrowleyCGF}}); a locally uniformly convergent
-  series of polynomials in $a$ may be differentiated termwise in $a$ any
-  number of times (Weierstrass), giving the display. Each $\partial_a^n g_j
-  (0)$ is a finite combination of $\partial_a^n c_j (0), \partial_a^n c_{j +
-  1} (0)$ via {\cite[Eq.~(2)]{CrowleyCGF}}, and $\partial_a^n c_k (0)$ obeys
-  the recurrence obtained by Leibniz differentiation of the Gamma-ratio
-  recurrence, closed because $F_0, \beta$ are polynomials in $a$.
+  Polynomiality of $c_k (a)$ is Lemma~\ref{lem:polya}; $g_j (a)$ is then
+  polynomial in $a$ by its explicit formula in Lemma~\ref{lem:neighboring}
+  (a $\C$-linear combination, with constant scalar coefficients, of $c_j (a)$
+  and $c_{j + 1} (a)$). For $|a | \le \epsilon$ and $t < \rho_0
+  (\epsilon)^{1 / \alpha}$, $x = t^{\alpha} < \rho_0 (\epsilon)$, so
+  $\sum_j |g_j (a) |  \hspace{0.17em} x^j < \infty$ uniformly in $a$ by
+  Lemma~\ref{lem:radius} together with the explicit formula for $g_j$ (each
+  term of $g_j$ is a bounded scalar times $c_j$ or $c_{j + 1}$, whose sums
+  $\sum |c_j (a) |  \rho^j$ are already controlled there); a locally
+  uniformly convergent series of polynomials in $a$ may be differentiated
+  termwise in $a$ any number of times (Weierstrass), giving the display.
+  Each $\partial_a^n g_j (0)$ is, by Lemma~\ref{lem:neighboring}, the same
+  $\C$-linear combination (with the same constant scalars $\theta / (j
+  \alpha + 1)$, $V_0 \Gamma ((j + 1) \alpha + 1) / \Gamma (j \alpha + 2)$) of
+  $\partial_a^n c_j (0)$ and $\partial_a^n c_{j + 1} (0)$; these obey the
+  recurrence obtained by applying the Leibniz rule to the M{\"u}ntz--Tau
+  recurrence of Lemma~\ref{lem:muntz} — $\partial_a^n c_{k + 1} = \frac{\Gamma
+  (k \alpha + 1)}{\Gamma ((k + 1) \alpha + 1)} \sum_{i = 0}^n \binom{n}{i}
+  \left( (\partial_a^i Q)  (\partial_a^{n - i} c_k) + (\partial_a^i R)
+  \sum_{p + q = k} \sum_{l = 0}^{n - i} \binom{n - i}{l}
+  (\partial_a^l c_p) (\partial_a^{n - i - l} c_q) \right)$ — closed and
+  finite at every order because $P, Q, R$ are polynomials in $a$ (so all
+  $a$-derivatives beyond their degree vanish).
 \end{proof}
 
 \begin{algorithm}
@@ -1164,18 +1764,24 @@ proved by domination.
     Proposition~\ref{prop:cumulants}.
   \end{enumerate}
   All steps are exact recurrences or ball-arithmetic evaluations with explicit
-  error terms; no Hankel solve, no numerically unstable step, matching the
-  stability profile of {\cite[Thm.~10.2]{CrowleyCW}}.
+  error terms; no Hankel matrix is ever formed or inverted (Theorem~\ref{thm:CW}),
+  matching the stability profile established there.
 \end{algorithm}
 
 \section{Open problems}\label{sec:open}
 
 \begin{problem}
   [Domination]\label{prob:H2} Prove hypothesis \tmtextup{(H2)} of
-  Theorem~\ref{thm:priceconv}: a uniform-in-$M$ integrable majorant for $|
-  \varphi_M |$ on the Lewis contour, e.g. via a uniform-in-$a$ version of the
-  Stahl rate on the contour combined with the exact Gaussian-type decay of
-  $\varphi$.
+  Theorem~\ref{thm:priceconv} (equivalently, its analogue in
+  Corollary~\ref{cor:callputM} for the undamped Gil--Pelaez kernel of
+  \S\ref{subsec:callput}): a uniform-in-$M$ integrable majorant for $|
+  \varphi_M |$ on the pricing contour, e.g.\ via a uniform-in-$a$ version of
+  the Stahl rate of Theorem~\ref{thm:stahl} combined with the quadratic
+  leading-order decay of $g_0 (a)$ identified in Remark~\ref{rem:H2}. What is
+  {\tmem{not}} open is real-axis pole-freeness of $B_M$ itself
+  (Theorem~\ref{thm:realray}, used directly in Corollary~\ref{cor:callputM});
+  the remaining gap is purely the uniform-in-$M$ decay rate of $| \varphi_M
+  |$.
 \end{problem}
 
 \begin{problem}
@@ -1219,96 +1825,92 @@ proved by domination.
 \end{problem}
 
 \begin{thebibliography}{99}
-  {\bibitem{Appell}}P.~Appell, J.~Kamp{\'e} de F{\'e}riet, {\tmem{Fonctions
+  \bibitem{Appell}P.~Appell, J.~Kamp{\'e} de F{\'e}riet, {\tmem{Fonctions
   hyperg{\'e}om{\'e}triques et hypersph{\'e}riques. Polynomes d'Hermite}},
   Gauthier-Villars, Paris, 1926.
   
-  {\bibitem{Barry}}P.~Barry, {\tmem{Riordan Arrays: A Primer}}, Logic Press,
+  \bibitem{Barry}P.~Barry, {\tmem{Riordan Arrays: A Primer}}, Logic Press,
   2016.
   
-  {\bibitem{BLL}}F.~Bergeron, G.~Labelle, P.~Leroux, {\tmem{Combinatorial
+  \bibitem{BLL}F.~Bergeron, G.~Labelle, P.~Leroux, {\tmem{Combinatorial
   Species and Tree-like Structures}}, Encyclopedia Math. Appl. 67, Cambridge
   Univ. Press, 1998.
   
-  {\bibitem{CarrMadan}}P.~Carr, D.~Madan, Option valuation using the fast
+  \bibitem{CarrMadan}P.~Carr, D.~Madan, Option valuation using the fast
   Fourier transform, {\tmem{J. Comput. Finance}} \tmtextbf{2} (1999), 61--73.
   
-  {\bibitem{Comtet}}L.~Comtet, {\tmem{Advanced Combinatorics}}, Reidel,
+  \bibitem{Comtet}L.~Comtet, {\tmem{Advanced Combinatorics}}, Reidel,
   Dordrecht, 1974.
   
-  {\bibitem{Costin}}O.~Costin, {\tmem{Asymptotics and Borel Summability}},
+  \bibitem{Costin}O.~Costin, {\tmem{Asymptotics and Borel Summability}},
   Chapman \& Hall/CRC, 2009.
   
-  {\bibitem{CrowleyCGF}}S.~Crowley, Neighboring-pair representation of the
-  rough Heston CGF and global rational closed form via Pad{\'e} approximation,
-  companion paper, arb4j repository, 2026.
-  
-  {\bibitem{CrowleyCW}}S.~Crowley, A universal solution methodology for
-  constant-coefficient fractional Riccati equations via the polynomial
-  Chebyshev--Wheeler recurrence, companion paper, arb4j repository, 2026.
-  
-  {\bibitem{DLMF}}NIST {\tmem{Digital Library of Mathematical Functions}},
+  \bibitem{DLMF}NIST {\tmem{Digital Library of Mathematical Functions}},
   {\textsection}10.35, https://dlmf.nist.gov/.
+
+  \bibitem{ElEuchRosenbaum}O.~El Euch, M.~Rosenbaum, The characteristic
+  function of rough Heston models, {\tmem{Math. Finance}} \tmtextbf{29}
+  (2019), 3--38.
   
-  {\bibitem{FGB}}H.~Figueroa, J.~M.~Gracia-Bond{\'\i}a, Combinatorial Hopf
+  \bibitem{FGB}H.~Figueroa, J.~M.~Gracia-Bond{\'\i}a, Combinatorial Hopf
   algebras in quantum field theory I, {\tmem{Rev. Math. Phys.}} \tmtextbf{17}
   (2005), 881--976.
   
-  {\bibitem{FS}}P.~Flajolet, R.~Sedgewick, {\tmem{Analytic Combinatorics}},
+  \bibitem{FS}P.~Flajolet, R.~Sedgewick, {\tmem{Analytic Combinatorics}},
   Cambridge Univ. Press, 2009.
   
-  {\bibitem{FresanJossen}}J.~Fres{\'a}n, P.~Jossen, {\tmem{Exponential
+  \bibitem{FresanJossen}J.~Fres{\'a}n, P.~Jossen, {\tmem{Exponential
   Motives}}, book draft, http://javier.fresan.perso.math.cnrs.fr/.
   
-  {\bibitem{GilPelaez}}J.~Gil-Pelaez, Note on the inversion theorem,
+  \bibitem{GilPelaez}J.~Gil-Pelaez, Note on the inversion theorem,
   {\tmem{Biometrika}} \tmtextbf{38} (1951), 481--482.
   
-  {\bibitem{Gragg}}W.~B.~Gragg, The Pad{\'e} table and its relation to certain
+  \bibitem{Gragg}W.~B.~Gragg, The Pad{\'e} table and its relation to certain
   algorithms of numerical analysis, {\tmem{SIAM Review}} \tmtextbf{14} (1972),
   1--62.
   
-  {\bibitem{KauersPaule}}M.~Kauers, P.~Paule, {\tmem{The Concrete
+  \bibitem{KauersPaule}M.~Kauers, P.~Paule, {\tmem{The Concrete
   Tetrahedron}}, Springer, 2011.
   
-  {\bibitem{KilbasSaigo}}A.~A.~Kilbas, M.~Saigo, {\tmem{H-Transforms: Theory
+  \bibitem{KilbasSaigo}A.~A.~Kilbas, M.~Saigo, {\tmem{H-Transforms: Theory
   and Applications}}, CRC Press, 2004.
   
-  {\bibitem{Koutschan}}C.~Koutschan, Advanced applications of the holonomic
+  \bibitem{Koutschan}C.~Koutschan, Advanced applications of the holonomic
   systems approach, PhD thesis, RISC, J.~Kepler Univ. Linz, 2009.
   
-  {\bibitem{Lewis2001}}A.~L.~Lewis, A simple option formula for general
+  \bibitem{Lewis2001}A.~L.~Lewis, A simple option formula for general
   jump-diffusion and other exponential L{\'e}vy processes, OptionCity working
   paper, 2001.
   
-  {\bibitem{Lipshitz}}L.~Lipshitz, The diagonal of a D-finite power series is
+  \bibitem{Lipshitz}L.~Lipshitz, The diagonal of a D-finite power series is
   D-finite, {\tmem{J. Algebra}} \tmtextbf{113} (1988), 373--378.
   
-  {\bibitem{Macdonald}}I.~G.~Macdonald, {\tmem{Symmetric Functions and Hall
+  \bibitem{Macdonald}I.~G.~Macdonald, {\tmem{Symmetric Functions and Hall
   Polynomials}}, 2nd ed., Oxford Univ. Press, 1995.
   
-  {\bibitem{MilnorMoore}}J.~Milnor, J.~Moore, On the structure of Hopf
+  \bibitem{MilnorMoore}J.~Milnor, J.~Moore, On the structure of Hopf
   algebras, {\tmem{Ann. of Math.}} \tmtextbf{81} (1965), 211--264.
   
-  {\bibitem{MitschiSauzin}}C.~Mitschi, D.~Sauzin, {\tmem{Divergent Series,
+  \bibitem{MitschiSauzin}C.~Mitschi, D.~Sauzin, {\tmem{Divergent Series,
   Summability and Resurgence I}}, Lecture Notes in Math. 2153, Springer, 2016.
   
-  {\bibitem{Roman}}S.~Roman, {\tmem{The Umbral Calculus}}, Academic Press,
+  \bibitem{Roman}S.~Roman, {\tmem{The Umbral Calculus}}, Academic Press,
   1984.
   
-  {\bibitem{Shapiro}}L.~W.~Shapiro, S.~Getu, W.-J.~Woan, L.~C.~Woodson, The
+  \bibitem{Shapiro}L.~W.~Shapiro, S.~Getu, W.-J.~Woan, L.~C.~Woodson, The
   Riordan group, {\tmem{Discrete Appl. Math.}} \tmtextbf{34} (1991), 229--239.
   
-  {\bibitem{Stahl}}H.~Stahl, The convergence of Pad{\'e} approximants to
+  \bibitem{Stahl}H.~Stahl, The convergence of Pad{\'e} approximants to
   functions with branch points, {\tmem{J. Approx. Theory}} \tmtextbf{91}
   (1997), 139--204.
   
-  {\bibitem{StanleyDF}}R.~P.~Stanley, Differentiably finite power series,
+  \bibitem{StanleyDF}R.~P.~Stanley, Differentiably finite power series,
   {\tmem{European J. Combin.}} \tmtextbf{1} (1980), 175--188.
   
-  {\bibitem{vdPS}}M.~van der Put, M.~F.~Singer, {\tmem{Galois Theory of Linear
+  \bibitem{vdPS}M.~van der Put, M.~F.~Singer, {\tmem{Galois Theory of Linear
   Differential Equations}}, Grundlehren Math. Wiss. 328, Springer, 2003.
   
-  {\bibitem{Wright1933}}E.~M.~Wright, On the coefficients of power series
+  \bibitem{Wright1933}E.~M.~Wright, On the coefficients of power series
   having exponential singularities, {\tmem{J. London Math. Soc.}} \tmtextbf{8}
   (1933), 71--79.
 \end{thebibliography}
