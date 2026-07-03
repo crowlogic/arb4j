@@ -14,6 +14,9 @@ import arb.functions.polynomials.orthogonal.real.ProbabilistHermitePolynomials;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealNullaryFunction;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * European call price under the rough Heston model via the Edgeworth expansion
  * of the log-price density around the matching Gaussian, with the
@@ -86,6 +89,9 @@ public class RoughHestonEdgeworthCallPrice implements
                                             RealFunction,
                                             AutoCloseable
 {
+  private static final Logger                    log            =
+                                                     LoggerFactory.getLogger(RoughHestonEdgeworthCallPrice.class);
+
   private static final String                    DEFAULT_S0     = "1.0";
   private static final String                    DEFAULT_K      = "1.0";
   private static final String                    DEFAULT_rr     = "0.0";
@@ -333,18 +339,22 @@ public class RoughHestonEdgeworthCallPrice implements
       // deg Φ, so orders past it add no information. This is the structural
       // content of the expansion, not a tuning knob.
       int order = ((RoughHestonCumulantSequence) κ).availableOrder(bits);
+      int bestJ = 3;
       for (int j = 4; j <= order; j++)
       {
         J.set(j);
         Π.evaluate(k, 1, bits, current);
         current.sub(previous, bits, gap).abs();
+        log.debug("accumulate k={} J={} gap={}", k, j, gap);
         if (gap.compareTo(threshold) <= 0)
         {
+          log.debug("accumulate k={} converged at J={} gap={} ≤ 2^-{}", k, j, gap, bits / 2);
           return dst.set(current);
         }
         if (gap.compareTo(bestGap) < 0)
         {
           bestGap.set(gap);
+          bestJ = j;
           dst.set(current);
         }
         else
@@ -355,11 +365,13 @@ public class RoughHestonEdgeworthCallPrice implements
           bestGap.mul2e(16, divergence);
           if (gap.compareTo(divergence) > 0)
           {
+            log.debug("accumulate k={} stalled: bestJ={} bestGap={} divergedAt J={} gap={}", k, bestJ, bestGap, j, gap);
             return dst;
           }
         }
         previous.set(current);
       }
+      log.debug("accumulate k={} exhausted order={} bestJ={} bestGap={}", k, order, bestJ, bestGap);
       return dst;
     }
   }
