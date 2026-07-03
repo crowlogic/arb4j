@@ -1,0 +1,1316 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{geometry,amsmath,amssymb,latexsym,theorem}
+\geometry{letterpaper}
+
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\assign}{:=}
+\newcommand{\cdummy}{\cdot}
+\newcommand{\tmaffiliation}[1]{\\ #1}
+\newcommand{\tmem}[1]{{\em #1\/}}
+\newcommand{\tmop}[1]{\ensuremath{\operatorname{#1}}}
+\newcommand{\tmscript}[1]{\text{\scriptsize{$#1$}}}
+\newcommand{\tmtextbf}[1]{\text{{\bfseries{#1}}}}
+\newcommand{\tmtextup}[1]{\text{{\upshape{#1}}}}
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+{\theorembodyfont{\rmfamily\small}\newtheorem{problem}{Problem}}
+\newtheorem{proposition}{Proposition}
+{\theorembodyfont{\rmfamily}\newtheorem{remark}{Remark}}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
+
+\newtheorem{algorithm}{Algorithm}
+\newcommand{\Prim}{\tmop{Prim}}
+\newcommand{\Sym}{\tmop{Sym}}
+\newcommand{\ev}{\tmop{ev}}
+\newcommand{\Aut}{\tmop{Aut}}
+\newcommand{\ord}{\tmop{ord}}
+\newcommand{\Res}{Res}
+\newcommand{\trdeg}{\tmop{trdeg}}
+\newcommand{\CA}{\mathfrak{B}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\ensuremath{\mathbb{N}}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\ensuremath{\mathbb{Q}}}
+
+\begin{document}
+
+\title{The Coefficient Algebra of Exponentials of Rational Functions}
+
+\author{
+  Stephen Crowley
+  \tmaffiliation{July 3, 2026}
+}
+
+\date{}
+
+\maketitle
+
+\begin{abstract}
+  Let $R$ be a rational function with a pole of order $m$ at $a$ and principal
+  part $\Pi (w) = \sum_{j = 1}^m c_j w^{- j}$, $w = z - a$. The Laurent
+  coefficients of $e^R$ on a punctured disk about $a$ are governed by the
+  coefficients $\Lambda_N$ of $\exp (\Pi)$, which satisfy the first-order
+  recurrence $N \Lambda_N = \sum_{j = 1}^{\min (m, N)} jc_j \Lambda_{N - j}$.
+  We take this recurrence as the primitive object, construct from it a graded
+  commutative Hopf algebra $\CA_m = \C [c_1, \ldots, c_m]$ carrying the
+  sequence $(\Lambda_N)$, and prove its structure theory: $\CA_m$ is
+  canonically the quotient of the Hopf algebra of symmetric functions by the
+  Hopf ideal $(p_{m + 1}, p_{m + 2}, \ldots)$, under which $\Lambda_N$
+  corresponds to the complete homogeneous symmetric function $h_N$, $c_j$ to
+  $p_j / j$, and the universal recurrence to Newton's identity. The sequence
+  $(\Lambda_N)$ is a divided-power sequence; as functions of $c_1$ the $N!
+  \hspace{0.17em} \Lambda_N$ form an Appell sequence; the coefficient matrix
+  is an element of the Appell subgroup of the exponential Riordan group; $N!
+  \hspace{0.17em} \Lambda_N$ enumerates set partitions with block sizes at
+  most $m$; the graded Hopf automorphism group is the torus $(\C^{\times})^m$;
+  and the Hankel determinants of $(\Lambda_N)$ are, up to explicit sign,
+  rectangular Schur functions. We then prove that the analytic
+  Laurent-coefficient construction is a model of the algebra, with
+  quantitative growth bounds; we identify the classical specializations
+  exactly (modified Bessel functions for $m = 1$, Hermite-type polynomials for
+  $m = 2$, Wright generalized Bessel functions for single-term principal parts
+  against a linear entire exponent) and refrain from claiming reductions that
+  do not exist for $m \ge 3$; we prove holonomy of the full Laurent
+  coefficient sequence at every pole, with an explicit recurrence and order
+  bound derived from $y' = R' y$; and we prove an initiality theorem and a
+  recognition theorem that together constitute the axiomatic characterization,
+  with independence of the hypotheses established by counterexamples. The
+  final section applies the algebra to the rough Heston characteristic
+  function $\varphi_M = \exp \left( t \hspace{0.17em} A_M (x) / B_M (x)
+  \right)$, $x = t^{\alpha}$, produced by the diagonal Pad{\'e} pipeline of
+  the companion papers: we give the exact local Laurent data of $\varphi_M$ at
+  the zeros of $B_M$ in the coefficient algebra, and prove convergence of
+  Pad{\'e} prices to exact prices under explicit hypotheses on a fixed
+  Lewis-type contour, with no contour deformation through approximant poles.
+  Statements that remain open (resurgent/alien-derivative structure,
+  uniform-in-parameter domination, exponential-motive positioning) are listed
+  as open problems, not theorems.
+\end{abstract}
+
+\section{The universal recurrence}\label{sec:recurrence}
+
+Throughout, $m \ge 1$ is a fixed integer and $c_1, \ldots, c_m$ are
+independent commuting indeterminates over $\C$. Set
+\[ \CA_m \assign \C [c_1, \ldots, c_m], \]
+graded by $\mathrm{wt} (c_j) = j$, so that $\CA_m = \bigoplus_{N \ge 0}
+(\CA_m)_N$ with $(\CA_m)_0 = \C$. All constructions in
+Sections~\ref{sec:recurrence}--\ref{sec:axioms} are exact identities in
+$\CA_m$ or in the formal power series ring $\CA_m [[v]]$; no analysis enters
+until Section~\ref{sec:model}.
+
+\begin{definition}
+  \label{def:E}$E (v) \assign \exp \left( \sum_{j = 1}^m c_j v^j \right) \in
+  \CA_m [[v]]$, and $\Lambda_N \in \CA_m$ is defined by $E (v) = \sum_{N \ge
+  0} \Lambda_N v^N$. We set $\Lambda_N \assign 0$ for $N < 0$.
+\end{definition}
+
+The exponential is well defined because $\sum_j c_j v^j$ has zero constant
+term. Under the substitution $v = w^{- 1}$, $E$ becomes the formal expansion
+of $\exp \left( \sum_{j = 1}^m c_j w^{- j} \right)$, the exponential of the
+principal part of a rational function at a pole of order $\le m$; the analytic
+counterpart is Theorem~\ref{thm:analyticmodel}.
+
+\begin{lemma}
+  [Universal recurrence]\label{lem:recurrence} $\Lambda_0 = 1$ and, for all $N
+  \ge 1$,
+  \begin{equation}
+    \label{eq:universal} N \hspace{0.17em} \Lambda_N \hspace{0.27em} =
+    \hspace{0.27em} \sum_{j = 1}^{\min (m, N)} j \hspace{0.17em} c_j 
+    \hspace{0.17em} \Lambda_{N - j} .
+  \end{equation}
+\end{lemma}
+
+\begin{proof}
+  $E$ satisfies the linear first-order equation $E' (v) = \left( \sum_{j =
+  1}^m jc_j v^{j - 1} \right) E (v)$ in $\CA_m [[v]]$, obtained by formal
+  differentiation of the exponential. The coefficient of $v^{N - 1}$ on the
+  left is $N \Lambda_N$; on the right it is $\sum_{j = 1}^m jc_j \Lambda_{N -
+  j}$, in which terms with $j > N$ vanish by the convention $\Lambda_{< 0} =
+  0$. The initial value $\Lambda_0 = E (0) = 1$.
+\end{proof}
+
+\begin{lemma}
+  [Partition formula]\label{lem:partition} For all $N \ge 0$,
+  \begin{equation}
+    \label{eq:partition} \Lambda_N \hspace{0.27em} = \hspace{0.27em}
+    \sum_{\tmscript{\begin{array}{c}
+      k_1, \ldots, k_m \ge 0\\
+      \sum_j jk_j = N
+    \end{array}}} \hspace{0.27em} \prod_{j = 1}^m \frac{c_j^{\hspace{0.17em}
+    k_j}}{k_j !} .
+  \end{equation}
+  In particular $\Lambda_N$ is homogeneous of weight $N$.
+\end{lemma}
+
+\begin{proof}
+  $E (v) = \prod_{j = 1}^m \exp (c_j v^j) = \prod_{j = 1}^m \sum_{k_j \ge 0}
+  \frac{c_j^{k_j}}{k_j !} v^{jk_j}$; the product of the $m$ series is computed
+  by collecting the coefficient of $v^N$, which is \eqref{eq:partition}.
+  Homogeneity is immediate since the monomial $\prod c_j^{k_j}$ has weight
+  $\sum jk_j = N$.
+\end{proof}
+
+\begin{proposition}
+  [Bell-polynomial form]\label{prop:bell} $N! \hspace{0.17em} \Lambda_N = B_N 
+  (1! \hspace{0.17em} c_1, \hspace{0.17em} 2! \hspace{0.17em} c_2, \ldots, m!
+  \hspace{0.17em} c_m, \hspace{0.17em} 0, \ldots, 0)$, where $B_N$ is the
+  complete Bell polynomial, defined by $\exp \left( \sum_{j \ge 1} x_j t^j /
+  j! \right) = \sum_{N \ge 0} B_N  (x_1, \ldots, x_N)  \hspace{0.17em} t^N /
+  N!$ {\tmem{(Comtet {\cite[{\textsection}3.3]{Comtet}})}}.
+\end{proposition}
+
+\begin{proof}
+  Substitute $x_j = j! \hspace{0.17em} c_j$ for $j \le m$ and $x_j = 0$ for $j
+  > m$ in the defining generating identity of $B_N$; the left side becomes $E
+  (t)$.
+\end{proof}
+
+\begin{lemma}
+  [Derivations]\label{lem:derivation} For $1 \le j \le m$ and all $N$,
+  \[ \frac{\partial \Lambda_N}{\partial c_j} \hspace{0.27em} = \hspace{0.27em}
+     \Lambda_{N - j} . \]
+\end{lemma}
+
+\begin{proof}
+  $\partial_{c_j} E (v) = v^j E (v)$; compare coefficients of $v^N$.
+\end{proof}
+
+\begin{remark}
+  \label{rem:eulerequiv}Lemma~\ref{lem:recurrence} is exactly the Euler
+  homogeneity relation: the grading operator $\mathcal{E}= \sum_{j = 1}^m j
+  \hspace{0.17em} c_j  \hspace{0.17em} \partial_{c_j}$ satisfies $\mathcal{E}
+  \Lambda_N = \sum_j jc_j \Lambda_{N - j}$ by Lemma~\ref{lem:derivation}, and
+  $\mathcal{E} \Lambda_N = N \Lambda_N$ by Lemma~\ref{lem:partition}.
+  Conversely, any sequence of weight-homogeneous elements satisfying
+  Lemma~\ref{lem:derivation} with $\Lambda_0 = 1$ satisfies
+  \eqref{eq:universal}. The universal recurrence, the lowering operators, and
+  the grading are one structure viewed three ways.
+\end{remark}
+
+\begin{theorem}
+  [Generation and freeness]\label{thm:generation} $\C [\Lambda_1, \ldots,
+  \Lambda_m] = \CA_m$, and $\Lambda_1, \ldots, \Lambda_m$ are algebraically
+  independent over $\C$. Consequently $(\Lambda_N)_{N \ge 0} \subset \C
+  [\Lambda_1, \ldots, \Lambda_m]$: the entire coefficient sequence lives in
+  the polynomial algebra on its first $m$ terms.
+\end{theorem}
+
+\begin{proof}
+  For $1 \le N \le m$, the multi-index $k_N = 1$, $k_j = 0$ $(j \ne N)$ is the
+  unique solution of $\sum jk_j = N$ using the variable $c_N$; every other
+  solution has $k_N = 0$ and involves only $c_1, \ldots, c_{N - 1}$. Hence
+  $\Lambda_N = c_N + q_N (c_1, \ldots, c_{N - 1})$ with $q_N$ polynomial. By
+  induction, $c_N \in \C [\Lambda_1, \ldots, \Lambda_N]$, so $\C [\Lambda_1,
+  \ldots, \Lambda_m] \supseteq \C [c_1, \ldots, c_m]$; the reverse inclusion
+  is trivial. Since $\trdeg_{\C} \CA_m = m$ and $\Lambda_1, \ldots, \Lambda_m$
+  generate it, they are algebraically independent. For $N > m$, $\Lambda_N \in
+  \CA_m = \C [\Lambda_1, \ldots, \Lambda_m]$; explicitly, iterate
+  \eqref{eq:universal}.
+\end{proof}
+
+\section{Hopf structure and the symmetric-function
+realization}\label{sec:hopf}
+
+\begin{definition}
+  \label{def:hopf}Equip $\CA_m$ with the unique bialgebra structure for which
+  each $c_j$ is primitive: $\Delta c_j = c_j \otimes 1 + 1 \otimes c_j$,
+  $\varepsilon (c_j) = 0$, extended as algebra morphisms. Since $\CA_m$ is
+  graded and connected ($(\CA_m)_0 = \C$), it is automatically a Hopf algebra,
+  with antipode determined by $S (c_j) = - c_j$ {\tmem{(graded connected
+  bialgebras possess antipodes; see
+  {\cite[{\textsection}1]{MilnorMoore}}{\hspace{0.17em}})}}.
+\end{definition}
+
+\begin{theorem}
+  [Divided-power property]\label{thm:dividedpower} $\Delta \Lambda_N = \sum_{i
+  = 0}^N \Lambda_i \otimes \Lambda_{N - i}$ for all $N \ge 0$, $\varepsilon
+  (\Lambda_N) = \delta_{N, 0}$, and $\sum_{i = 0}^N \Lambda_i  \hspace{0.17em}
+  S (\Lambda_{N - i}) = \delta_{N, 0}$, with $S (\Lambda_N) = \Lambda_N  (-
+  c_1, \ldots, - c_m)$.
+\end{theorem}
+
+\begin{proof}
+  Apply the algebra morphism $\Delta$ coefficient-wise in $(\CA_m \otimes
+  \CA_m) [[v]]$:
+  \[ \sum_N \Delta \Lambda_N  \hspace{0.17em} v^N = \Delta E (v) = \exp \left(
+     \sum_j (c_j \otimes 1 + 1 \otimes c_j) v^j \right) = \exp \left( \sum_j
+     (c_j \otimes 1) v^j \right) \exp \left( \sum_j (1 \otimes c_j) v^j
+     \right), \]
+  the factorization being valid because the two exponents commute. The right
+  side equals $\left( \sum_i \Lambda_i \otimes 1 \hspace{0.17em} v^i \right)
+  \left( \sum_k 1 \otimes \Lambda_k  \hspace{0.17em} v^k \right)$; compare
+  coefficients. The counit and antipode identities follow the same way from
+  $\varepsilon E (v) = 1$ and $SE (v) = E (v)^{- 1} = \exp (- \sum c_j v^j)$.
+\end{proof}
+
+Thus $(\Lambda_N)$ is a {\tmem{divided-power sequence}} in the graded
+connected Hopf algebra $\CA_m$: $\Lambda_N \in (\CA_m)_N$, $\Lambda_0 = 1$,
+$\Delta \Lambda_N = \sum \Lambda_i \otimes \Lambda_{N - i}$. Equivalently, the
+series $E (v)$ is group-like in the completed Hopf algebra $\CA_m [[v]]$.
+
+\begin{theorem}
+  [Primitives]\label{thm:primitives} $\Prim (\CA_m) = \bigoplus_{j = 1}^m \C
+  \hspace{0.17em} c_j$; in particular the primitive space in weight $j$ is
+  one-dimensional for $1 \le j \le m$ and zero for $j > m$.
+\end{theorem}
+
+\begin{proof}
+  Each $c_j$ is primitive by construction. Conversely, let $f = \sum_{\alpha}
+  a_{\alpha} c^{\alpha}$ be primitive, with multi-index notation $c^{\alpha} =
+  \prod c_j^{\alpha_j}$. Then $\Delta (c^{\alpha}) = \prod_j (c_j \otimes 1 +
+  1 \otimes c_j)^{\alpha_j} = \sum_{0 \le \beta \le \alpha}
+  \binom{\alpha}{\beta} c^{\beta} \otimes c^{\alpha - \beta}$. The component
+  of $\Delta f - f \otimes 1 - 1 \otimes f$ in $\CA_m^+ \otimes \CA_m^+$
+  ($\CA_m^+ \assign \ker \varepsilon$) is $\sum_{\alpha} a_{\alpha}  \sum_{0 <
+  \beta < \alpha} \binom{\alpha}{\beta} c^{\beta} \otimes c^{\alpha - \beta}$.
+  The elements $\{c^{\beta} \otimes c^{\gamma} : \beta, \gamma \ne 0\}$ are
+  linearly independent in $\CA_m \otimes \CA_m$, and for fixed $(\beta,
+  \gamma)$ the total coefficient is $a_{\beta + \gamma} \binom{\beta +
+  \gamma}{\beta}$. Primitivity therefore forces $a_{\alpha} = 0$ whenever
+  $\alpha$ admits a decomposition $\alpha = \beta + \gamma$ with $\beta,
+  \gamma \ne 0$, i.e. whenever $| \alpha | \assign \sum_j \alpha_j \ge 2$.
+  Hence $f$ is a linear combination of $1, c_1, \ldots, c_m$, and $\varepsilon
+  (f) = 0$ kills the constant.
+\end{proof}
+
+\subsection{The symmetric-function isomorphism}
+
+Let $\Sym = \C [p_1, p_2, \ldots]$ be the Hopf algebra of symmetric functions
+over $\C$, with power sums $p_r$ primitive, complete homogeneous symmetric
+functions $h_N$, and Schur functions $s_{\lambda}$ {\tmem{(Macdonald
+{\cite[Ch.~I]{Macdonald}})}}. Write $\CA_{\infty} \assign \C [c_1, c_2,
+\ldots]$ for the evident $m = \infty$ version of Definitions~\ref{def:E}
+and~\ref{def:hopf}; Lemmas \ref{lem:recurrence}--\ref{lem:derivation} and
+Theorems~\ref{thm:generation}--\ref{thm:primitives} hold verbatim with $\min
+(m, N)$ replaced by $N$.
+
+\begin{theorem}
+  [Symmetric-function realization]\label{thm:sym} The assignment $\Psi (p_j)
+  \assign j \hspace{0.17em} c_j$ extends uniquely to an isomorphism of graded
+  Hopf algebras $\Psi : \Sym \xrightarrow{\sim} \CA_{\infty}$, and
+  \[ \Psi (h_N) = \Lambda_N  \qquad (N \ge 0) . \]
+  Under $\Psi$, Newton's identity $Nh_N = \sum_{j = 1}^N p_j h_{N - j}$
+  becomes the universal recurrence \eqref{eq:universal}. Moreover the ideal
+  $I_m \assign (c_{m + 1}, c_{m + 2}, \ldots) \subset \CA_{\infty}$ is a
+  graded Hopf ideal, and
+  \[ \CA_m \hspace{0.27em} \cong \hspace{0.27em} \CA_{\infty} / I_m
+     \hspace{0.27em} \cong \hspace{0.27em} \Sym / (p_{m + 1}, p_{m + 2},
+     \ldots) \]
+  as graded Hopf algebras, compatibly with the sequences: $h_N \mapsto
+  \Lambda_N$ throughout.
+\end{theorem}
+
+\begin{proof}
+  $\Sym$ and $\CA_{\infty}$ are free commutative algebras on primitive
+  generators $p_j$, resp. $c_j$, one in each weight $j \ge 1$; $\Psi$ matches
+  them by weight with the nonzero scalar $j$, hence is an isomorphism of
+  graded algebras. It is a coalgebra map because it sends primitives to
+  primitives and both coproducts are algebra morphisms determined on
+  generators; a bialgebra isomorphism of Hopf algebras automatically respects
+  antipodes. For the sequence: the generating identity $\sum_{N \ge 0} h_N t^N
+  = \exp \left( \sum_{r \ge 1} p_r t^r / r \right)$
+  {\tmem{({\cite[I.(2.10)]{Macdonald}})}} maps under $\Psi$ (applied
+  coefficient-wise in $t$) to $\sum_N \Psi (h_N) t^N = \exp \left( \sum_r c_r
+  t^r \right) = \sum_N \Lambda_N t^N$, so $\Psi (h_N) = \Lambda_N$. Newton's
+  identity is {\cite[I.(2.11)$'$]{Macdonald}}; applying $\Psi$ gives
+  \eqref{eq:universal} (and, independently, Lemma~\ref{lem:recurrence}
+  re-proves Newton's identity via the differential equation $E' = (\sum jc_j
+  v^{j - 1}) E$). For the quotient: $I_m$ is generated by primitives, so
+  $\Delta I_m \subseteq I_m \otimes \CA_{\infty} + \CA_{\infty} \otimes I_m$,
+  $\varepsilon (I_m) = 0$, $S (I_m) \subseteq I_m$: a Hopf ideal. The quotient
+  map $\CA_{\infty} \to \CA_m$, $c_j \mapsto c_j$ $(j \le m)$, $c_j \mapsto 0$
+  $(j > m)$, carries $\Lambda_N^{(\infty)}$ to $\Lambda_N$ by
+  Lemma~\ref{lem:partition} (multi-indices with $k_j > 0$ for some $j > m$
+  die).
+\end{proof}
+
+\begin{remark}
+  \label{rem:notFdB}$\CA_{\infty}$ is {\tmem{not}} the Fa{\`a} di Bruno Hopf
+  algebra: the latter is the coordinate Hopf algebra of the group of formal
+  diffeomorphisms and is not cocommutative
+  {\tmem{(Figueroa--Gracia-Bond{\'\i}a {\cite{FGB}})}}, whereas $\CA_{\infty}
+  \cong \Sym$ is commutative and cocommutative. The relation to Bell
+  polynomials is the coefficient identity of Proposition~\ref{prop:bell}, not
+  an isomorphism with the Fa{\`a} di Bruno object. This answers, precisely,
+  the question ``is it the Bell algebra'': the coefficient algebra is the
+  algebra of symmetric functions, in which the $\Lambda_N$ are the complete
+  homogeneous basis re-expressed through rescaled power sums.
+\end{remark}
+
+\begin{remark}
+  [Hall algebra]\label{rem:hall} The classical Hall algebra of finite modules
+  over a discrete valuation ring with finite residue field is isomorphic,
+  after the standard rescaling, to $\Sym$
+  {\tmem{({\cite[Ch.~II--III]{Macdonald}})}}. Via Theorem~\ref{thm:sym},
+  $\CA_{\infty}$ therefore {\tmem{does}} arise as a Hall algebra, and $\CA_m$
+  as an explicit Hopf quotient of one. We record this as an identification
+  available by citation; we make no use of the finer (Hall--Littlewood, $q$-)
+  structure here, and lifting the coefficient sequence $(\Lambda_N)$ to the
+  $q$-deformed level is Open Problem~\ref{prob:hall}.
+\end{remark}
+
+\section{Combinatorial and matrix realizations}\label{sec:combinatorics}
+
+\begin{theorem}
+  [Species / set-partition interpretation]\label{thm:species} For $N \ge 1$,
+  \[ N! \hspace{0.17em} \Lambda_N \hspace{0.27em} = \hspace{0.27em}
+     \sum_{\tmscript{\begin{array}{c}
+       \pi \vdash [N]\\
+       \text{all blocks of size} \le m
+     \end{array}}} \hspace{0.27em} \prod_{B \in \pi} |B| ! \hspace{0.27em}
+     c_{|B|}, \]
+  the sum over set partitions $\pi$ of $\{1, \ldots, N\}$ with block sizes at
+  most $m$. Equivalently, $E (v)$ is the exponential generating function of
+  the species ``sets of blocks,'' each block of size $j \le m$ weighted $j!
+  \hspace{0.17em} c_j$.
+\end{theorem}
+
+\begin{proof}
+  The number of set partitions of $[N]$ with exactly $k_j$ blocks of size $j$
+  is $N! / \prod_j ((j!)^{k_j} k_j !)$. Hence
+  \[ \sum_{\pi} \prod_{B \in \pi} |B| ! \hspace{0.17em} c_{|B|} =
+     \sum_{\tmscript{\begin{array}{c}
+       k : \hspace{0.17em} \sum jk_j = N
+     \end{array}}} \frac{N!}{\prod_j (j!)^{k_j} k_j !}  \prod_j (j!
+     \hspace{0.17em} c_j)^{k_j} = N! \sum_{\tmscript{\begin{array}{c}
+       k : \hspace{0.17em} \sum jk_j = N
+     \end{array}}} \prod_j \frac{c_j^{k_j}}{k_j !} = N! \hspace{0.17em}
+     \Lambda_N \]
+  by Lemma~\ref{lem:partition}. The species statement is the exponential
+  formula {\tmem{(Flajolet--Sedgewick {\cite[II.2]{FS}};
+  Bergeron--Labelle--Leroux {\cite{BLL}})}}.
+\end{proof}
+
+\begin{theorem}
+  [Appell structure]\label{thm:appell} Fix $c_2, \ldots, c_m$ and regard $p_N
+  (c_1) \assign N! \hspace{0.17em} \Lambda_N$ as a polynomial in $c_1$. Then
+  $(p_N)_{N \ge 0}$ is an Appell sequence: $p_N' (c_1) = N \hspace{0.17em}
+  p_{N - 1} (c_1)$, with exponential generating function $\sum_N p_N (c_1) t^N
+  / N! = e^{c_1 t} A (t)$, $A (t) = \exp \left( \sum_{j = 2}^m c_j t^j
+  \right)$.
+\end{theorem}
+
+\begin{proof}
+  Lemma~\ref{lem:derivation} with $j = 1$ gives $\partial_{c_1} \Lambda_N =
+  \Lambda_{N - 1}$, i.e. $p_N' = Np_{N - 1}$; the generating function is
+  Definition~\ref{def:E} with the $c_1$-factor split off. Appell sequences are
+  exactly the Sheffer sequences with identity delta series, so $(p_N)$ is
+  Sheffer of Appell type {\tmem{(Roman {\cite[{\textsection}2.5]{Roman}})}}.
+\end{proof}
+
+\begin{theorem}
+  [Riordan-group realization]\label{thm:riordan} The lower-triangular matrix
+  $D = (d_{n, k})_{n, k \ge 0}$, $d_{n, k} \assign \dfrac{n!}{k!}
+  \hspace{0.17em} \Lambda_{n - k}$, is the exponential Riordan array $\left( E
+  (t), \hspace{0.17em} t \right)$, an element of the Appell subgroup of the
+  exponential Riordan group. The group law restricted to this subgroup, $(E
+  (t), t) \cdot (E' (t), t) = (E (t) E' (t), t)$, corresponds to addition $c_j
+  \mapsto c_j + c_j'$ of parameters, i.e. to the coproduct of
+  Theorem~\ref{thm:dividedpower}.
+\end{theorem}
+
+\begin{proof}
+  By definition {\tmem{(Shapiro et al. {\cite{Shapiro}}; Barry
+  {\cite{Barry}})}} the exponential Riordan array $(g (t), f (t))$ has entries
+  $d_{n, k} = \frac{n!}{k!} [t^{n - k}]  \hspace{0.17em} g (t) f (t)^k / t^k$
+  reduced, for $f (t) = t$, to $d_{n, k} = \frac{n!}{k!} [t^{n - k}] g (t)$;
+  with $g = E$ this is $\frac{n!}{k!} \Lambda_{n - k}$. Matrix multiplication
+  of Appell arrays multiplies the $g$'s; $E (t ; c) E (t ; c') = E (t ; c +
+  c')$ since the exponents add. The identification with the coproduct is
+  Theorem~\ref{thm:dividedpower} read through $\Lambda_N  (c + c') = \sum_i
+  \Lambda_i (c) \Lambda_{N - i} (c')$, which is the image of $\Delta
+  \Lambda_N$ under evaluation at $(c, c')$.
+\end{proof}
+
+\subsection{Hankel determinants are rectangular Schur functions}
+
+\begin{theorem}
+  [Hankel--Schur identity]\label{thm:hankelschur} In $\CA_{\infty} \cong \Sym$
+  (hence, after applying the quotient of Theorem~\ref{thm:sym}, as identities
+  in $\CA_m$), for every $n \ge 1$:
+  \[ \det (\Lambda_{i + j})_{0 \le i, j \le n - 1} = (- 1)^{\binom{n}{2}} 
+     \hspace{0.17em} \Psi (s_{((n - 1)^n)}), \qquad \det (\Lambda_{i + j +
+     1})_{0 \le i, j \le n - 1} = (- 1)^{\binom{n}{2}}  \hspace{0.17em} \Psi
+     (s_{(n^n)}), \]
+  where $(r^n)$ denotes the $n \times r$ rectangular partition.
+\end{theorem}
+
+\begin{proof}
+  Work in $\Sym$ with $\Lambda_N = h_N$ (Theorem~\ref{thm:sym}). Reverse the
+  rows of the Hankel matrix by $i \mapsto n - 1 - i$; this multiplies the
+  determinant by the sign of the reversal permutation, $(- 1)^{\binom{n}{2}}$.
+  In $1$-based indices $(i, j)$ the reversed matrix has entries
+  $h_{\hspace{0.17em} n - 1 - i + j}$ (first case), which is the Jacobi--Trudi
+  matrix $(h_{\lambda_i - i + j})$ for the constant partition $\lambda_i = n -
+  1$; by the Jacobi--Trudi identity {\tmem{({\cite[I.(3.4)]{Macdonald}})}} its
+  determinant is $s_{((n - 1)^n)}$. The shifted case is identical with
+  $\lambda_i = n$.
+\end{proof}
+
+\begin{corollary}
+  [Normality of the Pad{\'e} table of $E$]\label{cor:padeE} Let $\ev_c : \CA_m
+  \to \C$ be evaluation at $c \in \C^m$ and let $\mathcal{L}$ be the moment
+  functional $\mathcal{L} [x^N] = \ev_c (\Lambda_N)$. The Hankel determinants
+  governing the diagonal Pad{\'e} approximants of $E (v)$ at $c$ {\tmem{(Gragg
+  {\cite{Gragg}})}} are the numbers $(- 1)^{\binom{n}{2}}  \hspace{0.17em}
+  s_{((n - 1)^n)}$ and $(- 1)^{\binom{n}{2}}  \hspace{0.17em} s_{(n^n)}$
+  evaluated under $p_j = jc_j$ $(j \le m)$, $p_j = 0$ $(j > m)$. In
+  particular, for $m = 1$ (so $p_1 = c_1$, $p_{\ge 2} = 0$), the exponential
+  specialization $s_{\lambda} \mapsto f^{\lambda} c_1^{| \lambda |} / |
+  \lambda |$! {\tmem{({\cite[I.{\textsection}7, Ex.~24(a) with $n \to \infty$;
+  equivalently $\ev$ of {\cite[I.(5.16)]{Macdonald}} at the exponential
+  specialization]{Macdonald}}{\hspace{0.17em}})}}, where $f^{\lambda} > 0$ is
+  the number of standard Young tableaux, shows every such determinant is
+  nonzero for $c_1 \ne 0$: the Pad{\'e} table of $e^{c_1 v}$ is normal,
+  recovering the classical normality of the exponential.
+\end{corollary}
+
+\begin{proof}
+  Immediate from Theorem~\ref{thm:hankelschur}, the Pad{\'e}--Hankel
+  dictionary {\cite{Gragg}}, and $f^{\lambda} \ge 1$ for every partition
+  $\lambda$.
+\end{proof}
+
+\begin{remark}
+  \label{rem:zeroloci}For $m \ge 2$ the quasi-definiteness locus of
+  $\mathcal{L}$ is precisely the complement of the union of the hypersurfaces
+  $\{c \in \C^m : s_{((n - 1)^n)} (p_j = jc_j) = 0\}$; the obstruction to
+  Pad{\'e} normality of exponentials of principal parts is a rectangular Schur
+  divisor. This gives the ``discriminant locus'' appearing in the companion
+  Chebyshev--Wheeler paper a name in the pure-pole case.
+\end{remark}
+
+\section{Automorphisms and differential Galois structure}\label{sec:aut}
+
+\begin{theorem}
+  [Graded Hopf automorphisms]\label{thm:aut} $\Aut_{\textrm{\tmop{gr} \text{-}
+  \tmop{Hopf}}} (\CA_m) \cong (\C^{\times})^m$, acting by $c_j \mapsto
+  \lambda_j c_j$. The subgroup induced by the geometric rescalings $w \mapsto
+  \lambda w$ of the local coordinate is the one-parameter diagonal $\lambda_j
+  = \lambda^{\hspace{0.17em} j}$.
+\end{theorem}
+
+\begin{proof}
+  A graded Hopf automorphism preserves $\Prim (\CA_m)$ and each of its graded
+  pieces, which are the lines $\C c_j$ by Theorem~\ref{thm:primitives}; hence
+  $c_j \mapsto \lambda_j c_j$ with $\lambda_j \in \C^{\times}$, and any such
+  assignment plainly defines a graded Hopf automorphism. Under $w \mapsto
+  \lambda w$ the principal part $\sum c_j w^{- j}$ becomes $\sum (c_j
+  \lambda^{- j}) w^{- j}$, giving the stated one-parameter subgroup (with
+  $\lambda^{- j}$; reparametrize).
+\end{proof}
+
+\begin{proposition}
+  [Picard--Vessiot group]\label{prop:galois} Let $R \in \C (z)$ be
+  nonconstant. Then $y = e^R$ is transcendental over $\C (z)$ and the
+  Picard--Vessiot group of $y' = R' y$ over $\C (z)$ is $\mathbb{G}_m$. The
+  group acts on solutions by $y \mapsto \lambda y$, hence on the full Laurent
+  coefficient sequence $(A_n)$ of Section~\ref{sec:model} diagonally by $A_n
+  \mapsto \lambda A_n$: the coefficient sequence spans the weight-one isotypic
+  line, while the algebra $\CA_m$ itself is Galois-invariant.
+\end{proposition}
+
+\begin{proof}
+  The PV group of a rank-one equation is a Zariski-closed subgroup of
+  $\mathbb{G}_m$, hence $\mathbb{G}_m$ itself or the finite group $\mu_n$; the
+  latter occurs iff $y^n \in \C (z)$ for some $n \ge 1$ {\tmem{(van der
+  Put--Singer {\cite[Ex.~1.19, {\textsection}1.4]{vdPS}})}}. Suppose $e^{nR} =
+  f \in \C (z)$. Then $nR' = f' / f$. Every residue of $R'$ vanishes, since
+  $R'$ is the derivative of a rational function; every residue of $f' / f$ at
+  a zero or pole of $f$ is the (nonzero) integer order of $f$ there. Hence $f$
+  has no zeros or poles, so $f$ is constant and $R' = 0$, contradicting $R$
+  nonconstant.
+\end{proof}
+
+\section{The analytic model}\label{sec:model}
+
+We now verify that the formal object of
+Sections~\ref{sec:recurrence}--\ref{sec:combinatorics} computes actual Laurent
+coefficients, with quantitative control. Fix $c = (c_1, \ldots, c_m) \in \C^m$
+and write $\Lambda_N (c) \assign \ev_c (\Lambda_N)$, $C \assign \sum_{j = 1}^m
+|c_j |$.
+
+\begin{proposition}
+  [Growth bound]\label{prop:growth} For all $N \ge 0$ and all $v > 0$, $|
+  \Lambda_N (c) | \le \Lambda_N  (|c_1 |, \ldots, |c_m |) \le v^{- N} \exp
+  \left( \sum_j |c_j |v^j \right)$. Consequently, for $N \ge mC$,
+  \[ | \Lambda_N (c) | \hspace{0.27em} \le \hspace{0.27em} e^{N / m} \left(
+     \frac{mC}{N} \right)^{N / m}, \]
+  so $| \Lambda_N (c) |^{1 / N} \to 0$ super-geometrically, at the rate of an
+  entire function of order $m$ in $1 / w$.
+\end{proposition}
+
+\begin{proof}
+  The first inequality is termwise from \eqref{eq:partition}. For the second,
+  all terms of $\sum_M \Lambda_M (|c|) v^M = \exp (\sum_j |c_j |v^j)$ are
+  nonnegative, so any single term is bounded by the sum: $\Lambda_N (|c|) v^N
+  \le \exp (\sum |c_j |v^j) \le e^{Cv^m}$ for $v \ge 1$. Choose $v = (N /
+  (mC))^{1 / m} \ge 1$; then $e^{Cv^m} = e^{N / m}$ and $v^{- N} = (mC / N)^{N
+  / m}$.
+\end{proof}
+
+\begin{theorem}
+  [Pure-pole expansion]\label{thm:analyticmodel} For every $c \in \C^m$ and $w
+  \ne 0$, the series $\sum_{N \ge 0} \Lambda_N (c)  \hspace{0.17em} w^{- N}$
+  converges absolutely, uniformly on $|w| \ge \epsilon$ for each $\epsilon >
+  0$, and
+  \[ \exp \left( \sum_{j = 1}^m c_j w^{- j} \right) = \sum_{N \ge 0} \Lambda_N
+     (c)  \hspace{0.17em} w^{- N} . \]
+  In particular $\Lambda_N (c)$ {\tmem{is}} the coefficient of $w^{- N}$ in
+  the Laurent expansion of $e^{\Pi}$ on $\C^{\times}$, and the map $c \mapsto
+  (\Lambda_N (c))_{N \ge 0}$ is injective.
+\end{theorem}
+
+\begin{proof}
+  Expanding each factor $\exp (c_j w^{- j})$ and multiplying, the resulting
+  multi-series is dominated termwise by $\prod_j \sum_{k_j} |c_j |^{k_j}
+  |w|^{- jk_j} / k_j ! = \exp (\sum_j |c_j ||w|^{- j}) < \infty$, so it
+  converges absolutely and may be rearranged by total degree, yielding $\sum_N
+  \Lambda_N (c) w^{- N}$ with the coefficients of Lemma~\ref{lem:partition}.
+  Uniqueness of Laurent coefficients on an annulus identifies them with the
+  Laurent coefficients of $e^{\Pi}$. Injectivity: by the triangularity in the
+  proof of Theorem~\ref{thm:generation}, $c_N$ is a polynomial in $\Lambda_1
+  (c), \ldots, \Lambda_N (c)$.
+\end{proof}
+
+\begin{theorem}
+  [Local Laurent structure of $e^R$; the coefficient module]\label{thm:module}
+  Let $R \in \C (z)$ have a pole at $a$ of order $m \ge 1$ with principal part
+  $\Pi (w) = \sum_{j = 1}^m c_j w^{- j}$, $w = z - a$, $c_m \ne 0$, and let
+  $r_a \in (0, \infty]$ be the distance from $a$ to the nearest other pole of
+  $R$. Write $H \assign R - \Pi$, analytic on $|w| < r_a$, and $e^{H (a + w)}
+  = \sum_{l \ge 0} b_l w^l$, $\limsup_l |b_l |^{1 / l} \le 1 / r_a$. Then on
+  $0 < |w| < r_a$,
+  \[ e^{R (a + w)} = \sum_{n \in \Z} A_n  \hspace{0.17em} w^n, \qquad A_n =
+     \sum_{k \ge \max (0, - n)} \Lambda_k (c)  \hspace{0.17em} b_{n + k}, \]
+  each $A_n$ given by an absolutely convergent series. The map $\CA_m \times
+  \C [[w]]_{r_a} \to \C^{\Z}$ so defined is $\C$-bilinear in the coefficient
+  sequences $(\Lambda_k (c))$ and $(b_l)$: the Laurent coefficients of $e^R$
+  constitute a module over the coefficient algebra, with structure constants
+  supported on the exponent lattice $n = l - k$.
+\end{theorem}
+
+\begin{proof}
+  $e^R = e^{\Pi} e^H$ exactly, since $\Pi$ and $H$ are scalar functions. On
+  any circle $|w| = \rho \in (0, r_a)$, both factors are given by absolutely
+  convergent Laurent/Taylor series (Theorem~\ref{thm:analyticmodel}; Cauchy),
+  so their product's Laurent coefficients are the Cauchy convolutions $A_n =
+  \sum_k \Lambda_k (c) b_{n + k}$ (with $b_{< 0} \assign 0$), and the double
+  series converges absolutely because, choosing $\rho' \in (\rho, r_a)$,
+  $|b_{n + k} | {\le B \rho'}^{- (n + k)}$ while $| \Lambda_k (c) |$ decays
+  super-geometrically by Proposition~\ref{prop:growth}: $\sum_k | \Lambda_k
+  (c) |  \hspace{0.17em} {B \rho'}^{- (n + k)} {\le B \rho'}^{- n}  \sum_k
+  e^{k / m}  (mC / k)^{k / m} {\rho'}^{- k} < \infty$. Bilinearity is
+  manifest.
+\end{proof}
+
+\begin{proposition}
+  [Truncation error]\label{prop:tail} In the setting of
+  Theorem~\ref{thm:module}, fix $\rho' < r_a$ with $|b_l | {\le B \rho'}^{-
+  l}$, and let $K \ge K_0 \assign \max \left\{ mC, e \hspace{0.17em} mC
+  \hspace{0.17em} (2 / \rho')^m \right\}$. Then
+  \[ \left| A_n - \sum_{k = \max (0, - n)}^K \Lambda_k (c) b_{n + k} \right|
+     \hspace{0.27em} \le \hspace{0.27em} B \hspace{0.17em} {\rho'}^{- n} 
+     \hspace{0.17em} 2^{- K} . \]
+\end{proposition}
+
+\begin{proof}
+  For $k \ge K_0$, Proposition~\ref{prop:growth} gives $| \Lambda_k (c) |
+  {\rho'}^{- k} \le \left[ (e \hspace{0.17em} mC / k)^{1 / m} / \rho'
+  \right]^k \le 2^{- k}$ by the choice of $K_0$. Sum the geometric tail
+  $\sum_{k > K} 2^{- k} \le 2^{- K}$ against ${B \rho'}^{- n}$ (absorbing
+  ${\rho'}^{- k} \le$ what was already used).
+\end{proof}
+
+\begin{proposition}
+  [Hadamard closure]\label{prop:hadamard} For $c, c' \in \C^m$, the Hadamard
+  product sequence $(\Lambda_N (c) \Lambda_N (c'))_N$ is P-recursive
+  (holonomic).
+\end{proposition}
+
+\begin{proof}
+  Each factor satisfies the polynomial-coefficient recurrence
+  \eqref{eq:universal}; the Hadamard product of P-recursive sequences is
+  P-recursive {\tmem{(Stanley {\cite{StanleyDF}}; Lipshitz
+  {\cite{Lipshitz}})}}.
+\end{proof}
+
+\section{Classical specializations}\label{sec:classical}
+
+The identifications below are exact and exhaustive in the stated cases; no
+claim is made that a general principal part of order $m \ge 3$ reduces to a
+single classical one-variable function. The general case is the algebra
+itself.
+
+\begin{theorem}
+  [$m = 1$: modified Bessel]\label{thm:bessel} For $b, c \in \C$, the Laurent
+  expansion of $e^{c / w + bw}$ on $\C^{\times}$ has coefficients
+  \[ [w^{- n}]  \hspace{0.17em} e^{c / w + bw} = \sum_{j \ge 0}
+     \frac{c^{\hspace{0.17em} j + n} b^{\hspace{0.17em} j}}{j! \hspace{0.17em}
+     (j + n) !}  \qquad (n \ge 0), \qquad [w^n]  \hspace{0.17em} e^{c / w +
+     bw} = \text{same with } b \leftrightarrow c. \]
+  For any determination $\sqrt{bc}$ of a square root of $bc$ with
+  $(\sqrt{bc})^2 = bc$, these equal $(c / b)^{n / 2} I_n  (2 \sqrt{bc})$
+  (interpreting $(c / b)^{n / 2} \assign c^n  (bc)^{- n / 2}$ with the same
+  determination), where $I_n (x) = \sum_{j \ge 0} (x / 2)^{2 j + n} / (j!
+  \hspace{0.17em} (j + n) !)$. Setting $b = c = x / 2$, $w = 1 / t$ recovers
+  the classical generating identity $\exp \left( \tfrac{x}{2} (t + 1 / t)
+  \right) = \sum_{n \in \Z} I_n (x) t^n$.
+\end{theorem}
+
+\begin{proof}
+  Here $\Lambda_k (c) = c^k / k$! and $b_l = b^l / l$!;
+  Theorem~\ref{thm:module} with $r_a = \infty$ gives $A_{- n} = \sum_{k \ge n}
+  \frac{c^k}{k!}  \frac{b^{k - n}}{(k - n) !}$; substitute $k = j + n$. The
+  Bessel form is the same series regrouped: $\sum_j (bc)^j / (j! (j + n) !) =
+  (bc)^{- n / 2} I_n  (2 \sqrt{bc})$ term by term, both sides being
+  unambiguous power series in $bc$ once the prefactor convention is fixed.
+  Symmetry $w \mapsto 1 / w$ exchanges $b, c$ and $n \mapsto - n$, giving the
+  positive coefficients and, with $I_{- n} = I_n$, the classical identity
+  {\tmem{(cf. {\cite[10.35.1]{DLMF}})}}.
+\end{proof}
+
+\begin{theorem}
+  [$m = 2$: Hermite-type polynomials]\label{thm:hermite} Define $\mathbf{H}_N
+  (x, y)$ by $\exp (xt + yt^2) = \sum_{N \ge 0} \mathbf{H}_N (x, y) 
+  \hspace{0.17em} t^N / N!$ {\tmem{(the Hermite--Kamp{\'e} de F{\'e}riet
+  polynomials {\cite{Appell}})}}. Then for $m = 2$,
+  \[ \Lambda_N  (c_1, c_2) = \frac{\mathbf{H}_N (c_1, c_2)}{N!} = \sum_{0 \le
+     k \le N / 2} \frac{c_1^{\hspace{0.17em} N - 2 k} c_2^{\hspace{0.17em}
+     k}}{(N - 2 k) ! \hspace{0.17em} k!}, \]
+  and $\mathbf{H}_N (x, y) = (\mathrm{i} \sqrt{y})^{\hspace{0.17em} N} H_N 
+  \hspace{-0.17em} \left( x / (2 \mathrm{i} \sqrt{y}) \right)$ for any fixed
+  square root, where $H_N$ is the classical (physicists') Hermite polynomial.
+\end{theorem}
+
+\begin{proof}
+  The first two equalities are Definition~\ref{def:E} for $m = 2$ and
+  Lemma~\ref{lem:partition}. The classical relation follows by comparing $\exp
+  (xt + yt^2)$ with $\exp (2 Xs - s^2) = \sum H_N (X) s^N / N!$ under $s =
+  \mathrm{i} \sqrt{y}  \hspace{0.17em} t$, $X = x / (2 \mathrm{i} \sqrt{y})$;
+  both sides are polynomial identities in $(x, y^{1 / 2})$, hence hold for
+  every branch choice consistently.
+\end{proof}
+
+\begin{theorem}
+  [Single-term pole of order $m$: Wright functions]\label{thm:wright} Let
+  $\phi (\rho, \beta ; \zeta) \assign \sum_{k \ge 0} \dfrac{\zeta^k}{k!
+  \hspace{0.17em} \Gamma (\rho k + \beta)}$ be Wright's generalized Bessel
+  function {\tmem{(Wright {\cite{Wright1933}}; Kilbas--Saigo
+  {\cite[{\textsection}1.11]{KilbasSaigo}})}}, entire in $\zeta$ for $\rho > -
+  1$. Then for $b \in \C^{\times}$, $c \in \C$, $n \in \Z$,
+  \[ [w^{- n}]  \hspace{0.27em} \exp \left( \frac{c}{w^m} + bw \right) = b^{-
+     n}  \hspace{0.17em} \phi \left( m, \hspace{0.17em} 1 - n ;
+     \hspace{0.17em} c \hspace{0.17em} b^{\hspace{0.17em} m} \right) . \]
+\end{theorem}
+
+\begin{proof}
+  Here $\Lambda_{mk} = c^k / k$! and $\Lambda_N = 0$ otherwise, $b_l = b^l /
+  l$! $(l \ge 0)$, $b_l \assign 0$ $(l < 0)$. Theorem~\ref{thm:module}: $A_{-
+  n} = \sum_k \frac{c^k}{k!}  \hspace{0.17em} \frac{b^{\hspace{0.17em} mk -
+  n}}{(mk - n) !}$ over $k$ with $mk \ge n$. Since $1 / \Gamma (\ell) = 0$ for
+  $\ell \in \Z_{\le 0}$, the constraint is absorbed by writing $(mk - n) ! =
+  \Gamma (mk - n + 1) = \Gamma (mk + (1 - n))$, and the full sum over $k \ge
+  0$ equals $b^{- n}  \sum_k (cb^m)^k / \left( k! \hspace{0.17em} \Gamma (mk +
+  1 - n) \right)$.
+\end{proof}
+
+\begin{remark}
+  [Scope of special-function reductions]\label{rem:scope}
+  Theorems~\ref{thm:bessel}--\ref{thm:wright} exhaust the cases in which a
+  single classical family arises from a natural one-parameter entire factor:
+  $m = 1$, $m = 2$, and pure top-order poles. For a general principal part
+  with $m \ge 3$ and mixed $c_j$, the coefficient $A_n$ is the genuine
+  multivariate partition sum of Theorem~\ref{thm:module}, i.e. an element of
+  the $\CA_m$-module, and we do not assert any reduction to Wright,
+  Fox--Wright, or Fox $H$ functions of one variable. What replaces such a
+  reduction is the structure theory of
+  Sections~\ref{sec:hopf}--\ref{sec:combinatorics} together with the holonomy
+  of Section~\ref{sec:holonomy}: closed recurrences, not closed one-variable
+  forms.
+\end{remark}
+
+\section{Holonomy}\label{sec:holonomy}
+
+\begin{theorem}
+  [D-finiteness and the coefficient recurrence]\label{thm:holonomy} Let $R \in
+  \C (z)$ be nonconstant, write $R' = U / V$ in lowest terms with $U, V \in \C
+  [z]$, and let $a$ be a pole of $R$ of order $m \ge 1$. Set $\tilde{V} (w)
+  \assign V (a + w) = \sum_{p = 0}^{d_V} V_p w^p$, $\tilde{U} (w) \assign U (a
+  + w) = \sum_{p = 0}^{d_U} U_p w^p$. Then $y = e^R$ satisfies the first-order
+  equation $Vy' - Uy = 0$ over $\C (z)$ (in particular $y$ is D-finite), and
+  the full two-sided Laurent coefficient sequence $(A_n)_{n \in \Z}$ of $y$ at
+  $a$ (Theorem~\ref{thm:module}) satisfies, for every $s \in \Z$,
+  \begin{equation}
+    \label{eq:Prec} \sum_{p = 0}^{d_V} V_p  \hspace{0.17em} (s + 1 - p) 
+    \hspace{0.17em} A_{s + 1 - p} \hspace{0.27em} = \hspace{0.27em} \sum_{p =
+    0}^{d_U} U_p  \hspace{0.17em} A_{s - p} .
+  \end{equation}
+  This is a linear recurrence with coefficients affine in $s$, of order at
+  most $\max (d_V, \hspace{0.17em} d_U + 1)$, valid in both directions $n \to
+  \pm \infty$. Moreover $w^{m + 1} \mid \tilde{V}$ (indeed $\ord_{w = 0} R' =
+  - (m + 1)$ forces $\ord \tilde{V} - \ord \tilde{U} = m + 1$), and in the
+  pure-pole case $R = \Pi$ the recurrence \eqref{eq:Prec} reduces exactly to
+  the universal recurrence \eqref{eq:universal}.
+\end{theorem}
+
+\begin{proof}
+  $y' = R' y$ is immediate; clearing denominators gives $Vy' = Uy$ with
+  polynomial coefficients, which is the definition of D-finiteness for $y$
+  {\tmem{(Stanley {\cite{StanleyDF}})}}. On $0 < |w| < r_a$ insert $y = \sum_n
+  A_n w^n$ (absolutely and locally uniformly convergent, so termwise
+  differentiation and Cauchy products with the polynomials $\tilde{V},
+  \tilde{U}$ are valid): $\sum_p V_p w^p  \sum_n nA_n w^{n - 1} = \sum_p U_p
+  w^p  \sum_n A_n w^n$. Equate coefficients of $w^s$: $\sum_p V_p  (s + 1 - p)
+  A_{s + 1 - p} = \sum_p U_p A_{s - p}$, which is \eqref{eq:Prec}. The order
+  statement counts the index span. The valuation claim: near $a$, $R' = - mc_m
+  w^{- (m + 1)} + O (w^{- m})$ with $c_m \ne 0$, so $\ord_{w = 0} (\tilde{U} /
+  \tilde{V}) = - (m + 1)$; since $\gcd (U, V) = 1$, at most one of $\tilde{U}
+  (0), \tilde{V} (0)$ vanishes, forcing $\tilde{U} (0) \ne 0$ and $w^{m + 1}
+  \hspace{0.17em} \| \hspace{0.17em} \tilde{V}$. Pure pole: $R = \Pi$ gives
+  $R' = - \sum_j jc_j w^{- j - 1} = \tilde{U} / \tilde{V}$ with $\tilde{V} =
+  w^{m + 1}$, $\tilde{U} = - \sum_{j = 1}^m jc_j w^{\hspace{0.17em} m - j}$;
+  then \eqref{eq:Prec} reads $(s - m) A_{s - m} = - \sum_j jc_j A_{s - m +
+  j}$, and putting $A_{- N} = \Lambda_N$, $s - m = - N$: $N \Lambda_N = \sum_j
+  jc_j \Lambda_{N - j}$.
+\end{proof}
+
+\begin{corollary}
+  \label{cor:algorithmicholonomy}For fixed $c$, every coefficient sequence in
+  the module of Theorem~\ref{thm:module} is P-recursive with an explicitly
+  computable recurrence \eqref{eq:Prec}; creative-telescoping toolchains apply
+  directly {\tmem{(Kauers--Paule {\cite{KauersPaule}}; Koutschan
+  {\cite{Koutschan}})}}.
+\end{corollary}
+
+\section{Axiomatic characterization}\label{sec:axioms}
+
+Following the constructive development, we now characterize what has been
+built. Two statements are proved: an {\tmem{initiality}} theorem in the
+category naturally attached to the universal recurrence, and a
+{\tmem{recognition}} theorem identifying $\CA_m$ among graded Hopf algebras.
+The hypotheses of the recognition theorem are shown to be independent.
+
+\subsection{Initiality}
+
+\begin{definition}
+  [The category $\mathcal{C}_m$]\label{def:category} Objects of
+  $\mathcal{C}_m$ are triples $(A, \gamma = (\gamma_1, \ldots, \gamma_m) \in
+  A^m, (\lambda_N)_{N \ge 0})$ where $A$ is a commutative unital $\C$-algebra,
+  $\lambda_0 = 1$, and
+  \begin{equation}
+    \label{eq:axiomrec} N \lambda_N = \sum_{j = 1}^{\min (m, N)} j
+    \hspace{0.17em} \gamma_j  \hspace{0.17em} \lambda_{N - j}  \qquad (N \ge
+    1) .
+  \end{equation}
+  A morphism $(A, \gamma, \lambda) \to (A', \gamma', \lambda')$ is a unital
+  $\C$-algebra homomorphism $\varphi : A \to A'$ with $\varphi (\gamma_j) =
+  \gamma'_j$ for all $j$ and $\varphi (\lambda_N) = \lambda'_N$ for all $N$.
+\end{definition}
+
+\begin{theorem}
+  [Initiality]\label{thm:initial} $(\CA_m, \hspace{0.17em} c, \hspace{0.17em}
+  \Lambda)$ is an initial object of $\mathcal{C}_m$: for every object $(A,
+  \gamma, \lambda)$ there is exactly one morphism $\varphi : (\CA_m, c,
+  \Lambda) \to (A, \gamma, \lambda)$.
+\end{theorem}
+
+\begin{proof}
+  {\tmem{Existence.}} Since $\CA_m$ is the free commutative $\C$-algebra on
+  $c_1, \ldots, c_m$, there is a unique algebra map $\varphi$ with $\varphi
+  (c_j) = \gamma_j$. We claim $\varphi (\Lambda_N) = \lambda_N$ for all $N$,
+  by strong induction: true at $N = 0$ ($\Lambda_0 = 1 \mapsto 1 =
+  \lambda_0$); for $N \ge 1$, since $N$ is invertible in the $\C$-algebra $A$,
+  \[ \varphi (\Lambda_N) = \varphi \left( \tfrac{1}{N} \sum_j jc_j \Lambda_{N
+     - j} \right) = \tfrac{1}{N} \sum_j j \hspace{0.17em} \gamma_j 
+     \hspace{0.17em} \varphi (\Lambda_{N - j}) = \tfrac{1}{N} \sum_j j
+     \hspace{0.17em} \gamma_j  \hspace{0.17em} \lambda_{N - j} = \lambda_N, \]
+  using Lemma~\ref{lem:recurrence} in $\CA_m$, the inductive hypothesis, and
+  \eqref{eq:axiomrec} in $A$. {\tmem{Uniqueness.}} Any morphism must send $c_j
+  \mapsto \gamma_j$, and an algebra map out of a polynomial ring is determined
+  by the images of the variables; the $\lambda$-compatibility is then
+  automatic by the computation just made, so no further freedom exists.
+\end{proof}
+
+\begin{remark}
+  \label{rem:initialmeaning}Equation \eqref{eq:axiomrec} determines
+  $(\lambda_N)$ uniquely from $\gamma$ in any $\C$-algebra; so $\mathcal{C}_m$
+  is equivalent to the category of $m$-pointed commutative $\C$-algebras, and
+  initiality is exactly the freeness of $\CA_m$ {\tmem{together with}} the
+  verification that the distinguished sequence transports along the unique
+  map. The content is modest but the statement is now a theorem with a defined
+  category, defined morphisms, and a proof, rather than an assertion.
+\end{remark}
+
+\subsection{Recognition}
+
+\begin{theorem}
+  [Recognition]\label{thm:recognition} Let $A$ be a graded connected
+  commutative $\C$-Hopf algebra with a sequence $\lambda_N \in A_N$,
+  $\lambda_0 = 1$, satisfying:
+  \begin{enumerate}
+    \item[\tmtextup{(G)}] the $\lambda_N$ generate $A$ as an algebra;
+    
+    \item[\tmtextup{(D)}] $\Delta \lambda_N = \sum_{i = 0}^N \lambda_i \otimes
+    \lambda_{N - i}$ for all $N$ {\tmem{(divided-power sequence)}};
+    
+    \item[\tmtextup{(T)}] $\Prim (A)_j = 0$ for all $j > m$;
+    
+    \item[\tmtextup{(I)}] $\lambda_1, \ldots, \lambda_m$ are algebraically
+    independent over $\C$.
+  \end{enumerate}
+  Then there is a unique isomorphism of graded Hopf algebras $\varphi : \CA_m
+  \to A$ with $\varphi (\Lambda_N) = \lambda_N$ for all $N$; and $\varphi
+  (c_j)$ is the weight-$j$ coefficient of $\log \sum_N \lambda_N t^N$.
+\end{theorem}
+
+\begin{proof}
+  Set $\Lambda^A (t) \assign \sum_{N \ge 0} \lambda_N t^N \in A [[t]]$. By
+  (D), $\Lambda^A (t)$ is group-like in the completed Hopf algebra $A [[t]]$
+  (coproduct and counit extended $t$-adically): $\Delta \Lambda^A = \Lambda^A
+  \otimes \Lambda^A$ read in $(A \otimes A) [[t]]$, $\varepsilon \Lambda^A =
+  1$. Since $\Lambda^A (t) - 1 \in tA [[t]]$, the logarithm $\ell (t) \assign
+  \log \Lambda^A (t) = \sum_{j \ge 1} \gamma_j t^j$ is defined, and
+  \[ \Delta \ell = \log ((\Lambda^A \otimes 1) (1 \otimes \Lambda^A)) = \log
+     (\Lambda^A \otimes 1) + \log (1 \otimes \Lambda^A) = \ell \otimes 1 + 1
+     \otimes \ell, \]
+  the middle equality because the two arguments commute. Hence every
+  $\gamma_j$ is primitive; also $\gamma_j \in A_j$ because $\lambda_N \in A_N$
+  and $\log$ preserves the grading of coefficients. By (T), $\gamma_j = 0$ for
+  $j > m$, so
+  \[ \Lambda^A (t) = \exp \left( \sum_{j = 1}^m \gamma_j t^j \right), \qquad
+     \text{i.e.} \qquad \lambda_N = \Lambda_N  (\gamma_1, \ldots, \gamma_m) .
+  \]
+  Define the algebra map $\varphi : \CA_m \to A$ by $\varphi (c_j) =
+  \gamma_j$; then $\varphi (\Lambda_N) = \lambda_N$ by the displayed identity
+  (or by Theorem~\ref{thm:initial}, since $(A, \gamma, \lambda) \in
+  \mathcal{C}_m$: apply $d / dt$ to $\Lambda^A = \exp (\sum \gamma_j t^j)$ as
+  in Lemma~\ref{lem:recurrence}). $\varphi$ is a morphism of graded Hopf
+  algebras: it preserves grading ($\gamma_j \in A_j$) and sends the primitive
+  generators $c_j$ to primitives, which determines compatibility with
+  $\Delta$, $\varepsilon$, $S$ on all of $\CA_m$ since these are (anti)algebra
+  maps. {\tmem{Surjectivity:}} the image contains every $\lambda_N$, which
+  generate by (G). {\tmem{Injectivity:}} $\lambda_1, \ldots, \lambda_m$ are
+  polynomials in $\gamma_1, \ldots, \gamma_m$ and conversely (the
+  triangularity of Theorem~\ref{thm:generation} transports along $\varphi$),
+  so (I) is equivalent to algebraic independence of $\gamma_1, \ldots,
+  \gamma_m$; an algebra map from $\C [c_1, \ldots, c_m]$ sending the variables
+  to algebraically independent elements has zero kernel. {\tmem{Uniqueness:}}
+  any graded Hopf map $\psi$ with $\psi (\Lambda_N) = \lambda_N$ satisfies
+  $\psi (\log E (t)) = \ell (t)$ coefficient-wise, i.e. $\psi (c_j) =
+  \gamma_j$, and is therefore $\varphi$.
+\end{proof}
+
+\subsection{Independence of the hypotheses}
+
+\begin{proposition}
+  \label{prop:independence}Each of \tmtextup{(G), (D), (T), (I)} is
+  independent of the remaining three: for each hypothesis there is a triple
+  $(A, (\lambda_N))$ satisfying the other three but not isomorphic to $(\CA_m,
+  (\Lambda_N))$ in the sense of Theorem~\ref{thm:recognition}.
+\end{proposition}
+
+\begin{proof}
+  Fix $m \ge 2$ (for $m = 1$ replace the (I)-example by $A = \C$, $\lambda_N =
+  \delta_{N, 0}$, which satisfies (G),(D),(T) but not (I)).
+  
+  {\tmem{Drop (G).}} $A = \CA_m [y]$, $y$ primitive of weight $1$, with
+  $\lambda_N \assign \Lambda_N$. (D) holds as before; $\Prim (A)_j = \C c_j$
+  for $2 \le j \le m$, $\Prim (A)_1 = \C c_1 \oplus \C y$, and $0$ for $j >
+  m$, so (T) holds; (I) holds. But the $\lambda_N$ do not generate ($y$ is
+  missing), and $A \ncong \CA_m$ carrying the sequences (Hilbert series
+  differ).
+  
+  {\tmem{Drop (I).}} $A = \CA_m / (c_m) \cong \CA_{m - 1}$ with $\lambda_N
+  \assign$ image of $\Lambda_N$, i.e. $\Lambda_N  (c_1, \ldots, c_{m - 1},
+  0)$. $(c_m)$ is a Hopf ideal (generated by a primitive), so $A$ is a graded
+  connected Hopf algebra and (D) descends; (G) descends; (T) holds a fortiori
+  since $\Prim (A)_j = 0$ for $j \ge m$. But $\lambda_1, \ldots, \lambda_m$
+  satisfy the algebraic relation expressing $\lambda_m$ through $\lambda_1,
+  \ldots, \lambda_{m - 1}$ (set $c_m = 0$ in $\Lambda_m = c_m + q_m (c_1,
+  \ldots, c_{m - 1})$), and $A \ncong \CA_m$ (transcendence degree $m - 1$ vs.
+  $m$).
+  
+  {\tmem{Drop (T).}} $A = \CA_{m + 1}$ with its own sequence $\lambda_N
+  \assign \Lambda^{(m + 1)}_N$. (G), (D), (I) hold (Theorems
+  \ref{thm:generation}, \ref{thm:dividedpower}; independence of the first $m$
+  among the first $m + 1$). $\Prim (A)_{m + 1} = \C c_{m + 1} \ne 0$, and no
+  isomorphism onto $\CA_m$ exists (transcendence degree).
+  
+  {\tmem{Drop (D).}} $A = \CA_m$ as a graded Hopf algebra (so (T) is
+  unchanged), with the perturbed sequence $\lambda'_N \assign \Lambda_N$ for
+  $N \ne 2$ and $\lambda'_2 \assign \Lambda_2 + c_1^2$. (G): $\lambda'_1 =
+  c_1$ and $\lambda'_2 - \tfrac{3}{2} {\lambda_1'}^2 = c_2$ recover the
+  generators, and inductively all $c_j$; (I): $\lambda'_1, \ldots, \lambda'_m$
+  differ from $\Lambda_1, \ldots, \Lambda_m$ by a weight-preserving triangular
+  polynomial change, preserving independence. But
+  \[ \Delta \lambda'_2 - \sum_{i = 0}^2 \lambda'_i \otimes \lambda'_{2 - i} =
+     \Delta c_1^2 - (c_1^2 \otimes 1 + 1 \otimes c_1^2) = 2 \hspace{0.17em}
+     c_1 \otimes c_1 \neq 0, \]
+  so (D) fails; and no isomorphism $\varphi$ with $\varphi (\Lambda_N) =
+  \lambda'_N$ can exist, since a Hopf map would transport identity (D), which
+  holds for $(\Lambda_N)$ and fails for $(\lambda'_N)$.
+\end{proof}
+
+\begin{remark}
+  \label{rem:axiomsdowork}The axioms now do work in the promised sense:
+  (D)+(T) alone force the generating series into the exponential normal form
+  $\exp (\sum_{j \le m} \gamma_j t^j)$ (proof of
+  Theorem~\ref{thm:recognition}), i.e. they {\tmem{derive}} the universal
+  recurrence rather than postulate it; (G)+(I) then pin the algebra. Grading,
+  derivations (Lemma~\ref{lem:derivation}, recovered as
+  $\partial_{\gamma_j}$), and the product/coproduct formulas are theorems from
+  the axioms, and the Laurent construction of Section~\ref{sec:model} is a
+  model by Theorem~\ref{thm:analyticmodel}.
+\end{remark}
+
+\section{Application: rough Heston pricing in the coefficient
+algebra}\label{sec:pricing}
+
+We use the notation of the companion papers {\cite{CrowleyCGF,CrowleyCW}}: the
+rough Heston characteristic function is $\varphi (a, t) = e^{L (a, t)}$ with
+$L (a, t) = t \hspace{0.17em} G (a, x)$, $x = t^{\alpha}$, $\alpha = H +
+\tfrac{1}{2} \in (0, 1)$; $G (a, \cdot)$ is given by the neighboring-pair
+series with coefficients $g_j \in \C [a]$ {\cite[Thm.~1]{CrowleyCGF}}; and the
+diagonal Pad{\'e} approximant $G_M = A_M / B_M$ ($\deg A_M = \deg B_M = M$) is
+produced exactly in $\C [a]$ by the polynomial Chebyshev--Wheeler recurrence
+{\cite[Thm.~2]{CrowleyCGF}}, {\cite{CrowleyCW}}, with Stahl convergence on the
+physical ray {\cite[Thm.~3]{CrowleyCGF}}. Define
+\[ \varphi_M (a, t) \assign \exp \left( t \hspace{0.17em} G_M (a, t^{\alpha})
+   \right) . \]
+For fixed $a$ and $t$, $\varphi_M$ is the exponential of a rational function
+of $x$: exactly the object of this paper.
+
+\begin{theorem}
+  [Local data of $\varphi_M$ in the coefficient algebra]\label{thm:localdata}
+  Fix $a$ and $M$, and let $\xi_1, \ldots, \xi_r$ be the distinct zeros of
+  $B_M  (a, \cdot)$ in $\C$, with multiplicities $\mu_1, \ldots, \mu_r$, none
+  lying on $[0, x^{\ast}]$ where $x^{\ast} = t^{\alpha}$ for the maturity
+  range of interest {\tmem{(guaranteed for $a$ on the pricing contour by the
+  real-ray theorem {\cite[Thm.~3]{CrowleyCGF}} for all $M$ large)}}. Write the
+  exact partial fraction decomposition
+  \[ t \hspace{0.17em} G_M (a, x) = \pi (x) + \sum_{i = 1}^r \sum_{j =
+     1}^{\mu_i} \frac{c^{(i)}_j}{(x - \xi_i)^j}, \qquad \pi \in \C [x], \deg
+     \pi \le \deg A_M - \deg B_M + \text{(polynomial part)}, \]
+  all data computable exactly from $(A_M, B_M)$ by division and residue
+  extraction in $\C [a] (x)$. Then:
+  \begin{enumerate}
+    \item $\varphi_M (a, \cdot)$ is analytic on a neighborhood of $[0,
+    x^{\ast}]$ in the $x$-plane and is evaluated there by direct composition
+    $\exp \circ \hspace{0.17em} (t \hspace{0.17em} A_M / B_M)$; no expansion
+    is needed on the ray and no essential singularity is approached.
+    
+    \item Around each $\xi_i$, with $w = x - \xi_i$ and $H_i \assign tG_M -
+    \sum_j c^{(i)}_j w^{- j}$ analytic on $|w| < r_i$ ($r_i = \min_{i' \ne i}
+    | \xi_{i'} - \xi_i |$),
+    \begin{equation}
+      \varphi_M = \left( \sum_{N \ge 0} \Lambda_N (c^{(i)}) w^{- N} \right)
+      \left( \sum_{l \ge 0} b^{(i)}_l w^{\hspace{0.17em} l} \right)
+    \end{equation}
+    \begin{equation}
+      A^{(i)}_n = \sum_{k \ge \max (0, - n)} \Lambda_k (c^{(i)}) 
+      \hspace{0.17em} b^{(i)}_{n + k}
+    \end{equation}
+    absolutely convergent Laurent data on $0 < |w| < r_i$, with truncation
+    error controlled by Proposition~\ref{prop:tail} and with each coefficient
+    sequence P-recursive via \eqref{eq:Prec} applied to $R = tG_M$.
+    
+    \item All quantities in \tmtextup{(i)--(ii)} are algebraic expressions in
+    the Chebyshev--Wheeler output and hence carry rigorous arb enclosures when
+    evaluated in ball arithmetic.
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+  (i) is the zero-freeness of $B_M$ on the ray plus continuity of $\exp$. (ii)
+  is Theorem~\ref{thm:module} and Proposition~\ref{prop:tail} applied to the
+  rational function $R (x) = tG_M (a, x)$ at the pole $\xi_i$ (the polynomial
+  part $\pi$ is absorbed into $H_i$), together with
+  Theorem~\ref{thm:holonomy}. (iii) is by inspection: partial fractions,
+  $\Lambda$-recurrence \eqref{eq:universal}, and Taylor coefficients of
+  $e^{H_i}$ (themselves obtainable from \eqref{eq:Prec}) are finite exact
+  recurrences.
+\end{proof}
+
+\subsection{Price convergence without contour deformation}
+
+We deliberately do {\tmem{not}} deform any contour across poles of $B_M$: the
+poles belong to the approximant, not to $\varphi$, and residue exchange across
+them is not justified. Instead the pricing contour is held fixed inside the
+strip of analyticity of the exact characteristic function, and convergence is
+proved by domination.
+
+\begin{definition}
+  [Lewis-type pricing functional]\label{def:lewis} Fix maturity $T > 0$,
+  $x^{\ast} = T^{\alpha}$, log-strike $k$, and a horizontal contour $\Im a =
+  \eta_0$ interior to the moment-analyticity strip of $\varphi (\cdummy, T)$.
+  A {\tmem{Lewis-type functional}} is
+  \[ P [\psi] \hspace{0.27em} = \hspace{0.27em} c_0 + \int_{\R} K (u) 
+     \hspace{0.17em} \psi (u + \mathrm{i} \eta_0)  \hspace{0.17em} du, \qquad
+     |K (u) | \le \frac{C_K}{1 + u^2}, \]
+  with $c_0, K$ depending only on $(S_0, K, r, T, k, \eta_0)$; the call price
+  is $P [\varphi (\cdot, T)$] for the standard choices of $(c_0, K, \eta_0)$
+  {\tmem{(Lewis {\cite{Lewis2001}}; Carr--Madan {\cite{CarrMadan}}; Gil-Pelaez
+  {\cite{GilPelaez}})}}.
+\end{definition}
+
+\begin{theorem}
+  [Convergence of Pad{\'e} prices]\label{thm:priceconv} Assume:
+  \begin{enumerate}
+    \item for every $u \in \R$, $B_M  (u + \mathrm{i} \eta_0, \cdot)$ is
+    zero-free on $[0, x^{\ast}]$ for all $M \ge M_0 (u)$, and $\varphi_M (u +
+    \mathrm{i} \eta_0, T) \to \varphi (u + \mathrm{i} \eta_0, T)$ as $M \to
+    \infty$;
+    
+    \item there exists $\Phi \in L^1 \left( \R, \tfrac{du}{1 + u^2} \right)$
+    and $M_1$ with $| \varphi_M (u + \mathrm{i} \eta_0, T) | \le \Phi (u)$ for
+    all $M \ge M_1$ and a.e. $u$.
+  \end{enumerate}
+  Then $P [\varphi_M (\cdot, T)] \to P [\varphi (\cdot, T)$]: Pad{\'e} prices
+  converge to exact prices. Moreover \tmtextup{(H1)} holds pointwise on the
+  contour as a consequence of the real-ray Stahl theorem
+  {\cite[Thm.~3]{CrowleyCGF}} applied at each fixed $a = u + \mathrm{i}
+  \eta_0$ (convergence of $G_M (a, \cdot) \to G (a, \cdot)$ on a neighborhood
+  of $[0, x^{\ast}]$, hence of the exponentials), so the only unproved input
+  is the domination \tmtextup{(H2)}.
+\end{theorem}
+
+\begin{proof}
+  For $M \ge \max (M_0 (u), M_1)$ the integrand $K (u) \varphi_M (u +
+  \mathrm{i} \eta_0, T)$ converges pointwise to $K (u) \varphi (u + \mathrm{i}
+  \eta_0, T)$ by (H1) and continuity of nothing further (the integrand is the
+  object itself), and is dominated by $C_K \Phi (u) / (1 + u^2) \in L^1$ by
+  (H2). Apply dominated convergence. The claim about (H1): for fixed $a$ on
+  the contour, Stahl convergence in capacity together with zero-freeness of
+  $B_M$ on a fixed neighborhood $\Omega \supset [0, x^{\ast}]$ upgrades, by
+  the standard capacity-to-uniform argument on compacts avoiding the poles
+  {\tmem{(Stahl {\cite[Thm.~1 and {\textsection}6]{Stahl}})}}, to uniform
+  convergence $G_M \to G$ on $[0, x^{\ast}]$; then $\varphi_M = \exp (TG_M (a,
+  T^{\alpha})) \to \exp (TG (a, T^{\alpha})) = \varphi$.
+\end{proof}
+
+\begin{remark}
+  [Status of \tmtextup{(H2)}]\label{rem:H2} (H2) is the precise statement of
+  what remains open on the analytic side. It is implied by a uniform-in-$M$,
+  integrable-in-$u$ bound on $\Re \hspace{0.17em} T \hspace{0.17em} G_M (u +
+  \mathrm{i} \eta_0, T^{\alpha})$ from above; numerically, the implemented
+  pipeline exhibits $| \varphi_M |$ dominated by the exact $| \varphi
+  |$-envelope (Gaussian-type decay in $u$ from the leading cumulant $g_0 = v_0
+  F_0$ {\cite[Cor.~1.1]{CrowleyCGF}}) uniformly at machine-verified precision,
+  consistently with the end-to-end validation of the pricing series to $1.1
+  \times 10^{- 14}$ at $M = 20$ ($40$ coefficients) {\cite{CrowleyCGF}}. A
+  proof of (H2) is Open Problem~\ref{prob:H2}; Theorem~\ref{thm:priceconv}
+  isolates it as the exact remaining gap, replacing the invalid
+  contour-deformation route.
+\end{remark}
+
+\begin{proposition}
+  [Cumulants in the algebra]\label{prop:cumulants} Every $c_k (a)$ and hence
+  every $g_j (a)$ is a polynomial in $a$
+  {\tmem{({\cite[Lem.~2.1--2.2]{CrowleyCW}})}}, and for $0 \le t < t_0$ with
+  $t_0^{\alpha}$ less than the shared radius {\cite[Cor.~1.2]{CrowleyCGF}}
+  uniformly for $a$ in a neighborhood of $0$, the cumulants of $\log S_T$ are
+  the absolutely convergent series
+  \[ \kappa_n (t) \hspace{0.27em} = \hspace{0.27em} \partial_a^n L (a, t) |_{a
+     = 0} \hspace{0.27em} = \hspace{0.27em} t \sum_{j \ge 0} (\partial_a^n
+     g_j) (0)  \hspace{0.17em} t^{\alpha j}, \]
+  with each $(\partial_a^n g_j) (0)$ a finite exact expression obtained by
+  differentiating the Gamma-ratio recurrence in $a$. Consequently the cumulant
+  data feeding any transform- or expansion-based pricing representation lies
+  in $\C$-linear combinations of the same neighboring-pair objects, computed
+  without approximation.
+\end{proposition}
+
+\begin{proof}
+  Polynomiality in $a$ is the coefficient-ring statement of
+  {\cite{CrowleyCW}}. For $|a| \le \epsilon$ and $t \le t_1 < t_0$ the series
+  $\sum g_j (a) t^{\alpha j}$ converges uniformly (Cauchy majorization from
+  the shared radius, which is locally uniform in $a$ by the analyticity
+  argument of {\cite[Cor.~1.2]{CrowleyCGF}}); a locally uniformly convergent
+  series of polynomials in $a$ may be differentiated termwise in $a$ any
+  number of times (Weierstrass), giving the display. Each $\partial_a^n g_j
+  (0)$ is a finite combination of $\partial_a^n c_j (0), \partial_a^n c_{j +
+  1} (0)$ via {\cite[Eq.~(2)]{CrowleyCGF}}, and $\partial_a^n c_k (0)$ obeys
+  the recurrence obtained by Leibniz differentiation of the Gamma-ratio
+  recurrence, closed because $F_0, \beta$ are polynomials in $a$.
+\end{proof}
+
+\begin{algorithm}
+  [Coefficient-algebra evaluation layer for arb4j]\label{alg:arb4j} Input:
+  $(A_M, B_M) \in \C [a] [x]^2$ from the Chebyshev--Wheeler pipeline; contour
+  height $\eta_0$; maturity $T$; working precision; truncation bandwidth $K$.
+  \begin{enumerate}
+    \item For each quadrature node $a = u + \mathrm{i} \eta_0$: evaluate $B_M 
+    (a, x)$ on $[0, T^{\alpha}]$ in ball arithmetic; certify zero-freeness
+    (interval Descartes/argument principle). Cost $O (M)$ per node.
+    
+    \item Price by fixed-contour quadrature of $K (u) \exp \left( T
+    \hspace{0.17em} A_M / B_M \right)$ (Theorem~\ref{thm:priceconv}); rigorous
+    tails from the kernel bound. Cost: nodes $\times O (M)$.
+    
+    \item (Diagnostics / analytic continuation off the ray.) For each required
+    pole $\xi_i$: partial fractions to get $c^{(i)}$ ($O (M^2)$ exact ops);
+    $\Lambda$-sequence by \eqref{eq:universal} ($O (mK)$ ops); Taylor data
+    $b^{(i)}_l$ of $e^{H_i}$ by \eqref{eq:Prec} ($O ((d_U + d_V) K)$ ops);
+    assemble $A^{(i)}_n$ with certified tail via Proposition~\ref{prop:tail}.
+    
+    \item Cumulant channel: $\partial_a^n c_k (0)$ by the differentiated
+    Gamma-ratio recurrence ($O (nM)$ per order), then $\kappa_n$ by
+    Proposition~\ref{prop:cumulants}.
+  \end{enumerate}
+  All steps are exact recurrences or ball-arithmetic evaluations with explicit
+  error terms; no Hankel solve, no numerically unstable step, matching the
+  stability profile of {\cite[Thm.~10.2]{CrowleyCW}}.
+\end{algorithm}
+
+\section{Open problems}\label{sec:open}
+
+\begin{problem}
+  [Domination]\label{prob:H2} Prove hypothesis \tmtextup{(H2)} of
+  Theorem~\ref{thm:priceconv}: a uniform-in-$M$ integrable majorant for $|
+  \varphi_M |$ on the Lewis contour, e.g. via a uniform-in-$a$ version of the
+  Stahl rate on the contour combined with the exact Gaussian-type decay of
+  $\varphi$.
+\end{problem}
+
+\begin{problem}
+  [Resurgent structure]\label{prob:resurgence} $e^{\Pi}$ is the exponential
+  factor of the Hukuhara--Levelt--Turrittin normal form of the rank-one
+  connection $d - dR$ at the irregular singularity $a$
+  {\tmem{({\cite[Ch.~3]{vdPS}})}}; this much is classical. Construct the
+  action of the alien derivations of {\'E}calle on the $\CA_m$-module of
+  Theorem~\ref{thm:module} --- the natural conjecture, suggested by
+  Lemma~\ref{lem:derivation}, is that singular directions act through the
+  lowering operators $\partial_{c_j}$ --- and determine the Stokes data of
+  $\varphi_M$ in terms of the $c^{(i)}$ {\tmem{(framework: Mitschi--Sauzin
+  {\cite{MitschiSauzin}}; Costin {\cite{Costin}})}}. No such statement is
+  asserted here as a theorem.
+\end{problem}
+
+\begin{problem}
+  [Exponential periods]\label{prob:motives} $e^R  \hspace{0.17em} dz$ is an
+  exponential-period integrand; the category of exponential motives
+  {\tmem{(Fres{\'a}n--Jossen {\cite{FresanJossen}})}} attaches cohomological
+  invariants to $(\mathbb{A}^1, R)$. Position $\CA_m$ relative to the de Rham
+  realization of the rank-one exponential connection: is the coefficient
+  module of Theorem~\ref{thm:module} a concrete model of a known object there?
+\end{problem}
+
+\begin{problem}
+  [$q$-lift]\label{prob:hall} Lift $(\Lambda_N)$ along the Hall-algebra
+  isomorphism of Remark~\ref{rem:hall} to the Hall--Littlewood level: identify
+  the $q$-analogue of the universal recurrence and its analytic meaning, if
+  any, for $q$-deformed exponentials of principal parts.
+\end{problem}
+
+\begin{problem}
+  [Non-reduction]\label{prob:nonreduction} Prove (or refute) that for generic
+  $(c_1, c_2, c_3)$ the sequence $(\Lambda_N (c_1, c_2, c_3))_N$ is not
+  expressible as $\left( \rho^N  \hspace{0.17em} F (\sigma N + \tau)
+  \right)_N$ for any single classical hypergeometric-type function $F$ of one
+  variable --- i.e. make Remark~\ref{rem:scope} a theorem, plausibly via
+  differential Galois groups of the order-$3$ holonomic equation from
+  \eqref{eq:universal}.
+\end{problem}
+
+\begin{thebibliography}{99}
+  {\bibitem{Appell}}P.~Appell, J.~Kamp{\'e} de F{\'e}riet, {\tmem{Fonctions
+  hyperg{\'e}om{\'e}triques et hypersph{\'e}riques. Polynomes d'Hermite}},
+  Gauthier-Villars, Paris, 1926.
+  
+  {\bibitem{Barry}}P.~Barry, {\tmem{Riordan Arrays: A Primer}}, Logic Press,
+  2016.
+  
+  {\bibitem{BLL}}F.~Bergeron, G.~Labelle, P.~Leroux, {\tmem{Combinatorial
+  Species and Tree-like Structures}}, Encyclopedia Math. Appl. 67, Cambridge
+  Univ. Press, 1998.
+  
+  {\bibitem{CarrMadan}}P.~Carr, D.~Madan, Option valuation using the fast
+  Fourier transform, {\tmem{J. Comput. Finance}} \tmtextbf{2} (1999), 61--73.
+  
+  {\bibitem{Comtet}}L.~Comtet, {\tmem{Advanced Combinatorics}}, Reidel,
+  Dordrecht, 1974.
+  
+  {\bibitem{Costin}}O.~Costin, {\tmem{Asymptotics and Borel Summability}},
+  Chapman \& Hall/CRC, 2009.
+  
+  {\bibitem{CrowleyCGF}}S.~Crowley, Neighboring-pair representation of the
+  rough Heston CGF and global rational closed form via Pad{\'e} approximation,
+  companion paper, arb4j repository, 2026.
+  
+  {\bibitem{CrowleyCW}}S.~Crowley, A universal solution methodology for
+  constant-coefficient fractional Riccati equations via the polynomial
+  Chebyshev--Wheeler recurrence, companion paper, arb4j repository, 2026.
+  
+  {\bibitem{DLMF}}NIST {\tmem{Digital Library of Mathematical Functions}},
+  {\textsection}10.35, https://dlmf.nist.gov/.
+  
+  {\bibitem{FGB}}H.~Figueroa, J.~M.~Gracia-Bond{\'\i}a, Combinatorial Hopf
+  algebras in quantum field theory I, {\tmem{Rev. Math. Phys.}} \tmtextbf{17}
+  (2005), 881--976.
+  
+  {\bibitem{FS}}P.~Flajolet, R.~Sedgewick, {\tmem{Analytic Combinatorics}},
+  Cambridge Univ. Press, 2009.
+  
+  {\bibitem{FresanJossen}}J.~Fres{\'a}n, P.~Jossen, {\tmem{Exponential
+  Motives}}, book draft, http://javier.fresan.perso.math.cnrs.fr/.
+  
+  {\bibitem{GilPelaez}}J.~Gil-Pelaez, Note on the inversion theorem,
+  {\tmem{Biometrika}} \tmtextbf{38} (1951), 481--482.
+  
+  {\bibitem{Gragg}}W.~B.~Gragg, The Pad{\'e} table and its relation to certain
+  algorithms of numerical analysis, {\tmem{SIAM Review}} \tmtextbf{14} (1972),
+  1--62.
+  
+  {\bibitem{KauersPaule}}M.~Kauers, P.~Paule, {\tmem{The Concrete
+  Tetrahedron}}, Springer, 2011.
+  
+  {\bibitem{KilbasSaigo}}A.~A.~Kilbas, M.~Saigo, {\tmem{H-Transforms: Theory
+  and Applications}}, CRC Press, 2004.
+  
+  {\bibitem{Koutschan}}C.~Koutschan, Advanced applications of the holonomic
+  systems approach, PhD thesis, RISC, J.~Kepler Univ. Linz, 2009.
+  
+  {\bibitem{Lewis2001}}A.~L.~Lewis, A simple option formula for general
+  jump-diffusion and other exponential L{\'e}vy processes, OptionCity working
+  paper, 2001.
+  
+  {\bibitem{Lipshitz}}L.~Lipshitz, The diagonal of a D-finite power series is
+  D-finite, {\tmem{J. Algebra}} \tmtextbf{113} (1988), 373--378.
+  
+  {\bibitem{Macdonald}}I.~G.~Macdonald, {\tmem{Symmetric Functions and Hall
+  Polynomials}}, 2nd ed., Oxford Univ. Press, 1995.
+  
+  {\bibitem{MilnorMoore}}J.~Milnor, J.~Moore, On the structure of Hopf
+  algebras, {\tmem{Ann. of Math.}} \tmtextbf{81} (1965), 211--264.
+  
+  {\bibitem{MitschiSauzin}}C.~Mitschi, D.~Sauzin, {\tmem{Divergent Series,
+  Summability and Resurgence I}}, Lecture Notes in Math. 2153, Springer, 2016.
+  
+  {\bibitem{Roman}}S.~Roman, {\tmem{The Umbral Calculus}}, Academic Press,
+  1984.
+  
+  {\bibitem{Shapiro}}L.~W.~Shapiro, S.~Getu, W.-J.~Woan, L.~C.~Woodson, The
+  Riordan group, {\tmem{Discrete Appl. Math.}} \tmtextbf{34} (1991), 229--239.
+  
+  {\bibitem{Stahl}}H.~Stahl, The convergence of Pad{\'e} approximants to
+  functions with branch points, {\tmem{J. Approx. Theory}} \tmtextbf{91}
+  (1997), 139--204.
+  
+  {\bibitem{StanleyDF}}R.~P.~Stanley, Differentiably finite power series,
+  {\tmem{European J. Combin.}} \tmtextbf{1} (1980), 175--188.
+  
+  {\bibitem{vdPS}}M.~van der Put, M.~F.~Singer, {\tmem{Galois Theory of Linear
+  Differential Equations}}, Grundlehren Math. Wiss. 328, Springer, 2003.
+  
+  {\bibitem{Wright1933}}E.~M.~Wright, On the coefficients of power series
+  having exponential singularities, {\tmem{J. London Math. Soc.}} \tmtextbf{8}
+  (1933), 71--79.
+\end{thebibliography}
+
+\end{document}
