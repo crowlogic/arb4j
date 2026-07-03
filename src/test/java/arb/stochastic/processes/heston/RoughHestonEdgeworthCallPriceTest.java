@@ -1,5 +1,8 @@
 package arb.stochastic.processes.heston;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import arb.ComplexConstants;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -47,6 +50,8 @@ import junit.framework.TestCase;
 public class RoughHestonEdgeworthCallPriceTest extends
                                                TestCase
 {
+  public static final Logger log = LoggerFactory.getLogger(RoughHestonEdgeworthCallPriceTest.class);
+
   /**
    * Strike grid from arxiv:2508.15080 Table 1 (T=1/252, one trading day;
    * decimal strings — parsed to Real).
@@ -108,9 +113,9 @@ public class RoughHestonEdgeworthCallPriceTest extends
       for (int i = 0; i < STRIKES.length; i++)
       {
         K.set(STRIKES[i], bits);
-        System.out.printf("[T1 %d/%d] pricing K=%s elapsed=%.1fs%n", i + 1, STRIKES.length, STRIKES[i], (System.nanoTime() - t0) / 1e9);
+        log.info("[T1 {}/{}] pricing K={} elapsed={}s", i + 1, STRIKES.length, STRIKES[i], (System.nanoTime() - t0) / 1e9);
         price.call(K, bits, value);
-        System.out.printf("[T1 %d/%d] priced  K=%s elapsed=%.1fs%n", i + 1, STRIKES.length, STRIKES[i], (System.nanoTime() - t0) / 1e9);
+        log.info("[T1 {}/{}] priced  K={} elapsed={}s", i + 1, STRIKES.length, STRIKES[i], (System.nanoTime() - t0) / 1e9);
 
         // OTM: put for K<1 (P = C − 1 + K by parity at r=0), call for K≥1.
         if (i < 2)
@@ -124,6 +129,7 @@ public class RoughHestonEdgeworthCallPriceTest extends
         ref.set(REF_OTM[i], bits);
         otm.sub(ref, bits, diff);
         diff.abs();
+        log.info("[T1 {}/{}] K={} otm={} ref={} |Δ|={}", i + 1, STRIKES.length, STRIKES[i], otm, ref, diff);
         assertTrue("K=" + STRIKES[i] + ": otm=" + otm + " ref=" + ref + " |Δ|=" + diff + " exceeds tolerance "
                       + ABS_TOL,
                    diff.compareTo(tolR) < 0);
@@ -233,9 +239,9 @@ public class RoughHestonEdgeworthCallPriceTest extends
       for (int i = 0; i < STRIKES_T2.length; i++)
       {
         K.set(STRIKES_T2[i], bits);
-        System.out.printf("[T2 %d/%d] pricing K=%s elapsed=%.1fs%n", i + 1, STRIKES_T2.length, STRIKES_T2[i], (System.nanoTime() - t0) / 1e9);
+        log.info("[T2 {}/{}] pricing K={} elapsed={}s", i + 1, STRIKES_T2.length, STRIKES_T2[i], (System.nanoTime() - t0) / 1e9);
         price.call(K, bits, value);
-        System.out.printf("[T2 %d/%d] priced  K=%s elapsed=%.1fs%n", i + 1, STRIKES_T2.length, STRIKES_T2[i], (System.nanoTime() - t0) / 1e9);
+        log.info("[T2 {}/{}] priced  K={} elapsed={}s", i + 1, STRIKES_T2.length, STRIKES_T2[i], (System.nanoTime() - t0) / 1e9);
 
         if (i < 4)
         {
@@ -249,6 +255,7 @@ public class RoughHestonEdgeworthCallPriceTest extends
         tolR.set(TOL_T2[i], bits);
         otm.sub(ref, bits, diff);
         diff.abs();
+        log.info("[T2 {}/{}] K={} otm={} ref={} |Δ|={}", i + 1, STRIKES_T2.length, STRIKES_T2[i], otm, ref, diff);
         assertTrue("K=" + STRIKES_T2[i] + ": otm=" + otm + " ref=" + ref
                       + " |Δ|=" + diff + " exceeds tolerance " + TOL_T2[i],
                    diff.compareTo(tolR) < 0);
@@ -278,7 +285,7 @@ public class RoughHestonEdgeworthCallPriceTest extends
       price.κ.evaluate(two, 1, bits, κ2);
       double model = κ2.doubleValue();
       double rel   = Math.abs(model - analytic) / analytic;
-      System.out.printf("[T2 anchor] κ(2)=%.10e  analyticForwardVar=%.10e  rel=%.2e%n", model, analytic, rel);
+      log.info("[T2 anchor] κ(2)={}  analyticForwardVar={}  rel={}", model, analytic, rel);
       assertTrue("model variance κ(2)=" + model + " disagrees with the analytic forward-variance integral "
                     + analytic + " (rel=" + rel + ") — the ATM level / maturity is wrong",
                  rel < 0.01);
