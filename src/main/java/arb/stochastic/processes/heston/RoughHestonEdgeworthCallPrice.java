@@ -332,8 +332,8 @@ public class RoughHestonEdgeworthCallPrice implements
       // Every cumulant Φ holds: κ(m) = Φ^{(m)}(0) vanishes identically beyond
       // deg Φ, so orders past it add no information. This is the structural
       // content of the expansion, not a tuning knob.
-      int maxOrder = ((RoughHestonCumulantSequence) κ).availableOrder(bits);
-      for (int j = 4; j <= maxOrder; j++)
+      int order = ((RoughHestonCumulantSequence) κ).availableOrder(bits);
+      for (int j = 4; j <= order; j++)
       {
         J.set(j);
         Π.evaluate(k, 1, bits, current);
