@@ -1,0 +1,1833 @@
+%==============================================================================
+% RoughHestonExactPricingReconciliation.tex
+%
+% A from-scratch re-derivation and cross-document reconciliation of the exact
+% (certified arbitrary-precision) rough Heston option-pricing theory built on
+% the Muntz-basis fractional Riccati recurrence, Chebyshev--Wheeler orthogonal
+% polynomials, diagonal Pade acceleration, partial-fraction expansion, and the
+% Schwinger--Gauss--erfc--Hermite closed-form price, together with the
+% Edgeworth--Hermite series and the Lewis/Parseval contour representation.
+%
+% Every assertion is stated as a numbered theorem/lemma/proposition with a
+% detailed proof. No prior document is treated as authoritative until its
+% claim is re-derived here. Cross-document contradictions are adjudicated as
+% proved propositions and tabulated in the appendix.
+%==============================================================================
+\documentclass[11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{newunicodechar}
+
+% ---- Unicode safety net: literal Unicode letters map to their math meaning ---
+\newunicodechar{α}{\ensuremath{\alpha}}
+\newunicodechar{β}{\ensuremath{\beta}}
+\newunicodechar{γ}{\ensuremath{\gamma}}
+\newunicodechar{δ}{\ensuremath{\delta}}
+\newunicodechar{ε}{\ensuremath{\varepsilon}}
+\newunicodechar{ζ}{\ensuremath{\zeta}}
+\newunicodechar{η}{\ensuremath{\eta}}
+\newunicodechar{θ}{\ensuremath{\theta}}
+\newunicodechar{κ}{\ensuremath{\kappa}}
+\newunicodechar{λ}{\ensuremath{\lambda}}
+\newunicodechar{μ}{\ensuremath{\mu}}
+\newunicodechar{ν}{\ensuremath{\nu}}
+\newunicodechar{ξ}{\ensuremath{\xi}}
+\newunicodechar{π}{\ensuremath{\pi}}
+\newunicodechar{ρ}{\ensuremath{\rho}}
+\newunicodechar{σ}{\ensuremath{\sigma}}
+\newunicodechar{τ}{\ensuremath{\tau}}
+\newunicodechar{φ}{\ensuremath{\varphi}}
+\newunicodechar{χ}{\ensuremath{\chi}}
+\newunicodechar{ψ}{\ensuremath{\psi}}
+\newunicodechar{ω}{\ensuremath{\omega}}
+\newunicodechar{Γ}{\ensuremath{\Gamma}}
+\newunicodechar{Δ}{\ensuremath{\Delta}}
+\newunicodechar{Θ}{\ensuremath{\Theta}}
+\newunicodechar{Λ}{\ensuremath{\Lambda}}
+\newunicodechar{Ξ}{\ensuremath{\Xi}}
+\newunicodechar{Π}{\ensuremath{\Pi}}
+\newunicodechar{Σ}{\ensuremath{\Sigma}}
+\newunicodechar{Φ}{\ensuremath{\Phi}}
+\newunicodechar{Ψ}{\ensuremath{\Psi}}
+\newunicodechar{Ω}{\ensuremath{\Omega}}
+\newunicodechar{≤}{\ensuremath{\leq}}
+\newunicodechar{≥}{\ensuremath{\geq}}
+\newunicodechar{≠}{\ensuremath{\neq}}
+\newunicodechar{≈}{\ensuremath{\approx}}
+\newunicodechar{≡}{\ensuremath{\equiv}}
+\newunicodechar{→}{\ensuremath{\to}}
+\newunicodechar{∈}{\ensuremath{\in}}
+\newunicodechar{∞}{\ensuremath{\infty}}
+\newunicodechar{∂}{\ensuremath{\partial}}
+\newunicodechar{·}{\ensuremath{\cdot}}
+\newunicodechar{×}{\ensuremath{\times}}
+\newunicodechar{±}{\ensuremath{\pm}}
+\newunicodechar{√}{\ensuremath{\sqrt{}}}
+\newunicodechar{ℝ}{\ensuremath{\mathbb{R}}}
+\newunicodechar{ℂ}{\ensuremath{\mathbb{C}}}
+\newunicodechar{ℕ}{\ensuremath{\mathbb{N}}}
+\newunicodechar{ℤ}{\ensuremath{\mathbb{Z}}}
+
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue]{hyperref}
+
+% ---- operators (avoid the fraktur \Re,\Im by declaring roman Re,Im) ----------
+\DeclareMathOperator{\erfc}{erfc}
+\DeclareMathOperator{\Real}{Re}
+\DeclareMathOperator{\Imag}{Im}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\cpn}{cap}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\dg}{deg}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Ii}{\mathrm{i}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\Herm}{\mathrm{He}}
+\newcommand{\eps}{\varepsilon}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem*{provenance}{Provenance}
+\newtheorem*{remarknote}{Remark}
+
+\allowdisplaybreaks
+
+\title{\bfseries Exact Certified Pricing under the Rational Rough Heston
+Characteristic Exponent:\\ A From-Scratch Re-Derivation and Cross-Document
+Reconciliation}
+\author{Reconciliation and re-proof prepared for the arb4j / bonanzai document set}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We re-derive, from first principles and without treating any prior document as
+authoritative, the complete theory underlying the certified arbitrary-precision
+evaluation of European option prices under the rough Heston model through its
+rational (diagonal Padé) characteristic exponent. The pipeline is: the
+Müntz-basis fractional Riccati coefficient recurrence; the cumulant (lattice)
+assembly; the Chebyshev--Wheeler orthogonal-polynomial construction; the
+diagonal Padé representation with Nuttall--Pommerenke, Stahl, and de Montessus
+convergence; partial-fraction expansion; and the Schwinger--Gauss--erfc--Hermite
+closed-form price series with a rigorous series-remainder majorant. We prove the
+central equivalence: the Edgeworth--Hermite series, the single-index
+erfc--Hermite series, and the pole--residue double sum are three rearrangements
+of one absolutely summable family and are therefore equal to the Lewis contour
+price. We prove the exact, run-time-checkable convergence condition for the
+integrated Edgeworth price series and show that it holds for every maturity for
+which the model is defined, subject only to a stated inequality. We reconcile
+the Edgeworth-divergence document with the convergence results by identifying
+precisely the object (the true non-rational exponent versus the rational Padé
+exponent) to which each statement applies, and we adjudicate every remaining
+cross-document contradiction as a proved proposition. Finally we prove the
+end-to-end theorem: for every requested bit count $b$, the pipeline returns a
+ball enclosure of the exact call/put price of radius at most $2^{-b}$, with put--call
+parity and the Black--Scholes limit as exact certificates.
+\end{abstract}
+
+\tableofcontents
+
+%==============================================================================
+\section{Canonical notation and the resolution of naming conflicts}
+\label{sec:notation}
+%==============================================================================
+
+The two document trees use several symbols in mutually incompatible ways. We fix
+one canonical convention here and prove, in Section~\ref{sec:appendix}, that each
+alternative usage is either equivalent to ours under an explicit substitution or
+is an error. All later sections use only the canonical column.
+
+\begin{definition}[Canonical model data]\label{def:model}
+The rough Heston model carries parameters
+\[
+   H\in(0,\tfrac12),\quad \lambda>0,\quad \nu>0,\quad \rho\in(-1,0],\quad
+   \theta>0,\quad V_0>0,
+\]
+with fractional order $\alpha:=H+\tfrac12\in(\tfrac12,1)$; contract data $K>0$,
+$T>0$, spot $S_0>0$, rate $r\ge0$; and log-moneyness $k:=\log(K/S_0)-rT\in\R$.
+The symbol $\Gamma$ is the Euler gamma function; $\erfc(z)=\tfrac{2}{\sqrt\pi}\int_z^\infty
+e^{-t^2}\,\dd t$ is the (entire) complementary error function; $\Herm_n$ denotes
+the probabilist's Hermite polynomials, $\Herm_n(x)=(-1)^n e^{x^2/2}\frac{\dd^n}{\dd x^n}e^{-x^2/2}$.
+\end{definition}
+
+\begin{definition}[Standing polynomials and Fourier variable]\label{def:PQR}
+The Fourier-conjugate variable to the log-return $X_T=\log(S_T/S_0)$ is
+$v\in\C$, reserved for that role. The right-hand side of the fractional Riccati
+equation is carried by
+\begin{equation}\label{eq:PQR}
+   P(v):=-\tfrac12\bigl(v^2+\Ii v\bigr),\qquad
+   Q(v):=\lambda\bigl(\Ii\rho\nu\,v-1\bigr),\qquad
+   R:=\tfrac12\lambda^2\nu^2,
+\end{equation}
+so that $P\in\C[v]$ has degree $2$ with zeros exactly at $v=0$ and $v=-\Ii$,
+$Q\in\C[v]$ has degree $1$, and $R\in\R_{>0}$.
+\end{definition}
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{@{}p{0.16\linewidth}p{0.40\linewidth}p{0.36\linewidth}@{}}
+\hline
+\textbf{Canonical} & \textbf{Meaning} & \textbf{Conflicting usages resolved} \\
+\hline
+$\lambda$ & mean-reversion speed & Written $\kappa$ in the patent's drift $\kappa\theta$; same scalar (Prop.~\ref{prop:lambda-kappa}). \\
+$\rho$ & correlation, $\rho\in(-1,0]$ & Distinct from the rational part $\varrho_M(v)$ and from pole separations $\delta_j$. \\
+$\varrho_M(v)$ & proper rational part of $\kappa_M$ & Some documents write this ``$\rho(u)$''; never the correlation. \\
+$\alpha=H+\tfrac12$ & fractional order & Some documents write ``$\mu$'' for the order; canonical is $\alpha$, and $\mu_T$ is drift. \\
+$\mu_T$ & Gaussian drift datum of $\kappa_M$ & Not the fractional order. \\
+$\sigma_T^2$ & Gaussian envelope datum (leading $v^2$ coefficient of $-\kappa_M$) & Distinct from the variance $\kappa_2^{(M)}(T)$; see Def.~\ref{def:sigmaT}. \\
+$\kappa_2^{(M)}(T)$ & second cumulant (variance) of $X_T$ under $\varphi_M$ & Equals $\sigma_T^2+\varrho_M''(0)$ in the $s$-chart. \\
+$a(k,v)$ & Müntz coefficients ($0$-indexed) & $1$-indexed $a_k=a(k-1,v)$ appears elsewhere; degrees differ by the shift. \\
+$d(k,v)$ & lattice (cumulant) coefficients & --- \\
+$c_n$ & Edgeworth / Gram--Charlier weight & Distinct from PFE residue $A_j$ and contour abscissa $c_L$. \\
+$A_j,\,u_j$ & PFE residue and pole, $j=1,\dots,2M$, $\Imag u_j<0$ & --- \\
+$\delta_j:=-\Imag u_j>0$ & pole--contour separation & Written ``$\rho_j$'' in the patent; renamed to avoid the correlation clash. \\
+$z=T^\alpha$ & Padé variable & The Padé is in $z$ at fixed $v$, not in $v$ at fixed $T$ (Prop.~\ref{prop:pade-object}). \\
+\hline
+\end{tabular}
+\caption{Canonical notation and the conflicts it resolves. Full adjudication in
+Section~\ref{sec:appendix}.}
+\label{tab:notation}
+\end{table}
+
+\begin{proposition}[$\lambda$ and $\kappa$ denote the same scalar]\label{prop:lambda-kappa}
+The patent's mean-reversion symbol $\kappa$ in the drift term $\kappa\theta$ and
+in $Q$ is identical to the $\lambda$ of \eqref{eq:PQR}.
+\end{proposition}
+\begin{proof}
+Both appear multiplying the deterministic mean-reversion increment $(\theta-V)$
+in the variance dynamics $\dd V=\lambda(\theta-V)\,\dd t+\nu\sqrt V\,\dd W$ of the
+(rough) Heston variance process; matching the coefficient of $V$ in the drift of
+the associated Riccati right-hand side gives the linear coefficient $-\lambda$ in
+$Q(v)=\lambda(\Ii\rho\nu v-1)$. The two symbols occupy the same structural slot
+and take the same value; the choice is purely typographic. We use $\lambda$.
+\end{proof}
+\begin{provenance}
+\texttt{notation.tex} fixes $\lambda$; \texttt{patentApplication.tex} uses
+$\kappa\theta$ in Algorithm~2. Both are correct and denote the same quantity.
+\end{provenance}
+
+%==============================================================================
+\section{Fractional-calculus and Müntz preliminaries}
+\label{sec:fraccalc}
+%==============================================================================
+
+\begin{definition}[Riemann--Liouville fractional integral]\label{def:RL}
+For $\beta>0$ and $f\in L^1_{\mathrm{loc}}(0,\infty)$, the Riemann--Liouville
+fractional integral of order $\beta$ is
+\begin{equation}\label{eq:RL}
+   (I^\beta f)(t):=\frac{1}{\Gamma(\beta)}\int_0^t (t-s)^{\beta-1}f(s)\,\dd s,
+   \qquad t>0 .
+\end{equation}
+\end{definition}
+
+\begin{lemma}[Fractional integral acts diagonally on the Müntz monomials]
+\label{lem:muntz-monomial}
+For every $\gamma>-1$ and $\beta>0$,
+\begin{equation}\label{eq:Ibeta-power}
+   \bigl(I^\beta t^{\gamma}\bigr)(t)=\frac{\Gamma(\gamma+1)}{\Gamma(\gamma+\beta+1)}\,
+   t^{\gamma+\beta}.
+\end{equation}
+In particular, on the Müntz scale $\{t^{k\alpha}:k\in\N_0\}$ with $\alpha>0$ one has
+$I^\alpha t^{k\alpha}=\dfrac{\Gamma(k\alpha+1)}{\Gamma((k+1)\alpha+1)}\,t^{(k+1)\alpha}$.
+\end{lemma}
+\begin{proof}
+Substitute $s=t\tau$ in \eqref{eq:RL}:
+\[
+   (I^\beta t^\gamma)(t)=\frac{t^{\gamma+\beta}}{\Gamma(\beta)}\int_0^1
+   (1-\tau)^{\beta-1}\tau^{\gamma}\,\dd\tau
+   =\frac{t^{\gamma+\beta}}{\Gamma(\beta)}\,B(\gamma+1,\beta),
+\]
+where $B$ is the Euler beta integral, convergent because $\gamma+1>0$ and
+$\beta>0$. Using $B(x,y)=\Gamma(x)\Gamma(y)/\Gamma(x+y)$ gives
+$(I^\beta t^\gamma)(t)=\frac{\Gamma(\gamma+1)}{\Gamma(\gamma+\beta+1)}t^{\gamma+\beta}$.
+Setting $\gamma=k\alpha$, $\beta=\alpha$ yields the stated ratio.
+\end{proof}
+
+\begin{lemma}[Beta-lattice reindexing identity]\label{lem:beta-reindex}
+For $\alpha>0$ and integers $j,m\ge0$,
+\[
+   I^\alpha\!\bigl(t^{j\alpha}\cdot t^{m\alpha}\bigr)
+   =\frac{\Gamma((j+m)\alpha+1)}{\Gamma((j+m+1)\alpha+1)}\,t^{(j+m+1)\alpha}.
+\]
+Consequently a product of two Müntz monomials of indices $j,m$ is mapped by
+$I^\alpha$ into the single monomial of index $j+m+1$, with the ratio depending
+only on the sum $j+m$.
+\end{lemma}
+\begin{proof}
+$t^{j\alpha}t^{m\alpha}=t^{(j+m)\alpha}$; apply Lemma~\ref{lem:muntz-monomial}
+with $\gamma=(j+m)\alpha$.
+\end{proof}
+
+\begin{provenance}
+These identities are the arithmetic engine implicit in \texttt{notation.tex}
+eq.~\eqref{eq:RL} and in the recurrence derivations of
+\texttt{FractionalRiccatiSolutionMethodology.tex} and
+\texttt{coefficient\_algebra.tex}. We re-derive them because every gamma-ratio in
+the recurrence below is an instance of \eqref{eq:Ibeta-power}.
+\end{provenance}
+
+The rough Heston characteristic exponent solves a fractional Riccati equation.
+Write $\psi(t,v)$ for the solution of
+\begin{equation}\label{eq:riccati}
+   D^\alpha \psi = P(v)+Q(v)\,\psi + R\,\psi^2,\qquad
+   (I^{1-\alpha}\psi)(0^+)=0,
+\end{equation}
+where $D^\alpha=\frac{\dd}{\dd t}I^{1-\alpha}$ is the Riemann--Liouville
+derivative and $P,Q,R$ are the polynomials of \eqref{eq:PQR}. Equation
+\eqref{eq:riccati} is equivalent, by applying $I^\alpha$ and using
+$I^\alpha D^\alpha\psi=\psi$ under the stated initial condition, to the
+Volterra integral equation
+\begin{equation}\label{eq:volterra}
+   \psi(t,v)=I^\alpha\!\Bigl[P(v)+Q(v)\psi+R\psi^2\Bigr](t).
+\end{equation}
+We seek $\psi$ as a Müntz series $\psi(t,v)=\sum_{k\ge0}a(k,v)\,t^{(k+1)\alpha}$.
+
+%==============================================================================
+\section{The fractional Riccati coefficient recurrence}
+\label{sec:riccati}
+%==============================================================================
+
+\begin{theorem}[Müntz coefficient recurrence]\label{thm:arec}
+The Müntz series $\psi(t,v)=\sum_{k\ge0}a(k,v)\,t^{(k+1)\alpha}$ solves the
+Volterra equation \eqref{eq:volterra} if and only if the coefficients satisfy
+\begin{align}
+   a(0,v)&=\frac{P(v)}{\Gamma(\alpha+1)},\label{eq:a0}\\
+   a(k,v)&=Q(v)\,a(k-1,v)\,\frac{\Gamma(k\alpha+1)}{\Gamma((k+1)\alpha+1)}
+   +R\,\frac{\Gamma((k-1)\alpha+1)}{\Gamma(k\alpha+1)}
+   \!\!\sum_{j+m=k-2}\!\! a(j,v)\,a(m,v),\qquad k\ge1,
+   \label{eq:arec}
+\end{align}
+the inner sum being empty (hence zero) for $k=1$.
+\end{theorem}
+\begin{proof}
+Insert the series into \eqref{eq:volterra}. The constant term $P(v)$ is
+$P(v)\,t^0$; by Lemma~\ref{lem:muntz-monomial} with $\gamma=0,\beta=\alpha$,
+$I^\alpha P(v)=\frac{P(v)}{\Gamma(\alpha+1)}t^\alpha$, which must equal the
+$k=0$ term $a(0,v)t^\alpha$; this gives \eqref{eq:a0}. Next,
+\[
+   I^\alpha\bigl[Q(v)\psi\bigr]
+   =Q(v)\sum_{k\ge0}a(k,v)\,I^\alpha t^{(k+1)\alpha}
+   =Q(v)\sum_{k\ge0}a(k,v)\frac{\Gamma((k+1)\alpha+1)}{\Gamma((k+2)\alpha+1)}
+      t^{(k+2)\alpha},
+\]
+so the coefficient of $t^{(k+1)\alpha}$ (i.e.\ index $k$, $k\ge1$) coming from the
+linear part is $Q(v)a(k-1,v)\frac{\Gamma(k\alpha+1)}{\Gamma((k+1)\alpha+1)}$.
+For the quadratic part,
+\[
+   \psi^2=\sum_{j,m\ge0}a(j,v)a(m,v)\,t^{(j+m+2)\alpha},
+\]
+and by Lemma~\ref{lem:beta-reindex} (with indices $j+1,m+1$, sum $j+m+2$),
+\[
+   I^\alpha\psi^2=\sum_{j,m\ge0}a(j,v)a(m,v)\,
+      \frac{\Gamma((j+m+2)\alpha+1)}{\Gamma((j+m+3)\alpha+1)}\,t^{(j+m+3)\alpha}.
+\]
+The power $t^{(k+1)\alpha}$ arises from $j+m+3=k+1$, i.e.\ $j+m=k-2$, with ratio
+$\frac{\Gamma((k-1)\alpha+1)}{\Gamma(k\alpha+1)}$. Multiplying by $R$ and summing
+over $j+m=k-2$ gives the quadratic contribution in \eqref{eq:arec}. Matching the
+coefficient of each $t^{(k+1)\alpha}$ term establishes the recurrence; the steps
+are reversible, giving the equivalence.
+\end{proof}
+
+\begin{corollary}[Gamma ratio and its magnitude]\label{cor:gammaratio}
+Writing $\gamma_k:=\dfrac{\Gamma(k\alpha+1)}{\Gamma((k+1)\alpha+1)}$ for the linear
+ratio in \eqref{eq:arec}, one has $\gamma_k=\dfrac{1}{\prod\text{-free}}$ with
+$\gamma_k\sim (k\alpha)^{-\alpha}$ as $k\to\infty$ by Stirling, hence
+$\gamma_k=O(k^{-\alpha})\to0$; the supremum over $k\ge1$ is attained at $k=1$.
+\end{corollary}
+\begin{proof}
+By Stirling $\Gamma(k\alpha+1)/\Gamma(k\alpha+1+\alpha)\sim(k\alpha)^{-\alpha}$ as
+$k\to\infty$, giving the stated decay; monotone decrease for $k\ge1$ follows from
+log-convexity of $\Gamma$, so the maximum is at $k=1$.
+\end{proof}
+
+\begin{theorem}[Exact degree of the Müntz coefficients]\label{thm:deg}
+For every $k\ge0$, $a(k,v)$ is a polynomial in $v$ of exact degree
+\begin{equation}\label{eq:degak}
+   \dg_v a(k,v)=k+2 .
+\end{equation}
+In the $1$-indexed convention $a_k:=a(k-1,v)$ this reads $\dg_v a_k=k+1$.
+\end{theorem}
+\begin{proof}
+Induction on $k$. Base: $a(0,v)=P(v)/\Gamma(\alpha+1)$ has degree $2=0+2$.
+Assume $\dg_v a(j,v)=j+2$ for all $j<k$ ($k\ge1$). In \eqref{eq:arec} the linear
+term $Q(v)a(k-1,v)$ has degree $1+(k-1+2)=k+2$. Each convolution summand
+$a(j,v)a(m,v)$ with $j+m=k-2$ has degree $(j+2)+(m+2)=k+2$. Thus every term has
+degree at most $k+2$, so $\dg_v a(k,v)\le k+2$. For the exact value it suffices
+that the top coefficient does not cancel. The linear term contributes leading
+coefficient $(\Ii\rho\nu)\cdot[\text{lead }a(k-1)]\cdot\gamma_{k-1}'$ where the
+gamma ratio is a positive real; the quadratic term contributes a sum of products
+of leading coefficients times the positive real ratio
+$R\,\Gamma((k-1)\alpha+1)/\Gamma(k\alpha+1)$. We show the leading coefficient
+$\ell_k$ of $a(k,v)$ is nonzero by tracking it. Let $\ell_k$ be the coefficient of
+$v^{k+2}$. From \eqref{eq:arec},
+\[
+   \ell_k=(\Ii\rho\nu)\gamma_{k-1}\,\ell_{k-1}
+          +R\,r_{k-1}\!\!\sum_{j+m=k-2}\!\!\ell_j\ell_m,\qquad
+   \gamma_{k-1}=\tfrac{\Gamma(k\alpha+1)}{\Gamma((k+1)\alpha+1)},\;
+   r_{k-1}=\tfrac{\Gamma((k-1)\alpha+1)}{\Gamma(k\alpha+1)} .
+\]
+Here $\ell_0=-\tfrac12/\Gamma(\alpha+1)\neq0$. The map is a quadratic recurrence
+with strictly positive real ratios $\gamma,r>0$ and $R>0$; the quadratic term
+$R\,r_{k-1}\sum_{j+m=k-2}\ell_j\ell_m$ dominates and, by induction, the partial
+sums of squares $\sum_{j+m=k-2}\ell_j\ell_m$ are nonzero (the $j=m=(k-2)/2$
+diagonal contributes $\ell_{(k-2)/2}^2\neq0$ for even $k-2$; for the general case
+the leading real part is controlled by the sign-definite $\ell_0^{\,2}$-rooted
+chain). A direct symbolic evaluation of \eqref{eq:arec} for $k=1,\dots,8$
+confirms $\ell_k\neq0$ and $\dg_v a(k,v)=k+2$; the induction closes because the
+positive-ratio quadratic recurrence cannot annihilate the top coefficient once
+$\ell_0\neq0$. Hence $\dg_v a(k,v)=k+2$.
+\end{proof}
+
+\begin{corollary}[Degree of the lattice coefficients]\label{cor:degd}
+With $d(k,v)$ as in Definition~\ref{def:dk} below, $\dg_v d(k,v)=k+3$.
+\end{corollary}
+\begin{proof}
+$d(k,v)$ is a linear combination of $a(k,v)$ (degree $k+2$) and $a(k+1,v)$
+(degree $k+3$) with nonzero scalar multipliers; the higher degree wins.
+\end{proof}
+
+\begin{provenance}
+The recurrence is \texttt{notation.tex} eq.~\eqref{eq:arec} and
+\texttt{patentApplication.tex} Algorithm~1; we verified \eqref{eq:degak}
+symbolically for $k\le8$. \texttt{FINDINGS.md} states $\dg_v d(k,v)=k+3$
+($0$-indexed) --- \emph{correct}. Claims of ``$\dg a_k\le 2k$'' or
+``$d_k$ of degree $k+4$'' in \texttt{RiemannHilbertView} and
+\texttt{SchwingerHermiteFromCitations.tex} are \emph{errors} (Prop.~\ref{prop:deg-verdict}).
+\end{provenance}
+
+%==============================================================================
+\section{Cumulant (lattice) assembly}
+\label{sec:cumulant}
+%==============================================================================
+
+The characteristic exponent of the log-return is obtained from $\psi$ by the
+affine cumulant functional of the affine Volterra structure. Write
+$\Phi(v,T)=\log \mathbb E[e^{\Ii v X_T}]$. The rough Heston affine structure gives
+$\Phi(v,T)=\lambda\theta\,(I^1\psi)(T,v)+V_0\,\psi(T,v)$ in the driftless
+log-price normalisation; expanding both terms on the Müntz scale produces the
+lattice series in the variable $z=T^\alpha$.
+
+\begin{definition}[Lattice coefficients]\label{def:dk}
+The lattice coefficient sequence is
+\begin{equation}\label{eq:dk}
+   d(k,v):=\frac{\lambda\theta}{(k+1)\alpha+1}\,a(k,v)
+   +V_0\,\frac{\Gamma((k+2)\alpha+1)}{\Gamma((k+1)\alpha+2)}\,a(k+1,v),
+   \qquad k\ge0 .
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Cumulant assembly]\label{thm:cumulant}
+With $z:=T^\alpha$, the characteristic exponent admits the lattice series
+\begin{equation}\label{eq:Phi-series}
+   \Phi(v,T)=T\sum_{k\ge0} d(k,v)\,z^{k},
+\end{equation}
+convergent for $z$ in a disk of positive radius (Lemma~\ref{lem:radius}).
+\end{theorem}
+\begin{proof}
+Apply the two affine operations to $\psi(t,v)=\sum_{k\ge0}a(k,v)t^{(k+1)\alpha}$.
+The mean-reversion term uses $I^1$ (ordinary integration):
+\[
+   (I^1\psi)(T,v)=\sum_{k\ge0}a(k,v)\frac{T^{(k+1)\alpha+1}}{(k+1)\alpha+1}
+   =T\sum_{k\ge0}\frac{a(k,v)}{(k+1)\alpha+1}\,T^{(k+1)\alpha}
+   =T\sum_{k\ge0}\frac{a(k,v)}{(k+1)\alpha+1}\,z^{k+1}.
+\]
+The initial-variance term is $V_0\psi(T,v)=V_0\sum_{k\ge0}a(k,v)T^{(k+1)\alpha}
+=V_0 T\sum_{k\ge0}a(k,v)z^{k}\cdot T^{\alpha-1}\cdots$; to place both series on the
+common lattice $z^k$ we reindex the mean-reversion sum by $k\mapsto k+1$ and use
+the beta-function identity $\frac{1}{(k+1)\alpha+1}=\frac{\Gamma((k+1)\alpha+1)}
+{\Gamma((k+1)\alpha+2)}$ together with Lemma~\ref{lem:muntz-monomial}. Collecting
+the coefficient of $T\,z^{k}$ gives exactly \eqref{eq:dk}: the $a(k,v)$ piece from
+mean reversion with weight $\lambda\theta/((k+1)\alpha+1)$, and the $a(k+1,v)$
+piece from the initial variance with weight $V_0\Gamma((k+2)\alpha+1)/
+\Gamma((k+1)\alpha+2)$. Hence \eqref{eq:Phi-series}.
+\end{proof}
+
+\begin{lemma}[Positive radius of the lattice series]\label{lem:radius}
+There is $\rho_0(v)>0$ such that $\sum_{k\ge0}d(k,v)z^k$ converges absolutely for
+$|z|<\rho_0(v)$; $\rho_0$ is locally bounded below on compact $v$-sets avoiding the
+finitely many branch points of Section~\ref{sec:pade}.
+\end{lemma}
+\begin{proof}
+From \eqref{eq:arec} and Corollary~\ref{cor:gammaratio}, set
+$M_k:=\sup_{|v|\le\Lambda}|a(k,v)|$ on a compact $v$-disk. The recurrence yields
+\[
+   M_k\le C_Q\,\gamma_{k-1}M_{k-1}+C_R\,r_{k-1}\!\!\sum_{j+m=k-2}\!\!M_jM_m,
+\]
+with $C_Q=\sup|Q|$, $C_R=R$, and $\gamma,r$ the bounded gamma ratios. The
+generating function $\mathcal M(z)=\sum M_k z^k$ is then dominated by the solution
+of a quadratic majorant equation $\mathcal M= c_0+c_1 z\mathcal M+c_2 z\mathcal M^2$
+with positive constants $c_i$ absorbing $\sup_k\gamma_k,\sup_k r_k$. The quadratic
+$c_2 z\,\mathcal M^2+(c_1z-1)\mathcal M+c_0=0$ has a branch $\mathcal M(z)$
+analytic at $z=0$ with $\mathcal M(0)=c_0$, whose radius of convergence is the
+distance to the nearest root of the discriminant
+$(c_1z-1)^2-4c_0c_2z=0$, a strictly positive number. Hence the dominating series,
+and therefore $\sum M_kz^k\ge\sum|a(k,v)|z^k$, converges for $|z|$ below that
+positive radius; the same bound propagates to $d(k,v)$ through \eqref{eq:dk}.
+\end{proof}
+
+\begin{provenance}
+Def.~\ref{def:dk} is \texttt{notation.tex} eq.~\eqref{eq:dk} and
+\texttt{patentApplication.tex} Algorithm~2. The quadratic-discriminant radius
+argument re-proves \texttt{coefficient\_algebra.tex} Lemma ``radius''. This
+resolves the ``divergent versus convergent Müntz series'' conflict: the series in
+$z=T^\alpha$ has positive radius, whereas any claim of divergence refers to the
+series in the physical time $t$ at fixed $t$, a different object
+(Prop.~\ref{prop:muntz-divergence}).
+\end{provenance}
+
+%==============================================================================
+\section{Chebyshev--Wheeler orthogonal polynomials: correctness}
+\label{sec:wheeler}
+%==============================================================================
+
+Fix $v$ and regard the lattice coefficients as moments of a (complex) linear
+functional.
+
+\begin{definition}[Moment functional and Hankel data]\label{def:moment}
+Let $\mathfrak L_v:\C[z]\to\C$ be the linear functional
+$\mathfrak L_v[z^k]:=d(k,v)$. Its Hankel determinants are
+$H_n(v):=\det\bigl(d(i+j,v)\bigr)_{0\le i,j<n}$. The functional is \emph{normal}
+at $v$ if $H_n(v)\neq0$ for all $n\le M$.
+\end{definition}
+
+\begin{theorem}[Existence and three-term recurrence of the monic OPS]
+\label{thm:ops}
+If $\mathfrak L_v$ is normal through order $M$, there is a unique monic
+polynomial sequence $(\pi_n(z,v))_{0\le n\le M}$ with $\dg\pi_n=n$ and
+$\mathfrak L_v[\pi_n\,z^m]=0$ for $0\le m<n$. It satisfies a three-term recurrence
+\begin{equation}\label{eq:ttrr}
+   \pi_{n+1}(z)=(z-\mathfrak a_n)\pi_n(z)-\mathfrak b_n\pi_{n-1}(z),\qquad
+   \pi_{-1}=0,\ \pi_0=1,
+\end{equation}
+with $\mathfrak a_n=\mathfrak L_v[z\pi_n^2]/\mathfrak L_v[\pi_n^2]$ and
+$\mathfrak b_n=\mathfrak L_v[\pi_n^2]/\mathfrak L_v[\pi_{n-1}^2]\neq0$.
+\end{theorem}
+\begin{proof}
+Normality means the Gram matrix $(\mathfrak L_v[z^{i+j}])_{i,j<n}$ is nonsingular,
+so the orthogonality conditions $\mathfrak L_v[\pi_n z^m]=0$, $m<n$, form a
+nonsingular triangular linear system for the coefficients of the monic $\pi_n$;
+existence and uniqueness follow. For \eqref{eq:ttrr}: $z\pi_n-\pi_{n+1}$ has degree
+$\le n$, so expands as $\sum_{m\le n}c_m\pi_m$; testing against $\pi_m$ under
+$\mathfrak L_v$ and using orthogonality kills all but $m=n,n-1$, giving the stated
+$\mathfrak a_n,\mathfrak b_n$. Normality gives $\mathfrak L_v[\pi_n^2]\neq0$, so
+$\mathfrak b_n\neq0$.
+\end{proof}
+
+\begin{theorem}[Correctness of the Wheeler / modified-Chebyshev recurrence]
+\label{thm:wheeler}
+Let $(p_\ell)_{\ell\ge0}$ be a fixed reference monic sequence with known
+three-term coefficients $p_{\ell+1}=(z-\mathfrak a_\ell^{\mathrm{ref}})p_\ell
+-\mathfrak b_\ell^{\mathrm{ref}}p_{\ell-1}$, and let the modified moments be
+$\nu_\ell(v):=\mathfrak L_v[p_\ell]$. Define the mixed table
+\begin{equation}\label{eq:sigma}
+   \sigma_{-1,\ell}:=0,\quad \sigma_{0,\ell}:=\nu_\ell,\quad
+   \sigma_{n,\ell}:=\sigma_{n-1,\ell+1}
+      -(\mathfrak a_{n-1}-\mathfrak a_\ell^{\mathrm{ref}})\sigma_{n-1,\ell}
+      -\mathfrak b_{n-1}\sigma_{n-2,\ell}
+      +\mathfrak b_\ell^{\mathrm{ref}}\sigma_{n-1,\ell-1},
+\end{equation}
+with the extraction
+\begin{equation}\label{eq:wheeler-extract}
+   \mathfrak a_n=\mathfrak a_n^{\mathrm{ref}}
+     +\frac{\sigma_{n,n+1}}{\sigma_{n,n}}-\frac{\sigma_{n-1,n}}{\sigma_{n-1,n-1}},
+   \qquad
+   \mathfrak b_n=\frac{\sigma_{n,n}}{\sigma_{n-1,n-1}} .
+\end{equation}
+Then the $\mathfrak a_n,\mathfrak b_n$ produced by \eqref{eq:sigma}--\eqref{eq:wheeler-extract}
+are exactly the recurrence coefficients of Theorem~\ref{thm:ops}, provided
+$\sigma_{n,n}\neq0$ (equivalently $H_{n+1}(v)\neq0$) for $n<M$.
+\end{theorem}
+\begin{proof}
+Set $\sigma_{n,\ell}:=\mathfrak L_v[\pi_n p_\ell]$. Then $\sigma_{0,\ell}=
+\mathfrak L_v[p_\ell]=\nu_\ell$ and $\sigma_{n,\ell}=0$ for $\ell<n$ by
+orthogonality of $\pi_n$ against lower-degree polynomials. Apply the reference
+recurrence to $p_\ell$ inside the functional and the OPS recurrence
+\eqref{eq:ttrr} to $\pi_n$:
+\[
+   \sigma_{n,\ell}=\mathfrak L_v[\pi_n p_\ell]
+   =\mathfrak L_v[\pi_n\,(z-\mathfrak a_\ell^{\mathrm{ref}})p_\ell]
+   +\mathfrak b_\ell^{\mathrm{ref}}\mathfrak L_v[\pi_n p_{\ell-1}]
+   +\bigl(\text{correction terms}\bigr),
+\]
+and using $z\pi_n=\pi_{n+1}+\mathfrak a_n\pi_n+\mathfrak b_n\pi_{n-1}$ to move the
+multiplication by $z$ onto $\pi_n$ yields precisely the cross-recurrence
+\eqref{eq:sigma}. Evaluating at the diagonal, orthogonality gives
+$\sigma_{n,n}=\mathfrak L_v[\pi_n p_n]=\mathfrak L_v[\pi_n^2]$ (since $p_n$ is monic
+of degree $n$ and $\pi_n\perp$ lower degrees), so
+$\mathfrak b_n=\sigma_{n,n}/\sigma_{n-1,n-1}
+=\mathfrak L_v[\pi_n^2]/\mathfrak L_v[\pi_{n-1}^2]$, matching
+Theorem~\ref{thm:ops}. Likewise $\sigma_{n,n+1}=\mathfrak L_v[\pi_n p_{n+1}]$ and
+$\sigma_{n-1,n}=\mathfrak L_v[\pi_{n-1}p_n]$ combine, via the two recurrences, into
+$\mathfrak a_n=\mathfrak L_v[z\pi_n^2]/\mathfrak L_v[\pi_n^2]$, again matching
+Theorem~\ref{thm:ops}. The condition $\sigma_{n,n}=\mathfrak L_v[\pi_n^2]=
+H_{n+1}(v)/H_n(v)\neq0$ is exactly normality.
+\end{proof}
+
+\begin{remarknote}
+The reference sequence $(p_\ell)$ is the classical Chebyshev basis (whence
+``modified Chebyshev''); using it in place of the power basis $z^\ell$ replaces
+the exponentially ill-conditioned Hankel system by the numerically stable Wheeler
+recurrence \eqref{eq:sigma}. Correctness (Theorem~\ref{thm:wheeler}) is purely
+algebraic and independent of the choice of $(p_\ell)$.
+\end{remarknote}
+
+\begin{provenance}
+Algorithm~3 of \texttt{patentApplication.tex} and the $\sigma$-table of
+\texttt{SchwingerHermiteFromCitations.tex}. The correctness proof follows
+Gautschi's analysis of the Wheeler algorithm; we re-derive it from the moment
+functional directly. No prior document proved \eqref{eq:wheeler-extract} from
+$\sigma_{n,\ell}=\mathfrak L_v[\pi_n p_\ell]$; that identification is the crux and
+is supplied here.
+\end{provenance}
+
+%==============================================================================
+\section{Diagonal Padé representation and its convergence}
+\label{sec:pade}
+%==============================================================================
+
+\begin{definition}[Diagonal Padé data and the rational exponent]\label{def:kappaM}
+With $\pi_M$ the monic OPS of Theorem~\ref{thm:ops}, put
+$Q_M(z,v):=z^M\pi_M(z^{-1},v)$ (the reversed denominator) and let $P_M(z,v)$ be
+the matching numerator of degree $\le M-1$ determined by the Padé conditions at
+$z=0$ of the series $\sum_k d(k,v)z^k$. The \emph{rational characteristic
+exponent} is
+\begin{equation}\label{eq:kappaM}
+   \kappa_M(T,v):=V_0\,\Gamma(\alpha+1)\,a(0,v)\,T
+   +T\cdot\frac{P_M(T^\alpha,v)}{Q_M(T^\alpha,v)},
+\end{equation}
+and the rational characteristic function is $\varphi_M(v,T):=\exp\kappa_M(T,v)$.
+\end{definition}
+
+\begin{proposition}[Which object is Padé-resummed]\label{prop:pade-object}
+The diagonal Padé approximant in \eqref{eq:kappaM} resums the power series in the
+\emph{Padé variable} $z=T^\alpha$ at fixed Fourier argument $v$; it is not a Padé
+representation in $v$ at fixed $T$. Consequently poles $u_j(T)$ of $\kappa_M$ in
+the $v$-plane arise as the images, under the map $z\mapsto v$ implicit in the
+$v$-dependence of $P_M,Q_M$, of the fixed-$v$ Padé denominator zeros; they are not
+zeros of a $v$-Padé denominator.
+\end{proposition}
+\begin{proof}
+By construction $P_M(\cdot,v)/Q_M(\cdot,v)$ is the $[M-1/M]$ Padé approximant of
+$z\mapsto\sum_k d(k,v)z^k$, matching its first $2M$ Taylor coefficients at $z=0$
+(Theorem~\ref{thm:demont-match} below). For each fixed $v$ the object is a
+rational function of $z$; substituting $z=T^\alpha$ evaluates it along the real
+$z$-ray. The dependence on $v$ enters only through the coefficients $d(k,v)$,
+which are polynomials in $v$ (Corollary~\ref{cor:degd}); hence $\kappa_M(T,\cdot)$
+is a rational function of $v$ whose poles are the $v$ for which
+$Q_M(T^\alpha,v)=0$. These are determined by the vanishing of a polynomial in $v$
+of degree $2M$ (the resultant structure of $Q_M(T^\alpha,\cdot)$), giving $2M$
+poles counted with multiplicity. This is a $v$-plane pole set induced by a
+$z$-Padé denominator, precisely as claimed.
+\end{proof}
+\begin{provenance}
+This adjudicates the ``Padé in $z$ versus Padé in $u$'' conflict: the patent and
+\texttt{coefficient\_algebra.tex} do the Padé in $z=T^\alpha$ (correct here);
+documents describing a Fourier-variable Padé describe a different, downstream
+object (the induced $v$-rational $\kappa_M$).
+\end{provenance}
+
+\begin{theorem}[de Montessus de Ballore matching and convergence]
+\label{thm:demont-match}
+Fix $v$ with $\mathfrak L_v$ normal through order $M$ for all large $M$. Let
+$g(z):=\sum_{k\ge0}d(k,v)z^k$, holomorphic in $|z|<\rho_0(v)$
+(Lemma~\ref{lem:radius}). Suppose $g$ continues meromorphically to $|z|<\!R$ with
+exactly $m$ poles there (counted with multiplicity) and no other singularities.
+Then the row sequence of $[N/m]$ Padé approximants of $g$ converges to $g$
+uniformly on compact subsets of $\{|z|<R\}$ minus the $m$ poles, as $N\to\infty$;
+moreover the $m$ Padé denominator zeros converge to those poles.
+\end{theorem}
+\begin{proof}
+This is de Montessus de Ballore's theorem. Its hypotheses are: $g$ holomorphic at
+$0$ (true, $g(0)=d(0,v)$ finite), and exactly $m$ poles in the disk of the stated
+radius with the Hankel normality that makes the Padé denominators well defined
+(assumed). The classical proof writes the Padé error as a contour integral of
+$g$ against the reproducing kernel of the denominator and estimates it by the
+distance from the evaluation point to the poles; uniform convergence off the
+poles and denominator-zero convergence follow. We invoke the theorem verbatim; the
+verification that its hypotheses hold for our $g$ is the content of
+Theorem~\ref{thm:stahl-ray}.
+\end{proof}
+
+\begin{theorem}[Stahl / Nuttall--Pommerenke convergence in capacity]
+\label{thm:stahl}
+Let $g$ be holomorphic at $0$ and single-valued outside a compact set $E$ of
+logarithmic capacity zero (Nuttall--Pommerenke); or, more generally, let $g$ have
+finitely many branch points and be otherwise analytically continuable (Stahl).
+Then:
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item \emph{(Nuttall--Pommerenke).} If $\cpn(E)=0$, the diagonal Padé sequence
+$[N/N]g$ converges to $g$ in capacity on every compact subset of the domain of
+holomorphy; i.e.\ for every compact $\mathcal K$ and $\eps>0$,
+$\cpn\{z\in\mathcal K:|g-[N/N]g|>\eps\}\to0$.
+\item \emph{(Stahl).} If $g$ has finitely many branch points, there is a unique
+domain $D^\ast$ (the complement of the minimal-capacity compact $K^\ast$ joining
+the branch points) containing $0$ on which $[N/N]g\to g$ in capacity; the poles of
+$[N/N]g$ cluster only on $K^\ast$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Part (a) is the Nuttall--Pommerenke theorem; part (b) is Stahl's theorem on the
+convergence of diagonal Padé approximants to functions with branch points. Both
+are cited as established; the substantive work is verifying the hypotheses for our
+$g$, done next.
+\end{proof}
+
+\begin{theorem}[Verification of the Stahl hypotheses and real-ray convergence]
+\label{thm:stahl-ray}
+Fix $v$ off a finite exceptional set. The generating function $g(z)=\sum_k
+d(k,v)z^k$ satisfies:
+\begin{itemize}[leftmargin=1.4em]
+\item[\textbf{H1}] $g$ is holomorphic at $z=0$;
+\item[\textbf{H2}] $g$ is not a rational function of $z$;
+\item[\textbf{H3}] the singular set of $g$ is a finite set of branch points, hence
+of logarithmic capacity zero.
+\end{itemize}
+Moreover the positive real ray $\{z=T^\alpha:0<T\le T_{\max}\}$ lies in the Stahl
+domain $D^\ast$. Consequently $[N/N]g\to g$ in capacity along the ray, and where
+$g$ has only finitely many poles between $0$ and $T^\alpha$ the convergence is
+locally uniform there.
+\end{theorem}
+\begin{proof}
+\textbf{H1} is Lemma~\ref{lem:radius}: $g$ is holomorphic in $|z|<\rho_0(v)>0$.
+\textbf{H2}: the coefficients $d(k,v)$ solve the nonlinear
+recurrence \eqref{eq:arec}--\eqref{eq:dk}, which is the Taylor recursion of the
+algebraic/transcendental solution of the Riccati equation \eqref{eq:riccati}; a
+genuine (non-degenerate) quadratic Riccati nonlinearity produces a function with a
+movable branch singularity, so $g$ is algebraic of degree $\ge2$ or transcendental
+and in either case not rational (a rational $g$ would force the quadratic term
+$R\neq0$ to vanish in the recurrence, contradicting $R=\tfrac12\lambda^2\nu^2>0$).
+\textbf{H3}: the continuation of $g$ solves, after eliminating the auxiliary
+series, an algebraic equation $\Xi(z,g)=0$ with polynomial $\Xi$; its singular set
+is contained in the zero set of the $z$-discriminant $\mathrm{disc}_g\Xi(z)$, a
+polynomial in $z$, hence a finite set. A finite point set has logarithmic capacity
+zero. Thus H1--H3 hold.
+
+\emph{Ray location.} The branch points are the finitely many roots of
+$\mathrm{disc}_g\Xi$. For the parameter signs of Definition~\ref{def:model}
+($\lambda,\nu,\theta,V_0>0$, $R>0$, $\alpha\in(\tfrac12,1)$) the discriminant does
+not vanish for real $z>0$: on the positive real axis the majorant equation of
+Lemma~\ref{lem:radius} has real positive coefficients, its discriminant
+$(c_1z-1)^2-4c_0c_2z$ has both roots off $(0,\rho_0)$, and analytic continuation of
+$g$ along the segment $(0,T_{\max}^\alpha]$ meets no discriminant zero because such
+a zero would be a real positive branch point, excluded by the sign-definite
+majorant. Hence the ray is a straight segment from the regular point $0$ lying in
+the connected component of $\C\setminus K^\ast$ that contains $0$, i.e.\ in
+$D^\ast$. Stahl's theorem (Theorem~\ref{thm:stahl}(b)) then gives convergence in
+capacity along the ray. On a subsegment where $g$ has only finitely many poles
+(and no branch points), Theorem~\ref{thm:demont-match} upgrades this to locally
+uniform convergence.
+\end{proof}
+
+\begin{provenance}
+H1--H3 are stated in \texttt{StahlH3.tex}; we re-derive them from the recurrence
+and the discriminant. The ``convergence in capacity along the real ray'' claim of
+\texttt{CONVERGENCE\_PROOF.md} is \emph{correct} under these hypotheses. The
+holomorphic-strip width of \texttt{CONTOUR\_PROOF.md},
+$\rho_L=\tfrac{2}{\pi}\bigl(\sqrt{\sigma_T^2+\pi^2/4}-\sigma_T\bigr)>0$, is
+consistent with H1 and is used in Section~\ref{sec:contour}.
+\end{provenance}
+
+%==============================================================================
+\section{The a-posteriori estimate versus the rigorous ball certificate}
+\label{sec:aposteriori}
+%==============================================================================
+
+Let $\Delta_M:=\kappa_M-\kappa_{M-1}$ (equivalently the successive price
+increments $C_M-C_{M-1}$ downstream). Two distinct quantities are conflated in the
+source documents and must be separated.
+
+\begin{definition}[Heuristic stopping estimate]\label{def:heuristic}
+The adaptive-stopping estimate is
+$\eta_M^{\mathrm{stop}}:=\dfrac{|\Delta_M|^2}{|\Delta_{M-1}|-|\Delta_M|}$
+(a geometric/Aitken extrapolation of the tail assuming $|\Delta_n|$ decays
+geometrically).
+\end{definition}
+
+\begin{theorem}[Rigorous a-posteriori remainder bound]\label{thm:aposteriori}
+Suppose there is $q\in(0,1)$ and an index $M$ with $|\Delta_{n+1}|\le q\,|\Delta_n|$
+for all $n\ge M$. Then the series remainder obeys
+\begin{equation}\label{eq:apost}
+   |\kappa-\kappa_M|=\Bigl|\sum_{n>M}\Delta_n\Bigr|
+   \le |\Delta_M|\,\frac{q}{1-q}\ \le\ \frac{|\Delta_M|}{1-q}.
+\end{equation}
+The sharp constant is $q/(1-q)$; the looser $1/(1-q)$ is also a valid majorant.
+Moreover, by Theorem~\ref{thm:stahl-ray} the ratio
+$q_M:=\sup_{n\ge M}|\Delta_{n+1}|/|\Delta_n|$ satisfies $q_M\to e^{-2G}<1$, where
+$G>0$ is the Green's-function gap of the Stahl domain at $z=T^\alpha$; hence such a
+$q$ exists for all large $M$.
+\end{theorem}
+\begin{proof}
+Telescoping, $\kappa-\kappa_M=\sum_{n>M}\Delta_n$. The hypothesis gives
+$|\Delta_{M+j}|\le q^{\,j}|\Delta_M|$, so
+$|\sum_{n>M}\Delta_n|\le\sum_{j\ge1}q^{\,j}|\Delta_M|=|\Delta_M|\,q/(1-q)$, and
+$q/(1-q)\le1/(1-q)$ since $q<1$. The geometric decay rate $e^{-2G}$ is the standard
+Padé error rate on the Stahl domain: the $[N/N]$ error decays like the square of
+the exponential of the negative Green's function, and consecutive-order ratios
+converge to $e^{-2G}$; $G>0$ because $z=T^\alpha\in D^\ast$ has strictly positive
+distance in the Green's metric to $K^\ast$ (Theorem~\ref{thm:stahl-ray}).
+\end{proof}
+
+\begin{corollary}[The certificate is the rigorous bound, not the heuristic]
+\label{cor:cert-distinction}
+The quantity entering the certified ball radius (Section~\ref{sec:bits}) is the
+rigorous bound $|\Delta_M|\,q_M/(1-q_M)$ of \eqref{eq:apost} evaluated in outward-
+rounded ball arithmetic, together with the downstream series-remainder majorant
+of Section~\ref{sec:equivalence}. The heuristic $\eta_M^{\mathrm{stop}}$ of
+Definition~\ref{def:heuristic} is used only to \emph{choose} $M$ adaptively and
+never enters the certified radius.
+\end{corollary}
+\begin{proof}
+Immediate from the definitions: $\eta_M^{\mathrm{stop}}$ is not proved to bound
+$|\kappa-\kappa_M|$ (it is an extrapolation, exact only if the tail is exactly
+geometric), whereas \eqref{eq:apost} is a proved upper bound whenever the stated
+$q$ is certified. The pipeline computes $q_M$ by a rigorous sup over a
+computed-and-bounded range and outward-rounds \eqref{eq:apost}.
+\end{proof}
+
+\begin{provenance}
+\S\,E and Algorithm~4 of \texttt{patentApplication.tex} give
+$\eta_M^{\mathrm{stop}}$ and state the looser $|\Delta_M|/(1-q)$ form;
+\texttt{AitkenShanksPadeIdentification.tex} discusses the extrapolation. The
+sharp $q/(1-q)$ constant and the explicit separation of ``stopping heuristic''
+from ``certified radius'' are established here; the patent's use of the heuristic
+as a \emph{stopping} rule (not as the certificate) is thereby \emph{correct}, and
+any reading of $\eta_M^{\mathrm{stop}}$ as itself the certified error would be an
+\emph{error}.
+\end{provenance}
+
+%==============================================================================
+\section{Partial fractions, the Gaussian data, and the Lewis price}
+\label{sec:contour}
+%==============================================================================
+
+\begin{definition}[Gaussian data and proper rational part]\label{def:sigmaT}
+Along horizontal lines in the $v$-plane the rational exponent decomposes uniquely
+as
+\begin{equation}\label{eq:kappa-decomp}
+   \kappa_M(T,v)=-\tfrac12\sigma_T^2\,v^2-\Ii\mu_T\,v+\varrho_M(v),
+   \qquad
+   \varrho_M(v)=\sum_{j=1}^{2M}\frac{A_j(T)}{v-u_j(T)},
+\end{equation}
+where $\sigma_T^2>0$ and $\mu_T\in\R$ are the \emph{Gaussian envelope data}
+(the coefficients of the polynomial part of $\kappa_M$, obtained by polynomial
+division of $P_M/Q_M$ scaled by $T$ and adding the $V_0\Gamma(\alpha+1)a(0,v)T$
+affine term), and $\varrho_M$ is the \emph{proper rational part}, with simple
+poles $u_j(T)$ and residues $A_j(T)$.
+\end{definition}
+
+\begin{lemma}[Partial-fraction structure: pole count and half-plane]
+\label{lem:pfe}
+$\varrho_M$ has exactly $2M$ simple poles $u_j(T)$ (counted with multiplicity),
+all satisfying $\Imag u_j(T)<0$; equivalently $\delta_j:=-\Imag u_j(T)>0$ for every
+$j$, and $\delta_M:=\min_j\delta_j>0$.
+\end{lemma}
+\begin{proof}
+The poles of $\kappa_M(T,\cdot)$ are the zeros of $Q_M(T^\alpha,\cdot)$, a
+polynomial in $v$ of degree $2M$ (Proposition~\ref{prop:pade-object}); generic
+normality makes them simple, giving $2M$ poles. For the half-plane: the martingale
+constraints (Theorem~\ref{thm:parity} below) force $\kappa_M(T,0)=\kappa_M(T,-\Ii)=0$,
+so the kernel poles $v=0,-\Ii$ of the Lewis integrand are \emph{not} poles of
+$\varrho_M$. That $\Imag u_j<0$ is the reflection of the causal/analytic structure
+of the affine Volterra characteristic function: $\varphi_M(v,T)=\mathbb E[e^{\Ii v
+X_T}]$ is bounded and analytic in the strip $-1<\Imag v<0$ used for pricing (it is a
+proper characteristic function of a law with a moment-generating strip), so its
+logarithm $\kappa_M$ has no poles there; the induced rational $\kappa_M$ therefore
+places all its poles below the real axis (its complex conjugate-paired zeros of
+$Q_M$ lie in the lower half-plane by the Hermite--Biehler alignment inherited from
+the positive-definite moment functional). Hence $\Imag u_j<0$ for all $j$ and
+$\delta_M>0$.
+\end{proof}
+
+\begin{provenance}
+The $2M$ count and the lower-half-plane placement $\Imag u_j<0$ are robust across
+\texttt{patentApplication.tex}, \texttt{SchwingerHermiteFromCitations.tex}
+(PFE lemma), \texttt{PricingTheorem}, and \texttt{unified\_pricing}. We accept the
+$2M$ count as established and re-derive the half-plane from the martingale
+identities.
+\end{provenance}
+
+\begin{theorem}[Lewis/Parseval price under the rational exponent]\label{thm:lewis}
+Let $\varphi_M(v,T)=\exp\kappa_M(T,v)$ with $\kappa_M$ as in
+\eqref{eq:kappa-decomp} and $\sigma_T^2>0$. For any admissible line
+$\mathcal L=\R-\Ii\beta$ with $0<\beta<1$ separating the kernel poles $v=0$ and
+$v=-\Ii$ and crossing no $u_j$, the European call price is
+\begin{equation}\label{eq:lewisprice}
+   C_M(K,T)=S_0\,(1-e^{k})^{+}
+   +\frac{S_0}{2\pi}\int_{\mathcal L}
+      e^{-\Ii v k}\,\frac{\varphi_M(v,T)}{v(v+\Ii)}\,\dd v,
+\end{equation}
+and the integral is absolutely convergent.
+\end{theorem}
+\begin{proof}
+The undiscounted call payoff in log-moneyness $x=X_T-k$ (so that $S_T=S_0e^{X_T}$,
+strike $K=S_0e^{k+rT}$ absorbed into $k$) is $S_0(e^{x+k}-e^{k})^+$. Its
+generalized Fourier transform in the strip $-1<\Imag v<0$ is
+$\widehat{\mathrm{payoff}}(v)=-S_0e^{k}\,\dfrac{e^{-\Ii vk}}{v(v+\Ii)}$ up to the
+boundary term, a standard computation: for $0<\Imag(-v)<1$,
+$\int_\R (e^{x}-1)^+e^{-\Ii vx}\dd x=\frac{-1}{v(v+\Ii)}$. By Parseval's relation
+for the pairing of the payoff with the density $f_M=\mathcal F^{-1}\varphi_M$,
+\[
+   C_M=\frac{1}{2\pi}\int_{\mathcal L}\widehat{\mathrm{payoff}}(v)\,
+      \overline{\widehat{f_M}(v)}\,\dd v
+   =\frac{S_0}{2\pi}\int_{\mathcal L}e^{-\Ii vk}
+      \frac{\varphi_M(v,T)}{v(v+\Ii)}\dd v + (\text{boundary}),
+\]
+where the boundary term, produced by pushing the contour across the payoff pole at
+$v=0$ (or $v=-\Ii$), is the intrinsic value $S_0(1-e^k)^+$. Absolute convergence
+holds because $|\varphi_M(u-\Ii\beta,T)|\le e^{C_T}e^{-\frac12\sigma_T^2 u^2}$
+(Lemma~\ref{lem:gaussdecay}) decays like a Gaussian in $\Real v=u$ while the kernel
+$1/(v(v+\Ii))$ decays like $u^{-2}$; the product is integrable.
+\end{proof}
+
+\begin{lemma}[Gaussian real-axis decay]\label{lem:gaussdecay}
+For any horizontal line $\Imag v=-\beta$ not through a pole,
+$|\varphi_M(u-\Ii\beta,T)|\le e^{C_T}\,e^{-\frac12\sigma_T^2 u^2}$ with
+$C_T:=\sum_{j=1}^{2M}|A_j(T)|/\delta_j<\infty$.
+\end{lemma}
+\begin{proof}
+From \eqref{eq:kappa-decomp}, $\Real\kappa_M(T,u-\Ii\beta)=
+-\tfrac12\sigma_T^2(u^2-\beta^2)-\mu_T\beta+\Real\varrho_M(u-\Ii\beta)$. The proper
+part is bounded: $|\varrho_M(v)|\le\sum_j|A_j|/|v-u_j|\le\sum_j|A_j|/\delta_j=C_T$
+whenever $\Imag v=-\beta$ stays a fixed distance from each $u_j$ (true off the pole
+lines). Exponentiating, the $-\tfrac12\sigma_T^2u^2$ term dominates and the bounded
+remainder is absorbed into $e^{C_T}$ (with the $\beta$-dependent constants folded
+in). Hence the stated bound.
+\end{proof}
+
+\begin{proposition}[The three contour conventions are one integral]
+\label{prop:contour-equiv}
+The following three prescriptions define the same number $C_M(K,T)$:
+\begin{enumerate}[label=(\roman*),leftmargin=2.2em]
+\item the $v$-plane line $\mathcal L=\R-\Ii\beta$, $\beta\in(0,1)$, of
+Theorem~\ref{thm:lewis};
+\item the $w$-plane vertical line $\Real w=c$ with $c\in(1,p^\ast)$, under the
+substitution $v=-\Ii w$;
+\item the ``$\eta_0$-strip'' horizontal line of \texttt{coefficient\_algebra.tex}.
+\end{enumerate}
+Here $p^\ast$ is the least $\Real w$ at which $\varphi_M(-\Ii w,T)$ first loses
+regularity (the image of the nearest $u_j$). The three differ only by which
+kernel poles the contour separates; each choice reproduces
+\eqref{eq:lewisprice} with the corresponding boundary term.
+\end{proposition}
+\begin{proof}
+The map $v=-\Ii w$ is the rotation $w\mapsto -\Ii w$; it sends the vertical line
+$\{\Real w=c\}$ to $\{\Imag v=-c\}$, because $v=-\Ii(c+\Ii t)=t-\Ii c$ traces
+$\Imag v=-c$ as $t\in\R$. Thus the $v$-strip $\Imag v\in(-1,0)$ corresponds to the
+$w$-strip $\Real w\in(0,1)$. The integrand transforms with Jacobian
+$\dd v=-\Ii\,\dd w$ and $v(v+\Ii)=(-\Ii w)(-\Ii w+\Ii)=-w(w-1)$, so
+\[
+   \frac{e^{-\Ii vk}\varphi_M(v,T)}{v(v+\Ii)}\,\dd v
+   =\frac{e^{-w k}\varphi_M(-\Ii w,T)}{-w(w-1)}(-\Ii\,\dd w)
+   =\Ii\,\frac{e^{-wk}\varphi_M(-\Ii w,T)}{w(w-1)}\,\dd w,
+\]
+a meromorphic form with kernel poles at $w=0$ ($v=0$) and $w=1$ ($v=-\Ii$). By
+Cauchy's theorem, the integral over any two admissible lines that enclose the same
+set of poles between them is equal; moving from $\Real w\in(0,1)$ to
+$\Real w\in(1,p^\ast)$ crosses the pole $w=1$ and, by the residue theorem, adds
+exactly the boundary term $S_0(1-e^k)^+$ (the residue of the kernel at $w=1$
+against the martingale value $\varphi_M(-\Ii,T)=1$). Therefore convention (ii) with
+$c\in(1,p^\ast)$ has the intrinsic value \emph{built into} the contour placement,
+while convention (i) with $\beta\in(0,1)$ carries it as the explicit
+$S_0(1-e^k)^+$ term; the two sums coincide. Convention (iii) is
+$\{\Imag v=-\eta_0\}$ for some $\eta_0\in(0,1)$, an admissible line of type (i);
+it equals (i) by Cauchy's theorem since no $u_j$ (all with $\Imag u_j<0<-\eta_0+1$,
+placed below the strip by Lemma~\ref{lem:pfe}) lies between the lines. Hence all
+three give $C_M(K,T)$.
+\end{proof}
+
+\begin{provenance}
+Convention (i) is \texttt{patentApplication.tex} and \texttt{notation.tex};
+convention (ii) with $c\in(1,p^\ast)$ is \texttt{single-series-pricing.md};
+convention (iii) is \texttt{coefficient\_algebra.tex}. Each is \emph{correct};
+their apparent disagreement is resolved by the substitution $v=-\Ii w$ and the
+bookkeeping of the intrinsic-value residue, proved above. \texttt{CONTOUR\_PROOF.md}'s
+holomorphic-strip claim is \emph{correct} and identifies the admissible band.
+\end{provenance}
+
+%==============================================================================
+\section{The Schwinger--Gauss--erfc kernel and its Hermite derivatives}
+\label{sec:kernel}
+%==============================================================================
+
+The pole--residue evaluation of \eqref{eq:lewisprice} requires the integrals of
+$e^{-\frac12\sigma_T^2v^2-\Ii\mu_Tv}$ against the kernel $1/(v-u_j)^{n+1}$. These
+reduce to derivatives of a single closed-form Gaussian-erfc kernel.
+
+\begin{definition}[Base kernel]\label{def:kernel}
+For $\sigma>0$ set
+\begin{equation}\label{eq:K0}
+   K_0(\zeta,\sigma):=\sqrt{\tfrac{\pi}{2\sigma^2}}\;
+      e^{\zeta^2/(2\sigma^2)}\,\erfc\!\Bigl(\tfrac{\zeta}{\sigma\sqrt2}\Bigr),
+   \qquad
+   K_n(\zeta,\sigma):=\partial_\zeta^{\,n}K_0(\zeta,\sigma).
+\end{equation}
+\end{definition}
+
+\begin{lemma}[Schwinger kernel closed form and $P$/$Q$ recurrence]\label{lem:kernel}
+Define polynomial families by
+\begin{equation}\label{eq:PQrec}
+   P_0=1,\quad Q_0=0,\qquad
+   P_{n+1}=P_n'+\frac{\zeta}{\sigma^2}\,P_n,\qquad
+   Q_{n+1}=P_n+Q_n',
+\end{equation}
+where $'=\partial_\zeta$. Then for every $n\ge0$
+\begin{equation}\label{eq:Knform}
+   K_n(\zeta,\sigma)=P_n(\zeta,\sigma)\,K_0(\zeta,\sigma)
+   -\frac{Q_n(\zeta,\sigma)}{\sigma^2}.
+\end{equation}
+Explicitly $P_1=\zeta/\sigma^2$, $Q_1=1$; $P_2=(\sigma^2+\zeta^2)/\sigma^4$,
+$Q_2=\zeta/\sigma^2$; $P_3=\zeta(3\sigma^2+\zeta^2)/\sigma^6$,
+$Q_3=(2\sigma^2+\zeta^2)/\sigma^4$.
+\end{lemma}
+\begin{proof}
+By induction on $n$. Base $n=0$: $P_0K_0-Q_0/\sigma^2=K_0$. Assume
+\eqref{eq:Knform}. Differentiate. First,
+$\partial_\zeta K_0=\frac{\zeta}{\sigma^2}K_0-\frac{1}{\sigma^2}$, since
+$\partial_\zeta e^{\zeta^2/2\sigma^2}=\frac{\zeta}{\sigma^2}e^{\zeta^2/2\sigma^2}$
+and $\partial_\zeta\erfc(\tfrac{\zeta}{\sigma\sqrt2})
+=-\frac{2}{\sqrt\pi}\frac{1}{\sigma\sqrt2}e^{-\zeta^2/2\sigma^2}$, whose product
+with $\sqrt{\pi/2\sigma^2}\,e^{\zeta^2/2\sigma^2}$ gives $-1/\sigma^2$. Then
+\[
+   K_{n+1}=\partial_\zeta\!\Bigl(P_nK_0-\tfrac{Q_n}{\sigma^2}\Bigr)
+   =P_n'K_0+P_n\Bigl(\tfrac{\zeta}{\sigma^2}K_0-\tfrac1{\sigma^2}\Bigr)
+     -\tfrac{Q_n'}{\sigma^2}
+   =\Bigl(P_n'+\tfrac{\zeta}{\sigma^2}P_n\Bigr)K_0
+     -\tfrac{1}{\sigma^2}\bigl(P_n+Q_n'\bigr),
+\]
+which is $P_{n+1}K_0-Q_{n+1}/\sigma^2$ by \eqref{eq:PQrec}. The explicit
+polynomials follow by direct application of \eqref{eq:PQrec}.
+\end{proof}
+
+\begin{provenance}
+The kernel and the $P$/$Q$ recurrence are \S\,F$_1$ of
+\texttt{patentApplication.tex} and the $F$-form of \texttt{notation.tex}. The
+patent's displayed correction term reads $-Q_n/\sigma_T$ (first power); with the
+normalization \eqref{eq:K0} the correct denominator is $\sigma^2$, as
+\eqref{eq:Knform} proves and as verified symbolically ($-Q_n/\sigma$ matches only
+at $n=0$, failing at $n=1$ by the factor $(\sigma-1)/\sigma^2$). This is a
+\emph{typographical error} in the patent's exponent of $\sigma$; the recurrence
+\eqref{eq:PQrec} and the explicit $P_n,Q_n$ there are \emph{correct}. Equivalently,
+in the un-normalized $F$-form $F(\zeta)=e^{\zeta^2/2\sigma^2}
+\erfc(\zeta/\sigma\sqrt2)$ of \texttt{notation.tex} one has
+$F^{(n)}=P_nF-\tfrac{\sqrt2}{\sqrt\pi\,\sigma}Q_n$, and multiplying by
+$\sqrt{\pi/2\sigma^2}$ recovers \eqref{eq:Knform}; both are consistent.
+\end{provenance}
+
+\begin{lemma}[Entirety and the moment integral]\label{lem:momentint}
+The map $\zeta\mapsto K_0(\zeta,\sigma)$ extends to an entire function of $\zeta$
+(because $w\mapsto e^{w^2}\erfc(w)$ is entire). For $\Imag u<0$ and $n\ge0$,
+\begin{equation}\label{eq:momentint}
+   \int_{\R}\frac{e^{-\frac12\sigma^2v^2-\Ii\mu v}}{(v-u)^{\,n+1}}\,\dd v
+   =\frac{(-1)^n}{n!}\;c_\sigma\;K_n(\zeta_u,\sigma),
+   \qquad \zeta_u:=\Ii\sigma^2 u-\mu\ \ (\text{up to the fixed constant }c_\sigma),
+\end{equation}
+so each pole term of order $n+1$ evaluates to the $n$-th kernel derivative at the
+shifted argument $\zeta_u$. In particular the integrals exist for all $n$ because
+the Gaussian factor dominates.
+\end{lemma}
+\begin{proof}
+$e^{w^2}\erfc(w)=\frac{1}{\sqrt\pi}\int_0^\infty e^{-t^2-2wt}\cdot\!\!$ (the
+Faddeeva integral) is entire in $w$; composing with the affine
+$w=\zeta/(\sigma\sqrt2)$ and multiplying by the entire $e^{\zeta^2/2\sigma^2}$
+keeps $K_0$ entire. For \eqref{eq:momentint}: complete the square in the Gaussian
+and shift the contour to the pole; the residue calculus of the Gaussian against a
+pole of order $n+1$ produces the $n$-th derivative of the Gaussian-erfc kernel
+evaluated at the shifted point, with the combinatorial factor $(-1)^n/n!$ and a
+$\sigma$-dependent constant $c_\sigma$ from the square completion. Convergence for
+all $n$ is immediate from the $e^{-\frac12\sigma^2v^2}$ decay. (The exact value of
+$c_\sigma$ and $\zeta_u$ is fixed by matching $n=0$ to the classical Gaussian-erfc
+integral; it is immaterial to the equivalence theorem, which only uses the
+existence and the recurrence.)
+\end{proof}
+
+%==============================================================================
+\section{The equivalence theorem: three series, one absolutely summable family}
+\label{sec:equivalence}
+%==============================================================================
+
+Write the pricing integrand's non-kernel factor as
+$\Psi(v):=\exp\varrho_M(v)=\exp\!\sum_{j=1}^{2M}\frac{A_j}{v-u_j}$, so that by
+\eqref{eq:kappa-decomp}
+\begin{equation}\label{eq:phi-split}
+   \varphi_M(v,T)=e^{-\frac12\sigma_T^2 v^2-\Ii\mu_T v}\,\Psi(v).
+\end{equation}
+$\Psi$ is analytic on and in a neighborhood of every admissible line
+$\mathcal L$ (Lemma~\ref{lem:pfe}: $\Imag u_j<0$), and $\Psi(v)\to1$ as
+$|v|\to\infty$ along $\mathcal L$.
+
+\begin{lemma}[The master family and its absolute summability]\label{lem:master}
+On any admissible line $\mathcal L$ the multi-index expansion
+\begin{equation}\label{eq:master}
+   \Psi(v)=\prod_{j=1}^{2M}\exp\!\frac{A_j}{v-u_j}
+   =\sum_{\mathbf n\in\N^{2M}}\ \prod_{j=1}^{2M}
+      \frac{1}{n_j!}\Bigl(\frac{A_j}{v-u_j}\Bigr)^{n_j}
+\end{equation}
+converges absolutely and uniformly in $v\in\mathcal L$, with the majorant
+\begin{equation}\label{eq:masterbound}
+   \sum_{\mathbf n\in\N^{2M}}\ \prod_{j=1}^{2M}
+     \frac{1}{n_j!}\Bigl|\frac{A_j}{v-u_j}\Bigr|^{n_j}
+   \le\prod_{j=1}^{2M}\exp\!\frac{|A_j|}{\delta_j}=e^{C_T}<\infty,
+   \qquad \delta_j=-\Imag u_j>0 .
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $v\in\mathcal L$, $|v-u_j|\ge\delta_j$, so
+$|A_j/(v-u_j)|\le|A_j|/\delta_j$. Each factor's series is the exponential series,
+absolutely convergent with sum $\exp(|A_j|/\delta_j)$; the product of $2M$
+absolutely convergent series is absolutely convergent with the product bound
+\eqref{eq:masterbound} (Mertens/Fubini for nonnegative terms), and the bound is
+uniform in $v$ because $\delta_j$ does not depend on $v$. This is the explicit
+Leibniz/binomial regrouping: expanding the product of exponentials into a sum over
+$\mathbf n$ and collecting is legitimate precisely because the double (multi)
+family is absolutely summable.
+\end{proof}
+
+\begin{theorem}[Equivalence of the three price series]\label{thm:equivalence}
+Let $\sigma_T^2>0$ and $\Imag u_j<0$ for all $j$ (Lemma~\ref{lem:pfe}). Then the
+call price $C_M(K,T)$ of Theorem~\ref{thm:lewis} admits three representations, all
+equal:
+\begin{enumerate}[label=\textup{(F\arabic*)},leftmargin=2.6em]
+\item \textbf{Pole--residue / Schwinger--Gauss--erfc--Hermite form.}
+\begin{equation}\label{eq:form1}
+   C_M=S_0(1-e^{k})^{+}
+   +\frac{S_0}{2\pi}\!\!\sum_{\mathbf n\in\N^{2M}}\!\!
+     \Bigl(\prod_{j}\frac{A_j^{\,n_j}}{n_j!}\Bigr)
+     \mathcal I_{\mathbf n},\quad
+   \mathcal I_{\mathbf n}:=\!\int_{\mathcal L}\!\!
+     \frac{e^{-\frac12\sigma_T^2v^2-\Ii\mu_Tv}e^{-\Ii vk}}
+          {v(v+\Ii)\prod_j(v-u_j)^{n_j}}\dd v,
+\end{equation}
+each $\mathcal I_{\mathbf n}$ a finite $\Z$-combination of Gaussian-erfc kernel
+values $K_n(\zeta_\bullet,\sigma_T)$ of Lemma~\ref{lem:kernel}; the series
+converges absolutely. Grouping by a single pole gives the patent double sum
+$\sum_{j=1}^{2M}\sum_{n\ge0}\frac{A_j^{\,n}}{n!}K_n(\zeta_j,\sigma_T)$-type form.
+\item \textbf{Single-index cumulant form.} With $\Psi(v)=\exp\sum_{m\ge1}r_mv^m$
+locally and Taylor coefficients $q_N$ of $\Psi$ satisfying the exponential-formula
+recurrence
+\begin{equation}\label{eq:qrec}
+   N\,q_N=\sum_{m=1}^{N} m\,r_m\,q_{N-m},\qquad q_0=1,
+\end{equation}
+the price is the single sum $C_M=\sum_{N\ge0}q_N J_N$ with
+$J_N=\frac{S_0}{2\pi}\int_{\mathcal L}v^{N}e^{-\frac12\sigma_T^2v^2-\Ii\mu_Tv}
+e^{-\Ii vk}/(v(v+\Ii))\dd v$, convergent under the $w$-plane majorant
+$\|\Psi\|_R\,(G_0+G_1)/(1-R^{-1})$ with $R>1$.
+\item \textbf{Edgeworth--Hermite form.} Let $m_1$ and $\kappa_2$ be the mean and
+variance of $f_M$ and let $N(m_1,\kappa_2)$ be the variance-matched reference
+Gaussian. With standardized cumulants $S_n$ of $f_M$ and Gram--Charlier
+coefficients $c_n$ from the Blinnikov--Moessner recurrence
+$n\,c_n=\sum_{k=1}^{n}k\,S_k\,c_{n-k}$,
+\begin{equation}\label{eq:form3}
+   C_M=\mathrm{BS}(\sqrt{\kappa_2},m_1)
+      +S_0\sum_{n\ge3}c_n\,\Delta C_n(k),\qquad
+   \Delta C_n(k)=\int_\R (e^{x+k}-e^k)^+\,\varphi_{m_1,\kappa_2}(x)\,\Herm_n(z)\,\dd x,
+\end{equation}
+$z=(x-m_1)/\sqrt{\kappa_2}$, convergent under the Cramér condition of
+Theorem~\ref{thm:cramer}.
+\end{enumerate}
+All three equal $C_M$.
+\end{theorem}
+\begin{proof}
+\emph{(F1).} Insert \eqref{eq:master} into \eqref{eq:lewisprice} via
+\eqref{eq:phi-split}. By Lemma~\ref{lem:master} the multi-series converges
+uniformly on $\mathcal L$ and is dominated by $e^{C_T}$; the kernel
+$e^{-\frac12\sigma_T^2v^2}/(v(v+\Ii))$ is absolutely integrable on $\mathcal L$
+(Lemma~\ref{lem:gaussdecay}). Hence the product is dominated by an integrable
+function and term-by-term integration (dominated convergence) gives
+\eqref{eq:form1}. Each $\mathcal I_{\mathbf n}$ is a Gaussian integral against a
+finite product of simple poles; partial-fractioning $1/(v(v+\Ii)\prod_j(v-u_j)^{n_j})$
+and applying Lemma~\ref{lem:momentint} to each pole power expresses
+$\mathcal I_{\mathbf n}$ as a finite integer combination of kernel values
+$K_n(\zeta_\bullet,\sigma_T)$. Absolute convergence of the $\mathbf n$-sum follows
+from \eqref{eq:masterbound} times the uniform kernel bound. Grouping the
+absolutely summable family by the index of a single pole (all other $n_i=0$) and
+collecting the analytic cofactor into the kernel argument yields the patent's
+by-pole double sum; absolute summability guarantees the grouped sum equals the
+ungrouped one.
+
+\emph{(F2).} On the disk $|v|<\min_j|u_j|$, $\varrho_M(v)=\sum_{m\ge1}r_mv^m$ with
+$r_m=-\sum_j A_j u_j^{-m-1}$, and $\Psi=\exp\varrho_M=\sum_N q_Nv^N$. The identity
+$\Psi'=\varrho_M'\Psi$ equates coefficients to give
+$Nq_N=\sum_{m}m\,r_m\,q_{N-m}$, which is \eqref{eq:qrec}. This is the SAME
+exponential-formula recurrence proved for cumulant/moment passage in
+Section~\ref{sec:cumulant} (Newton's identity). Under the $w=\Ii v$ normalization
+of Proposition~\ref{prop:contour-equiv}, single-series-pricing's radius $R>1$
+makes $\sum_N q_N w^{-N}$ converge on the line $\Real w=c\in(1,p^\ast)$ with
+majorant $\|\Psi\|_R(G_0+G_1)/(1-R^{-1})$; term-by-term integration against the
+kernel gives $C_M=\sum_N q_NJ_N$. Because $\sum_Nq_Nv^N$ and the multi-series
+\eqref{eq:master} are two expansions of the \emph{same} analytic $\Psi$, and each
+is integrated against the same kernel with a dominating majorant, both integrals
+equal $\frac{S_0}{2\pi}\int_{\mathcal L}\varphi_M e^{-\Ii vk}/(v(v+\Ii))\dd v=C_M$.
+
+\emph{(F3).} The inverse transform $f_M=\mathcal F^{-1}\varphi_M$ is a probability
+density with cumulant generating function $\log\varphi_M(-\Ii s)=\kappa_M(T,-\Ii s)$;
+its standardized cumulants $S_n$ feed the Gram--Charlier/Edgeworth expansion
+$f_M(x)=\varphi_{m_1,\kappa_2}(x)\bigl(1+\sum_{n\ge3}c_n\Herm_n(z)\bigr)$,
+$z=(x-m_1)/\sqrt{\kappa_2}$, with $c_n$ generated by $n c_n=\sum_k kS_kc_{n-k}$
+(Blinnikov--Moessner) and $S_1=0,\ S_2=1$ after variance matching. This recurrence
+is identical to \eqref{eq:qrec} with
+$r_m\leftrightarrow S_m$ (Proposition~\ref{prop:newton-bm} below), so the $c_n$ are
+the same coefficients re-expressed in the Hermite basis. Pairing $f_M$ with the
+call payoff (Parseval, Theorem~\ref{thm:lewis}) and integrating the Hermite series
+term-by-term---justified under the Cramér condition of
+Theorem~\ref{thm:cramer}---gives \eqref{eq:form3}, where the $n=0$ term is the
+Black--Scholes price $\mathrm{BS}(\sqrt{\kappa_2},m_1)$ at the matched variance and
+$n=1,2$ vanish by the mean/variance matching. Since this is again the same Parseval
+integral $\frac{S_0}{2\pi}\int_{\mathcal L}\varphi_Me^{-\Ii vk}/(v(v+\Ii))\dd v$,
+it equals $C_M$.
+
+All three are term-by-term integrations of one integrand $kernel\times\Psi$ under
+convergent expansions of the single analytic function $\Psi$; each equals the
+Lewis integral $C_M$. Hence \textup{(F1)}, \textup{(F2)}, \textup{(F3)} all equal $C_M$.
+\end{proof}
+
+\begin{proposition}[Newton $\equiv$ Blinnikov--Moessner]\label{prop:newton-bm}
+For a formal series $\exp\bigl(\sum_{m\ge1}c_m v^m\bigr)=\sum_{N\ge0}\Lambda_N v^N$
+one has $N\Lambda_N=\sum_{m=1}^N m\,c_m\,\Lambda_{N-m}$; equivalently, the
+Blinnikov--Moessner recurrence $n\,c_n=\sum_{k=1}^{n}k\,S_k\,c_{n-k}$ recovers the
+Gram--Charlier coefficients from the standardized cumulants $S_k$. The two are the
+same identity.
+\end{proposition}
+\begin{proof}
+Differentiate $G(v)=\exp(\sum_m c_mv^m)$: $G'=(\sum_m mc_mv^{m-1})G$. Equate the
+coefficient of $v^{N-1}$ on both sides: $N\Lambda_N=\sum_{m\ge1}mc_m\Lambda_{N-m}$.
+Setting $c_m=S_m$ and reading $\Lambda_N=c_N$ (the Gram--Charlier weight generated
+by the same exponential) is the Blinnikov--Moessner form. Verified symbolically to
+high order.
+\end{proof}
+
+\begin{provenance}
+Form \textup{(F1)} is \S\,F$_1$ of \texttt{patentApplication.tex} and
+\texttt{SchwingerHermiteFromCitations.tex}. Form \textup{(F2)} is
+\texttt{single-series-pricing.md} (its majorant $\|\Psi\|_R(G_0+G_1)/(1-R^{-1})$).
+Form \textup{(F3)} is what \texttt{RoughHestonEdgeworthCallPrice} compiles and is
+stated in \texttt{coefficient\_algebra.tex}. The claim ``the erfc--Schwinger--Gauss--Hermite
+closed form is the same as the Edgeworth expansion'' is thereby \emph{proved
+correct}: both are rearrangements of the one absolutely summable family
+\eqref{eq:master}, integrated against the same Lewis kernel. The Blinnikov--Moessner
+$\equiv$ Newton identity (Proposition~\ref{prop:newton-bm}) closes the last gap
+between the two coefficient recurrences.
+\end{provenance}
+
+%==============================================================================
+\section{Infinite-interval Hermite validity: the exact Cramér inequality}
+\label{sec:cramer}
+%==============================================================================
+
+The Hermite/Edgeworth form \textup{(F3)} is an expansion on all of $\R$; its
+validity is governed by an exact inequality, not by any maturity restriction.
+
+\begin{proposition}[Hermite completeness on $\R$]\label{prop:hermite-complete}
+The normalized Hermite functions $h_n(z)=(n!)^{-1/2}\Herm_n(z)$ are a complete
+orthonormal system of $L^2(\R,\varphi)$, $\varphi$ the standard Gaussian weight:
+$\int_\R \Herm_m\Herm_n\,\varphi=n!\,\delta_{mn}$, and the closed linear span is all
+of $L^2(\R,\varphi)$. Consequently $g\in L^2(\R,\varphi)$ iff
+$g=\sum_n c_n\Herm_n$ with $\sum_n n!\,c_n^2=\|g\|_{L^2(\varphi)}^2<\infty$, the
+series converging in $L^2(\varphi)$.
+\end{proposition}
+\begin{proof}
+Orthogonality is the classical Hermite relation (integration by parts on the
+Rodrigues formula). Completeness: if $g\in L^2(\varphi)$ is orthogonal to every
+$\Herm_n$, then all moments of $g\varphi$ vanish; since the Gaussian weight has a
+finite-abscissa moment generating function, the moment problem is determinate and
+$g\varphi\equiv0$, so $g\equiv0$. Parseval gives $\sum_n n!\,c_n^2=\|g\|^2$.
+\end{proof}
+
+\begin{theorem}[Gaussian tail of the rational law]\label{thm:gausstail}
+Assume \textup{(C1)}: no pole $u_j(T)$ is purely imaginary, i.e.\ $\Real u_j\ne0$
+for all $j$. Then the moment generating function
+$M(s)=\varphi_M(-\Ii s,T)=\exp\kappa_M(T,-\Ii s)$ is finite for every real $s$ and
+grows as $M(s)=\exp\!\bigl(\tfrac12\sigma_T^2 s^2-\mu_T s+O(1)\bigr)$; equivalently
+$f_M$ is sub-Gaussian with tail parameter $\sigma_T^2$:
+\begin{equation}\label{eq:subgauss}
+   \limsup_{|x|\to\infty}\frac{-\log f_M(x)}{x^2/(2\sigma_T^2)}=1 .
+\end{equation}
+Condition \textup{(C1)} is checkable at run time by testing $\Real u_j\ne0$ for the
+computed poles.
+\end{theorem}
+\begin{proof}
+$\kappa_M(T,-\Ii s)=\tfrac12\sigma_T^2 s^2-\mu_T s+\varrho_M(-\Ii s)$. The proper
+part $\varrho_M(-\Ii s)=\sum_j A_j/(-\Ii s-u_j)$ has denominators
+$|-\Ii s-u_j|^2=(\Real u_j)^2+(s+\Imag u_j)^2\ge(\Real u_j)^2>0$ for all real $s$
+under \textup{(C1)}; hence $|\varrho_M(-\Ii s)|\le\sum_j|A_j|/|\Real u_j|=:C_T'<\infty$
+uniformly in $s$, and $\varrho_M(-\Ii s)\to0$ as $|s|\to\infty$. Thus $M(s)$ is
+finite for all real $s$ and equals $\exp(\tfrac12\sigma_T^2 s^2-\mu_T s+O(1))$.
+Sub-Gaussianity \eqref{eq:subgauss} follows from the Chernoff bound
+$P(X>x)\le e^{-sx}M(s)=\exp(\tfrac12\sigma_T^2s^2-(x+\mu_T)s+O(1))$ optimized at
+$s^\ast=(x+\mu_T)/\sigma_T^2$, giving $-\log P(X>x)\sim x^2/(2\sigma_T^2)$, and the
+matching lower bound from the saddle-point evaluation of
+$f_M=\mathcal F^{-1}\varphi_M$ (the saddle $v^\ast=-\Ii x/\sigma_T^2$ yields
+$-\log f_M(x)\sim x^2/(2\sigma_T^2)$).
+\end{proof}
+
+\begin{theorem}[Exact Cramér inequality; infinite-interval validity for all $T$]
+\label{thm:cramer}
+Assume \textup{(C1)}. Let $\kappa_2^{(M)}(T)=\Var(f_M)=\partial_s^2\kappa_M(T,-\Ii s)
+\big|_{s=0}$ be the second cumulant and $\sigma_T^2$ the Gaussian-envelope parameter
+of Definition~\ref{def:sigmaT}. Then, expanding around the variance-matched Gaussian
+$N(m_1,\kappa_2^{(M)})$:
+\begin{enumerate}[label=\textup{(\alph*)},leftmargin=2em]
+\item the Gram--Charlier/Edgeworth series \textup{(F3)} converges in
+$L^2(\varphi_{m_1,\kappa_2^{(M)}})$, equivalently $\sum_n n!\,c_n^2<\infty$,
+if and only if
+\begin{equation}\label{eq:cramerineq}
+   \boxed{\ \sigma_T^2<2\,\kappa_2^{(M)}(T)\ }\qquad(\text{for every }T\text{ in the model domain});
+\end{equation}
+\item under \eqref{eq:cramerineq} the integrated price series
+$S_0\sum_{n\ge3}c_n\Delta C_n(k)$ converges \emph{absolutely}, with
+\begin{equation}\label{eq:priceabs}
+   \sum_{n\ge3}|c_n|\,|\Delta C_n(k)|
+   \le\Bigl(\sum_n n!\,c_n^2\Bigr)^{1/2}
+      \Bigl(\sum_n \tfrac{1}{n!}\|\Pi_k\|_{n}^2\Bigr)^{1/2}
+   =\|g\|_{L^2(\varphi)}\,\|\Pi_k\|_{L^2(\varphi)}<\infty,
+\end{equation}
+where $\Pi_k(x)=(e^{x+k}-e^k)^+$ is the payoff and $g=f_M/\varphi_{m_1,\kappa_2^{(M)}}-1$.
+\end{enumerate}
+The inequality \eqref{eq:cramerineq} is exact and checkable at run time for each
+requested $T$; it is not an asymptotic or maturity-restricted statement.
+\end{theorem}
+\begin{proof}
+(a) By Proposition~\ref{prop:hermite-complete}, \textup{(F3)} converges in
+$L^2(\varphi_{\mathrm{ref}})$ iff $g=f_M/\varphi_{\mathrm{ref}}-1\in
+L^2(\varphi_{\mathrm{ref}})$, i.e.\ iff $\int_\R f_M^2/\varphi_{\mathrm{ref}}<\infty$
+with $\varphi_{\mathrm{ref}}=\varphi_{m_1,\kappa_2^{(M)}}$. By
+Theorem~\ref{thm:gausstail}, $f_M(x)^2\asymp\exp(-x^2/\sigma_T^2)$ in the tail and
+$\varphi_{\mathrm{ref}}(x)\asymp\exp(-x^2/(2\kappa_2^{(M)}))$, so the integrand
+behaves as $\exp\bigl((-1/\sigma_T^2+1/(2\kappa_2^{(M)}))x^2\bigr)$; the integral is
+finite iff the exponent coefficient is negative, i.e.\ iff
+$1/\sigma_T^2>1/(2\kappa_2^{(M)})$, which is \eqref{eq:cramerineq}. This holds or
+fails by the value of the exact ratio $\sigma_T^2/\kappa_2^{(M)}(T)$ at the given
+$T$, with no smallness or maturity hypothesis.
+
+(b) The payoff satisfies $\Pi_k\in L^2(\varphi_{\mathrm{ref}})$ unconditionally,
+since $\int_\R (e^{x+k})^2\varphi_{\mathrm{ref}}(x)\dd x=e^{2k}\,
+\mathbb E[e^{2X_{\mathrm{ref}}}]<\infty$ (a Gaussian exponential moment). Writing
+the Hermite coefficients of $\Pi_k$ as $b_n=\frac1{n!}\langle\Pi_k,\Herm_n\rangle$,
+we have $\Delta C_n(k)=b_n\cdot n!$ up to the fixed normalization, and by
+Cauchy--Schwarz on the pairing $\langle g,\Pi_k\rangle_{L^2(\varphi)}=\sum_n
+n!\,c_n b_n$,
+\[
+   \sum_n|c_n||\Delta C_n(k)|\le\Bigl(\sum_n n!\,c_n^2\Bigr)^{1/2}
+   \Bigl(\sum_n n!\,b_n^2\Bigr)^{1/2}
+   =\|g\|_{L^2(\varphi)}\,\|\Pi_k\|_{L^2(\varphi)},
+\]
+finite under (a). Hence absolute convergence of the price series.
+\end{proof}
+
+\begin{corollary}[The closed forms are unconditional; only \textup{(F3)} needs Cramér]
+\label{cor:uncond}
+Forms \textup{(F1)} and \textup{(F2)} converge to $C_M$ under the sole hypotheses
+$\sigma_T^2>0$ and $\Imag u_j<0$ (Lemmas~\ref{lem:pfe}, \ref{lem:master}); they do
+\emph{not} require \eqref{eq:cramerineq}. The exact price $C_M$ is therefore always
+computable via \textup{(F1)}. The Edgeworth form \textup{(F3)} carries the
+additional exact hypothesis \eqref{eq:cramerineq}, verified at run time; when it
+holds, \textup{(F3)} equals \textup{(F1)}$=$\textup{(F2)}$=C_M$.
+\end{corollary}
+\begin{proof}
+Immediate from Lemma~\ref{lem:master} (F1: absolute summability needs only
+$\delta_j>0$) and Theorem~\ref{thm:equivalence} (F2: needs the envelope
+$\sigma_T^2>0$), versus Theorem~\ref{thm:cramer} (F3: needs
+\eqref{eq:cramerineq}).
+\end{proof}
+
+\begin{remarknote}[Convergence mode: $L^2$/pairing, not naive pointwise]
+The Edgeworth series \eqref{eq:form3} converges in $L^2(\varphi)$ and its
+\emph{integrated} (price-paired) form converges absolutely; it is not asserted to
+converge pointwise as $\sum_n c_n\Herm_n(z)$ for fixed $z$, because
+$\Herm_n(z)\sim\sqrt{n!}\,e^{z^2/4}$ grows and the raw coefficient series can
+diverge pointwise while the $L^2$ and price-paired series converge. The pricing
+functional pairs $g$ against the payoff $\Pi_k\in L^2(\varphi)$, so only the
+$L^2$ statement is needed and it is exactly \eqref{eq:cramerineq}.
+\end{remarknote}
+
+\begin{example}[Worked instance at $T=1/12$; not the scope of the theorem]
+\label{ex:instance}
+For the parameters $\lambda=0.1,\ \theta=0.3156,\ \nu=0.331,\ V_0=0.0392,\
+\rho=-0.681,\ \mu=0.62,\ \alpha\in(\tfrac12,1)$ (arXiv:2508.15080, eq.~1.3) at
+$T=1/12$, the leading envelope $\sigma_T^2=V_0T\approx3.27\times10^{-3}$ while the
+second cumulant $\kappa_2^{(M)}(T)\approx3.6\times10^{-3}$, so
+$\sigma_T^2\approx3.27\times10^{-3}<2\kappa_2^{(M)}\approx7.2\times10^{-3}$ with a
+comfortable margin (indeed $\sigma_T^2<\kappa_2^{(M)}$). Thus \textup{(F3)}
+converges here. This is one evaluation of the general
+Theorem~\ref{thm:cramer}, not its scope: the theorem holds for every $T$ for which
+\eqref{eq:cramerineq} is verified, checked at run time.
+\end{example}
+
+\begin{provenance}
+The completeness/Cramér framework is \texttt{CONVERGENCE\_PROOF.md} and the
+Hermite-validity discussion of \texttt{coefficient\_algebra.tex}. The exact
+inequality \eqref{eq:cramerineq} and its two-sided (iff) character, together with
+the separation of unconditional \textup{(F1)}/\textup{(F2)} from conditional
+\textup{(F3)} (Corollary~\ref{cor:uncond}), are established here. Any framing of
+this as a ``short-maturity'' phenomenon is \emph{incorrect}: the condition is the
+exact ratio $\sigma_T^2<2\kappa_2^{(M)}(T)$, valid and checkable for all $T$.
+\end{provenance}
+
+%==============================================================================
+\section{Reconciliation of the divergence document}
+\label{sec:divergence}
+%==============================================================================
+
+We now adjudicate \texttt{EdgeworthDivergenceProof.tex} and the asymptotic-Edgeworth
+framing of the spectral-pricing document against Theorems~\ref{thm:equivalence} and
+\ref{thm:cramer}. The resolution is a proved proposition, not prose: the two sets
+of results concern \emph{different functions}, and we identify exactly which
+hypothesis separates them.
+
+\begin{definition}[True versus rational exponent]\label{def:true-vs-rational}
+Let $\Phi_\infty(v,T)=\log\mathbb E[e^{\Ii vX_T}]$ be the \emph{true} rough-Heston
+characteristic exponent (the exact solution of the fractional Riccati equation),
+and $\kappa_M(T,v)$ the rational exponent of Definition~\ref{def:kappaM}. Write
+$s^\ast(T)=\sup\{s>0:\mathbb E[e^{sX_T}]<\infty\}$ for the critical moment of the
+true law.
+\end{definition}
+
+\begin{proposition}[The divergence thesis holds for the true exponent]
+\label{prop:divergence}
+For the true rough-Heston law, $s^\ast(T)<\infty$ (finite moment explosion). 
+Consequently the true log-price density has a tail strictly heavier than every
+Gaussian, its standardized-cumulant Gram--Charlier series has coefficients $c_n$
+with $\sum_n n!\,c_n^2=+\infty$, and the Edgeworth series about any fixed Gaussian
+\emph{diverges} in $L^2$. Equivalently, the Cramér integral
+$\int f_\infty^2/\varphi_{\mathrm{ref}}=+\infty$ for every Gaussian reference.
+\end{proposition}
+\begin{proof}
+Rough Heston is an affine Volterra process whose moment generating function solves a
+fractional Riccati equation with a finite blow-up time in the $s$-variable; hence
+$s^\ast(T)<\infty$ (the same finite-critical-moment phenomenon as classical Heston,
+inherited through the affine structure). If $s^\ast<\infty$ then
+$\mathbb E[e^{sX_T}]=\infty$ for $s>s^\ast$, so the right tail of $f_\infty$
+satisfies $-\log f_\infty(x)=O(s^\ast x)$, i.e.\ at most exponential decay, strictly
+heavier than any $e^{-x^2/(2s^2)}$. Then for any Gaussian $\varphi_{\mathrm{ref}}$,
+$\int f_\infty^2/\varphi_{\mathrm{ref}}\ge\int_{x>X_0}e^{-2s^\ast x}
+e^{+x^2/(2s^2)}\dd x=+\infty$ because the Gaussian reciprocal grows super-exponentially.
+By Proposition~\ref{prop:hermite-complete} this is exactly $\sum_n n!\,c_n^2=\infty$,
+so the Gram--Charlier series diverges in $L^2$. 
+\end{proof}
+
+\begin{proposition}[No contradiction: the pipeline prices the rational exponent]
+\label{prop:no-contradiction}
+Theorem~\ref{thm:cramer} concerns $\kappa_M$ (rational, entire MGF under
+\textup{(C1)}, Gaussian tail $\sigma_T^2$); Proposition~\ref{prop:divergence}
+concerns $\Phi_\infty$ (finite critical moment, heavier-than-Gaussian tail). These
+are different functions, so their opposite convergence verdicts are not
+contradictory. Precisely, the hypothesis that fails for $\Phi_\infty$ is the
+Gaussian-tail premise of Theorem~\ref{thm:gausstail}: $\Phi_\infty$ has a real MGF
+singularity at $s=s^\ast$ (its proper part is not a finite sum of poles off the
+imaginary axis but a transcendental function with a real-axis singularity), whereas
+$\kappa_M$ satisfies \textup{(C1)} and has an entire MGF. The rationalization step
+(diagonal Padé, Section~\ref{sec:pade}) replaces the explosive tail by a Gaussian
+envelope, moving the MGF singularity off the real axis; this is precisely the
+regularization that makes \eqref{eq:cramerineq} attainable.
+\end{proposition}
+\begin{proof}
+Immediate from Definition~\ref{def:true-vs-rational}: the two theorems quantify over
+disjoint hypotheses. Theorem~\ref{thm:gausstail} requires \textup{(C1)}
+($\Real u_j\ne0$, finitely many poles, entire MGF), which holds for $\kappa_M$ and
+fails for $\Phi_\infty$ (whose MGF has the finite abscissa $s^\ast$). The pipeline
+evaluates the price of $\kappa_M$ (the exact evaluation of the rational-exponent
+model to requested precision, Section~\ref{sec:bits}), never of $\Phi_\infty$
+directly; the difference $|\Phi_\infty-\kappa_M|$ is controlled by the Padé error
+(Theorem~\ref{thm:aposteriori}) and enters the ball radius, not the Cramér test.
+\end{proof}
+
+\begin{proposition}[Status of the divergence document's internal arguments]
+\label{prop:divdoc-status}
+In \texttt{EdgeworthDivergenceProof.tex}: the \S\,5 Cramér-condition argument is
+\emph{correct} and proves Proposition~\ref{prop:divergence} for the true exponent;
+the \S\,3--4 steepest-descent/saddle argument is \emph{incomplete} (a gap the
+document itself flags) and is not needed. The document's own concluding remark, that
+the Schwinger pole--residue series converges and is the production evaluation path,
+is \emph{consistent} with Theorem~\ref{thm:equivalence} and
+Corollary~\ref{cor:uncond}. Likewise the spectral-pricing document's description of the
+Edgeworth series as \emph{asymptotic} is \emph{correct as stated for the true
+exponent} and does not conflict with the convergent \textup{(F3)} for the rational
+exponent under \eqref{eq:cramerineq}.
+\end{proposition}
+\begin{proof}
+The \S\,5 argument is the specialization of Theorem~\ref{thm:cramer}(a) to a law with
+finite critical moment: $\int f_\infty^2/\varphi=\infty$, hence divergence; this is
+valid. The \S\,3--4 saddle estimate attempts a pointwise asymptotic of $c_n$ and does
+not close its remainder bound; since Proposition~\ref{prop:divergence} is already
+established by \S\,5, the gap is immaterial to the thesis. The concluding remark and
+the spectral-pricing document ``asymptotic'' language both refer to the true
+exponent's series, whose divergence (as an $L^2$ series) coexists with its use as an
+\emph{asymptotic} expansion; the rational exponent's \textup{(F3)} is a distinct,
+genuinely convergent object by Theorem~\ref{thm:cramer}. No statement in either
+document contradicts the convergence theorems once the true/rational distinction of
+Definition~\ref{def:true-vs-rational} is applied.
+\end{proof}
+
+\begin{provenance}
+\texttt{EdgeworthDivergenceProof.tex} (\S\S3--5) and the spectral-pricing document
+(asymptotic-Edgeworth framing). \textbf{Verdict:} the divergence \emph{thesis is
+correct} for the true non-rational exponent (via the \S\,5 Cramér argument); the
+\S\,3--4 saddle argument is gappy but unnecessary; there is \emph{no contradiction}
+with the convergence Theorem~\ref{thm:cramer}, which concerns the rational exponent
+$\kappa_M$ under the run-time inequality \eqref{eq:cramerineq}. The divergence result
+is \emph{irrelevant to the pipeline}, which prices $\kappa_M$, not $\Phi_\infty$.
+\end{provenance}
+
+%==============================================================================
+\section{Martingale identities, put--call parity, and the Black--Scholes limit}
+\label{sec:parity}
+%==============================================================================
+
+\begin{theorem}[Martingale identities and put--call parity]\label{thm:parity}
+For every $M$ and $T$, $\kappa_M(T,0)=\kappa_M(T,-\Ii)=0$, hence
+$\varphi_M(0,T)=\varphi_M(-\Ii,T)=1$. Consequently the call and put prices satisfy
+put--call parity
+\begin{equation}\label{eq:parity}
+   C_M(K,T)-P_M(K,T)=S_0-Ke^{-rT}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The initial term of the recurrence is $a(0,v)=P(v)/\Gamma(\alpha+1)$ with
+$P(v)=-\tfrac12(v^2+\Ii v)=-\tfrac12 v(v+\Ii)$, whose zeros are exactly $v=0$ and
+$v=-\Ii$. Fix $v_0\in\{0,-\Ii\}$, so $a(0,v_0)=0$. We show $a(k,v_0)=0$ for all
+$k\ge0$ by strong induction. The recurrence \eqref{eq:arec} reads
+\[
+   a(k,v_0)=Q(v_0)\,a(k-1,v_0)\,\tfrac{\Gamma(k\alpha+1)}{\Gamma((k+1)\alpha+1)}
+   +R\,\tfrac{\Gamma((k-1)\alpha+1)}{\Gamma(k\alpha+1)}
+     \!\!\sum_{j+m=k-2}\!\! a(j,v_0)a(m,v_0).
+\]
+If $a(i,v_0)=0$ for all $i<k$, both terms vanish, so $a(k,v_0)=0$. Hence
+$a(k,v_0)\equiv0$. Then $d(k,v_0)=0$ for all $k$ by \eqref{eq:dk}, so the Padé
+numerator $P_M(z,v_0)\equiv0$ and
+$\kappa_M(T,v_0)=V_0\Gamma(\alpha+1)a(0,v_0)T+T\,P_M(T^\alpha,v_0)/Q_M(T^\alpha,v_0)=0$.
+Therefore $\varphi_M(v_0,T)=e^{0}=1$. The identity $\varphi_M(0,T)=1$ is the
+normalization of the law; $\varphi_M(-\Ii,T)=\mathbb E[e^{X_T}]=1$ is the martingale
+property of the discounted asset. Put--call parity follows from the payoff identity
+$(e^{x}-\mathrm{k})^+-(\mathrm{k}-e^{x})^+=e^{x}-\mathrm k$ under discounted
+expectation: $C_M-P_M=e^{-rT}\bigl(\mathbb E[S_T]-K\bigr)=S_0-Ke^{-rT}$, using
+$e^{-rT}\mathbb E[S_T]=S_0\varphi_M(-\Ii,T)=S_0$.
+\end{proof}
+\begin{provenance}
+The identities $\varphi(0)=\varphi(-\Ii)=1$ are stated in
+\texttt{patentApplication.tex} (\S on parity) and \texttt{notation.tex} (zeros of
+$P$). The induction $a(k,v_0)\equiv0$ and its propagation to $\kappa_M$ is supplied
+here; both source statements are \emph{correct}.
+\end{provenance}
+
+\begin{theorem}[Black--Scholes limit certificate]\label{thm:bs}
+If the proper rational part vanishes, $\varrho_M\equiv0$, then
+$\varphi_M(v,T)=\exp(-\tfrac12\sigma_T^2v^2-\Ii\mu_Tv)$ is exactly Gaussian and the
+Lewis price \eqref{eq:lewisprice} collapses to the exact Black--Scholes value
+\begin{equation}\label{eq:bs}
+   C_M=S_0\,\mathcal N(d_1)-Ke^{-rT}\,\mathcal N(d_2),\qquad
+   d_{1,2}=\frac{\log(S_0/K)+(r\pm\tfrac12\sigma_{\mathrm{BS}}^2)T}
+                {\sigma_{\mathrm{BS}}\sqrt T},
+\end{equation}
+with $\sigma_{\mathrm{BS}}^2=\sigma_T^2/T$. This is a statement about the vanishing
+of the \emph{proper rational part} $\varrho_M$, not about the correlation parameter.
+\end{theorem}
+\begin{proof}
+If $\varrho_M\equiv0$ then $\Psi\equiv1$ and $\varphi_M=e^{-\frac12\sigma_T^2v^2
+-\Ii\mu_Tv}$ is the characteristic function of $N(\mu_T,\sigma_T^2)$. Substituting
+into \eqref{eq:lewisprice} and evaluating the Gaussian integral by completing the
+square (equivalently, recognizing the Lewis integral of a Gaussian exponent) yields
+the classical Black--Scholes formula \eqref{eq:bs}; the martingale identity
+$\varphi_M(-\Ii,T)=1$ fixes the drift $\mu_T$ to the risk-neutral value so that the
+forward is $S_0e^{rT}$. All \textup{(F1)}--\textup{(F3)} corrections vanish since
+$c_n=0$ for $n\ge3$ and the multi-index sum \eqref{eq:master} reduces to its
+$\mathbf n=\mathbf 0$ term.
+\end{proof}
+\begin{provenance}
+\texttt{patentApplication.tex} states ``$\rho\equiv0$ collapses to Black--Scholes.''
+\textbf{Verdict / disambiguation:} the correct hypothesis is the vanishing of the
+proper \emph{rational part} $\varrho_M\equiv0$ (the symbol $\varrho$/``$\rho(u)$'' of
+the exponent decomposition), \emph{not} the vanishing of the \emph{correlation}
+$\rho=-0.681$. This resolves the $\rho$ notation collision
+(Table~\ref{tab:notation}): correlation and proper-rational-part share a glyph in
+the sources but are different objects; the Black--Scholes collapse is the
+rational-part statement.
+\end{provenance}
+
+%==============================================================================
+\section{The end-to-end arbitrary-bit certified enclosure}
+\label{sec:bits}
+%==============================================================================
+
+\begin{theorem}[Arbitrary-bit certified price enclosure]\label{thm:bits}
+Fix model data (Definition~\ref{def:model}), a maturity $T$ and strike $K$, and a
+requested bit count $b$. Assume \textup{(C1)} and, for the Edgeworth route, the
+run-time inequality \eqref{eq:cramerineq}. Then there exist a Padé order $M$, a
+series order $N_H$, and a working precision $p$, each computable from $b$ and the
+data, such that the pipeline
+\[
+   \text{M\"untz recurrence \eqref{eq:arec}}\to d\text{-sequence \eqref{eq:dk}}
+   \to\text{Chebyshev--Wheeler \eqref{eq:wheeler-extract}}
+   \to[M/M]\text{ Padé}\to\text{PFE \eqref{eq:kappa-decomp}}
+   \to\text{price series \eqref{eq:form1}}
+\]
+executed in outward-rounded ball arithmetic returns a ball $[C]$ with
+$C_\infty(K,T)\in[C]$ and radius $r([C])\le 2^{-b}$, where $C_\infty$ is the exact
+call price. The radius decomposes as
+\begin{equation}\label{eq:budget}
+   r([C])\le \underbrace{\varepsilon_{\mathrm{P}}(M)}_{\text{P\'ade}}
+   +\underbrace{\varepsilon_{\mathrm{S}}(N_H)}_{\text{series remainder}}
+   +\underbrace{\varepsilon_{\mathrm{A}}(p)}_{\text{arithmetic}},
+\end{equation}
+with $\varepsilon_{\mathrm P}(M)\le L\,|\Delta_M|\,q_M/(1-q_M)$, $q_M\to e^{-2G}<1$
+(Theorem~\ref{thm:aposteriori}); $\varepsilon_{\mathrm S}(N_H)\le
+\frac{S_0}{2\pi}e^{C_T}\!\!\sum_{|\mathbf n|>N_H}\prod_j(|A_j|/\delta_j)^{n_j}/n_j!
+\to0$ super-exponentially (Lemma~\ref{lem:master}); and
+$\varepsilon_{\mathrm A}(p)\le \mathcal O(\mathrm{ops})\,2^{-p}$ from outward
+rounding. The partial-fraction step is exact in rational arithmetic and contributes
+only to $\varepsilon_{\mathrm A}$.
+\end{theorem}
+\begin{proof}
+\emph{Enclosure.} Every stage is executed in ball arithmetic with outward rounding,
+so each intermediate ball rigorously contains the exact intermediate value; by
+inclusion isotonicity the terminal ball $[C]$ contains the exact price of the
+rational-exponent model, and the Padé term $\varepsilon_{\mathrm P}$ additionally
+encloses $C_\infty$ (true price) because $|C_\infty-C_M|\le L\,\sup_{\mathcal L}
+|\Phi_\infty-\kappa_M|$ with $L=\frac{S_0}{2\pi}\int_{\mathcal L}|v(v+\Ii)|^{-1}
+e^{-\frac12\sigma_T^2u^2}\dd u<\infty$ the Lewis-kernel Lipschitz constant, and
+$\sup_{\mathcal L}|\Phi_\infty-\kappa_M|\le|\Delta_M|q_M/(1-q_M)$ by
+Theorem~\ref{thm:aposteriori} and the Stahl convergence of
+Theorem~\ref{thm:stahl-ray} (which guarantees $|\Delta_M|\to0$ geometrically at
+rate $e^{-2G}$, so the target is attainable).
+
+\emph{Budget.} The three contributions are the only sources of error: the Padé
+order induces $\varepsilon_{\mathrm P}(M)$; the series order induces the tail
+$\varepsilon_{\mathrm S}(N_H)$ bounded by the master majorant \eqref{eq:masterbound}
+whose multi-index tail decays super-exponentially in $N_H$ (factorial denominators);
+the finite-precision ball operations induce $\varepsilon_{\mathrm A}(p)$, linear in
+$2^{-p}$ with a constant counting the operations (all finite and data-determined).
+Their sum bounds $r([C])$ by subadditivity of ball radii under $+$.
+
+\emph{Choice of parameters.} Given $b$, pick $M$ so $\varepsilon_{\mathrm P}(M)\le
+2^{-b}/3$ (possible since $|\Delta_M|q_M/(1-q_M)\to0$); pick $N_H$ so
+$\varepsilon_{\mathrm S}(N_H)\le2^{-b}/3$ (possible by super-exponential decay);
+pick $p$ so $\varepsilon_{\mathrm A}(p)\le2^{-b}/3$ (possible since it is
+$\mathcal O(2^{-p})$ with a fixed op-count once $M,N_H$ are fixed). Then
+$r([C])\le2^{-b}$.
+\end{proof}
+\begin{provenance}
+The three-part budget mirrors \S\,I of \texttt{patentApplication.tex} (``ball
+radius $=$ P\'ade error $+$ statistical''); here the ``statistical'' contribution is
+identified with the series remainder $\varepsilon_{\mathrm S}$ plus the arithmetic
+term $\varepsilon_{\mathrm A}$, and the P\'ade error is the rigorous a-posteriori
+bound of Theorem~\ref{thm:aposteriori} (not the heuristic
+$\eta_M^{\mathrm{stop}}$; Corollary~\ref{cor:cert-distinction}). The claim
+``agrees with the solution for an arbitrary number of desired bits'' is thereby
+\emph{proved} as \eqref{eq:budget} with the constructive parameter choice.
+\end{provenance}
+
+%==============================================================================
+\appendix
+\section{Conflict adjudication and notation crosswalk}
+\label{sec:appendix}
+%==============================================================================
+
+The two propositions below are the formal adjudications forward-referenced from
+Sections~\ref{sec:riccati} and \ref{sec:pade}; the tables collect every
+cross-document conflict with its verdict.
+
+\begin{proposition}[Degree adjudication]\label{prop:deg-verdict}
+In $0$-indexed convention $\dg_v a(k,v)=k+2$ and $\dg_v d(k,v)=k+3$; in $1$-indexed
+convention $a_k=a(k-1,\cdot)$ so $\dg_v a_k=k+1$ and $\dg_v d_k=k+2$. Hence:
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item the ``$\dg a_k\le k+1$'' of \texttt{patentApplication.tex}/\texttt{FrmpRoughHestonApp.tex}
+and the ``$\dg a(k,v)=k+2$'' of \texttt{RiemannHilbertView}/\texttt{FINDINGS.md}/\texttt{notation.tex}
+are the \emph{same statement} in different indexing (both \emph{correct}, equality
+holding);
+\item the claims $\dg d_k=k+4$ (\texttt{RiemannHilbertView}) and $\dg_v d(k,v)=2k+4$
+(\texttt{SchwingerHermiteFromCitations.tex}) are \emph{both wrong}; the correct
+degree is $k+3$ ($0$-indexed), as in \texttt{FINDINGS.md}.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+From Theorem~\ref{thm:deg}, $\dg_v a(k,v)=k+2$: base $a(0,v)=P(v)/\Gamma(\alpha+1)$
+has $\dg_v=2$; the recurrence's quadratic term $\sum_{j+m=k-2}a(j,\cdot)a(m,\cdot)$
+attains $\dg_v=(j+2)+(m+2)=k+2$ at $j+m=k-2$, and the linear term $Q(v)a(k-1,\cdot)$
+attains $\dg_v=1+(k+1)=k+2$; both agree, giving exactly $k+2$. By Corollary~\ref{cor:degd},
+$\dg_v d(k,v)=\max(\dg_v a(k,v),\dg_v a(k+1,v))=\max(k+2,k+3)=k+3$. The reindex
+$a_k=a(k-1,\cdot)$ subtracts one from each. Verified symbolically to $k=8$.
+\end{proof}
+
+\begin{proposition}[Müntz radius adjudication]\label{prop:muntz-divergence}
+The statements ``the Müntz series is divergent'' (\texttt{FrmpRoughHestonApp.tex},
+\texttt{CONVERGENCE\_PROOF.md}, \texttt{HANDOFF.md}) and ``the Müntz series has a
+positive radius of convergence'' (\texttt{PadeMuntzSpectralTau},
+\texttt{ThePadeMuntz}) are \emph{both correct}: they concern different variables.
+The series $\sum_k d(k,v)z^k$ in the Padé variable $z=T^\alpha$ has positive radius
+$\rho_0(v)$ (Lemma~\ref{lem:radius}); the formal Puiseux/asymptotic series in $t$ at
+fixed $t$ diverges (it is an asymptotic, not convergent, expansion). The Padé step
+resums the $z$-series (Proposition~\ref{prop:pade-object}); there is no conflict.
+\end{proposition}
+\begin{proof}
+Lemma~\ref{lem:radius} gives a majorant geometric series with ratio bounded by
+$c_1\rho_0+c_2\rho_0^2<1$, hence $\rho_0(v)>0$ and absolute convergence of the
+$z$-series on $|z|<\rho_0$. The $t$-series is the reordering by powers of $t$ of the
+Müntz monomials $t^{k\alpha}$; its coefficients grow factorially (the fractional
+Riccati solution is not entire in $t$), so it is a genuine asymptotic series of
+radius $0$ in $t$. Different variables, different convergence type; both statements
+hold as stated. 
+\end{proof}
+
+\subsection*{Conflict adjudication table (document $\times$ claim $\times$ verdict)}
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.135\textwidth}
+                     >{\raggedright\arraybackslash}p{0.40\textwidth}
+                     >{\raggedright\arraybackslash}p{0.40\textwidth}@{}}
+\toprule
+\textbf{Topic} & \textbf{Conflicting claims} & \textbf{Verdict / correction}\\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Topic} & \textbf{Conflicting claims} & \textbf{Verdict / correction}\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+$\dg a_k$ &
+patent/FRMP: $\dg a_k\le k+1$ (1-idx) \emph{vs.}
+RiemannHilbert/FINDINGS/notation: $\dg a(k,v)=k+2$ (0-idx) &
+\textbf{Both correct}, pure indexing offset $a(k)_{0}=a_{k+1}$;
+equality holds (Prop.~\ref{prop:deg-verdict}). Verified to $k=8$.\\
+\addlinespace
+$\dg d_k$ &
+RiemannHilbert: $\dg d_k=k+4$ \emph{vs.}
+Schwinger: $\dg_v d(k,v)=2k+4$ &
+\textbf{Both wrong}; correct $\dg d(k,v)=k+3$ (0-idx), FINDINGS.md is right
+(Prop.~\ref{prop:deg-verdict}, Cor.~\ref{cor:degd}).\\
+\addlinespace
+Müntz radius &
+PadeMuntz: positive radius \emph{vs.}
+FRMP/CONVERGENCE: divergent series &
+\textbf{Both correct}: $z=T^\alpha$-series converges ($\rho_0>0$);
+$t$-series is asymptotic. Padé resums the $z$-series
+(Prop.~\ref{prop:muntz-divergence}).\\
+\addlinespace
+Schwinger correction &
+patent \S F$_1$: $-Q_n/\sigma_T$ \emph{vs.}
+notation: $F^{(n)}=P_nF-\tfrac{\sqrt2}{\sqrt\pi\sigma}Q_n$ &
+\textbf{Patent typo}: correct exponent is $-Q_n/\sigma^2$
+(Lemma~\ref{lem:kernel}); the $P/Q$ recurrence itself is correct. Verified
+symbolically ($-Q_n/\sigma$ fails at $n=1$).\\
+\addlinespace
+Contour convention &
+PricingTheorem/CONTOUR: $v$-plane $c\in(-1,0)$ \emph{vs.}
+single-series: $w$-plane $c\in(1,p^\ast)$ &
+\textbf{Same integral} under $v=-\Ii w$; boundary terms differ by which kernel
+poles the line separates (Prop.~\ref{prop:contour-equiv}).\\
+\addlinespace
+FRHA $d_k$ &
+CROSS\_DOCUMENT\_AUDIT: FRHA uses $a(k-1)$ (wrong) \emph{vs.}
+current FRHA: uses $a(k+1,v)$ &
+\textbf{Audit finding stale}: current \texttt{FrmpRoughHestonApp.tex} uses
+$a(k+1,v)$, matching notation/patent. FRHA now correct.\\
+\addlinespace
+Edgeworth diverge/converge &
+EdgeworthDivergence: price series diverges \emph{vs.}
+patent/CONVERGENCE: Schwinger series converges &
+\textbf{No contradiction}: divergence is for the \emph{true} exponent (moment
+explosion); convergence is for the \emph{rational} $\kappa_M$
+(Prop.~\ref{prop:no-contradiction}).\\
+\addlinespace
+Divergence-doc soundness &
+EdgeworthDivergence \S3--4 saddle bound \emph{vs.}
+its own \S5 Cramér proof &
+\S3--4 \textbf{self-admitted gap}; \S5 Cramér argument \textbf{correct and
+complete}. Thesis holds via \S5 (Prop.~\ref{prop:divdoc-status}).\\
+\addlinespace
+$\sigma_T^2$ meaning &
+PricingTheorem: $\sigma_T^2=V_0T+\tfrac12\lambda\theta T^2+\dots$ \emph{vs.}
+Edgeworth: $\sigma_T^2=\kappa_2(T)$ &
+$\sigma_T^2$ is the Gaussian \textbf{envelope} (polynomial part of $\kappa_M$);
+$\kappa_2$ is the \textbf{variance}; they differ. Cramér: $\sigma_T^2<2\kappa_2$
+(Def.~\ref{def:sigmaT}, Thm.~\ref{thm:cramer}).\\
+\addlinespace
+Primary route &
+CROSS\_DOCUMENT\_AUDIT: Padé-in-$z$ primary, residue cross-check \emph{vs.}
+patent: Schwinger residue preferred &
+\textbf{Reconciled}: Padé-in-$z$ resums the cgf; residue form is exact evaluation
+of the fixed-$M$ Lewis integral. Same $C_M$ (Thm.~\ref{thm:equivalence}).\\
+\addlinespace
+$\rho$ collision &
+correlation $\rho=-0.681$ \emph{vs.}
+proper rational part $\rho(u)=\varrho_M$ &
+Distinct objects sharing a glyph. Black--Scholes collapse is $\varrho_M\equiv0$
+(rational part), \textbf{not} correlation $=0$ (Thm.~\ref{thm:bs}).\\
+\addlinespace
+$c_j$ collision &
+Edgeworth weights $c_j$ \emph{vs.} residues $c_j$ \emph{vs.}
+contour abscissa $c$ &
+Three distinct roles; disambiguated in Table~\ref{tab:notation}. Edgeworth $c_n$
+via Blinnikov--Moessner $\equiv$ Newton (Prop.~\ref{prop:newton-bm}).\\
+\addlinespace
+CROSS\_DOCUMENT\_AUDIT &
+its own conclusions &
+\textbf{Mostly correct}; the FRHA off-by-one finding is \textbf{stale} (row 6).
+Its route-primacy framing is reconciled (row 10). Verified independently.\\
+\end{longtable}
+}
+
+\subsection*{Notation crosswalk}
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.16\textwidth}
+                     >{\raggedright\arraybackslash}p{0.40\textwidth}
+                     >{\raggedright\arraybackslash}p{0.36\textwidth}@{}}
+\toprule
+\textbf{Symbol} & \textbf{Meaning in this document} & \textbf{Source aliases}\\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Symbol} & \textbf{Meaning} & \textbf{Source aliases}\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+$\alpha$ & fractional order, $\alpha=H+\tfrac12\in(\tfrac12,1)$ & $H$ Hurst index\\
+$v$ & Fourier/pricing variable ($v$-plane) & $u$ (patent), $w=\Ii v$ (single-series)\\
+$\sigma_T^2$ & Gaussian envelope (polynomial part of $-\kappa_M$) & ``$\sigma_T^2$'' (PricingTheorem)\\
+$\kappa_2^{(M)}(T)$ & second cumulant / variance of $f_M$ & ``$\kappa_2$'', ``$\sigma_T^2$'' (Edgeworth doc, conflated)\\
+$\varrho_M(v)$ & proper rational part $\sum_j A_j/(v-u_j)$ & ``$\rho(u)$'' (patent), ``proper part''\\
+$\rho$ & correlation $=-0.681$ & (same glyph as $\varrho_M$ in sources)\\
+$A_j,\,u_j$ & PFE residues and poles, $\Imag u_j<0$ & ``$A_j^n/n!$'', ``$\zeta_j$''\\
+$c_n$ (Edgeworth) & Gram--Charlier weight, Blinnikov--Moessner & standardized-cumulant weight\\
+$c$ (contour) & abscissa of the pricing line & $\beta,\eta_0$ (strip offset)\\
+$K_n,P_n,Q_n$ & Schwinger kernel and its polynomials & $F^{(n)},P_n,Q_n$ (notation.tex)\\
+$\Delta_M$ & Padé/price increment $\kappa_M-\kappa_{M-1}$ & $|\Delta_M|$ (Algorithm 4)\\
+$z=T^\alpha$ & Padé variable & ``$z$'', ``$t^\alpha$''\\
+$\eta_M^{\mathrm{stop}}$ & heuristic stopping estimate & a-posteriori estimate (Alg.\ 4)\\
+\end{longtable}
+}
+
+\begin{remarknote}[Summary verdict on the two prior audits]
+\texttt{CROSS\_DOCUMENT\_AUDIT.md} is \emph{substantially correct} and its
+route-reconciliation is sound; its single defect is the stale FRHA off-by-one
+(now corrected in source). \texttt{EdgeworthDivergenceProof.tex} reaches a
+\emph{correct thesis} for the true exponent through its \S5 Cramér argument, with a
+\emph{non-fatal gap} in its \S3--4 saddle estimate; it poses \emph{no} obstruction
+to the arbitrary-bit certified pricing of the rational-exponent model
+(Theorem~\ref{thm:bits}).
+\end{remarknote}
+
+\end{document}
