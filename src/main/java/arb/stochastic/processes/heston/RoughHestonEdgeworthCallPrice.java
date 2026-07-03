@@ -92,9 +92,12 @@ public class RoughHestonEdgeworthCallPrice implements
    * and hence the cumulants κ_m — are order-invariant: growing N only
    * accumulates more terms of the convergent cumulant sum, it never changes an
    * already-computed value. It is set once, well past cumulant convergence for
-   * the rough-Heston regime.
+   * the rough-Heston regime. It bounds nothing on the Edgeworth side: the
+   * Edgeworth order J in {@link #call(Real, int, Real)} grows until the
+   * expansion itself terminates it — either by convergence or by passing its
+   * optimal truncation point — never by a fixed ceiling.
    */
-  private static final int                       CUMULANT_ORDER = 48;
+  private static final int                       MUNTZ_ORDER = 48;
 
   /** Underlying CGF (and Müntz–Padé d-sequence via {@code φ.cgf.d}). */
   public final RoughHestonCharacteristicFunction φ;
@@ -172,7 +175,7 @@ public class RoughHestonEdgeworthCallPrice implements
   public RoughHestonEdgeworthCallPrice(Complex v)
   {
     this.φ = new RoughHestonCharacteristicFunction(v);
-    this.φ.N.set(CUMULANT_ORDER);
+    this.φ.N.set(MUNTZ_ORDER);
 
     this.S0             = new Real(DEFAULT_S0, 128).setName("S0");
     this.rr             = new Real(DEFAULT_rr, 128).setName("rr");
@@ -194,7 +197,7 @@ public class RoughHestonEdgeworthCallPrice implements
       throw new IllegalArgumentException("K must not be null");
 
     this.φ = new RoughHestonCharacteristicFunction(context, v);
-    this.φ.N.set(CUMULANT_ORDER);
+    this.φ.N.set(MUNTZ_ORDER);
 
     this.S0             = required(context, "S0");
     this.rr             = required(context, "rr");
@@ -304,10 +307,15 @@ public class RoughHestonEdgeworthCallPrice implements
    * Price the call at {@code strike}: forms k = log(strike/S0) and accumulates
    * the compiled partial sums Π_J there over increasing J. Returns {@code dst}
    * as soon as consecutive partial sums agree to within {@code 2^(-bits/2)};
-   * otherwise scans every order up to {@link #CUMULANT_ORDER} and returns the
-   * partial sum at the globally smallest consecutive gap — the order at which
-   * the expansion has delivered the answer, whose distance from the sum is
-   * bounded by the magnitude of the first further term. (The gap sequence need
+   * otherwise the order J grows until the expansion itself stops delivering —
+   * either the consecutive gap has blown past the smallest gap seen (the series
+   * is asymptotic: beyond its optimal truncation point the corrections grow
+   * without bound, and once the gap exceeds the best by 2^16 the optimum is
+   * conclusively behind), or J has consumed every cumulant the degree of Φ
+   * holds. In both cases the partial sum at the globally smallest consecutive
+   * gap is returned — the order at which the expansion has delivered the
+   * answer, whose distance from the sum is bounded by the magnitude of the
+   * first further term. There is no fixed ceiling on J. (The gap sequence need
    * not shrink monotonically — the Edgeworth corrections arrive in odd/even
    * bursts — so the minimum is tracked globally rather than stopping at the
    * first non-improvement.)
@@ -323,14 +331,18 @@ public class RoughHestonEdgeworthCallPrice implements
   private Real accumulate(Real k, int bits, Real dst)
   {
     try ( Real previous = new Real(); Real current = new Real(); Real gap = new Real(); Real bestGap = new Real();
-          Real threshold = new Real())
+          Real threshold = new Real(); Real divergence = new Real())
     {
       threshold.one().mul2e(-bits / 2);
       J.set(3);
       Π.evaluate(k, 1, bits, previous);
       dst.set(previous);
       bestGap.posInf();
-      for (int j = 4; j <= CUMULANT_ORDER; j++)
+      // Every cumulant Φ holds: κ(m) = Φ^{(m)}(0) vanishes identically beyond
+      // deg Φ, so orders past it add no information. This is the structural
+      // content of the expansion, not a tuning knob.
+      int maxOrder = ((RoughHestonCumulantSequence) κ).availableOrder(bits);
+      for (int j = 4; j <= maxOrder; j++)
       {
         J.set(j);
         Π.evaluate(k, 1, bits, current);
@@ -344,10 +356,37 @@ public class RoughHestonEdgeworthCallPrice implements
           bestGap.set(gap);
           dst.set(current);
         }
+        else
+        {
+          // Past the optimal truncation point the asymptotic corrections grow
+          // without bound; once the gap has blown 2^16 past the best, the
+          // optimum is conclusively behind and further orders only diverge.
+          bestGap.mul2e(16, divergence);
+          if (gap.compareTo(divergence) > 0)
+          {
+            return dst;
+          }
+        }
         previous.set(current);
       }
       return dst;
     }
+  }
+
+  /**
+   * Refresh every parameter-dependent cache after a model-parameter or
+   * maturity mutation (λ, θ, ν, V0, ρ, μ, T): the Riccati coefficient
+   * polynomials p, q, r and the Müntz coefficient chain, the d-sequence, and
+   * both contexts' per-index expression caches (the cumulant chain Φ/κ, the
+   * standardized cumulants S, the weights c, and every compiled helper). Call
+   * once after each parameter set change, before the next {@link #call}.
+   */
+  public void invalidate()
+  {
+    φ.riccati.invalidateCache();
+    φ.cgf.d.invalidateCache();
+    φ.context.invalidateAllCaches();
+    pricingContext.invalidateAllCaches();
   }
 
   @Override

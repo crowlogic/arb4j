@@ -45,8 +45,8 @@ public class MuntzPadeFunctional implements
   /**
    * Memoization of one: the most recent {@link #evaluate} result is retained and
    * returned again when the next call requests the same {@code (v, bits)}.
-   * Curried evaluation is expensive and consecutive calls at the same Fourier
-   * argument are common in the pricing/calibration loops that drive this
+   * Forming the approximant is expensive and consecutive calls at the same
+   * Fourier argument are common in the pricing/calibration loops that drive this
    * functional. Cleared by {@link #invalidateCache()} so a parameter change
    * can never surface a stale approximant.
    */

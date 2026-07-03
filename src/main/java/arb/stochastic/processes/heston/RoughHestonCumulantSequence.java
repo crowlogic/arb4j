@@ -103,6 +103,26 @@ public final class RoughHestonCumulantSequence implements
     return result;
   }
 
+  /**
+   * The highest cumulant order the generating polynomial holds at
+   * {@code bits}: deg Φ. κ(m) = Re((−i)^m·Φ^{(m)}(0)) vanishes identically for
+   * m &gt; deg Φ, so an Edgeworth accumulation past this order can only replay
+   * information it already has. Forms Φ (and caches it, exactly as
+   * {@link #evaluate} would) if it is not already current.
+   */
+  public int availableOrder(int bits)
+  {
+    if (cachedBits < bits)
+    {
+      clearDerivatives();
+      ComplexPolynomial Φ = new ComplexPolynomial();
+      cgf.evaluate(bits, Φ);
+      derivatives.add(Φ);
+      cachedBits = bits;
+    }
+    return derivatives.get(0).degree();
+  }
+
   @Override
   public void invalidateCache()
   {
