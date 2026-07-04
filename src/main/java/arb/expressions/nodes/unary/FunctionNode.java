@@ -541,10 +541,36 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       return arg.differentiate(variable).apply(functionName).simplify();
     }
+    if (isPolynomialValuedWithIndeterminate(variable) && (arg == null || !arg.dependsOn(variable)))
+    {
+      return new FunctionNode<D, R, F>("differentiate",
+                                       this,
+                                       expression);
+    }
     var argDerivative      = arg.differentiate(variable);
     var functionDerivative = differentiateFunction();
     var derivative         = functionDerivative.mul(argDerivative);
     return derivative.simplify();
+  }
+
+  /**
+   * True when this call returns a polynomial (or other type carrying an
+   * indeterminate coefficient structure whose type declares
+   * {@code differentiate(int, sameType)}) and {@code variable} is that
+   * indeterminate: the value's dependence on the indeterminate is through its
+   * coefficients, so its derivative is the runtime coefficient-wise
+   * {@code differentiate} of the value rather than a symbolic expansion of the
+   * mapping's defining expression — which for a self-recursive definition such
+   * as H:n➔when(n=0,1,else,2*x*H(n-1)-diff(H(n-1),x)) cannot terminate.
+   *
+   * @param variable the differentiation variable
+   * @return whether the runtime coefficient-wise derivative applies
+   */
+  public boolean isPolynomialValuedWithIndeterminate(VariableNode<D, R, F> variable)
+  {
+    Class<?> valueType = type();
+    return variable.equals(expression.getPlaceholderVariable())
+                  && Compiler.doesBuiltinFunctionExist("differentiate", false, valueType, valueType);
   }
 
   public boolean isLinearOperator()
