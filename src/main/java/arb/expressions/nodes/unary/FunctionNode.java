@@ -642,7 +642,12 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
           return differentiateFunctionMapping(ctxMapping);
         }
       }
-      throw new UnsupportedOperationException("Derivative not implemented for builtin function: " + functionName + " in expression '" + expression + "'");
+      throw new UnsupportedOperationException("Derivative not implemented for builtin function: "
+                                              + functionName
+                                              + " in expression '"
+                                              + expression
+                                              + "'. Register the function in the context with a name prefix "
+                                              + "(e.g. \"P:v->...\" instead of \"v->...\") so it can be differentiated symbolically.");
     }
   }
 
