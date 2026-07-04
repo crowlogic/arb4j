@@ -36,22 +36,12 @@ import junit.framework.TestCase;
  * Maturities: the paper states T = 1/252 is one trading day (§4.1); one
  * trading week is 5/252 and one month is 21/252 = 1/12.
  *
- * <h2>Measured agreement per entry</h2>
+ * <h2>Agreement criterion</h2>
  *
- * Each published entry carries the paper's own Carr–Madan quadrature (damping
- * 1.1, Re u₁ ∈ {0.1,…,250}) and print precision. The measured differences at
- * bits = 512 are asserted per entry in {@link #TOL}. Measured facts:
- *
- * <ul>
- * <li>31 of the 36 entries agree within 2.8e-4 absolute on the S₀ = 100
- * scale — the paper's own print precision. ATM: 1 day |Δ| = 8.6e-5, 1 week
- * |Δ| = 2.8e-5, 1 month |Δ| = 7.7e-5, 6 months |Δ| = 4.6e-5.
- * <li>The 1-day entries at strikes 105–120% (6.39e-5, 2.37e-5, 1.51e-5,
- * 1.14e-5) do not agree with this expansion, whose values there are 3.31e-6,
- * 2.7e-16, −1.3e-28, −3.0e-47.
- * <li>The 1-week entry at strike 120% (1.80e-13) does not agree with this
- * expansion's value −3.80e-12.
- * </ul>
+ * Each computed price is asserted to agree with the published figure to
+ * within half a unit in the last printed decimal place of that figure — the
+ * only tolerance the publication itself defines. Any entry outside that
+ * bound is a disagreement with the paper and fails this test.
  *
  * @author Stephen Crowley ©2026
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -83,20 +73,9 @@ public class RoughHestonEdgeworthCallPriceTest extends
     { "20.6112", "16.2807", "12.3948", "9.0636", "6.3497", "4.2550", "2.7251", "1.6680", "0.9761" } };
 
   /**
-   * Asserted per-entry absolute tolerance |Δ| on the S₀ = 100 scale, pinned
-   * just above the measured difference between the published entry and this
-   * expansion at bits = 512 so a regression in either direction fails.
-   */
-  private static final String[][] TOL      =
-  {
-    { "1e-12", "1e-12", "1e-12", "3e-4", "9e-5", "7e-5", "2.4e-5", "1.6e-5", "1.2e-5" },
-    { "1e-11", "2e-7", "5e-5", "4e-5", "3e-5", "2e-6", "2e-8", "2e-10", "5e-12" },
-    { "4e-5", "3e-5", "4e-5", "7e-5", "8e-5", "2e-5", "4e-5", "1.1e-4", "2e-7" },
-    { "4e-5", "2e-5", "3e-5", "5e-5", "5e-5", "6e-5", "4e-5", "7e-5", "4e-5" } };
-
-  /**
    * Prices every entry of the tested columns of arxiv:1805.12587v4 Table 3 at
-   * bits = 512 and asserts the measured per-entry agreement of {@link #TOL}.
+   * bits = 512 and asserts each agrees with the published figure to within
+   * half a unit in its last printed decimal place.
    */
   public void testAgainstCallegaroGrasselliPagesTable3()
   {
@@ -127,7 +106,8 @@ public class RoughHestonEdgeworthCallPriceTest extends
           Real value = new Real(); Real K = new Real(); Real ref = new Real();
           Real diff = new Real(); Real tolR = new Real(); Real num = new Real(); Real den = new Real())
     {
-      long t0 = System.nanoTime();
+      StringBuilder disagreements = new StringBuilder();
+      long          t0            = System.nanoTime();
       for (int m = 0; m < MATURITIES.length; m++)
       {
         setFraction(T, MATURITIES[m], bits, num, den);
@@ -138,10 +118,11 @@ public class RoughHestonEdgeworthCallPriceTest extends
           price.call(K, bits, value);
           value.mul(100, bits, value);
           ref.set(REF[m][i], bits);
-          tolR.set(TOL[m][i], bits);
+          tolR.set(halfLastPrintedDecimal(REF[m][i]), bits);
           value.sub(ref, bits, diff);
           diff.abs();
-          log.info("[CGP T={} {}/{}] K={} call={} ref={} |Δ|={} elapsed={}s",
+          boolean agrees = diff.compareTo(tolR) < 0;
+          log.info("[CGP T={} {}/{}] K={} call={} ref={} |Δ|={} tol={} {} elapsed={}s",
                    MATURITIES[m],
                    i + 1,
                    STRIKES.length,
@@ -149,14 +130,41 @@ public class RoughHestonEdgeworthCallPriceTest extends
                    value,
                    ref,
                    diff,
+                   halfLastPrintedDecimal(REF[m][i]),
+                   agrees ? "agrees" : "DISAGREES",
                    (System.nanoTime() - t0) / 1e9);
-          assertTrue("T=" + MATURITIES[m] + " K=" + STRIKES[i] + ": call=" + value + " ref=" + ref + " |Δ|="
-                        + diff + " exceeds tolerance " + TOL[m][i],
-                     diff.compareTo(tolR) < 0);
+          if (!agrees)
+          {
+            disagreements.append("\nT=")
+                         .append(MATURITIES[m])
+                         .append(" K=")
+                         .append(STRIKES[i])
+                         .append(": call=")
+                         .append(value)
+                         .append(" ref=")
+                         .append(REF[m][i])
+                         .append(" |Δ|=")
+                         .append(diff)
+                         .append(" exceeds half the last printed decimal ")
+                         .append(halfLastPrintedDecimal(REF[m][i]));
+          }
         }
       }
+      assertTrue("entries disagreeing with arxiv:1805.12587v4 Table 3 (Hybrid row):" + disagreements,
+                 disagreements.length() == 0);
       assertVarianceMatchesForwardVarianceIntegral(price, T, bits);
     }
+  }
+
+  /**
+   * Half a unit in the last printed decimal place of the published figure,
+   * e.g. "5.0003" ➔ "5e-5", "20" ➔ "0.5", "0.000000000000180" ➔ "5e-16".
+   */
+  static String halfLastPrintedDecimal(String printed)
+  {
+    int dot = printed.indexOf('.');
+    int places = dot < 0 ? 0 : printed.length() - dot - 1;
+    return places == 0 ? "0.5" : "5e-" + (places + 1);
   }
 
   /** Parses "p/q" into {@code T = p/q} exactly in {@link Real} balls. */
