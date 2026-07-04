@@ -63,8 +63,14 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    var a   = left.differentiate(variable).mul(right);
-    var b   = right.differentiate(variable).mul(left);
+    // The undifferentiated cofactors are spliced copies: reusing the live
+    // left/right instances places one node object at two positions of the
+    // resulting tree (its arg is also reachable through the differentiated
+    // factor), and Node.parent is single-valued — the CSE pass then loses the
+    // canonical compute-and-store of the shared subexpression and the
+    // generated field is read unassigned (issue #1096).
+    var a   = left.differentiate(variable).mul(right.spliceInto(expression));
+    var b   = right.differentiate(variable).mul(left.spliceInto(expression));
     var sum = a.add(b);
     return sum;
   }

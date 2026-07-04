@@ -59,9 +59,11 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    var lhs     = left.differentiate(variable).mul(right);
-    var rhs     = right.differentiate(variable).mul(left);
-    var divisor = right.pow(2);
+    // Spliced copies of the undifferentiated cofactors — see
+    // MultiplicationNode.differentiate (issue #1096).
+    var lhs     = left.differentiate(variable).mul(right.spliceInto(expression));
+    var rhs     = right.differentiate(variable).mul(left.spliceInto(expression));
+    var divisor = right.spliceInto(expression).pow(2);
     return lhs.sub(rhs).div(divisor);
   }
 
