@@ -57,7 +57,7 @@ public class RoughHestonCalibrationTest extends
       }
     }
 
-    Real truth = Real.newVector(6); // λ θ ν V0 ρ μ — arxiv:2508.15080 eq 1.3
+    Real truth = Real.newVector(6); // λ θ ν V0 ρ μ — arxiv:1805.12587 §4.1
     set(truth, "0.1", "0.3156", "0.331", "0.0392", "-0.681", "0.62");
 
     long t0 = System.nanoTime();
