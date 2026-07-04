@@ -10,7 +10,10 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.functions.integer.RealFunctionSequence;
+import arb.functions.integer.RealSequence;
+import arb.functions.polynomials.orthogonal.real.ProbabilistHermitePolynomials;
 import arb.functions.real.RealFunction;
+import arb.functions.real.RealNullaryFunction;
 
 /**
  * European call/put prices under the rough Heston model, evaluated in closed
@@ -57,6 +60,40 @@ import arb.functions.real.RealFunction;
 public class RoughHestonOptionPricer implements
                                       AutoCloseable
 {
+  public static final class CayleyCoefficientSequence implements
+                                                      RealSequence
+  {
+    private final Real coefficients;
+
+    public CayleyCoefficientSequence(Real coefficients)
+    {
+      this.coefficients = coefficients;
+    }
+
+    @Override
+    public Class<Real> coDomainType()
+    {
+      return Real.class;
+    }
+
+    @Override
+    public String getName()
+    {
+      return "q";
+    }
+
+    @Override
+    public Real evaluate(Integer n, int order, int bits, Real res)
+    {
+      if (res == null)
+        res = new Real();
+      int i = n.getSignedValue();
+      if (i < 0 || i + 1 >= coefficients.dim)
+        return res.zero();
+      return res.set(coefficients.get(i + 1));
+    }
+  }
+
   public final RoughHestonCharacteristicFunction φ;
 
   public final Real                              S0;
@@ -82,19 +119,57 @@ public class RoughHestonOptionPricer implements
   public final Real                              cLine        = new Real("3/2",
                                                                          128).setName("cLine");
 
+  /** Cayley scale κ, a rebindable context variable. */
+  public final Real                              κScale       = new Real("1",
+                                                                         128).setName("κScale");
+
+  /** q = c + κ, the Cayley pole. */
+  public final Real                              qNode        = new Real("5/2",
+                                                                         128).setName("qNode");
+
+  /** K·e^{-rT}, rebindable between calls. */
+  public final Real                              discountedK  = new Real("1",
+                                                                         128).setName("discountedK");
+
+  /** The real Cayley-series coefficients q_n, stored with one leading zero slot. */
+  public final Real                              qRe          = Real.newVector(1,
+                                                                              "qRe");
+
+  /** Majorant exit index N*. */
+  public final Integer                           Nstar        = Integer.named("Nstar").set(0);
+
   /**
    * E(w) = ½e^{g(w)}erfc(z_w) − θ(w−c)e^{g(w)}: the Schwinger–Gauss–erfc
    * function as ONE compiled expression over the context variables σsq, ξ,
    * cLine.
    */
-  public final RealFunction            E;
+  public final RealFunction                     E;
+
+  /** The constant σ/√(2π)·exp(−ξ²/(2σ²)) in the atom recurrence. */
+  public final RealNullaryFunction              C0;
+
+  /** The probabilist Hermite basis used to evaluate the Gaussian derivative chain. */
+  public final ProbabilistHermitePolynomials    He = new ProbabilistHermitePolynomials(128);
 
   /**
-   * A:m➔w➔diff(E(w),w^(m−1))/Γ(m) — the scaled derivative sequence as ONE
-   * compiled expression: the symbolic nth-order {@code diff} owns the entire
-   * derivative chain and the sequence caches each order.
+   * P:n➔w➔∂ⁿe^{g(w)}/e^{g(w)} = (−√σ²)^n·He_n((ξ−σ²w)/√σ²).
    */
-  public final RealFunctionSequence    A;
+  public final RealFunctionSequence             P;
+
+  /**
+   * A:m➔w➔E⁽ᵐ⁻¹⁾(w)/Γ(m), expanded through the Hermite basis already present in
+   * the codebase rather than through repeated scalar differentiation.
+   */
+  public final RealFunctionSequence             A;
+
+  /** Tₙ^{(δ)} as one compiled function-valued sequence over the fixed nodes 0,1,q. */
+  public final RealFunctionSequence             T;
+
+  /** K·e^{-rT}·Σₙ qₙ(Tₙ^{(1)}−Tₙ^{(0)}) with N*=majorant exit index. */
+  public final RealNullaryFunction              price;
+
+  /** q:n↦qₙ, exposing the exp-series coefficients stored in {@link #qRe}. */
+  public final RealSequence                     q;
 
   public RoughHestonOptionPricer()
   {
@@ -127,10 +202,27 @@ public class RoughHestonOptionPricer implements
     lewisContext.registerVariable(σsq);
     lewisContext.registerVariable(ξ);
     lewisContext.registerVariable(cLine);
+    lewisContext.registerVariable(κScale);
+    lewisContext.registerVariable(qNode);
+    lewisContext.registerVariable(discountedK);
+    lewisContext.registerVariable(qRe);
+    lewisContext.registerVariable(Nstar);
+    lewisContext.registerFunction("He", He);
+    this.q = new CayleyCoefficientSequence(qRe);
+    lewisContext.registerFunction("q", q);
     RealFunction.express("g:w➔σsq*w²/2-w*ξ", lewisContext);
     RealFunction.express("z:w➔(ξ-σsq*w)/sqrt(2*σsq)", lewisContext);
+    RealFunction.express("y:w➔(ξ-σsq*w)/sqrt(σsq)", lewisContext);
     this.E = RealFunction.express("E:w➔exp(g(w))*erfc(z(w))/2-θ(w-cLine)*exp(g(w))", lewisContext);
-    this.A = RealFunctionSequence.express("A:m➔w➔diff(E(w),w^(m-1))/Γ(m)", lewisContext);
+    this.C0 = RealNullaryFunction.express("C0", "exp((-ξ²)/(2*σsq))*sqrt(σsq/(2*π))", lewisContext);
+    this.P  = RealFunctionSequence.express("P:n➔w➔(-sqrt(σsq))^n*He(n)(y(w))", lewisContext);
+    this.A  = RealFunctionSequence.express("A:m➔w➔when(m=1,E(w),else,P(m-1)(w)*E(w)/Γ(m)+C0()*Σj➔((sqrt(σsq)^(j-1))*P(m-1-j)(w)*He(j-1)(y(w)))/(Γ(j+1)*Γ(m-j)){j=1..m-1})",
+                                           lewisContext);
+    this.T  = RealFunctionSequence.express("T:n➔δ➔E(δ)+when(n=0,0,else,Σk➔((Γ(n+1)/(Γ(k+1)*Γ(n-k+1)))*(2*κScale)^k*(Σm➔(((-1)^(k-m))*A(m)(qNode)/(qNode-δ)^(k-m+1)){m=1..k}+E(δ)/(δ-qNode)^k)){k=1..n})",
+                                           lewisContext);
+    this.price = RealNullaryFunction.express("price",
+                                             "discountedK*Σn➔q(n)*(T(n)(1)-T(n)(0)){n=0..Nstar}",
+                                             lewisContext);
   }
 
   /**
@@ -239,14 +331,7 @@ public class RoughHestonOptionPricer implements
       throw new ArithmeticException("σ_T² must be strictly positive; got " + σT2);
     final int p = w == null ? 0 : w.dim();
 
-    // Rebind the compiled-expression context to this expansion's data.
-    σsq.set(σT2);
-    ktil.add(μT, bits, ξ);
-    cLine.set(c);
-    lewisContext.invalidateAllCaches();
-
-    try ( Real discount = new Real(); Real q = new Real(); Real target = new Real();
-          Integer m = new Integer())
+    try ( Real discount = new Real(); Real q = new Real(); Real target = new Real())
     {
       rT.neg(discount);
       discount.exp(bits, discount).mul(K, bits, discount);
@@ -275,62 +360,37 @@ public class RoughHestonOptionPricer implements
           span = exitIndex(tauC, R, bits);
         }
 
-        try ( Real E0 = new Real(); Real E1 = new Real(); Real Aq = Real.newVector(span + 1))
+        try ( ComplexPolynomial ψ = new ComplexPolynomial(); Real τout = new Real())
         {
-          E.evaluate(RealConstants.zero, 1, bits, E0);
-          E.evaluate(RealConstants.one, 1, bits, E1);
-          for (int order = 1; order <= span + 1; order++)
+          if (p == 0)
           {
-            m.set(order);
-            A.evaluate(m, 1, bits, null).evaluate(q, 1, bits, Aq.get(order - 1));
+            ψ.fitLength(1);
+            ψ.setLength(1);
+            ψ.get(0).one();
+          }
+          else
+          {
+            exponentialOfCayleySeries(ψ, w, B, c, κ, span + 1, bits);
           }
 
-          try ( ComplexPolynomial ψ = new ComplexPolynomial(); ComplexPolynomial dψ = new ComplexPolynomial();
-                Complex origin = new Complex(); Complex qn = new Complex(); Real fact = new Real();
-                Complex acc = new Complex(); Complex term = new Complex(); Real diff = new Real();
-                Real T0 = new Real(); Real T1 = new Real(); Real Rpow = new Real())
-          {
-            if (p == 0)
-            {
-              ψ.fitLength(1);
-              ψ.setLength(1);
-              ψ.get(0).one();
-            }
-            else
-            {
-              exponentialOfCayleySeries(ψ, w, B, c, κ, span + 1, bits);
-            }
+          σsq.set(σT2);
+          ktil.add(μT, bits, ξ);
+          cLine.set(c);
+          κScale.set(κ);
+          qNode.set(q);
+          discountedK.set(discount);
+          Nstar.set(span);
+          if (qRe.dim != span + 2)
+            qRe.become(Real.newVector(span + 2, "qRe"));
+          qRe.get(0).zero();
+          for (int n = 0; n <= span; n++)
+            qRe.get(n + 1).set(ψ.get(n).re());
+          lewisContext.invalidateAllCaches();
 
-            acc.zero();
-            Rpow.one();
-            fact.one();
-            for (int n = 0; n <= span; n++)
-            {
-              // q_n = ψ^{(n)}(0)/n! — point-derivative of the generated series
-              ψ.evaluate(origin, 1, bits, qn);
-              qn.div(fact, bits, qn);
-              termIntegral(n, 0, E0, Aq, q, κ, bits, T0);
-              termIntegral(n, 1, E1, Aq, q, κ, bits, T1);
-              T1.sub(T0, bits, diff);
-              qn.mul(diff, bits, term);
-              acc.add(term, bits, acc);
-              if (p == 0)
-              {
-                break;
-              }
-              Rpow.mul(Rinv, bits, Rpow);
-              τ.set(tauC).mul(Rpow, bits, τ);
-              if (τ.compareTo(target) <= 0)
-                break;
-              ψ.differentiate(bits, dψ);
-              ψ.set(dψ);
-              fact.mul(n + 1, bits, fact);
-            }
-            acc.mul(discount, bits, acc);
-            res.set(acc.re());
-            arblib.arb_add_error(res, τ);
-            return res;
-          }
+          price.evaluate(bits, res);
+          τout.set(τ);
+          arblib.arb_add_error(res, τout);
+          return res;
         }
       }
     }
@@ -401,49 +461,6 @@ public class RoughHestonOptionPricer implements
         R.add(termPoly, bits, R);
       }
       arblib.acb_poly_exp_series(ψ, R, len, bits);
-    }
-  }
-
-  /**
-   * T_n^{(δ)} = E(δ) + Σ_{k=1..n} C(n,k)(2κ)^k·[Σ_{m=1..k}(−1)^{k−m}(q−δ)^{−(k−m+1)}·A_m(q)
-   * + (δ−q)^{−k}·E(δ)] — a finite combination of the compiled-kernel values.
-   */
-  private static void termIntegral(int n, int delta, Real Edelta, Real Aq, Real q, Real κ, int bits, Real res)
-  {
-    res.set(Edelta);
-    if (n == 0)
-      return;
-    try ( Real qmd = new Real(); Real dmq = new Real(); Real binom = new Real(); Real twoκ = new Real();
-          Real s = new Real(); Real coef = new Real(); Real acc = new Real(); Real qmdPow = new Real())
-    {
-      q.sub(delta, bits, qmd);
-      dmq.set(qmd).neg(dmq);
-      κ.mul(2, bits, twoκ);
-      binom.set(twoκ).mul(n, bits, binom);
-      for (int k = 1; k <= n; k++)
-      {
-        s.zero();
-        for (int m = 1; m <= k; m++)
-        {
-          int e = k - m + 1;
-          qmd.pow(e, bits, qmdPow);
-          coef.set(Aq.get(m - 1)).div(qmdPow, bits, coef);
-          if (((k - m) & 1) != 0)
-            coef.neg(coef);
-          s.add(coef, bits, s);
-        }
-        dmq.pow(k, bits, qmdPow);
-        coef.set(Edelta).div(qmdPow, bits, coef);
-        s.add(coef, bits, s);
-        s.mul(binom, bits, acc);
-        res.add(acc, bits, res);
-        if (k < n)
-        {
-          binom.mul(n - k, bits, binom);
-          binom.div(k + 1, bits, binom);
-          binom.mul(twoκ, bits, binom);
-        }
-      }
     }
   }
 
@@ -520,14 +537,31 @@ public class RoughHestonOptionPricer implements
   @Override
   public void close()
   {
+    if (price != null)
+      price.close();
+    if (T != null)
+      T.close();
+    if (q != null)
+      q.close();
     if (A != null)
       A.close();
+    if (P != null)
+      P.close();
+    if (He != null)
+      He.close();
+    if (C0 != null)
+      C0.close();
     if (E != null)
       E.close();
     lewisContext.close();
     σsq.close();
     ξ.close();
     cLine.close();
+    κScale.close();
+    qNode.close();
+    discountedK.close();
+    qRe.close();
+    Nstar.close();
     if (ownsParameters)
     {
       φ.close();
