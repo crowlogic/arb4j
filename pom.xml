@@ -210,6 +210,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.2.5</version>
 				<configuration>
+					<forkedProcessTimeoutInSeconds>45</forkedProcessTimeoutInSeconds>
 					<argLine>-ea --illegal-native-access=allow
 						--sun-misc-unsafe-memory-access=allow
 						-Djava.library.path=${project.basedir}
