@@ -31,10 +31,11 @@ public class RoughHestonOptionPricerTest extends
   // Black–Scholes value exactly (to the working-precision ball).
   public void testBlackScholesLimitIsExact()
   {
-    try ( Real σT2 = new Real("0.6", bits); Real σT = new Real(); Real μT = new Real();
+    try ( RoughHestonOptionPricer pricing = new RoughHestonOptionPricer();
+          Real σT2 = new Real("0.6", bits); Real σT = new Real(); Real μT = new Real();
           Real K = new Real("110", bits); Real S0 = new Real("100", bits); Real rT = new Real("0.03", bits);
           Real ktil = new Real(); Real c = new Real("1.5", bits); Real κ = new Real("1", bits);
-          Real price = new Real(); Real bs = new Real(); Real d1 = new Real(); Real d2 = new Real();
+          Real value = new Real(); Real bs = new Real(); Real d1 = new Real(); Real d2 = new Real();
           Real Nd1 = new Real(); Real Nd2 = new Real(); Real disc = new Real(); Real t = new Real();
           Real err = new Real(); Real thr = twoPow(-100))
     {
@@ -42,7 +43,7 @@ public class RoughHestonOptionPricerTest extends
       σT2.mul2e(-1, μT);
       K.div(S0, bits, ktil).log(bits, ktil).sub(rT, bits, ktil);
 
-      RoughHestonOptionPricer.lewisSingleSeries(σT2, μT, K, rT, ktil, c, κ, null, null, bits, price);
+      pricing.lewisSingleSeries(σT2, μT, K, rT, ktil, c, κ, null, null, bits, value);
 
       S0.div(K, bits, t).log(bits, t).add(rT, bits, t).div(σT, bits, t);
       σT.mul2e(-1, d1);
@@ -56,8 +57,8 @@ public class RoughHestonOptionPricerTest extends
       disc.mul(Nd2, bits, t);
       bs.sub(t, bits, bs);
 
-      price.sub(bs, bits, err).abs();
-      assertTrue("C=" + price + " BS=" + bs + " |Δ|=" + err, err.compareTo(thr) < 0);
+      value.sub(bs, bits, err).abs();
+      assertTrue("C=" + value + " BS=" + bs + " |Δ|=" + err, err.compareTo(thr) < 0);
     }
   }
 
@@ -66,7 +67,8 @@ public class RoughHestonOptionPricerTest extends
   // sum of the certified radii).
   public void testCayleyScaleInvariance()
   {
-    try ( Real σT2 = new Real("0.6", bits); Real μT = new Real("0.3", bits); Real K = new Real("105", bits);
+    try ( RoughHestonOptionPricer pricing = new RoughHestonOptionPricer();
+          Real σT2 = new Real("0.6", bits); Real μT = new Real("0.3", bits); Real K = new Real("105", bits);
           Real S0 = new Real("100", bits); Real rT = new Real("0.02", bits); Real ktil = new Real();
           Real c = new Real("1.4", bits); Real κ1 = new Real("1", bits); Real κ2 = new Real("7/4", bits);
           Real p1 = new Real(); Real p2 = new Real())
@@ -83,8 +85,8 @@ public class RoughHestonOptionPricerTest extends
         B.get(1).re().set("1/10", bits);
         B.get(1).im().set("-1/20", bits);
 
-        RoughHestonOptionPricer.lewisSingleSeries(σT2, μT, K, rT, ktil, c, κ1, w, B, bits, p1);
-        RoughHestonOptionPricer.lewisSingleSeries(σT2, μT, K, rT, ktil, c, κ2, w, B, bits, p2);
+        pricing.lewisSingleSeries(σT2, μT, K, rT, ktil, c, κ1, w, B, bits, p1);
+        pricing.lewisSingleSeries(σT2, μT, K, rT, ktil, c, κ2, w, B, bits, p2);
 
         assertTrue("κ-invariance: p1=" + p1 + " p2=" + p2, p1.overlaps(p2));
       }

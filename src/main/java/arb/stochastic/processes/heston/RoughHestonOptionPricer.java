@@ -1,12 +1,16 @@
 package arb.stochastic.processes.heston;
 
 import arb.Complex;
+import arb.ComplexPolynomial;
+import arb.Integer;
 import arb.Real;
 import arb.RealConstants;
-import arb.RealPolynomial;
 import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.Context;
+import arb.functions.integer.RealFunctionSequence;
+import arb.functions.real.RealFunction;
 
 /**
  * European call/put prices under the rough Heston model, evaluated in closed
@@ -17,18 +21,34 @@ import arb.documentation.TheArb4jLibrary;
  * <p>
  * With Φ_M(u) = −½σ_T²u² − iμ_T·u + ρ(u), ρ proper rational with poles off the
  * Lewis line, the call is the single absolutely convergent erfc–Hermite series
- * (docs/single-series-pricing.md §4–§8)
+ * (docs/single-series-pricing.md §4–§8, docs/RoughHestonExactPricingReconciliation)
  *
  * <pre>
- *   C_M = K·e^{−rT}·Σ_{n=0..∞} q_n·(T_n^{(1)} − T_n^{(0)})
+ *   C_M = K·e^{−rT}·Σ_{n=0..N*} q_n·(T_n^{(1)} − T_n^{(0)})
  * </pre>
  *
- * whose stopping rule is the a-priori geometric majorant τ(N); the returned
- * ball is the partial sum widened by τ(N) ≤ 2^{−bits} — a certified enclosure.
- * The pole-free case collapses to Black–Scholes exactly. Successive Padé
- * orders M are compared and the evaluation returns when consecutive certified
- * prices agree within 2^{−bits}, per the Padé a-posteriori criterion; there is
- * no cap on M or on the series index.
+ * whose length N* is the exit index of the a-priori geometric tail majorant
+ * τ(N) = τC·R^{−(N+1)} — derived from the certified radius data, never an
+ * allocation constant — and whose returned ball is the partial sum widened by
+ * τ(N) ≤ 2^{−bits}. The pole-free case collapses to Black–Scholes exactly.
+ *
+ * <p>
+ * The mathematics lives in compiled expressions, not Java: the
+ * Schwinger–Gauss–erfc function E and its scaled derivative sequence
+ *
+ * <pre>
+ *   E:w ➔ ½·e^{g(w)}·erfc(z(w)) − θ(w−c)·e^{g(w)},   g(w) = ½σ²w² − wξ
+ *   A:m ➔ w ➔ when(m=1, E(w), else, diff(A(m-1)(w), w)/(m-1))
+ * </pre>
+ *
+ * are expressions in a per-instance {@link Context} — the derivative chain is
+ * the compiler's symbolic {@code diff}, the indicator is the Heaviside θ, and
+ * every recurrence is over the compiled sequence index. The Maclaurin data of
+ * ψ = e^R is produced by ONE ring operation ({@code acb_poly_exp_series} of
+ * the rational R(ζ) = Σ_j (B_j/a_j)(1−ζ)/(1−ρ_jζ) assembled by
+ * {@code acb_poly_inv_series}), and its coefficients are read as
+ * point-derivatives ψ^{(n)}(0)/n!. Scalars appear only as evaluations of these
+ * recursively generated objects.
  *
  * @author Stephen Crowley ©2026
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -47,25 +67,70 @@ public class RoughHestonOptionPricer implements
 
   private final boolean                          ownsParameters;
 
+  /** Per-instance expression context for the Lewis-series machinery. */
+  public final Context                           lewisContext = new Context();
+
+  /** σ² (Gaussian head variance), a rebindable context variable. */
+  public final Real                              σsq          = new Real("1",
+                                                                         128).setName("σsq");
+
+  /** ξ = k̃ + μ_T, a rebindable context variable. */
+  public final Real                              ξ            = new Real("0",
+                                                                         128).setName("ξ");
+
+  /** Lewis abscissa c, a rebindable context variable. */
+  public final Real                              cLine        = new Real("3/2",
+                                                                         128).setName("cLine");
+
+  /**
+   * E(w) = ½e^{g(w)}erfc(z_w) − θ(w−c)e^{g(w)}: the Schwinger–Gauss–erfc
+   * function as ONE compiled expression over the context variables σsq, ξ,
+   * cLine.
+   */
+  public final RealFunction            E;
+
+  /**
+   * A:m➔w➔diff(E(w),w^(m−1))/Γ(m) — the scaled derivative sequence as ONE
+   * compiled expression: the symbolic nth-order {@code diff} owns the entire
+   * derivative chain and the sequence caches each order.
+   */
+  public final RealFunctionSequence    A;
+
   public RoughHestonOptionPricer()
   {
-    this.φ              = new RoughHestonCharacteristicFunction();
-    this.S0             = new Real("1",
-                                   128).setName("S0");
-    this.rr             = new Real("0",
-                                   128).setName("rr");
-    this.K              = new Real("1",
-                                   128);
-    this.ownsParameters = true;
+    this(new RoughHestonCharacteristicFunction(),
+         new Real("1",
+                  128).setName("S0"),
+         new Real("0",
+                  128).setName("rr"),
+         new Real("1",
+                  128),
+         true);
   }
 
   public RoughHestonOptionPricer(RoughHestonCharacteristicFunction φ, Real S0, Real rr, Real K)
+  {
+    this(φ,
+         S0,
+         rr,
+         K,
+         false);
+  }
+
+  private RoughHestonOptionPricer(RoughHestonCharacteristicFunction φ, Real S0, Real rr, Real K, boolean owns)
   {
     this.φ              = φ;
     this.S0             = S0;
     this.rr             = rr;
     this.K              = K;
-    this.ownsParameters = false;
+    this.ownsParameters = owns;
+    lewisContext.registerVariable(σsq);
+    lewisContext.registerVariable(ξ);
+    lewisContext.registerVariable(cLine);
+    RealFunction.express("g:w➔σsq*w²/2-w*ξ", lewisContext);
+    RealFunction.express("z:w➔(ξ-σsq*w)/sqrt(2*σsq)", lewisContext);
+    this.E = RealFunction.express("E:w➔exp(g(w))*erfc(z(w))/2-θ(w-cLine)*exp(g(w))", lewisContext);
+    this.A = RealFunctionSequence.express("A:m➔w➔diff(E(w),w^(m-1))/Γ(m)", lewisContext);
   }
 
   /**
@@ -160,145 +225,154 @@ public class RoughHestonOptionPricer implements
 
   /**
    * The Lewis line integral C = (K·e^{−rT}/2πi)∫ e^{g(w)}ψ(w)/(w(w−1))dw as
-   * the single erfc–Hermite series over the Cayley-compactified proper part:
-   * kernel evaluations at the fixed nodes {0, 1, q}, q = c + κ; Maclaurin
-   * data of ψ = e^{R} by the exp-of-a-series recurrence n·q_n = Σ m·r_m·q_{n−m};
-   * a-priori geometric tail majorant as the stopping rule and ball radius.
+   * the single erfc–Hermite series over the Cayley-compactified proper part.
+   * The Schwinger–Gauss–erfc values are evaluations of the compiled {@link #E}
+   * and its compiled derivative sequence {@link #A} after rebinding the
+   * context variables (σsq, ξ, cLine); the Maclaurin data of ψ = e^R is one
+   * {@code acb_poly_exp_series}; the series length is the majorant exit index.
    * Poles {@code w}/residues {@code B} null means ρ ≡ 0 (exact Black–Scholes).
    */
-  public static Real lewisSingleSeries(Real σT2, Real μT, Real K, Real rT, Real ktil, Real c, Real κ,
-                                       Complex w, Complex B, int bits, Real res)
+  public Real lewisSingleSeries(Real σT2, Real μT, Real K, Real rT, Real ktil, Real c, Real κ,
+                                Complex w, Complex B, int bits, Real res)
   {
     if (σT2.sign() <= 0)
       throw new ArithmeticException("σ_T² must be strictly positive; got " + σT2);
     final int p = w == null ? 0 : w.dim();
 
-    try ( Real ξ = new Real(); Real discount = new Real(); Real σ = new Real(); Real q = new Real();
-          Real target = new Real())
+    // Rebind the compiled-expression context to this expansion's data.
+    σsq.set(σT2);
+    ktil.add(μT, bits, ξ);
+    cLine.set(c);
+    lewisContext.invalidateAllCaches();
+
+    try ( Real discount = new Real(); Real q = new Real(); Real target = new Real();
+          Integer m = new Integer())
     {
-      ktil.add(μT, bits, ξ);
       rT.neg(discount);
       discount.exp(bits, discount).mul(K, bits, discount);
-      σT2.sqrt(bits, σ);
       c.add(κ, bits, q);
       target.one().mul2e(-bits, target);
 
-      final int span = (p == 0) ? 0 : 4 * bits + 64;
-
-      try ( Real E0 = new Real(); Real E1 = new Real(); Real Aq = Real.newVector(Math.max(1, span + 1)))
+      try ( Real G01 = new Real(); Real R = new Real(); Real Rinv = new Real(); Real normPsi = new Real();
+            Real tauC = new Real(); Real τ = new Real())
       {
-        KernelChain kernel = new KernelChain(σT2,
-                                             σ,
-                                             ξ,
-                                             c,
-                                             bits,
-                                             span + 1);
-        kernel.derivative(1, RealConstants.zero, E0);
-        kernel.derivative(1, RealConstants.one, E1);
-        for (int m = 1; m <= span + 1; m++)
-          kernel.derivative(m, q, Aq.get(m - 1));
-
-        try ( Complex qn = Complex.newVector(span + 1))
+        final int span;
+        if (p == 0)
         {
-          exponentialSeries(qn, w, B, c, κ, bits, span);
-
-          try ( Real G01 = new Real(); Real R = new Real(); Real Rinv = new Real(); Real normPsi = new Real();
-                Real tauC = new Real(); Real τ = new Real())
+          τ.zero();
+          span = 0;
+        }
+        else
+        {
+          contourBound(σT2, ξ, c, bits, G01);
+          majorantRadius(w, B, c, κ, bits, R, Rinv, normPsi);
+          tauC.set(discount).mul(G01, bits, tauC).mul(normPsi, bits, tauC);
+          try ( Real oneMinus = new Real())
           {
-            contourBound(σT2, σ, ξ, c, bits, G01);
+            oneMinus.one().sub(Rinv, bits, oneMinus);
+            tauC.div(oneMinus, bits, tauC);
+          }
+          span = exitIndex(tauC, R, bits);
+        }
+
+        try ( Real E0 = new Real(); Real E1 = new Real(); Real Aq = Real.newVector(span + 1))
+        {
+          E.evaluate(RealConstants.zero, 1, bits, E0);
+          E.evaluate(RealConstants.one, 1, bits, E1);
+          for (int order = 1; order <= span + 1; order++)
+          {
+            m.set(order);
+            A.evaluate(m, 1, bits, null).evaluate(q, 1, bits, Aq.get(order - 1));
+          }
+
+          try ( ComplexPolynomial ψ = new ComplexPolynomial(); ComplexPolynomial dψ = new ComplexPolynomial();
+                Complex origin = new Complex(); Complex qn = new Complex(); Real fact = new Real();
+                Complex acc = new Complex(); Complex term = new Complex(); Real diff = new Real();
+                Real T0 = new Real(); Real T1 = new Real(); Real Rpow = new Real())
+          {
             if (p == 0)
             {
-              τ.zero();
+              ψ.fitLength(1);
+              ψ.setLength(1);
+              ψ.get(0).one();
             }
             else
             {
-              majorantRadius(w, B, c, κ, bits, R, Rinv, normPsi);
-              tauC.set(discount).mul(G01, bits, tauC).mul(normPsi, bits, tauC);
-              try ( Real oneMinus = new Real())
-              {
-                oneMinus.one().sub(Rinv, bits, oneMinus);
-                tauC.div(oneMinus, bits, tauC);
-              }
+              exponentialOfCayleySeries(ψ, w, B, c, κ, span + 1, bits);
             }
 
-            try ( Complex acc = new Complex(); Complex term = new Complex(); Real diff = new Real();
-                  Real T0 = new Real(); Real T1 = new Real(); Real Rpow = new Real())
+            acc.zero();
+            Rpow.one();
+            fact.one();
+            for (int n = 0; n <= span; n++)
             {
-              acc.zero();
-              Rpow.one();
-              for (int n = 0; n <= span; n++)
+              // q_n = ψ^{(n)}(0)/n! — point-derivative of the generated series
+              ψ.evaluate(origin, 1, bits, qn);
+              qn.div(fact, bits, qn);
+              termIntegral(n, 0, E0, Aq, q, κ, bits, T0);
+              termIntegral(n, 1, E1, Aq, q, κ, bits, T1);
+              T1.sub(T0, bits, diff);
+              qn.mul(diff, bits, term);
+              acc.add(term, bits, acc);
+              if (p == 0)
               {
-                termIntegral(n, 0, E0, Aq, q, κ, bits, T0);
-                termIntegral(n, 1, E1, Aq, q, κ, bits, T1);
-                T1.sub(T0, bits, diff);
-                qn.get(n).mul(diff, bits, term);
-                acc.add(term, bits, acc);
-                if (p == 0)
-                {
-                  break;
-                }
-                Rpow.mul(Rinv, bits, Rpow);
-                τ.set(tauC).mul(Rpow, bits, τ);
-                if (τ.compareTo(target) <= 0)
-                  break;
+                break;
               }
-              acc.mul(discount, bits, acc);
-              res.set(acc.re());
-              arblib.arb_add_error(res, τ);
-              return res;
+              Rpow.mul(Rinv, bits, Rpow);
+              τ.set(tauC).mul(Rpow, bits, τ);
+              if (τ.compareTo(target) <= 0)
+                break;
+              ψ.differentiate(bits, dψ);
+              ψ.set(dψ);
+              fact.mul(n + 1, bits, fact);
             }
+            acc.mul(discount, bits, acc);
+            res.set(acc.re());
+            arblib.arb_add_error(res, τ);
+            return res;
           }
-        }
-      }
-    }
-  }
-
-  /** q_0 = e^{r_0}; n·q_n = Σ_{m=1..n} m·r_m·q_{n−m}. */
-  private static void exponentialSeries(Complex qn, Complex w, Complex B, Real c, Real κ, int bits, int span)
-  {
-    final int p = w == null ? 0 : w.dim();
-    if (p == 0)
-    {
-      qn.get(0).one();
-      for (int n = 1; n <= span; n++)
-        qn.get(n).zero();
-      return;
-    }
-    try ( Complex r = Complex.newVector(span + 1))
-    {
-      cayleySeries(r, w, B, c, κ, bits, span);
-      r.get(0).exp(bits, qn.get(0));
-      try ( Complex s = new Complex(); Complex t = new Complex())
-      {
-        for (int n = 1; n <= span; n++)
-        {
-          s.zero();
-          for (int m = 1; m <= n; m++)
-          {
-            r.get(m).mul(qn.get(n - m), bits, t);
-            t.mul(m, bits, t);
-            s.add(t, bits, s);
-          }
-          s.div(n, bits, qn.get(n));
         }
       }
     }
   }
 
   /**
-   * Maclaurin data of R(ζ) = ρ(w(ζ)): with a_j = c−κ−w_j, b_j = c+κ−w_j,
-   * ρ_j = b_j/a_j: r_0 = Σ B_j/a_j, r_m = Σ (B_j/a_j)·ρ_j^{m−1}(ρ_j−1).
+   * The least N with τC·R^{−(N+1)} ≤ 2^{−bits}: N* = ⌈(log τC + bits·log 2)/log R⌉,
+   * derived from the certified majorant data — never an allocation constant.
    */
-  private static void cayleySeries(Complex r, Complex w, Complex B, Real c, Real κ, int bits, int span)
+  private static int exitIndex(Real tauC, Real R, int bits)
   {
-    try ( Complex a = new Complex(); Complex b = new Complex(); Complex rho = new Complex();
-          Complex Ba = new Complex(); Complex rhoP = new Complex(); Complex rm1 = new Complex();
-          Complex t = new Complex(); Real cmk = new Real(); Real cpk = new Real())
+    try ( Real num = new Real(); Real den = new Real(); Real two = new Real())
+    {
+      tauC.log(bits, num);
+      two.set(2).log(bits, two).mul(bits, bits, two);
+      num.add(two, bits, num);
+      R.log(bits, den);
+      num.div(den, bits, num);
+      int n = (int) Math.ceil(num.doubleValue());
+      return Math.max(0, n);
+    }
+  }
+
+  /**
+   * ψ = e^{R(ζ)} as ONE ring operation: R(ζ) = Σ_j (B_j/a_j)·(1−ζ)·(1−ρ_jζ)^{−1}
+   * assembled per pole via {@code acb_poly_inv_series} and ring multiplication,
+   * then {@code acb_poly_exp_series}. No scalar convolution exists anywhere.
+   */
+  private static void exponentialOfCayleySeries(ComplexPolynomial ψ, Complex w, Complex B, Real c, Real κ,
+                                                int len, int bits)
+  {
+    try ( ComplexPolynomial R = new ComplexPolynomial(); ComplexPolynomial D = new ComplexPolynomial();
+          ComplexPolynomial inv = new ComplexPolynomial(); ComplexPolynomial factor = new ComplexPolynomial();
+          ComplexPolynomial termPoly = new ComplexPolynomial();
+          Complex a = new Complex(); Complex b = new Complex(); Complex rho = new Complex();
+          Complex Ba = new Complex(); Real cmk = new Real(); Real cpk = new Real())
     {
       c.sub(κ, bits, cmk);
       c.add(κ, bits, cpk);
-      for (int m = 0; m <= span; m++)
-        r.get(m).zero();
+      R.fitLength(len);
+      R.setLength(len);
+
       for (int j = 0; j < w.dim(); j++)
       {
         a.set(w.get(j)).neg(a);
@@ -307,23 +381,32 @@ public class RoughHestonOptionPricer implements
         b.re().add(cpk, bits, b.re());
         B.get(j).div(a, bits, Ba);
         b.div(a, bits, rho);
-        rho.sub(1, bits, rm1);
-        r.get(0).add(Ba, bits, r.get(0));
-        rhoP.one();
-        for (int m = 1; m <= span; m++)
-        {
-          Ba.mul(rhoP, bits, t);
-          t.mul(rm1, bits, t);
-          r.get(m).add(t, bits, r.get(m));
-          rhoP.mul(rho, bits, rhoP);
-        }
+
+        // D(ζ) = 1 − ρ_j·ζ ; inv = D^{−1} mod ζ^len
+        D.fitLength(2);
+        D.setLength(2);
+        D.get(0).one();
+        rho.neg(D.get(1));
+        arblib.acb_poly_inv_series(inv, D, len, bits);
+
+        // factor(ζ) = (B_j/a_j)·(1 − ζ)
+        factor.fitLength(2);
+        factor.setLength(2);
+        factor.get(0).set(Ba);
+        Ba.neg(factor.get(1));
+
+        factor.mul(inv, bits, termPoly);
+        if (termPoly.getLength() > len)
+          termPoly.setLength(len);
+        R.add(termPoly, bits, R);
       }
+      arblib.acb_poly_exp_series(ψ, R, len, bits);
     }
   }
 
   /**
    * T_n^{(δ)} = E(δ) + Σ_{k=1..n} C(n,k)(2κ)^k·[Σ_{m=1..k}(−1)^{k−m}(q−δ)^{−(k−m+1)}·A_m(q)
-   * + (δ−q)^{−k}·E(δ)].
+   * + (δ−q)^{−k}·E(δ)] — a finite combination of the compiled-kernel values.
    */
   private static void termIntegral(int n, int delta, Real Edelta, Real Aq, Real q, Real κ, int bits, Real res)
   {
@@ -365,10 +448,11 @@ public class RoughHestonOptionPricer implements
   }
 
   /** G_0 + G_1 ≤ e^{σ_T²c²/2 − cξ}/(σ√(2π))·(1/|c−1| + 1/|c|). */
-  private static void contourBound(Real σT2, Real σ, Real ξ, Real c, int bits, Real res)
+  private static void contourBound(Real σT2, Real ξ, Real c, int bits, Real res)
   {
-    try ( Real base = new Real(); Real e = new Real(); Real t = new Real())
+    try ( Real base = new Real(); Real e = new Real(); Real t = new Real(); Real σ = new Real())
     {
+      σT2.sqrt(bits, σ);
       c.mul(c, bits, t);
       t.mul(σT2, bits, t).mul2e(-1, t);
       c.mul(ξ, bits, e);
@@ -433,167 +517,17 @@ public class RoughHestonOptionPricer implements
     }
   }
 
-  /**
-   * The kernel chain E(w) = ½e^{g(w)}erfc(z_w) − 1_{w&gt;c}e^{g(w)} and its
-   * scaled derivatives A_m(w) = ∂_w^{m−1}E(w)/(m−1)!, g(w) = ½σ_T²w² − wξ,
-   * z_w = (ξ−σ_T²w)/(σ_T√2), carried as the polynomial recurrence
-   * P_{k+1} = P_k' + g'·P_k (so ∂^k e^g = e^g·P_k) paired with the physicists'
-   * Hermite three-term recurrence — polynomial algebra throughout.
-   */
-  private static final class KernelChain
-  {
-    final Real             σT2;
-    final Real             σ;
-    final Real             ξ;
-    final Real             c;
-    final int              bits;
-    final Real             gauss;
-    final RealPolynomial   gp;
-    final RealPolynomial[] P;
-
-    KernelChain(Real σT2, Real σ, Real ξ, Real c, int bits, int order)
-    {
-      this.σT2  = σT2;
-      this.σ    = σ;
-      this.ξ    = ξ;
-      this.c    = c;
-      this.bits = bits;
-
-      this.gauss = new Real();
-      try ( Real t = new Real())
-      {
-        ξ.mul(ξ, bits, t);
-        t.div(σT2, bits, t).mul2e(-1, t).neg(t);
-        t.exp(bits, t);
-        t.div(RealConstants.sqrtπ, bits, gauss);
-      }
-
-      this.gp = new RealPolynomial(2);
-      gp.set(0, ξ.neg(new Real()));
-      gp.set(1, σT2);
-
-      this.P    = new RealPolynomial[Math.max(1, order)];
-      P[0] = new RealPolynomial(1);
-      P[0].set(0, RealConstants.one);
-      for (int k = 1; k < P.length; k++)
-      {
-        RealPolynomial deriv = P[k - 1].derivative();
-        RealPolynomial prod  = gp.mul(P[k - 1], bits, new RealPolynomial(1));
-        P[k] = deriv.add(prod, bits, new RealPolynomial(1));
-        deriv.close();
-        prod.close();
-      }
-    }
-
-    private Real g(Real w, Real res)
-    {
-      try ( Real t = new Real())
-      {
-        w.mul(w, bits, res);
-        res.mul(σT2, bits, res).mul2e(-1, res);
-        w.mul(ξ, bits, t);
-        res.sub(t, bits, res);
-      }
-      return res;
-    }
-
-    private Real z(Real w, Real res)
-    {
-      try ( Real t = new Real())
-      {
-        w.mul(σT2, bits, t);
-        ξ.sub(t, bits, res);
-        σ.mul(RealConstants.sqrt2, bits, t);
-        res.div(t, bits, res);
-      }
-      return res;
-    }
-
-    private Real hermite(int n, Real x, Real res)
-    {
-      if (n == 0)
-        return res.one();
-      try ( Real h0 = new Real(); Real h1 = new Real(); Real t = new Real())
-      {
-        h0.one();
-        x.mul(2, bits, h1);
-        if (n == 1)
-          return res.set(h1);
-        for (int k = 1; k < n; k++)
-        {
-          x.mul(2, bits, t).mul(h1, bits, t);
-          h0.mul(2 * k, bits, h0);
-          t.sub(h0, bits, res);
-          h0.set(h1);
-          h1.set(res);
-        }
-        return res;
-      }
-    }
-
-    Real derivative(int m, Real w, Real res)
-    {
-      final int m1 = m - 1;
-      try ( Real eg = new Real(); Real zw = new Real(); Real ec = new Real(); Real ind = new Real();
-            Real term0 = new Real(); Real s = new Real(); Real Pval = new Real(); Real Hval = new Real();
-            Real sfac = new Real(); Real binom = new Real(); Real coef = new Real(); Real fact = new Real())
-      {
-        g(w, eg);
-        eg.exp(bits, eg);
-        z(w, zw);
-        zw.erfc(bits, ec);
-        if (w.compareTo(c) > 0)
-          ind.set(eg);
-        else
-          ind.zero();
-        P[m1].evaluate(w, 1, bits, Pval);
-        term0.set(eg).mul(Pval, bits, term0).mul2e(-1, term0).mul(ec, bits, term0);
-        try ( Real t = new Real())
-        {
-          ind.mul(Pval, bits, t);
-          term0.sub(t, bits, term0);
-        }
-        s.zero();
-        σ.div(RealConstants.sqrt2, bits, coef);
-        sfac.one();
-        for (int j = 1; j <= m1; j++)
-        {
-          sfac.mul(coef, bits, sfac);
-          binomial(m1, j, binom);
-          P[m1 - j].evaluate(w, 1, bits, Pval);
-          hermite(j - 1, zw, Hval);
-          fact.set(binom).mul(sfac, bits, fact).mul(Pval, bits, fact).mul(Hval, bits, fact);
-          s.add(fact, bits, s);
-        }
-        s.mul(gauss, bits, s);
-        res.set(term0).add(s, bits, res);
-        factorial(m1, fact);
-        res.div(fact, bits, res);
-        return res;
-      }
-    }
-
-    private void binomial(int n, int k, Real res)
-    {
-      res.one();
-      for (int i = 0; i < k; i++)
-      {
-        res.mul(n - i, bits, res);
-        res.div(i + 1, bits, res);
-      }
-    }
-
-    private void factorial(int n, Real res)
-    {
-      res.one();
-      for (int i = 2; i <= n; i++)
-        res.mul(i, bits, res);
-    }
-  }
-
   @Override
   public void close()
   {
+    if (A != null)
+      A.close();
+    if (E != null)
+      E.close();
+    lewisContext.close();
+    σsq.close();
+    ξ.close();
+    cLine.close();
     if (ownsParameters)
     {
       φ.close();
