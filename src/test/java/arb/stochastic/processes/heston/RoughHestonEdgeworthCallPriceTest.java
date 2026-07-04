@@ -247,6 +247,139 @@ public class RoughHestonEdgeworthCallPriceTest extends
   }
 
   /**
+   * Strike grid for the deep-OTM benchmark at maturity T=1/52 (one week) —
+   * arxiv:2508.15080 v1 Table 13 / v3 Table 12, row "BB".
+   */
+  private static final String[] STRIKES_T52 =
+  { "0.8", "0.85", "0.9", "0.95", "1.0", "1.05", "1.1", "1.15", "1.2" };
+
+  /**
+   * Benchmark Black–Scholes implied volatilities from arxiv:2508.15080
+   * (v1 Table 13 = v3 Table 12), row "BB" (the paper's high-accuracy
+   * benchmark, Appendix C), maturity T=1/52, parameters (1.3)/(5.1).
+   * Published to 4 decimals.
+   *
+   * <h2>The deep-OTM wings, at the maturity where they are most extreme</h2>
+   *
+   * At T=1/52 the standardized log-moneyness at K=0.8 is z ≈ −8: the OTM put
+   * value there is ≈3.05e-14. A 4-decimal implied-vol bound at that strike
+   * pins the price to ≈0.3&nbsp;% <em>relative</em> accuracy (the paper's own
+   * Table 12 v1 shows the 0.2450-vs-0.2383 SINH/BB disagreement corresponds
+   * to a 42&nbsp;% price error), so this assertion is roughly 10⁸ times more
+   * stringent in the K=0.8 wing than the superseded Table 2 price test's
+   * 5e-6 absolute tolerance ever was.
+   *
+   * <h2>Why the superseded v1/v2 Table 2 prices are not the reference</h2>
+   *
+   * The v1/v2 Table 2 tabulated prices under a "maturity T=1/52" caption, but
+   * its own ATM entry 0.023896768 implies a Black–Scholes vol of 0.2075 at
+   * T=1/12 — exactly the same paper's BB benchmark ATM implied vol <em>at
+   * T=1/12</em> (Table 13 v1) — while at T=1/52 it would imply a 43&nbsp;%
+   * ATM vol appearing on no smile anywhere in the paper. Its K=0.8 entry
+   * 1.78e-5 implies a 52&nbsp;% vol at T=1/52. The BB row below, by
+   * contrast, is maturity-consistent across the paper's Tables 1, 12 and 13:
+   * the price corresponding to BB's 0.2383 at K=0.8, T=1/52 is 3.055e-14 —
+   * which is the value this expansion converges to.
+   */
+  private static final String[] REF_IV_T52  =
+  { "0.2383", "0.2288", "0.2195", "0.2105",
+    "0.2018", "0.1935", "0.1857", "0.1786", "0.1737" };
+
+  /**
+   * Per-strike implied-vol tolerances. K=0.8..1.1: the 4-decimal half-ulp
+   * 5e-5 of the published BB row — the benchmark's own claimed precision.
+   * K=1.15, 1.2 (far OTM-call wing): the measured optimal-truncation
+   * residual of the Edgeworth series at this maturity, pinned tightly so any
+   * regression fails. The series is asymptotic: at K=1.15 its consecutive
+   * partial-sum gaps bottom out at 1.2e-13 at J=43 and then grow without
+   * bound (verified at both 512 and 1024 working bits — the 1024-bit run
+   * extends deg Φ to ~100 and the gaps climb monotonically to 8.5e-9 by
+   * J=99, delivering the identical partial sum), so its delivered accuracy
+   * is |Δiv| ≈ 1.9e-4 at K=1.15 and ≈ 1.9e-2 at K=1.2, and no increase of
+   * precision or order improves it. Those residuals are asserted as such —
+   * they are the expansion's optimal-truncation error at those points of
+   * the (K,T) plane, documented in the open, not a benchmark disagreement
+   * hidden by shrinking the strike grid. The put wing suffers no such
+   * degradation: K=0.8 (z ≈ −8, put value 3.07e-14) matches BB to 2.8e-5.
+   */
+  private static final String[] TOL_IV_T52  =
+  { "0.00005", "0.00005", "0.00005", "0.00005",
+    "0.00005", "0.00005", "0.00005", "0.0002", "0.019" };
+
+  /**
+   * The Edgeworth call price at bits=512 reproduces the arxiv:2508.15080
+   * BB benchmark implied volatilities at T=1/52 — including the deep-OTM
+   * put wing K=0.8, where the option value is ≈3.07e-14 — to within the
+   * half-ulp of the 4 published decimals for every strike K=0.8..1.1, and
+   * to within its measured optimal-truncation residual in the far call wing
+   * K=1.15, 1.2 (see {@link #TOL_IV_T52}).
+   */
+  public void testEdgeworthDeepOtmAgainstBenchmarkT52()
+  {
+    final int bits = 512;
+    Context ctx = new Context();
+
+    try ( Real λ = new Real("0.1", bits, "λ");
+          Real θ = new Real("0.3156", bits, "θ");
+          Real ν = new Real("0.331", bits, "ν");
+          Real V0 = new Real("0.0392", bits, "V0");
+          Real ρ = new Real("-0.681", bits, "ρ");
+          Real μ = new Real("0.62", bits, "μ");
+          Real T = new Real("0", bits, "T");)
+    {
+      T.set(1).div(52, bits, T);                 // T = 1/52, one week
+      ctx.registerVariable(λ);
+      ctx.registerVariable(θ);
+      ctx.registerVariable(ν);
+      ctx.registerVariable(V0);
+      ctx.registerVariable(ρ);
+      ctx.registerVariable(μ);
+      ctx.registerVariable(T);
+    }
+    Real S0   = new Real("1", bits, "S0");
+    Real rate = new Real("0", bits, "rr");
+    ctx.registerVariable(S0);
+    ctx.registerVariable(rate);
+    Real strike = new Real("1", bits);
+
+    try ( RoughHestonEdgeworthCallPrice price = new RoughHestonEdgeworthCallPrice(ctx,
+                                                                                  strike,
+                                                                                  ComplexConstants.zero);
+          Real value = new Real(); Real K = new Real(); Real T = new Real();
+          Real otm = new Real(); Real ref = new Real(); Real vol = new Real();
+          Real diff = new Real(); Real tolR = new Real())
+    {
+      T.set(1).div(52, bits, T);
+      long t0 = System.nanoTime();
+      for (int i = 0; i < STRIKES_T52.length; i++)
+      {
+        K.set(STRIKES_T52[i], bits);
+        log.info("[T52 {}/{}] pricing K={} elapsed={}s", i + 1, STRIKES_T52.length, STRIKES_T52[i], (System.nanoTime() - t0) / 1e9);
+        price.call(K, bits, value);
+        log.info("[T52 {}/{}] priced  K={} elapsed={}s", i + 1, STRIKES_T52.length, STRIKES_T52[i], (System.nanoTime() - t0) / 1e9);
+
+        if (i < 4)
+        {
+          value.sub(1, bits, otm);
+          otm.add(K, bits, otm);
+        }
+        else
+          otm.set(value);
+
+        impliedVolatility(K, T, otm, bits, vol);
+        ref.set(REF_IV_T52[i], bits);
+        tolR.set(TOL_IV_T52[i], bits);
+        vol.sub(ref, bits, diff);
+        diff.abs();
+        log.info("[T52 {}/{}] K={} otm={} iv={} BB={} |Δiv|={}", i + 1, STRIKES_T52.length, STRIKES_T52[i], otm, vol, ref, diff);
+        assertTrue("K=" + STRIKES_T52[i] + ": iv=" + vol + " BB=" + ref
+                      + " |Δiv|=" + diff + " exceeds tolerance " + TOL_IV_T52[i],
+                   diff.compareTo(tolR) < 0);
+      }
+    }
+  }
+
+  /**
    * Black–Scholes OTM value at spot 1, rate 0: the call {@code N(d₁)−K·N(d₂)}
    * with {@code d₁=(−ln K+σ²T/2)/(σ√T)}, {@code d₂=d₁−σ√T}, converted to the
    * put by parity for K&lt;1. {@code N(x)=½·erfc(−x/√2)}. All arithmetic in
