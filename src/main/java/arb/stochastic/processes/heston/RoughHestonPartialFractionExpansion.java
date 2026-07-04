@@ -49,6 +49,24 @@ public class RoughHestonPartialFractionExpansion implements
     this.A   = A;
   }
 
+  /**
+   * The hypothesis of the erfc–Hermite series representation at this order:
+   * σ_T² &gt; 0 and every pole strictly below the real axis (Im u_j &lt; 0), so
+   * ψ = e^ρ is analytic on the closed left w-half-plane of the Lewis line.
+   * Guaranteed for all sufficiently large M by the pole-location asymptotics;
+   * an order at which it fails is outside this chart and the next order is
+   * taken.
+   */
+  public boolean admissible()
+  {
+    if (σT2.sign() <= 0)
+      return false;
+    for (int j = 0; j < u.dim(); j++)
+      if (u.get(j).im().sign() >= 0)
+        return false;
+    return true;
+  }
+
   @Override
   public void close()
   {

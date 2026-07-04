@@ -591,6 +591,12 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return arg.sinh();
     case "exp":
       return this;
+    case "erf":
+      return erfDerivative();
+    case "erfc":
+      return erfDerivative().neg();
+    case "erfi":
+      return erfiDerivative();
     case "log":
       return one().div(arg);
     case "cot":
@@ -636,18 +642,25 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
           return differentiateFunctionMapping(ctxMapping);
         }
       }
-      throw new UnsupportedOperationException("Derivative not implemented for builtin function: "
-                                              + functionName
-                                              + " in expression '"
-                                              + expression
-                                              + "'. Register the function in the context with a name prefix "
-                                              + "(e.g. \"P:v->...\" instead of \"v->...\") so it can be differentiated symbolically.");
+      throw new UnsupportedOperationException("Derivative not implemented for builtin function: " + functionName + " in expression '" + expression + "'");
     }
   }
 
   public Node<D, R, F> arcsinDerivative()
   {
     return one().div(one().sub(arg.pow(2)).sqrt());
+  }
+
+  /** (2/√π)·e^{−z²} — the derivative of erf. */
+  public Node<D, R, F> erfDerivative()
+  {
+    return two().div(π().sqrt()).mul(arg.pow(2).neg().exp());
+  }
+
+  /** (2/√π)·e^{+z²} — the derivative of erfi. */
+  public Node<D, R, F> erfiDerivative()
+  {
+    return two().div(π().sqrt()).mul(arg.pow(2).exp());
   }
 
   /**

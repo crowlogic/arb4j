@@ -1648,6 +1648,43 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
+   * Optional structural-coherence check: walks the tree with {@link Node#accept}
+   * and reports any node INSTANCE encountered at more than one position.
+   * {@code parent} is single-valued, so one instance at two positions (the
+   * aliasing of issue #1096, e.g. a differentiation rule reusing a live operand
+   * instead of a spliced copy) corrupts the tree: the common-subexpression pass
+   * loses its canonical compute-and-store and the generated class reads an
+   * unassigned field. Call after any AST surgery (differentiate, substitute,
+   * simplify) and before compilation when diagnosing such defects.
+   *
+   * @return this, for chaining
+   * @throws IllegalStateException naming the first node instance that occurs
+   *                               at two positions and this expression
+   */
+  public Expression<D, C, F> verifyTreeCoherence()
+  {
+    if (rootNode == null)
+    {
+      return this;
+    }
+    var visited = new ArrayList<Node<D, C, F>>();
+    rootNode.accept(node ->
+    {
+      for (Node<D, C, F> seen : visited)
+      {
+        if (seen == node)
+        {
+          throw new IllegalStateException("node instance " + node + " (a " + node.getClass().getSimpleName()
+                                          + ") occurs at two positions in " + this
+                                          + " — a transformation reused a live node instead of a spliced copy");
+        }
+      }
+      visited.add(node);
+    });
+    return this;
+  }
+
+  /**
    * Lazy on-demand symbolic partial derivative w.r.t. {@code variable}, returned
    * as a fresh compiled {@link Function}. The work is pure-Java AST surgery on
    * the already-parsed {@link #rootNode} — no source re-parsing — followed by a
@@ -4356,13 +4393,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       if (nextCharacterRepresentsMultiplication())
       {
-        Node<D, C, F> exponentiated = exponentiate();
+        Node<D, C, F> exponentiated = exponentiateFactor();
         assert exponentiated != null : "exponentiate() returned null to be multiplied at position=" + position;
         node = node.mul(exponentiated);
       }
       else if (nextCharacterRepresentsDivision())
       {
-        Node<D, C, F> exponentiated = exponentiate();
+        Node<D, C, F> exponentiated = exponentiateFactor();
         assert exponentiated != null : "exponentiate() returned null to be divided at position=" + position;
         node = node.div(exponentiated);
       }
@@ -4371,6 +4408,25 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         return node;
       }
     }
+  }
+
+  /**
+   * A factor at a position where a minus is always unary: after a consumed
+   * {@code *} or {@code /} in {@link #multiplyAndDivide} (binary subtraction
+   * is consumed by {@link #addAndSubtract}), and after a non-parenthetical
+   * {@code ^} in {@link #exponentiate(Node)} (so {@code √(π)^-1} is
+   * {@code √(π)^(−1)} and {@code a*-b^2 = a*(−(b²))}). The printed form of
+   * differentiated expressions produces these. A leading minus at the start
+   * of an additive operand is NOT handled here, preserving
+   * {@code -a*b = −(a·b)}.
+   */
+  private Node<D, C, F> exponentiateFactor()
+  {
+    if (nextCharacterRepresentsSubtraction())
+    {
+      return exponentiateFactor().neg();
+    }
+    return exponentiate();
   }
 
   protected boolean needsCloseMethod()

@@ -186,6 +186,10 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
   {
     super(expression);
 
+    assert right != null : "BinaryOperationNode " + operation + " constructed with null right operand; a unary minus is"
+                           + " SubtractionNode(null,y) with null LEFT only — null right is structurally invalid, in "
+                           + expression;
+
     this.right     = right;
     this.operation = operation;
     this.left      = left;
@@ -195,10 +199,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     {
       left.parent = this;
     }
-    if (right != null)
-    {
-      right.parent = this;
-    }
+    right.parent = this;
   }
 
   @Override

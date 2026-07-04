@@ -137,20 +137,25 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
+    // Every reuse of an undifferentiated operand is a spliced copy — see
+    // MultiplicationNode.differentiate (issue #1096). `this` itself is also
+    // copied where it re-enters the derivative as a factor.
     if (!right.dependsOn(variable))
     {
-      var newExponent = right.sub(one());
-      return right.mul(left.pow(newExponent)).mul(left.differentiate(variable));
+      var newExponent = right.spliceInto(expression).sub(one());
+      return right.spliceInto(expression)
+                  .mul(left.spliceInto(expression).pow(newExponent))
+                  .mul(left.differentiate(variable));
     }
 
     if (!left.dependsOn(variable))
     {
-      return mul(right.differentiate(variable).mul(left.log()));
+      return spliceInto(expression).mul(right.differentiate(variable).mul(left.spliceInto(expression).log()));
     }
 
-    var term1 = right.mul(left.differentiate(variable)).div(left);
-    var term2 = right.differentiate(variable).mul(left.log());
-    return mul(term1.add(term2));
+    var term1 = right.spliceInto(expression).mul(left.differentiate(variable)).div(left.spliceInto(expression));
+    var term2 = right.differentiate(variable).mul(left.spliceInto(expression).log());
+    return spliceInto(expression).mul(term1.add(term2));
   }
 
   @Override
@@ -168,6 +173,22 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   public String format(Node<D, R, F> side)
   {
     return side.isAtomic() ? "%s" : "(%s)";
+  }
+
+  /**
+   * A negative exponent prints parenthesized — {@code √(π)^(-1)}, never
+   * {@code √(π)^-1} — because after {@code ^} the parser reads exactly one
+   * operand and a bare minus there is not an operand; associativity follows
+   * mathematics, so the printed form supplies the parentheses.
+   */
+  @Override
+  public String stringFormat(Node<?, ?, ?> operand)
+  {
+    if (operand == right && operand != null && operand.toString().startsWith("-"))
+    {
+      return "(%s)";
+    }
+    return super.stringFormat(operand);
   }
 
   @Override

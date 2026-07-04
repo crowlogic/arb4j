@@ -89,7 +89,8 @@ public class RoughHestonEdgeworthCallPrice implements
                                             RealFunction,
                                             AutoCloseable
 {
-  private static final Logger                    log            = LoggerFactory.getLogger(RoughHestonEdgeworthCallPrice.class);
+  private static final Logger                    log            =
+                                                     LoggerFactory.getLogger(RoughHestonEdgeworthCallPrice.class);
 
   private static final String                    DEFAULT_S0     = "1.0";
   private static final String                    DEFAULT_K      = "1.0";
@@ -337,14 +338,14 @@ public class RoughHestonEdgeworthCallPrice implements
       // Every cumulant Φ holds: κ(m) = Φ^{(m)}(0) vanishes identically beyond
       // deg Φ, so orders past it add no information. This is the structural
       // content of the expansion, not a tuning knob.
-      int maxOrder = ((RoughHestonCumulantSequence) κ).availableOrder(bits);
-      int bestJ    = 3;
-      for (int j = 4; j <= maxOrder; j++)
+      int order = ((RoughHestonCumulantSequence) κ).availableOrder(bits);
+      int bestJ = 3;
+      for (int j = 4; j <= order; j++)
       {
         J.set(j);
         Π.evaluate(k, 1, bits, current);
         current.sub(previous, bits, gap).abs();
-        log.debug("accumulate k={} J={} Π={} gap={}", k, j, current, gap);
+        log.debug("accumulate k={} J={} gap={}", k, j, gap);
         if (gap.compareTo(threshold) <= 0)
         {
           log.debug("accumulate k={} converged at J={} gap={} ≤ 2^-{}", k, j, gap, bits / 2);
@@ -364,13 +365,13 @@ public class RoughHestonEdgeworthCallPrice implements
           bestGap.mul2e(16, divergence);
           if (gap.compareTo(divergence) > 0)
           {
-            log.debug("accumulate k={} divergence exit at J={} (bestJ={} bestGap={})", k, j, bestJ, bestGap);
+            log.debug("accumulate k={} stalled: bestJ={} bestGap={} divergedAt J={} gap={}", k, bestJ, bestGap, j, gap);
             return dst;
           }
         }
         previous.set(current);
       }
-      log.debug("accumulate k={} exhausted maxOrder={} (bestJ={} bestGap={})", k, maxOrder, bestJ, bestGap);
+      log.debug("accumulate k={} exhausted order={} bestJ={} bestGap={}", k, order, bestJ, bestGap);
       return dst;
     }
   }

@@ -26,7 +26,7 @@ import arb.functions.polynomials.orthogonal.complex.FractionalRicattiOrthogonalP
  *
  * The parameters κ, ρ, σ, μ are registered as named variables in a shared
  * {@link Context}; expression strings reference them symbolically and the ARB4J
- * compiler handles all arithmetic at full arbitrary precision. Approximation
+ * compiler handles all arithmetic at full arbitrary precision. The evaluation
  * order is determined adaptively at evaluation time from the requested
  * bit-precision — it is never fixed at construction.
  *
