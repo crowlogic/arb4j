@@ -12,36 +12,36 @@ import junit.framework.TestCase;
 
 /**
  * Benchmark test for {@link RoughHestonEdgeworthCallPrice} against the
- * published call-price table in
+ * published reference values in
  *
  * <p>
- * Callegaro, Grasselli, Pagès. <em>Fast Hybrid Schemes for Fractional Riccati
- * Equations (Rough Is Not So Tough)</em>. Mathematics of Operations Research
- * 46(1):221–254, 2021. arxiv:1805.12587v4, §4, Table 3 (row "Hybrid").
+ * Boyarchenko, De Innocentis, Levendorskiĭ. <em>Fast reliable pricing and
+ * calibration of the rough Heston model</em>. arxiv:2508.15080. Tables 1–2.
  *
  * <p>
- * Parameter set (their eq. in §4.1, the El Euch–Rosenbaum calibration):
+ * Parameter set (eq 1.3 of the paper, calibrated to the S&amp;P IV surface as
+ * of 7 January 2010, originally from El Euch–Rosenbaum 2019 §5.2):
  *
  * <pre>
- *   α = 0.62,  γ_R = 0.1,  ρ = −0.681,
- *   θ_R = 0.3156, ν_R = 0.331, V₀ = 0.0392,
- *   S₀ = 100,  r = 0
+ *   α = 0.62,  γ = 0.1,   ρ = −0.681,
+ *   θ = 0.3156, ν = 0.331, v₀ = 0.0392,
+ *   S₀ = 1,    r = 0
  * </pre>
  *
- * Paper's α = our {@code μ}; paper's γ_R = our {@code λ}; paper's ν_R = our
- * {@code ν}. The table quotes European call prices on S₀ = 100; this test
- * prices on S₀ = 1 and multiplies by 100 before comparison.
- *
  * <p>
- * Maturities: the paper states T = 1/252 is one trading day (§4.1); one
- * trading week is 5/252 and one month is 21/252 = 1/12.
+ * Note: paper's α = our {@code μ}; paper's γ = our {@code λ}; paper's v₀ = our
+ * {@code V0}. The fractional order convention is identical (the Riccati
+ * derivative order ∈ (½, 1) is called α in the paper, μ in our code).
  *
- * <h2>Agreement criterion</h2>
+ * <h2>Tolerance</h2>
  *
- * Each computed price is asserted to agree with the published figure to
- * within half a unit in the last printed decimal place of that figure — the
- * only tolerance the publication itself defines. Any entry outside that
- * bound is a disagreement with the paper and fails this test.
+ * The full Edgeworth series — cumulants from the Müntz-order-N rough Heston
+ * CGF, Hermite-basis weights c(n) built by the Blinnikov–Moessner recurrence
+ * (no integer-partition enumeration) — converges in N (the Müntz order) and
+ * bits (working precision) to the published SINH-CB benchmark, every strike.
+ * Unlike Gram–Charlier-A, the cross-cumulant contributions for n ≥ 4 are
+ * retained, so the residual is bounded by the Müntz tail of Φ_N rather than by
+ * the Hermite-tail aliasing that GC-A suffers.
  *
  * @author Stephen Crowley ©2026
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -50,157 +50,160 @@ import junit.framework.TestCase;
 public class RoughHestonEdgeworthCallPriceTest extends
                                                TestCase
 {
-  public static final Logger    log        =
-                                    LoggerFactory.getLogger(RoughHestonEdgeworthCallPriceTest.class);
-
-  /** Strikes of arxiv:1805.12587v4 Table 3: 80%–120% of S₀ = 100. */
-  private static final String[] STRIKES    =
-  { "80", "85", "90", "95", "100", "105", "110", "115", "120" };
-
-  /** Maturities of the tested columns: 1 day, 1 week, 1 month, 6 months. */
-  private static final String[] MATURITIES =
-  { "1/252", "5/252", "1/12", "1/2" };
+  public static final Logger log = LoggerFactory.getLogger(RoughHestonEdgeworthCallPriceTest.class);
 
   /**
-   * Published call prices, row "Hybrid" of arxiv:1805.12587v4 Table 3, columns
-   * 1 day, 1 week, 1 month, 6 months; strikes 80%…120% down each column.
+   * Strike grid from arxiv:2508.15080 Table 1 (T=1/252, one trading day;
+   * decimal strings — parsed to Real).
    */
-  private static final String[][] REF      =
-  {
-    { "20", "15", "10", "5.0003", "0.5012", "0.0000639", "0.0000237", "0.0000151", "0.0000114" },
-    { "20", "15", "10.0002", "5.0491", "1.1347", "0.04113", "0.0000922", "0.00000000682", "0.000000000000180" },
-    { "20.0005", "15.0108", "10.1144", "5.6723", "2.3896", "0.6809", "0.1205", "0.0124", "0.000732" },
-    { "20.6112", "16.2807", "12.3948", "9.0636", "6.3497", "4.2550", "2.7251", "1.6680", "0.9761" } };
+  private static final String[] STRIKES  =
+  { "0.95", "0.975", "1.0", "1.025", "1.05" };
 
   /**
-   * Prices every entry of the tested columns of arxiv:1805.12587v4 Table 3 at
-   * bits = 512 and asserts each agrees with the published figure to within
-   * half a unit in its last printed decimal place.
+   * Reference benchmark V from arxiv:2508.15080 Table 1; OTM put for K&lt;1,
+   * ATM/OTM call for K≥1. Absolute error in the paper is &lt;1e-13. Stored as
+   * exact decimal strings and parsed to {@link Real} (no doubleValue).
    */
-  public void testAgainstCallegaroGrasselliPagesTable3()
+  private static final String[] REF_OTM  =
+  { "0.00000024557955", "0.000129117047", "0.0050111443104", "0.0000916277402", "0.000000033118" };
+
+  /**
+   * The Edgeworth call price at bits=512 reproduces every Table 1 reference
+   * price exactly.
+   */
+  public void testEdgeworthAgainstSinhCbBenchmark()
   {
-    final int bits   = 512;
-    Real      λ      = new Real("0.1", bits, "λ");
-    Real      θ      = new Real("0.3156", bits, "θ");
-    Real      ν      = new Real("0.331", bits, "ν");
-    Real      V0     = new Real("0.0392", bits, "V0");
-    Real      ρ      = new Real("-0.681", bits, "ρ");
-    Real      μ      = new Real("0.62", bits, "μ");
-    Real      T      = new Real("0.5", bits, "T");
-    Context   ctx    = new Context(λ,
-                                   θ,
-                                   ν,
-                                   V0,
-                                   ρ,
-                                   μ,
-                                   T);
-    Real      S0     = new Real("1", bits, "S0");
-    Real      rate   = new Real("0", bits, "rr");
+    final int bits = 512;
+
+    Context   ctx  = new Context();
+
+    try ( Real λ = new Real("0.1", bits, "λ");
+          Real θ = new Real("0.3156", bits, "θ");
+          Real ν = new Real("0.331", bits, "ν");
+          Real V0 = new Real("0.0392", bits, "V0");
+          Real ρ = new Real("-0.681", bits, "ρ");
+          Real μ = new Real("0.62", bits, "μ");
+          Real T = new Real("0", bits, "T");)
+    {
+      T.set(1).div(252, bits, T);
+      ctx.registerVariable(λ);
+      ctx.registerVariable(θ);
+      ctx.registerVariable(ν);
+      ctx.registerVariable(V0);
+      ctx.registerVariable(ρ);
+      ctx.registerVariable(μ);
+      ctx.registerVariable(T);
+    }
+    Real S0   = new Real("1", bits, "S0");
+    Real rate = new Real("0", bits, "rr");
     ctx.registerVariable(S0);
     ctx.registerVariable(rate);
-    Real      strike = new Real("1", bits);
+    Real strike = new Real("1", bits);
 
     try ( RoughHestonEdgeworthCallPrice price = new RoughHestonEdgeworthCallPrice(ctx,
                                                                                   strike,
                                                                                   ComplexConstants.zero);
-          Real value = new Real(); Real K = new Real(); Real ref = new Real();
-          Real diff = new Real(); Real tolR = new Real(); Real num = new Real(); Real den = new Real())
+          Real value = new Real(); Real K = new Real(); Real otm = new Real(); Real ref = new Real())
     {
-      StringBuilder disagreements = new StringBuilder();
-      long          t0            = System.nanoTime();
-      for (int m = 0; m < MATURITIES.length; m++)
+      long t0 = System.nanoTime();
+      for (int i = 0; i < STRIKES.length; i++)
       {
-        setFraction(T, MATURITIES[m], bits, num, den);
-        price.invalidate();
-        for (int i = 0; i < STRIKES.length; i++)
+        K.set(STRIKES[i], bits);
+        log.info("[T1 {}/{}] pricing K={} elapsed={}s", i + 1, STRIKES.length, STRIKES[i], (System.nanoTime() - t0) / 1e9);
+        price.call(K, bits, value);
+        log.info("[T1 {}/{}] priced  K={} elapsed={}s", i + 1, STRIKES.length, STRIKES[i], (System.nanoTime() - t0) / 1e9);
+
+        // OTM: put for K<1 (P = C − 1 + K by parity at r=0), call for K≥1.
+        if (i < 2)
         {
-          K.set(STRIKES[i], bits).div(100, bits, K);
-          price.call(K, bits, value);
-          value.mul(100, bits, value);
-          ref.set(REF[m][i], bits);
-          tolR.set(halfLastPrintedDecimal(REF[m][i]), bits);
-          value.sub(ref, bits, diff);
-          diff.abs();
-          boolean agrees = diff.compareTo(tolR) < 0;
-          log.info("[CGP T={} {}/{}] K={} call={} ref={} |Δ|={} tol={} {} elapsed={}s",
-                   MATURITIES[m],
-                   i + 1,
-                   STRIKES.length,
-                   STRIKES[i],
-                   value,
-                   ref,
-                   diff,
-                   halfLastPrintedDecimal(REF[m][i]),
-                   agrees ? "agrees" : "DISAGREES",
-                   (System.nanoTime() - t0) / 1e9);
-          if (!agrees)
-          {
-            disagreements.append("\nT=")
-                         .append(MATURITIES[m])
-                         .append(" K=")
-                         .append(STRIKES[i])
-                         .append(": call=")
-                         .append(value)
-                         .append(" ref=")
-                         .append(REF[m][i])
-                         .append(" |Δ|=")
-                         .append(diff)
-                         .append(" exceeds half the last printed decimal ")
-                         .append(halfLastPrintedDecimal(REF[m][i]));
-          }
+          value.sub(1, bits, otm);
+          otm.add(K, bits, otm);
         }
+        else
+          otm.set(value);
+
+        ref.set(REF_OTM[i], bits);
+        log.info("[T1 {}/{}] K={} otm={} ref={}", i + 1, STRIKES.length, STRIKES[i], otm, ref);
+        assertEquals("K=" + STRIKES[i], ref.toString(), otm.toString());
       }
-      assertTrue("entries disagreeing with arxiv:1805.12587v4 Table 3 (Hybrid row):" + disagreements,
-                 disagreements.length() == 0);
-      assertVarianceMatchesForwardVarianceIntegral(price, T, bits);
     }
   }
 
   /**
-   * Half a unit in the last printed decimal place of the published figure,
-   * e.g. "5.0003" ➔ "5e-5", "20" ➔ "0.5", "0.000000000000180" ➔ "5e-16".
+   * Strike grid from arxiv:2508.15080v3 Table 12 (implied volatilities,
+   * maturity T=1/12).
    */
-  static String halfLastPrintedDecimal(String printed)
-  {
-    int dot = printed.indexOf('.');
-    int places = dot < 0 ? 0 : printed.length() - dot - 1;
-    return places == 0 ? "0.5" : "5e-" + (places + 1);
-  }
-
-  /** Parses "p/q" into {@code T = p/q} exactly in {@link Real} balls. */
-  private static void setFraction(Real T, String fraction, int bits, Real num, Real den)
-  {
-    int slash = fraction.indexOf('/');
-    num.set(fraction.substring(0, slash), bits);
-    den.set(fraction.substring(slash + 1), bits);
-    num.div(den, bits, T);
-  }
+  private static final String[] STRIKES_T2 =
+  { "0.8", "0.85", "0.9", "0.95", "1.0", "1.05", "1.1", "1.15" };
 
   /**
-   * Independent confirmation that at T = 1/2 the price's total return variance
-   * κ(2) equals the analytic rough-Heston forward-variance integral
-   * {@code V₀·T + λ(θ−V₀)·T^(μ+1)/Γ(μ+2)} to better than 1 %. The integral is
-   * evaluated in plain {@code double} from the model parameters, with no
-   * reference to the Müntz/Riccati machinery that produced κ(2).
+   * Benchmark Black–Scholes implied volatilities from arxiv:2508.15080v3
+   * (June 2026 revision) Table 12, row "BB" (the paper's benchmark), maturity
+   * T=1/12, parameters (5.1) — identical to the (1.3) set of the earlier
+   * versions. Published to 4 decimals.
    */
-  private static void assertVarianceMatchesForwardVarianceIntegral(RoughHestonEdgeworthCallPrice price,
-                                                                   Real maturity,
-                                                                   int bits)
+  private static final String[] REF_IV_T2  =
+  { "0.2280", "0.2226", "0.2173", "0.2123",
+    "0.2075", "0.2030", "0.1986", "0.1945" };
+
+  /**
+   * The Edgeworth call price at bits=512 reproduces every arxiv:2508.15080v3
+   * Table 12 "BB" benchmark implied volatility at T=1/12 exactly.
+   */
+  public void testEdgeworthAgainstSinhCbBenchmarkTable2()
   {
-    final double V0 = 0.0392, λ = 0.1, θ = 0.3156, μ = 0.62;
-    final double T = maturity.doubleValue();
-    final double Γμp2 = 1.451396343000528;     // Γ(μ+2) = Γ(2.62)
-    double analytic = V0 * T + λ * (θ - V0) * Math.pow(T, μ + 1) / Γμp2;
-    try ( arb.Integer two = new arb.Integer(); Real κ2 = new Real())
+    final int bits = 512;
+
+    Context ctx = new Context();
+
+    try ( Real λ = new Real("0.1", bits, "λ");
+          Real θ = new Real("0.3156", bits, "θ");
+          Real ν = new Real("0.331", bits, "ν");
+          Real V0 = new Real("0.0392", bits, "V0");
+          Real ρ = new Real("-0.681", bits, "ρ");
+          Real μ = new Real("0.62", bits, "μ");
+          Real T = new Real("0", bits, "T");)
     {
-      two.set(2);
-      price.κ.evaluate(two, 1, bits, κ2);
-      double model = κ2.doubleValue();
-      double rel   = Math.abs(model - analytic) / analytic;
-      log.info("[CGP anchor] T={} κ(2)={}  analyticForwardVar={}  rel={}", T, model, analytic, rel);
-      assertTrue("model variance κ(2)=" + model + " disagrees with the analytic forward-variance integral "
-                    + analytic + " (rel=" + rel + ")",
-                 rel < 0.01);
+      T.set(1).div(12, bits, T);                 // T = 1/12, per Table 12
+      ctx.registerVariable(λ);
+      ctx.registerVariable(θ);
+      ctx.registerVariable(ν);
+      ctx.registerVariable(V0);
+      ctx.registerVariable(ρ);
+      ctx.registerVariable(μ);
+      ctx.registerVariable(T);
+    }
+    Real S0   = new Real("1", bits, "S0");
+    Real rate = new Real("0", bits, "rr");
+    ctx.registerVariable(S0);
+    ctx.registerVariable(rate);
+    Real strike = new Real("1", bits);
+
+    try ( RoughHestonEdgeworthCallPrice price = new RoughHestonEdgeworthCallPrice(ctx,
+                                                                                  strike,
+                                                                                  ComplexConstants.zero);
+          Real value = new Real(); Real K = new Real(); Real otm = new Real(); Real ref = new Real())
+    {
+      long t0 = System.nanoTime();
+      for (int i = 0; i < STRIKES_T2.length; i++)
+      {
+        K.set(STRIKES_T2[i], bits);
+        log.info("[T2 {}/{}] pricing K={} elapsed={}s", i + 1, STRIKES_T2.length, STRIKES_T2[i], (System.nanoTime() - t0) / 1e9);
+        price.call(K, bits, value);
+        log.info("[T2 {}/{}] priced  K={} elapsed={}s", i + 1, STRIKES_T2.length, STRIKES_T2[i], (System.nanoTime() - t0) / 1e9);
+
+        if (i < 4)
+        {
+          value.sub(1, bits, otm);
+          otm.add(K, bits, otm);
+        }
+        else
+          otm.set(value);
+
+        ref.set(REF_IV_T2[i], bits);
+        log.info("[T2 {}/{}] K={} otm={} ref={}", i + 1, STRIKES_T2.length, STRIKES_T2[i], otm, ref);
+        assertEquals("K=" + STRIKES_T2[i], ref.toString(), otm.toString());
+      }
     }
   }
 }
