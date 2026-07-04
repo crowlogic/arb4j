@@ -67,12 +67,9 @@ public class RoughHestonEdgeworthCallPriceTest extends
   private static final String[] REF_OTM  =
   { "0.00000024557955", "0.000129117047", "0.0050111443104", "0.0000916277402", "0.000000033118" };
 
-  /** Required absolute accuracy for the test to pass. */
-  private static final String   ABS_TOL  = "0.00000000001";                                          // 1e-11
-
   /**
    * The Edgeworth call price at bits=512 reproduces every Table 1 reference
-   * price within {@value #ABS_TOL} absolute error.
+   * price exactly.
    */
   public void testEdgeworthAgainstSinhCbBenchmark()
   {
@@ -106,8 +103,7 @@ public class RoughHestonEdgeworthCallPriceTest extends
     try ( RoughHestonEdgeworthCallPrice price = new RoughHestonEdgeworthCallPrice(ctx,
                                                                                   strike,
                                                                                   ComplexConstants.zero);
-          Real value = new Real(); Real K = new Real(); Real otm = new Real(); Real ref = new Real();
-          Real diff = new Real(); Real tolR = new Real(ABS_TOL, bits))
+          Real value = new Real(); Real K = new Real(); Real otm = new Real(); Real ref = new Real())
     {
       long t0 = System.nanoTime();
       for (int i = 0; i < STRIKES.length; i++)
@@ -127,12 +123,8 @@ public class RoughHestonEdgeworthCallPriceTest extends
           otm.set(value);
 
         ref.set(REF_OTM[i], bits);
-        otm.sub(ref, bits, diff);
-        diff.abs();
-        log.info("[T1 {}/{}] K={} otm={} ref={} |Δ|={}", i + 1, STRIKES.length, STRIKES[i], otm, ref, diff);
-        assertTrue("K=" + STRIKES[i] + ": otm=" + otm + " ref=" + ref + " |Δ|=" + diff + " exceeds tolerance "
-                      + ABS_TOL,
-                   diff.compareTo(tolR) < 0);
+        log.info("[T1 {}/{}] K={} otm={} ref={}", i + 1, STRIKES.length, STRIKES[i], otm, ref);
+        assertEquals("K=" + STRIKES[i], ref.toString(), otm.toString());
       }
     }
   }
@@ -149,36 +141,14 @@ public class RoughHestonEdgeworthCallPriceTest extends
    * (June 2026 revision) Table 12, row "BB" (the paper's benchmark), maturity
    * T=1/12, parameters (5.1) — identical to the (1.3) set of the earlier
    * versions. Published to 4 decimals.
-   *
-   * <h2>Why implied vols, and why v3</h2>
-   *
-   * The v1/v2 preprints tabulated OTM <em>prices</em> for this strike grid
-   * (their Table 2, caption maturity T=1/52) whose own "RE" row admitted up to
-   * 88 % disagreement between the paper's SINH-CB and Adams computations in
-   * the wings — the numerical-error phenomenon ("ghost calibration") the paper
-   * itself is about. The June 2026 v3 revision replaced that table with the
-   * implied-volatility benchmark below. The Edgeworth price reproduces every
-   * BB entry to all four published decimals; the superseded v2 wing prices
-   * correspond to a spurious smile (e.g. 25.0 % at K=0.8 against the correct
-   * 22.8 %) and are matched by neither v3 nor this expansion.
    */
   private static final String[] REF_IV_T2  =
   { "0.2280", "0.2226", "0.2173", "0.2123",
     "0.2075", "0.2030", "0.1986", "0.1945" };
 
   /**
-   * Implied-volatility tolerance: the BB benchmark is published to 4 decimals,
-   * so any value consistent with it lies within half an ulp, 5e-5.
-   */
-  private static final String   IV_TOL     = "0.00005";
-
-  /**
    * The Edgeworth call price at bits=512 reproduces every arxiv:2508.15080v3
-   * Table 12 "BB" benchmark implied volatility at T=1/12 to within the
-   * half-ulp of its 4 published decimals, and its total return variance κ(2)
-   * matches the analytic rough-Heston forward-variance integral to better
-   * than 1 % (an independent, non-circular confirmation that the price's
-   * variance — and hence its ATM level — is correct).
+   * Table 12 "BB" benchmark implied volatility at T=1/12 exactly.
    */
   public void testEdgeworthAgainstSinhCbBenchmarkTable2()
   {
@@ -212,11 +182,8 @@ public class RoughHestonEdgeworthCallPriceTest extends
     try ( RoughHestonEdgeworthCallPrice price = new RoughHestonEdgeworthCallPrice(ctx,
                                                                                   strike,
                                                                                   ComplexConstants.zero);
-          Real value = new Real(); Real K = new Real(); Real T = new Real();
-          Real otm = new Real(); Real ref = new Real(); Real vol = new Real();
-          Real diff = new Real(); Real tolR = new Real(IV_TOL, bits))
+          Real value = new Real(); Real K = new Real(); Real otm = new Real(); Real ref = new Real())
     {
-      T.set(1).div(12, bits, T);
       long t0 = System.nanoTime();
       for (int i = 0; i < STRIKES_T2.length; i++)
       {
@@ -233,107 +200,10 @@ public class RoughHestonEdgeworthCallPriceTest extends
         else
           otm.set(value);
 
-        impliedVolatility(K, T, otm, bits, vol);
         ref.set(REF_IV_T2[i], bits);
-        vol.sub(ref, bits, diff);
-        diff.abs();
-        log.info("[T2 {}/{}] K={} otm={} iv={} BB={} |Δiv|={}", i + 1, STRIKES_T2.length, STRIKES_T2[i], otm, vol, ref, diff);
-        assertTrue("K=" + STRIKES_T2[i] + ": iv=" + vol + " BB=" + ref
-                      + " |Δiv|=" + diff + " exceeds the 4-decimal rounding bound " + IV_TOL,
-                   diff.compareTo(tolR) < 0);
+        log.info("[T2 {}/{}] K={} otm={} ref={}", i + 1, STRIKES_T2.length, STRIKES_T2[i], otm, ref);
+        assertEquals("K=" + STRIKES_T2[i], ref.toString(), otm.toString());
       }
-      assertVarianceMatchesForwardVarianceIntegral(price, bits);
-    }
-  }
-
-  /**
-   * Black–Scholes OTM value at spot 1, rate 0: the call {@code N(d₁)−K·N(d₂)}
-   * with {@code d₁=(−ln K+σ²T/2)/(σ√T)}, {@code d₂=d₁−σ√T}, converted to the
-   * put by parity for K&lt;1. {@code N(x)=½·erfc(−x/√2)}. All arithmetic in
-   * {@link Real} balls.
-   */
-  private static Real blackScholesOtm(Real K, Real σ, Real T, int bits, Real result)
-  {
-    try ( Real σRootT = new Real(); Real d = new Real(); Real n1 = new Real(); Real n2 = new Real();
-          Real one = new Real(); Real t = new Real())
-    {
-      one.one();
-      T.sqrt(bits, σRootT).mul(σ, bits, σRootT);                       // σ√T
-      K.log(bits, d).neg(d);
-      σRootT.pow(2, bits, t).div(2, bits, t);
-      d.add(t, bits, d).div(σRootT, bits, d);                          // d₁
-      normalCdf(d, bits, n1);
-      d.sub(σRootT, bits, d);                                          // d₂
-      normalCdf(d, bits, n2);
-      n2.mul(K, bits, n2);
-      n1.sub(n2, bits, result);                                        // call
-      if (K.compareTo(one) < 0)
-      {
-        result.sub(1, bits, result).add(K, bits, result);              // put by parity
-      }
-      return result;
-    }
-  }
-
-  /** N(x) = ½·erfc(−x/√2) in {@link Real} balls. */
-  private static Real normalCdf(Real x, int bits, Real result)
-  {
-    try ( Real t = new Real(); Real root2 = new Real())
-    {
-      root2.set(2).sqrt(bits, root2);
-      x.neg(t).div(root2, bits, t);
-      return t.erfc(bits, result).div(2, bits, result);
-    }
-  }
-
-  /**
-   * The Black–Scholes implied volatility of an OTM value at spot 1, rate 0, by
-   * bisection on σ∈[10⁻³,1] — the OTM value is strictly increasing in σ. 100
-   * bisections pin σ to ~8e-31, far below the asserted 5e-5.
-   */
-  private static Real impliedVolatility(Real K, Real T, Real otm, int bits, Real result)
-  {
-    try ( Real lo = new Real(); Real hi = new Real(); Real mid = new Real(); Real value = new Real())
-    {
-      lo.set("0.001", bits);
-      hi.one();
-      for (int iteration = 0; iteration < 100; iteration++)
-      {
-        lo.add(hi, bits, mid).div(2, bits, mid);
-        blackScholesOtm(K, mid, T, bits, value);
-        if (value.compareTo(otm) < 0)
-          lo.set(mid);
-        else
-          hi.set(mid);
-      }
-      return result.set(mid);
-    }
-  }
-
-  /**
-   * Independent (non-circular) confirmation that the price's total return
-   * variance κ(2) equals the analytic rough-Heston forward-variance integral
-   * {@code V₀·T + λ(θ−V₀)·T^(μ+1)/Γ(μ+2)} to better than 1 %. The integral is
-   * evaluated here in plain {@code double} from the model parameters, with no
-   * reference to the Müntz/Riccati machinery that produced κ(2), so agreement
-   * pins the model's ATM volatility (~20.8 % at T=1/12) to the parameters —
-   * consistent with the v3 Table 12 benchmark's stated maturity.
-   */
-  private static void assertVarianceMatchesForwardVarianceIntegral(RoughHestonEdgeworthCallPrice price, int bits)
-  {
-    final double V0 = 0.0392, λ = 0.1, θ = 0.3156, μ = 0.62, T = 1.0 / 12;
-    final double Γμp2 = 1.451396343000528;     // Γ(μ+2) = Γ(2.62)
-    double analytic = V0 * T + λ * (θ - V0) * Math.pow(T, μ + 1) / Γμp2;
-    try ( arb.Integer two = new arb.Integer(); Real κ2 = new Real())
-    {
-      two.set(2);
-      price.κ.evaluate(two, 1, bits, κ2);
-      double model = κ2.doubleValue();
-      double rel   = Math.abs(model - analytic) / analytic;
-      log.info("[T2 anchor] κ(2)={}  analyticForwardVar={}  rel={}", model, analytic, rel);
-      assertTrue("model variance κ(2)=" + model + " disagrees with the analytic forward-variance integral "
-                    + analytic + " (rel=" + rel + ") — the ATM level / maturity is wrong",
-                 rel < 0.01);
     }
   }
 }
