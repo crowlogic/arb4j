@@ -141,18 +141,6 @@ public class RoughHestonEdgeworthCallPriceTest extends
    * (June 2026 revision) Table 12, row "BB" (the paper's benchmark), maturity
    * T=1/12, parameters (5.1) — identical to the (1.3) set of the earlier
    * versions. Published to 4 decimals.
-   *
-   * <h2>Why implied vols, and why v3</h2>
-   *
-   * The v1/v2 preprints tabulated OTM <em>prices</em> for this strike grid
-   * (their Table 2, caption maturity T=1/52) whose own "RE" row admitted up to
-   * 88 % disagreement between the paper's SINH-CB and Adams computations in
-   * the wings — the numerical-error phenomenon ("ghost calibration") the paper
-   * itself is about. The June 2026 v3 revision replaced that table with the
-   * implied-volatility benchmark below. The Edgeworth price reproduces every
-   * BB entry to all four published decimals; the superseded v2 wing prices
-   * correspond to a spurious smile (e.g. 25.0 % at K=0.8 against the correct
-   * 22.8 %) and are matched by neither v3 nor this expansion.
    */
   private static final String[] REF_IV_T2  =
   { "0.2280", "0.2226", "0.2173", "0.2123",
