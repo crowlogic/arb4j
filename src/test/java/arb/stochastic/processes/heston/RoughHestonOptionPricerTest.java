@@ -67,6 +67,7 @@ public class RoughHestonOptionPricerTest extends
   // sum of the certified radii).
   public void testCayleyScaleInvariance()
   {
+    assert false : "fix this busted-ass shit, hanging with OOM like an idiot";
     try ( RoughHestonOptionPricer pricing = new RoughHestonOptionPricer();
           Real σT2 = new Real("0.6", bits); Real μT = new Real("0.3", bits); Real K = new Real("105", bits);
           Real S0 = new Real("100", bits); Real rT = new Real("0.02", bits); Real ktil = new Real();
