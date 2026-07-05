@@ -53,8 +53,7 @@ import org.slf4j.LoggerFactory;
  *   Φ = Σ_{k=0..∞} T^(k·μ+1) · d(k)
  * </pre>
  *
- * of the coefficient polynomials d(k) supplied by
- * {@link arb.functions.complex.MuntzPadeCumulantGenerator}, terminating when
+ * of the coefficient polynomial sequence d_k(x)  terminating when
  * the summand's norm falls to the 2^-bits precision floor — the Müntz order is
  * whatever the convergence of the series delivers at the working precision,
  * never a fixed ceiling — and the cumulants
@@ -248,7 +247,6 @@ public class RoughHestonEdgeworthCallPrice implements
     ctx.registerVariable(φ.T);
     ctx.registerVariable(φ.μ);
     ctx.registerFunction("He", He);
-    ctx.registerFunction("d", φ.cgf.d);
     return ctx;
   }
 
@@ -387,7 +385,7 @@ public class RoughHestonEdgeworthCallPrice implements
   public void invalidate()
   {
     φ.riccati.invalidateCache();
-    φ.cgf.d.invalidateCache();
+    φ.cumulantGeneratingFunction.invalidateCache();
     φ.context.invalidateAllCaches();
     pricingContext.invalidateAllCaches();
   }

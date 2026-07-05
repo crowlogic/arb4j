@@ -72,6 +72,50 @@ public class Fraction implements Becomable<Fraction>,AutoCloseable,NamedField<Fr
   }
 
 
+	/**
+	 * Returns the absolute value of this fraction as a {@link Real} ball. The
+	 * fraction is first converted to a ball at precision {@code bits} via
+	 * {@link arblib#arb_set_fmpq}, and then the absolute value is taken.
+	 *
+	 * <p>
+	 * This method satisfies the {@code T abs(int bits, Real result)} contract
+	 * required by the infinite-sum convergence test in
+	 * {@link arb.expressions.nodes.nary.NAryOperationNode}, enabling
+	 * {@code Σ{k=a…∞}} over {@code FractionSequence}.
+	 *
+	 * @param bits   working precision for the ball conversion
+	 * @param result output ball — overwritten with {@code |this|}
+	 * @return {@code result}
+	 */
+	public Real abs(int bits, Real result)
+	{
+	  arblib.arb_set_fmpq(result, this, bits);
+	  return result.abs(bits, result);
+	}
+
+	/**
+	 * Adds {@code that} to this fraction in place and returns {@code this}.
+	 *
+	 * <p>
+	 * The {@code prec} parameter is accepted for API uniformity with other
+	 * arithmetic types but is not used: rational addition is exact.
+	 *
+	 * <p>
+	 * This two-argument overload satisfies the {@code T add(T, int)} contract
+	 * emitted by
+	 * {@link arb.expressions.nodes.nary.NAryOperationNode#combine(org.objectweb.asm.MethodVisitor)}
+	 * for the sum accumulation loop, enabling {@code Σ{k=a…∞}} over
+	 * {@code FractionSequence}.
+	 *
+	 * @param that the addend
+	 * @param prec ignored (exact arithmetic)
+	 * @return {@code this} (mutated to hold {@code this + that})
+	 */
+	public Fraction add(Fraction that, int prec)
+	{
+	  return add(that, this);
+	}
+		
 	public Real tanh( int bits, Real result )
 	{
 	  return result.set(this).tanh(bits);

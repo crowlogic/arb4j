@@ -91,7 +91,7 @@ public class RoughHestonCalibrationTest extends
     // start away from the truth — perturbed within the quadratic basin, as any
     // warm-started calibration is — and recover ν, ρ, V₀
     Real init = Real.newVector(6);
-    set(init, "0.1", "0.3156", "0.35", "0.041", "-0.65", "0.62");
+    set(init, "0.2", "0.2856", "0.35", "0.041", "-0.65", "0.89");
 
     try ( RoughHestonCalibration cal = new RoughHestonCalibration(quotes,
                                                                   free,
