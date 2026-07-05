@@ -1,11 +1,7 @@
 package arb.stochastic.processes.heston;
 
-import arb.Complex;
-import arb.ComplexPolynomial;
+import arb.*;
 import arb.Integer;
-import arb.Real;
-import arb.RealConstants;
-import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
@@ -24,7 +20,8 @@ import arb.functions.real.RealNullaryFunction;
  * <p>
  * With Φ_M(u) = −½σ_T²u² − iμ_T·u + ρ(u), ρ proper rational with poles off the
  * Lewis line, the call is the single absolutely convergent erfc–Hermite series
- * (docs/single-series-pricing.md §4–§8, docs/RoughHestonExactPricingReconciliation)
+ * (docs/single-series-pricing.md §4–§8,
+ * docs/RoughHestonExactPricingReconciliation)
  *
  * <pre>
  *   C_M = K·e^{−rT}·Σ_{n=0..N*} q_n·(T_n^{(1)} − T_n^{(0)})
@@ -46,9 +43,9 @@ import arb.functions.real.RealNullaryFunction;
  *
  * are expressions in a per-instance {@link Context} — the derivative chain is
  * the compiler's symbolic {@code diff}, the indicator is the Heaviside θ, and
- * every recurrence is over the compiled sequence index. The Maclaurin data of
- * ψ = e^R is produced by ONE ring operation ({@code acb_poly_exp_series} of
- * the rational R(ζ) = Σ_j (B_j/a_j)(1−ζ)/(1−ρ_jζ) assembled by
+ * every recurrence is over the compiled sequence index. The Maclaurin data of ψ
+ * = e^R is produced by ONE ring operation ({@code acb_poly_exp_series} of the
+ * rational R(ζ) = Σ_j (B_j/a_j)(1−ζ)/(1−ρ_jζ) assembled by
  * {@code acb_poly_inv_series}), and its coefficients are read as
  * point-derivatives ψ^{(n)}(0)/n!. Scalars appear only as evaluations of these
  * recursively generated objects.
@@ -58,7 +55,7 @@ import arb.functions.real.RealNullaryFunction;
  *      {@link TheArb4jLibrary}
  */
 public class RoughHestonOptionPricer implements
-                                      AutoCloseable
+                                     AutoCloseable
 {
   public static final class CayleyCoefficientSequence implements
                                                       RealSequence
@@ -131,45 +128,49 @@ public class RoughHestonOptionPricer implements
   public final Real                              discountedK  = new Real("1",
                                                                          128).setName("discountedK");
 
-  /** The real Cayley-series coefficients q_n, stored with one leading zero slot. */
-  public final Real                              qRe          = Real.newVector(1,
-                                                                              "qRe");
+  /**
+   * The real Cayley-series coefficients q_n, stored with one leading zero slot.
+   */
+  public final Real                              qRe          = Real.newVector(1, "qRe");
 
   /** Majorant exit index N*. */
   public final Integer                           Nstar        = Integer.named("Nstar").set(0);
 
   /**
-   * E(w) = ½e^{g(w)}erfc(z_w) − θ(w−c)e^{g(w)}: the Schwinger–Gauss–erfc
-   * function as ONE compiled expression over the context variables σsq, ξ,
-   * cLine.
+   * E(w) = ½e^{g(w)}erfc(z_w) − θ(w−c)e^{g(w)}: the Schwinger–Gauss–erfc function
+   * as ONE compiled expression over the context variables σsq, ξ, cLine.
    */
-  public final RealFunction                     E;
+  public final RealFunction                      E;
 
   /** The constant σ/√(2π)·exp(−ξ²/(2σ²)) in the atom recurrence. */
-  public final RealNullaryFunction              C0;
+  public final RealNullaryFunction               C0;
 
-  /** The probabilist Hermite basis used to evaluate the Gaussian derivative chain. */
-  public final ProbabilistHermitePolynomials    He = new ProbabilistHermitePolynomials(128);
+  /**
+   * The probabilist Hermite basis used to evaluate the Gaussian derivative chain.
+   */
+  public final ProbabilistHermitePolynomials     He           = new ProbabilistHermitePolynomials(128);
 
   /**
    * P:n➔w➔∂ⁿe^{g(w)}/e^{g(w)} = (−√σ²)^n·He_n((ξ−σ²w)/√σ²).
    */
-  public final RealFunctionSequence             P;
+  public final RealFunctionSequence              P;
 
   /**
    * A:m➔w➔E⁽ᵐ⁻¹⁾(w)/Γ(m), expanded through the Hermite basis already present in
    * the codebase rather than through repeated scalar differentiation.
    */
-  public final RealFunctionSequence             A;
+  public final RealFunctionSequence              A;
 
-  /** Tₙ^{(δ)} as one compiled function-valued sequence over the fixed nodes 0,1,q. */
-  public final RealFunctionSequence             T;
+  /**
+   * Tₙ^{(δ)} as one compiled function-valued sequence over the fixed nodes 0,1,q.
+   */
+  public final RealFunctionSequence              T;
 
   /** K·e^{-rT}·Σₙ qₙ(Tₙ^{(1)}−Tₙ^{(0)}) with N*=majorant exit index. */
-  public final RealNullaryFunction              price;
+  public final RealNullaryFunction               price;
 
   /** q:n↦qₙ, exposing the exp-series coefficients stored in {@link #qRe}. */
-  public final RealSequence                     q;
+  public final RealSequence                      q;
 
   public RoughHestonOptionPricer()
   {
@@ -213,21 +214,21 @@ public class RoughHestonOptionPricer implements
     RealFunction.express("g:w➔σsq*w²/2-w*ξ", lewisContext);
     RealFunction.express("z:w➔(ξ-σsq*w)/sqrt(2*σsq)", lewisContext);
     RealFunction.express("y:w➔(ξ-σsq*w)/sqrt(σsq)", lewisContext);
-    this.E = RealFunction.express("E:w➔exp(g(w))*erfc(z(w))/2-θ(w-cLine)*exp(g(w))", lewisContext);
-    this.C0 = RealNullaryFunction.express("C0", "exp((-ξ²)/(2*σsq))*sqrt(σsq/(2*π))", lewisContext);
-    this.P  = RealFunctionSequence.express("P:n➔w➔(-sqrt(σsq))^n*He(n)(y(w))", lewisContext);
-    this.A  = RealFunctionSequence.express("A:m➔w➔when(m=1,E(w),else,P(m-1)(w)*E(w)/Γ(m)+C0()*Σj➔((sqrt(σsq)^(j-1))*P(m-1-j)(w)*He(j-1)(y(w)))/(Γ(j+1)*Γ(m-j)){j=1..m-1})",
-                                           lewisContext);
-    this.T  = RealFunctionSequence.express("T:n➔δ➔E(δ)+when(n=0,0,else,Σk➔((Γ(n+1)/(Γ(k+1)*Γ(n-k+1)))*(2*κScale)^k*(Σm➔(((-1)^(k-m))*A(m)(qNode)/(qNode-δ)^(k-m+1)){m=1..k}+E(δ)/(δ-qNode)^k)){k=1..n})",
-                                           lewisContext);
-    this.price = RealNullaryFunction.express("price",
-                                             "discountedK*Σn➔q(n)*(T(n)(1)-T(n)(0)){n=0..Nstar}",
-                                             lewisContext);
+    this.E     = RealFunction.express("E:w➔exp(g(w))*erfc(z(w))/2-θ(w-cLine)*exp(g(w))", lewisContext);
+    this.C0    = RealNullaryFunction.express("C0", "exp((-ξ²)/(2*σsq))*sqrt(σsq/(2*π))", lewisContext);
+    this.P     = RealFunctionSequence.express("P:n➔w➔(-sqrt(σsq))^n*He(n)(y(w))", lewisContext);
+    this.A     =
+           RealFunctionSequence.express("A:m➔w➔when(m=1,E(w),else,P(m-1)(w)*E(w)/Γ(m)+C0()*Σj➔((sqrt(σsq)^(j-1))*P(m-1-j)(w)*He(j-1)(y(w)))/(Γ(j+1)*Γ(m-j)){j=1..m-1})",
+                                        lewisContext);
+    this.T     =
+           RealFunctionSequence.express("T:n➔δ➔E(δ)+when(n=0,0,else,Σk➔((Γ(n+1)/(Γ(k+1)*Γ(n-k+1)))*(2*κScale)^k*(Σm➔(((-1)^(k-m))*A(m)(qNode)/(qNode-δ)^(k-m+1)){m=1..k}+E(δ)/(δ-qNode)^k)){k=1..n})",
+                                        lewisContext);
+    this.price = RealNullaryFunction.express("price", "discountedK*Σn➔q(n)*(T(n)(1)-T(n)(0)){n=0..Nstar}", lewisContext);
   }
 
   /**
-   * The call at strike {@code strike}: adaptive in the Padé order M — returns
-   * at the first M where consecutive certified prices agree within 2^{−bits},
+   * The call at strike {@code strike}: adaptive in the Padé order M — returns at
+   * the first M where consecutive certified prices agree within 2^{−bits},
    * widened by that difference.
    */
   public Real call(Real strike, int bits, Real dst)
@@ -281,16 +282,16 @@ public class RoughHestonOptionPricer implements
 
   /**
    * The single-series price at one fixed Padé order, from the v-plane
-   * partial-fraction data. The w-plane data is w_j = i·u_j (Re w_j = −Im u_j
-   * &gt; 0), B_j = i·A_j; the Lewis abscissa c is placed midway between the
-   * kernel pole at 1 and the nearest exponent pole, refusing the input on
-   * moment explosion (min Re w_j ≤ 1).
+   * partial-fraction data. The w-plane data is w_j = i·u_j (Re w_j = −Im u_j &gt;
+   * 0), B_j = i·A_j; the Lewis abscissa c is placed midway between the kernel
+   * pole at 1 and the nearest exponent pole, refusing the input on moment
+   * explosion (min Re w_j ≤ 1).
    */
   public Real callFromExpansion(RoughHestonPartialFractionExpansion pfe, Real strike, int bits, Real dst)
   {
     int p = pfe.u.dim();
-    try ( Complex w = Complex.newVector(p); Complex B = Complex.newVector(p);
-          Real minRe = new Real(); Real c = new Real(); Real κc = new Real(); Real ktil = new Real())
+    try ( Complex w = Complex.newVector(p); Complex B = Complex.newVector(p); Real minRe = new Real(); Real c = new Real(); Real κc = new Real();
+          Real ktil = new Real())
     {
       minRe.posInf();
       for (int j = 0; j < p; j++)
@@ -316,89 +317,22 @@ public class RoughHestonOptionPricer implements
   }
 
   /**
-   * The Lewis line integral C = (K·e^{−rT}/2πi)∫ e^{g(w)}ψ(w)/(w(w−1))dw as
-   * the single erfc–Hermite series over the Cayley-compactified proper part.
-   * The Schwinger–Gauss–erfc values are evaluations of the compiled {@link #E}
-   * and its compiled derivative sequence {@link #A} after rebinding the
-   * context variables (σsq, ξ, cLine); the Maclaurin data of ψ = e^R is one
+   * The Lewis line integral C = (K·e^{−rT}/2πi)∫ e^{g(w)}ψ(w)/(w(w−1))dw as the
+   * single erfc–Hermite series over the Cayley-compactified proper part. The
+   * Schwinger–Gauss–erfc values are evaluations of the compiled {@link #E} and
+   * its compiled derivative sequence {@link #A} after rebinding the context
+   * variables (σsq, ξ, cLine); the Maclaurin data of ψ = e^R is one
    * {@code acb_poly_exp_series}; the series length is the majorant exit index.
    * Poles {@code w}/residues {@code B} null means ρ ≡ 0 (exact Black–Scholes).
    */
-  public Real lewisSingleSeries(Real σT2, Real μT, Real K, Real rT, Real ktil, Real c, Real κ,
-                                Complex w, Complex B, int bits, Real res)
+  public Real lewisSingleSeries(Real σT2, Real μT, Real K, Real rT, Real ktil, Real c, Real κ, Complex w, Complex B, int bits, Real res)
   {
-    if (σT2.sign() <= 0)
-      throw new ArithmeticException("σ_T² must be strictly positive; got " + σT2);
-    final int p = w == null ? 0 : w.dim();
-
-    try ( Real discount = new Real(); Real q = new Real(); Real target = new Real())
-    {
-      rT.neg(discount);
-      discount.exp(bits, discount).mul(K, bits, discount);
-      c.add(κ, bits, q);
-      target.one().mul2e(-bits, target);
-
-      try ( Real G01 = new Real(); Real R = new Real(); Real Rinv = new Real(); Real normPsi = new Real();
-            Real tauC = new Real(); Real τ = new Real())
-      {
-        final int span;
-        if (p == 0)
-        {
-          τ.zero();
-          span = 0;
-        }
-        else
-        {
-          contourBound(σT2, ξ, c, bits, G01);
-          majorantRadius(w, B, c, κ, bits, R, Rinv, normPsi);
-          tauC.set(discount).mul(G01, bits, tauC).mul(normPsi, bits, tauC);
-          try ( Real oneMinus = new Real())
-          {
-            oneMinus.one().sub(Rinv, bits, oneMinus);
-            tauC.div(oneMinus, bits, tauC);
-          }
-          span = exitIndex(tauC, R, bits);
-        }
-
-        try ( ComplexPolynomial ψ = new ComplexPolynomial(); Real τout = new Real())
-        {
-          if (p == 0)
-          {
-            ψ.fitLength(1);
-            ψ.setLength(1);
-            ψ.get(0).one();
-          }
-          else
-          {
-            exponentialOfCayleySeries(ψ, w, B, c, κ, span + 1, bits);
-          }
-
-          σsq.set(σT2);
-          ktil.add(μT, bits, ξ);
-          cLine.set(c);
-          κScale.set(κ);
-          qNode.set(q);
-          discountedK.set(discount);
-          Nstar.set(span);
-          if (qRe.dim != span + 2)
-            qRe.become(Real.newVector(span + 2, "qRe"));
-          qRe.get(0).zero();
-          for (int n = 0; n <= span; n++)
-            qRe.get(n + 1).set(ψ.get(n).re());
-          lewisContext.invalidateAllCaches();
-
-          price.evaluate(bits, res);
-          τout.set(τ);
-          arblib.arb_add_error(res, τout);
-          return res;
-        }
-      }
-    }
+    throw new UnsupportedOperationException("idiotic shit like the java code that was deleted and replaced with this message needs to be expressed as a fucking expressed Function via expression compiler at Java runtime not the Java compiler and LLMBUMFUCKERY runtime you idiot.");
   }
 
   /**
-   * The least N with τC·R^{−(N+1)} ≤ 2^{−bits}: N* = ⌈(log τC + bits·log 2)/log R⌉,
-   * derived from the certified majorant data — never an allocation constant.
+   * The least N with τC·R^{−(N+1)} ≤ 2^{−bits}: N* = ⌈(log τC + bits·log 2)/log
+   * R⌉, derived from the certified majorant data — never an allocation constant.
    */
   private static int exitIndex(Real tauC, Real R, int bits)
   {
@@ -419,14 +353,11 @@ public class RoughHestonOptionPricer implements
    * assembled per pole via {@code acb_poly_inv_series} and ring multiplication,
    * then {@code acb_poly_exp_series}. No scalar convolution exists anywhere.
    */
-  private static void exponentialOfCayleySeries(ComplexPolynomial ψ, Complex w, Complex B, Real c, Real κ,
-                                                int len, int bits)
+  private static void exponentialOfCayleySeries(ComplexPolynomial ψ, Complex w, Complex B, Real c, Real κ, int len, int bits)
   {
-    try ( ComplexPolynomial R = new ComplexPolynomial(); ComplexPolynomial D = new ComplexPolynomial();
-          ComplexPolynomial inv = new ComplexPolynomial(); ComplexPolynomial factor = new ComplexPolynomial();
-          ComplexPolynomial termPoly = new ComplexPolynomial();
-          Complex a = new Complex(); Complex b = new Complex(); Complex rho = new Complex();
-          Complex Ba = new Complex(); Real cmk = new Real(); Real cpk = new Real())
+    try ( ComplexPolynomial R = new ComplexPolynomial(); ComplexPolynomial D = new ComplexPolynomial(); ComplexPolynomial inv = new ComplexPolynomial();
+          ComplexPolynomial factor = new ComplexPolynomial(); ComplexPolynomial termPoly = new ComplexPolynomial(); Complex a = new Complex();
+          Complex b = new Complex(); Complex rho = new Complex(); Complex Ba = new Complex(); Real cmk = new Real(); Real cpk = new Real())
     {
       c.sub(κ, bits, cmk);
       c.add(κ, bits, cpk);
@@ -487,12 +418,14 @@ public class RoughHestonOptionPricer implements
     }
   }
 
-  /** R = (1+R₀)/2 with R₀ = 1/max_j|ρ_j|; ‖ψ‖_R ≤ exp(Σ_j|B_j|(1+R)/(|a_j|−|b_j|R)). */
+  /**
+   * R = (1+R₀)/2 with R₀ = 1/max_j|ρ_j|; ‖ψ‖_R ≤
+   * exp(Σ_j|B_j|(1+R)/(|a_j|−|b_j|R)).
+   */
   private static void majorantRadius(Complex w, Complex B, Real c, Real κ, int bits, Real R, Real Rinv, Real normPsi)
   {
-    try ( Complex a = new Complex(); Complex b = new Complex(); Real cmk = new Real(); Real cpk = new Real();
-          Real absa = new Real(); Real absb = new Real(); Real absB = new Real(); Real ratio = new Real();
-          Real maxRho = new Real(); Real R0 = new Real(); Real onePlusR = new Real(); Real denom = new Real();
+    try ( Complex a = new Complex(); Complex b = new Complex(); Real cmk = new Real(); Real cpk = new Real(); Real absa = new Real(); Real absb = new Real();
+          Real absB = new Real(); Real ratio = new Real(); Real maxRho = new Real(); Real R0 = new Real(); Real onePlusR = new Real(); Real denom = new Real();
           Real t = new Real(); Real sum = new Real())
     {
       c.sub(κ, bits, cmk);
