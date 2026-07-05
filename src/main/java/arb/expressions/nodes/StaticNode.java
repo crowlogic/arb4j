@@ -1,8 +1,5 @@
 package arb.expressions.nodes;
 
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.ASTORE;
-
 import org.objectweb.asm.MethodVisitor;
 
 import arb.expressions.Expression;
@@ -41,20 +38,23 @@ public class StaticNode<D, R, F extends Function<? extends D, ? extends R>> exte
     Class<?> fieldType = delegate.type();
     if (isRootNode)
     {
-      // Issue #1039: when the root node itself is a StaticNode (the entire
-      // expression depends only on context/fixed variables), we must write
-      // the cached value into the caller's result argument (slot 4) rather
-      // than just leaving it on the stack.
+      // Issue #1147: when the root node itself is a StaticNode (the entire
+      // expression depends only on context/fixed variables), copy the cached
+      // value into the caller's result argument — the same contract every other
+      // root node honours via generateSetResultInvocation. The previous
+      // ASTORE 4 only rebound the local slot to the field object and left the
+      // caller's result buffer stale.
       expression.loadThisAndFieldOntoStack(mv, fieldName, fieldType);
       if (!resultType.equals(fieldType))
       {
         generateCastTo(mv, resultType);
+        generatedType = resultType;
       }
-      // Store to result parameter (slot 4)
-      mv.visitVarInsn(ASTORE, 4);
-      // Reload for ARETURN
-      mv.visitVarInsn(ALOAD, 4);
-      generatedType = fieldType;
+      else
+      {
+        generatedType = fieldType;
+      }
+      expression.generateSetResultInvocation(mv, generatedType);
       return mv;
     }
     expression.loadThisAndFieldOntoStack(mv, fieldName, fieldType);
