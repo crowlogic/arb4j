@@ -1,0 +1,349 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.1in]{geometry}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{Maximum Likelihood Estimation of the Negative Binomial Distribution:\\
+Completed Theorems and the Levenberg--Marquardt Ascent in arb4j}
+\author{Stephen Crowley}
+\date{July 5, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This note completes the derivations of \emph{Maximum Likelihood Estimation of
+the Negative Binomial Distribution} (vixra 1211.0113, 2012) with formal
+theorems and proofs: normalization, moments, the score equations, the profile
+likelihood identity, the existence criterion for the maximum likelihood
+estimate, the Hessian and Fisher information, and the damped-Newton
+(Levenberg--Marquardt) ascent implemented in arbitrary-precision ball
+arithmetic by the arb4j classes
+\texttt{NegativeBinomialDistribution} and
+\texttt{NegativeBinomialMaximumLikelihoodEstimation}, whose derivative
+expressions are produced symbolically by the expression compiler from the
+compiled log-density via the Jacobian over the variable-name sequence
+$(r,p)$.
+\end{abstract}
+
+\section{The Distribution}
+
+\begin{definition}[Negative binomial distribution]\label{def:nb}
+For $r>0$ and $p\in(0,1)$ the negative binomial probability mass function is
+\begin{equation}
+p_{\mathrm{nb}}(y\,|\,r,p)=\frac{\Gamma(r+y)\,p^{r}(1-p)^{y}}{\Gamma(r)\,\Gamma(y+1)},
+\qquad y=0,1,2,\ldots
+\label{eq:pmf}
+\end{equation}
+where $r$ is the number of successes at which the experiment stops and $p$
+the per-trial success probability.
+\end{definition}
+
+\begin{theorem}[Normalization]\label{thm:norm}
+$\displaystyle\sum_{y=0}^{\infty}p_{\mathrm{nb}}(y\,|\,r,p)=1$.
+\end{theorem}
+
+\begin{proof}
+Since $\Gamma(r+y)/(\Gamma(r)\Gamma(y+1))=\binom{r+y-1}{y}$, the binomial
+series $(1-x)^{-r}=\sum_{y\ge0}\binom{r+y-1}{y}x^{y}$ for $|x|<1$ with
+$x=1-p$ gives
+$\sum_{y\ge0}p_{\mathrm{nb}}(y\,|\,r,p)=p^{r}(1-(1-p))^{-r}=1$.
+\end{proof}
+
+\begin{theorem}[Moments]\label{thm:moments}
+If $Y\sim p_{\mathrm{nb}}(\cdot\,|\,r,p)$ then
+\begin{equation}
+\mathbb{E}[Y]=\frac{r(1-p)}{p},
+\qquad
+\operatorname{Var}[Y]=\frac{r(1-p)}{p^{2}} .
+\label{eq:moments}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The probability generating function is
+$G(z)=\mathbb{E}[z^{Y}]=p^{r}\bigl(1-(1-p)z\bigr)^{-r}$ for
+$|z|<(1-p)^{-1}$, again by the binomial series. Then
+$G'(1)=r(1-p)/p$ and
+$G''(1)=r(r+1)(1-p)^{2}/p^{2}$, so
+$\operatorname{Var}[Y]=G''(1)+G'(1)-G'(1)^{2}
+=\frac{r(1-p)^{2}}{p^{2}}+\frac{r(1-p)}{p}
+=\frac{r(1-p)}{p^{2}}$.
+\end{proof}
+
+\begin{remark}
+$\operatorname{Var}[Y]-\mathbb{E}[Y]=r(1-p)^{2}/p^{2}>0$: the negative
+binomial is over-dispersed relative to the Poisson for every admissible
+$(r,p)$, and the Poisson law of intensity $\lambda$ is the boundary limit
+$r\to\infty$, $p=r/(r+\lambda)$. This over-dispersion is exactly what
+Theorem~\ref{thm:existence} converts into the existence criterion for the
+maximum likelihood estimate.
+\end{remark}
+
+\begin{theorem}[Distribution function]\label{thm:cdf}
+$\displaystyle
+\Pr[Y\le y]=I_{p}(r,\lfloor y\rfloor+1)$
+for $y\ge0$, where
+$I_{z}(a,b)=B(a,b;z)/B(a,b)$ is the regularized lower incomplete beta
+function.
+\end{theorem}
+
+\begin{proof}
+With $k=\lfloor y\rfloor$, integration by parts $k$ times of
+$I_{p}(r,k+1)=\frac{1}{B(r,k+1)}\int_{0}^{p}t^{r-1}(1-t)^{k}\,dt$
+produces the telescoping partial sum
+$I_{p}(r,k+1)=\sum_{j=0}^{k}\binom{r+j-1}{j}p^{r}(1-p)^{j}
+=\sum_{j=0}^{k}p_{\mathrm{nb}}(j\,|\,r,p)$.
+\end{proof}
+
+This is the function evaluated by the arb4j binding
+\texttt{arb\_hypgeom\_beta\_lower} through
+\texttt{Real.betaLower(b, z, regularized, bits, result)}, giving a verified
+ball enclosure of the distribution function in a single special-function
+call.
+
+\section{Likelihood and Score}
+
+Given observations $y_{1},\ldots,y_{N}$ the per-observation log-likelihood
+of \eqref{eq:pmf} is
+\begin{equation}
+\ell(r,p\,|\,y)=\ln\Gamma(r+y)-\ln\Gamma(r)-\ln\Gamma(y+1)+r\ln p+y\ln(1-p),
+\label{eq:loglik}
+\end{equation}
+and the sample log-likelihood is
+$L(r,p)=\sum_{i=1}^{N}\ell(r,p\,|\,y_{i})$.
+
+\begin{theorem}[Score]\label{thm:score}
+With $\psi=\Gamma'/\Gamma$ the digamma function,
+\begin{equation}
+\frac{\partial\ell}{\partial r}=\psi(r+y)-\psi(r)+\ln p,
+\qquad
+\frac{\partial\ell}{\partial p}=\frac{r}{p}-\frac{y}{1-p},
+\label{eq:score}
+\end{equation}
+and $\mathbb{E}[\partial\ell/\partial r]=\mathbb{E}[\partial\ell/\partial p]=0$
+at the generating parameters.
+\end{theorem}
+
+\begin{proof}
+Both formulas are direct differentiations of \eqref{eq:loglik}. The zero
+means follow from $\mathbb{E}[Y]=r(1-p)/p$ for the second component, and for
+the first from differentiating the normalization
+$\sum_{y}p_{\mathrm{nb}}(y\,|\,r,p)=1$ under the sum with respect to $r$,
+which is justified by locally uniform convergence of the series and its
+$r$-derivative.
+\end{proof}
+
+In arb4j the two components of \eqref{eq:score} are not hand-coded: the
+expression compiler parses \eqref{eq:loglik} from the source string
+\begin{center}
+\verb|y➔lnΓ(r+y)-lnΓ(r)-lnΓ(y+1)+r*ln(p)+y*ln(1-p)|
+\end{center}
+and \texttt{jacobian(\{"r","p"\})} differentiates the compiled abstract
+syntax tree symbolically with respect to the named context variables,
+compiling each partial derivative to JVM bytecode. The generated evaluators
+print themselves as
+\begin{center}
+\verb|(ψ(r+y)-ψ(r))+log(p)| \qquad and \qquad \verb|(r/p)+(-1/(1-p)*y)|,
+\end{center}
+in exact agreement with \eqref{eq:score}.
+
+\begin{theorem}[Profile likelihood]\label{thm:profile}
+For fixed $r>0$ the unique maximizer of $L(r,\cdot)$ on $(0,1)$ is
+\begin{equation}
+\hat p(r)=\frac{Nr}{Nr+\sum_{i=1}^{N}y_{i}},
+\label{eq:profile}
+\end{equation}
+and the profile score in $r$ alone is
+\begin{equation}
+\frac{dL\bigl(r,\hat p(r)\bigr)}{dr}
+=N\ln\!\frac{Nr}{Nr+\sum_{i}y_{i}}-N\psi(r)+\sum_{i=1}^{N}\psi(r+y_{i}).
+\label{eq:profileScore}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+$\partial L/\partial p=Nr/p-\sum_{i}y_{i}/(1-p)$ vanishes iff
+$Nr(1-p)=p\sum_{i}y_{i}$, i.e.\ at \eqref{eq:profile}; since
+$\partial^{2}L/\partial p^{2}=-Nr/p^{2}-\sum_{i}y_{i}/(1-p)^{2}<0$
+the critical point is the unique maximum. Substituting \eqref{eq:profile}
+into $\partial L/\partial r=N\ln p-N\psi(r)+\sum_{i}\psi(r+y_{i})$ — the
+total derivative equals the partial derivative at the profile because
+$\partial L/\partial p=0$ there (the envelope identity) — gives
+\eqref{eq:profileScore}.
+\end{proof}
+
+\section{Existence of the Maximum Likelihood Estimate}
+
+Write $\bar y=\frac1N\sum_{i}y_{i}$ and
+$\hat\sigma^{2}=\frac1N\sum_{i}y_{i}^{2}-\bar y^{2}$ for the sample mean and
+(biased) sample variance, and assume $\bar y>0$.
+
+\begin{lemma}\label{lem:asymptotics}
+As $r\to\infty$,
+\begin{equation}
+\frac{dL\bigl(r,\hat p(r)\bigr)}{dr}
+=\frac{N}{2r^{2}}\bigl(\bar y-\hat\sigma^{2}\bigr)+O(r^{-3}),
+\end{equation}
+and as $r\to0^{+}$,
+$\dfrac{dL\bigl(r,\hat p(r)\bigr)}{dr}=\dfrac{N_{+}}{r}+O(\ln r)\to+\infty$,
+where $N_{+}=\#\{i:y_{i}\ge1\}$.
+\end{lemma}
+
+\begin{proof}
+For $r\to\infty$ expand each term of \eqref{eq:profileScore}. From
+$\psi(r+y)-\psi(r)=\frac{y}{r}-\frac{y^{2}-y}{2r^{2}}+O(r^{-3})$
+(telescoping $\psi(x+1)=\psi(x)+1/x$ against the asymptotic series
+$\psi(r)=\ln r-\frac{1}{2r}-\frac{1}{12r^{2}}+O(r^{-4})$) and
+$\ln\frac{Nr}{Nr+N\bar y}=-\ln\bigl(1+\tfrac{\bar y}{r}\bigr)
+=-\frac{\bar y}{r}+\frac{\bar y^{2}}{2r^{2}}+O(r^{-3})$,
+\[
+\frac{dL}{dr}
+=N\Bigl(-\frac{\bar y}{r}+\frac{\bar y^{2}}{2r^{2}}\Bigr)
++\sum_{i}\Bigl(\frac{y_{i}}{r}-\frac{y_{i}^{2}-y_{i}}{2r^{2}}\Bigr)+O(r^{-3})
+=\frac{N}{2r^{2}}\Bigl(\bar y^{2}+\bar y-\frac1N\sum_{i}y_{i}^{2}\Bigr)+O(r^{-3}),
+\]
+and $\bar y^{2}+\bar y-\frac1N\sum y_{i}^{2}=\bar y-\hat\sigma^{2}$. For
+$r\to0^{+}$, $\psi(r)=-\frac1r-\gamma+O(r)$, while $\psi(r+y_{i})$ remains
+bounded for $y_{i}\ge1$ and cancels $-\psi(r)$ exactly for $y_{i}=0$; the
+logarithmic term is $N\ln\frac{r}{r+\bar y}=O(\ln r)$. Hence the profile
+score is $N_{+}/r+O(\ln r)$, which diverges to $+\infty$ because $\bar y>0$
+forces $N_{+}\ge1$.
+\end{proof}
+
+\begin{theorem}[Existence]\label{thm:existence}
+If $\hat\sigma^{2}>\bar y$ the profile score \eqref{eq:profileScore} has a
+root $\hat r\in(0,\infty)$, and $(\hat r,\hat p(\hat r))$ is a maximum
+likelihood estimate. If $\hat\sigma^{2}\le\bar y$ and the sample is not
+constant, the supremum of the likelihood is approached only as
+$r\to\infty$ with $\hat p(r)\to1$ along \eqref{eq:profile} — the Poisson
+boundary — and no finite maximizer exists.
+\end{theorem}
+
+\begin{proof}
+When $\hat\sigma^{2}>\bar y$, Lemma~\ref{lem:asymptotics} makes the profile
+score positive near $0$ and negative for all large $r$; continuity on
+$(0,\infty)$ yields a root $\hat r$, which maximizes the profile
+log-likelihood $r\mapsto L(r,\hat p(r))$ since that function increases
+before the first root and decreases after the last one. Because
+Theorem~\ref{thm:profile} maximizes over $p$ at every $r$, the pair
+$(\hat r,\hat p(\hat r))$ maximizes $L$ jointly. When
+$\hat\sigma^{2}\le\bar y$, the limit of $L(r,\hat p(r))$ as $r\to\infty$ is
+the Poisson log-likelihood at intensity $\bar y$ — termwise,
+$\ln\Gamma(r+y)-\ln\Gamma(r)-r\ln(1+\bar y/r)+y\ln\frac{\bar y}{r+\bar y}
+\to y\ln\bar y-\bar y-\ln\Gamma(y+1)$ — and the classical result of
+Anscombe (Biometrika 37 (1950) 358--382) is that the profile score stays
+positive on all of $(0,\infty)$ exactly in this case, so the supremum is
+attained only in the limit.
+\end{proof}
+
+\section{Hessian, Fisher Information, and the Levenberg--Marquardt Ascent}
+
+\begin{theorem}[Hessian]\label{thm:hessian}
+With $\psi_{1}=\psi'$ the trigamma function, the Hessian of
+\eqref{eq:loglik} is
+\begin{equation}
+\nabla^{2}\ell=
+\begin{pmatrix}
+\psi_{1}(r+y)-\psi_{1}(r) & \dfrac1p\\[1.2ex]
+\dfrac1p & -\dfrac{r}{p^{2}}-\dfrac{y}{(1-p)^{2}}
+\end{pmatrix},
+\label{eq:hessian}
+\end{equation}
+and $L$ is strictly concave in $p$ for every fixed $r$ and strictly concave
+in $r$ for every fixed $p$ (since $\psi_{1}$ is strictly decreasing).
+\end{theorem}
+
+\begin{proof}
+Differentiate \eqref{eq:score}; $\psi_{1}$ strictly decreasing on
+$(0,\infty)$ makes $\psi_{1}(r+y)-\psi_{1}(r)<0$ for $y\ge1$ (and $=0$ for
+$y=0$), and both diagonal accumulated entries over a non-constant sample are
+strictly negative.
+\end{proof}
+
+In arb4j the four entries of \eqref{eq:hessian} are again symbolic: each
+compiled score component is itself an expression, so a second
+\texttt{jacobian(\{"r","p"\})} pass differentiates it. The trigamma values
+arise as Taylor-jet coefficients of $\ln\Gamma$
+(\texttt{arb\_poly\_lgamma\_series}); the coefficient at index $k$ is
+$\psi^{(k-1)}(x)/k!$, and the chain rule for jet coefficients,
+$\frac{d}{dv}\frac{f^{(k)}(g)}{k!}=(k{+}1)\frac{f^{(k+1)}(g)}{(k{+}1)!}\,g'$,
+is what the compiler's \texttt{JetNode.differentiate} implements.
+
+\begin{theorem}[Fisher information]\label{thm:fisher}
+The Fisher information matrix
+$\mathcal{I}(r,p)=-\mathbb{E}\bigl[\nabla^{2}\ell\bigr]$ is
+\begin{equation}
+\mathcal{I}(r,p)=
+\begin{pmatrix}
+\psi_{1}(r)-\mathbb{E}\bigl[\psi_{1}(r+Y)\bigr] & -\dfrac1p\\[1.2ex]
+-\dfrac1p & \dfrac{r}{p^{2}(1-p)}
+\end{pmatrix}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The $(p,p)$ entry uses $\mathbb{E}[Y]=r(1-p)/p$:
+$\frac{r}{p^{2}}+\frac{r(1-p)}{p(1-p)^{2}}
+=\frac{r(1-p)+rp}{p^{2}(1-p)}=\frac{r}{p^{2}(1-p)}$. The off-diagonal and
+$(r,r)$ entries are immediate from \eqref{eq:hessian}.
+\end{proof}
+
+\subsection{The damped-Newton iteration}
+
+The estimation class ascends $L$ by the Levenberg--Marquardt-damped Newton
+step: with $S=\nabla L$ and $H=\nabla^{2}L$ accumulated over the sample from
+the compiled symbolic evaluators, each iteration solves
+\begin{equation}
+\bigl(-H+\mu\,\mathrm{diag}(-H)\bigr)\,\delta=S
+\label{eq:lmstep}
+\end{equation}
+in arbitrary-precision \texttt{RealMatrix} arithmetic and accepts the
+candidate $x+\delta$ only when it is admissible ($r>0$, $0<p<1$) and
+strictly increases $L$; a rejected candidate triples the damping $\mu$, an
+accepted one divides it by three. Near the maximizer $-H$ is positive
+definite by Theorem~\ref{thm:hessian}, $\mu$ collapses toward zero, and
+\eqref{eq:lmstep} becomes the exact Newton step, so the iteration inherits
+Newton's local quadratic convergence.
+
+For a sample of $N=250$ observations drawn from $r=4$, $p=0.35$ by the
+inverse-distribution-function method (exact pmf recursion
+$P(0)=p^{r}$, $P(y{+}1)=P(y)(1-p)(r+y)/(y+1)$ in ball arithmetic), the unit
+test \texttt{NegativeBinomialMaximumLikelihoodEstimationTest} measures, at
+128-bit precision:
+
+\begin{center}
+\begin{tabular}{cccc}
+starting point $(r_{0},p_{0})$ & iterations & $\hat r$ & $\hat p$\\
+\hline
+$(1,\;0.5)$ & 10 & $3.5298768491745039673\ldots$ & $0.31760985811505457208\ldots$\\
+$(2,\;0.2)$ & 9  & $3.5298768491745039673\ldots$ & $0.31760985811505457208\ldots$\\
+$(8,\;0.7)$ & 13 & $3.5298768491745039673\ldots$ & $0.31760985811505457208\ldots$\\
+$(0.5,\;0.9)$ & 11 & $3.5298768491745039673\ldots$ & $0.31760985811505457208\ldots$\\
+\end{tabular}
+\end{center}
+
+\noindent
+Every run reaches the same estimates to more than twenty decimal digits, and
+the estimates satisfy the profile identity \eqref{eq:profile} to the
+working precision — the two-dimensional ascent lands exactly on the
+one-dimensional manifold of Theorem~\ref{thm:profile}, as it must.
+
+\begin{thebibliography}{9}
+\bibitem{crowley2012} S.~Crowley,
+\emph{Maximum Likelihood Estimation of the Negative Binomial Distribution},
+vixra 1211.0113, 2012.
+\bibitem{anscombe1950} F.~J.~Anscombe,
+\emph{Sampling theory of the negative binomial and logarithmic series
+distributions}, Biometrika \textbf{37} (1950) 358--382.
+\bibitem{hilbe2011} J.~M.~Hilbe,
+\emph{Negative Binomial Regression}, Cambridge University Press, 2011.
+\end{thebibliography}
+
+\end{document}
