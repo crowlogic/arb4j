@@ -68,12 +68,26 @@ public class LogGammaJetNode<D, C, F extends Function<? extends D, ? extends C>>
   @Override
   public String toString()
   {
-    return String.format("lnΓ(%s)", arg);
+    return switch (coefficientIndex)
+    {
+      case 0 -> String.format("lnΓ(%s)", arg);
+      case 1 -> String.format("ψ(%s)", arg);
+      default -> String.format("ψ⁽%d⁾(%s)/%d!", coefficientIndex - 1, arg, coefficientIndex);
+    };
   }
 
   @Override
   public String typeset()
   {
-    return String.format("\\ln\\Gamma\\left(%s\\right)", arg == null ? "" : arg.typeset());
+    String argument = arg == null ? "" : arg.typeset();
+    return switch (coefficientIndex)
+    {
+      case 0 -> String.format("\\ln\\Gamma\\left(%s\\right)", argument);
+      case 1 -> String.format("\\psi\\left(%s\\right)", argument);
+      default -> String.format("\\frac{\\psi^{(%d)}\\left(%s\\right)}{%d!}",
+                               coefficientIndex - 1,
+                               argument,
+                               coefficientIndex);
+    };
   }
 }
