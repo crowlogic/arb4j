@@ -29,7 +29,7 @@
 
 **Location:** `src/test/java/arb/stochastic/processes/heston/RoughHestonEdgeworthCallPriceTest.java:127`
 
-**Parameters:** T = 1/12, K = 0.95
+**Parameters:** T = 1/252, K = 0.95
 
 ```
 expected: 2.45579[5500000000000000000e-7 +/- 3e-36]
@@ -45,7 +45,7 @@ The computed radius (1.37e-32) is also wider than the reference ball (3e-36), in
 
 **Location:** `src/test/java/arb/stochastic/processes/heston/RoughHestonEdgeworthCallPriceTest.java:205`
 
-**Parameters:** T = 1/8, K = 0.8
+**Parameters:** T = 1/12, K = 0.8
 
 ```
 expected: [0.2280000000000000000000000 +/- 3e-30]
