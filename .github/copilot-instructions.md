@@ -81,7 +81,7 @@ Strings passed to `.express(...)`, `.compile(...)`, `.declare(...)` are parsed a
 ### Compilation ordering rule
 There is one rule: when `express` instantiates a generated class, every class that expression references must already be defined in the `ExpressionClassLoader`. Instantiation calls `injectVariableReferences` / `injectFunctionReferences`, which resolve every field type via reflection. There is no second pass.
 
-- `parseCompileAndRegister(...)` — emits bytecode without instantiation. Call for every function that is referenced by others and must be defined first.
+- `compile(...)` — emits bytecode without instantiation. Call for every function that is referenced by others and must be defined first.
 - `express(...)` — emits bytecode and instantiates. Call last, after all referenced classes are defined.
 
 Single self-recursive sequences (`T` referencing `T`) need only `express` — the self-reference guard handles them automatically.

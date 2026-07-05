@@ -36,10 +36,10 @@ There is one rule: when `express` instantiates a generated class, every class th
 
 The two API methods reflect this directly:
 
-- `parseCompileAndRegister(name, …, expression, …, context)` — emits bytecode and registers the `FunctionMapping`. Does not instantiate.
-- `express(name, …, expression, …, context)` — calls `parseCompileAndRegister` then instantiates and injects references.
+- `compile(name, …, expression, …, context)` — emits bytecode and registers the `FunctionMapping`. Does not instantiate.
+- `express(name, …, expression, …, context)` — calls `compile` then instantiates and injects references.
 
-When two or more functions reference each other, call `parseCompileAndRegister` for all but the last, then `express` for the last:
+When two or more functions reference each other, call `compile` for all but the last, then `express` for the last:
 
 ```java
 // Register `a` so the parser can resolve the name when compiling S.
@@ -50,9 +50,9 @@ context.registerFunctionMapping("a",
 
 // Define S's bytecode without instantiating. S references `a` by name in
 // its opcodes; the JVM links that name lazily on first execution.
-Sequence.parseCompileAndRegister("S", Complex.class,
-                                 "S:k➔sum(j➔a(j)*a(k-1-j){j=1..k-2})",
-                                 ComplexSequence.class, context);
+Sequence.compile("S", Complex.class,
+                 "S:k➔sum(j➔a(j)*a(k-1-j){j=1..k-2})",
+                 ComplexSequence.class, context);
 
 // Both classes are now defined; instantiate `a`. Reflection resolves
 // every field type — including S — without error.

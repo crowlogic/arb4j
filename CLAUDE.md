@@ -124,10 +124,10 @@ The pipeline: `Expression.parseRoot` (recursive-descent, Unicode-aware) → an A
 
 There is one ordering rule: when `express` instantiates a generated class, every class that expression references must already be defined in the `ExpressionClassLoader`. Instantiation calls `injectVariableReferences` / `injectFunctionReferences`, which resolve every field type via reflection. There is no second pass.
 
-- `parseCompileAndRegister(name, …, expression, …, context)` — emits bytecode and registers the `FunctionMapping`. Does not instantiate.
-- `express(name, …, expression, …, context)` — calls `parseCompileAndRegister` then instantiates and injects references.
+- `compile(name, …, expression, …, context)` — emits bytecode and registers the `FunctionMapping`. Does not instantiate.
+- `express(name, …, expression, …, context)` — calls `compile` then instantiates and injects references.
 
-Call `parseCompileAndRegister` for every function that must be defined before instantiation, then `express` last. See `README.md` for the full walkthrough. The self-reference guard in `Expression.constructReferencedFunctionInstanceIfItIsNull` handles single self-recursive sequences automatically.
+Call `compile` for every function that must be defined before instantiation, then `express` last. See `README.md` for the full walkthrough. The self-reference guard in `Expression.constructReferencedFunctionInstanceIfItIsNull` handles single self-recursive sequences automatically.
 
 ### 3. Hand-written math — `arb.functions.*`
 
