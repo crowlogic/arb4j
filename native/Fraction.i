@@ -1001,7 +1001,18 @@ import arb.utensils.Utensils;
   {
     return arblib.fmpq_cmp(this, o);
   }
-  
+
+  public Real abs(int bits, Real result)
+  {
+    arblib.arb_set_fmpq(result, this, bits);
+    return result.abs(bits, result);
+  }
+
+  public Fraction add(Fraction that, int prec)
+  {
+    return add(that, this);
+  }
+
   
 %};
  
