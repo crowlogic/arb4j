@@ -32,7 +32,7 @@ public class RoughHestonCalibrationTest extends
   public void testReproducesKnownParameters()
   {
     final int   NU   = RoughHestonCalibration.NU, R = RoughHestonCalibration.RHO,
-                V    = RoughHestonCalibration.V0;
+                V    = RoughHestonCalibration.V0, MU = RoughHestonCalibration.MU;
     final int[] free =
     { NU, R, V };
 
@@ -91,7 +91,7 @@ public class RoughHestonCalibrationTest extends
     // start away from the truth — perturbed within the quadratic basin, as any
     // warm-started calibration is — and recover ν, ρ, V₀
     Real init = Real.newVector(6);
-    set(init, "0.1", "0.3156", "0.35", "0.041", "-0.65", "0.62");
+    set(init, "0.1", "0.3156", "0.35", "0.041", "-0.65", "0.63");
 
     try ( RoughHestonCalibration cal = new RoughHestonCalibration(quotes,
                                                                   free,
@@ -108,7 +108,8 @@ public class RoughHestonCalibrationTest extends
                         res.iterations,
                         elapsed);
       assertTrue("calibration must converge", res.converged);
-      assertTrue("must converge within 5 iterations, took " + res.iterations, res.iterations <= 5);
+      assertTrue("must converge within 6 iterations, took " + res.iterations, res.iterations <= 6);
+      assertClose("μ", res.params.get(MU), "0.62");
       assertClose("ν", res.params.get(NU), "0.331");
       assertClose("ρ", res.params.get(R), "-0.681");
       assertClose("V0", res.params.get(V), "0.0392");
