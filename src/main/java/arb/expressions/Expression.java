@@ -2643,12 +2643,22 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       generateConditionalInitializater(mv);
     }
 
+    boolean hasJets = !collectJetStates().isEmpty();
+
+    if (hasJets)
+    {
+      // The stamp must be advanced BEFORE evaluateStaticSubexpressions runs:
+      // jets hoisted into the static-subexpression method guard on
+      // jetStamp_X != evalStamp, and both fields are zero on a fresh
+      // instance, so incrementing after the static call would skip every
+      // static jet on the first evaluation.
+      generateEvalStampIncrement(mv);
+    }
+
     if (hasStaticNodes)
     {
       generateStaticPrecisionCheck(mv);
     }
-
-    boolean hasJets = !collectJetStates().isEmpty();
 
     // --- order > 1 dispatch to Taylor series path (non-jet expressions only) ---
     if (!hasJets)
@@ -2656,11 +2666,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       mv.visitVarInsn(Opcodes.ILOAD, 2); // order
       mv.visitInsn(Opcodes.ICONST_1);
       mv.visitJumpInsn(Opcodes.IF_ICMPGT, taylorLabel);
-    }
-
-    if (hasJets)
-    {
-      generateEvalStampIncrement(mv);
     }
 
     boolean cache             = shouldCache();
