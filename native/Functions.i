@@ -200,6 +200,7 @@ void arb_urandom(arb_t x, flint_rand_t state, slong prec);
 int fmpq_is_one(const fmpq_t x);
 
 void arb_hypgeom_gamma_lower(arb_t res, const arb_t s, const arb_t z, int regularized, slong prec);
+void arb_hypgeom_beta_lower(arb_t res, const arb_t a, const arb_t b, const arb_t z, int regularized, slong prec);
 void acb_hypgeom_gamma_lower(acb_t res, const acb_t s, const acb_t z, int modified, slong prec);
 
 void acb_poly_integral(acb_poly_t res, const acb_poly_t poly, slong prec);

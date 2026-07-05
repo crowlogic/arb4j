@@ -21,13 +21,15 @@ import arb.functions.real.RealFunction;
 public class NegativeBinomialDistribution extends
                                           Distribution
 {
-  private final Context      context;
-  private final Real         shape;
-  private final Real         successProbability;
+  public final Context       context;
+  public final Real          shape;
+  public final Real          successProbability;
+  public final Real          r;
+  public final Real          p;
 
-  private final RealFunction density;
-  private final RealFunction logDensity;
-  private final RealFunction distribution;
+  public final RealFunction  density;
+  public final RealFunction  logDensity;
+  public final RealFunction  distribution;
 
   public NegativeBinomialDistribution(double shape, double successProbability)
   {
@@ -35,6 +37,23 @@ public class NegativeBinomialDistribution extends
     this.context = new Context();
     this.shape = Real.named("r").set(shape);
     this.successProbability = Real.named("p").set(successProbability);
+    this.r = this.shape;
+    this.p = this.successProbability;
+    this.context.registerVariable(this.shape);
+    this.context.registerVariable(this.successProbability);
+    this.density = RealFunction.express("f", densityExpression(), context);
+    this.logDensity = RealFunction.express("ℓ", logDensityExpression(), context);
+    this.distribution = RealFunction.express("F", cumulativeExpression(), context);
+  }
+
+  public NegativeBinomialDistribution(Real r, Real p, int bits)
+  {
+    super("negative-binomial");
+    this.context = new Context();
+    this.shape = r.setName("r");
+    this.successProbability = p.setName("p");
+    this.r = this.shape;
+    this.p = this.successProbability;
     this.context.registerVariable(this.shape);
     this.context.registerVariable(this.successProbability);
     this.density = RealFunction.express("f", densityExpression(), context);
@@ -139,26 +158,9 @@ public class NegativeBinomialDistribution extends
   {
     Real observations = Real.newVector(sampleSize);
     RandomState state = new RandomState().initialize().seed(seed);
-    try ( Real uniform = new Real(); Real mass = new Real(); Real cumulative = new Real();
-          Real q = new Real(); Real ratio = new Real(); Real kPlusR = new Real())
+    try
     {
-      new Real().one().sub(successProbability, bits, q);
-      for (int i = 0; i < sampleSize; i++)
-      {
-        arblib.arb_urandom(uniform, state, bits);
-
-        successProbability.pow(shape, bits, mass);
-        cumulative.set(mass);
-        int k = 0;
-        while (cumulative.compareTo(uniform) <= 0)
-        {
-          shape.add(k, bits, kPlusR).mul(q, bits, ratio).div(k + 1, bits, ratio);
-          mass.mul(ratio, bits, mass);
-          cumulative.add(mass, bits, cumulative);
-          k++;
-        }
-        observations.get(i).set(k);
-      }
+      sample(state, bits, observations, sampleSize);
     }
     finally
     {
@@ -172,6 +174,36 @@ public class NegativeBinomialDistribution extends
       }
     }
     return observations;
+  }
+
+  public Real sample(RandomState state, int bits, Real results, int count)
+  {
+    for (int i = 0; i < count; i++)
+    {
+      sample(state, bits, results.get(i));
+    }
+    return results;
+  }
+
+  public Real sample(RandomState state, int bits, Real result)
+  {
+    try ( Real uniform = new Real(); Real mass = new Real(); Real cumulative = new Real();
+          Real q = new Real(); Real ratio = new Real(); Real kPlusR = new Real())
+    {
+      q.one().sub(successProbability, bits, q);
+      arblib.arb_urandom(uniform, state, bits);
+      successProbability.pow(shape, bits, mass);
+      cumulative.set(mass);
+      int k = 0;
+      while (cumulative.compareTo(uniform) <= 0)
+      {
+        shape.add(k, bits, kPlusR).mul(q, bits, ratio).div(k + 1, bits, ratio);
+        mass.mul(ratio, bits, mass);
+        cumulative.add(mass, bits, cumulative);
+        k++;
+      }
+      return result.set(k);
+    }
   }
 
   private void invalidateCaches()
@@ -188,5 +220,6 @@ public class NegativeBinomialDistribution extends
     logDensity.close();
     distribution.close();
     context.close();
+    super.close();
   }
 }
