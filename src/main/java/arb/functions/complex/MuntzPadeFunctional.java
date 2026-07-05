@@ -14,9 +14,17 @@ import arb.functions.integer.ComplexPolynomialSequence;
  * Adaptive Müntz–Padé functional.
  *
  * <p>
- * Curries the external parameter v and returns an adaptive
+ * Binds the external parameter v and returns an adaptive
  * {@link MuntzPadeApproximant} which incrementally grows the Padé
  * hierarchy on demand during evaluation at the requested point t.
+ *
+ * <p>
+ * <b>Architectural invariant 2 — the factory knows only freezing.</b><br>
+ * This layer receives a polynomial sequence {@code k ↦ aₖ(v) ∈ ℂ[v]} and its
+ * sole responsibility is binding the perturbation point {@code v} so that
+ * {@link MuntzPadeApproximant} can evaluate the polynomials at that point
+ * during its σ-table construction. It has no knowledge of how those polynomials
+ * were derived or what application drives the evaluation.
  *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
