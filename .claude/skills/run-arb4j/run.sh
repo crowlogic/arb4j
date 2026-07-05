@@ -31,8 +31,13 @@ if [ ! -f libarblib.so ]; then
   make >&2
 fi
 if [ ! -f class.path ] || [ ! -d build/classes ]; then
-  echo "driver: Java artifacts missing, building (mvn install)…" >&2
-  mvn -q install >&2
+  # Carved exception to the "install always runs the tests" rule: this path only
+  # compiles what is needed to *launch an app* (class.path + build/classes). It
+  # is not a build you rely on for correctness, so it skips the ~900-test suite
+  # to start the app quickly. Any real build you trust must be a plain
+  # `mvn install` that runs every test.
+  echo "driver: Java artifacts missing, compiling to launch (mvn install -Dmaven.test.skip=true; tests intentionally not run for launcher)…" >&2
+  mvn -q install -Dmaven.test.skip=true >&2
 fi
 
 CP="build/classes:$(cat class.path)"

@@ -80,6 +80,13 @@ make   # ONLY after a native/*.i change
 falls back to `make` if the committed `libarblib.so` is absent — so for the agent
 path you usually don't invoke either directly.
 
+> **Launcher-only exception.** The auto-build inside `run.sh` exists solely to
+> compile enough to *start an app* (`class.path` + `build/classes`), so it uses
+> `mvn install -Dmaven.test.skip=true` to launch quickly. This is the **one**
+> sanctioned skip: it is not a build you rely on for correctness. Any build you
+> trust — and every build you run by hand — is a plain `mvn install` that runs
+> the full test suite.
+
 ## Run (agent path) — compile + run a Java program
 
 Default smoke (native arithmetic + expression compiler + the Riccati–Müntz–
@@ -146,7 +153,7 @@ dropdowns, the `∫ ∂ π √ ⊥` symbol palette, and the function table).
 mvn test
 ```
 
-838 JUnit tests; expect `BUILD SUCCESS`, `Tests run: 838, Failures: 0,
+900-plus JUnit tests; expect `BUILD SUCCESS`, `Tests run: <N>, Failures: 0,
 Errors: 0`. A single class/method: `mvn test -Dtest=RealTest#testSqrt`.
 
 ## Profile (why is something slow) — bin/profile
