@@ -298,6 +298,29 @@ public class Integer implements
     return this;
   }
 
+  /**
+   * Returns the absolute value of this integer as a {@link Real} ball. The
+   * integer is first lifted to an exact ball (radius zero) and then the absolute
+   * value is taken. The {@code bits} parameter is stored on the result for
+   * downstream operations but does not affect precision, since integer-to-ball
+   * conversion is exact.
+   *
+   * <p>
+   * This method satisfies the {@code T abs(int bits, Real result)} contract
+   * required by the infinite-sum convergence test in
+   * {@link arb.expressions.nodes.nary.NAryOperationNode}, enabling
+   * {@code Σ{k=a…∞}} over {@code IntegerSequence}.
+   *
+   * @param bits   working precision (stored on result; conversion is exact)
+   * @param result output ball — overwritten with {@code |this|}
+   * @return {@code result}
+   */
+  public Real abs(int bits, Real result)
+  {
+    arblib.arb_set_fmpz(result, swigCPtr);
+    return result.abs(bits, result);
+  }
+
   public Complex add(Complex addend, int bits, Complex result)
   {
     return result.set(this).add(addend, bits);
