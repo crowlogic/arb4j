@@ -19,6 +19,12 @@
 		<asm.version>9.9.1</asm.version>
 		<mdep.outputFile>class.path</mdep.outputFile>
 		<argLine></argLine>
+		<!-- When true, surefire writes each test class's stdout/stderr to its own
+		     target/surefire-reports/<Class>-output.txt instead of the console.
+		     Default false keeps local runs printing to the terminal; CI sets it
+		     to true so every test's console output survives as an uploadable
+		     artifact even when the JVM is later killed by an OOM or a timeout. -->
+		<arb4j.redirectTestOutputToFile>false</arb4j.redirectTestOutputToFile>
 	</properties>
 
 	<repositories>
@@ -215,6 +221,7 @@
 						-Djava.library.path=${project.basedir}
 						-XX:+DisableExplicitGC
 						${argLine}</argLine>
+					<redirectTestOutputToFile>${arb4j.redirectTestOutputToFile}</redirectTestOutputToFile>
 					<!-- Exclude native-memory-leak tests that require explicit GC;
 					     run them via: mvn -Pleak-test test -->
 					<excludes>

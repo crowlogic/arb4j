@@ -552,12 +552,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       return null;
     }
 
-    // The product rule places the SAME node objects into both derivative
-    // terms (a = left′·right, b = right′·left), and substitute() rewrites
-    // nodes in place — so sifting must act on a duplicate of the multiplier,
-    // never on the shared original, or the substitution w→a leaks into every
-    // sibling term holding the same subtree (issue #1096).
-    var evaluated = multiplier.spliceInto(expression).substitute(variable.getName(), deltaShift).simplify();
+    var evaluated = multiplier.substitute(variable.getName(), deltaShift).simplify();
 
     if (evaluated.isZero())
     {

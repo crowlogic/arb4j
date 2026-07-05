@@ -12,6 +12,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
+import arb.expressions.nodes.LiteralConstantNode;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
@@ -70,18 +71,25 @@ public abstract class JetNode<D, C, F extends Function<? extends D, ? extends C>
   @Override
   public Node<D, C, F> differentiate(VariableNode<D, C, F> variable)
   {
+    // This node is the Taylor coefficient f⁽ᵏ⁾(g(v))/k! at index k of the
+    // series jet, so by the chain rule
+    //
+    // d/dv [f⁽ᵏ⁾(g(v))/k!] = (k+1)·[f⁽ᵏ⁺¹⁾(g(v))/(k+1)!]·g'(v)
+    //
+    // — the next coefficient scaled by (k+1) and by the derivative of the
+    // argument. If g does not depend on the differentiation variable then
+    // g'(v) = 0 and so is the product.
+    if (!arg.dependsOn(variable))
+    {
+      return zero();
+    }
     var next = newInstance(expression, arg, coefficientIndex + 1, sharedState);
     sharedState.updateMax(coefficientIndex + 1);
-    // Apply the chain rule: d/dv f(g(v)) = f'(g(v)) * g'(v)
-    // The jet coefficient at index k+1 gives f^(k+1)(g(v)), which is the
-    // derivative with respect to the argument. If g depends on the
-    // differentiation variable, we must multiply by g'(v).
-    if (arg.dependsOn(variable))
-    {
-      Node<D, C, F> argDerivative = arg.differentiate(variable);
-      return next.mul(argDerivative);
-    }
-    return next;
+    Node<D, C, F> scaled = coefficientIndex == 0 ? next
+                                                 : next.mul(new LiteralConstantNode<>(expression,
+                                                                                      String.valueOf(coefficientIndex + 1)));
+    Node<D, C, F> argDerivative = arg.differentiate(variable);
+    return scaled.mul(argDerivative);
   }
 
   @Override

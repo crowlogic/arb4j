@@ -96,7 +96,6 @@ public final class RoughHestonCalibration implements
   final Real                                 λ, θ, ν, v0, ρ, μ, T, S0, rr, strike;
   final RoughHestonEdgeworthCallPrice        price; // compiled once; repriced by mutating handles
 
-  public int                                 maxIter = 40;
   int                                        maxDamping = 40;
 
   /** Where each per-iteration trace line goes; default is the console. */
@@ -234,7 +233,7 @@ public final class RoughHestonCalibration implements
 
       boolean started = false, converged = false;
       int     iter    = 0;
-      for (iter = 0; iter < maxIter; iter++)
+      for (iter = 0; true; iter++)
       {
         jacobian(x, J);
         J.transpose(Jt);

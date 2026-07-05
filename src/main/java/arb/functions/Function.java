@@ -250,9 +250,23 @@ public interface Function<D, CO> extends
    * @param variables ordered list of parameter names whose partials to return
    * @return a {@link Jacobian} whose i-th partial is ∂this/∂variables[i]
    */
+  @SuppressWarnings("unchecked")
   public default <F extends Function<D, CO>> Jacobian<D, CO, F> jacobian(String[] variables)
   {
-    throw new UnsupportedOperationException("TODO: " + getClass() + " should implement jacobian(String[])");
+    Expression<D, CO, F> expr = getExpression();
+    if (expr == null)
+    {
+      throw new UnsupportedOperationException("TODO: " + getClass()
+                                              + " must implement jacobian(String[]) or expose getExpression()");
+    }
+    F[] partials = (F[]) java.lang.reflect.Array.newInstance(expr.functionClass, variables.length);
+    for (int i = 0; i < variables.length; i++)
+    {
+      partials[i] = expr.derivative(new VariableReference<>(variables[i]));
+    }
+    return new Jacobian<D, CO, F>((F) this,
+                                  variables,
+                                  partials);
   }
 
   /**

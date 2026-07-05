@@ -147,6 +147,10 @@ public final class MuntzPadeApproximant implements
       threshold.one().mul2e(-bits / 2, threshold);
       bestMag.posInf();
       M.set(2);
+      // Fill the σ-table caches bottom-up first; a top-down read of the cyclic
+      // {σ,α,β,h} recurrence otherwise memoises a partial ∅ and later divides by
+      // it. Cheap and idempotent once σfunc is memoised (re-calls are cache hits).
+      ops.warmTo(2, bits);
       Φ.evaluate(M, 1, bits, null).evaluate(z, 1, bits, prev);
       best.set(prev);
       // Unbounded by design: the diff descends monotonically to that floor
@@ -156,7 +160,7 @@ public final class MuntzPadeApproximant implements
         M.set(m);
         try
         {
-          Φ.evaluate(M, 1, bits, null).evaluate(z, 1, bits, curr);
+          ops.warmTo(m, bits);
         }
         catch (DivisionByZeroException e)
         {
@@ -166,6 +170,7 @@ public final class MuntzPadeApproximant implements
           // seen so far instead of throwing on the degenerate step.
           return result.set(best);
         }
+        Φ.evaluate(M, 1, bits, null).evaluate(z, 1, bits, curr);
         curr.sub(prev, bits, diff).abs(bits, diffMag);
         if (diffMag.compareTo(threshold) <= 0)
         {

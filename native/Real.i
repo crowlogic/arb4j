@@ -351,6 +351,17 @@ import arb.utensils.Utensils;
     result.bits = bits;
     return result;  
   }
+
+  /**
+   * The lower incomplete beta function B(a,b;z) with a=this, regularized to
+   * I_z(a,b)=B(a,b;z)/B(a,b) when regularized=1
+   */
+  public Real betaLower(Real b, Real z, int regularized, int bits, Real result)
+  {
+    arblib.arb_hypgeom_beta_lower(result, this, b, z, regularized, bits);
+    result.bits = bits;
+    return result;
+  }
     
   public RationalFunction add( Real z, int bits, RationalFunction result )
   {
