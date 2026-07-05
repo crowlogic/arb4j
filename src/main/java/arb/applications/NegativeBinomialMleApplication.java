@@ -1,18 +1,19 @@
 package arb.applications;
 
-import java.util.Random;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import arb.Real;
+import arb.RealMatrix;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.stochastic.NegativeBinomialDistribution;
 
 /**
- * Command-line entry point that synthesizes negative-binomial data and calibrates
- * the distribution by maximum likelihood from several starting points.
+ * Command-line entry point that draws an exact-inversion negative-binomial
+ * sample and calibrates the distribution by maximum likelihood
+ * (Levenberg–Marquardt on the exact compiler-built score and observed
+ * information) from several starting points.
  *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the {@link TheArb4jLibrary}
  */
@@ -22,18 +23,20 @@ public class NegativeBinomialMleApplication
 
   public static void main(String[] args) throws Exception
   {
-    int sampleSize = args.length > 0 ? Integer.parseInt(args[0]) : 400;
-    double trueShape = 5.0;
-    double trueProbability = 0.35;
+    int sampleSize = args.length > 0 ? Integer.parseInt(args[0]) : 2000;
+    double trueShape = args.length > 1 ? Double.parseDouble(args[1]) : 4.75;
+    double trueProbability = args.length > 2 ? Double.parseDouble(args[2]) : 0.5;
     int bits = 256;
-
-    Real observations = sampleData(sampleSize, trueShape, trueProbability, 123456789L, bits);
 
     try ( NegativeBinomialDistribution distribution = new NegativeBinomialDistribution(trueShape, trueProbability))
     {
       log.info("distribution: {}", distribution.getName());
+      log.info("density expression: {}", distribution.densityExpression());
       log.info("log-density expression: {}", distribution.logDensityExpression());
-      log.info("cumulative expression: {}", distribution.cumulativeExpression());
+      log.info("distribution-function expression: {}", distribution.cumulativeExpression());
+      log.info("true parameters: r={} p={}", trueShape, trueProbability);
+
+      Real observations = distribution.sample(sampleSize, 123456789L, bits);
       log.info("sample size: {}", observations.dim());
 
       double[][] starts = {
@@ -46,39 +49,18 @@ public class NegativeBinomialMleApplication
         try ( Real initial = Real.newVector(start))
         {
           int iterations = distribution.calibrate(observations, initial, 200, bits);
-          log.info("start=[{}, {}] -> r={} p={} iterations={}",
+          RealMatrix covariance = distribution.parameterCovariance();
+          log.info("start=[{}, {}] -> r̂={} p̂={} iterations={} var(r̂)={} var(p̂)={}",
                    start[0],
                    start[1],
-                   distribution.shape(),
-                   distribution.successProbability(),
-                   iterations);
+                   distribution.parameters().get(0),
+                   distribution.parameters().get(1),
+                   iterations,
+                   covariance.get(0, 0),
+                   covariance.get(1, 1));
         }
       }
+      observations.close();
     }
-  }
-
-  private static Real sampleData(int sampleSize, double shape, double probability, long seed, int bits)
-  {
-    int effectiveShape = Math.max(1, (int) Math.round(shape));
-    Real observations = Real.newVector(sampleSize);
-    Random random = new Random(seed);
-    for (int i = 0; i < sampleSize; i++)
-    {
-      int failures = 0;
-      int successes = 0;
-      while (successes < effectiveShape)
-      {
-        if (random.nextDouble() < probability)
-        {
-          successes++;
-        }
-        else
-        {
-          failures++;
-        }
-      }
-      observations.get(i).set(failures);
-    }
-    return observations;
   }
 }

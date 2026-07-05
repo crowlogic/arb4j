@@ -1,7 +1,5 @@
 package arb.stochastic;
 
-import java.util.Random;
-
 import arb.Real;
 import arb.RealMatrix;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -233,28 +231,36 @@ public class NegativeBinomialDistributionTest extends
 
   public void testRecoversParametersFromMethodOfMomentsStart()
   {
-    double trueShape = 5.0;
+    // Exact inversion sampling with a NON-INTEGER shape — the pmf recurrence
+    // holds for every real r>0, so nothing is rounded.
+    double trueShape = 4.75;
     double trueProbability = 0.5;
     int    sampleSize = 2000;
-    Real   observations = sampleData(sampleSize, trueShape, trueProbability, 20260706L);
 
-    try ( NegativeBinomialDistribution d = new NegativeBinomialDistribution(trueShape, trueProbability);
-          Real initial = methodOfMomentsInitialGuess(observations))
+    try ( NegativeBinomialDistribution d = new NegativeBinomialDistribution(trueShape, trueProbability))
     {
-      int iterations = d.calibrate(observations, initial, 100, BITS);
-      assertTrue("Newton–Kantorovich must converge from the moment start; iterations=" + iterations,
-                 iterations >= 0);
+      Real observations = d.sample(sampleSize, 20260706L, BITS);
+      try ( Real initial = methodOfMomentsInitialGuess(observations))
+      {
+        int iterations = d.calibrate(observations, initial, 100, BITS);
+        assertTrue("Levenberg–Marquardt must converge from the moment start; iterations=" + iterations,
+                   iterations >= 0);
 
-      RealMatrix cov = d.parameterCovariance();
-      double rHat = d.parameters().get(0).doubleValue();
-      double pHat = d.parameters().get(1).doubleValue();
-      double seR = Math.sqrt(cov.get(0, 0).doubleValue());
-      double seP = Math.sqrt(cov.get(1, 1).doubleValue());
+        RealMatrix cov = d.parameterCovariance();
+        double rHat = d.parameters().get(0).doubleValue();
+        double pHat = d.parameters().get(1).doubleValue();
+        double seR = Math.sqrt(cov.get(0, 0).doubleValue());
+        double seP = Math.sqrt(cov.get(1, 1).doubleValue());
 
-      assertTrue("r₀ in 95% Wald interval " + rHat + "±" + (Z_975 * seR),
-                 Math.abs(rHat - trueShape) <= Z_975 * seR);
-      assertTrue("p₀ in 95% Wald interval " + pHat + "±" + (Z_975 * seP),
-                 Math.abs(pHat - trueProbability) <= Z_975 * seP);
+        assertTrue("r₀ in 95% Wald interval " + rHat + "±" + (Z_975 * seR),
+                   Math.abs(rHat - trueShape) <= Z_975 * seR);
+        assertTrue("p₀ in 95% Wald interval " + pHat + "±" + (Z_975 * seP),
+                   Math.abs(pHat - trueProbability) <= Z_975 * seP);
+      }
+      finally
+      {
+        observations.close();
+      }
     }
   }
 
@@ -289,28 +295,4 @@ public class NegativeBinomialDistributionTest extends
     return θ;
   }
 
-  private static Real sampleData(int sampleSize, double shape, double probability, long seed)
-  {
-    int effectiveShape = Math.max(1, (int) Math.round(shape));
-    Real observations = Real.newVector(sampleSize);
-    Random random = new Random(seed);
-    for (int i = 0; i < sampleSize; i++)
-    {
-      int failures = 0;
-      int successes = 0;
-      while (successes < effectiveShape)
-      {
-        if (random.nextDouble() < probability)
-        {
-          successes++;
-        }
-        else
-        {
-          failures++;
-        }
-      }
-      observations.get(i).set(failures);
-    }
-    return observations;
-  }
 }

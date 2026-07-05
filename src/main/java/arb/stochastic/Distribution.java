@@ -89,35 +89,61 @@ public abstract class Distribution implements
       }
     }
 
-    Real       θ     = Real.newVector(n);
+    // Exact aggregation: the sample sum Σᵢ g(xᵢ) equals Σ_v m(v)·g(v) over the
+    // distinct observation values v with integer multiplicities m(v). For a
+    // discrete law with far fewer distinct values than observations this
+    // removes redundant evaluations with zero effect on the result.
+    Real  distinct       = distinctValues(observations);
+    int[] multiplicities = multiplicities(observations, distinct);
+
+    Real       θ      = Real.newVector(n);
     θ.set(initialParameters);
     zeroRadius(θ);
-    RealMatrix U     = RealMatrix.newMatrix(n, 1);
-    RealMatrix M     = RealMatrix.newMatrix(n, n);
-    RealMatrix δ     = RealMatrix.newMatrix(n, 1);
+    Real       θTrial = Real.newVector(n);
+    RealMatrix U      = RealMatrix.newMatrix(n, 1);
+    RealMatrix M      = RealMatrix.newMatrix(n, n);
+    RealMatrix A      = RealMatrix.newMatrix(n, n);
+    RealMatrix δ      = RealMatrix.newMatrix(n, 1);
 
     boolean converged = false;
     int     iteration = 0;
 
-    // Newton–Kantorovich iteration for F(θ)=U(θ)=∇ℓ=0 with F'(θ)=−M(θ),
-    // M=−∇²ℓ the observed information: θ ← θ + M(θ)⁻¹U(θ). No damping, no free
-    // parameters; the convergence tolerance 2⁻ᵇⁱᵗˢ/² is fixed by the requested
-    // precision, not chosen.
+    // Levenberg–Marquardt iteration on the exact score U = ∇ℓ with the exact
+    // observed information M = −∇²ℓ: solve (M + λI)δ = U, accept on likelihood
+    // increase. Near the maximum M is positive definite, λ shrinks to zero and
+    // the step is the undamped Newton step, so the Newton–Kantorovich theorem
+    // gives quadratic convergence to the score root; far from it, λ grows until
+    // the damped step ascends. The convergence tolerance 2⁻ᵇⁱᵗˢ/² is fixed by
+    // the requested precision.
     try ( Real logL      = new Real();
+          Real logLTrial = new Real();
+          Real λ         = new Real();
+          Real augmented = new Real();
           Real magnitude = new Real();
           Real stepNorm  = new Real();
           Real tolerance = new Real().one().mul2e(-bits / 2))
     {
+      evaluateAt(θ, ℓ, score, info, distinct, multiplicities, bits, logL, U, M);
+      λ.one().mul2e(-20, λ);
+
       for (; iteration < maxIterations; iteration++)
       {
-        evaluateAt(θ, ℓ, score, info, observations, bits, logL, U, M);
-        M.solve(U, bits, δ);
+        for (int j = 0; j < n; j++)
+        {
+          for (int k = 0; k < n; k++)
+          {
+            A.set(j, k, M.get(j, k));
+          }
+          M.get(j, j).add(λ, bits, augmented);
+          A.set(j, j, augmented);
+        }
+        A.solve(U, bits, δ);
 
         stepNorm.zero();
         for (int j = 0; j < n; j++)
         {
-          θ.get(j).add(δ.get(j, 0), bits, θ.get(j));
-          θ.get(j).getRad().zero();
+          θ.get(j).add(δ.get(j, 0), bits, θTrial.get(j));
+          θTrial.get(j).getRad().zero();
           δ.get(j, 0).abs(bits, magnitude);
           if (magnitude.compareTo(stepNorm) > 0)
           {
@@ -125,13 +151,36 @@ public abstract class Distribution implements
           }
         }
 
-        log.debug("iter={} θ={} ‖δ‖={}", iteration, θ, stepNorm);
-
-        if (stepNorm.compareTo(tolerance) < 0)
+        boolean accepted;
+        if (isInDomain(θTrial))
         {
-          converged = true;
-          iteration++;
-          break;
+          evaluateAt(θTrial, ℓ, score, info, distinct, multiplicities, bits, logLTrial, U, M);
+          accepted = logLTrial.isFinite() && logLTrial.compareTo(logL) > 0;
+        }
+        else
+        {
+          accepted = false;
+        }
+
+        log.debug("iter={} θ={} λ={} ‖δ‖={} accepted={}", iteration, θ, λ, stepNorm, accepted);
+
+        if (accepted)
+        {
+          θ.set(θTrial);
+          zeroRadius(θ);
+          logL.set(logLTrial);
+          λ.mul2e(-2, λ);
+          if (stepNorm.compareTo(tolerance) < 0)
+          {
+            converged = true;
+            iteration++;
+            break;
+          }
+        }
+        else
+        {
+          λ.mul2e(2, λ);
+          evaluateAt(θ, ℓ, score, info, distinct, multiplicities, bits, logL, U, M);
         }
       }
     }
@@ -142,10 +191,12 @@ public abstract class Distribution implements
     observedInformation = RealMatrix.newMatrix(n, n);
     try ( Real logLfinal = new Real())
     {
-      evaluateAt(θ, ℓ, score, info, observations, bits, logLfinal, U, observedInformation);
+      evaluateAt(θ, ℓ, score, info, distinct, multiplicities, bits, logLfinal, U, observedInformation);
     }
     parameterCovariance = RealMatrix.newMatrix(n, n);
     observedInformation.inverse(bits, parameterCovariance);
+
+    distinct.close();
 
     return converged ? iteration : -iteration;
   }
@@ -175,12 +226,64 @@ public abstract class Distribution implements
   }
 
   /**
+   * The distinct values of the sample, in first-appearance order. Two
+   * observations are the same value exactly when their balls are identical
+   * point balls; any observation that is not an exact point joins the distinct
+   * list as its own entry, so aggregation never alters the sum.
+   */
+  private static Real distinctValues(Real observations)
+  {
+    int m = observations.dim();
+    int distinctCount = 0;
+    Real scratch = Real.newVector(m);
+    for (int i = 0; i < m; i++)
+    {
+      Real value = observations.get(i);
+      boolean found = false;
+      for (int j = 0; j < distinctCount && !found; j++)
+      {
+        found = scratch.get(j).equals(value);
+      }
+      if (!found)
+      {
+        scratch.get(distinctCount++).set(value);
+      }
+    }
+    Real distinct = Real.newVector(distinctCount);
+    for (int j = 0; j < distinctCount; j++)
+    {
+      distinct.get(j).set(scratch.get(j));
+    }
+    scratch.close();
+    return distinct;
+  }
+
+  /** Integer multiplicity of each distinct value within the sample. */
+  private static int[] multiplicities(Real observations, Real distinct)
+  {
+    int[] counts = new int[distinct.dim()];
+    for (int i = 0; i < observations.dim(); i++)
+    {
+      for (int j = 0; j < distinct.dim(); j++)
+      {
+        if (distinct.get(j).equals(observations.get(i)))
+        {
+          counts[j]++;
+          break;
+        }
+      }
+    }
+    return counts;
+  }
+
+  /**
    * Set the parameters to {@code point}, refresh the compiled functions, and
    * evaluate the log-likelihood, the score U = ∇ℓ, and the observed information
-   * M = −∇²ℓ summed over the sample.
+   * M = −∇²ℓ over the sample as multiplicity-weighted sums over its distinct
+   * values.
    */
   private void evaluateAt(Real point, RealFunction ℓ, RealFunction[] score, RealFunction[][] info,
-                          Real observations, int bits, Real logL, RealMatrix U, RealMatrix M)
+                          Real distinct, int[] multiplicities, int bits, Real logL, RealMatrix U, RealMatrix M)
   {
     int n = score.length;
     setParameters(point);
@@ -198,18 +301,19 @@ public abstract class Distribution implements
 
     try ( Real term = new Real())
     {
-      for (int i = 0; i < observations.dim(); i++)
+      for (int i = 0; i < distinct.dim(); i++)
       {
-        Real x = observations.get(i);
-        ℓ.evaluate(x, 1, bits, term);
+        Real x = distinct.get(i);
+        int  m = multiplicities[i];
+        ℓ.evaluate(x, 1, bits, term).mul(m, bits, term);
         logL.add(term, bits, logL);
         for (int j = 0; j < n; j++)
         {
-          score[j].evaluate(x, 1, bits, term);
+          score[j].evaluate(x, 1, bits, term).mul(m, bits, term);
           U.get(j, 0).add(term, bits, U.get(j, 0));
           for (int k = 0; k < n; k++)
           {
-            info[j][k].evaluate(x, 1, bits, term);
+            info[j][k].evaluate(x, 1, bits, term).mul(m, bits, term);
             M.get(j, k).sub(term, bits, M.get(j, k));
           }
         }

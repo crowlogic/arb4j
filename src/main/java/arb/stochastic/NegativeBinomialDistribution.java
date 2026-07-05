@@ -1,6 +1,8 @@
 package arb.stochastic;
 
+import arb.RandomState;
 import arb.Real;
+import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
@@ -111,6 +113,65 @@ public class NegativeBinomialDistribution extends
   public String logDensityExpression()
   {
     return "ln(Γ(x+r))-ln(Γ(r))-ln(Γ(x+1))+r*ln(p)+x*ln(1-p)";
+  }
+
+  /**
+   * Draw a sample of the law by exact inversion: for each observation a uniform
+   * ball U ∈ [0,1) from {@code arb_urandom} is inverted through the exact
+   * partial-sum distribution function, accumulated by the pmf recurrence
+   *
+   * <pre>
+   *   f(0) = pʳ,   f(k+1) = f(k)·(k+r)·(1−p)/(k+1)
+   * </pre>
+   *
+   * in ball arithmetic at {@code bits}. The recurrence holds for every real
+   * r&gt;0 — no integer rounding of the shape parameter enters. The returned
+   * observation is the smallest k with F(k) &gt; U; each comparison is between
+   * balls whose radii are far below the comparison scale at the working
+   * precision, so the inversion is exact.
+   *
+   * @param sampleSize number of observations
+   * @param seed       seed for the deterministic arb random state
+   * @param bits       working precision
+   * @return a {@link Real} vector of {@code sampleSize} observations
+   */
+  public Real sample(int sampleSize, long seed, int bits)
+  {
+    Real observations = Real.newVector(sampleSize);
+    RandomState state = new RandomState().initialize().seed(seed);
+    try ( Real uniform = new Real(); Real mass = new Real(); Real cumulative = new Real();
+          Real q = new Real(); Real ratio = new Real(); Real kPlusR = new Real())
+    {
+      new Real().one().sub(successProbability, bits, q);
+      for (int i = 0; i < sampleSize; i++)
+      {
+        arblib.arb_urandom(uniform, state, bits);
+
+        successProbability.pow(shape, bits, mass);
+        cumulative.set(mass);
+        int k = 0;
+        while (cumulative.compareTo(uniform) <= 0)
+        {
+          shape.add(k, bits, kPlusR).mul(q, bits, ratio).div(k + 1, bits, ratio);
+          mass.mul(ratio, bits, mass);
+          cumulative.add(mass, bits, cumulative);
+          k++;
+        }
+        observations.get(i).set(k);
+      }
+    }
+    finally
+    {
+      try
+      {
+        state.close();
+      }
+      catch (Exception e)
+      {
+        throw new RuntimeException(e.getMessage(), e);
+      }
+    }
+    return observations;
   }
 
   private void invalidateCaches()
