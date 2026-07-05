@@ -8,10 +8,11 @@ import arb.functions.real.RealFunction;
 
 /**
  * Negative-binomial probability law with an exact compiler-built density and
- * log-density. The distribution function is defined as ∫₀ˣ density(t) dt, with
- * the density being its derivative via the Fundamental Theorem of Calculus —
- * satisfying the {@link Distribution} contract semantically without triggering
- * symbolic antiderivative computation.
+ * log-density. It is a <em>discrete</em> law supported on the non-negative
+ * integers, so the density is the probability mass f(k) and the distribution
+ * function is the partial sum F(x) = ∑ₖ₌₀^⌊x⌋ f(k). The mass is therefore the
+ * increment of the distribution function, f(k) = F(k) − F(k−1), the discrete
+ * counterpart of the Fundamental Theorem of Calculus.
  *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the {@link TheArb4jLibrary}
  */
@@ -24,6 +25,7 @@ public class NegativeBinomialDistribution extends
 
   private final RealFunction density;
   private final RealFunction logDensity;
+  private final RealFunction distribution;
 
   public NegativeBinomialDistribution(double shape, double successProbability)
   {
@@ -35,6 +37,7 @@ public class NegativeBinomialDistribution extends
     this.context.registerVariable(this.successProbability);
     this.density = RealFunction.express("f", densityExpression(), context);
     this.logDensity = RealFunction.express("ℓ", logDensityExpression(), context);
+    this.distribution = RealFunction.express("F", cumulativeExpression(), context);
   }
 
   @Override
@@ -46,7 +49,7 @@ public class NegativeBinomialDistribution extends
   @Override
   public RealFunction distributionFunction()
   {
-    return RealFunction.express(cumulativeExpression(), context);
+    return distribution;
   }
 
   @Override
@@ -102,7 +105,7 @@ public class NegativeBinomialDistribution extends
 
   public String cumulativeExpression()
   {
-    return "x➔∫t➔f(t)dt∈(0,x)";
+    return "x➔∑n➔f(n){n=0…⌊x⌋}";
   }
 
   public String logDensityExpression()
@@ -114,6 +117,7 @@ public class NegativeBinomialDistribution extends
   {
     density.invalidateCache();
     logDensity.invalidateCache();
+    distribution.invalidateCache();
   }
 
   @Override
@@ -121,6 +125,7 @@ public class NegativeBinomialDistribution extends
   {
     density.close();
     logDensity.close();
+    distribution.close();
     context.close();
   }
 }

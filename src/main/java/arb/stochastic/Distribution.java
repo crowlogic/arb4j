@@ -10,8 +10,9 @@ import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
 
 /**
- * Probability law for arb4j-style stochastic models. The density is the
- * derivative of the distribution function.
+ * Probability law for arb4j-style stochastic models. For a continuous law the
+ * density is the derivative of the distribution function; for a discrete law the
+ * mass f(k) is the increment F(k)−F(k−1) of the distribution function.
  *
  * <p>
  * A distribution owns its parameters, so it owns its calibration. The parameters

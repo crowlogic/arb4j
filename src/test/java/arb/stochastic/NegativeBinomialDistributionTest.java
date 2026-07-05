@@ -86,19 +86,30 @@ public class NegativeBinomialDistributionTest extends
     }
   }
 
-  public void testDensityIsDerivativeOfDistributionFunction()
+  public void testDensityIsIncrementOfDistributionFunction()
   {
+    // A discrete law: the mass f(k) is the increment F(k)−F(k−1) of the
+    // distribution function, and F rises monotonically to 1.
     try ( NegativeBinomialDistribution d = new NegativeBinomialDistribution(4.5, 0.5);
-          Real x = new Real(); Real fromDensity = new Real(); Real fromCdf = new Real())
+          Real x = new Real(); Real mass = new Real(); Real Fk = new Real(); Real Fk1 = new Real();
+          Real increment = new Real(); Real total = new Real())
     {
-      RealFunction cdfDerivative = d.distributionFunction().derivative("x");
-      for (double probe : new double[] { 0.5, 1.5, 3.0, 6.0 })
+      RealFunction F = d.distributionFunction();
+      for (int k = 0; k <= 8; k++)
       {
-        x.set(probe);
-        d.densityFunction().evaluate(x, 1, BITS, fromDensity);
-        cdfDerivative.evaluate(x, 1, BITS, fromCdf);
-        assertTrue("F'(" + probe + ")=f", tiny(fromDensity, fromCdf));
+        x.set(k);
+        F.evaluate(x, 1, BITS, Fk);
+        x.set(k - 1);
+        F.evaluate(x, 1, BITS, Fk1);
+        x.set(k);
+        d.densityFunction().evaluate(x, 1, BITS, mass);
+        Fk.sub(Fk1, BITS, increment);
+        assertTrue("f(" + k + ")=F(" + k + ")−F(" + (k - 1) + ")", tiny(mass, increment));
+        assertTrue("F increasing at " + k, Fk.compareTo(Fk1) >= 0);
       }
+      x.set(1000);
+      F.evaluate(x, 1, BITS, total);
+      assertTrue("F(1000)→1", tiny(total, new Real().one()));
     }
   }
 

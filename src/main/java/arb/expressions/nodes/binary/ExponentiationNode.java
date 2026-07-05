@@ -221,7 +221,7 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     }
 
     Node<D, R, F> exponent = right.add(one());
-    return left.pow(exponent).div(exponent);
+    return left.pow(exponent).div(exponent.spliceInto(expression));
   }
 
   @Override

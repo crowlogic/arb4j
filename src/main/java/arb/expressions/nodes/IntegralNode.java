@@ -772,6 +772,19 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     }
     else
     {
+      // The indefinite integral is an antiderivative that is a function of the
+      // integration variable. When the antiderivative hides that variable inside
+      // an operand sub-function (e.g. a Σ whose summand references it as an
+      // upstream variable), the enclosing expression never adopts it, leaving its
+      // independent variable unset; the summand's input propagation would then
+      // emit a GETFIELD for the integration variable on the enclosing class
+      // rather than loading the input parameter, and no such field is ever
+      // declared. Adopt the integration variable as the independent variable so
+      // propagation loads the input parameter. (Mirrors compileIndefiniteIntegral.)
+      if (expression.getIndependentVariable() == null && expression.canHaveIndependentVariable())
+      {
+        expression.assignInputVariable(expression.newVariableNode(integrationVariableName));
+      }
       return indefiniteIntegralNode.spliceInto(expression);
     }
   }
