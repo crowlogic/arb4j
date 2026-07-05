@@ -15,7 +15,7 @@
 	  though nobody enabled debug/trace. This test-scoped config restores a sane
 	  INFO default for the whole suite.
 	-->
-	<logger name="arb.stochastic.MaximumLikelihoodEstimation" level="DEBUG" />
+	<logger name="arb.stochastic.Distribution" level="DEBUG" />
 
 	<root level="INFO">
 		<appender-ref ref="console" />

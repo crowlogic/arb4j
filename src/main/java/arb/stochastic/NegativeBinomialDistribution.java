@@ -62,12 +62,27 @@ public class NegativeBinomialDistribution extends
   }
 
   @Override
-  public void setParameters(double... parameters)
+  public Real parameters()
   {
-    assert parameters.length == 2 : "negative-binomial expects [shape, successProbability]";
-    shape.set(parameters[0]);
-    successProbability.set(parameters[1]);
+    Real θ = Real.newVector(2);
+    θ.get(0).set(shape);
+    θ.get(1).set(successProbability);
+    return θ;
+  }
+
+  @Override
+  public void setParameters(Real θ)
+  {
+    assert θ.dim() == 2 : "negative-binomial expects [shape, successProbability]";
+    shape.set(θ.get(0));
+    successProbability.set(θ.get(1));
     invalidateCaches();
+  }
+
+  @Override
+  public boolean isInDomain(Real θ)
+  {
+    return θ.get(0).sign() > 0 && θ.get(1).sign() > 0 && θ.get(1).doubleValue() < 1.0;
   }
 
   public double shape()
