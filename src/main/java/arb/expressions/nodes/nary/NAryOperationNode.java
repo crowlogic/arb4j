@@ -1348,22 +1348,49 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   public <E, S, G extends Function<? extends E, ? extends S>> Node<E, S, G> spliceInto(Expression<E, S, G> newExpression)
   {
     var splicedOperandExpression = (Expression<Integer, S, Sequence<S>>) (Expression<?, ?, ?>) operandExpression;
-    var nAryOperationNode        = new NAryOperationNode<E, S, G>(newExpression,
-                                                                  identity,
-                                                                  prefix,
-                                                                  operation,
-                                                                  symbol,
-                                                                  splicedOperandExpression,
-                                                                  lowerLimit.spliceInto(newExpression),
-                                                                  upperLimit.spliceInto(newExpression));
+    var nAryOperationNode        = createSimilarNode(newExpression,
+                                                     splicedOperandExpression,
+                                                     lowerLimit.spliceInto(newExpression),
+                                                     upperLimit.spliceInto(newExpression));
     nAryOperationNode.assignFieldNamesIfNecessary(newExpression.coDomainType);
     nAryOperationNode.indexVariableFieldName          = this.indexVariableFieldName;
     nAryOperationNode.indexVariableGeneratedFieldName = this.indexVariableGeneratedFieldName;
+    // The index field was declared on the source expression; move that
+    // declaration onto the expression this node is being spliced into so the
+    // generated class actually declares the field it references.
+    if (this.indexVariableGeneratedFieldName != null
+                  && !newExpression.hasIntermediateVariable(this.indexVariableGeneratedFieldName))
+    {
+      newExpression.registerIntermediateVariable(this.indexVariableGeneratedFieldName, Integer.class, true);
+    }
     nAryOperationNode.parsed                          = this.parsed;
     nAryOperationNode.functionInternalName            = newExpression.internalName();
     nAryOperationNode.operandFunctionFieldName        = this.operandFunctionFieldName;
     nAryOperationNode.operandMapping                  = (FunctionMapping<Integer, S, Sequence<S>>) (FunctionMapping<?, ?, ?>) this.operandMapping;
     newExpression.registerReferencedFunction(this.operandFunctionFieldName, this.operandMapping);
+    // The operand sub-function was built in the source expression's context.
+    // Splicing moves this node into newExpression, whose context both drives
+    // declareFunctionReferences (it walks context.functions to decide which
+    // reference fields to declare) and owns the ExpressionClassLoader the
+    // generated classes are defined in. Re-home the operand mapping and its
+    // expression into newExpression's context so (a) the operand-function field
+    // is actually declared on newExpression's class — otherwise the emitted
+    // GETFIELD has no matching field and instantiation throws NoSuchFieldError —
+    // and (b) the operand sub-class is defined by the same loader as its parent,
+    // so the parent's `this.<operand>.context = this.context` assignment does
+    // not fail with a cross-loader protected-access IllegalAccessError.
+    if (this.operandMapping != null && newExpression.getContext() != null)
+    {
+      if (newExpression.getContext().functions.get(this.operandFunctionFieldName) == null)
+      {
+        newExpression.getContext().functions.put(this.operandFunctionFieldName, this.operandMapping);
+      }
+      if (this.operandMapping.expression != null
+                    && this.operandMapping.expression.getContext() != newExpression.getContext())
+      {
+        this.operandMapping.expression.setContext(newExpression.getContext());
+      }
+    }
     return nAryOperationNode;
   }
 
@@ -1382,7 +1409,20 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       return this;
     }
 
-    operandExpression = operandExpression.substitute(variable, substitution.expression);
+    // Splice the substitution node into the operand's own expression and use the
+    // Node-valued substitute overload. The operand references the outer variable
+    // (e.g. a definite integral's integration variable) as an upstream variable;
+    // substituting it with a limit node that is a literal constant or other
+    // input-variable-free node would NPE in the Expression-valued overload, which
+    // dereferences substitution.getInputVariable(). The substitution may itself
+    // reference outer free variables (e.g. z in 2*z) that are not part of the
+    // operand's local scope, so resolution is deferred across the splice to avoid
+    // force-resolving them against the operand's context.
+    boolean deferred = operandExpression.deferVariableResolution;
+    operandExpression.deferVariableResolution = true;
+    var splicedSubstitution = substitution.spliceInto(operandExpression);
+    operandExpression.deferVariableResolution = deferred;
+    operandExpression = operandExpression.substitute(variable, splicedSubstitution);
     lowerLimit        = lowerLimit.substitute(variable, substitution);
     upperLimit        = upperLimit.substitute(variable, substitution);
     return this;
@@ -1421,10 +1461,93 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                          operandExpression == null ? "null" : operandExpression.typeset());
   }
 
+  /**
+   * Symbolic derivative of a bounded summation with respect to an outer
+   * variable. The summation operator is linear and its index limits are integer
+   * bounds independent of {@code variable}, so differentiation commutes with the
+   * summation:
+   *
+   * <pre>
+   *   d/dv Σ_{i=L}^{U} f(i, v) = Σ_{i=L}^{U} ∂f(i, v)/∂v
+   * </pre>
+   *
+   * The shared operand sub-expression is left untouched: a fresh operand
+   * expression is deep-cloned, its root differentiated with respect to
+   * {@code variable}, and wrapped in a new summation node over the same limits
+   * with its own operand function field and mapping.
+   *
+   * <p>
+   * Product ({@code ∏}) differentiation is not supported here; the callers in
+   * this library only ever differentiate summations.
+   */
+  /**
+   * Base n-ary operations have no generic differentiation rule; the concrete
+   * behaviour lives on the subclass ({@link SumNode#differentiate} implements
+   * summation linearity, {@link ProductNode#differentiate} the product rule).
+   */
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    throw new UnsupportedOperationException("differentiate of NAryOperationNode not implemented");
+    throw new UnsupportedOperationException("differentiate of " + getClass().getSimpleName() + " is not implemented");
+  }
+
+  /**
+   * Overridable factory that constructs a node of the SAME concrete type as
+   * this one over a (possibly different) enclosing expression, operand and
+   * limits. {@link SumNode} and {@link ProductNode} override it to return their
+   * own type so that {@link #spliceInto(Expression)} and
+   * {@link #wrapTransformedOperand(Expression)} preserve the subclass — and
+   * therefore its {@link #differentiate(VariableNode)} and
+   * {@link #integral(VariableNode)} overrides — instead of collapsing to a bare
+   * {@link NAryOperationNode}.
+   */
+  protected <E, S, G extends Function<? extends E, ? extends S>> NAryOperationNode<E, S, G>
+            createSimilarNode(Expression<E, S, G> newExpression,
+                              Expression<Integer, S, Sequence<S>> operand,
+                              Node<E, S, G> lower,
+                              Node<E, S, G> upper)
+  {
+    return new NAryOperationNode<>(newExpression,
+                                   identity,
+                                   prefix,
+                                   operation,
+                                   symbol,
+                                   operand,
+                                   lower,
+                                   upper);
+  }
+
+  /**
+   * Wraps an operand sub-expression that has already been transformed
+   * term-by-term (differentiated or integrated) back into a fully-wired n-ary
+   * summation node over this node's limits. Copies every field the compiler
+   * relies on — {@link #indexVariableFieldName}, the operand function field name
+   * and its {@link FunctionMapping} registration, and the owning expression's
+   * internal name — so the returned node is directly compilable. This is the
+   * single wiring path shared by {@link SumNode#differentiate(VariableNode)} and
+   * {@link SumNode#integral(VariableNode)}; skipping any of these steps leaves
+   * {@code indexVariableFieldName} null and makes {@link #toString()} and
+   * bytecode generation fail. The result preserves this node's concrete type via
+   * {@link #createSimilarNode}.
+   *
+   * @param transformedOperand the operand expression whose root has already been
+   *                           differentiated or integrated with respect to the
+   *                           outer variable
+   * @return a new summation node over the same limits with the transformed
+   *         operand, simplified
+   */
+  protected Node<D, R, F> wrapTransformedOperand(Expression<Integer, R, Sequence<R>> transformedOperand)
+  {
+    NAryOperationNode<D, R, F> result = createSimilarNode(expression,
+                                                          transformedOperand,
+                                                          lowerLimit.spliceInto(expression),
+                                                          upperLimit.spliceInto(expression));
+    result.assignFieldNamesIfNecessary(transformedOperand.coDomainType);
+    transformedOperand.setClassName(result.operandFunctionFieldName);
+    result.indexVariableFieldName = this.indexVariableFieldName;
+    result.functionInternalName   = expression.internalName();
+    result.registerOperand(result.operandFunctionFieldName, transformedOperand);
+    return result.simplify();
   }
 
   @Override

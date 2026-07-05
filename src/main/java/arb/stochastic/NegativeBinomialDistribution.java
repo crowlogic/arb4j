@@ -9,120 +9,56 @@ import arb.expressions.Context;
 import arb.functions.real.RealFunction;
 
 /**
- * The (discrete) negative binomial distribution
+ * Negative-binomial probability law with an exact compiler-built density and
+ * log-density. It is a <em>discrete</em> law supported on the non-negative
+ * integers, so the density is the probability mass f(k) and the distribution
+ * function is the partial sum F(x) = ∑ₖ₌₀^⌊x⌋ f(k). The mass is therefore the
+ * increment of the distribution function, f(k) = F(k) − F(k−1), the discrete
+ * counterpart of the Fundamental Theorem of Calculus.
  *
- * <pre>
- *                Γ(r+y)·pʳ·(1-p)ʸ
- * pnb(y|r,p) =  ─────────────────     y = 0, 1, 2, …
- *                  Γ(r)·Γ(y+1)
- * </pre>
- *
- * where r &gt; 0 is the number of successes at which the experiment stops and
- * p ∈ (0,1) the per-trial success probability, following Crowley,
- * <i>Maximum Likelihood Estimation of the Negative Binomial Distribution</i>,
- * vixra 1211.0113 (2012). The mean is r·(1-p)/p and the variance r·(1-p)/p².
- *
- * <p>
- * The density and per-observation log-likelihood
- *
- * <pre>
- * ℓ(y|r,p) = lnΓ(r+y) - lnΓ(r) - lnΓ(y+1) + r·ln(p) + y·ln(1-p)
- * </pre>
- *
- * are compiled from expression-language source over the named parameter
- * handles {@link #r} and {@link #p} registered in the {@link #context}; the
- * score
- *
- * <pre>
- * ∂ℓ/∂r = ψ(r+y) - ψ(r) + ln(p)
- * ∂ℓ/∂p = r/p - y/(1-p)
- * </pre>
- *
- * is obtained symbolically from the compiled log-density via
- * {@link RealFunction#jacobian(String[])} with the variable-name sequence
- * {"r","p"} — no procedural differentiation anywhere.
- *
- * <p>
- * The distribution function is P(Y ≤ y) = I_p(r, ⌊y⌋+1), the regularized
- * incomplete beta function evaluated through
- * {@link Real#betaLower(Real, Real, int, int, Real)}
- * (arb_hypgeom_beta_lower).
- *
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the {@link TheArb4jLibrary}
  */
 public class NegativeBinomialDistribution extends
                                           Distribution
 {
+  public final Context       context;
+  public final Real          shape;
+  public final Real          successProbability;
+  public final Real          r;
+  public final Real          p;
 
-  /**
-   * Stopping number of successes, r &gt; 0 (named handle registered in
-   * {@link Distribution#context}).
-   */
-  public final Real         r;
+  public final RealFunction  density;
+  public final RealFunction  logDensity;
+  public final RealFunction  distribution;
 
-  /**
-   * Per-trial success probability, p ∈ (0,1) (named handle registered in
-   * {@link Distribution#context}).
-   */
-  public final Real         p;
-
-  /**
-   * pnb(y|r,p) = Γ(r+y)·pʳ·(1-p)ʸ/(Γ(r)·Γ(y+1)), compiled from
-   * expression-language source.
-   */
-  public final RealFunction density;
-
-  /**
-   * ℓ(y|r,p) = lnΓ(r+y) - lnΓ(r) - lnΓ(y+1) + r·ln(p) + y·ln(1-p), compiled
-   * from expression-language source; its symbolic parameter derivatives are
-   * the score.
-   */
-  public final RealFunction logDensity;
-
-  private final RealFunction distributionFunction;
+  public NegativeBinomialDistribution(double shape, double successProbability)
+  {
+    super("negative-binomial");
+    this.context = new Context();
+    this.shape = Real.named("r").set(shape);
+    this.successProbability = Real.named("p").set(successProbability);
+    this.r = this.shape;
+    this.p = this.successProbability;
+    this.context.registerVariable(this.shape);
+    this.context.registerVariable(this.successProbability);
+    this.density = RealFunction.express("f", densityExpression(), context);
+    this.logDensity = RealFunction.express("ℓ", logDensityExpression(), context);
+    this.distribution = RealFunction.express("F", cumulativeExpression(), context);
+  }
 
   public NegativeBinomialDistribution(Real r, Real p, int bits)
   {
-    super(new Context(r.setName("r"),
-                      p.setName("p")),
-          bits);
-    this.r               = r;
-    this.p               = p;
-    this.density         =
-                 RealFunction.express("pnb", "y➔Γ(r+y)*p^r*(1-p)^y/(Γ(r)*Γ(y+1))", context);
-    this.logDensity      =
-                 RealFunction.express("ℓ", "y➔lnΓ(r+y)-lnΓ(r)-lnΓ(y+1)+r*ln(p)+y*ln(1-p)", context);
-    this.distributionFunction = new CumulativeDistributionFunction();
-  }
-
-  /**
-   * F(y) = P(Y ≤ y) = I_p(r, ⌊y⌋+1) via arb_hypgeom_beta_lower with
-   * regularized=1.
-   */
-  private final class CumulativeDistributionFunction implements
-                                                     RealFunction
-  {
-    @Override
-    public Real evaluate(Real y, int order, int bits, Real result)
-    {
-      if (y.sign() < 0)
-      {
-        return result.zero();
-      }
-      try ( Real kPlusOne = new Real())
-      {
-        y.floor(bits, kPlusOne);
-        kPlusOne.add(1, bits, kPlusOne);
-        return r.betaLower(kPlusOne, p, 1, bits, result);
-      }
-    }
-
-    @Override
-    public String toString()
-    {
-      return "y➔I(p;r,⌊y⌋+1)";
-    }
+    super("negative-binomial");
+    this.context = new Context();
+    this.shape = r.setName("r");
+    this.successProbability = p.setName("p");
+    this.r = this.shape;
+    this.p = this.successProbability;
+    this.context.registerVariable(this.shape);
+    this.context.registerVariable(this.successProbability);
+    this.density = RealFunction.express("f", densityExpression(), context);
+    this.logDensity = RealFunction.express("ℓ", logDensityExpression(), context);
+    this.distribution = RealFunction.express("F", cumulativeExpression(), context);
   }
 
   @Override
@@ -134,7 +70,7 @@ public class NegativeBinomialDistribution extends
   @Override
   public RealFunction distributionFunction()
   {
-    return distributionFunction;
+    return distribution;
   }
 
   @Override
@@ -143,47 +79,138 @@ public class NegativeBinomialDistribution extends
     return logDensity;
   }
 
-  /**
-   * Inverse-distribution-function draw: u is uniform on [0,1] via
-   * {@link arblib#arb_urandom(Real, RandomState, int)}, and the variate is the
-   * least y with F(y) ≥ u, located by accumulating the exact pmf recursion
-   *
-   * <pre>
-   * P(0)   = pʳ
-   * P(y+1) = P(y)·(1-p)·(r+y)/(y+1)
-   * </pre>
-   *
-   * in ball arithmetic.
-   */
   @Override
-  public Real sample(RandomState state, int bits, Real result)
+  public String[] parameterNames()
   {
-    try ( Real u = new Real(); Real mass = new Real(); Real cumulative = new Real(); Real ratio = new Real();
-          Real numerator = new Real(); Real one = new Real())
-    {
-      arblib.arb_urandom(u, state, bits);
-      one.one();
-      one.sub(p, bits, ratio);                       // ratio = 1-p
-      p.pow(r, bits, mass);                          // P(0) = p^r
-      cumulative.set(mass);
-      int y = 0;
-      while (cumulative.compareTo(u) < 0)
-      {
-        numerator.set(r).add(y, bits, numerator);    // r+y
-        numerator.mul(ratio, bits, numerator);       // (r+y)·(1-p)
-        numerator.div(y + 1, bits, numerator);       // /(y+1)
-        mass.mul(numerator, bits, mass);
-        cumulative.add(mass, bits, cumulative);
-        y++;
-      }
-      return result.set(y);
-    }
+    return new String[] { "r", "p" };
   }
 
   @Override
-  public String toString()
+  public Real parameters()
   {
-    return "NegativeBinomialDistribution[r=" + r + ", p=" + p + "]";
+    Real θ = Real.newVector(2);
+    θ.get(0).set(shape);
+    θ.get(1).set(successProbability);
+    return θ;
+  }
+
+  @Override
+  public void setParameters(Real θ)
+  {
+    assert θ.dim() == 2 : "negative-binomial expects [shape, successProbability]";
+    shape.set(θ.get(0));
+    successProbability.set(θ.get(1));
+    invalidateCaches();
+  }
+
+  @Override
+  public boolean isInDomain(Real θ)
+  {
+    return θ.get(0).sign() > 0 && θ.get(1).sign() > 0 && θ.get(1).doubleValue() < 1.0;
+  }
+
+  public double shape()
+  {
+    return shape.doubleValue();
+  }
+
+  public double successProbability()
+  {
+    return successProbability.doubleValue();
+  }
+
+  public String densityExpression()
+  {
+    return "Γ(x+r)/(Γ(r)*Γ(x+1))*(p^r)*((1-p)^x)";
+  }
+
+  public String cumulativeExpression()
+  {
+    return "x➔∑n➔f(n){n=0…⌊x⌋}";
+  }
+
+  public String logDensityExpression()
+  {
+    return "ln(Γ(x+r))-ln(Γ(r))-ln(Γ(x+1))+r*ln(p)+x*ln(1-p)";
+  }
+
+  /**
+   * Draw a sample of the law by exact inversion: for each observation a uniform
+   * ball U ∈ [0,1) from {@code arb_urandom} is inverted through the exact
+   * partial-sum distribution function, accumulated by the pmf recurrence
+   *
+   * <pre>
+   *   f(0) = pʳ,   f(k+1) = f(k)·(k+r)·(1−p)/(k+1)
+   * </pre>
+   *
+   * in ball arithmetic at {@code bits}. The recurrence holds for every real
+   * r&gt;0 — no integer rounding of the shape parameter enters. The returned
+   * observation is the smallest k with F(k) &gt; U; each comparison is between
+   * balls whose radii are far below the comparison scale at the working
+   * precision, so the inversion is exact.
+   *
+   * @param sampleSize number of observations
+   * @param seed       seed for the deterministic arb random state
+   * @param bits       working precision
+   * @return a {@link Real} vector of {@code sampleSize} observations
+   */
+  public Real sample(int sampleSize, long seed, int bits)
+  {
+    Real observations = Real.newVector(sampleSize);
+    RandomState state = new RandomState().initialize().seed(seed);
+    try
+    {
+      sample(state, bits, observations, sampleSize);
+    }
+    finally
+    {
+      try
+      {
+        state.close();
+      }
+      catch (Exception e)
+      {
+        throw new RuntimeException(e.getMessage(), e);
+      }
+    }
+    return observations;
+  }
+
+  public Real sample(RandomState state, int bits, Real results, int count)
+  {
+    for (int i = 0; i < count; i++)
+    {
+      sample(state, bits, results.get(i));
+    }
+    return results;
+  }
+
+  public Real sample(RandomState state, int bits, Real result)
+  {
+    try ( Real uniform = new Real(); Real mass = new Real(); Real cumulative = new Real();
+          Real q = new Real(); Real ratio = new Real(); Real kPlusR = new Real())
+    {
+      q.one().sub(successProbability, bits, q);
+      arblib.arb_urandom(uniform, state, bits);
+      successProbability.pow(shape, bits, mass);
+      cumulative.set(mass);
+      int k = 0;
+      while (cumulative.compareTo(uniform) <= 0)
+      {
+        shape.add(k, bits, kPlusR).mul(q, bits, ratio).div(k + 1, bits, ratio);
+        mass.mul(ratio, bits, mass);
+        cumulative.add(mass, bits, cumulative);
+        k++;
+      }
+      return result.set(k);
+    }
+  }
+
+  private void invalidateCaches()
+  {
+    density.invalidateCache();
+    logDensity.invalidateCache();
+    distribution.invalidateCache();
   }
 
   @Override
@@ -191,8 +218,8 @@ public class NegativeBinomialDistribution extends
   {
     density.close();
     logDensity.close();
-    r.close();
-    p.close();
+    distribution.close();
+    context.close();
+    super.close();
   }
-
 }

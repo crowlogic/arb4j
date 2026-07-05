@@ -642,9 +642,17 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     case "lnGamma":
       return arg.digamma();
     case "digamma":
-      return new GammaFunctionNode<>(expression,
-                                     arg,
-                                     1);
+    {
+      boolean  isComplexDigamma = Complex.class.equals(scalarType(expression.coDomainType));
+      JetState digammaState      = new JetState("digamma",
+                                                 arg.toString(),
+                                                 isComplexDigamma);
+      digammaState.updateMax(1);
+      return new DigammaJetNode<>(expression,
+                                  arg,
+                                  1,
+                                  digammaState);
+    }
     case "ζ":
     {
       boolean  isComplex = Complex.class.equals(scalarType(expression.coDomainType));

@@ -249,6 +249,20 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   {
     indefiniteIntegralExpression           = expression.cloneExpression();
     indefiniteIntegralExpression.setClassName("∫" + indefiniteIntegralExpression.className());
+    // The indefinite integral is an antiderivative that is a function of the
+    // integration variable. When the antiderivative exposes that variable
+    // directly (e.g. arcsin(y)), the cloned expression adopts it as its
+    // independent variable during resolution. When the antiderivative hides it
+    // inside an operand sub-function (e.g. a Σ whose summand references it as an
+    // upstream variable), the cloned expression never sees it, leaving the
+    // independent variable unset; the summand's input propagation would then emit
+    // a GETFIELD for the integration variable on the enclosing class rather than
+    // loading the input parameter. Adopt the integration variable as the
+    // independent variable so propagation loads the input parameter.
+    if (indefiniteIntegralExpression.getIndependentVariable() == null && indefiniteIntegralExpression.canHaveIndependentVariable())
+    {
+      indefiniteIntegralExpression.assignInputVariable(indefiniteIntegralExpression.newVariableNode(integrationVariableName));
+    }
     indefiniteIntegralExpression.rootNode  = indefiniteIntegralNode.spliceInto(indefiniteIntegralExpression);
     indefiniteIntegralExpression.compile();
     expression.registerSubexpression(indefiniteIntegralExpression);
@@ -300,10 +314,94 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
                   || (upperLimitNode != null && upperLimitNode.dependsOn(variable));
   }
 
+  /**
+   * Leibniz integral rule, in full generality. For
+   * {@code G = ∫_{a}^{b} f(t,·) dt} with limits {@code a}, {@code b} and
+   * integrand {@code f} each possibly depending on the differentiation
+   * variable {@code v}:
+   *
+   * <pre>
+   *   dG/dv = f(b)·db/dv − f(a)·da/dv + ∫_{a}^{b} ∂f/∂v dt
+   * </pre>
+   *
+   * Terms whose factors are independent of {@code v} are never constructed.
+   * For the indefinite form {@code ∫ f(x) dx} differentiated with respect to
+   * the integration variable, the fundamental theorem of calculus yields the
+   * integrand itself; for a definite integral the integration variable is
+   * bound, so the derivative with respect to it is zero.
+   */
   @Override
   public Node<D, C, F> differentiate(VariableNode<D, C, F> variable)
   {
-    return integrandNode;
+    boolean wrtIntegrationVariable = variable.getName().equals(integrationVariableName);
+
+    if (!isDefiniteIntegral())
+    {
+      if (wrtIntegrationVariable)
+      {
+        return integrandNode;
+      }
+      var partial = integrandNode.spliceInto(expression).differentiate(variable).simplify();
+      if (partial.isZero())
+      {
+        return partial;
+      }
+      return new IntegralNode<>(expression,
+                                partial,
+                                integrationVariableNode,
+                                null,
+                                null);
+    }
+
+    if (wrtIntegrationVariable)
+    {
+      return zero();
+    }
+
+    // The integrand references the bound integration variable, which is not in
+    // the enclosing expression's scope; resolution is deferred across the
+    // splices so it is not force-resolved there.
+    boolean deferred = expression.deferVariableResolution;
+    expression.deferVariableResolution = true;
+    try
+    {
+      Node<D, C, F> result = null;
+
+      if (upperLimitNode.dependsOn(variable))
+      {
+        var atUpper = integrandNode.spliceInto(expression)
+                                   .substitute(integrationVariableName, upperLimitNode)
+                                   .mul(upperLimitNode.spliceInto(expression).differentiate(variable))
+                                   .simplify();
+        result = atUpper;
+      }
+
+      if (lowerLimitNode.dependsOn(variable))
+      {
+        var atLower = integrandNode.spliceInto(expression)
+                                   .substitute(integrationVariableName, lowerLimitNode)
+                                   .mul(lowerLimitNode.spliceInto(expression).differentiate(variable))
+                                   .simplify();
+        result = result == null ? atLower.neg() : result.sub(atLower);
+      }
+
+      var partial = integrandNode.spliceInto(expression).differentiate(variable).simplify();
+      if (!partial.isZero())
+      {
+        var interior = new IntegralNode<>(expression,
+                                          partial,
+                                          integrationVariableNode,
+                                          lowerLimitNode.spliceInto(expression),
+                                          upperLimitNode.spliceInto(expression));
+        result = result == null ? interior : result.add(interior);
+      }
+
+      return result == null ? zero() : result;
+    }
+    finally
+    {
+      expression.deferVariableResolution = deferred;
+    }
   }
 
   @Override
@@ -349,6 +447,16 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   protected MethodVisitor generateIndefiniteIntegral(MethodVisitor mv, Class<?> resultType)
   {
     ensureIndefiniteIntegralNode();
+
+    // See compileIndefiniteIntegral: adopt the integration variable as the
+    // enclosing expression's independent variable so that an antiderivative
+    // which hides that variable inside an operand sub-function (e.g. a Σ whose
+    // summand references it as an upstream variable) propagates it by loading the
+    // input parameter rather than emitting a GETFIELD on the enclosing class.
+    if (expression.getIndependentVariable() == null && expression.canHaveIndependentVariable())
+    {
+      expression.assignInputVariable(expression.newVariableNode(integrationVariableName));
+    }
 
     var splicedNode = indefiniteIntegralNode.spliceInto(expression);
     splicedNode.isRootNode = isRootNode;
@@ -748,6 +856,19 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     }
     else
     {
+      // See compileIndefiniteIntegral: adopt the integration variable as the
+      // enclosing expression's independent variable so that an antiderivative
+      // which hides that variable inside an operand sub-function (e.g. a Σ whose
+      // summand references it as an upstream variable) propagates it by loading
+      // the input parameter rather than emitting a GETFIELD for an undeclared
+      // field on the enclosing class. Only when the antiderivative references
+      // the integration variable at all — a constant antiderivative (e.g. the
+      // zero of a delta-sifted integrand) requires no input variable.
+      if (expression.getIndependentVariable() == null && expression.canHaveIndependentVariable()
+                    && !indefiniteIntegralNode.isConstant())
+      {
+        expression.assignInputVariable(expression.newVariableNode(integrationVariableName));
+      }
       return indefiniteIntegralNode.spliceInto(expression);
     }
   }

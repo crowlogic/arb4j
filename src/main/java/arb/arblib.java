@@ -141,6 +141,14 @@ public class arblib {
     arblibJNI.acb_poly_lgamma_series(ComplexPolynomial.getCPtr(res), res, ComplexPolynomial.getCPtr(f), f, n, prec);
   }
 
+  public static void arb_poly_digamma_series(RealPolynomial res, RealPolynomial f, int n, int prec) {
+    arblibJNI.arb_poly_digamma_series(RealPolynomial.getCPtr(res), res, RealPolynomial.getCPtr(f), f, n, prec);
+  }
+
+  public static void acb_poly_digamma_series(ComplexPolynomial res, ComplexPolynomial f, int n, int prec) {
+    arblibJNI.acb_poly_digamma_series(ComplexPolynomial.getCPtr(res), res, ComplexPolynomial.getCPtr(f), f, n, prec);
+  }
+
   public static void acb_poly_inv_series(ComplexPolynomial Qinv, ComplexPolynomial Q, int n, int prec) {
     arblibJNI.acb_poly_inv_series(ComplexPolynomial.getCPtr(Qinv), Qinv, ComplexPolynomial.getCPtr(Q), Q, n, prec);
   }

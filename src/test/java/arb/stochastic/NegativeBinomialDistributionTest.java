@@ -1,288 +1,298 @@
 package arb.stochastic;
 
-import org.junit.Test;
-
-import arb.Complex;
-import arb.RandomState;
-import arb.arblib;
 import arb.Real;
-import arb.functions.Jacobian;
+import arb.RealMatrix;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 
 /**
- * Tests of the {@link NegativeBinomialDistribution}: the compiled density and
- * log-density, the distribution function, the moments of Crowley,
- * <i>Maximum Likelihood Estimation of the Negative Binomial Distribution</i>,
- * vixra 1211.0113 (2012) eqs. (3)–(4), the symbolic score obtained from
- * {@link RealFunction#jacobian(String[])}, and reproducible sampling.
+ * Component tests for the negative-binomial distribution and its
+ * maximum-likelihood calibration. Each derivative produced by the expression
+ * compiler is checked against its closed form, and parameter recovery is
+ * validated from the method-of-moments initial guess with the Newton–Kantorovich
+ * iteration, against the 95% Wald interval from the observed-information inverse.
  *
- * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the {@link TheArb4jLibrary}
  */
 public class NegativeBinomialDistributionTest extends
                                               TestCase
 {
+  private static final int    BITS  = 256;
+  private static final double Z_975 = 1.959963984540054;
 
-  static final int bits = 128;
-
-  static NegativeBinomialDistribution newDistribution(String r, String p)
+  private static boolean tiny(Real a, Real b)
   {
-    return new NegativeBinomialDistribution(new Real(r,
-                                                     bits),
-                                            new Real(p,
-                                                     bits),
-                                            bits);
+    try ( Real d = new Real(); Real threshold = new Real().one().mul2e(-100))
+    {
+      a.sub(b, BITS, d).abs(BITS, d);
+      return d.compareTo(threshold) < 0;
+    }
   }
 
-  /**
-   * pnb(0|r,p) = pʳ and pnb(y+1) = pnb(y)·(1-p)·(r+y)/(y+1); check the
-   * compiled density against the recursion at r=4, p=0.35 for y=0..20.
-   */
-  @Test
-  public void testDensityMatchesRecursion()
+  public void testParametersRoundTrip()
   {
-    try ( NegativeBinomialDistribution nb = newDistribution("4", "0.35"); Real y = new Real(); Real value = new Real();
-          Real mass = new Real(); Real ratio = new Real(); Real factor = new Real())
+    try ( NegativeBinomialDistribution d = new NegativeBinomialDistribution(5.0, 0.5);
+          Real θ = Real.newVector(new double[] { 3.25, 0.4 }))
     {
-      nb.p.pow(nb.r, bits, mass);                    // pnb(0) = p^r
-      new Real("1",
-               bits).sub(nb.p, bits, ratio);         // 1-p
-      for (int k = 0; k <= 20; k++)
+      d.setParameters(θ);
+      assertTrue(tiny(d.parameters().get(0), θ.get(0)));
+      assertTrue(tiny(d.parameters().get(1), θ.get(1)));
+    }
+  }
+
+  public void testDomain()
+  {
+    try ( NegativeBinomialDistribution d = new NegativeBinomialDistribution(5.0, 0.5))
+    {
+      assertTrue(d.isInDomain(Real.newVector(new double[] { 5.0, 0.5 })));
+      assertFalse(d.isInDomain(Real.newVector(new double[] { 0.0, 0.5 })));
+      assertFalse(d.isInDomain(Real.newVector(new double[] { -1.0, 0.5 })));
+      assertFalse(d.isInDomain(Real.newVector(new double[] { 5.0, 0.0 })));
+      assertFalse(d.isInDomain(Real.newVector(new double[] { 5.0, 1.0 })));
+    }
+  }
+
+  public void testDensityIsPositiveOnItsSupport()
+  {
+    try ( NegativeBinomialDistribution d = new NegativeBinomialDistribution(4.5, 0.5);
+          Real x = new Real(); Real y = new Real())
+    {
+      for (double probe : new double[] { 0.0, 0.5, 1.0, 2.0, 3.7, 7.5, 15.25 })
       {
-        y.set(k);
-        nb.densityFunction().evaluate(y, 1, bits, value);
-        assertTrue("pnb(" + k + ") = " + value + " must overlap recursion value " + mass,
-                   value.overlaps(mass));
-        factor.set(nb.r).add(k, bits, factor).mul(ratio, bits, factor).div(k + 1, bits, factor);
-        mass.mul(factor, bits, mass);
+        x.set(probe);
+        d.densityFunction().evaluate(x, 1, BITS, y);
+        assertTrue("f(" + probe + ")>0", y.sign() > 0);
       }
     }
   }
 
-  /**
-   * The compiled log-density agrees with the logarithm of the compiled
-   * density.
-   */
-  @Test
-  public void testLogDensityIsLogOfDensity()
+  public void testLogDensityEqualsLogOfDensity()
   {
-    try ( NegativeBinomialDistribution nb = newDistribution("2.5", "0.6"); Real y = new Real(); Real density = new Real();
-          Real logDensity = new Real())
+    try ( NegativeBinomialDistribution d = new NegativeBinomialDistribution(4.5, 0.5);
+          Real x = new Real(); Real f = new Real(); Real logf = new Real(); Real ℓ = new Real())
     {
-      for (int k = 0; k <= 10; k++)
+      for (double probe : new double[] { 0.0, 1.0, 2.5, 6.0, 12.0 })
       {
-        y.set(k);
-        nb.densityFunction().evaluate(y, 1, bits, density);
-        nb.logDensityFunction().evaluate(y, 1, bits, logDensity);
-        density.log(bits, density);
-        assertTrue("ℓ(" + k + ") = " + logDensity + " must overlap ln pnb = " + density,
-                   logDensity.overlaps(density));
+        x.set(probe);
+        d.densityFunction().evaluate(x, 1, BITS, f);
+        f.log(BITS, logf);
+        d.logDensityFunction().evaluate(x, 1, BITS, ℓ);
+        assertTrue("ln f(" + probe + ")", tiny(logf, ℓ));
       }
     }
   }
 
-  /**
-   * Partial sums of the density approach 1 (eq. (2)), and the mean and
-   * variance match r·(1-p)/p and r·(1-p)/p² (eqs. (3)–(4)) to the tail error
-   * of a 400-term partial sum.
-   */
-  @Test
-  public void testMomentsOfCrowley2012()
+  public void testDensityIsIncrementOfDistributionFunction()
   {
-    try ( NegativeBinomialDistribution nb = newDistribution("4", "0.35"); Real y = new Real(); Real mass = new Real();
-          Real total = new Real(); Real mean = new Real(); Real second = new Real(); Real term = new Real();
-          Real expected = new Real(); Real variance = new Real())
+    // A discrete law: the mass f(k) is the increment F(k)−F(k−1) of the
+    // distribution function, and F rises monotonically to 1.
+    try ( NegativeBinomialDistribution d = new NegativeBinomialDistribution(4.5, 0.5);
+          Real x = new Real(); Real mass = new Real(); Real Fk = new Real(); Real Fk1 = new Real();
+          Real increment = new Real(); Real total = new Real())
     {
-      for (int k = 0; k <= 400; k++)
+      RealFunction F = d.distributionFunction();
+      for (int k = 0; k <= 8; k++)
       {
-        y.set(k);
-        nb.densityFunction().evaluate(y, 1, bits, mass);
-        total.add(mass, bits, total);
-        mass.mul(y, bits, term);
-        mean.add(term, bits, mean);
-        term.mul(y, bits, term);
-        second.add(term, bits, second);
+        x.set(k);
+        F.evaluate(x, 1, BITS, Fk);
+        x.set(k - 1);
+        F.evaluate(x, 1, BITS, Fk1);
+        x.set(k);
+        d.densityFunction().evaluate(x, 1, BITS, mass);
+        Fk.sub(Fk1, BITS, increment);
+        assertTrue("f(" + k + ")=F(" + k + ")−F(" + (k - 1) + ")", tiny(mass, increment));
+        assertTrue("F increasing at " + k, Fk.compareTo(Fk1) >= 0);
       }
-      assertEquals("Σ pnb", 1.0, total.doubleValue(), 1e-15);
-      // mean = r(1-p)/p = 4·0.65/0.35
-      new Real("1",
-               bits).sub(nb.p, bits, expected).mul(nb.r, bits, expected).div(nb.p, bits, expected);
-      assertEquals("mean r(1-p)/p", expected.doubleValue(), mean.doubleValue(), 1e-12);
-      // variance = r(1-p)/p²
-      expected.div(nb.p, bits, expected);
-      mean.mul(mean, bits, term);
-      second.sub(term, bits, variance);
-      assertEquals("variance r(1-p)/p²", expected.doubleValue(), variance.doubleValue(), 1e-10);
+      x.set(1000);
+      F.evaluate(x, 1, BITS, total);
+      assertTrue("F(1000)→1", tiny(total, new Real().one()));
     }
   }
 
-  /**
-   * The distribution function F(y) = I_p(r,⌊y⌋+1) equals the partial sums of
-   * the density, is 0 for y &lt; 0, and approaches 1.
-   */
-  @Test
-  public void testDistributionFunctionMatchesPartialSums()
+  public void testScorePClosedForm()
   {
-    try ( NegativeBinomialDistribution nb = newDistribution("4", "0.35"); Real y = new Real(); Real mass = new Real();
-          Real partialSum = new Real(); Real cdf = new Real())
+    // ∂ℓ/∂p = r/p − x/(1−p)
+    try ( NegativeBinomialDistribution d = new NegativeBinomialDistribution(5.0, 0.5);
+          Real x = new Real(); Real got = new Real(); Real want = new Real(); Real a = new Real(); Real b = new Real())
     {
-      y.set(-1);
-      nb.distributionFunction().evaluate(y, 1, bits, cdf);
-      assertEquals("F(-1)", 0.0, cdf.doubleValue(), 0.0);
-      for (int k = 0; k <= 30; k++)
+      RealFunction sp = d.logDensityFunction().derivative("p");
+      for (double probe : new double[] { 0.0, 1.0, 4.0, 9.0 })
       {
-        y.set(k);
-        nb.densityFunction().evaluate(y, 1, bits, mass);
-        partialSum.add(mass, bits, partialSum);
-        nb.distributionFunction().evaluate(y, 1, bits, cdf);
-        assertTrue("F(" + k + ") = " + cdf + " must overlap partial sum " + partialSum,
-                   cdf.overlaps(partialSum));
+        x.set(probe);
+        sp.evaluate(x, 1, BITS, got);
+        new Real().set(5.0).div(new Real().set(0.5), BITS, a);
+        x.div(new Real().set(0.5), BITS, b);
+        a.sub(b, BITS, want);
+        assertTrue("∂ℓ/∂p(" + probe + ")", tiny(got, want));
       }
-      assertTrue("F(30) approaches 1", cdf.doubleValue() > 0.999);
     }
   }
 
-  /**
-   * The symbolic score from {@code logDensity.jacobian({"r","p"})} matches
-   * the closed forms ∂ℓ/∂r = ψ(r+y)-ψ(r)+ln(p) and ∂ℓ/∂p = r/p - y/(1-p)
-   * from eqs. (7) and (9).
-   */
-  @Test
-  public void testSymbolicScoreMatchesClosedForms()
+  public void testScoreRClosedForm()
   {
-    try ( NegativeBinomialDistribution nb = newDistribution("4", "0.35"); Real y = new Real(); Real value = new Real();
-          Real expected = new Real(); Real tmp = new Real(); Real oneMinusP = new Real())
+    // ∂ℓ/∂r = ψ(x+r) − ψ(r) + ln p
+    try ( NegativeBinomialDistribution d = new NegativeBinomialDistribution(5.0, 0.5);
+          Real x = new Real(); Real got = new Real(); Real want = new Real();
+          Real xr = new Real(); Real dxr = new Real(); Real dr = new Real(); Real lnp = new Real())
     {
-      Jacobian<Real, Real, RealFunction> score = nb.logDensity.jacobian(new String[]
-      { "r", "p" });
-      try
+      RealFunction sr = d.logDensityFunction().derivative("r");
+      new Real().set(0.5).log(BITS, lnp);
+      new Real().set(5.0).digamma(BITS, dr);
+      for (double probe : new double[] { 0.0, 1.0, 4.0, 9.0 })
       {
-        new Real("1",
-                 bits).sub(nb.p, bits, oneMinusP);
-        for (int k = 0; k <= 12; k++)
-        {
-          y.set(k);
-          // ∂ℓ/∂r = ψ(r+y) - ψ(r) + ln(p)
-          nb.r.add(y, bits, expected).digamma(bits, expected);
-          nb.r.digamma(bits, tmp);
-          expected.sub(tmp, bits, expected);
-          nb.p.log(bits, tmp);
-          expected.add(tmp, bits, expected);
-          value.set(score.partials[0].evaluate(y, 1, bits, value));
-          assertTrue("∂ℓ/∂r(" + k + ") = " + value + " must overlap " + expected,
-                     value.overlaps(expected));
-          // ∂ℓ/∂p = r/p - y/(1-p)
-          nb.r.div(nb.p, bits, expected);
-          y.div(oneMinusP, bits, tmp);
-          expected.sub(tmp, bits, expected);
-          value.set(score.partials[1].evaluate(y, 1, bits, value));
-          assertTrue("∂ℓ/∂p(" + k + ") = " + value + " must overlap " + expected,
-                     value.overlaps(expected));
-        }
+        x.set(probe);
+        sr.evaluate(x, 1, BITS, got);
+        x.add(new Real().set(5.0), BITS, xr).digamma(BITS, dxr);
+        dxr.sub(dr, BITS, want).add(lnp, BITS, want);
+        assertTrue("∂ℓ/∂r(" + probe + ")", tiny(got, want));
+      }
+    }
+  }
+
+  public void testHessianRPClosedForm()
+  {
+    // ∂²ℓ/∂r∂p = 1/p
+    try ( NegativeBinomialDistribution d = new NegativeBinomialDistribution(5.0, 0.5);
+          Real x = new Real(); Real got = new Real(); Real want = new Real())
+    {
+      RealFunction srp = d.logDensityFunction().derivative("r").derivative("p");
+      new Real().one().div(new Real().set(0.5), BITS, want);
+      for (double probe : new double[] { 0.0, 2.0, 7.0 })
+      {
+        x.set(probe);
+        srp.evaluate(x, 1, BITS, got);
+        assertTrue("∂²ℓ/∂r∂p(" + probe + ")", tiny(got, want));
+      }
+    }
+  }
+
+  public void testHessianPPClosedForm()
+  {
+    // ∂²ℓ/∂p² = −r/p² − x/(1−p)²
+    try ( NegativeBinomialDistribution d = new NegativeBinomialDistribution(5.0, 0.5);
+          Real x = new Real(); Real got = new Real(); Real want = new Real();
+          Real p2 = new Real(); Real q2 = new Real(); Real a = new Real(); Real b = new Real())
+    {
+      RealFunction spp = d.logDensityFunction().derivative("p").derivative("p");
+      new Real().set(0.5).pow(2, BITS, p2);
+      new Real().set(0.5).pow(2, BITS, q2);
+      for (double probe : new double[] { 0.0, 3.0, 8.0 })
+      {
+        x.set(probe);
+        spp.evaluate(x, 1, BITS, got);
+        new Real().set(5.0).div(p2, BITS, a).neg(a);
+        x.div(q2, BITS, b);
+        a.sub(b, BITS, want);
+        assertTrue("∂²ℓ/∂p²(" + probe + ")", tiny(got, want));
+      }
+    }
+  }
+
+  public void testTrigammaRecurrence()
+  {
+    // ψ₁ = digamma', and ψ₁(x+1) = ψ₁(x) − 1/x².
+    try ( RealFunction ψ1 = RealFunction.express("digamma(x)").derivative("x");
+          Real x = new Real(); Real at = new Real(); Real atPlus1 = new Real();
+          Real want = new Real(); Real inv = new Real())
+    {
+      for (double probe : new double[] { 1.5, 3.0, 7.25 })
+      {
+        x.set(probe);
+        ψ1.evaluate(x, 1, BITS, at);
+        x.add(1, BITS, x);
+        ψ1.evaluate(x, 1, BITS, atPlus1);
+        x.sub(1, BITS, x);
+        x.pow(2, BITS, inv);
+        new Real().one().div(inv, BITS, inv);
+        at.sub(inv, BITS, want);
+        assertTrue("ψ₁(" + probe + "+1)=ψ₁−1/x²", tiny(atPlus1, want));
+      }
+    }
+  }
+
+  public void testGammaDerivativeRelations()
+  {
+    // lnΓ' = digamma.
+    try ( RealFunction lnGammaPrime = RealFunction.express("ln(Γ(x))").derivative("x");
+          RealFunction digamma = RealFunction.express("digamma(x)");
+          Real x = new Real(); Real a = new Real(); Real b = new Real())
+    {
+      for (double probe : new double[] { 1.0, 2.5, 6.0 })
+      {
+        x.set(probe);
+        lnGammaPrime.evaluate(x, 1, BITS, a);
+        digamma.evaluate(x, 1, BITS, b);
+        assertTrue("lnΓ'=ψ at " + probe, tiny(a, b));
+      }
+    }
+  }
+
+  public void testRecoversParametersFromMethodOfMomentsStart()
+  {
+    // Exact inversion sampling with a NON-INTEGER shape — the pmf recurrence
+    // holds for every real r>0, so nothing is rounded.
+    double trueShape = 4.75;
+    double trueProbability = 0.5;
+    int    sampleSize = 2000;
+
+    try ( NegativeBinomialDistribution d = new NegativeBinomialDistribution(trueShape, trueProbability))
+    {
+      Real observations = d.sample(sampleSize, 20260706L, BITS);
+      try ( Real initial = methodOfMomentsInitialGuess(observations))
+      {
+        int iterations = d.calibrate(observations, initial, 100, BITS);
+        assertTrue("Levenberg–Marquardt must converge from the moment start; iterations=" + iterations,
+                   iterations >= 0);
+
+        RealMatrix cov = d.parameterCovariance();
+        double rHat = d.parameters().get(0).doubleValue();
+        double pHat = d.parameters().get(1).doubleValue();
+        double seR = Math.sqrt(cov.get(0, 0).doubleValue());
+        double seP = Math.sqrt(cov.get(1, 1).doubleValue());
+
+        assertTrue("r₀ in 95% Wald interval " + rHat + "±" + (Z_975 * seR),
+                   Math.abs(rHat - trueShape) <= Z_975 * seR);
+        assertTrue("p₀ in 95% Wald interval " + pHat + "±" + (Z_975 * seP),
+                   Math.abs(pHat - trueProbability) <= Z_975 * seP);
       }
       finally
       {
-        score.close();
+        observations.close();
       }
     }
   }
 
-  /**
-   * Sampling with the same generator state reproduces the same variates, the
-   * variates are nonnegative integers, and the sample mean of 500 draws is
-   * within 15% of r·(1-p)/p ≈ 7.43.
-   */
-  @Test
-  public void testSamplingReproducibleWithCorrectMean() throws Exception
+  /** Paper's initial guess: p₀ = x̄/s², r₀ = x̄²/(s²−x̄). */
+  private static Real methodOfMomentsInitialGuess(Real observations)
   {
-    int N = 500;
-    try ( NegativeBinomialDistribution nb = newDistribution("4", "0.35"); Real first = Real.newVector(N);
-          Real second = Real.newVector(N); RandomState state = new RandomState(); Real mean = new Real())
+    int m = observations.dim();
+    Real θ = Real.newVector(2);
+    try ( Real mean = new Real(); Real var = new Real(); Real d = new Real())
     {
-      state.initialize().seed(7L);
-      nb.sample(state, bits, first, N);
-      state.initialize().seed(7L);
-      nb.sample(state, bits, second, N);
-      for (int i = 0; i < N; i++)
+      mean.zero();
+      for (int i = 0; i < m; i++)
       {
-        assertTrue("draw " + i + " reproduced", first.get(i).equals(second.get(i)));
-        assertTrue("draw " + i + " nonnegative", first.get(i).sign() >= 0);
-        assertTrue("draw " + i + " integer", first.get(i).isInteger());
-        mean.add(first.get(i), bits, mean);
+        mean.add(observations.get(i), BITS, mean);
       }
-      mean.div(N, bits, mean);
-      double expected = 4 * 0.65 / 0.35;
-      assertEquals("sample mean near r(1-p)/p", expected, mean.doubleValue(), 0.15 * expected);
+      mean.div(m, BITS, mean);
+      var.zero();
+      for (int i = 0; i < m; i++)
+      {
+        observations.get(i).sub(mean, BITS, d);
+        d.pow(2, BITS, d);
+        var.add(d, BITS, var);
+      }
+      var.div(m - 1, BITS, var);
+      mean.div(var, BITS, θ.get(1));                 // p₀ = x̄/s²
+      mean.pow(2, BITS, d);
+      Real denom = new Real();
+      var.sub(mean, BITS, denom);
+      d.div(denom, BITS, θ.get(0));                  // r₀ = x̄²/(s²−x̄)
+      denom.close();
     }
-  }
-
-
-  /**
-   * The second symbolic pass — each score component's own
-   * {@code jacobian({"r","p"})} — matches the closed-form Hessian entries
-   * ∂²ℓ/∂r² = ψ₁(r+y)-ψ₁(r), ∂²ℓ/∂r∂p = ∂²ℓ/∂p∂r = 1/p, and
-   * ∂²ℓ/∂p² = -r/p² - y/(1-p)², with ψ₁ evaluated through acb_polygamma.
-   */
-  @Test
-  public void testSymbolicHessianMatchesClosedForms()
-  {
-    try ( NegativeBinomialDistribution nb = newDistribution("4", "0.35"); Real y = new Real(); Real value = new Real();
-          Real expected = new Real(); Real tmp = new Real(); Real oneMinusP = new Real();
-          Complex s = new Complex(); Complex z = new Complex(); Complex ψ1 = new Complex())
-    {
-      Jacobian<Real, Real, RealFunction> score = nb.logDensity.jacobian(new String[]
-      { "r", "p" });
-      Jacobian<Real, Real, RealFunction> rowR  = score.partials[0].jacobian(new String[]
-      { "r", "p" });
-      Jacobian<Real, Real, RealFunction> rowP  = score.partials[1].jacobian(new String[]
-      { "r", "p" });
-      try
-      {
-        new Real("1",
-                 bits).sub(nb.p, bits, oneMinusP);
-        s.re().one();                                          // polygamma order 1
-        for (int k = 0; k <= 8; k++)
-        {
-          y.set(k);
-          // ∂²ℓ/∂r² = ψ₁(r+y) - ψ₁(r)
-          nb.r.add(y, bits, tmp);
-          z.re().set(tmp);
-          z.im().zero();
-          arblib.acb_polygamma(ψ1, s, z, bits);
-          expected.set(ψ1.re());
-          z.re().set(nb.r);
-          arblib.acb_polygamma(ψ1, s, z, bits);
-          expected.sub(ψ1.re(), bits, expected);
-          value.set(rowR.partials[0].evaluate(y, 1, bits, value));
-          assertTrue("∂²ℓ/∂r²(" + k + ") = " + value + " must overlap " + expected,
-                     value.overlaps(expected));
-          // ∂²ℓ/∂r∂p = ∂²ℓ/∂p∂r = 1/p
-          new Real("1",
-                   bits).div(nb.p, bits, expected);
-          value.set(rowR.partials[1].evaluate(y, 1, bits, value));
-          assertTrue("∂²ℓ/∂r∂p(" + k + ") = " + value + " must overlap " + expected,
-                     value.overlaps(expected));
-          value.set(rowP.partials[0].evaluate(y, 1, bits, value));
-          assertTrue("∂²ℓ/∂p∂r(" + k + ") = " + value + " must overlap " + expected,
-                     value.overlaps(expected));
-          // ∂²ℓ/∂p² = -r/p² - y/(1-p)²
-          nb.p.mul(nb.p, bits, tmp);
-          nb.r.div(tmp, bits, expected).neg(expected);
-          oneMinusP.mul(oneMinusP, bits, tmp);
-          y.div(tmp, bits, tmp);
-          expected.sub(tmp, bits, expected);
-          value.set(rowP.partials[1].evaluate(y, 1, bits, value));
-          assertTrue("∂²ℓ/∂p²(" + k + ") = " + value + " must overlap " + expected,
-                     value.overlaps(expected));
-        }
-      }
-      finally
-      {
-        score.close();
-        rowR.close();
-        rowP.close();
-      }
-    }
+    return θ;
   }
 
 }

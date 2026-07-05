@@ -78,7 +78,10 @@ public abstract class JetNode<D, C, F extends Function<? extends D, ? extends C>
     //
     // — the next coefficient scaled by (k+1) and by the derivative of the
     // argument. If g does not depend on the differentiation variable then
-    // g'(v) = 0 and so is the product.
+    // g'(v) = 0 and so is the product. The (k+1) factor is what turns the raw
+    // Taylor coefficient f⁽ᵏ⁺¹⁾/(k+1)! into the true derivative f⁽ᵏ⁺¹⁾/k! of
+    // the coefficient at index k; omitting it is correct only through k=0, so
+    // it is essential for every derivative beyond the first (e.g. ψ₂ and up).
     if (!arg.dependsOn(variable))
     {
       return zero();
