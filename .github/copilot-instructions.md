@@ -78,12 +78,13 @@ x.sqrt(128, x)       // in-place (overwrites x)
 ### Expression strings are literal source — never construct them programmatically
 Strings passed to `.express(...)`, `.compile(...)`, `.declare(...)` are parsed as source code by the expression compiler. Concatenation, `String.format`, `replace`, `StringBuilder`, or any runtime construction of an expression string is forbidden. If a naming collision forces that temptation, fix the architecture instead.
 
-### Forward-declaration protocol for mutual recursion
-When two generated functions reference each other:
-1. `parseCompileAndRegister(...)` — emits bytecode without instantiation. Call for all-but-the-last member of a mutually recursive cluster.
-2. `express(...)` — emits bytecode and instantiates (injecting field references via reflection). Call last, after all peers are defined.
+### Compilation ordering rule
+There is one rule: when `express` instantiates a generated class, every class that expression references must already be defined in the `ExpressionClassLoader`. Instantiation calls `injectVariableReferences` / `injectFunctionReferences`, which resolve every field type via reflection. There is no second pass.
 
-Single self-recursive sequences (`T` referencing `T`) need no forward declaration — `express(...)` alone works.
+- `compile(...)` — emits bytecode without instantiation. Call for every function that is referenced by others and must be defined first.
+- `express(...)` — emits bytecode and instantiates. Call last, after all referenced classes are defined.
+
+Single self-recursive sequences (`T` referencing `T`) need only `express` — the self-reference guard handles them automatically.
 
 ### Tests extend `TestCase` (JUnit 3-style) or use `@Test` (JUnit 4)
 Most tests use `@Test`. The `junit.framework.TestCase` style is present but uncommon. Test sources mirror the main package layout under `src/test/java/arb/`.
