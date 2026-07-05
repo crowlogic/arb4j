@@ -31,8 +31,8 @@ if [ ! -f libarblib.so ]; then
   make >&2
 fi
 if [ ! -f class.path ] || [ ! -d build/classes ]; then
-  echo "driver: Java artifacts missing, building (mvn install -Dmaven.test.skip=true)…" >&2
-  mvn -q install -Dmaven.test.skip=true >&2
+  echo "driver: Java artifacts missing, building (mvn install)…" >&2
+  mvn -q install >&2
 fi
 
 CP="build/classes:$(cat class.path)"

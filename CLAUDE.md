@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-arb4j is a Java API wrapping the C library [arblib](http://arblib.org)/FLINT (arbitrary precision real and complex ball arithmetic) via a SWIG-generated JNI bridge, plus an expression compiler that turns Unicode-rich mathematical notation directly into JVM bytecode via ASM. See `README.md` for the full feature tour and the recursive-cluster compilation protocol.
+arb4j is a Java API wrapping the C library [arblib](http://arblib.org)/FLINT (arbitrary precision real and complex ball arithmetic) via a SWIG-generated JNI bridge, plus an expression compiler that turns Unicode-rich mathematical notation directly into JVM bytecode via ASM. See `README.md` for the full feature tour and the compilation ordering rule.
 
 ## Cardinal rule: NEVER GUESS
 
@@ -122,12 +122,12 @@ Each top-level class (`Real`, `Complex`, `Integer`, `Float`, `Magnitude`, `RealP
 
 The pipeline: `Expression.parseRoot` (recursive-descent, Unicode-aware) → an AST whose `Node` subclasses live in `arb.expressions.nodes` (binary/unary/nary subpackages). Each `Node` implements its own `generate(...)` (ASM bytecode emission), `differentiate(...)` (symbolic), and `simplify(...)`. The compiler emits a class into `ExpressionClassLoader`, then instantiates it and uses reflection (`Class.getFields()`) to inject variable and function references via `Context.injectVariableReferences` / `Context.injectFunctionReferences`.
 
-The critical invariant — **all classes in a recursive cluster must be defined in the ClassLoader before any of them is instantiated** — drives the split between two public APIs:
+There is one ordering rule: when `express` instantiates a generated class, every class that expression references must already be defined in the `ExpressionClassLoader`. Instantiation calls `injectVariableReferences` / `injectFunctionReferences`, which resolve every field type via reflection. There is no second pass.
 
-- `parseCompileAndRegister(name, …, expression, …, context)` — define-only. Use for every member of a recursive cluster except the last.
-- `express(name, …, expression, …, context)` — define + instantiate (calls `injectVariableReferences` / `injectFunctionReferences`, which reflectively touch every field type and would throw `NoClassDefFoundError` if a peer class isn't defined yet).
+- `compile(name, …, expression, …, context)` — emits bytecode and registers the `FunctionMapping`. Does not instantiate.
+- `express(name, …, expression, …, context)` — calls `compile` then instantiates and injects references.
 
-See `README.md` for the full Chebyshev / mutual-recursion walkthrough. The self-reference guard in `Expression.constructReferencedFunctionInstanceIfItIsNull` is what makes single self-recursive sequences "just work" without forward declaration.
+Call `compile` for every function that must be defined before instantiation, then `express` last. See `README.md` for the full walkthrough. The self-reference guard in `Expression.constructReferencedFunctionInstanceIfItIsNull` handles single self-recursive sequences automatically.
 
 ### 3. Hand-written math — `arb.functions.*`
 

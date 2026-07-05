@@ -1101,7 +1101,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     boolean hasSomething     = mapping.expression != null || mapping.instance != null;
     // A forward-declared peer: ctx.declare("f",...) was called but express("f",...)
     // hasn't run yet when this expression was compiled. The concrete class is
-    // unknown at compile time, so we emit a runtime call to allocateFreshPeer
+    // unknown at compile time, so we emit a runtime call to allocatePeer
     // rather than a bytecode `new`.
     boolean isForwardDeclared = !hasSomething;
 
@@ -1114,9 +1114,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       if (isForwardDeclared)
       {
         // Forward-declared peer (declared but not yet expressed at compile time).
-        // Emit: if (this.f == null) { this.f = (FType) this.context.allocateFreshPeer("f"); }
-        // At runtime, allocateFreshPeer looks up the now-instantiated class and
-        // returns a fresh instance (own `evaluating` flag, shared context & cache).
+        // Emit: if (this.f == null) { this.f = (FType) this.context.allocatePeer("f"); }
+        // At runtime, allocatePeer looks up the now-instantiated class and
+        // returns an instance (own `evaluating` flag, shared context & cache).
         loadThisOntoStack(mv).visitFieldInsn(GETFIELD, internalName(), mapping.functionName, fieldDescriptor);
         mv.visitJumpInsn(Opcodes.IFNONNULL, alreadyInitialized);
         loadThisOntoStack(mv); // for PUTFIELD
@@ -1125,7 +1125,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         mv.visitLdcInsn(mapping.functionName);
         mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                            Type.getInternalName(Context.class),
-                           "allocateFreshPeer",
+                           "allocatePeer",
                            "(Ljava/lang/String;)Larb/functions/Function;",
                            false);
         mv.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(mapping.functionClass));
@@ -1141,11 +1141,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         // outer compile chain has defined every class in the recursive cluster.
         String typeInternalName = mapping.functionInternalName();
         // Detect if the peer is in the same SCC as this expression (any cycle
-        // length, not just 2). For all such peers we must allocate a FRESH
+        // length, not just 2). For all such peers we must allocate a distinct
         // instance so each evaluation level owns its own `evaluating` flag and
         // the re-entrancy guard cannot fire.
         // Detect if the peer is in the same SCC as this expression (any cycle
-        // length, not just 2). For all such peers we must allocate a FRESH
+        // length, not just 2). For all such peers we must allocate a distinct
         // instance so each evaluation level owns its own `evaluating` flag and
         // the re-entrancy guard cannot fire. Σ/Π operand sub-expressions carry a
         // null functionName but are referenced by their owner under className(),
@@ -1162,18 +1162,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
         if (isMutuallyRecursive)
         {
-          // Recursive peer: allocate via allocateFreshPeer so the fresh instance
+          // Recursive peer: allocate via allocatePeer so the instance
           // shares the context singleton's IndexCache — without this, each
           // evaluation level gets its own empty cache and q(n) is recomputed
           // O(2^n) times instead of being memoized.
-          // if (this.g == null) { this.g = (GType) context.allocateFreshPeer("g"); }
+          // if (this.g == null) { this.g = (GType) context.allocatePeer("g"); }
           loadThisOntoStack(mv); // for PUTFIELD
           loadThisOntoStack(mv);
           mv.visitFieldInsn(GETFIELD, internalName(), "context", contextTypeDesc);
           mv.visitLdcInsn(mapping.functionName);
           mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                              Type.getInternalName(Context.class),
-                             "allocateFreshPeer",
+                             "allocatePeer",
                              "(Ljava/lang/String;)Larb/functions/Function;",
                              false);
           mv.visitTypeInsn(Opcodes.CHECKCAST, typeInternalName);

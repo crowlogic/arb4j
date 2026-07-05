@@ -48,8 +48,8 @@ import arb.functions.integer.*;
  *   Calling invalidateCache() on this functional re-evaluates P, Q, R
  *   to refresh p, q, r, then recalculates the Müntz coefficients.
  *
- *   The curried Müntz coefficient sequence  k ↦ v ↦ aₖ(v)  is built from
- *   the algebraic recurrence
+ *   The Müntz coefficient sequence  k ↦ aₖ(v) ∈ ℂ[v]  is built by
+ *   polynomial ring recursion:
  *
  *       a₁(v) = p(v) / Γ(μ+1)
  *       γₖ    = Γ((k−1)μ+1) / Γ(kμ+1)
@@ -59,6 +59,36 @@ import arb.functions.integer.*;
  *   compiled once as a {@link ComplexFunctionSequence} and handed to the parent
  *   {@link MuntzPadeFunctional}.
  * </pre>
+ *
+ * <p>
+ * <b>Layer architecture — type summary</b>
+ * <table>
+ *   <caption>Three-layer Müntz–Padé hierarchy</caption>
+ *   <tr><th>Class</th><th>Receives</th><th>Produces</th></tr>
+ *   <tr><td>{@link MuntzPadeApproximant}</td>
+ *       <td>polynomial sequence k ↦ aₖ(v) ∈ ℂ[v]</td>
+ *       <td>adaptive rational approximant (scalar in z = t^α)</td></tr>
+ *   <tr><td>{@link MuntzPadeFunctional}</td>
+ *       <td>polynomial sequence (ComplexPolynomialSequence)</td>
+ *       <td>frozen approximant per v</td></tr>
+ *   <tr><td>{@link RiccatiMuntzPadeFunctional}</td>
+ *       <td>nullary factories P, Q, R</td>
+ *       <td>polynomial sequence + functional</td></tr>
+ * </table>
+ *
+ * <p>
+ * <b>Architectural invariants</b>
+ * <ol>
+ *   <li>The engine ({@link MuntzPadeApproximant}) builds the OPS σ-table over
+ *       ℂ[v] then evaluates at the frozen v to produce scalar Padé
+ *       coefficients.</li>
+ *   <li>The factory ({@link MuntzPadeFunctional}) knows only freezing.</li>
+ *   <li>The solver ({@link RiccatiMuntzPadeFunctional}) knows only the
+ *       Gamma-ratio recurrence.</li>
+ *   <li>No layer knows about applications above it.</li>
+ *   <li>The solver exposes its polynomial sequence
+ *       ({@link #muntzBasis()}) for downstream derivation.</li>
+ * </ol>
  *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
@@ -133,9 +163,9 @@ public class RiccatiMuntzPadeFunctional extends
     discriminant = ComplexPolynomialNullaryFunction.express("D:Q()² − 4·P()·R()", context);
 
     // Declare the Müntz coefficient sequence
-    ComplexFunctionSequence.declare("a", context);
+    ComplexPolynomialSequence.declare("a", context);
 
-    a = ComplexPolynomialSequence.express("a:k➔v➔when(k=1,p(v)/Γ(μ+1),else,(Γ((k-1)*μ+1)/Γ(k*μ+1))*(q(v)*a(k-1)(v)+r(v)*∑j➔a(j)(v)*a(k-1-j)(v){j=1..k-2}))",
+    a = ComplexPolynomialSequence.express("a:k➔when(k=1,p/Γ(μ+1),else,(Γ((k-1)*μ+1)/Γ(k*μ+1))*(q*a(k-1)+r*∑j➔a(j)*a(k-1-j){j=1..k-2}))",
                                           context);
 
 
@@ -178,7 +208,7 @@ public class RiccatiMuntzPadeFunctional extends
     //   daₖ = γₖ( q̇·aₖ₋₁ + q·daₖ₋₁ + ṙ·Σ aⱼaₖ₋₁₋ⱼ + r·Σ(daⱼ·aₖ₋₁₋ⱼ + aⱼ·daₖ₋₁₋ⱼ) ),
     // γₖ = Γ((k-1)μ+1)/Γ(kμ+1). Same shape as a; expressed once, self-reference
     // resolved by the compiler exactly as for a.
-    dyByVar = ComplexPolynomialSequence.express("da:k➔v➔when(k=1,pdv(v)/Γ(μ+1),else,(Γ((k-1)*μ+1)/Γ(k*μ+1))*(qdv(v)*a(k-1)(v)+q(v)*da(k-1)(v)+rdv(v)*∑j➔a(j)(v)*a(k-1-j)(v){j=1..k-2}+r(v)*∑j➔(da(j)(v)*a(k-1-j)(v)+a(j)(v)*da(k-1-j)(v)){j=1..k-2}))",
+    dyByVar = ComplexPolynomialSequence.express("da:k➔when(k=1,pdv/Γ(μ+1),else,(Γ((k-1)*μ+1)/Γ(k*μ+1))*(qdv*a(k-1)+q*da(k-1)+rdv*∑j➔a(j)*a(k-1-j){j=1..k-2}+r*∑j➔(da(j)*a(k-1-j)+a(j)*da(k-1-j)){j=1..k-2}))",
                                                 context);
   }
 

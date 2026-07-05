@@ -1,0 +1,142 @@
+name: CI test reports
+
+# Runs `mvn install` (which runs the full test suite — no test is ever skipped)
+# on every push to master, then publishes the surefire reports as an artifact.
+#
+# Two hard limits are imposed on the run, exactly as requested:
+#   * one gigabyte maximum memory  -> the forked test JVM runs with -Xmx1g
+#   * a two-minute wall-clock cap  -> the whole `mvn install` is wrapped in
+#     `timeout 120s`, so a hang (or a test that never returns) is killed.
+#
+# Partial results survive a crash. maven-surefire writes each test class's
+# report (the XML/TXT plus, thanks to redirectTestOutputToFile=true, a
+# <Class>-output.txt capturing that class's console output) to disk the moment
+# the class finishes. So if 700 tests have already run when test 701 triggers an
+# OutOfMemoryError, a native crash, or the 2-minute timeout kills the JVM, the
+# 700 completed reports — with their captured console output and per-test run
+# times — are already on disk and get uploaded by the `if: always()` step below.
+# maven.test.failure.ignore=true additionally lets ordinary assertion failures
+# accumulate instead of aborting the run at the first failing class.
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-test-reports-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    # Safety net for the setup/checkout/upload steps only; the actual 2-minute
+    # cap on the build+tests is the `timeout 120s` around mvn below.
+    timeout-minutes: 15
+    steps:
+      - name: Check out HEAD
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+
+      - name: mvn install (1 GiB heap, 2-minute wall-clock cap)
+        id: build
+        env:
+          # Source tree has Unicode-named files (e.g. σField.java); a UTF-8
+          # locale is mandatory or javac rejects the filenames.
+          LANG: C.UTF-8
+          LC_ALL: C.UTF-8
+        run: |
+          set +e
+          # timeout sends TERM at 120s, then KILL 15s later if it is still alive.
+          # -DargLine="-Xmx1g" is appended to the surefire argLine defined in
+          # pom.xml (its trailing ${argLine}), capping the test JVM heap at 1 GiB.
+          timeout --signal=TERM --kill-after=15s 120s \
+            mvn --batch-mode --no-transfer-progress install \
+              -Dmaven.test.failure.ignore=true \
+              -Darb4j.redirectTestOutputToFile=true \
+              -DargLine="-Xmx1g"
+          status=$?
+          echo "mvn-exit=$status" >> "$GITHUB_OUTPUT"
+          if [ "$status" -eq 124 ]; then
+            echo "::warning::mvn install was killed after the 2-minute wall-clock limit; uploading whatever reports completed."
+          elif [ "$status" -ne 0 ]; then
+            echo "::warning::mvn install exited with status $status; uploading whatever reports completed."
+          fi
+          # Never fail this step: partial reports are the whole point, so the
+          # summary + upload steps below always run. The final "Report status"
+          # step decides the job's red/green outcome from the collected reports.
+          exit 0
+
+      - name: Summarise test reports
+        if: always()
+        run: |
+          reports_dir=build/surefire-reports
+          {
+            echo "## Test report summary"
+            echo ""
+            echo "\`mvn install\` exit status: \`${{ steps.build.outputs.mvn-exit }}\` (124 = killed by the 2-minute timeout)."
+            echo ""
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [ ! -d "$reports_dir" ]; then
+            echo "No surefire reports were produced (the run was killed before any test class finished)." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          classes=$(find "$reports_dir" -name 'TEST-*.xml' | wc -l)
+          # Sum the tests/failures/errors/skipped/time attributes across every
+          # completed TEST-*.xml testsuite element.
+          totals=$(grep -ho '<testsuite [^>]*>' "$reports_dir"/TEST-*.xml 2>/dev/null | \
+            awk '
+              function attr(s, name,   m) { if (match(s, name "=\"[^\"]*\"")) { m=substr(s,RSTART,RLENGTH); sub(name "=\"","",m); sub("\"","",m); return m } return 0 }
+              { t+=attr($0,"tests"); f+=attr($0,"failures"); e+=attr($0,"errors"); s+=attr($0,"skipped"); sec+=attr($0,"time") }
+              END { printf "%d %d %d %d %.3f", t, f, e, s, sec }')
+          set -- $totals
+          {
+            echo "Completed test classes with reports on disk: **$classes**"
+            echo ""
+            echo "| Tests run | Failures | Errors | Skipped | Total time (s) |"
+            echo "|---:|---:|---:|---:|---:|"
+            echo "| ${1:-0} | ${2:-0} | ${3:-0} | ${4:-0} | ${5:-0} |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload surefire reports (including partial results)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports
+          # TEST-*.xml + *.txt summaries + *-output.txt per-class console output.
+          path: |
+            build/surefire-reports/**
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Report status
+        if: always()
+        run: |
+          reports_dir=build/surefire-reports
+          exit_code='${{ steps.build.outputs.mvn-exit }}'
+          bad=0
+          if [ -d "$reports_dir" ]; then
+            bad=$(grep -ho '<testsuite [^>]*>' "$reports_dir"/TEST-*.xml 2>/dev/null | \
+              awk '
+                function attr(s, name,   m) { if (match(s, name "=\"[^\"]*\"")) { m=substr(s,RSTART,RLENGTH); sub(name "=\"","",m); sub("\"","",m); return m } return 0 }
+                { f+=attr($0,"failures"); e+=attr($0,"errors") }
+                END { print f + e }')
+          fi
+          if [ "$exit_code" = "124" ]; then
+            echo "Build was killed by the 2-minute wall-clock limit; failing the job (partial reports were uploaded)."
+            exit 1
+          fi
+          if [ "${bad:-0}" -gt 0 ]; then
+            echo "$bad test failure(s)/error(s) recorded; failing the job (reports were uploaded)."
+            exit 1
+          fi
+          echo "All completed tests passed within the 1 GiB / 2-minute budget."

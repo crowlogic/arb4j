@@ -317,7 +317,7 @@ public class Context implements
       // the shared context singleton into f.<peer> would alias f.<peer> to an
       // instance whose `evaluating` flag can be true when f's own evaluate()
       // is running — firing the re-entrancy guard. The generated initialize()
-      // method allocates a FRESH instance for each such peer, so leaving the
+      // method allocates an instance for each such peer, so leaving the
       // field null here is correct.
       if (finalTargetName != null
           && Expression.isTransitivelyReachable(functionMapping, finalTargetName, new java.util.HashSet<>()))
@@ -391,21 +391,21 @@ public class Context implements
   }
 
   /**
-   * Allocates a fresh instance of the function registered under {@code name}.
+   * Allocates an instance of the function registered under {@code name}.
    * Used by the generated {@code initialize()} bytecode for forward-declared
    * peers — functions that were declared via {@code ctx.declare(...)} but not
    * yet expressed when the calling expression was compiled.
    *
    * <p>
-   * A fresh instance (own {@code evaluating} flag, shared context and cache) is
-   * required so that each evaluation level in a mutually-recursive cluster uses
-   * a distinct instance and the re-entrancy guard cannot fire.
+   * Each allocated peer has its own {@code evaluating} flag and shares the
+   * context and cache, so each evaluation level in a mutually-recursive cluster
+   * uses a distinct instance and the re-entrancy guard cannot fire.
    *
    * @param name the function name registered in this context
-   * @return a fresh instance of the named function's concrete class, or
+   * @return an instance of the named function's concrete class, or
    *         {@code null} if the mapping has no instance yet
    */
-  public Function<?, ?> allocateFreshPeer(String name)
+  public Function<?, ?> allocatePeer(String name)
   {
     FunctionMapping<?, ?, ?> mapping = functions.get(name);
     if (mapping == null || mapping.instance == null)
@@ -414,21 +414,21 @@ public class Context implements
     }
     try
     {
-      Function<?, ?> fresh = (Function<?, ?>) mapping.instance.getClass().getDeclaredConstructor().newInstance();
-      injectContextReference(fresh);
+      Function<?, ?> peer = (Function<?, ?>) mapping.instance.getClass().getDeclaredConstructor().newInstance();
+      injectContextReference(peer);
       // Share the canonical instance's IndexCache so this cluster member
       // memoizes into the same table as the context singleton — without this
-      // each fresh peer has its own empty cache and q(n) is recomputed
+      // each peer has its own empty cache and q(n) is recomputed
       // exponentially across all evaluation levels.
       for (java.lang.reflect.Field field : mapping.instance.getClass().getFields())
       {
         if (field.getName().equals("cache"))
         {
-          field.set(fresh, field.get(mapping.instance));
+          field.set(peer, field.get(mapping.instance));
           break;
         }
       }
-      return fresh;
+      return peer;
     }
     catch (ReflectiveOperationException e)
     {

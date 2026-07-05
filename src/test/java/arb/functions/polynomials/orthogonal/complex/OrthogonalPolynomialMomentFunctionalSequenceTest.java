@@ -41,17 +41,25 @@ import junit.framework.TestCase;
  * reference modified-Chebyshev map for the y′ = 1 + y² (tan) case.
  *
  * <p>
+ * The cyclic {σ,α,β,h} recurrence is evaluated strictly on demand: each
+ * reference to a mutually-recursive peer resolves to a per-level instance
+ * with its own private cache, so a top-down read of α(j)=σ(j)(j+1)/h(j) descends
+ * into allocated σ/h children rather than re-entering an in-flight instance. There
+ * is therefore no cache-warming step; the assertions below evaluate the
+ * sequences directly.
+ *
+ * <p>
  * Covered:
  * <ol>
- *   <li>{@code warmTo(M)} does not throw and populates σ, h, α, β for j up
- *       to M.</li>
- *   <li>All σ(j)(k), h(j), α(j), β(j) are non-empty polynomials at each
- *       warmed index.</li>
+ *   <li>σ, h, α, β are non-null and evaluate for j up to M.</li>
+ *   <li>All h(j) are non-empty polynomials at each index.</li>
  *   <li>The diagonal Jacobi coefficients α(j) are all zero for the symmetric
  *       tanh functional (regression guard for the α two-term correction).</li>
  *   <li>β(1) = −1/3 and β(2) = −1/15 match the tanh moment-functional J-fraction
  *       oracle to 10 digits, confirming that the σ-table recurrence produces
  *       the correct off-diagonal Jacobi entries.</li>
+ *   <li>Repeated on-demand evaluation is consistent (private per-instance cache
+ *       returns the same value).</li>
  * </ol>
  *
  * @author Stephen Crowley ©2024-2026
@@ -70,33 +78,36 @@ public class OrthogonalPolynomialMomentFunctionalSequenceTest extends
   }
 
   /**
-   * {@code warmTo(M)} for M = 1, 2, 3 does not throw and leaves all
-   * four recurrence sequences non-null.
+   * On-demand evaluation of σ, h, α, β for j = 0..3 does not throw and returns
+   * non-null polynomials.
    */
-  public void testWarmToDoesNotThrow()
+  public void testOnDemandEvaluationDoesNotThrow()
   {
-    try ( FractionalRicattiOrthogonalPolynomialMomentFunctionalSequence ops = tanhOPS())
+    try ( FractionalRicattiOrthogonalPolynomialMomentFunctionalSequence ops = tanhOPS();
+          Integer n = new Integer())
     {
-      for (int M = 1; M <= 3; M++)
+      assertNotNull("σ must be non-null", ops.σ);
+      assertNotNull("h must be non-null", ops.h);
+      assertNotNull("α must be non-null", ops.α);
+      assertNotNull("β must be non-null", ops.β);
+      for (int j = 0; j <= 3; j++)
       {
-        ops.warmTo(M, BITS);
-        assertNotNull("σ must be non-null after warmTo(" + M + ")", ops.σ);
-        assertNotNull("h must be non-null after warmTo(" + M + ")", ops.h);
-        assertNotNull("α must be non-null after warmTo(" + M + ")", ops.α);
-        assertNotNull("β must be non-null after warmTo(" + M + ")", ops.β);
+        n.set(j);
+        assertNotNull("h(" + j + ") must evaluate", ops.h.evaluate(n, 1, BITS, null));
+        assertNotNull("α(" + j + ") must evaluate", ops.α.evaluate(n, 1, BITS, null));
+        assertNotNull("β(" + j + ") must evaluate", ops.β.evaluate(n, 1, BITS, null));
       }
     }
   }
 
   /**
-   * h(j) for j = 0..3 must be non-empty after warmTo(3).
+   * h(j) for j = 0..3 must be non-empty polynomials.
    */
   public void testSquaredNormsAreNonEmpty()
   {
     try ( FractionalRicattiOrthogonalPolynomialMomentFunctionalSequence ops = tanhOPS();
           Integer n = new Integer())
     {
-      ops.warmTo(3, BITS);
       for (int j = 0; j <= 3; j++)
       {
         n.set(j);
@@ -127,7 +138,6 @@ public class OrthogonalPolynomialMomentFunctionalSequenceTest extends
           Integer n = new Integer();
           Complex v = new Complex())
     {
-      ops.warmTo(3, BITS);
       v.set("1", BITS); // evaluate at v=1
 
       for (int j = 0; j <= 2; j++)
@@ -165,7 +175,6 @@ public class OrthogonalPolynomialMomentFunctionalSequenceTest extends
           Integer n = new Integer();
           Complex v = new Complex())
     {
-      ops.warmTo(3, BITS);
       v.set("1", BITS);
 
       // β(1) = −1/3
@@ -189,17 +198,16 @@ public class OrthogonalPolynomialMomentFunctionalSequenceTest extends
   }
 
   /**
-   * Repeated warmTo calls are idempotent: re-running warmTo(M) after warmTo(M)
-   * must not throw and must leave the sequences unchanged.
+   * Repeated on-demand evaluation of β(1) returns the same value: the private
+   * per-instance cache memoizes the result and re-reads are consistent.
    */
-  public void testWarmToIsIdempotent()
+  public void testRepeatedEvaluationIsConsistent()
   {
     try ( FractionalRicattiOrthogonalPolynomialMomentFunctionalSequence ops = tanhOPS();
           Integer n = new Integer();
           Complex v = new Complex())
     {
       v.set("1", BITS);
-      ops.warmTo(2, BITS);
 
       n.set(1);
       ComplexPolynomial β1first = ops.β.evaluate(n, 1, BITS, null);
@@ -207,13 +215,12 @@ public class OrthogonalPolynomialMomentFunctionalSequenceTest extends
       β1first.evaluate(v, 1, BITS, β1firstV);
       double beta1Re = β1firstV.re().doubleValue();
 
-      // Second warmTo at same M
-      ops.warmTo(2, BITS);
+      // Second evaluation at same index
       ComplexPolynomial β1second = ops.β.evaluate(n, 1, BITS, null);
       Complex β1secondV = new Complex();
       β1second.evaluate(v, 1, BITS, β1secondV);
 
-      assertEquals("β(1) must be unchanged by repeated warmTo(2)",
+      assertEquals("β(1) must be unchanged by repeated evaluation",
                    beta1Re, β1secondV.re().doubleValue(), 1e-15);
     }
   }
