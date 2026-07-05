@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-arb4j is a Java API wrapping the C library [arblib](http://arblib.org)/FLINT (arbitrary precision real and complex ball arithmetic) via a SWIG-generated JNI bridge, plus an expression compiler that turns Unicode-rich mathematical notation directly into JVM bytecode via ASM. See `README.md` for the full feature tour and the recursive-cluster compilation protocol.
+arb4j is a Java API wrapping the C library [arblib](http://arblib.org)/FLINT (arbitrary precision real and complex ball arithmetic) via a SWIG-generated JNI bridge, plus an expression compiler that turns Unicode-rich mathematical notation directly into JVM bytecode via ASM. See `README.md` for the full feature tour and the compilation ordering rule.
 
 ## Cardinal rule: NEVER GUESS
 
