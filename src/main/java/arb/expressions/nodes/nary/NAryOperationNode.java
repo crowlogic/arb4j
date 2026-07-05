@@ -1414,8 +1414,15 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     // (e.g. a definite integral's integration variable) as an upstream variable;
     // substituting it with a limit node that is a literal constant or other
     // input-variable-free node would NPE in the Expression-valued overload, which
-    // dereferences substitution.getInputVariable().
-    operandExpression = operandExpression.substitute(variable, substitution.spliceInto(operandExpression));
+    // dereferences substitution.getInputVariable(). The substitution may itself
+    // reference outer free variables (e.g. z in 2*z) that are not part of the
+    // operand's local scope, so resolution is deferred across the splice to avoid
+    // force-resolving them against the operand's context.
+    boolean deferred = operandExpression.deferVariableResolution;
+    operandExpression.deferVariableResolution = true;
+    var splicedSubstitution = substitution.spliceInto(operandExpression);
+    operandExpression.deferVariableResolution = deferred;
+    operandExpression = operandExpression.substitute(variable, splicedSubstitution);
     lowerLimit        = lowerLimit.substitute(variable, substitution);
     upperLimit        = upperLimit.substitute(variable, substitution);
     return this;
