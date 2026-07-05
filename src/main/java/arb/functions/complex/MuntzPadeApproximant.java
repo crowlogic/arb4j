@@ -21,11 +21,15 @@ import arb.functions.polynomials.orthogonal.complex.OrthogonalPolynomialMomentFu
  * code path (the expression language has no fixed-point-over-predicate).
  *
  * <p>
- * <b>Architectural invariant 1 — the engine knows only scalars.</b><br>
- * Every instance of this class receives a frozen scalar sequence
- * {@code k ↦ aₖ ∈ ℂ}. The polynomial-in-v layer above evaluates each
- * {@code aₖ(v)} before constructing this object; no {@code ComplexPolynomial}
- * ever enters this class.
+ * <b>Architectural invariant 1 — the engine operates on polynomials then
+ * freezes at v.</b><br>
+ * Every instance of this class receives a polynomial sequence
+ * {@code k ↦ aₖ(v) ∈ ℂ[v]}. The Chebyshev/Wheeler σ-table builds the Jacobi
+ * entries {@code α(n)(v)}, {@code β(n)(v)}, {@code h(n)(v)} as polynomials in
+ * {@code v}; evaluating them at the frozen perturbation point {@code v} yields
+ * the scalar Padé coefficients. No polynomial variable survives into the
+ * assembled rational approximant {@code Φ(z)} — the output is a
+ * scalar-coefficient rational function of {@code z = t^α}.
  *
  * @author Stephen Crowley ©2024–2026
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
@@ -65,8 +69,10 @@ public final class MuntzPadeApproximant implements
     context.registerVariable("v", this.v);
     context.registerSequence("a", a);
 
-    // m(k)(u) = a(k+1)(u). 1-shift: caller's a is 1-indexed, OPS is 0-indexed.
-    ComplexPolynomialSequence m = ComplexPolynomialSequence.express("m:k➔u➔a(k+1)(u)", context);
+    // m(k) = a(k+1): 1-shift (caller's a is 1-indexed, OPS is 0-indexed).
+    // Each a(k) is a ComplexPolynomial in v; m passes them directly to the OPS
+    // σ-table, which builds α(j), β(j), h(j) as polynomials in v.
+    ComplexPolynomialSequence m = ComplexPolynomialSequence.express("m:k➔a(k+1)", context);
 
     // OPS owns σ, h, α, β, the recurrence-coefficient sequences A/B/C, and the
     // orthogonal-polynomial Q (its parent's P field, accessed via ops.evaluate).
