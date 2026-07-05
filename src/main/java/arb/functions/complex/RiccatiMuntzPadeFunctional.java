@@ -60,6 +60,34 @@ import arb.functions.integer.*;
  *   {@link MuntzPadeFunctional}.
  * </pre>
  *
+ * <p>
+ * <b>Layer architecture — type summary</b>
+ * <table>
+ *   <caption>Three-layer Müntz–Padé hierarchy</caption>
+ *   <tr><th>Class</th><th>Receives</th><th>Produces</th></tr>
+ *   <tr><td>{@link MuntzPadeApproximant}</td>
+ *       <td>frozen scalar sequence (ComplexSequence)</td>
+ *       <td>adaptive rational approximant</td></tr>
+ *   <tr><td>{@link MuntzPadeFunctional}</td>
+ *       <td>polynomial sequence (ComplexPolynomialSequence)</td>
+ *       <td>frozen approximant per v</td></tr>
+ *   <tr><td>{@link RiccatiMuntzPadeFunctional}</td>
+ *       <td>nullary factories P, Q, R</td>
+ *       <td>polynomial sequence + functional</td></tr>
+ * </table>
+ *
+ * <p>
+ * <b>Architectural invariants</b>
+ * <ol>
+ *   <li>The engine ({@link MuntzPadeApproximant}) knows only scalars.</li>
+ *   <li>The factory ({@link MuntzPadeFunctional}) knows only freezing.</li>
+ *   <li>The solver ({@link RiccatiMuntzPadeFunctional}) knows only the
+ *       Gamma-ratio recurrence.</li>
+ *   <li>No layer knows about applications above it.</li>
+ *   <li>The solver exposes its polynomial sequence
+ *       ({@link #muntzBasis()}) for downstream derivation.</li>
+ * </ol>
+ *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */

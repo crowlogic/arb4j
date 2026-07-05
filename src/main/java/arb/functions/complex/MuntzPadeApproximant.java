@@ -20,6 +20,13 @@ import arb.functions.polynomials.orthogonal.complex.OrthogonalPolynomialMomentFu
  * the same shared {@link Context}; the adaptive growth of M is the only Java
  * code path (the expression language has no fixed-point-over-predicate).
  *
+ * <p>
+ * <b>Architectural invariant 1 — the engine knows only scalars.</b><br>
+ * Every instance of this class receives a frozen scalar sequence
+ * {@code k ↦ aₖ ∈ ℂ}. The polynomial-in-v layer above evaluates each
+ * {@code aₖ(v)} before constructing this object; no {@code ComplexPolynomial}
+ * ever enters this class.
+ *
  * @author Stephen Crowley ©2024–2026
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
