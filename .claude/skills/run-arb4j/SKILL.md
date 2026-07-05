@@ -78,14 +78,9 @@ make   # ONLY after a native/*.i change
 
 `run.sh` auto-runs `mvn` if `class.path` or `build/classes` is missing, and only
 falls back to `make` if the committed `libarblib.so` is absent — so for the agent
-path you usually don't invoke either directly.
-
-> **Launcher-only exception.** The auto-build inside `run.sh` exists solely to
-> compile enough to *start an app* (`class.path` + `build/classes`), so it uses
-> `mvn install -Dmaven.test.skip=true` to launch quickly. This is the **one**
-> sanctioned skip: it is not a build you rely on for correctness. Any build you
-> trust — and every build you run by hand — is a plain `mvn install` that runs
-> the full test suite.
+path you usually don't invoke either directly. That auto-build is a plain
+`mvn install` — it runs the full test suite like every other build; there is **no**
+test-skipping shortcut.
 
 ## Run (agent path) — compile + run a Java program
 
@@ -215,5 +210,8 @@ jfr print --events jdk.ExecutionSample --stack-depth 30 /tmp/arb4j-profile.jfr \
   usually a missing `--add-opens` for a new JavaFX surface the app touches,
   or the app needs longer than the default 22s to render (pass a larger
   third argument).
-- `class.path` references jars under `~/.m2` that don't exist → run a Maven
-  phase past `generate-sources` (e.g. `mvn -q install`) to regenerate it.
+- `class.path` references jars under `~/.m2` that don't exist → regenerate it
+  with `bin/updateClasspath` (`mvn dependency:build-classpath`). This rewrites
+  `class.path` **regardless of unit-test output** — it runs no tests. It does
+  not rebuild `build/classes`; if those `.class` files are also stale, follow up
+  with a plain `mvn install` (which runs the full test suite).
