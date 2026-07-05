@@ -5,6 +5,7 @@ import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
+import arb.functions.integer.Sequence;
 
 /**
  * Computes the product operator where the syntax is Π{k=a…b}f(k): the limit
@@ -32,6 +33,40 @@ public class ProductNode<D, C, F extends Function<? extends D, ? extends C>> ext
           "prod",
           "mul",
           "Π");
+  }
+
+  /**
+   * Constructor used by {@link #createSimilarNode} so that
+   * {@link NAryOperationNode#spliceInto(Expression)} preserves the
+   * {@link ProductNode} type instead of collapsing to a bare
+   * {@link NAryOperationNode}.
+   */
+  public ProductNode(Expression<D, C, F> expression,
+                     Expression<Integer, C, Sequence<C>> operandExpression,
+                     Node<D, C, F> lowerLimit,
+                     Node<D, C, F> upperLimit)
+  {
+    super(expression,
+          "multiplicativeIdentity",
+          "prod",
+          "mul",
+          "Π",
+          operandExpression,
+          lowerLimit,
+          upperLimit);
+  }
+
+  @Override
+  protected <E, S, G extends Function<? extends E, ? extends S>> NAryOperationNode<E, S, G>
+            createSimilarNode(Expression<E, S, G> newExpression,
+                              Expression<Integer, S, Sequence<S>> operand,
+                              Node<E, S, G> lower,
+                              Node<E, S, G> upper)
+  {
+    return new ProductNode<>(newExpression,
+                             operand,
+                             lower,
+                             upper);
   }
 
   @Override

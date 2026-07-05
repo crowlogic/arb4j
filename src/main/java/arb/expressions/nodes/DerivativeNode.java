@@ -393,7 +393,6 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
       splicedNode.order = order == null ? null : order.spliceInto(newExpression);
       return splicedNode;
     }
-    assert false : "nthDerivativeNode is null for " + this + " context=" + expression.getContext() + "functions=" + expression.getContext().functions;
     return getDifferentiatedNode().spliceInto(newExpression);
   }
 

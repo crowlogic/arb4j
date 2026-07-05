@@ -249,6 +249,20 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   {
     indefiniteIntegralExpression           = expression.cloneExpression();
     indefiniteIntegralExpression.setClassName("∫" + indefiniteIntegralExpression.className());
+    // The indefinite integral is an antiderivative that is a function of the
+    // integration variable. When the antiderivative exposes that variable
+    // directly (e.g. arcsin(y)), the cloned expression adopts it as its
+    // independent variable during resolution. When the antiderivative hides it
+    // inside an operand sub-function (e.g. a Σ whose summand references it as an
+    // upstream variable), the cloned expression never sees it, leaving the
+    // independent variable unset; the summand's input propagation would then emit
+    // a GETFIELD for the integration variable on the enclosing class rather than
+    // loading the input parameter. Adopt the integration variable as the
+    // independent variable so propagation loads the input parameter.
+    if (indefiniteIntegralExpression.getIndependentVariable() == null && indefiniteIntegralExpression.canHaveIndependentVariable())
+    {
+      indefiniteIntegralExpression.assignInputVariable(indefiniteIntegralExpression.newVariableNode(integrationVariableName));
+    }
     indefiniteIntegralExpression.rootNode  = indefiniteIntegralNode.spliceInto(indefiniteIntegralExpression);
     indefiniteIntegralExpression.compile();
     expression.registerSubexpression(indefiniteIntegralExpression);
@@ -349,6 +363,16 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   protected MethodVisitor generateIndefiniteIntegral(MethodVisitor mv, Class<?> resultType)
   {
     ensureIndefiniteIntegralNode();
+
+    // See compileIndefiniteIntegral: adopt the integration variable as the
+    // enclosing expression's independent variable so that an antiderivative
+    // which hides that variable inside an operand sub-function (e.g. a Σ whose
+    // summand references it as an upstream variable) propagates it by loading the
+    // input parameter rather than emitting a GETFIELD on the enclosing class.
+    if (expression.getIndependentVariable() == null && expression.canHaveIndependentVariable())
+    {
+      expression.assignInputVariable(expression.newVariableNode(integrationVariableName));
+    }
 
     var splicedNode = indefiniteIntegralNode.spliceInto(expression);
     splicedNode.isRootNode = isRootNode;
