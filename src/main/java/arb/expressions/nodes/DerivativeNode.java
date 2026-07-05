@@ -237,6 +237,14 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
     {
       throw new UnsupportedOperationException("integral of symbolic-order derivative not supported");
     }
+    // Fundamental theorem of calculus: ∫ (dg/dv) dv = g when the integration
+    // variable is the differentiation variable — one antiderivative is exactly
+    // the un-differentiated operand, computed without any closed-form
+    // antiderivative of the differentiated expression.
+    if (order == null && this.variable != null && this.variable.equals(variable))
+    {
+      return operand;
+    }
     return getDifferentiatedNode().integral(variable);
   }
 

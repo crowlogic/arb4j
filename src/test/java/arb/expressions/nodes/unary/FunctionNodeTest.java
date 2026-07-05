@@ -141,7 +141,7 @@ public class FunctionNodeTest extends
   {
     var context = new Context();
     var f       = RealFunction.parse("int((x-1)*δ(x-1),x)", context, true);
-    assertEquals("x➔0", f.toString());
+    assertEquals("0", f.toString());
   }
 
   public static void testDeltaFunctionMultipleVariableOccurrences()
