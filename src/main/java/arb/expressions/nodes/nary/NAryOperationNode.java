@@ -518,16 +518,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                       expression.newIntermediateVariable(expression.getNextIntermediateVariableFieldName(indexVariableFieldName, generatedType),
                                                                          Integer.class);
     }
-    else if (!expression.hasIntermediateVariable(indexVariableGeneratedFieldName))
-    {
-      // A summation node carried into this expression by spliceInto keeps its
-      // index field name but the field itself was declared on the source
-      // expression, not here. This happens when a differentiation retains an
-      // original summation subtree (e.g. the product-rule term
-      // d(ln(1−p))·Σyᵢ) alongside freshly built ones: register the field on the
-      // current expression so the generated class actually declares it.
-      expression.registerIntermediateVariable(indexVariableGeneratedFieldName, Integer.class, true);
-    }
   }
 
   public Class<?> assignTypes(Class<?> resultType)
@@ -1369,6 +1359,14 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     nAryOperationNode.assignFieldNamesIfNecessary(newExpression.coDomainType);
     nAryOperationNode.indexVariableFieldName          = this.indexVariableFieldName;
     nAryOperationNode.indexVariableGeneratedFieldName = this.indexVariableGeneratedFieldName;
+    // The index field was declared on the source expression; move that
+    // declaration onto the expression this node is being spliced into so the
+    // generated class actually declares the field it references.
+    if (this.indexVariableGeneratedFieldName != null
+                  && !newExpression.hasIntermediateVariable(this.indexVariableGeneratedFieldName))
+    {
+      newExpression.registerIntermediateVariable(this.indexVariableGeneratedFieldName, Integer.class, true);
+    }
     nAryOperationNode.parsed                          = this.parsed;
     nAryOperationNode.functionInternalName            = newExpression.internalName();
     nAryOperationNode.operandFunctionFieldName        = this.operandFunctionFieldName;
