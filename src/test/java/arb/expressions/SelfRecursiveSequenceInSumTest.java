@@ -13,7 +13,7 @@ import junit.framework.TestCase;
  * the shape of the Blinnikov–Moessner Edgeworth coefficient recurrence
  * {@code c:n➔when(n<3,…,else,(1/n)·Σk➔k·c(n-k){k=3..n})}. The recursive call
  * {@code c(n-k)} sits in a nested sum operand sub-expression, so it must route
- * through the memoizing per-cluster fresh-peer allocation rather than
+ * through the memoizing per-cluster peer allocation rather than
  * re-entering the same instance's guarded {@code evaluate()}.
  */
 public class SelfRecursiveSequenceInSumTest extends

@@ -42,9 +42,9 @@ import junit.framework.TestCase;
  *
  * <p>
  * The cyclic {σ,α,β,h} recurrence is evaluated strictly on demand: each
- * reference to a mutually-recursive peer resolves to a fresh per-level instance
+ * reference to a mutually-recursive peer resolves to a per-level instance
  * with its own private cache, so a top-down read of α(j)=σ(j)(j+1)/h(j) descends
- * into fresh σ/h children rather than re-entering an in-flight instance. There
+ * into allocated σ/h children rather than re-entering an in-flight instance. There
  * is therefore no cache-warming step; the assertions below evaluate the
  * sequences directly.
  *
