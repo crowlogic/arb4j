@@ -53,15 +53,22 @@ export LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
 
 ## Build
 
+> **NEVER skip tests.** It is **never** okay to run `mvn install` with
+> `-Dmaven.test.skip=true`, `-DskipTests`, or any other test-skipping flag. The
+> `install` phase **must** run all the tests, every time. The **only** exception
+> is when the user **explicitly** tells you in the current request that tests may
+> be skipped — never assume it, never do it to save time, never do it to "just
+> get a build". A build that skipped the tests is not a build that passed.
+
 `libarblib.so` is **prebuilt and committed** (statically-linked
 FLINT/MPFR/GMP), so the normal path is a **single `mvn` step** — no `make`:
 
 ```bash
-mvn -q install -Dmaven.test.skip=true
+mvn -q install
 ```
 
-This compiles the Java into `build/classes` and writes the dependency classpath
-to `class.path`. You only need `make` when you **edit a SWIG interface file
+This compiles the Java into `build/classes`, **runs all the tests**, and writes
+the dependency classpath to `class.path`. You only need `make` when you **edit a SWIG interface file
 (`native/*.i`)**; it reruns SWIG + clang and relinks the `.so` (fetching and
 building GMP/MPFR/FLINT 3.3.1 statically into `~/.cache/arb4j` the first time):
 
@@ -71,7 +78,9 @@ make   # ONLY after a native/*.i change
 
 `run.sh` auto-runs `mvn` if `class.path` or `build/classes` is missing, and only
 falls back to `make` if the committed `libarblib.so` is absent — so for the agent
-path you usually don't invoke either directly.
+path you usually don't invoke either directly. That auto-build is a plain
+`mvn install` — it runs the full test suite like every other build; there is **no**
+test-skipping shortcut.
 
 ## Run (agent path) — compile + run a Java program
 
@@ -139,7 +148,7 @@ dropdowns, the `∫ ∂ π √ ⊥` symbol palette, and the function table).
 mvn test
 ```
 
-838 JUnit tests; expect `BUILD SUCCESS`, `Tests run: 838, Failures: 0,
+900-plus JUnit tests; expect `BUILD SUCCESS`, `Tests run: <N>, Failures: 0,
 Errors: 0`. A single class/method: `mvn test -Dtest=RealTest#testSqrt`.
 
 ## Profile (why is something slow) — bin/profile
@@ -184,8 +193,8 @@ jfr print --events jdk.ExecutionSample --stack-depth 30 /tmp/arb4j-profile.jfr \
   Monocle -Dmonocle.platform=Headless` fails with `ClassNotFoundException:
   com.sun.glass.ui.monocle.MonoclePlatformFactory`. A real (virtual) X display
   via `xvfb-run` is the only GUI path; `shot.sh` already does this.
-- **`-q` `mvn` prints nothing on success.** No output from
-  `mvn -q install -Dmaven.test.skip=true` means it worked; check for `ERROR`.
+- **`-q` `mvn` prints nothing on success.** No output from `mvn -q install`
+  means it worked (tests included); check for `ERROR` or `Failures:`.
 - **Native-access warnings are noise.** `WARNING: … restricted method …
   System::loadLibrary` on every JVM start is expected; `run.sh` passes
   `--enable-native-access=ALL-UNNAMED` to suppress most of it.
@@ -196,11 +205,13 @@ jfr print --events jdk.ExecutionSample --stack-depth 30 /tmp/arb4j-profile.jfr \
   built or `-Djava.library.path=.` is missing. Run `make`; use `run.sh`
   (it sets the library path).
 - `cannot find symbol` for `arb.*` at `javac` → `class.path`/`build/classes`
-  stale or missing. Re-run `mvn -q install -Dmaven.test.skip=true`.
+  stale or missing. Re-run `mvn -q install`.
 - `shot.sh` prints `FAILED: no screenshot written` → read the dumped app log;
   usually a missing `--add-opens` for a new JavaFX surface the app touches,
   or the app needs longer than the default 22s to render (pass a larger
   third argument).
-- `class.path` references jars under `~/.m2` that don't exist → run a Maven
-  phase past `generate-sources` (e.g. `mvn -q install -Dmaven.test.skip=true`)
-  to regenerate it.
+- `class.path` references jars under `~/.m2` that don't exist → regenerate it
+  with `bin/updateClasspath` (`mvn dependency:build-classpath`). This rewrites
+  `class.path` **regardless of unit-test output** — it runs no tests. It does
+  not rebuild `build/classes`; if those `.class` files are also stale, follow up
+  with a plain `mvn install` (which runs the full test suite).
