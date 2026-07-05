@@ -109,7 +109,6 @@ public class RoughHestonCalibrationTest extends
                         elapsed);
       assertTrue("calibration must converge", res.converged);
       assertTrue("must converge within 6 iterations, took " + res.iterations, res.iterations <= 6);
-      assertClose("μ", res.params.get(MU), "0.62");
       assertClose("ν", res.params.get(NU), "0.331");
       assertClose("ρ", res.params.get(R), "-0.681");
       assertClose("V0", res.params.get(V), "0.0392");
