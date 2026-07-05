@@ -71,17 +71,18 @@ public abstract class JetNode<D, C, F extends Function<? extends D, ? extends C>
   public Node<D, C, F> differentiate(VariableNode<D, C, F> variable)
   {
     var next = newInstance(expression, arg, coefficientIndex + 1, sharedState);
-    sharedState.updateMax(coefficientIndex + 1);
-    // Apply the chain rule: d/dv f(g(v)) = f'(g(v)) * g'(v)
-    // The jet coefficient at index k+1 gives f^(k+1)(g(v)), which is the
-    // derivative with respect to the argument. If g depends on the
-    // differentiation variable, we must multiply by g'(v).
+    // Apply the chain rule: d/dv f(g(v)) = f'(g(v)) · g'(v). The jet coefficient
+    // at index k+1 gives f^(k+1)(g(v)), the derivative with respect to the
+    // argument. When g does not depend on the differentiation variable, g'(v)=0
+    // and the whole derivative is zero — returning the higher-order jet here
+    // would silently drop the chain-rule factor and yield f'(g) instead of 0.
     if (arg.dependsOn(variable))
     {
+      sharedState.updateMax(coefficientIndex + 1);
       Node<D, C, F> argDerivative = arg.differentiate(variable);
       return next.mul(argDerivative);
     }
-    return next;
+    return zero();
   }
 
   @Override

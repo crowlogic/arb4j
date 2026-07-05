@@ -518,6 +518,16 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                       expression.newIntermediateVariable(expression.getNextIntermediateVariableFieldName(indexVariableFieldName, generatedType),
                                                                          Integer.class);
     }
+    else if (!expression.hasIntermediateVariable(indexVariableGeneratedFieldName))
+    {
+      // A summation node carried into this expression by spliceInto keeps its
+      // index field name but the field itself was declared on the source
+      // expression, not here. This happens when a differentiation retains an
+      // original summation subtree (e.g. the product-rule term
+      // d(ln(1−p))·Σyᵢ) alongside freshly built ones: register the field on the
+      // current expression so the generated class actually declares it.
+      expression.registerIntermediateVariable(indexVariableGeneratedFieldName, Integer.class, true);
+    }
   }
 
   public Class<?> assignTypes(Class<?> resultType)
@@ -1421,10 +1431,54 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                          operandExpression == null ? "null" : operandExpression.typeset());
   }
 
+  /**
+   * Symbolic derivative of a bounded summation with respect to an outer
+   * variable. The summation operator is linear and its index limits are integer
+   * bounds independent of {@code variable}, so differentiation commutes with the
+   * summation:
+   *
+   * <pre>
+   *   d/dv Σ_{i=L}^{U} f(i, v) = Σ_{i=L}^{U} ∂f(i, v)/∂v
+   * </pre>
+   *
+   * The shared operand sub-expression is left untouched: a fresh operand
+   * expression is deep-cloned, its root differentiated with respect to
+   * {@code variable}, and wrapped in a new summation node over the same limits
+   * with its own operand function field and mapping.
+   *
+   * <p>
+   * Product ({@code ∏}) differentiation is not supported here; the callers in
+   * this library only ever differentiate summations.
+   */
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    throw new UnsupportedOperationException("differentiate of NAryOperationNode not implemented");
+    if (!"add".equals(operation))
+    {
+      throw new UnsupportedOperationException("differentiate of ∏ (product) n-ary operation is not implemented; only Σ (summation) is supported");
+    }
+
+    Expression<Integer, R, Sequence<R>>   differentiatedOperand = operandExpression.deepCloneExpression();
+    VariableNode<Integer, R, Sequence<R>> probe                 =
+                                                new VariableNode<>(differentiatedOperand,
+                                                                   new VariableReference<>(variable.getName()),
+                                                                   false);
+    differentiatedOperand.rootNode = differentiatedOperand.rootNode.differentiate(probe).simplify();
+
+    NAryOperationNode<D, R, F> derivative = new NAryOperationNode<>(expression,
+                                                                    identity,
+                                                                    prefix,
+                                                                    operation,
+                                                                    symbol,
+                                                                    differentiatedOperand,
+                                                                    lowerLimit.spliceInto(expression),
+                                                                    upperLimit.spliceInto(expression));
+    derivative.assignFieldNamesIfNecessary(differentiatedOperand.coDomainType);
+    differentiatedOperand.setClassName(derivative.operandFunctionFieldName);
+    derivative.indexVariableFieldName = this.indexVariableFieldName;
+    derivative.functionInternalName   = expression.internalName();
+    derivative.registerOperand(derivative.operandFunctionFieldName, differentiatedOperand);
+    return derivative.simplify();
   }
 
   @Override
