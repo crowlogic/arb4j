@@ -317,7 +317,7 @@ public class Context implements
       // the shared context singleton into f.<peer> would alias f.<peer> to an
       // instance whose `evaluating` flag can be true when f's own evaluate()
       // is running — firing the re-entrancy guard. The generated initialize()
-      // method allocates a FRESH instance for each such peer, so leaving the
+      // method allocates an instance for each such peer, so leaving the
       // field null here is correct.
       if (finalTargetName != null
           && Expression.isTransitivelyReachable(functionMapping, finalTargetName, new java.util.HashSet<>()))
