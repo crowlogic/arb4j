@@ -30,62 +30,38 @@ The AST isn't a passive data structure. It's a self-rewriting, self-compiling or
 
 The `Context` class provides a shared namespace where functions reference other functions, and a topological sort guarantees correct initialization order—critical for recursive definitions like Chebyshev where `T` references itself. Variable propagation flows from parent expressions into nested functionally-generated sub-expressions, maintaining referential coherence across compilation boundaries.
 
-## Forward Declarations and Mutual Recursion
+## Compilation Ordering
 
-A single self-recursive sequence (e.g. Chebyshev `T(n) = 2x·T(n-1) - T(n-2)`) needs no special handling: the body refers to its own name, the compiler’s self-reference guard short-circuits the recursive descent during code generation, and at run time the JVM resolves the class lazily on first `evaluate` call.
+There is one rule: when `express` instantiates a generated class, every class that expression references must already be defined in the `ExpressionClassLoader`. Instantiation calls `Context.injectVariableReferences` and `Context.injectFunctionReferences`, which use `Class.getFields()` to resolve every field type by reflection. There is no second pass — any referenced class not yet defined at that point throws `NoClassDefFoundError`.
 
-A cluster of two or more sequences that reference *each other* (mutual recursion) needs forward declaration. The pattern below compiles `S` and `a` where `S(k) = Σ a(j)·a(k-1-j)` and `a(k)` calls back into `S(k)`:
+The two API methods reflect this directly:
+
+- `parseCompileAndRegister(name, …, expression, …, context)` — emits bytecode and registers the `FunctionMapping`. Does not instantiate.
+- `express(name, …, expression, …, context)` — calls `parseCompileAndRegister` then instantiates and injects references.
+
+When two or more functions reference each other, call `parseCompileAndRegister` for all but the last, then `express` for the last:
 
 ```java
-// 1. Forward-declare `a` as a typed prototype. No expression body, no class
-//    bytecode — just a FunctionMapping registered in the Context so that the
-//    parser can resolve symbol `a` to a typed function reference.
+// Register `a` so the parser can resolve the name when compiling S.
 context.registerFunctionMapping("a",
                                 arb.Integer.class,
                                 Complex.class,
                                 ComplexSequence.class);
 
-// 2. parseCompileAndRegister(S): parse S, generate class bytecode for S,
-//    register the FunctionMapping. Crucially, do NOT instantiate S yet.
-//    S’s bytecode references `a` by class-name STRING in the `new`/`<init>`
-//    opcodes — the JVM does not eagerly resolve that string until the opcode
-//    actually executes.
+// Define S's bytecode without instantiating. S references `a` by name in
+// its opcodes; the JVM links that name lazily on first execution.
 Sequence.parseCompileAndRegister("S", Complex.class,
                                  "S:k➔sum(j➔a(j)*a(k-1-j){j=1..k-2})",
                                  ComplexSequence.class, context);
 
-// 3. express(a): parse `a`, generate bytecode for `a`, AND instantiate `a`.
-//    Instantiation walks `a`’s public fields via reflection — which forces
-//    the JVM to resolve every field type. By this point both class `S` and
-//    class `a` are defined in the ExpressionClassLoader, so resolution
-//    succeeds.
+// Both classes are now defined; instantiate `a`. Reflection resolves
+// every field type — including S — without error.
 ComplexSequence a = ComplexSequence.express(
     "a:k➔when(k=1, p(v)/Γ(μ+1), else, γ_k*(q(v)*a(k-1) + r(v)*S(k)))",
     context);
-
-// 4. Optional: instantiate S now that both classes exist. Calling express(S)
-//    a second time, or evaluating any expression that references S, will
-//    trigger this transparently.
 ```
 
-### Why the order matters
-
-The critical invariant is: **all classes in a recursive cluster must be defined in the ClassLoader before any of them is instantiated**. Class definition (bytecode generation + `ClassLoader.defineClass`) does not force resolution of the classes named by `new`/`<init>` opcodes inside the body — those names are linked lazily on first execution. Instantiation, however, calls `Context.injectVariableReferences` and `Context.injectFunctionReferences`, both of which use `Class.getFields()` to enumerate the new instance’s public fields. The JVM reflection machinery resolves every field’s declared type at that point, and any reference to an undefined class throws `NoClassDefFoundError`.
-
-The two roles of the API are:
-
-- `parseCompileAndRegister(name, …, expression, …, context)` — parse, emit bytecode, register the `FunctionMapping`. **Does not instantiate.** Use this to define every member of a recursive cluster except the last.
-- `express(name, …, expression, …, context)` — calls `parseCompileAndRegister` then instantiates and injects references. Use this for the last (or only) member, after all peers are defined.
-
-### Why the compile chain itself doesn’t loop
-
-During code generation for a sequence whose body references another (yet-undefined) function, `Expression.constructReferencedFunctionInstanceIfItIsNull` emits the `new`/`<init>` opcodes using `mapping.functionName` as the class-name string and `mapping.functionFieldDescriptor()` (which falls back to `L<functionName>;` for un-instantiated mappings) as the field descriptor. No `Class<?>` lookup, no reflective `instantiate()` call — nothing in the compile path attempts to load the referenced class. The self-reference guard at the top of that method handles the same-name case (e.g. `a` referring to `a` inside `when`/`else`). Cross-references (`a` → `S`, `S` → `a`) traverse ordinary `FunctionMapping` lookup which only reads the registered name and types.
-
-### When forward declaration is *not* needed
-
-- Single self-recursive sequences: `Sequence.express("T:n➔when(n=0,1, n=1,x, else, 2*x*T(n-1) - T(n-2))", context)` works as-is.
-- Topologically ordered references: if `g` calls `f` but `f` does not call `g`, just compile `f` first via plain `express`, then `g`.
-- Self-references inside `sum`/`product` over a recursion-free index, where the body of the index function is independent of the outer recursive symbol.
+A single self-recursive sequence (`T` referring to itself) needs only `express` — the self-reference guard in `Expression.constructReferencedFunctionInstanceIfItIsNull` handles it. When references are topologically ordered (g calls f, f does not call g), compile f first with `express`, then g.
 
 ## Unicode-Native Parser
 
