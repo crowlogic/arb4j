@@ -213,6 +213,7 @@
 					<argLine>-ea --illegal-native-access=allow
 						--sun-misc-unsafe-memory-access=allow
 						-Djava.library.path=${project.basedir}
+						-Xmx1g
 						-XX:+DisableExplicitGC
 						${argLine}</argLine>
 					<!-- Exclude native-memory-leak tests that require explicit GC;
