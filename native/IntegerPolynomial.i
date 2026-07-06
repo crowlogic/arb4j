@@ -229,6 +229,7 @@ import arb.expressions.Context;
   @Override
   public void close() 
   {
+    removeFromRegisteredContexts();
     delete();
   }
   

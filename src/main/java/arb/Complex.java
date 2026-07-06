@@ -1837,6 +1837,7 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
   @Override
   public void close()
   {
+    removeFromRegisteredContexts();
     emptyVariablePool();
 
     if (poolOwner != null)

@@ -483,6 +483,7 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
   @Override
   public void close()
   {
+    removeFromRegisteredContexts();
     delete();
   }
 

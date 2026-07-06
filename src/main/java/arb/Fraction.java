@@ -845,6 +845,7 @@ public class Fraction implements Becomable<Fraction>,AutoCloseable,NamedField<Fr
   
   @Override
   public void close() {
+      removeFromRegisteredContexts();
       if (swigCPtr != 0) {
           if (swigCMemOwn) {
               swigCMemOwn = false;

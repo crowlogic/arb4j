@@ -734,7 +734,7 @@ import arb.functions.real.RealFunction;
     arblib.arb_poly_shift_left(result, this, n);
     if (originalResult != null)
     {
-      originalResult.close();
+      originalResult.closeRetainingContextMemberships();
       originalResult.swigCPtr = result.swigCPtr;
       return originalResult;
     }
@@ -761,7 +761,7 @@ import arb.functions.real.RealFunction;
     arblib.arb_poly_shift_right(result, this, n);
     if (originalResult != null)
     {
-      originalResult.close();
+      originalResult.closeRetainingContextMemberships();
       originalResult.swigCPtr = result.swigCPtr;
       return originalResult;
     }
@@ -873,6 +873,19 @@ import arb.functions.real.RealFunction;
 
   @Override
   public void close()
+  {
+    removeFromRegisteredContexts();
+    closeRetainingContextMemberships();
+  }
+
+  /**
+   * Frees this polynomial's native state without touching its {@link
+   * arb.expressions.Context} memberships. Used by the aliasing helpers
+   * (e.g. {@link #shiftLeft(int, RealPolynomial)}) that close this object
+   * and immediately revive it by pointer reassignment — the Java object
+   * survives, so it must remain registered in its Contexts.
+   */
+  public void closeRetainingContextMemberships()
   {
     if (remainder != null)
     {

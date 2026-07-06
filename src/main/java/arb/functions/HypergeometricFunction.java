@@ -199,6 +199,7 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>, C extends N
   @Override
   public void close()
   {
+    removeFromRegisteredContexts();
     p = Utensils.close(p);
     q = Utensils.close(q);
     N = Utensils.close(N);

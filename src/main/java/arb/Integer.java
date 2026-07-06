@@ -520,6 +520,7 @@ public class Integer implements
   @Override
   public void close()
   {
+    removeFromRegisteredContexts();
     if (arena != null)
     {
       arena.close();

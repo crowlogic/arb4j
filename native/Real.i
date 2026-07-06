@@ -242,6 +242,7 @@ import arb.utensils.Utensils;
   @Override
   public void close()
   {
+    removeFromRegisteredContexts();
     emptyVariablePool();
 
     if (home != null)

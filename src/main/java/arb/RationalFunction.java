@@ -567,6 +567,7 @@ public class RationalFunction implements RealFunction,NamedField<RationalFunctio
   @Override
   public void close() 
   {
+      removeFromRegisteredContexts();
       assertPointerConsistency();
   
     delete();

@@ -269,6 +269,7 @@ public class Real implements Cloneable,Becomable<Real>,Domain<Real>,Serializable
   @Override
   public void close()
   {
+    removeFromRegisteredContexts();
     emptyVariablePool();
 
     if (home != null)

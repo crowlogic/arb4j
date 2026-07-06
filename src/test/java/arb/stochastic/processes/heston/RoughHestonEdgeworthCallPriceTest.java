@@ -80,23 +80,18 @@ public class RoughHestonEdgeworthCallPriceTest extends
 
     Context   ctx  = new Context();
 
-    try ( Real λ = new Real("0.1", bits, "λ");
-          Real θ = new Real("0.3156", bits, "θ");
-          Real ν = new Real("0.331", bits, "ν");
-          Real V0 = new Real("0.0392", bits, "V0");
-          Real ρ = new Real("-0.681", bits, "ρ");
-          Real μ = new Real("0.62", bits, "μ");
-          Real T = new Real("0", bits, "T");)
-    {
-      T.set(1).div(252, bits, T);
-      ctx.registerVariable(λ);
-      ctx.registerVariable(θ);
-      ctx.registerVariable(ν);
-      ctx.registerVariable(V0);
-      ctx.registerVariable(ρ);
-      ctx.registerVariable(μ);
-      ctx.registerVariable(T);
-    }
+    // The Context owns these parameter variables: registering records the
+    // membership, and ctx.close() at the end of the test disposes them. They
+    // must not be closed before use — a closed variable removes itself from
+    // every Context it is registered in (#1156).
+    ctx.registerVariable(new Real("0.1", bits, "λ"));
+    ctx.registerVariable(new Real("0.3156", bits, "θ"));
+    ctx.registerVariable(new Real("0.331", bits, "ν"));
+    ctx.registerVariable(new Real("0.0392", bits, "V0"));
+    ctx.registerVariable(new Real("-0.681", bits, "ρ"));
+    ctx.registerVariable(new Real("0.62", bits, "μ"));
+    Real maturity = ctx.registerVariable(new Real("0", bits, "T"));
+    maturity.set(1).div(252, bits, maturity);
     Real S0   = new Real("1", bits, "S0");
     Real rate = new Real("0", bits, "rr");
     ctx.registerVariable(S0);
@@ -135,6 +130,7 @@ public class RoughHestonEdgeworthCallPriceTest extends
                    diff.compareTo(tolR) < 0);
       }
     }
+    ctx.close();
   }
 
   /**
@@ -186,23 +182,18 @@ public class RoughHestonEdgeworthCallPriceTest extends
 
     Context ctx = new Context();
 
-    try ( Real λ = new Real("0.1", bits, "λ");
-          Real θ = new Real("0.3156", bits, "θ");
-          Real ν = new Real("0.331", bits, "ν");
-          Real V0 = new Real("0.0392", bits, "V0");
-          Real ρ = new Real("-0.681", bits, "ρ");
-          Real μ = new Real("0.62", bits, "μ");
-          Real T = new Real("0", bits, "T");)
-    {
-      T.set(1).div(12, bits, T);                 // T = 1/12, per Table 12
-      ctx.registerVariable(λ);
-      ctx.registerVariable(θ);
-      ctx.registerVariable(ν);
-      ctx.registerVariable(V0);
-      ctx.registerVariable(ρ);
-      ctx.registerVariable(μ);
-      ctx.registerVariable(T);
-    }
+    // The Context owns these parameter variables: registering records the
+    // membership, and ctx.close() at the end of the test disposes them. They
+    // must not be closed before use — a closed variable removes itself from
+    // every Context it is registered in (#1156).
+    ctx.registerVariable(new Real("0.1", bits, "λ"));
+    ctx.registerVariable(new Real("0.3156", bits, "θ"));
+    ctx.registerVariable(new Real("0.331", bits, "ν"));
+    ctx.registerVariable(new Real("0.0392", bits, "V0"));
+    ctx.registerVariable(new Real("-0.681", bits, "ρ"));
+    ctx.registerVariable(new Real("0.62", bits, "μ"));
+    Real maturity = ctx.registerVariable(new Real("0", bits, "T"));
+    maturity.set(1).div(12, bits, maturity);                 // T = 1/12, per Table 12
     Real S0   = new Real("1", bits, "S0");
     Real rate = new Real("0", bits, "rr");
     ctx.registerVariable(S0);
@@ -244,6 +235,7 @@ public class RoughHestonEdgeworthCallPriceTest extends
       }
       assertVarianceMatchesForwardVarianceIntegral(price, bits);
     }
+    ctx.close();
   }
 
   /**
@@ -319,23 +311,18 @@ public class RoughHestonEdgeworthCallPriceTest extends
     final int bits = 512;
     Context ctx = new Context();
 
-    try ( Real λ = new Real("0.1", bits, "λ");
-          Real θ = new Real("0.3156", bits, "θ");
-          Real ν = new Real("0.331", bits, "ν");
-          Real V0 = new Real("0.0392", bits, "V0");
-          Real ρ = new Real("-0.681", bits, "ρ");
-          Real μ = new Real("0.62", bits, "μ");
-          Real T = new Real("0", bits, "T");)
-    {
-      T.set(1).div(52, bits, T);                 // T = 1/52, one week
-      ctx.registerVariable(λ);
-      ctx.registerVariable(θ);
-      ctx.registerVariable(ν);
-      ctx.registerVariable(V0);
-      ctx.registerVariable(ρ);
-      ctx.registerVariable(μ);
-      ctx.registerVariable(T);
-    }
+    // The Context owns these parameter variables: registering records the
+    // membership, and ctx.close() at the end of the test disposes them. They
+    // must not be closed before use — a closed variable removes itself from
+    // every Context it is registered in (#1156).
+    ctx.registerVariable(new Real("0.1", bits, "λ"));
+    ctx.registerVariable(new Real("0.3156", bits, "θ"));
+    ctx.registerVariable(new Real("0.331", bits, "ν"));
+    ctx.registerVariable(new Real("0.0392", bits, "V0"));
+    ctx.registerVariable(new Real("-0.681", bits, "ρ"));
+    ctx.registerVariable(new Real("0.62", bits, "μ"));
+    Real maturity = ctx.registerVariable(new Real("0", bits, "T"));
+    maturity.set(1).div(52, bits, maturity);                 // T = 1/52, one week
     Real S0   = new Real("1", bits, "S0");
     Real rate = new Real("0", bits, "rr");
     ctx.registerVariable(S0);
@@ -377,6 +364,7 @@ public class RoughHestonEdgeworthCallPriceTest extends
                    diff.compareTo(tolR) < 0);
       }
     }
+    ctx.close();
   }
 
   /**

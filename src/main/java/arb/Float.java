@@ -261,6 +261,7 @@ public class Float implements AutoCloseable,Comparable<Float>,NamedField<Float> 
   @Override
   public void close()
   {
+    removeFromRegisteredContexts();
     clear();
   }
 

@@ -255,6 +255,7 @@ public class IntegerPolynomial implements Named,AutoCloseable,Ring<IntegerPolyno
   @Override
   public void close() 
   {
+    removeFromRegisteredContexts();
     delete();
   }
   
