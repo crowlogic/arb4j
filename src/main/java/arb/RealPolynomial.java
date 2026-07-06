@@ -901,6 +901,7 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
   @Override
   public void close()
   {
+    removeFromRegisteredContexts();
     if (remainder != null)
     {
       remainder.close();

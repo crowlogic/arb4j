@@ -874,6 +874,7 @@ import arb.functions.real.RealFunction;
   @Override
   public void close()
   {
+    removeFromRegisteredContexts();
     if (remainder != null)
     {
       remainder.close();

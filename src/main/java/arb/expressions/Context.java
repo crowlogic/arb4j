@@ -212,6 +212,52 @@ public class Context implements
   {
     this.variables = FXCollections.observableHashMap();
     this.functions = new FunctionMappings();
+    maintainVariableContextMemberships();
+  }
+
+  /**
+   * Keeps {@link Named#getRegisteredContexts()} in sync with membership in this
+   * {@link Context}'s variable map: every variable added to {@link #variables}
+   * (through any path — {@link #registerVariable(String, Named)},
+   * {@link #mergeFrom(Context, ConflictPolicy)}, {@link #rename(String, String)},
+   * constructors, …) records this Context via
+   * {@link Named#registerContext(Context)}, and every variable removed forgets
+   * it via {@link Named#unregisterContext(Context)} (unless it remains mapped
+   * under another name). This is what lets a variable's
+   * {@link AutoCloseable#close()} remove it from every Context it belongs to,
+   * so that closed variables never remain registered in a Context.
+   */
+  private void maintainVariableContextMemberships()
+  {
+    variables.values().forEach(variable -> variable.registerContext(this));
+    variables.addListener((javafx.collections.MapChangeListener<String, Named>) change ->
+    {
+      if (change.wasAdded())
+      {
+        change.getValueAdded().registerContext(this);
+      }
+      if (change.wasRemoved())
+      {
+        Named removed = change.getValueRemoved();
+        if (removed != change.getValueAdded() && variables.values().stream().noneMatch(remaining -> remaining == removed))
+        {
+          removed.unregisterContext(this);
+        }
+      }
+    });
+  }
+
+  /**
+   * Removes every binding of the given variable (matched by identity, under
+   * whatever name(s) it is registered) from this Context's variable map without
+   * closing it. Invoked by {@link Named#removeFromRegisteredContexts()} when the
+   * variable is closed, so that closed variables never remain registered here.
+   * 
+   * @param variable the variable to remove
+   */
+  public void removeVariable(Named variable)
+  {
+    variables.entrySet().removeIf(entry -> entry.getValue() == variable);
   }
 
   /**
@@ -232,6 +278,7 @@ public class Context implements
   {
     this.variables = FXCollections.observableHashMap();
     this.functions = funcs;
+    maintainVariableContextMemberships();
   }
 
   public Context(Named... vars)
@@ -247,12 +294,14 @@ public class Context implements
   {
     this.variables = FXCollections.observableMap(vars);
     this.functions = new FunctionMappings();
+    maintainVariableContextMemberships();
   }
 
   public Context(Map<String, Named> vars, FunctionMappings functions)
   {
     this.variables = FXCollections.observableMap(vars);
     this.functions = functions;
+    maintainVariableContextMemberships();
   }
 
   public Stream<Entry<String, FunctionMapping<?, ?, ?>>> functionEntryStream()
@@ -1416,7 +1465,10 @@ public class Context implements
         f.instance.close();
       }
     });
-    variables.values().forEach(v ->
+    // Snapshot: closing a variable removes it from this Context's variable map
+    // via Named.removeFromRegisteredContexts(), so iterating the live values()
+    // view here would throw ConcurrentModificationException.
+    List.copyOf(variables.values()).forEach(v ->
     {
       if (v instanceof AutoCloseable autoCloseable)
       {

@@ -1812,6 +1812,7 @@ import arb.functions.complex.ComplexNullaryFunction;
   @Override
   public void close()
   {
+    removeFromRegisteredContexts();
     emptyVariablePool();
 
     if (poolOwner != null)

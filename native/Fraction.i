@@ -817,6 +817,7 @@ import arb.utensils.Utensils;
   
   @Override
   public void close() {
+      removeFromRegisteredContexts();
       if (swigCPtr != 0) {
           if (swigCMemOwn) {
               swigCMemOwn = false;

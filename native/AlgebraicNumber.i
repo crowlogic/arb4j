@@ -463,6 +463,7 @@ import arb.functions.NullaryFunction;
   @Override
   public void close()
   {
+    removeFromRegisteredContexts();
     delete();
   }
 

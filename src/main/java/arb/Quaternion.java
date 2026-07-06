@@ -213,6 +213,7 @@ public class Quaternion implements
   @Override
   public void close()
   {
+    removeFromRegisteredContexts();
     left.close();
     right.close();
   }

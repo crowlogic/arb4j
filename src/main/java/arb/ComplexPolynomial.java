@@ -689,6 +689,7 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
   @Override
   public void close()
   {
+    removeFromRegisteredContexts();
     clear();
   }
   

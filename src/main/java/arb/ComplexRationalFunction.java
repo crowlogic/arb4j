@@ -144,6 +144,7 @@ public class ComplexRationalFunction implements
   @Override
   public void close()
   {
+    removeFromRegisteredContexts();
     if (realPart != null)
     {
       realPart.close();

@@ -661,6 +661,7 @@
   @Override
   public void close()
   {
+    removeFromRegisteredContexts();
     clear();
   }
   

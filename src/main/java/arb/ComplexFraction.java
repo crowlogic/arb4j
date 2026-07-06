@@ -125,6 +125,7 @@ public class ComplexFraction implements
   public void close()
   {
 
+    removeFromRegisteredContexts();
     realPart = imaginaryPart = null;
     if (numerator != null)
     {
