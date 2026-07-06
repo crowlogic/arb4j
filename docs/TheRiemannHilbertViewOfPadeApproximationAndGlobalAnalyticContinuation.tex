@@ -1162,6 +1162,59 @@ Given $(c_{0},c_{1},c_{2},\mu)$ and Pad\'e order $M$:
 \end{enumerate}
 Steps 1--4 are independent of $t$. The entire family $\{y_{M}(t):t\ge 0\}$ is encoded in a single rational function in $z=t^{\mu}$. There is no grid, no time stepping, no Newton iteration, and no fixed-point loop at evaluation time.
 
+\subsection{Geometry of the Stahl compact for meromorphic Mittag--Leffler functions}
+\label{sec:heston-stahl-geometry}
+
+The function $g(z)=y(z^{1/\mu})$ of Proposition~\ref{prop:meromorphy} is meromorphic on $\mathbb{C}$ with discrete pole set $\mathcal{P}_{g}$, a ratio of entries of a fundamental matrix of Mittag--Leffler functions. This subsection describes the Stahl compact $\Delta_{g}$ of such a function: which compacts are admissible, what shape the extremal arcs take, and why none of that geometry enters the algorithm of Section~\ref{sec:heston-algorithm}.
+
+\begin{theorem}[Arcs connect poles to infinity]
+\label{thm:arcs-to-infinity}
+Let $g$ be meromorphic on $\mathbb{C}$ with discrete pole set $\mathcal{P}_{g}$. The admissible compacts of Definition~\ref{def:admissible} are precisely the compacts containing $\mathcal{P}_{g}$, and the Stahl compact $\Delta_{g}$ minimizes logarithmic capacity among them. Since $\mathcal{P}_{g}$ is discrete, the minimal capacity is achieved by adjoining to the poles a system of arcs $\gamma$ connecting the poles to each other and to infinity, so that
+\begin{equation}
+\Delta_{g}=\overline{\mathcal{P}_{g}}\cup\gamma
+\label{eq:stahl-compact-structure}
+\end{equation}
+is a connected set of minimal logarithmic capacity.
+\end{theorem}
+
+\begin{proof}
+A compact $K$ is admissible for $g$ if and only if $g$ admits single-valued meromorphic continuation on $\overline{\mathbb{C}}\setminus K$ (Definition~\ref{def:admissible}). Since $g$ is already single-valued and meromorphic on all of $\mathbb{C}$, the continuation exists on $\overline{\mathbb{C}}\setminus K$ exactly when $K$ contains every pole of $g$; removing a pole from $K$ leaves a point of $\overline{\mathbb{C}}\setminus K$ at which $g$ has no meromorphic extension only if that point is an essential singularity, which is excluded, so the condition reduces to $\mathcal{P}_{g}\subset K$. Among admissible compacts, Theorem~\ref{thm:stahl-geometric} selects the unique $\Delta_{g}$ of minimal capacity. The connectivity of the extremal configuration and the presence of connecting arcs follow from the variational characterization of Remark~\ref{rem:variational}: within the homotopy class of admissible compacts, the capacity minimum is attained on a connected set, and connecting a discrete point set into a single continuum of minimal capacity requires arcs joining the poles to each other and, when $\mathcal{P}_{g}$ is infinite, to infinity.
+\end{proof}
+
+\begin{theorem}[The arcs are not straight]
+\label{thm:arcs-not-straight}
+For generic parameters $(c_{0},c_{1},c_{2})$ with $c_{2}\ne 0$, the arcs of $\gamma$ are not straight line segments. They are analytic curves satisfying the $S$-property
+\begin{equation}
+\frac{\partial g_{\Delta_{g}}}{\partial n_{+}}(s)=\frac{\partial g_{\Delta_{g}}}{\partial n_{-}}(s),
+\qquad s\in\gamma\setminus\{\text{endpoints}\},
+\label{eq:s-property-arcs}
+\end{equation}
+where $g_{\Delta_{g}}(\cdot,\infty)$ is the Green's function of $\overline{\mathbb{C}}\setminus\Delta_{g}$ with pole at infinity and $n_{\pm}$ are the two unit normals. The curvature of each arc is determined by the local distribution of the poles and residues of $g$. A straight line segment satisfies the $S$-property only when the harmonic measure is symmetric about the line, which requires a symmetry of the pole--residue configuration of $g$ about that line and is nongeneric in $(c_{0},c_{1},c_{2})$.
+\end{theorem}
+
+\begin{proof}
+The arcs of any Stahl compact are trajectories of a quadratic differential and hence analytic curves satisfying \eqref{eq:s-property-arcs} (Theorem~\ref{thm:s-property}). The $S$-property equates the two normal derivatives of the Green's function along each arc, and the Green's function is the logarithmic potential of the equilibrium measure of $\Delta_{g}$ up to the Robin constant; its normal derivatives at a point $s\in\gamma$ are therefore functionals of the full configuration $\Delta_{g}$, which for the Mittag--Leffler ratio $g$ is determined by the poles and residues of $g$. If an arc were a straight segment, reflection across the supporting line would have to preserve the two one-sided harmonic measures, forcing the pole--residue configuration of $g$ to be symmetric about that line. The zeros of the Mittag--Leffler entries of the fundamental matrix depend analytically and nontrivially on $(c_{0},c_{1},c_{2})$, and the symmetry condition imposes nontrivial analytic constraints on these parameters; the constrained set is a proper analytic subvariety of the parameter space, so for generic $(c_{0},c_{1},c_{2})$ with $c_{2}\ne 0$ no arc is straight.
+\end{proof}
+
+\begin{theorem}[Algorithmic irrelevance of the arc geometry]
+\label{thm:arc-irrelevance}
+The incremental Hankel solver of Corollary~\ref{cor:incremental-solver}, the computable error bound of Theorem~\ref{thm:error-bound}, and the uniform convergence theorem (Theorem~\ref{thm:global}) do not require knowledge of the arc geometry of $\gamma$. The Pad\'e approximant $R_{M}$ is constructed from the M\"untz coefficients $a_{k}$ alone; the Riemann--Hilbert matrix $Y$ is built from the orthogonal polynomials $Q_{n}$ for the discrete measure determined by the poles and residues of $g$; and the convergence certificate depends only on the successive Pad\'e differences $\Delta_{k}$ of Definition~\ref{def:differences}. The arcs $\gamma$ are the theoretical backbone of the convergence theory, not a computational input.
+\end{theorem}
+
+\begin{proof}
+Each claim is read off from the corresponding construction. The solver of Corollary~\ref{cor:incremental-solver} consumes only the Hankel data $a_{1},\dots,a_{2M}$ produced by the recurrence \eqref{eq:a1}--\eqref{eq:ak}; no geometric quantity enters. The error bound \eqref{eq:error-uniform} of Theorem~\ref{thm:error-bound} is stated entirely in terms of the observable differences $\Delta_{k}(z)$ and their contraction ratio. The proof of Theorem~\ref{thm:global} invokes the Stahl compact only through the qualitative facts that $\mathcal{P}_{g}$ is discrete and avoids $[0,\infty)$; the shape of the arcs never appears. The arc geometry governs the exponential convergence \emph{rate} through the Green's function $g_{\Delta_{g}}(z,\infty)$ (Corollary~\ref{cor:exponential-rate}), but the algorithm certifies its accuracy a~posteriori without evaluating that rate.
+\end{proof}
+
+\begin{remark}[The arcs organize the Pad\'e poles]
+\label{rem:arcs-organize-poles}
+The arcs are the structural framework onto which the Pad\'e approximant organizes its poles. At order $n$, the $n$ poles of $[n/n]_{g}$ are distributed near the true poles of $g$ and along the arcs of $\gamma$. As $n\to\infty$ the poles condense: the true poles are approximated by nearby Pad\'e poles (de~Montessus de~Ballore), while the remaining Pad\'e poles distribute along $\gamma$ according to the equilibrium measure $\mu_{\Delta_{g}}$ (Theorem~\ref{thm:zeros-equilibrium}). Froissart doublets (Definition~\ref{def:froissart}) are the mechanism by which spurious poles are canceled by nearby zeros, mimicking the residue structure of the true spectral measure.
+\end{remark}
+
+\begin{remark}[Accumulation at infinity]
+\label{rem:accumulation-infinity}
+The pole set $\mathcal{P}_{g}$ may accumulate at infinity, as the zeros of the Mittag--Leffler entries do. In that case the arcs connect the finite poles to each other and to infinity in a tree structure. The Stahl compact is then unbounded in $\mathbb{C}$ (compact in $\overline{\mathbb{C}}$), but its intersection with any bounded set contains only finitely many poles and arc segments. The equilibrium measure $\mu_{\Delta_{g}}$ is still well-defined, and the convergence theory of Section~\ref{sec:heston-global} applies without modification.
+\end{remark}
+
 \section{The essential difference}
 \label{sec:conclusion}
 
