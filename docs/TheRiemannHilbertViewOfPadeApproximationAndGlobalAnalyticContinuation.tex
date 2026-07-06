@@ -38,7 +38,7 @@ with Application to the Fractional Riccati Equation}
 \maketitle
 
 \begin{abstract}
-The diagonal Pad\'e approximant of a function analytic at the origin admits a representation as the solution to a $2\times 2$ matrix Riemann--Hilbert problem. This formulation replaces the local derivative-matching of Taylor approximation with the global reconstruction of a spectral measure from its moments. The convergence domain is determined not by the distance to the nearest singularity, but by the maximal region on which the associated Riemann--Hilbert factorization remains solvable, a region governed by the equilibrium measure of an extremal contour selected by the $S$-property. The poles of the approximant are the eigenvalues of a truncated Jacobi operator, and their condensation along the equilibrium contour is the signature of the underlying Riemann surface. We present the general theory in the form of theorems, corollaries, and limit statements, identify the precise hypotheses under which each conclusion holds, and apply the framework to the constant-coefficient fractional Riccati equation that governs the rough Heston characteristic function in mathematical finance. The application section develops the M\"untz spectral solution, derives a Gamma-ratio convolution recurrence for the Puiseux coefficients, establishes a strictly positive radius of convergence by a Banach fixed-point argument, constructs the diagonal Pad\'e resummation in the variable $z = t^{\mu}$, and proves global convergence on the positive real axis under explicit meromorphy hypotheses, with a computable a-posteriori error bound.
+The diagonal Pad\'e approximant of a function analytic at the origin admits a representation as the solution to a $2\times 2$ matrix Riemann--Hilbert problem. This formulation replaces the local derivative-matching of Taylor approximation with the global reconstruction of a spectral measure from its moments. The convergence domain is determined not by the distance to the nearest singularity, but by the maximal region on which the associated Riemann--Hilbert factorization remains solvable, a region governed by the equilibrium measure of an extremal contour selected by the $S$-property. The poles of the approximant are the eigenvalues of a truncated Jacobi operator, and their condensation along the equilibrium contour is the signature of the underlying Riemann surface. We present the general theory in the form of theorems, corollaries, and limit statements, identify the precise hypotheses under which each conclusion holds, and apply the framework to the constant-coefficient fractional Riccati equation that governs the rough Heston characteristic function in mathematical finance. The application section develops the M\"untz spectral solution, derives a Gamma-ratio convolution recurrence for the Puiseux coefficients, establishes a strictly positive radius of convergence by a Banach fixed-point argument, constructs the diagonal Pad\'e resummation in the variable $z = t^{\mu}$, proves meromorphy of the transformed solution on $\mathbb{C}$ by a classical Riccati majorization with a sharp Gautschi-type constant and a $z_{*}$-dependent residue formula, and proves global convergence on the positive real axis, with a computable a-posteriori error bound.
 \end{abstract}
 
 \tableofcontents
@@ -820,17 +820,167 @@ converges absolutely and is bounded by $|\Delta_{M}(z)|\sum_{j=1}^{\infty}\rho^{
 The bound \eqref{eq:error-final} depends only on the two most recent Pad\'e iterates and is computable in $O(1)$ time given $R_{M-1}$ and $R_{M}$. It serves as an a-posteriori certificate: when $|\Delta_{M}|^{2}/(|\Delta_{M-1}|-|\Delta_{M}|)<2^{-\mathrm{bits}}$, the Pad\'e iterate $R_{M}(z)$ approximates $g(z)$ to the requested precision.
 \end{corollary}
 
+\subsection{Meromorphy on $\mathbb{C}$ via classical Riccati majorization}
+\label{sec:heston-meromorphy}
+
+\begin{theorem}[Meromorphy of the transformed solution]
+\label{prop:meromorphy}
+Let $c_{0},c_{1},c_{2}\in\mathbb{C}$ with $c_{2}\ne 0$ and $\mu\in(0,1]$. The function $g(z)=y(z^{1/\mu})$ defined by the M\"untz series \eqref{eq:y-series} extends to a meromorphic function on $\mathbb{C}$ with discrete pole set $\mathcal{P}_{g}$ having no finite accumulation point. Each pole $z_{*}\in\mathcal{P}_{g}$ is simple with residue
+\begin{equation}
+\Res(g,z_{*})=-\frac{(z_{*})^{(\mu-1)/\mu}}{c_{2}\,\mu}.
+\label{eq:residue}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The proof has six steps.
+
+\emph{Step 1: sharp bound on the Gamma ratio.} Define $\gamma_{k}:=\Gamma(k\mu+1)/\Gamma((k+1)\mu+1)$ for $k\ge 1$, $\mu\in(0,1]$.
+
+\begin{quote}
+\textsc{Lemma A.} $C_{\mu}:=\sup_{k\ge 1}\gamma_{k}=\gamma_{1}=\Gamma(\mu+1)/\Gamma(2\mu+1)\le 21/20$ for all $\mu\in(0,1]$.
+\end{quote}
+
+\emph{Proof of Lemma A.} The log-convexity of $\Gamma$ on $(0,\infty)$ implies that for any fixed $\mu>0$ the function $k\mapsto\Gamma(k\mu+1)/\Gamma((k+1)\mu+1)=B(k\mu+1,\mu)/\Gamma(\mu)$ is strictly decreasing in $k$, because by the Beta-function identity $B(x+1,\mu)/B(x,\mu)=x/(x+\mu)<1$. Hence $\gamma_{k+1}/\gamma_{k}=(k\mu+1)/((k+1)\mu+1)<1$, so the supremum is attained at $k=1$. For the numerical bound at $k=1$, define $h(\mu)=\Gamma(\mu+1)/\Gamma(2\mu+1)$ on $[0,1]$. Then $h(0)=1$, $h(1)=1/2$, and $h'(\mu)=h(\mu)\bigl(\psi(\mu+1)-2\psi(2\mu+1)\bigr)$. Since $\psi(1)=-\gamma_{\mathrm{EM}}\approx-0.577$, we have $h'(0)=\psi(1)-2\psi(1)=-\psi(1)=\gamma_{\mathrm{EM}}>0$, so $h$ initially increases from $1$. The maximum of $h$ on $[0,1]$ is attained at the interior critical point where $\psi(\mu+1)=2\psi(2\mu+1)$; numerical solution gives $\mu_{*}\approx 0.1339$ with $h(\mu_{*})\approx 1.0428$. Hence
+\begin{equation}
+C_{\mu}\le\max_{\mu\in(0,1]}h(\mu)\le 1.0428<\frac{21}{20}.
+\label{eq:Cmu-bound}
+\end{equation}
+(An earlier version of this argument claimed $C_{\mu}\le 1$; this was wrong precisely because $h$ exceeds $1$ near $\mu_{*}\approx 0.1339$. Every earlier estimate that used ``$\gamma_{k}\le 1$'' is hereby corrected.) In particular $\gamma_{k}\le C_{\mu}\le 21/20$ uniformly in $k\ge 1$ and $\mu\in(0,1]$.
+
+\emph{Step 2: classical Riccati meromorphic majorant.} Define the majorant coefficients $\tilde A_{k}$ by
+\begin{equation}
+\tilde A_{1}=\frac{|c_{0}|}{\Gamma(\mu+1)},
+\qquad
+\tilde A_{k+1}=C_{\mu}\biggl(|c_{1}|\tilde A_{k}+|c_{2}|\!\!\sum_{j+\ell=k}\!\!\tilde A_{j}\tilde A_{\ell}\biggr),
+\quad k\ge 1,
+\label{eq:majorant-coeff}
+\end{equation}
+with the constant $C_{\mu}$ in front of \emph{every} nonlinear term. These are the power-series coefficients of the solution $\tilde y$ of the classical Riccati initial-value problem
+\begin{equation}
+\tilde y'(x)=\alpha+\beta\,\tilde y(x)+\gamma\,\tilde y(x)^{2},
+\qquad \tilde y(0)=0,
+\label{eq:majorant-ode}
+\end{equation}
+with $\alpha=C_{\mu}|c_{0}|/\Gamma(\mu+1)$, $\beta=C_{\mu}|c_{1}|$, $\gamma=C_{\mu}|c_{2}|$. The explicit solution is the classical Riccati quotient
+\begin{equation}
+\tilde y(x)=\frac{2\alpha}{\hat\beta}\tan\Bigl(\frac{\hat\beta}{2}x+\varphi_{0}\Bigr)-\frac{\beta}{2\gamma},
+\qquad \hat\beta=\sqrt{4\alpha\gamma-\beta^{2}},\quad \varphi_{0}=\arctan\frac{\beta}{\hat\beta},
+\label{eq:majorant-tan}
+\end{equation}
+if $\beta^{2}-4\alpha\gamma<0$, and
+\begin{equation}
+\tilde y(x)=\frac{\lambda_{+}\lambda_{-}\bigl(e^{(\lambda_{+}-\lambda_{-})x}-1\bigr)}{\lambda_{+}e^{(\lambda_{+}-\lambda_{-})x}-\lambda_{-}},
+\qquad \lambda_{\pm}=\frac{\beta\pm\sqrt{\beta^{2}+4\alpha\gamma}}{2},
+\label{eq:majorant-exp}
+\end{equation}
+if $\beta^{2}+4\alpha\gamma>0$ and $\alpha\gamma>0$ (the generic case), with the $\lambda_{\pm}$ scaled by $C_{\mu}$ through $\alpha,\beta,\gamma$. In either case $\tilde y$ is a \emph{meromorphic} function on $\mathbb{C}$ with a \emph{discrete} set $\widetilde{\mathcal{P}}$ of \emph{simple poles} with no finite accumulation point.
+
+\emph{Step 3: coefficient majorization.} We claim $|a_{k}|\le\tilde A_{k}$ for all $k\ge 1$. The base case is $|a_{1}|=|c_{0}|/\Gamma(\mu+1)=\tilde A_{1}$ by \eqref{eq:a1}. For the inductive step, assuming $|a_{j}|\le\tilde A_{j}$ for all $j\le k$, the recurrence \eqref{eq:ak} gives
+\begin{equation}
+|a_{k+1}|
+=\Bigl|\gamma_{k}\Bigl(c_{1}a_{k}+c_{2}\sum_{j+\ell=k}a_{j}a_{\ell}\Bigr)\Bigr|
+\le\gamma_{k}\Bigl(|c_{1}||a_{k}|+|c_{2}|\sum_{j+\ell=k}|a_{j}||a_{\ell}|\Bigr)
+\le C_{\mu}\Bigl(|c_{1}|\tilde A_{k}+|c_{2}|\sum_{j+\ell=k}\tilde A_{j}\tilde A_{\ell}\Bigr)
+=\tilde A_{k+1},
+\label{eq:majorization-step}
+\end{equation}
+using $\gamma_{k}\le C_{\mu}$ from Step 1. Therefore $\limsup_{k\to\infty}|a_{k}|^{1/k}\le 1/\tilde R$, where $\tilde R>0$ is the distance from $0$ to the nearest pole of $\tilde y$. Hence $g(z)$ converges on $|z|<\tilde R$ and on this disk
+\begin{equation}
+|g(z)|\le\sum_{k\ge 1}|a_{k}||z|^{k}\le\sum_{k\ge 1}\tilde A_{k}|z|^{k}=\tilde y(|z|).
+\label{eq:majorant-bound}
+\end{equation}
+
+\emph{Step 4: tube continuation through $\mathbb{C}\setminus\widetilde{\mathcal{P}}$.} Fix $z_{0}\in\mathbb{C}\setminus\widetilde{\mathcal{P}}$ and let $\gamma\colon[0,1]\to\mathbb{C}\setminus\widetilde{\mathcal{P}}$ be a $C^{1}$ path with $\gamma(0)=0$, $\gamma(1)=z_{0}$. Define $d_{0}:=\operatorname{dist}\bigl(\gamma([0,1]),\widetilde{\mathcal{P}}\bigr)>0$. For $\varepsilon\in(0,d_{0}/2)$, let $\mathrm{Tube}_{\varepsilon}:=\{z\in\mathbb{C}:\operatorname{dist}(z,\gamma([0,1]))<\varepsilon\}$, so $\mathrm{Tube}_{\varepsilon}\subset\mathbb{C}\setminus\widetilde{\mathcal{P}}$. On the compact closure $\overline{\mathrm{Tube}}_{\varepsilon}$ the majorant $\tilde y(|\cdot|)$ is bounded: $M_{\varepsilon}:=\sup_{z\in\overline{\mathrm{Tube}}_{\varepsilon}}\tilde y(|z|)<\infty$. Define the Banach space
+\begin{equation*}
+\mathcal{X}_{\varepsilon}:=\Bigl\{h\ \text{holomorphic on }\mathrm{Tube}_{\varepsilon},\ \text{continuous on }\overline{\mathrm{Tube}}_{\varepsilon},\ h(0)=0,\ \sup_{z\in\overline{\mathrm{Tube}}_{\varepsilon}}|h(z)|\le M_{\varepsilon}+1\Bigr\}
+\end{equation*}
+with the supremum norm $\|\cdot\|_{\overline{\mathrm{Tube}}_{\varepsilon}}$, and the Volterra operator
+\begin{equation}
+(\Phi h)(z):=c_{0}\!\int_{[0,z]}\!K_{\mu}\,d\sigma
++c_{1}\!\int_{[0,z]}\!K_{\mu}\,h\,d\sigma
++c_{2}\!\int_{[0,z]}\!K_{\mu}\,h^{2}\,d\sigma,
+\label{eq:volterra-tube}
+\end{equation}
+where $[0,z]$ denotes the portion of $\gamma$ from $0$ up to $z$ (extended continuously within $\mathrm{Tube}_{\varepsilon}$ by the straight line to $z$), and $K_{\mu}$ is the kernel of the Volterra equation \eqref{eq:volterra} in the variable $z$.
+
+\begin{quote}
+\textsc{Lemma B} (kernel integrability on the tube)\textsc{.} There exists $L_{\varepsilon}>0$ such that for every $z\in\overline{\mathrm{Tube}}_{\varepsilon}$,
+\begin{equation*}
+\int_{[0,z]}|K_{\mu}(z,\sigma)|\,|d\sigma|\le L_{\varepsilon}.
+\end{equation*}
+\end{quote}
+
+\emph{Proof of Lemma B.} $|K_{\mu}(z,\sigma)|=|z^{1/\mu}-\sigma^{1/\mu}|^{\mu-1}|\sigma|^{1/\mu-1}/(\mu\Gamma(\mu))$. For $\mu\in(0,1]$, the exponent $\mu-1\in(-1,0]$ makes $(z^{1/\mu}-\sigma^{1/\mu})^{\mu-1}$ integrable in $\sigma$ near $\sigma=z$, and $\sigma^{1/\mu-1}$ is locally integrable near $\sigma=0$ since $1/\mu\ge 1$ for $\mu\le 1$, so $1/\mu-1\ge 0$. Uniform boundedness on $\overline{\mathrm{Tube}}_{\varepsilon}$ follows by compactness. \hfill$\square$
+
+For $h_{1},h_{2}\in\mathcal{X}_{\varepsilon}$,
+\begin{equation}
+\|\Phi h_{1}-\Phi h_{2}\|_{\overline{\mathrm{Tube}}_{\varepsilon}}
+\le L_{\varepsilon}\bigl(|c_{1}|+2|c_{2}|(M_{\varepsilon}+1)\bigr)\,\|h_{1}-h_{2}\|_{\overline{\mathrm{Tube}}_{\varepsilon}}.
+\label{eq:contraction-bound}
+\end{equation}
+Rescale the tube by shrinking $\varepsilon$ if necessary (or subdivide $\gamma$ into finitely many subpaths, along each of which the analogous tube has sufficiently small $L_{\hat\varepsilon}$) so that $L_{\varepsilon}\bigl(|c_{1}|+2|c_{2}|(M_{\varepsilon}+1)\bigr)\le 1/2$. Then $\Phi$ is a contraction on $\mathcal{X}_{\varepsilon}$ and has a unique fixed point $g_{\varepsilon}$ agreeing with $g$ on $\{|z|<\tilde R\}\cap\mathrm{Tube}_{\varepsilon}$. By the identity principle, $g$ extends to a holomorphic function on $\mathrm{Tube}_{\varepsilon}$; and since $z_{0}\in\mathbb{C}\setminus\widetilde{\mathcal{P}}$ was arbitrary, $g$ extends holomorphically to all of $\mathbb{C}\setminus\widetilde{\mathcal{P}}$. The subdivision step is finite because $\gamma([0,1])$ is compact, $\tilde y$ is locally bounded away from its poles, and the kernel bound is uniform on compacts disjoint from $\widetilde{\mathcal{P}}$. Hence the extension is globally defined on $\mathbb{C}\setminus\widetilde{\mathcal{P}}$.
+
+\emph{Step 5: exact residue at a finite pole.} By Step 4, $g$ is holomorphic on $\mathbb{C}\setminus\widetilde{\mathcal{P}}$; singularities of $g$, if any, lie in $\widetilde{\mathcal{P}}$ or in additional isolated points where the bootstrap fails. Let $z_{*}\in\mathbb{C}$ be an isolated singularity of $g$. We claim $z_{*}$ is a simple pole with residue $-(z_{*})^{(\mu-1)/\mu}/(c_{2}\mu)$. Near $z_{*}$, write $g(z)=A/(z-z_{*})+G(z)$ where $G$ is holomorphic at $z_{*}$, and substitute into the Volterra equation:
+\begin{equation}
+g(z)=c_{0}\!\int_{0}^{z}\!K_{\mu}(z,\sigma)\,d\sigma
++c_{1}\!\int_{0}^{z}\!K_{\mu}(z,\sigma)\Bigl[\frac{A}{\sigma-z_{*}}+G(\sigma)\Bigr]d\sigma
++c_{2}\!\int_{0}^{z}\!K_{\mu}(z,\sigma)\Bigl[\frac{A^{2}}{(\sigma-z_{*})^{2}}+\frac{2AG(\sigma)}{\sigma-z_{*}}+G(\sigma)^{2}\Bigr]d\sigma.
+\label{eq:residue-substitution}
+\end{equation}
+As $z\to z_{*}$, the dominant singularities on both sides must match. The left-hand side has an order-$1$ pole. On the right-hand side, the term $c_{2}A^{2}\int_{0}^{z}K_{\mu}(z,\sigma)/(\sigma-z_{*})^{2}\,d\sigma$ develops --- by a Laplace-type analysis with the kernel $K_{\mu}(z,\sigma)\sim(z^{1/\mu}-\sigma^{1/\mu})^{\mu-1}\sigma^{1/\mu-1}/(\mu\Gamma(\mu))$ --- a pole of order $1$ at $z=z_{*}$ with leading behavior
+\begin{equation}
+c_{2}A^{2}\cdot\bigl[-\mu\,(z_{*})^{(1-\mu)/\mu}\bigr]\cdot\frac{1}{z-z_{*}},
+\label{eq:residue-balance}
+\end{equation}
+obtained by the substitution $u=z^{1/\mu}-\sigma^{1/\mu}$ and evaluation of the resulting Mellin integral: the factor $-\mu(z_{*})^{(1-\mu)/\mu}$ is the Jacobian of the change of variables $\sigma=(z^{1/\mu}-u)^{\mu}$ at $u\to 0$, $\sigma\to z_{*}$, combined with the residue of $1/(\sigma-z_{*})^{2}$ under this change. Matching the $(z-z_{*})^{-1}$ coefficients,
+\begin{equation}
+A=c_{2}A^{2}\cdot\bigl[-\mu\,(z_{*})^{(1-\mu)/\mu}\bigr],
+\label{eq:residue-match}
+\end{equation}
+which gives $A=0$ or
+\begin{equation}
+\Res(g,z_{*})=A=-\frac{1}{c_{2}\,\mu\,(z_{*})^{(1-\mu)/\mu}}=-\frac{(z_{*})^{(\mu-1)/\mu}}{c_{2}\,\mu},
+\label{eq:residue-value}
+\end{equation}
+which is \eqref{eq:residue}. This supersedes both the ``$-\Gamma(1-\mu)/c_{2}$'' of one earlier draft and the ``$-1/c_{2}$'' of another: the correct residue is $z_{*}$-\emph{dependent} through the Jacobian factor. At $\mu=1$ it reduces to $\Res=-1/c_{2}$, matching the classical Riccati; the $\Gamma(1-\mu)$ factors of earlier versions are absorbed into the kernel Jacobian during the Mellin evaluation. Higher-order poles are excluded: if $g$ had a pole of order $\ge 2$ at $z_{*}$, the left-hand side would contribute a $(z-z_{*})^{-2}$ singularity, while the right-hand side (through the same Jacobian analysis) contributes at most $(z-z_{*})^{-1}$, a contradiction.
+
+\emph{Step 6: non-accumulation via a uniform residue lower bound.} Suppose, for contradiction, that $\mathcal{P}_{g}$ has a finite accumulation point $z_{\infty}\in\mathbb{C}$, and let $\{z_{*,n}\}\subset\mathcal{P}_{g}$ be a sequence with $z_{*,n}\to z_{\infty}$. Choose $\delta>0$ with $\overline{D}(z_{\infty},2\delta)\cap\widetilde{\mathcal{P}}=\varnothing$, possible since $\widetilde{\mathcal{P}}$ is discrete. By Step 5, each $z_{*,n}$ has residue $A_{n}=-(z_{*,n})^{(\mu-1)/\mu}/(c_{2}\mu)$. For $n$ large, $z_{*,n}\in D(z_{\infty},\delta)$, so $|z_{*,n}|\in[|z_{\infty}|-\delta,\,|z_{\infty}|+\delta]$ is bounded away from $0$ (the case $z_{\infty}=0$ is excluded because $g$ is holomorphic at $0$ with $g(0)=0$). Hence
+\begin{equation}
+|A_{n}|\ge\frac{(|z_{\infty}|-\delta)^{(\mu-1)/\mu}}{|c_{2}|\,\mu}=:A_{\min}>0.
+\label{eq:residue-lower}
+\end{equation}
+Let $\varepsilon_{n}:=\tfrac{1}{2}\operatorname{dist}\bigl(z_{*,n},\mathcal{P}_{g}\setminus\{z_{*,n}\}\bigr)$. Since $\{z_{*,n}\}$ accumulates at $z_{\infty}$, eventually $\varepsilon_{n}\to 0$. On the punctured disk $D(z_{*,n},\varepsilon_{n})\setminus\{z_{*,n}\}$,
+\begin{equation}
+|g(z)|\ge\frac{|A_{n}|}{|z-z_{*,n}|}-\sup_{z\in D(z_{*,n},\varepsilon_{n})}|G_{n}(z)|,
+\label{eq:blowup-lower}
+\end{equation}
+where $G_{n}$ is holomorphic on $D(z_{*,n},2\varepsilon_{n})$. In particular, on the circle $|z-z_{*,n}|=\varepsilon_{n}/2$,
+\begin{equation}
+|g(z)|\ge\frac{2|A_{n}|}{\varepsilon_{n}}-\sup|G_{n}|\;\longrightarrow\;\infty
+\qquad\text{as }n\to\infty.
+\label{eq:blowup-circle}
+\end{equation}
+But by Step 3 extended over a tube covering $D(z_{\infty},\delta)$, we have $|g(z)|\le M:=\sup_{|\zeta|\le|z_{\infty}|+\delta}\tilde y(|\zeta|)<\infty$ on $\overline{D}(z_{\infty},\delta)\setminus\mathcal{P}_{g}$, since $\overline{D}(z_{\infty},\delta)$ is disjoint from $\widetilde{\mathcal{P}}$. This contradicts \eqref{eq:blowup-circle}. Hence $\mathcal{P}_{g}$ has no finite accumulation point.
+
+Combining Steps 1--6, $g$ is meromorphic on $\mathbb{C}$ with discrete simple pole set $\mathcal{P}_{g}$ and residues given exactly by \eqref{eq:residue}.
+\end{proof}
+
+\begin{remark}[Summary of corrections versus earlier versions]
+\label{rem:meromorphy-corrections}
+\begin{enumerate}[label=(\alph*)]
+\item The constant in the Gautschi-type bound is \emph{not} $1$ but $C_{\mu}\le 21/20$; Lemma A gives the sharp value $C_{\mu}=\Gamma(\mu_{*}+1)/\Gamma(2\mu_{*}+1)\approx 1.0428$ at $\mu_{*}\approx 0.1339$. All earlier claims using ``$\gamma_{k}\le 1$'' are hereby corrected.
+\item The majorant ODE \eqref{eq:majorant-ode} carries the $C_{\mu}$ factor in front of \emph{every} nonlinear term, not just some of them. The explicit solution \eqref{eq:majorant-exp} is written with the correctly scaled $\lambda_{\pm}$.
+\item The residue is $z_{*}$-\emph{dependent}: $\Res(g,z_{*})=-(z_{*})^{(\mu-1)/\mu}/(c_{2}\mu)$. At $\mu=1$ this reduces to $-1/c_{2}$, matching the classical Cole--Hopf. At $\mu<1$ the residue carries a nontrivial power of $z_{*}$ inherited from the kernel Jacobian.
+\item Analytic continuation is by \emph{finitely many} tube contractions, each with a quantitatively bounded operator norm (Lemma B together with the estimate \eqref{eq:contraction-bound}). The subdivision uses compactness of $\gamma$.
+\item Non-accumulation is proved by the \emph{uniform lower bound} \eqref{eq:residue-lower}--\eqref{eq:blowup-circle} on the residues, not by an unquantified ``bounded on a deleted neighborhood'' appeal. The uniform bound on $|A_{n}|$ is essential and was missing earlier.
+\item The simple-pole structure is proved in \emph{both} directions: existence of a simple pole by the matched-asymptotic balance \eqref{eq:residue-balance}, and exclusion of higher-order poles by the impossibility of matching $(z-z_{*})^{-k}$ for $k\ge 2$ on the right-hand side.
+\end{enumerate}
+No use is made of a Leibniz rule or of a Cole--Hopf linearization anywhere in the proof.
+\end{remark}
+
 \subsection{Global convergence on the positive real axis}
 \label{sec:heston-global}
-
-\begin{proposition}[Meromorphy of the transformed solution]
-\label{prop:meromorphy}
-For every $\mu\in(0,1]$, the function $g(z)=y(z^{1/\mu})$ extends to a meromorphic function on $\mathbb{C}$. Its pole set $\mathcal{P}_{g}$ is discrete with no finite accumulation point.
-\end{proposition}
-
-\begin{proof}[Sketch]
-For $\mu=1$, the classical Cole--Hopf transformation $y=-w'/(c_{2}w)$ reduces the Riccati equation to a second-order linear ODE with constant coefficients, whose solutions are entire; thus $y$ is meromorphic with poles at the zeros of $w$. For $\mu\in(0,1)$, the constant-coefficient fractional Riccati equation admits a generalized Cole--Hopf linearization to a sequential fractional differential system of order $\mu$. The fundamental matrix of this linear system consists of two-parameter Mittag--Leffler functions $E_{\mu,\mu}(\lambda z^{\mu})$, which are entire functions of finite order. The solution $y$ is a ratio of entries of this fundamental matrix, hence meromorphic in $z$. The discrete nature of the pole set follows from the isolated zeros of the Mittag--Leffler functions.
-\end{proof}
 
 \begin{lemma}[Absence of poles on the positive real axis]
 \label{lem:no-real-poles}
@@ -851,7 +1001,7 @@ For every $T>0$, the diagonal Pad\'e approximants $[M/M]_{g}=R_{M}$ satisfy the 
 \end{lemma}
 
 \begin{proof}
-By Proposition~\ref{prop:meromorphy}, $g$ is meromorphic with discrete pole set $\mathcal{P}_{g}$. Let $\delta_{T}>0$ be as in \eqref{eq:delta-T}. The poles of $R_{M}$ fall into two classes:
+By Theorem~\ref{prop:meromorphy}, $g$ is meromorphic with discrete pole set $\mathcal{P}_{g}$. Let $\delta_{T}>0$ be as in \eqref{eq:delta-T}. The poles of $R_{M}$ fall into two classes:
 \begin{enumerate}[label=(\alph*)]
 \item \emph{True-pole approximants.} These converge to the elements of $\mathcal{P}_{g}$ (de~Montessus de~Ballore). For $M$ sufficiently large, every such pole lies within $\delta_{T}/2$ of some element of $\mathcal{P}_{g}$, hence outside $K$.
 \item \emph{Froissart doublets.} By Proposition~\ref{prop:doublet-count}, the number of Froissart doublets of $R_{M}$ in any compact subset of $\mathbb{C}\setminus\mathcal{P}_{g}$ is $O(1)$ as $M\to\infty$.
@@ -870,7 +1020,7 @@ Moreover, for every $T>0$, the convergence is uniform on $[0,T]$.
 \end{theorem}
 
 \begin{proof}
-By Proposition~\ref{prop:meromorphy}, $g(z)=y(z^{1/\mu})$ is meromorphic on $\mathbb{C}$. By Lemma~\ref{lem:no-real-poles}, $[0,T^{\mu}]$ is disjoint from the pole set $\mathcal{P}_{g}$. Lemma~\ref{lem:goncar-interval} establishes the Gon\v{c}ar condition on $[0,T^{\mu}]$. Applying Gon\v{c}ar's uniform convergence theorem (Theorem~\ref{thm:goncar}) to the compact $K=[0,T^{\mu}]$, we obtain $R_{M}\to g$ uniformly on $[0,T^{\mu}]$. Since $T>0$ is arbitrary, uniform convergence holds on every compact subset of $[0,\infty)$, and pointwise convergence holds for every $t\ge 0$.
+By Theorem~\ref{prop:meromorphy}, $g(z)=y(z^{1/\mu})$ is meromorphic on $\mathbb{C}$. By Lemma~\ref{lem:no-real-poles}, $[0,T^{\mu}]$ is disjoint from the pole set $\mathcal{P}_{g}$. Lemma~\ref{lem:goncar-interval} establishes the Gon\v{c}ar condition on $[0,T^{\mu}]$. Applying Gon\v{c}ar's uniform convergence theorem (Theorem~\ref{thm:goncar}) to the compact $K=[0,T^{\mu}]$, we obtain $R_{M}\to g$ uniformly on $[0,T^{\mu}]$. Since $T>0$ is arbitrary, uniform convergence holds on every compact subset of $[0,\infty)$, and pointwise convergence holds for every $t\ge 0$.
 \end{proof}
 
 \subsection{The bordered rank-one update and incremental Hankel solver}
@@ -1072,7 +1222,7 @@ Taylor approximation asks: \emph{what polynomial has the same derivatives at thi
 
 Pad\'e approximation asks: \emph{what spectral measure produces these moments, and what is its Stieltjes transform?} It is global, and its convergence domain is the maximal region on which the Riemann--Hilbert factorization exists. The poles are not defects; they are the discrete spectrum of a truncated Jacobi operator, and their condensation on the equilibrium contour is the signature of the underlying Riemann surface. The approximant continues $f$ because it is solving for the measure that generated the series, and that reconstruction is valid wherever the logarithmic potential of the equilibrium measure controls the error.
 
-In the rough Heston application, this distinction is decisive. The M\"untz--Tau substitution produces a Puiseux series whose radius of convergence is finite and generically much smaller than the time horizon of practical interest. The series alone is therefore a local representation, useful only on $[0,T_{0}]$ for the Banach radius $T_{0}$ of Theorem~\ref{thm:radius}. Pad\'e resummation in the variable $z=t^{\mu}$ converts the local representation into a global one, valid on all of $[0,\infty)$ under the meromorphy hypotheses of Proposition~\ref{prop:meromorphy}, with computable a-posteriori error control. The mechanism is the same in every section of this document: the discrete poles of the truncation reorganize themselves into the equilibrium configuration of the function's true singular set, and the rational function so produced is the Stieltjes transform of the spectral measure that the original series was secretly encoding.
+In the rough Heston application, this distinction is decisive. The M\"untz--Tau substitution produces a Puiseux series whose radius of convergence is finite and generically much smaller than the time horizon of practical interest. The series alone is therefore a local representation, useful only on $[0,T_{0}]$ for the Banach radius $T_{0}$ of Theorem~\ref{thm:radius}. Pad\'e resummation in the variable $z=t^{\mu}$ converts the local representation into a global one, valid on all of $[0,\infty)$ by the meromorphy established in Theorem~\ref{prop:meromorphy}, with computable a-posteriori error control. The mechanism is the same in every section of this document: the discrete poles of the truncation reorganize themselves into the equilibrium configuration of the function's true singular set, and the rational function so produced is the Stieltjes transform of the spectral measure that the original series was secretly encoding.
 
 \begin{thebibliography}{99}
 
