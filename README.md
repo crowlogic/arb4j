@@ -328,8 +328,8 @@ libxfixes-dev libxext-dev libxau-dev libxdmcp-dev libxcb1-dev`) installed:
 
 ```bash
 make            # reruns SWIG + clang, relinks libarblib.so (statically linked
-                # FLINT/MPFR/GMP + libxdo + the X11 transitive deps, built once
-                # into ~/.cache/arb4j)
+                # FLINT/MPFR/GMP + libxdo + libxkbcommon + the X11 transitive
+                # deps, built once into ~/.cache/arb4j)
 mvn test
 ```
 
@@ -352,9 +352,7 @@ the version your distro ships is irrelevant. (The historical FLINT 3.1/3.2
 `libxdo.a` from the pinned xdotool source into `~/.cache/arb4j` and links it
 statically, exactly like FLINT/MPFR/GMP. The runtime therefore no longer needs
 `libxdo.so.3` (which broke loading on hosts where it was absent), and the
-statically linkable X11 transitive dependencies (`libX11`, `libXtst`,
-`libXinerama`, `libXext`, `libXau`, `libXdmcp`, `libxcb`) are linked into
-`libarblib.so` as well.
+source-built static `libxkbcommon.a` is linked into `libarblib.so` as well.
 
 ### Troubleshooting
 
