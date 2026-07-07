@@ -324,11 +324,12 @@ mvn test
 You only need to rebuild the native library **when a SWIG interface file
 (`native/*.i`) changes**. Then, with `clang swig` and the X11 dev headers
 (`libx11-dev libxtst-dev libxinerama-dev libxi-dev libxkbcommon-dev
-libxfixes-dev`) installed:
+libxfixes-dev libxext-dev libxau-dev libxdmcp-dev libxcb1-dev`) installed:
 
 ```bash
 make            # reruns SWIG + clang, relinks libarblib.so (statically linked
-                # FLINT/MPFR/GMP + libxdo, built once into ~/.cache/arb4j)
+                # FLINT/MPFR/GMP + libxdo + the X11 transitive deps, built once
+                # into ~/.cache/arb4j)
 mvn test
 ```
 
@@ -350,9 +351,10 @@ the version your distro ships is irrelevant. (The historical FLINT 3.1/3.2
 **libxdo is statically linked too.** xdotool ships no `.a`, so `make` builds
 `libxdo.a` from the pinned xdotool source into `~/.cache/arb4j` and links it
 statically, exactly like FLINT/MPFR/GMP. The runtime therefore no longer needs
-`libxdo.so.3` (which broke loading on hosts where it was absent); only the stable
-system X11 libs (`libX11`, `libXtst`, `libXinerama`, `libxkbcommon`) remain as
-dynamic dependencies.
+`libxdo.so.3` (which broke loading on hosts where it was absent), and the X11
+transitive dependencies (`libX11`, `libXtst`, `libXinerama`, `libxkbcommon`,
+`libXext`, `libXau`, `libXdmcp`, `libxcb`) are linked into `libarblib.so` as
+well.
 
 ### Troubleshooting
 

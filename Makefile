@@ -36,8 +36,9 @@ FLINT_URL     := https://github.com/flintlib/flint/releases/download/v$(FLINT_VE
 FLINT_SRCDIR  := $(CACHE)/flint-$(FLINT_VERSION)-src
 
 # xdotool ships no static .a, so (like GMP/MPFR/FLINT) we build libxdo.a from
-# source and link it statically. Its X11 transitive deps (libX11/libXtst/
-# libXinerama) stay dynamic — those are stable system libs, unlike libxdo.so.3.
+# source and link it statically. The X11 libraries that xdotool/X11 transitively
+# depend on are available as static archives in the matching dev packages, so
+# link them statically too rather than leaving them as runtime deps.
 XDO_VERSION := 3.20211022.1
 XDO_PREFIX  := $(CACHE)/xdotool-$(XDO_VERSION)
 XDO_STATIC  := $(XDO_PREFIX)/lib/libxdo.a
@@ -140,8 +141,8 @@ $(SO_RESOURCE): $(SOURCES) $(FLINT_STATIC) $(XDO_STATIC)
 	clang $(CFLAGS) $(SOURCES) $(C_INCLUDES) \
 	  -L$(FLINT_PREFIX)/lib -L$(MPFR_PREFIX)/lib -L$(GMP_PREFIX)/lib -L$(XDO_PREFIX)/lib \
 	  -o$(SO_RESOURCE) \
-	  -Wl,-Bstatic -lflint -lmpfr -lgmp -lxdo \
-	  -Wl,-Bdynamic -Wl,--as-needed -lX11 -lXtst -lXinerama -lxkbcommon
+	  -Wl,-Bstatic -lflint -lmpfr -lgmp -lxdo -lX11 -lXtst -lXinerama -lxkbcommon -lXext -lXau -lXdmcp -lxcb \
+	  -Wl,-Bdynamic
 	strip $(SO_RESOURCE)
 
 libarblib.so: $(SO_RESOURCE)
