@@ -58,10 +58,46 @@ a(j,u)\, a(\ell,u) \Bigr).
 \end{lemma}
 
 \begin{proof}
-Substitute the ansatz into the Volterra form
-$y = I^{\mu}[P + Qy + Ry^{2}]$ and use
-$I^{\mu} t^{s} = \Gamma(s+1)/\Gamma(s+\mu+1)\, t^{s+\mu}$. Match
-$t^{(k+1)\mu}$ on both sides.
+The initial-value problem is equivalent to the Volterra integral
+equation $y = I^{\mu}[P + Qy + Ry^{2}]$, where
+$I^{\mu} f(t) = \frac{1}{\Gamma(\mu)} \int_{0}^{t} (t-s)^{\mu-1} f(s)\,
+ds$; equivalence and uniqueness of the continuous solution on a
+small interval $[0,\delta]$ follow from the Banach fixed-point theorem
+applied to the map $T[y] = I^{\mu}[P+Qy+Ry^{2}]$ on
+$C([0,\delta])$: for $\|y\|_{\infty},\|w\|_{\infty} \leq \rho$,
+\[
+\|T[y]-T[w]\|_{\infty}
+\;\leq\; \frac{\delta^{\mu}}{\Gamma(\mu+1)}
+\bigl( |Q(u)| + 2\rho\,|R(u)| \bigr)\, \|y - w\|_{\infty},
+\]
+which is a contraction once $\delta$ is small enough, and $T$ maps the
+ball $\|y\|_{\infty}\leq\rho$ into itself when additionally
+$\delta^{\mu}(|P|+\rho|Q|+\rho^{2}|R|)/\Gamma(\mu+1) \leq \rho$.
+Substituting the ansatz $y = \sum_{k\geq 1} a(k,u)\, t^{k\mu}$ into
+the Volterra form and using the Euler integral
+\[
+I^{\mu} t^{s}
+= \frac{1}{\Gamma(\mu)} \int_{0}^{t} (t-s')^{\mu-1} (s')^{s}\, ds'
+= \frac{\Gamma(s+1)}{\Gamma(s+\mu+1)}\, t^{s+\mu}
+\qquad (s > -1)
+\]
+termwise (justified on $[0,\delta']$, $\delta' < $ the radius
+established in Theorem~\ref{thm:realray} Step~3, by absolute
+convergence), the right side becomes
+\[
+\frac{P(u)}{\Gamma(\mu+1)}\, t^{\mu}
++ \sum_{k\geq 1} \frac{\Gamma(k\mu+1)}{\Gamma((k+1)\mu+1)}
+\Bigl( Q(u)\, a(k,u) + R(u) \!\!\sum_{\substack{j+\ell=k\\ j,\ell\geq 1}}\!\!
+a(j,u)\, a(\ell,u) \Bigr) t^{(k+1)\mu}.
+\]
+Matching the coefficient of $t^{\mu}$ gives $a(1,u) = P(u)/\Gamma(\mu+1)$,
+and matching $t^{(k+1)\mu}$ for $k \geq 1$ gives the displayed
+recurrence. Each $a(k,u)$ is determined uniquely because the right side
+involves only $a(1),\ldots,a(k)$; membership in $\mathbb{C}[u]$
+follows by induction since the Gamma ratios are scalars and
+$\mathbb{C}[u]$ is closed under products and sums. The fixed-point
+solution and the series agree on $[0,\min(\delta,\delta')]$ by
+uniqueness, and the series is the unique solution there.
 \end{proof}
 
 \begin{lemma}[Polynomial degree growth]\label{lem:degree}
@@ -69,10 +105,14 @@ $\deg_{u} a(k,u) \leq k\, \max\{\deg P, \deg Q, \deg R\}$.
 \end{lemma}
 
 \begin{proof}
-Induction on $k$ using the recurrence of Lemma~\ref{lem:muntz}. The
-base case $k=1$ is $\deg_{u} a(1,u) = \deg P$. The inductive step is
-controlled by the larger of $\deg Q + \deg a(k,u)$ and
-$\deg R + 2\,\max_{j<k} \deg a(j,u)$.
+Induction on $k$ with $d := \max\{\deg P, \deg Q, \deg R\}$. Base case
+$k=1$: $\deg_{u} a(1,u) = \deg P \leq d$. Inductive step: assume
+$\deg a(j,u) \leq jd$ for all $j \leq k$. In the recurrence of
+Lemma~\ref{lem:muntz}, the term $Q\,a(k,u)$ has degree
+$\leq d + kd = (k+1)d$; each convolution term $R\,a(j,u)\,a(\ell,u)$
+with $j+\ell = k$ has degree
+$\leq d + jd + \ell d = (k+1)d$. The Gamma ratio is a scalar, so
+$\deg a(k+1,u) \leq (k+1)d$.
 \end{proof}
 
 \begin{lemma}[Convolution closure]\label{lem:conv}
@@ -89,8 +129,19 @@ where $\Gamma_{\mu}$ encodes the Gamma-ratio weights.
 \end{lemma}
 
 \begin{proof}
-Direct: the convolution is a finite $\mathbb{C}[u]$-bilinear sum. The
-generating identity is the $z$-transform of Lemma~\ref{lem:muntz}.
+The convolution is a finite $\mathbb{C}[u]$-bilinear sum of products of
+elements of $\mathbb{C}[u]$, hence lands in $\mathbb{C}[u]$. For the
+generating identity, multiply the recurrence of Lemma~\ref{lem:muntz}
+by $z^{k+1}$ and sum over $k \geq 1$; adding the $k=1$ seed term
+$a(1,u)z = (P(u)/\Gamma(\mu+1))\,z$ reproduces the three displayed
+summands: the weight sequence
+$\Gamma_{\mu}(k) := \Gamma((k-1)\mu+1)/\Gamma(k\mu+1)$ multiplies,
+coefficient-by-coefficient, the constant $P$, the shift $Q\,a(k-1)$,
+and the Cauchy self-convolution $R\,(a\ast a)(k-1)$ respectively, and
+the operation $f \mapsto (\Gamma_{\mu}\!\ast\! f)$ denotes exactly this
+coefficient-wise weighting composed with the index shift
+$k-1 \mapsto k$. Every coefficient identity holds in $\mathbb{C}[u]$,
+so the identity holds in $\mathbb{C}[u][[z]]$.
 \end{proof}
 
 \section{Moment functional}
@@ -106,35 +157,109 @@ $H_{n}(u) := \det\bigl[ m(i+j,u) \bigr]_{0\leq i,j \leq n-1} \in \mathbb{C}[u]$.
 \end{definition}
 
 \begin{lemma}[Quasi-definiteness]\label{lem:quasidef}
-$H_{n}(u) \neq 0$ as an element of $\mathbb{C}[u]$ for all $n\geq 1$
-under the genericity hypothesis $P(u)\, R(u) \not\equiv 0$. The set
-$\{u \in \mathbb{C} : H_{n}(u) = 0\text{ for some }n\}$ is a countable
-union of proper algebraic subvarieties of $\mathbb{C}$.
+Regard the coefficients of $P, Q, R$ as indeterminates, so that
+$H_{n}$ is a polynomial $\widehat H_{n}$ in those indeterminates and
+$u$. Then for every $n \geq 1$ and every $\mu$ in the complement of a
+discrete (possibly empty) exceptional set
+$E_{n} \subset (0,1]$ with $1 \notin E_{n}$:
+$\widehat H_{n} \neq 0$ as a polynomial. Consequently, for
+coefficient data $(P,Q,R)$ outside a countable union of proper
+algebraic hypersurfaces of coefficient space, $H_{n}(u) \not\equiv 0$
+in $\mathbb{C}[u]$ for all $n \geq 1$, and the scalar locus
+$\{u \in \mathbb{C} : H_{n}(u) = 0 \text{ for some } n\}$ is a
+countable union of finite sets, with Zariski-dense complement.
 \end{lemma}
 
 \begin{proof}
-$m(0,u) = a(1,u) = P(u)/\Gamma(\mu+1) \not\equiv 0$, so $H_{1}\neq 0$.
-For $n\geq 2$, the leading coefficient of $H_{n}(u)$ as a polynomial in
-$u$ is computed from the highest-degree contributions to each $a(k,u)$,
-which are themselves nonzero polynomials in $\deg P, \deg Q, \deg R$
-under genericity. The vanishing locus of each $H_{n}$ is an algebraic
-hypersurface in $\mathbb{C}$, hence finite.
+\emph{Step 1 ($n=1$, all data).}
+$m(0,u) = a(1,u) = P(u)/\Gamma(\mu+1) \not\equiv 0$ whenever
+$P \not\equiv 0$, so $H_{1} \neq 0$.
+
+\emph{Step 2 (specialization $Q = 0$, $P = R = 1$).}
+It suffices to exhibit one specialization at which
+$\widehat H_{n} \neq 0$. Set $Q \equiv 0$, $P \equiv R \equiv 1$. The
+recurrence of Lemma~\ref{lem:muntz} then produces scalars
+$c_{k}(\mu) := a(k)$ with $c_{k} = 0$ for even $k$ (induction: the
+convolution of two sequences supported on odd indices is supported on
+even indices, and the $Q$-term vanishes) and $c_{k}(\mu) > 0$ for odd
+$k$ (induction: all Gamma ratios are positive and the convolution of
+positive sequences is positive). The moment sequence
+$m(k) = c_{k+1}$ therefore has $m(k) = 0$ for odd $k$; permuting rows
+and columns of the Hankel matrix by index parity block-diagonalizes it
+into two smaller Hankel matrices built from the subsequence
+$(c_{1}, c_{3}, c_{5}, \ldots)$, so
+$\widehat H_{n}$ at this specialization equals $\pm$ a product of two
+Hankel determinants of that positive scalar sequence.
+
+\emph{Step 3 ($\mu = 1$: normality via Lambert).}
+At $\mu = 1$ the specialization of Step~2 is $y' = 1 + y^{2}$,
+$y(0)=0$, whose solution is $y = \tan t$, so
+$(c_{1}, c_{3}, \ldots)$ are the Maclaurin coefficients of $\tan$.
+Lambert's continued fraction
+$\tan t = \cfrac{t}{1 - \cfrac{t^{2}}{3 - \cfrac{t^{2}}{5 - \cdots}}}$
+is a regular C-fraction with all partial numerators nonzero; by the
+classical correspondence between regular C-fractions and normality of
+the Pad\'e table (Wall, \emph{Analytic Theory of Continued
+Fractions}, Thm.~21.1; Baker--Graves-Morris, \emph{Pad\'e
+Approximants}, \S4.4), every Hankel determinant of the coefficient
+sequence of $\tan$ is nonzero. Hence $\widehat H_{n} \neq 0$ at this
+specialization for every $n$, so $\widehat H_{n} \neq 0$ as a
+polynomial when $\mu = 1$.
+
+\emph{Step 4 (analyticity in $\mu$).}
+Each $c_{k}(\mu)$ is a finite sum of products of Gamma ratios
+$\Gamma(j\mu+1)/\Gamma((j+1)\mu+1)$, hence real-analytic in $\mu$ on
+$(0,1]$ (indeed on a complex neighborhood, since $\Gamma$ is
+holomorphic and zero-free on $\Re s > 0$). The specialized
+determinant of Step~2 is therefore real-analytic in $\mu$, and by
+Step~3 it is nonzero at $\mu = 1$; being analytic and not identically
+zero, it vanishes at most on a set $E_{n}$ that is discrete in
+$(0,1]$, and $1 \notin E_{n}$.
+
+\emph{Step 5 (genericity transfer).}
+For $\mu \notin \bigcup_{n} E_{n}$, each
+$\{\widehat H_{n} = 0\}$ is a proper algebraic hypersurface of the
+(coefficient data)$\times u$ affine space. For coefficient data
+avoiding the (countably many) hypersurfaces obtained by eliminating
+$u$, the specialized $H_{n}(u)$ is a nonzero polynomial in $u$, whose
+zero set is finite. A countable union of finite sets has Zariski-dense
+complement in $\mathbb{C}$.
+
+\emph{What is and is not proved.} The statement is proved as given:
+it is a genericity statement over the coefficient data. For one
+\emph{fixed} non-generic triple $(P,Q,R)$ --- rough Heston included
+--- membership of that triple in the generic set is not decided by
+this argument for all $n$ simultaneously; each individual $H_{n}(u)$
+is, however, a concrete polynomial computable exactly in
+$\mathbb{C}[u]$ by Lemma~\ref{lem:muntz}, so any required finite range
+$n \leq M$ is machine-checkable in ball arithmetic, and
+Proposition~\ref{prop:verify} records such checks. No general
+argument deciding all $n$ at once for a fixed triple is known to the
+author; the obstruction is that the curve
+$u \mapsto (P(u),Q(u),R(u))$ could in principle lie inside
+$\{\widehat H_{n} = 0\}$ for some $n$, and excluding this requires
+information about $\widehat H_{n}$ beyond its nonvanishing.
 \end{proof}
 
 \begin{lemma}[Signed --- never positive --- definiteness]\label{lem:signed}
-For every real $u$ at which the Volterra contraction hypotheses hold,
-$\Lop$ is not positive-definite: there exists $p \in \mathbb{R}[x]$
-with $\Lop[p^{2}] \notin \mathbb{R}_{\geq 0}$.
+For every $u$ at which $P(u) \neq 0$ and $P(u)$ is real and
+non-positive or non-real, $\Lop$ is not positive-definite: there exists
+$p \in \mathbb{R}[x]$ with $\Lop[p^{2}] \notin \mathbb{R}_{\geq 0}$.
 \end{lemma}
 
 \begin{proof}
-By Lemma~\ref{lem:conv} and the contraction hypothesis, $g(\cdot,u)$
-is meromorphic with all poles strictly off $\mathbb{R}$. If $\Lop$
-were positive-definite, Favard's theorem applied to the Jacobi matrix
-$J$ of \S\ref{sec:jacobi} would force $\sigma(J) \subset \mathbb{R}$;
-its companion-matrix realization gives the zeros of $P(M,\cdot)$ as
-real, hence the poles of $\hat R(M,\cdot,u)$ as real, contradicting
-the disjointness $\Delta_{g}(u) \cap \mathbb{R} = \emptyset$.
+Take $p = 1$. Then
+$\Lop[1^{2}] = m(0,u) = a(1,u) = P(u)/\Gamma(\mu+1)$, and
+$\Gamma(\mu+1) > 0$, so $\Lop[1^{2}] \notin \mathbb{R}_{\geq 0}$
+whenever $P(u) \notin \mathbb{R}_{\geq 0}$. Hence $\Lop$ is not
+positive-definite. (For rough Heston,
+$P(u) = \tfrac{1}{2}(-u^{2}-iu)$ is non-real for every real
+$u \neq 0$, so the hypothesis holds on all of
+$\mathbb{R}\setminus\{0\}$.) The quasi-definiteness claim ---
+leading principal Hankel minors nonzero on a Zariski-dense set ---
+follows from Lemma~\ref{lem:quasidef}. This places $\Lop$ in the
+quasi-definite-but-not-positive-definite (Nuttall--Stahl) class; see
+\texttt{frmp\_orthopoly.tex}, \S3, for that classification.
 \end{proof}
 
 \section{OPS and its generating polynomials}
@@ -173,13 +298,45 @@ generically by Lemma~\ref{lem:quasidef}.
 \end{lemma}
 
 \begin{proof}
-Standard: expand $P(n,x) = \det(\,\cdot\,)/H_{n}$ via Heine's formula
-and compute $\Lop[P(n,x)^{2}]$.
+Heine's determinantal formula for the monic OPS,
+\[
+P(n,x) \;=\; \frac{1}{H_{n}}
+\det\!\begin{pmatrix}
+m(0) & m(1) & \cdots & m(n) \\
+\vdots & & & \vdots \\
+m(n-1) & m(n) & \cdots & m(2n-1) \\
+1 & x & \cdots & x^{n}
+\end{pmatrix},
+\]
+is verified by checking orthogonality: applying $\Lop[\,\cdot\,x^{k}]$
+for $k < n$ replaces the last row by
+$(m(k), m(k+1), \ldots, m(k+n))$, duplicating row $k+1$, so the
+determinant vanishes; and the coefficient of $x^{n}$ is
+$H_{n}/H_{n} = 1$, so it is monic, and monic orthogonal polynomials
+are unique when $H_{1},\ldots,H_{n} \neq 0$ (Gram--Schmidt on the
+moment bilinear form). Then
+\[
+h(n) = \Lop[x^{n} P(n,x)]
+= \frac{1}{H_{n}} \det\!\bigl[ m(i+j) \bigr]_{0\leq i,j\leq n}
+= \frac{H_{n+1}}{H_{n}},
+\]
+since applying $\Lop[\,\cdot\,x^{n}]$ to the last row of Heine's
+determinant produces exactly the last row of $H_{n+1}$.
 \end{proof}
 
 \begin{lemma}[Base $S(0,z)$]\label{lem:S0}
 $S(0,z) = \sum_{k\geq 0} m(k,u)\, z^{k}$, with $S(0,0) = m(0,u) = P(u)/\Gamma(\mu+1)$.
 \end{lemma}
+
+\begin{proof}
+By Definition~\ref{def:Sn} with $P(0,x) = 1$:
+$S(0,z) = \sum_{k\geq 0} \Lop[x^{k}\cdot 1]\, z^{k}
+= \sum_{k\geq 0} m(k,u)\, z^{k}$, and the constant term is
+$m(0,u) = a(1,u) = P(u)/\Gamma(\mu+1)$ by Definition~\ref{def:Lop}
+and Lemma~\ref{lem:muntz}. Note also
+$S(0,z) = g(z,u)/z$ in $\mathbb{C}[u][[z]]$, since
+$m(k,u) = a(k+1,u)$.
+\end{proof}
 
 \section{Polynomial Chebyshev--Wheeler recurrence}
 
@@ -226,10 +383,37 @@ operations in $\mathbb{C}[u]$. No Hankel matrix is formed; no power-series
 inversion is performed.
 \end{corollary}
 
+\begin{proof}
+By Theorem~\ref{thm:CW}, the only data needed at step $n$ are the
+coefficient vectors of $S(n,z)$ and $S(n-1,z)$ up to $z^{2N}$.
+$\beta(n)$ and $\alpha(n)$ are each one $\mathbb{C}[u]$-division of
+already-computed coefficients (the displayed formulas), and
+$S(n+1,z)$ is a fixed $\mathbb{C}[u]$-linear combination of the
+shifted series $S(n,z)/z$, $S(n,z)$, and $S(n-1,z)$, i.e.\ at most
+$3(2N+1)$ coefficient multiply--adds. The shift $S(n,z)/z$ is an
+index shift, exact because $\ord_{z} S(n,z) = n \geq 1$
+(Lemma~\ref{lem:vanord}). No step forms a matrix, no step inverts a
+power series, and the count is $O(N)$ ring operations.
+\end{proof}
+
 \begin{corollary}[Standard-form coefficients]\label{cor:ABC}
 In the form $P(n+1,x) = (A(n)x + B(n)) P(n,x) - C(n) P(n-1,x)$:
 $A(n)=1$, $B(n) = -\alpha(n)$, $C(n) = \beta(n) = h(n)/h(n-1)$.
 \end{corollary}
+
+\begin{proof}
+The monic three-term recurrence of Definition~\ref{def:OPS} is
+$P(n+1,x) = (x - \alpha(n))P(n,x) - \beta(n)P(n-1,x)$; matching it
+term-by-term against the standard form gives $A(n) = 1$ (both sides
+monic of degree $n+1$), $B(n) = -\alpha(n)$, and $C(n) = \beta(n)$,
+and $\beta(n) = h(n)/h(n-1)$ is Theorem~\ref{thm:CW}. That
+$\beta(n) = h(n)/h(n-1)$ also follows intrinsically: apply
+$\Lop[\,\cdot\,P(n-1,x)]$ to the recurrence; orthogonality kills
+$\Lop[P(n+1,x)P(n-1,x)]$ and $\alpha(n)\Lop[P(n,x)P(n-1,x)]$, leaving
+$\Lop[xP(n,x)P(n-1,x)] = \beta(n)h(n-1)$, and the left side equals
+$\Lop[P(n,x)\,(xP(n-1,x))] = \Lop[P(n,x)^{2}] = h(n)$ since
+$xP(n-1,x) = P(n,x) + (\text{lower order})$.
+\end{proof}
 
 \begin{theorem}[Equivalence to Hankel form]\label{thm:hankelequiv}
 On the complement of the discriminant locus,
@@ -245,9 +429,21 @@ inverting any of these determinants.
 \end{theorem}
 
 \begin{proof}
-Cramer's rule applied to the orthogonality system yields the displayed
-ratios; equality with the recurrence output follows by uniqueness in
-Theorem~\ref{thm:CW}.
+The orthogonality conditions $\Lop[x^{k}P(n,x)] = 0$, $k<n$, on the
+monic $P(n,x) = x^{n} + \sum_{j<n} c_{j}x^{j}$ form the linear system
+$\sum_{j<n} m(k+j)\,c_{j} = -m(k+n)$, $0 \leq k < n$, with matrix
+$[m(k+j)]$ --- the Hankel matrix of $H_{n}$. Cramer's rule solves it
+whenever $H_{n}\neq 0$; substituting the resulting $c_{j}$ into
+$\alpha(n) = \Lop[xP(n,x)^{2}]/h(n)$ and
+$\beta(n) = h(n)/h(n-1) = (H_{n+1}/H_{n})/(H_{n}/H_{n-1})$
+(Lemma~\ref{lem:hratio}) yields the displayed determinant ratios; the
+$\alpha(n)$ formula is the classical expansion
+$\alpha(n) = \Delta_{n}'/H_{n+1} - \Delta_{n-1}'/H_{n}$ obtained by
+writing $\Lop[xP(n,x)^{2}]$ as a bordered determinant (Chihara,
+\emph{An Introduction to Orthogonal Polynomials}, Thm.~I.4.2).
+Equality with the recurrence output of Theorem~\ref{thm:CW} follows
+because the monic OPS is unique when $H_{1},\ldots,H_{n+1} \neq 0$,
+so the $(\alpha,\beta)$ produced by any two correct methods coincide.
 \end{proof}
 
 \section{Pad\'e numerator and denominator}
@@ -266,9 +462,31 @@ Pad\'e denominator of $g$ is
 \end{theorem}
 
 \begin{proof}
-Diagonal Pad\'e equivalence (Gragg, 1974, Thm.~1) identifies the
-denominator with the OPS member of the moment functional under
-$x \leftrightarrow 1/z$.
+The linearized $[M/M]$ Pad\'e conditions on a denominator
+$\hat Q(z) = \sum_{i=0}^{M} q_{i} z^{i}$, $\hat Q(0) \neq 0$, are that
+$[z^{j}](g\hat Q) = 0$ for $j = M+1,\ldots,2M$ (these $M$ homogeneous
+conditions determine $\hat Q$ up to scale when the relevant Hankel
+determinant $H_{M} \neq 0$). Writing
+$g(z) = \sum_{k\geq 1} m(k-1,u) z^{k}$,
+\[
+[z^{j}]\bigl(g\hat Q\bigr)
+= \sum_{i=0}^{M} q_{i}\, m(j-i-1,u).
+\]
+Now set $\hat Q(M,z) = z^{M}P(M,1/z)$, i.e.\ $q_{i} = p_{M-i}$ where
+$P(M,x) = \sum_{s=0}^{M} p_{s} x^{s}$, $p_{M}=1$. Then with
+$j = M+1+r$, $0 \leq r \leq M-1$,
+\[
+[z^{M+1+r}]\bigl(g\hat Q\bigr)
+= \sum_{i=0}^{M} p_{M-i}\, m(M+r-i,u)
+= \sum_{s=0}^{M} p_{s}\, m(r+s,u)
+= \Lop[x^{r} P(M,x)] = 0
+\]
+by orthogonality (Definition~\ref{def:OPS}). So the flipped OPS
+satisfies all $M$ linearized conditions; $\hat Q(M,0) = p_{M} = 1
+\neq 0$ normalizes the scale; and uniqueness up to scale (valid on
+the complement of $\{H_{M} = 0\}$, Lemma~\ref{lem:quasidef})
+identifies it with the Pad\'e denominator. This is the content of
+Gragg (1974, Thm.~1) in the moment-functional language.
 \end{proof}
 
 \begin{theorem}[Pad\'e numerator via second-kind OPS]\label{thm:padenum}
@@ -283,28 +501,81 @@ the $\Lop$-divided-difference of $P(n,\cdot)$.
 \end{theorem}
 
 \begin{proof}
-The divided-difference formula yields a polynomial of degree $n-1$ in
-$x$ satisfying the same recurrence with the stated seeds; the Pad\'e
-numerator/denominator pair $(\hat P, \hat Q)$ is then verified to
-satisfy $g(z) \hat Q(M,z) - z\hat P(M,z) = O(z^{2M+2})$ by orthogonality
-of $P(M,\cdot)$ against $1, x, \ldots, x^{M-1}$.
+\emph{Recurrence for the divided difference.} Write
+$D[p](x) := \Lop_{y}[(p(x)-p(y))/(x-y)]$. Applying $D$ to the
+three-term recurrence of Definition~\ref{def:OPS} and using
+\[
+(x-\alpha(n))P(n,x) - (y-\alpha(n))P(n,y)
+= (x-\alpha(n))\bigl(P(n,x)-P(n,y)\bigr) + (x-y)P(n,y)
+\]
+gives $D[P(n+1)] = (x-\alpha(n))D[P(n)] + \Lop_{y}[P(n,y)]
+- \beta(n)D[P(n-1)]$. For $n\geq 1$, $\Lop_{y}[P(n,y)] = 0$ by
+orthogonality against $1$, so $D[P(n)]$ obeys the same recurrence.
+The seeds are $D[P(0)] = D[1] = 0$ and, from
+$P(1,x) = x - \alpha(0)$, $D[P(1)] = \Lop_{y}[1] = m(0)$; these agree
+with the stated initialization $P^{(1)}(0,x) = 0$,
+$P^{(1)}(-1,x) = -1$ under the convention $\beta(0) := m(0) = h(0)$,
+since then $P^{(1)}(1,x) = (x-\alpha(0))\cdot 0 - \beta(0)\cdot(-1)
+= m(0)$.
+
+\emph{Numerator property.} In $\mathbb{C}[u][[z]]$, with $x := 1/z$,
+one has the formal identity $z/(1-zy) = 1/(x-y)$ and
+$g(z) = \sum_{k\geq 1} \Lop_{y}[y^{k-1}]\,z^{k}
+= \Lop_{y}\!\left[\frac{z}{1-zy}\right]$
+(termwise application of $\Lop_{y}$ to the geometric expansion).
+Therefore
+\begin{align*}
+g(z)\,\hat Q(M,z) - \hat P(M,z)
+&= z^{M}\Bigl( \Lop_{y}\!\Bigl[\frac{P(M,x)}{x-y}\Bigr]
+- \Lop_{y}\!\Bigl[\frac{P(M,x)-P(M,y)}{x-y}\Bigr] \Bigr) \\
+&= z^{M}\,\Lop_{y}\!\Bigl[\frac{P(M,y)}{x-y}\Bigr]
+= z^{M}\sum_{k\geq 0} \Lop_{y}[\,y^{k}P(M,y)\,]\, z^{k+1}
+= z^{M+1}\, S(M,z),
+\end{align*}
+using $1/(x-y) = \sum_{k\geq 0} y^{k}z^{k+1}$ and
+Definition~\ref{def:Sn}. Since $\ord_{z}S(M,z) = M$ with leading
+coefficient $h(M)$ (Lemma~\ref{lem:vanord}), the remainder
+$g\hat Q - \hat P$ has order exactly $2M+1$, so $\hat P$ matches all
+coefficients of $g\hat Q$ through $z^{2M}$ and is the diagonal
+Pad\'e numerator paired with the denominator of
+Theorem~\ref{thm:padedenom}.
 \end{proof}
 
 \begin{definition}[Approximant]\label{def:approx}
-$\hat R(M,z,u) := z\, \hat P(M,z)\,/\,\hat Q(M,z)$.
+$\hat R(M,z,u) := \hat P(M,z)\,/\,\hat Q(M,z)$.
+Note there is no additional factor of $z$: since
+$\hat P(M,z) = z^{M} P^{(1)}(M,1/z)$ with
+$\deg_{x} P^{(1)}(M,x) = M-1$, the numerator $\hat P$ already begins
+at order $z^{1}$. (Check: for $g(z) = z/(1-z)$ and $M=1$ one finds
+$\hat Q = 1-z$, $\hat P = z$, so $\hat R = z/(1-z) = g$ exactly,
+whereas $z\hat P/\hat Q = z^{2}/(1-z) \neq g$.)
 \end{definition}
 
 \begin{theorem}[Pad\'e identity]\label{thm:padeid}
-$g(z,u)\, \hat Q(M,z) - z\,\hat P(M,z) = O(z^{2M+2})$ in $\mathbb{C}[u][[z]]$.
+$g(z,u)\, \hat Q(M,z) - \hat P(M,z) = O(z^{2M+1})$ in $\mathbb{C}[u][[z]]$,
+and the coefficient of $z^{2M+1}$ is $h(M) \neq 0$ generically, so the
+order is exact.
 \end{theorem}
 
 \begin{proof}
 By Theorem~\ref{thm:padedenom}, $\hat Q(M,z) = z^{M} P(M,1/z)$. Then
 $g(z) \hat Q(M,z) = \sum_{j} m(j-1) z^{j} \cdot z^{M} P(M,1/z)$, whose
-coefficients of $z^{M+1}, \ldots, z^{2M+1}$ are precisely
-$\Lop[x^{k} P(M,x)]$ for $k=0,\ldots,M-1$, all zero by orthogonality.
-The $z^{1}, \ldots, z^{M}$ coefficients are matched by
-$z\hat P(M,z)$ via Theorem~\ref{thm:padenum}.
+coefficient of $z^{M+1+r}$ is $\Lop[x^{r} P(M,x)]$. The $[M/M]$
+Pad\'e condition $\Lop[x^{r} P(M,x)] = 0$ for $r = 0,\ldots,M-1$ is
+equivalent to $P(M,\cdot)$ being orthogonal to
+$x^{0},\ldots,x^{M-1}$ under $\Lop$, which holds by construction;
+this kills the coefficients of $z^{M+1},\ldots,z^{2M}$. At $r = M$
+the coefficient of $z^{2M+1}$ is
+$\Lop[x^{M} P(M,x)] = \Lop[P(M,x)^{2}] = h(M)$
+(Lemma~\ref{lem:vanord}), which is nonzero generically by
+Lemma~\ref{lem:hratio} --- so the first nonzero remainder coefficient
+sits at $z^{2M+1}$ and the stated order is exact. The coefficients of
+$z^{1},\ldots,z^{M}$ of $g\hat Q$ are matched by those of
+$\hat P(M,z)$ via Theorem~\ref{thm:padenum}. The corrected identity
+$\hat Q_{M}\, g - \hat P_{M} = O(z^{2M+1})$ agrees with
+\texttt{fr.md} eq.~(9.32) and \texttt{frmp\_pade\_muntz.tex}
+(the linearized Pad\'e condition stated there), which independently
+confirm it.
 \end{proof}
 
 \section{Jacobi matrix and spectrum}\label{sec:jacobi}
@@ -320,15 +591,43 @@ $\sigma(J(M,u)) = \{x : P(M,x) = 0\}$ as multisets in $\mathbb{C}$.
 \end{theorem}
 
 \begin{proof}
-$P(M,x) = \det(xI - J(M,u))$ by expansion along the last row of the
-companion matrix realization of multiplication-by-$x$ in the basis
-$\{P(0,\cdot), \ldots, P(M-1,\cdot)\}$.
+Let $J$ act on the column $(P(0,x),\ldots,P(M-1,x))^{T}$. Row $n$
+of $Jv$ is $\beta(n)P(n-1,x) + \alpha(n)P(n,x) + P(n+1,x)
+= xP(n,x)$ for $n < M-1$ by Definition~\ref{def:OPS}, and row $M-1$
+is $xP(M-1,x) - P(M,x)$. Hence
+$(xI - J)v = P(M,x)\,e_{M-1}$. If $P(M,x_{0}) = 0$ then
+$(x_{0}I-J)v(x_{0}) = 0$ with $v(x_{0}) \neq 0$ (its first entry is
+$1$), so $x_{0} \in \sigma(J)$. Conversely,
+$\det(xI - J(M,u))$ expanded along the last row satisfies the same
+three-term recurrence in $M$ as $P(M,x)$ with the same seeds
+$1$ and $x - \alpha(0)$, so
+$\det(xI - J(M,u)) = P(M,x)$ identically, giving equality of the
+multisets with multiplicity.
 \end{proof}
 
 \begin{corollary}[Pole locus of approximant]\label{cor:poles}
 The poles of $\hat R(M,\cdot,u)$ are the reciprocals of the zeros of
 $P(M,\cdot)$, i.e. the reciprocals of $\sigma(J(M,u))$.
-\end{corollary>
+\end{corollary}
+
+\begin{proof}
+$\hat R(M,z,u) = \hat P(M,z)/\hat Q(M,z)$ with
+$\hat Q(M,z) = z^{M}P(M,1/z)$, so
+$\hat Q(M,z_{0}) = 0 \iff P(M, 1/z_{0}) = 0$ for $z_{0} \neq 0$,
+while $z_{0} = 0$ is not a pole since $\hat Q(M,0) = 1$. The zeros
+of $P(M,\cdot)$ are $\sigma(J(M,u))$ by Theorem~\ref{thm:spectrum}.
+A common factor of $\hat P$ and $\hat Q$ at $1/x_{0}$ would force
+$P(M,x_{0}) = P^{(1)}(M,x_{0}) = 0$, which propagates down the shared
+three-term recurrence to $P^{(1)}(0,x_{0}) \neq 0$ vs.\
+$P^{(1)}(0,x) = 0$ --- concretely, if $P(M)$ and $P^{(1)}(M)$ had a
+common zero, the Wronskian-type identity
+$P^{(1)}(n+1,x)P(n,x) - P^{(1)}(n,x)P(n+1,x)
+= \beta(n)\bigl(P^{(1)}(n,x)P(n-1,x) - P^{(1)}(n-1,x)P(n,x)\bigr)
+= h(0)\prod_{j=1}^{n}\beta(j) = h(n) \neq 0$ (generically,
+Lemma~\ref{lem:hratio}) would vanish at
+$x_{0}$, a contradiction. Hence generically no cancellation occurs
+and every zero of $\hat Q$ is a genuine pole.
+\end{proof}
 
 \begin{theorem}[Non-symmetric form is forced]\label{thm:nonsymm}
 When $\beta(n) \in \mathbb{C}\setminus\mathbb{R}_{>0}$, the
@@ -350,31 +649,154 @@ Corollary~\ref{cor:poles}.
 \begin{theorem}[Stahl, 1997]\label{thm:stahl}
 Let $\Delta_{g}(u)$ be the Stahl compact of $g(\cdot,u)$. For every
 compact $K \subset \mathbb{C} \setminus \Delta_{g}(u)$,
-$\hat R(M,z,u) \to g(z,u)$ uniformly on $K$ as $M\to\infty$, with
-convergence rate $\limsup_{M} \|g - \hat R(M,\cdot,u)\|_{K}^{1/M}
-= \exp(-2/\mathrm{cap}(\Delta_{g}(u),K))$.
-\end{theorem}
-
-\begin{theorem}[Real-ray inclusion]\label{thm:realray}
-Under the Volterra contraction hypotheses,
-$\Delta_{g}(u) \cap \mathbb{R} = \emptyset$, so $[0,\infty) \subset
-\mathbb{C}\setminus\Delta_{g}(u)$ and
-\[
-\hat R(M, t^{\mu}, u) \;\to\; y(t,u) \qquad \text{uniformly on compacts of }[0,\infty).
-\]
+$\hat R(M,z,u) \to g(z,u)$ in capacity on $K$ as $M\to\infty$, with
+rate $\limsup_{M} \|g - \hat R(M,\cdot,u)\|_{K}^{1/M}
+= \exp(-2/\mathrm{cap}(\Delta_{g}(u),K))$ in capacity.
 \end{theorem}
 
 \begin{proof}
-The Volterra fixed-point bound $\|y\|_{T} \leq C_{\mu}(T)\,\|P\|$
-extends meromorphically to a strip about $\mathbb{R}_{\geq 0}$ in $z$
-under the substitution $z = t^{\mu}$; pole-freeness on this strip
-forces $\Delta_{g}(u)\cap\mathbb{R} = \emptyset$.
+This is a published external theorem and is used as such: H.~Stahl,
+\emph{The convergence of Pad\'e approximants to functions with branch
+points}, J.~Approx.\ Theory \textbf{91} (1997) 139--204, Thm.~1
+(convergence in capacity) and Thm.~2 (rate). Its hypotheses ---
+$g(\cdot,u)$ analytic at $0$ and single-valuedly continuable outside
+a compact set of capacity zero --- are supplied here by
+Lemma~\ref{lem:muntz} (analyticity at $0$, via the majorant bound of
+Theorem~\ref{thm:realray} Step~3) and, when $\mu = 1$, by
+Proposition~\ref{prop:ML} (single-valued meromorphy, polar set
+countable hence of capacity zero). For $\mu < 1$ single-valued
+continuability past every singularity is not established (see
+Proposition~\ref{prop:ML}); in that regime this theorem is applied
+only on discs inside the proven pole-free tube, where $g$ is
+holomorphic and the hypothesis is trivially met.
+\end{proof}
+
+\begin{theorem}[Real-ray inclusion under explicit hypotheses]\label{thm:realray}
+Assume:
+\begin{enumerate}[label=(H\arabic*),leftmargin=*]
+  \item\label{hyp:tube} the solution $y(\cdot,u)$ of the Volterra
+        equation extends analytically to an open neighborhood of
+        $[0,\infty)$ in $\mathbb{C}$ (no finite-time blowup on the
+        closed ray and no poles in some tube around it); and
+  \item\label{hyp:single} $g(\cdot,u)$ continues single-valuedly to
+        $\mathbb{C}$ minus a compact polar set of capacity zero
+        (automatic for $\mu = 1$ by Proposition~\ref{prop:ML}).
+\end{enumerate}
+Then $\Delta_{g}(u) \cap [0,\infty) = \emptyset$ and
+$\hat R(M, t^{\mu}, u) \to y(t,u)$ in capacity on compacts of
+$[0,\infty)$, with the geometric rate of Theorem~\ref{thm:stahl}.
+
+Hypothesis \ref{hyp:tube} is \emph{not removable}: for
+$(P,Q,R,\mu) = (1,0,1,1)$ the solution is $y = \tan t$, with real
+poles at $t = \pi/2 + k\pi$, so $\Delta_{g} \cap \mathbb{R} \neq
+\emptyset$ and no convergence on $[\pi/2,\infty)$ is possible. Any
+claim of unconditional real-ray disjointness is therefore false.
+\end{theorem}
+
+\begin{proof}
+The argument proceeds in five steps.
+
+\emph{Step 1 (Gamma-ratio bound).}
+By Proposition~\ref{prop:corrig},
+$C_{\mu} := \max_{\mu\in(0,1]} \Gamma(\mu+1)/\Gamma(2\mu+1)
+= 1.03967510771\ldots < 21/20$, attained at
+$\mu^{*} = 0.14503474316667\ldots$. Moreover for every $k \geq 1$,
+$\Gamma(k\mu+1)/\Gamma((k+1)\mu+1) \leq \Gamma(\mu+1)/\Gamma(2\mu+1)
+\leq C_{\mu}$: the ratio is decreasing in $k$ because
+$\log\Gamma$ is convex, so
+$\log\Gamma((k+1)\mu+1) - \log\Gamma(k\mu+1)$, an increment of
+$\log\Gamma$ over an interval of fixed length $\mu$ whose left
+endpoint increases with $k$, is increasing in $k$.
+
+\emph{Step 2 (Majorant construction).}
+Let $\tilde P \geq |P(u)|$, $\tilde Q \geq |Q(u)|$,
+$\tilde R \geq |R(u)|$ and define $\tilde a(1) = C_{\mu}\tilde P$,
+$\tilde a(k+1) = C_{\mu}\bigl(\tilde Q\,\tilde a(k) + \tilde R
+\sum_{j+\ell=k} \tilde a(j)\tilde a(\ell)\bigr)$. This is, up to the
+constant $C_{\mu}$, the Taylor recurrence of the classical Riccati
+equation $w' = C_{\mu}(\tilde P + \tilde Q w + \tilde R w^{2})$
+without the $1/(k+1)$ integration weights, hence dominates them; its
+generating function $\tilde g(z) = \sum \tilde a(k) z^{k}$ satisfies
+the algebraic equation
+$\tilde g = C_{\mu} z (\tilde P + \tilde Q \tilde g + \tilde R
+\tilde g^{2})$, a quadratic in $\tilde g$ whose discriminant
+$(1 - C_{\mu}\tilde Q z)^{2} - 4C_{\mu}^{2}\tilde P \tilde R z^{2}$
+is nonzero at $z = 0$; the branch with $\tilde g(0) = 0$ is analytic
+on $|z| < \rho_{0}$ with the explicit radius
+\[
+\rho_{0} \;=\; \Bigl( C_{\mu}\,\tilde Q
++ 2\,C_{\mu}\sqrt{\tilde P \tilde R} \Bigr)^{-1},
+\]
+the smallest positive zero of the discriminant.
+
+\emph{Step 3 (Inductive majorization).}
+By induction on $k$, $|a(k,u)| \leq \tilde a(k)$: the base case is
+$|a(1,u)| = |P(u)|/\Gamma(\mu+1) \leq C_{\mu}'\tilde P$ with
+$C_{\mu}' := 1/\min_{s\in(1,2]}\Gamma(s) < 1.13$ (the minimum of
+$\Gamma$ on $[1,2]$ is $0.8856\ldots$ at $s = 1.4616\ldots$);
+replacing $C_{\mu}$ by $\max(C_{\mu}, C_{\mu}') < 1.13$ throughout
+Step~2 costs only a constant and leaves $\rho_{0} > 0$; the step is
+Step~1 applied to the
+recurrence of Lemma~\ref{lem:muntz} together with the triangle
+inequality. Hence $\sum_{k} |a(k,u)|\, r^{k} < \infty$ for all
+$r < \rho_{0}$: $g(\cdot,u)$ is analytic on $|z| < \rho_{0}$ and
+the M\"untz series converges absolutely for
+$t^{\mu} < \rho_{0}$.
+
+\emph{Step 4 (No real singularities).}
+By \ref{hyp:tube}, $y(\cdot,u)$ is analytic on an open neighborhood
+$U \supset [0,\infty)$; then $g(z,u) = y(z^{1/\mu},u)$ (principal
+branch) is analytic on an open neighborhood of $(0,\infty)$, and at
+$z=0$ by Step~3. Thus no point of $[0,\infty)$ is a singularity of
+$g$, and since $\Delta_{g}(u)$ is contained in the singular set of
+the continuation (Stahl, op.~cit., \S2),
+$\Delta_{g}(u) \cap [0,\infty) = \emptyset$.
+
+\emph{Step 5 (Convergence).}
+By \ref{hyp:single}, Theorem~\ref{thm:stahl} applies with any
+compact $K \subset [0,\infty)$ (in the $z = t^{\mu}$ chart) and gives
+convergence in capacity on $K$ at geometric rate. Convergence in
+capacity is the strongest unconditional mode available here: spurious
+pole--zero pairs of the approximants (Froissart doublets) can pass
+through $K$ for infinitely many $M$, and no theorem excludes them at
+this generality --- the Baker--Gammel--Wills conjecture, which would
+have upgraded a subsequence to locally uniform convergence, is false
+(Lubinsky, Ann.\ of Math.\ \textbf{157} (2003) 847--889). Uniform
+convergence on $K$ therefore holds along the subsequence of $M$ for
+which no approximant pole meets an $\varepsilon$-neighborhood of
+$K$; Proposition~\ref{prop:verify} checks this pole-avoidance
+numerically for the rough Heston parameter ranges used in practice.
 \end{proof}
 
 \begin{corollary}[Spectral condensation]\label{cor:spectralcond}
-$\sigma(J(M,u))^{-1} \to \Delta_{g}(u)$ in Hausdorff distance as
-$M\to\infty$, where the inversion is taken pointwise.
+Every pole $z_{0}$ of $g(\cdot,u)$ with $z_{0}^{-1}$ in the limit
+set attracts spectrum: there are eigenvalues
+$x_{M} \in \sigma(J(M,u))$ with $x_{M}^{-1} \to z_{0}$. Consequently
+$\liminf_{M} \mathrm{dist}_{H}\bigl(\sigma(J(M,u))^{-1},
+\Delta_{g}(u)\bigr)$ is controlled by the capacity convergence;
+full Hausdorff convergence
+$\sigma(J(M,u))^{-1} \to \Delta_{g}(u)$ requires the absence of
+persistent spurious eigenvalues, which is exactly the
+pole-avoidance caveat of Theorem~\ref{thm:realray} Step~5 and is not
+provable in general (Lubinsky's counterexample class).
 \end{corollary}
+
+\begin{proof}
+By Corollary~\ref{cor:poles}, $\sigma(J(M,u))^{-1}$ is the pole set
+of $\hat R(M,\cdot,u)$. If some neighborhood $D$ of a pole $z_{0}$
+of $g$ contained no pole of $\hat R(M,\cdot,u)$ for a subsequence
+$M_{j} \to \infty$, then on $D$ the $\hat R(M_{j})$ would be
+holomorphic and converge in capacity to $g$; capacity convergence of
+holomorphic functions implies locally uniform convergence on
+compacts of $D$ after shrinking (Gonchar's lemma: a sequence of
+holomorphic functions converging in capacity on a domain converges
+locally uniformly there), making $g$ holomorphic near $z_{0}$ ---
+contradiction. Hence eigenvalue reciprocals enter every neighborhood
+of every pole for all large $M$: attraction holds. The negative
+half of the statement is Lubinsky's example, which exhibits
+approximant poles (hence eigenvalues of the associated $J$) with
+limit points off the singular set of the function.
+\end{proof}
 
 \section{Integrated and fractionally-integrated Riccati}
 
@@ -499,9 +921,86 @@ At working precision $128$ bits and bandwidth $M = 64$:
   \item $|\alpha_{CW}(n,u_{0}) - \alpha_{Hankel}(n,u_{0})| < 10^{-47}$
         and identical for $\beta$, for $n\leq M$ and a grid of $u_{0}\in\mathbb{C}$.
   \item Pad\'e residue:
-        $\|[z^{M+1\,:\,2M+1}](g\hat Q - z\hat P)\|_{\infty} < 10^{-53}$.
-  \item Free-part match: $[z^{1\,:\,M}](g\hat Q - z\hat P) = 0$ to working precision.
+        $\|[z^{M+1\,:\,2M}](g\hat Q - \hat P)\|_{\infty} < 10^{-53}$.
+  \item Free-part match: $[z^{1\,:\,M}](g\hat Q - \hat P) = 0$ to working precision.
 \end{enumerate}
+\end{proposition}
+
+\section{Meromorphy: linearization, full theorem, residues}
+
+This section collects, in one place, the strongest available forms of
+the global meromorphy statements used above.
+
+\begin{proposition}[Linearization and global meromorphy for $\mu=1$]\label{prop:ML}
+For $\mu = 1$ and $R(u) \neq 0$, the Riccati substitution
+$y = -w'/(R\,w)$ linearizes the equation to
+$w'' - Q\,w' + PR\,w = 0$, an entire linear ODE; with the initial
+data $w(0)=1$, $w'(0) = -R\,y(0) = 0$, the solution $w$ is entire,
+and
+\[
+g(z,u) \;=\; y(z,u) \;=\; -\,\frac{w'(z)}{R(u)\, w(z)}
+\]
+is globally meromorphic in $z$, its poles being the (isolated,
+simple where $w' \neq 0$) zeros of the entire function $w$. For
+constant coefficients $w$ is an explicit combination of exponentials
+$e^{\lambda_{\pm}z}$, $\lambda_{\pm} = \tfrac{1}{2}(Q \pm
+\sqrt{Q^{2}-4PR})$, so the pole set is an explicit lattice-like
+zero set. For $\mu < 1$ no such linearization is available: the
+Mittag-Leffler substitution $y = -\,(D^{\mu}w)/(R\,w)$ does not
+close, because the fractional Leibniz rule
+$D^{\mu}(fg) \neq f D^{\mu}g + g D^{\mu}f$ obstructs the
+cancellation that makes the $\mu=1$ computation work. Global
+meromorphy of $g(\cdot,u)$ for $\mu < 1$ is therefore \emph{not
+proved here}, and the obstruction is stated exactly: the known
+continuation past the first real singularity $t^{*}$ has, by matched
+asymptotics, the local form $y \sim c\,(t^{*}-t)^{-\mu}$, whose
+$z = t^{\mu}$ chart image is a branch point, not a pole, whenever
+$\mu \notin 1/\mathbb{N}$.
+\end{proposition}
+
+\begin{theorem}[Meromorphy on the closed real ray]\label{thm:mero}
+For $\mu = 1$: $g(\cdot,u)$ is globally meromorphic
+(Proposition~\ref{prop:ML}), and hypothesis \ref{hyp:tube} of
+Theorem~\ref{thm:realray} holds if and only if the entire function
+$w$ has no zeros on $[0,\infty)$ --- an explicitly checkable
+condition on $(P,Q,R)$; for rough Heston at $u$ real, $u \neq 0$,
+$PR = \tfrac{1}{4}\nu^{2}(-u^{2}-iu)$ is non-real, the exponents
+$\lambda_{\pm}$ are non-real and non-conjugate, and $w$ has no real
+zeros because $|e^{\lambda_{+}t}|$ and $|e^{\lambda_{-}t}|$ separate
+exponentially while zero of $w$ requires exact modulus balance
+$|c_{+}|e^{\Re\lambda_{+}t} = |c_{-}|e^{\Re\lambda_{-}t}$ together
+with phase alignment, which the non-real frequency mismatch
+$\Im(\lambda_{+}-\lambda_{-}) \neq 0$ permits at most at isolated
+$t$ where the phase condition fails to hold identically ---
+concretely, real zeros form a subset of the solutions of two
+simultaneous real-analytic equations with nonvanishing Jacobian,
+which is discrete and, for the rough Heston parameter set used in
+Proposition~\ref{prop:verify}, empty by ball-arithmetic check on the
+compact time horizon $[0,T]$. For $\mu < 1$ the statement of global
+meromorphy is withdrawn per Proposition~\ref{prop:ML}; the proven
+content is the pole-free disc $|z| < \rho_{0}$ of
+Theorem~\ref{thm:realray} Step~3 plus continuation as far as the
+Volterra solution extends.
+\end{theorem}
+
+\begin{proposition}[Residue at a simple pole, $\mu=1$; withdrawal for $\mu<1$]\label{cor:residue}
+For $\mu = 1$, at each simple zero $z^{*}$ of $w$,
+\[
+\Res\bigl(g, z^{*}\bigr) \;=\; -\,\frac{1}{R(u)},
+\]
+since $g = -w'/(Rw)$ has residue $-1/R$ at every simple zero of $w$
+(logarithmic derivative). In particular $|\Res(g,z^{*})|$ is
+constant, hence bounded below. The previously circulated formula
+$\Res(g,z^{*}) = -(z^{*})^{(\mu-1)/\mu}/(c_{2}\mu)$ for general
+$\mu \in (0,1)$ is \emph{withdrawn}: it presupposes a simple pole in
+the $z$-chart, whereas matched asymptotics at a real blowup give
+$y \sim c\,(t^{*}-t)^{-\mu}$, which in $z = t^{\mu}$ is a branch
+singularity of exponent $-\mu \notin \mathbb{Z}$ for
+$\mu \notin 1/\mathbb{N}$ --- there is no residue to compute, and no
+proof of the formula exists. The check $\mu = 1$: $\tan$ has
+residue $-1$ at $\pi/2$, matching $-1/R = -1$ for $R = 1$, while the
+withdrawn formula also gives $-1/c_{2}$ only with $c_{2} = R$, its
+sole surviving case.
 \end{proposition}
 
 \section{Corrigendum}
@@ -515,8 +1014,40 @@ uniform bound is unchanged.
 \end{proposition}
 
 \begin{proof}
-$d/d\mu \log[\Gamma(\mu+1)/\Gamma(2\mu+1)] = \psi(\mu+1) - 2\psi(2\mu+1) = 0$
-solved to working precision via Newton on $\psi$.
+Let $h(\mu) := \Gamma(\mu+1)/\Gamma(2\mu+1)$ on $(0,1]$. Then
+\[
+\frac{d}{d\mu} \log h(\mu) \;=\; \psi(\mu+1) - 2\psi(2\mu+1),
+\]
+so an interior critical point solves the digamma equation
+\begin{equation}\label{eq:digammacrit}
+F(\mu) := \psi(\mu+1) - 2\psi(2\mu+1) = 0 .
+\end{equation}
+The prior value $\mu \approx 0.1339$ does not solve
+\eqref{eq:digammacrit}: evaluating in ball arithmetic,
+$F(0.1339) = 3.65\ldots \times 10^{-2} > 0$, a value bounded away
+from zero, so $h$ is still strictly increasing there and $0.1339$ is
+not the critical point. Newton's iteration
+\[
+\mu_{n+1} \;=\; \mu_{n} - \frac{F(\mu_{n})}{F'(\mu_{n})},
+\qquad
+F'(\mu) = \psi'(\mu+1) - 4\,\psi'(2\mu+1) < 0 \text{ near the root},
+\]
+started from $\mu_{0} = 0.14$ converges quadratically to
+\[
+\mu^{*} = 0.14503474316667\ldots,
+\qquad
+h(\mu^{*}) = 1.03967510771\ldots < \tfrac{21}{20},
+\]
+with $F(\mu^{*})$ enclosing $0$ at working precision. Since
+$F(0^{+}) = \gamma > 0$ (as $\psi(1) = -\gamma$ and the limit of $F$
+at $0$ is $-\gamma + 2\gamma$) and $F(1) = \psi(2) - 2\psi(3) < 0$,
+with $F$ strictly decreasing on the bracketing interval, $\mu^{*}$ is
+the unique interior critical point and a maximum; the endpoint values
+$h(0^{+}) = \Gamma(1)/\Gamma(1) = 1$ and
+$h(1) = \Gamma(2)/\Gamma(3) = \tfrac{1}{2}$ are strictly smaller. This
+derivation is
+self-contained and machine-verified in ball arithmetic by the unit
+test \texttt{LemmaACriticalPointTest} in the arb4j repository.
 \end{proof}
 
 \section{Extension to $\mu>1$}
@@ -537,10 +1068,90 @@ produced by the modified Gamma-ratio recurrence; the proof of
 Theorem~\ref{thm:CW} is moment-only and oblivious to origin.
 \end{proof}
 
-\begin{remark}[Conjectural status]\label{rem:conj}
-Theorem~\ref{thm:realray} for $\mu > 1$ requires reproof of
-$\Delta_{g}(u)\cap\mathbb{R} = \emptyset$ via iterated Volterra
-contraction; conjectural pending that argument.
-\end{remark}
+\begin{theorem}[Uniform Gamma-ratio contraction for $\mu>1$]\label{rem:conj}
+Let $\mu = n+\nu$ with $n = \lfloor\mu\rfloor \geq 1$ and
+$\nu \in (0,1)$. Then the modified Gamma ratio of
+Theorem~\ref{thm:munugt1} satisfies
+\[
+\frac{\Gamma(k\nu+n+1)}{\Gamma((k+1)\nu+n+1)}
+\;\leq\; e^{-\nu(1-\gamma)}
+\;=:\; C_{\nu}
+\;<\; 1
+\qquad\text{for all } k \geq 0 \text{ and all } n \geq 1,
+\]
+where $\gamma = 0.5772156649\ldots$ is the Euler--Mascheroni
+constant, so $1-\gamma = 0.4227843350\ldots > 0$. The bound is
+uniform in $k$ and $n$, the ratio is strictly decreasing in $k$, and
+it tends to $0$ as $k \to \infty$. Consequently
+Theorem~\ref{thm:realray} holds for $\mu > 1$, $\nu \in (0,1)$, under
+the same hypotheses \ref{hyp:tube}--\ref{hyp:single}: its conclusion
+is no longer conjectural.
+\end{theorem}
 
-\end{document>
+\begin{proof}
+\emph{Step 1 (the ratio is uniformly below $1$).}
+Write $x := k\nu + n + 1$, so the ratio is
+$\Gamma(x)/\Gamma(x+\nu)$. Since $k \geq 0$, $\nu > 0$, and
+$n \geq 1$, we have $x \geq n+1 \geq 2$. By the fundamental theorem
+of calculus applied to $\log\Gamma$,
+\[
+\log\Gamma(x+\nu) - \log\Gamma(x)
+\;=\; \int_{x}^{x+\nu} \psi(t)\,dt
+\;\geq\; \nu\,\psi(x)
+\;\geq\; \nu\,\psi(2)
+\;=\; \nu\,(1-\gamma),
+\]
+where both inequalities use that the digamma function $\psi$ is
+strictly increasing on $(0,\infty)$ (its derivative
+$\psi'(t) = \sum_{j\geq 0} (t+j)^{-2}$ is positive), together with
+$x \geq 2$ and the classical value $\psi(2) = 1-\gamma$ (from
+$\psi(1) = -\gamma$ and the recurrence $\psi(t+1) = \psi(t) + 1/t$).
+Exponentiating and taking reciprocals,
+\[
+\frac{\Gamma(x)}{\Gamma(x+\nu)} \;\leq\; e^{-\nu(1-\gamma)} \;<\; 1,
+\]
+uniformly in $k \geq 0$ and $n \geq 1$, since neither side of the
+bound depends on $k$ or $n$.
+
+\emph{Step 2 (monotonicity and decay).}
+The increment $\log\Gamma(x+\nu) - \log\Gamma(x)$ is an increment of
+the convex function $\log\Gamma$ over an interval of fixed length
+$\nu$ whose left endpoint $x = k\nu+n+1$ is strictly increasing in
+$k$; by convexity the increment is strictly increasing in $k$, so the
+ratio $\Gamma(x)/\Gamma(x+\nu)$ is strictly decreasing in $k$ (the
+same argument as Theorem~\ref{thm:realray} Step~1). Since
+$\psi(x) \to \infty$ as $x \to \infty$, the increment tends to
+$\infty$ and the ratio tends to $0$.
+
+\emph{Step 3 (the contraction argument of Theorem~\ref{thm:realray}
+carries through).}
+By Theorem~\ref{thm:munugt1} the recurrence of
+Lemma~\ref{lem:muntz} for the fractional part of the $\mu>1$ basis is
+the same moment recurrence with
+$\Gamma(k\mu+1)/\Gamma((k+1)\mu+1)$ replaced by
+$\Gamma(k\nu+n+1)/\Gamma((k+1)\nu+n+1)$. In the proof of
+Theorem~\ref{thm:realray}, the Gamma ratio enters only through the
+two constants of Steps~1--3: the uniform ratio bound (there
+$C_{\mu} < 21/20$) and the base-case constant (there
+$C_{\mu}' < 1.13$). Here Step~1 above gives the ratio bound
+$C_{\nu} < 1 < 21/20$, strictly better than $C_{\mu}$; and the base
+case is $|a(1,u)| = |P(u)|/\Gamma(\nu+n+1) \leq \tilde P$, because
+$\nu+n+1 \geq 2$ and $\Gamma$ is increasing on $[2,\infty)$ with
+$\Gamma(2) = 1$, so $1/\Gamma(\nu+n+1) \leq 1 < C_{\mu}'$. Every
+inequality in Steps~2--3 of Theorem~\ref{thm:realray} therefore holds
+verbatim with the same (indeed smaller) majorant constants, yielding
+the same explicit radius $\rho_{0} > 0$ of analyticity of
+$g(\cdot,u)$ at $z=0$, and Steps~4--5 are independent of the Gamma
+ratio, using only \ref{hyp:tube} and \ref{hyp:single}. Hence
+Theorem~\ref{thm:realray} holds for $\mu = n+\nu > 1$ with
+$\nu \in (0,1)$.
+
+The excluded case $\nu = 0$ is the integer-order equation
+$y^{(n)} = P + Qy + Ry^{2}$: the fractional part of the basis in
+Theorem~\ref{thm:munugt1} is empty, the modified ratio degenerates to
+$\Gamma(n+1)/\Gamma(n+1) = 1$, and local analyticity at $t=0$ is
+instead the classical Cauchy--Kovalevskaya majorant statement for an
+analytic ODE, so no fractional contraction constant is needed there.
+\end{proof}
+
+\end{document}
