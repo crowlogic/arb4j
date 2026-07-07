@@ -27,12 +27,27 @@ runtime, so a cycle wires itself the same way a DAG does:
    compilation ordering rule. A cyclic cluster such as {σ, h, α, β} is
    forward-declared with `declare(...)`, compiled member by member, and the
    leaf is `express`ed, which cascades instantiation through the cluster.
-3. **Runtime lookup for cycle edges.** When a generated `evaluate` reaches a
-   referenced function whose field is still null,
-   `Expression.constructReferencedFunctionInstanceIfItIsNull` emits
-   `this.context.lookupFunctionInstance("<name>")` — the peer instance is
-   fetched from the shared `Context` at the moment it is first needed, so
-   the order in which cycle members were instantiated is irrelevant.
+3. **Runtime resolution of null reference fields.** When a generated
+   `initialize()` reaches a referenced function whose field is still null,
+   `Expression.constructReferencedFunctionInstanceIfItIsNull` emits one of
+   two branches, chosen at compile time:
+   - **Recursive and forward-declared peers →
+     `this.context.allocatePeer("<name>")`.** If the peer is in the same
+     cycle as this expression (`isTransitivelyReachable`), or was only
+     forward-declared via `declare(...)` so its concrete class is unknown
+     when this expression compiles, the emitted code calls
+     `Context.allocatePeer`, which looks up the now-defined class at
+     runtime and allocates a fresh instance that owns its own `evaluating`
+     re-entrancy flag while sharing the context singleton's `IndexCache` —
+     so the order in which cycle members were instantiated is irrelevant
+     and memoization is not lost across recursion levels.
+   - **Non-recursive peers →
+     `this.context.lookupFunctionInstance("<name>")`, then `new`.** The
+     emitted code first fetches the context's canonical instance; only if
+     no instance is registered yet does it construct a fresh one with a
+     bytecode `new` of the mapping's generated class and propagate the
+     parent's `context` field into it.
+
    Self-recursion is handled by `Expression.generateSelfReference`, which
    allocates a separate instance per recursion level.
 
@@ -55,7 +70,8 @@ already-frozen σ/h children rather than re-entering an in-flight instance.
 | Concern | File / line |
 |---|---|
 | Graph construction (codegen order) | `src/main/java/arb/expressions/Context.java` — `populateFunctionReferenceGraph()` |
-| Runtime peer lookup | `src/main/java/arb/expressions/Context.java` — `lookupFunctionInstance(name)` |
+| Runtime peer allocation (recursive/forward-declared) | `src/main/java/arb/expressions/Context.java` — `allocatePeer(name)` |
+| Runtime peer lookup (non-recursive) | `src/main/java/arb/expressions/Context.java` — `lookupFunctionInstance(name)` |
 | Deferred wiring emission | `src/main/java/arb/expressions/Expression.java` — `constructReferencedFunctionInstanceIfItIsNull()` |
 | Frozen-index inner instances | `src/main/java/arb/expressions/Expression.java` — `generateFunctionalElement()` |
 | Per-index memoization | `src/main/java/arb/expressions/Expression.java` — `shouldCache()` |
