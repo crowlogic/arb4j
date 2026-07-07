@@ -1,7 +1,10 @@
 package arb.functions.complex;
 
 import arb.Complex;
+import arb.ComplexConstants;
+import arb.ComplexMatrix;
 import arb.ComplexPolynomial;
+import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
@@ -65,6 +68,102 @@ public final class DiagonalPadePair implements
     this.Q      = new ComplexPolynomial();
     this.P.fitLength(Math.max(1, M + 1));
     this.Q.fitLength(Math.max(1, M + 1));
+  }
+
+  /**
+   * Solve the diagonal Padé normal equations directly from Maclaurin
+   * coefficients: given the formal series g(z) = Σ_k c_k z^k (supplied as a
+   * {@link ComplexPolynomial} carrying the Taylor data c_0 … c_{2M};
+   * coefficients beyond the polynomial's degree are read as zero), construct
+   * the unique pair (P_M, Q_M) with deg P_M ≤ M, deg Q_M ≤ M, Q_M(0) = 1 and
+   *
+   * <pre>
+   *   Q_M(z)·g(z) − P_M(z) = O(z^{2M+1})
+   * </pre>
+   *
+   * The denominator coefficients q_1 … q_M solve the M×M Hankel system
+   *
+   * <pre>
+   *   Σ_{j=1..M} q_j·c_{M+i−j} = −c_{M+i},   i = 1..M,
+   * </pre>
+   *
+   * and the numerator is the order-M truncation P_i = Σ_{j=0..min(i,M)}
+   * q_j·c_{i−j}. When the Hankel system is singular (an indefinite moment
+   * functional at order M) the returned pair carries the sentinel described in
+   * {@link #isSingularSentinel}.
+   *
+   * <p>
+   * By Stahl's convergence theorem — see the theorem "Analytic Continuation
+   * via Diagonal Padé Sequence in Capacity" and
+   * {@code docs/TheRiemannHilbertViewOfPadeApproximationAndGlobalAnalyticContinuation.tex}
+   * — the resulting sequence [M/M]_g = P_M/Q_M converges in capacity to g on
+   * compact subsets of D* = ℂ ∖ K*, where K* is the minimal-capacity compact
+   * carrying the branch cuts of g. The sequence therefore analytically
+   * continues g strictly past the local radius of convergence ρ₀ of the
+   * series, with the continuous blow-up along K* mapped to the discrete roots
+   * of Q_M condensing on the equilibrium measure of K*.
+   * {@code PadeAnalyticContinuationInCapacityTest} exhibits this on
+   * g(z) = log(1+z).
+   *
+   * @param g    the Maclaurin coefficients c_0 … c_{2M} of the series
+   * @param M    the diagonal Padé order
+   * @param bits working precision
+   * @return the freshly allocated (P_M, Q_M) pair — owned by the caller
+   */
+  public static DiagonalPadePair fromMaclaurinSeries(ComplexPolynomial g, int M, int bits)
+  {
+    DiagonalPadePair pair = new DiagonalPadePair(M);
+    int              deg  = g.degree();
+    if (M == 0)
+    {
+      pair.P.setLength(1);
+      pair.P.get(0).set(deg >= 0 ? g.get(0) : ComplexConstants.zero);
+      pair.Q.setLength(1);
+      pair.Q.get(0).one();
+      return pair;
+    }
+    try ( ComplexMatrix A = ComplexMatrix.newMatrix(M, M);
+          ComplexMatrix rhs = ComplexMatrix.newMatrix(M, 1);
+          ComplexMatrix qsol = ComplexMatrix.newMatrix(M, 1);
+          Complex neg = new Complex();
+          Complex acc = new Complex();
+          Complex term = new Complex())
+    {
+      for (int i = 1; i <= M; i++)
+      {
+        for (int j = 1; j <= M; j++)
+        {
+          int idx = M + i - j;
+          A.set(i - 1, j - 1, idx <= deg ? g.get(idx) : ComplexConstants.zero);
+        }
+        int idx = M + i;
+        (idx <= deg ? g.get(idx) : ComplexConstants.zero).neg(neg);
+        rhs.set(i - 1, 0, neg);
+      }
+      if (arblib.acb_mat_solve(qsol, A, rhs, bits) == 0)
+      {
+        return pair.markSingular();
+      }
+      pair.Q.setLength(M + 1);
+      pair.Q.get(0).one();
+      for (int j = 1; j <= M; j++)
+      {
+        pair.Q.get(j).set(qsol.get(j - 1, 0));
+      }
+      pair.P.setLength(M + 1);
+      for (int i = 0; i <= M; i++)
+      {
+        acc.zero();
+        for (int j = 0; j <= i; j++)
+        {
+          int idx = i - j;
+          pair.Q.get(j).mul(idx <= deg ? g.get(idx) : ComplexConstants.zero, bits, term);
+          acc.add(term, bits, acc);
+        }
+        pair.P.get(i).set(acc);
+      }
+    }
+    return pair;
   }
 
   // ── Producer-side mutation; fluent return of `this` ───────────────────────
