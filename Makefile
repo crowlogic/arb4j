@@ -36,9 +36,9 @@ FLINT_URL     := https://github.com/flintlib/flint/releases/download/v$(FLINT_VE
 FLINT_SRCDIR  := $(CACHE)/flint-$(FLINT_VERSION)-src
 
 # xdotool ships no static .a, so (like GMP/MPFR/FLINT) we build libxdo.a from
-# source and link it statically. The X11 runtime libraries remain dynamically
-# linked; libxkbcommon is built from source as a static archive because the
-# distro packages do not ship a PIC static archive for it.
+# source and link it statically. The X11 runtime libraries and libxkbcommon
+# remain dynamically linked (apt install libxkbcommon-dev provides the headers
+# and link stub).
 XDO_VERSION := 3.20211022.1
 XDO_PREFIX  := $(CACHE)/xdotool-$(XDO_VERSION)
 XDO_STATIC  := $(XDO_PREFIX)/lib/libxdo.a
@@ -46,20 +46,10 @@ XDO_TARBALL := $(CACHE)/xdotool-$(XDO_VERSION).tar.gz
 XDO_URL     := https://github.com/jordansissel/xdotool/releases/download/v$(XDO_VERSION)/xdotool-$(XDO_VERSION).tar.gz
 XDO_SRCDIR  := $(CACHE)/xdotool-$(XDO_VERSION)-src
 
-# libxkbcommon is not shipped as a PIC static archive by the distro packages, so
-# build it from source and cache the resulting static archive here.
-XKBCOMMON_VERSION := 1.6.0
-XKBCOMMON_PREFIX  := $(CACHE)/libxkbcommon-$(XKBCOMMON_VERSION)
-XKBCOMMON_LIBDIR  := $(XKBCOMMON_PREFIX)/lib/$(shell dpkg-architecture -qDEB_HOST_MULTIARCH 2>/dev/null || echo x86_64-linux-gnu)
-XKBCOMMON_STATIC  := $(XKBCOMMON_LIBDIR)/libxkbcommon.a
-XKBCOMMON_TARBALL := $(CACHE)/libxkbcommon-$(XKBCOMMON_VERSION).tar.xz
-XKBCOMMON_URL     := https://xkbcommon.org/download/libxkbcommon-$(XKBCOMMON_VERSION).tar.xz
-XKBCOMMON_SRCDIR  := $(CACHE)/libxkbcommon-$(XKBCOMMON_VERSION)-src
-
 C_INCLUDES=-I$(JAVA_HOME)include -I$(JAVA_HOME)include/linux \
            -I$(FLINT_PREFIX)/include -I$(FLINT_PREFIX)/include/flint \
            -I$(MPFR_PREFIX)/include -I$(GMP_PREFIX)/include \
-           -I$(XDO_PREFIX)/include -I$(XKBCOMMON_PREFIX)/include
+           -I$(XDO_PREFIX)/include
 
 all: libarblib.so
 
@@ -140,34 +130,19 @@ $(XDO_STATIC): $(XDO_TARBALL)
 	# complex.c's version remains the sole global one, preserving behavior.
 	objcopy --localize-symbol=xdo_activate_window $(XDO_STATIC)
 
-$(XKBCOMMON_TARBALL):
-	mkdir -p $(CACHE)
-	curl -L --fail -o $@ $(XKBCOMMON_URL)
-
-$(XKBCOMMON_STATIC): $(XKBCOMMON_TARBALL)
-	mkdir -p $(XKBCOMMON_SRCDIR)
-	tar -xJf $(XKBCOMMON_TARBALL) -C $(XKBCOMMON_SRCDIR) --strip-components=1
-	mkdir -p $(XKBCOMMON_PREFIX)/lib $(XKBCOMMON_LIBDIR) $(XKBCOMMON_PREFIX)/include
-	command -v meson >/dev/null 2>&1 || python3 -m pip install --user meson
-	cd $(XKBCOMMON_SRCDIR) && \
-	  rm -rf builddir && \
-	  PATH=$$(python3 -m site --user-base)/bin:$$PATH meson setup builddir --prefix=$(XKBCOMMON_PREFIX) --default-library=static -Denable-x11=false -Denable-wayland=false -Denable-docs=false && \
-	  PATH=$$(python3 -m site --user-base)/bin:$$PATH ninja -C builddir && \
-	  PATH=$$(python3 -m site --user-base)/bin:$$PATH ninja -C builddir install
-
 # The single canonical native library lives under src/main/resources so Maven
 # packages it into the jar at native/libarblib.so via standard resource
 # processing. The repo-root libarblib.so is a symlink to it, so dev runs
 # (-Djava.library.path=.) and the packaged jar load the exact same binary.
 SO_RESOURCE = src/main/resources/native/libarblib.so
 
-$(SO_RESOURCE): $(SOURCES) $(FLINT_STATIC) $(XDO_STATIC) $(XKBCOMMON_STATIC)
+$(SO_RESOURCE): $(SOURCES) $(FLINT_STATIC) $(XDO_STATIC)
 	mkdir -p $(dir $(SO_RESOURCE))
 	clang $(CFLAGS) $(SOURCES) $(C_INCLUDES) \
-	  -L$(FLINT_PREFIX)/lib -L$(MPFR_PREFIX)/lib -L$(GMP_PREFIX)/lib -L$(XDO_PREFIX)/lib -L$(XKBCOMMON_LIBDIR) \
+	  -L$(FLINT_PREFIX)/lib -L$(MPFR_PREFIX)/lib -L$(GMP_PREFIX)/lib -L$(XDO_PREFIX)/lib \
 	  -o$(SO_RESOURCE) \
-	  -Wl,-Bstatic -lflint -lmpfr -lgmp -lxdo -lxkbcommon \
-	  -Wl,-Bdynamic -lX11 -lXtst -lXinerama -lXext -lXau -lXdmcp -lxcb
+	  -Wl,-Bstatic -lflint -lmpfr -lgmp -lxdo \
+	  -Wl,-Bdynamic -lxkbcommon -lX11 -lXtst -lXinerama -lXext -lXau -lXdmcp -lxcb
 	strip $(SO_RESOURCE)
 
 libarblib.so: $(SO_RESOURCE)
