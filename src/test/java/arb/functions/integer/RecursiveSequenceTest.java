@@ -8,10 +8,10 @@ import arb.functions.complex.ComplexFunction;
 import junit.framework.TestCase;
 
 /**
- * Regression test for inner-curry preservation across self-recursive splice.
+ * Regression test for inner- preservation across self-recursive splice.
  *
  * <p>
- * A {@link ComplexFunctionSequence} whose codomain is a curried
+ * A {@link ComplexFunctionSequence} whose codomain is a 
  * {@link ComplexFunction} (so the source has the form {@code k➔v➔body}) must
  * preserve the inner {@code v➔} arrow when {@code body} contains a
  * self-reference such as {@code a(k-1)(v)}. Prior to the fix, the inner
@@ -25,10 +25,10 @@ import junit.framework.TestCase;
  * exercises the splice path: parsing, recursion through the integer-domain
  * cache, and codomain-function evaluation.
  */
-public class SelfRecursiveCurriedSequenceTest extends
+public class RecursiveSequenceTest extends
                                               TestCase
 {
-  public static void testSelfRecursiveInnerCurryIsPreserved()
+  public static void testSelfRecursiveInnerIsPreserved()
   {
     Context                 ctx    = new Context();
     String                  source = "a:k➔v➔when(k=1, v, else, a(k-1)(v)+v)";
@@ -48,7 +48,7 @@ public class SelfRecursiveCurriedSequenceTest extends
   }
 
   /**
-   * Mutually-recursive curried functional sequences: peers a and S each have
+   * Mutually-recursive  functional sequences: peers a and S each have
    * codomain {@link ComplexFunction} and reference each other. Equivalent to
    * the inner cluster of the Müntz–Padé recurrence with all numerical content
    * stripped:
@@ -61,7 +61,7 @@ public class SelfRecursiveCurriedSequenceTest extends
    * {@code a(3)(v) = a(2)(v) + S(3)(v) = v + v²}. With {@code v=2},
    * {@code a(3)(2) = 2 + 4 = 6}.
    */
-  public static void testMutuallyRecursiveCurriedSequencesPreserveInnerCurry()
+  public static void testMutuallyRecursiveFunctionalSequencesPreserveInnerFunction()
   {
     Context ctx = new Context();
     ctx.declare("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
@@ -91,7 +91,7 @@ public class SelfRecursiveCurriedSequenceTest extends
    * referring to {@code v} directly. With {@code p(v) = v} the arithmetic is
    * identical, so {@code a(3)(2) = 6} remains exact.
    */
-  public static void testMutuallyRecursiveCurriedSequencesWithExternalReferencedFunction()
+  public static void testMutuallyRecursiveFunctionalSequencesWithExternalReferencedFunction()
   {
     Context ctx = new Context();
     ComplexFunction.express("p", "v➔v", ctx);
@@ -115,15 +115,7 @@ public class SelfRecursiveCurriedSequenceTest extends
     assertTrue(out.im().isZero());
   }
 
-  /**
-   * Minimal mutually-recursive curried pair: {@code a} references {@code S},
-   * {@code S} references {@code a}, both curried {@code k➔v➔...}, no sum,
-   * no external referenced functions, no Context variables besides the bound
-   * arguments. Recurrence: {@code S(k)(v) = a(k-1)(v)·a(k-1)(v)} and
-   * {@code a(k)(v) = when(k=1, v, else, S(k)(v))}. With {@code k=2, v=2}:
-   * {@code a(1)(v) = v = 2}, {@code S(2)(v) = 4}, {@code a(2)(v) = 4}.
-   */
-  public static void testMinimalMutuallyRecursiveCurriedPair()
+  public static void testMinimalMutuallyRecursiveFunctionPair()
   {
     Context ctx = new Context();
     ctx.declare("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
@@ -147,12 +139,12 @@ public class SelfRecursiveCurriedSequenceTest extends
   }
 
   /**
-   * Minimal mutually-recursive curried pair plus a Real Context variable
+   * Minimal mutually-recursive  pair plus a Real Context variable
    * {@code μ} used multiplicatively in {@code a}'s recursive case. With
    * {@code μ = 1} the arithmetic is identical to
-   * {@link #testMinimalMutuallyRecursiveCurriedPair}, so {@code a(2)(2) = 4}.
+   * {@link #testMinimalMutuallyRecursivePair}, so {@code a(2)(2) = 4}.
    */
-  public static void testMinimalMutuallyRecursiveCurriedPairWithMu()
+  public static void testMinimalMutuallyRecursiveFunctionPairWithMu()
   {
     Context ctx = new Context();
     Real μ      = new Real();
@@ -181,12 +173,12 @@ public class SelfRecursiveCurriedSequenceTest extends
   }
 
   /**
-   * Mutually-recursive curried pair with arithmetic combining the bound
+   * Mutually-recursive  pair with arithmetic combining the bound
    * integer index {@code k} and a Real Context variable {@code μ}. With
    * {@code μ = 1}: {@code S(2)(v) = v·v = 4}, and
    * {@code a(2)(v) = (2·1)·S(2)(v) = 8}. So {@code a(2)(2) = 8}.
    */
-  public static void testMinimalMutuallyRecursiveCurriedPairWithKTimesMu()
+  public static void testMinimalMutuallyRecursivePairWithKTimesMu()
   {
     Context ctx = new Context();
     Real μ      = new Real();
@@ -215,13 +207,13 @@ public class SelfRecursiveCurriedSequenceTest extends
   }
 
   /**
-   * Mutually-recursive curried pair with {@code Γ} applied to {@code k·μ+1}
+   * Mutually-recursive  pair with {@code Γ} applied to {@code k·μ+1}
    * in {@code a}'s recursive case — the exact arithmetic shape of the
    * rough-Heston Riccati Müntz recurrence factor. With {@code μ = 1, k = 2}:
    * {@code Γ(k·μ+1) = Γ(3) = 2}, {@code S(2)(v) = v·v = 4}, and
    * {@code a(2)(v) = 2·S(2)(v) = 8}. So {@code a(2)(2) = 8}.
    */
-  public static void testMinimalMutuallyRecursiveCurriedPairWithGammaOfKMu()
+  public static void testMinimalMutuallyRecursivePairWithGammaOfKMu()
   {
     Context ctx = new Context();
     Real μ      = new Real();
@@ -250,7 +242,7 @@ public class SelfRecursiveCurriedSequenceTest extends
   }
 
   /**
-   * Mutually-recursive curried pair where {@code a}'s recursive case
+   * Mutually-recursive  pair where {@code a}'s recursive case
    * multiplies an external referenced function {@code p(v)} by the recursive
    * self-call {@code a(k-1)(v)} and adds the peer mutual call {@code S(k)(v)}.
    * This is the structural shape of bonanzai's
@@ -258,7 +250,7 @@ public class SelfRecursiveCurriedSequenceTest extends
    * with the prefactor and {@code r} dropped. With {@code p(v)=v}: {@code a(1)(v) = v = 2},
    * {@code S(2)(v) = a(1)(v)·a(1)(v) = 4}, {@code a(2)(v) = p(v)·a(1)(v) + S(2)(v) = 2·2 + 4 = 8}.
    */
-  public static void testMutuallyRecursiveCurriedPairWithExternalFunctionMultiplyingRecursiveSelfCall()
+  public static void testMutuallyRecursivePairWithExternalFunctionMultiplyingRecursiveSelfCall()
   {
     Context ctx = new Context();
     ComplexFunction.express("p", "v➔v", ctx);
@@ -283,12 +275,12 @@ public class SelfRecursiveCurriedSequenceTest extends
   }
 
   /**
-   * Mutually-recursive curried pair where {@code a}'s recursive case multiplies
+   * Mutually-recursive  pair where {@code a}'s recursive case multiplies
    * an external referenced function {@code p(v)} by the peer mutual call
    * {@code S(k)(v)}. With {@code p(v) = v}, {@code k = 2, v = 2}:
    * {@code a(1)(v) = v = 2}, {@code S(2)(v) = 4}, {@code a(2)(v) = p(v)·S(2)(v) = 2·4 = 8}.
    */
-  public static void testMutuallyRecursiveCurriedPairWithExternalFunctionMultiplyingPeerCall()
+  public static void testMutuallyRecursivePairWithExternalFunctionMultiplyingPeerCall()
   {
     Context ctx = new Context();
     ComplexFunction.express("p", "v➔v", ctx);
@@ -358,12 +350,12 @@ public class SelfRecursiveCurriedSequenceTest extends
   }
 
   /**
-   * Mutually-recursive curried pair where {@code S} itself uses {@code when}
+   * Mutually-recursive  pair where {@code S} itself uses {@code when}
    * to terminate — both peers piecewise. {@code S(k=2)(v) = a(1)(v)·a(1)(v) = v·v},
    * {@code S(k>2)(v) = 0}; {@code a(k=1)(v) = v}, {@code a(k>1)(v) = S(k)(v)}.
    * With {@code k=2, v=2}: {@code a(2)(2) = 4}.
    */
-  public static void testMutuallyRecursiveCurriedPairWithWhenInPeer()
+  public static void testMutuallyRecursivePairWithWhenInPeer()
   {
     Context ctx = new Context();
     ctx.declare("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);

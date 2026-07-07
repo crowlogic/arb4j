@@ -26,9 +26,9 @@ Canonical feature names used by `docs/test-catalog.md`. Section headings here ar
 **Brief description:** Multi-parameter declarations are normalized into nested arrows, yielding higher-order generated functions with captured upstream parameters and stable rendering.
 **Key source files/classes:** `src/main/java/arb/expressions/Expression.java`, `src/main/java/arb/expressions/nodes/Node.java`, `src/main/java/arb/expressions/nodes/VariableNode.java`
 **Representative tests:**
-- [AutoCurryTest.testTwoParameterDeclarationMatchesArrowChain](test-catalog.md#autocurrytesttesttwoparameterdeclarationmatchesarrowchain)
-- [AutoCurryTest.testSingleParameterDeclarationMatchesArrow](test-catalog.md#autocurrytesttestsingleparameterdeclarationmatchesarrow)
-- [AutoCurryTest.testNamedDeclarationMatchesAnonymous](test-catalog.md#autocurrytesttestnameddeclarationmatchesanonymous)
+- [AutofunctionTest.testTwoParameterDeclarationMatchesArrowChain](test-catalog.md#autofunctiontesttesttwoparameterdeclarationmatchesarrowchain)
+- [AutofunctionTest.testSingleParameterDeclarationMatchesArrow](test-catalog.md#autofunctiontesttestsingleparameterdeclarationmatchesarrow)
+- [AutofunctionTest.testNamedDeclarationMatchesAnonymous](test-catalog.md#autofunctiontesttestnameddeclarationmatchesanonymous)
 - [BesselTargetHoistingTest.testJOfKXIsNotHoisted](test-catalog.md#besseltargethoistingtesttestjofkxisnothoisted)
 - [BesselTargetHoistingTest.testCompositeDependsOnlyOnBoundParameters](test-catalog.md#besseltargethoistingtesttestcompositedependsonlyonboundparameters)
 

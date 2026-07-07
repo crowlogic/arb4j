@@ -1298,7 +1298,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     if (shouldCacheValueBacking())
     {
-      // Issue #1005: per-instance value-backing cache for inner curry bodies.
+      // Issue #1005: per-instance value-backing cache for inner function bodies.
       // lastV holds the most recent input by reference; cachedResult holds the
       // last computed Field result. On reentry with the same v identity, the
       // body is short-circuited to a result.set(cachedResult) copy.
@@ -6653,9 +6653,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public boolean shouldCache()
   {
     // Memoize any integer-indexed function whose value is a pure function of its
-    // index. A top-level sequence (no upstream) qualifies. An inner curry body
+    // index. A top-level sequence (no upstream) qualifies. An inner function body
     // qualifies iff its upstream is itself a generated functional — i.e. it is
-    // the k-body of a curried sequence-of-sequences (σ:j➔k➔…): the curry builds
+    // the k-body of a curried sequence-of-sequences (σ:j➔k➔…): the function builds
     // a fresh inner instance per outer index j, so the body depends only on k
     // and that frozen j and is safe to cache by k. Without this the σ-table's
     // 3-term recurrence re-runs exponentially (φ^j) — the #1034 slowness.
@@ -6666,7 +6666,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * True when this expression is the inner curry body of an integer-domain
+   * True when this expression is the inner function body of an integer-domain
    * sequence whose codomain is itself a function (Issue #1005). Such expressions
    * get a per-instance value-backing cache: a single (lastInput, cachedResult)
    * pair, populated on first evaluate and short-circuited on repeat calls with

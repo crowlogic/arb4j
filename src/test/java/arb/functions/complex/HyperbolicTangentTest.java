@@ -13,11 +13,11 @@ import junit.framework.TestCase;
  * Parameters: P = 1, Q = 0, R = -1, μ = 1.
  *
  * <p>
- * The functional is a two-level curried object:
+ * The functional is :
  * 
  * <pre>
- *   functional.evaluate(v, ...) → MuntzPadeApproximant  (curried on v)
- *   approximant.evaluate(t, ...) → Complex               (value at t)
+ *   functional.evaluate(v, ...) → MuntzPadeApproximant  
+ *   approximant.evaluate(t, ...) → Complex              
  * </pre>
  * 
  * Because P, Q, R are all constant in v, the parameter v is a dummy zero here.
@@ -30,7 +30,7 @@ public class HyperbolicTangentTest extends
 {
   private static final int     BITS   = 128;
 
-  /** Dummy v=0 used when currying the functional (constants in v). */
+  /** Dummy v=0 used when applying the functional (constants in v). */
   private static final Complex ZERO_V = new Complex();
 
   /**
