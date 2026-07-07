@@ -1068,14 +1068,90 @@ produced by the modified Gamma-ratio recurrence; the proof of
 Theorem~\ref{thm:CW} is moment-only and oblivious to origin.
 \end{proof}
 
-\begin{remark}[Conjectural status]\label{rem:conj}
-Theorem~\ref{thm:realray} for $\mu > 1$ requires reproof of
-$\Delta_{g}(u)\cap\mathbb{R} = \emptyset$ via iterated Volterra
-contraction; conjectural pending that argument. The missing step is a
-proof that for $\mu > 1$ the modified Gamma ratio
-$\Gamma(k\nu+n+1)/\Gamma((k+1)\nu+n+1)$ satisfies $C_{\nu,n} < 1$
-uniformly in $k, n$, from which the Volterra contraction argument of
-Theorem~\ref{thm:realray} carries through verbatim.
-\end{remark}
+\begin{theorem}[Uniform Gamma-ratio contraction for $\mu>1$]\label{rem:conj}
+Let $\mu = n+\nu$ with $n = \lfloor\mu\rfloor \geq 1$ and
+$\nu \in (0,1)$. Then the modified Gamma ratio of
+Theorem~\ref{thm:munugt1} satisfies
+\[
+\frac{\Gamma(k\nu+n+1)}{\Gamma((k+1)\nu+n+1)}
+\;\leq\; e^{-\nu(1-\gamma)}
+\;=:\; C_{\nu}
+\;<\; 1
+\qquad\text{for all } k \geq 0 \text{ and all } n \geq 1,
+\]
+where $\gamma = 0.5772156649\ldots$ is the Euler--Mascheroni
+constant, so $1-\gamma = 0.4227843350\ldots > 0$. The bound is
+uniform in $k$ and $n$, the ratio is strictly decreasing in $k$, and
+it tends to $0$ as $k \to \infty$. Consequently
+Theorem~\ref{thm:realray} holds for $\mu > 1$, $\nu \in (0,1)$, under
+the same hypotheses \ref{hyp:tube}--\ref{hyp:single}: its conclusion
+is no longer conjectural.
+\end{theorem}
+
+\begin{proof}
+\emph{Step 1 (the ratio is uniformly below $1$).}
+Write $x := k\nu + n + 1$, so the ratio is
+$\Gamma(x)/\Gamma(x+\nu)$. Since $k \geq 0$, $\nu > 0$, and
+$n \geq 1$, we have $x \geq n+1 \geq 2$. By the fundamental theorem
+of calculus applied to $\log\Gamma$,
+\[
+\log\Gamma(x+\nu) - \log\Gamma(x)
+\;=\; \int_{x}^{x+\nu} \psi(t)\,dt
+\;\geq\; \nu\,\psi(x)
+\;\geq\; \nu\,\psi(2)
+\;=\; \nu\,(1-\gamma),
+\]
+where both inequalities use that the digamma function $\psi$ is
+strictly increasing on $(0,\infty)$ (its derivative
+$\psi'(t) = \sum_{j\geq 0} (t+j)^{-2}$ is positive), together with
+$x \geq 2$ and the classical value $\psi(2) = 1-\gamma$ (from
+$\psi(1) = -\gamma$ and the recurrence $\psi(t+1) = \psi(t) + 1/t$).
+Exponentiating and taking reciprocals,
+\[
+\frac{\Gamma(x)}{\Gamma(x+\nu)} \;\leq\; e^{-\nu(1-\gamma)} \;<\; 1,
+\]
+uniformly in $k \geq 0$ and $n \geq 1$, since neither side of the
+bound depends on $k$ or $n$.
+
+\emph{Step 2 (monotonicity and decay).}
+The increment $\log\Gamma(x+\nu) - \log\Gamma(x)$ is an increment of
+the convex function $\log\Gamma$ over an interval of fixed length
+$\nu$ whose left endpoint $x = k\nu+n+1$ is strictly increasing in
+$k$; by convexity the increment is strictly increasing in $k$, so the
+ratio $\Gamma(x)/\Gamma(x+\nu)$ is strictly decreasing in $k$ (the
+same argument as Theorem~\ref{thm:realray} Step~1). Since
+$\psi(x) \to \infty$ as $x \to \infty$, the increment tends to
+$\infty$ and the ratio tends to $0$.
+
+\emph{Step 3 (the contraction argument of Theorem~\ref{thm:realray}
+carries through).}
+By Theorem~\ref{thm:munugt1} the recurrence of
+Lemma~\ref{lem:muntz} for the fractional part of the $\mu>1$ basis is
+the same moment recurrence with
+$\Gamma(k\mu+1)/\Gamma((k+1)\mu+1)$ replaced by
+$\Gamma(k\nu+n+1)/\Gamma((k+1)\nu+n+1)$. In the proof of
+Theorem~\ref{thm:realray}, the Gamma ratio enters only through the
+two constants of Steps~1--3: the uniform ratio bound (there
+$C_{\mu} < 21/20$) and the base-case constant (there
+$C_{\mu}' < 1.13$). Here Step~1 above gives the ratio bound
+$C_{\nu} < 1 < 21/20$, strictly better than $C_{\mu}$; and the base
+case is $|a(1,u)| = |P(u)|/\Gamma(\nu+n+1) \leq \tilde P$, because
+$\nu+n+1 \geq 2$ and $\Gamma$ is increasing on $[2,\infty)$ with
+$\Gamma(2) = 1$, so $1/\Gamma(\nu+n+1) \leq 1 < C_{\mu}'$. Every
+inequality in Steps~2--3 of Theorem~\ref{thm:realray} therefore holds
+verbatim with the same (indeed smaller) majorant constants, yielding
+the same explicit radius $\rho_{0} > 0$ of analyticity of
+$g(\cdot,u)$ at $z=0$, and Steps~4--5 are independent of the Gamma
+ratio, using only \ref{hyp:tube} and \ref{hyp:single}. Hence
+Theorem~\ref{thm:realray} holds for $\mu = n+\nu > 1$ with
+$\nu \in (0,1)$.
+
+The excluded case $\nu = 0$ is the integer-order equation
+$y^{(n)} = P + Qy + Ry^{2}$: the fractional part of the basis in
+Theorem~\ref{thm:munugt1} is empty, the modified ratio degenerates to
+$\Gamma(n+1)/\Gamma(n+1) = 1$, and local analyticity at $t=0$ is
+instead the classical Cauchy--Kovalevskaya majorant statement for an
+analytic ODE, so no fractional contraction constant is needed there.
+\end{proof}
 
 \end{document}
