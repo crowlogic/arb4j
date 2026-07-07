@@ -362,7 +362,8 @@ public class Context implements
       {
         return;
       }
-      // Skip peers that are in the same SCC as f (any cycle length). Wiring
+      // Skip peers that participate in a reference cycle with f (any cycle
+      // length). Wiring
       // the shared context singleton into f.<peer> would alias f.<peer> to an
       // instance whose `evaluating` flag can be true when f's own evaluate()
       // is running — firing the re-entrancy guard. The generated initialize()

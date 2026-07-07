@@ -1140,14 +1140,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         // lazily by the JVM when the opcode first executes — by which point the
         // outer compile chain has defined every class in the recursive cluster.
         String typeInternalName = mapping.functionInternalName();
-        // Detect if the peer is in the same SCC as this expression (any cycle
-        // length, not just 2). For all such peers we must allocate a distinct
-        // instance so each evaluation level owns its own `evaluating` flag and
-        // the re-entrancy guard cannot fire.
-        // Detect if the peer is in the same SCC as this expression (any cycle
-        // length, not just 2). For all such peers we must allocate a distinct
-        // instance so each evaluation level owns its own `evaluating` flag and
-        // the re-entrancy guard cannot fire. Σ/Π operand sub-expressions carry a
+        // Detect if the peer participates in a reference cycle with this
+        // expression (any cycle length, not just 2). For all such peers we must
+        // allocate a distinct instance so each evaluation level owns its own
+        // `evaluating` flag and the re-entrancy guard cannot fire. Σ/Π operand
+        // sub-expressions carry a
         // null functionName but are referenced by their owner under className(),
         // so fall back to className() for the cycle test — otherwise a recursive
         // reference nested inside a sum operand is missed and aliases the same

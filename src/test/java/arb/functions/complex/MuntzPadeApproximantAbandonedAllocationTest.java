@@ -51,7 +51,7 @@ public class MuntzPadeApproximantAbandonedAllocationTest extends
         eq.evaluate(v, 1, bits, null).evaluate(t, 1, bits, r);
       }
       forceCollection();
-      long abandonedAfterWarm = LeakTracker.abandonedTotal();
+      long abandonedBeforeSweep = LeakTracker.abandonedTotal();
 
       int rebinds = 80;
       for (int i = 0; i < rebinds; i++)
@@ -60,7 +60,7 @@ public class MuntzPadeApproximantAbandonedAllocationTest extends
         eq.evaluate(v, 1, bits, null).evaluate(t, 1, bits, r);
       }
       forceCollection();
-      long abandonedDuringSweep = LeakTracker.abandonedTotal() - abandonedAfterWarm;
+      long abandonedDuringSweep = LeakTracker.abandonedTotal() - abandonedBeforeSweep;
 
       assertEquals("owned arb objects were garbage-collected WITHOUT close() during the Müntz-Padé rebind "
                     + "sweep — native memory orphaned (the calibration OOM/slowness regression): "

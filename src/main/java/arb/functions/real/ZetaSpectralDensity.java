@@ -90,7 +90,7 @@ import arb.expressions.Context;
  * <p>
  * <b>Inversion of ϑ'.</b> The per-mode saddle requires inverting ϑ' at the
  * target value η = log(n)/(σ−ν). We do this by Newton iteration on
- * f(t) = ϑ'(t) − η, with the guaranteed-convergent warm start
+ * f(t) = ϑ'(t) − η, with the guaranteed-convergent initial iterate
  * t₀ = max(T₀, 2π · n^(2/(σ−ν))) from Lemma "thetapbound"; convergence is
  * second-order since ϑ''(t) &gt; 0 (Lemma "mono") and ϑ''' is bounded.
  *
@@ -177,9 +177,9 @@ public class ZetaSpectralDensity implements
   }
 
   /**
-   * Warm start for Newton: 2π · n^(2/(σ-ν)).
+   * Newton initial iterate: 2π · n^(2/(σ-ν)).
    */
-  private static double warmStart(double nd, double σd, double νd)
+  private static double newtonInitialIterate(double nd, double σd, double νd)
   {
     double exponent = 2.0 / (σd - νd);
     return 2.0 * Math.PI * Math.pow(nd, exponent);
@@ -202,14 +202,14 @@ public class ZetaSpectralDensity implements
 
   /**
    * Solve ϑ'(t) = η for t via Newton iteration, starting from the
-   * Lemma-"thetapbound"-derived warm start. Writes the result into {@code out}.
+   * Lemma-"thetapbound"-derived initial iterate. Writes the result into {@code out}.
    */
   private Real solveSaddle(int nInt, double σd, double νd, double tLow, int bits, Real out, Real scratchJet)
   {
     double nd  = (double) nInt;
     double η   = Math.log(nd) / (σd - νd);
     double tLo = lowerBoundForMode(nInt, tLow);
-    double t0d = Math.max(tLo, warmStart(nd, σd, νd));
+    double t0d = Math.max(tLo, newtonInitialIterate(nd, σd, νd));
     out.set(t0d);
     for (int iter = 0; iter < 80; iter++)
     {

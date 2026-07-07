@@ -45,7 +45,7 @@ import junit.framework.TestCase;
  * reference to a mutually-recursive peer resolves to a per-level instance
  * with its own private cache, so a top-down read of α(j)=σ(j)(j+1)/h(j) descends
  * into allocated σ/h children rather than re-entering an in-flight instance. There
- * is therefore no cache-warming step; the assertions below evaluate the
+ * is no fill-order precondition of any kind; the assertions below evaluate the
  * sequences directly.
  *
  * <p>
