@@ -350,6 +350,57 @@ public class RecursiveSequenceTest extends
   }
 
   /**
+   * Cyclic-cluster peer-pointer wiring (issue #1129): a parent {@code P}
+   * references both members of the two-element mutually-recursive cluster
+   * {@code {a, S}} ({@code a} references {@code S}, {@code S} references
+   * {@code a}). The parent's generated {@code initialize()} must emit the
+   * cycle-edge peer-pointer assignments the same way it emits DAG-edge
+   * assignments:
+   * <ul>
+   * <li>{@code this.a.S = this.S;}</li>
+   * <li>{@code this.S.a = this.a;}</li>
+   * </ul>
+   * so that after initialization both cluster instances point at each other.
+   * Evaluation must also be correct through a depth that exercises the wired
+   * cycle pointers: {@code a(1)(v) = v}, {@code S(k)(v) = a(k-1)(v)²},
+   * {@code a(k)(v) = S(k)(v)} for {@code k > 1}, so with {@code v = 2}:
+   * {@code a(2)(2) = 4}, {@code a(3)(2) = S(3)(2) = 16}, and
+   * {@code P(3)(2) = a(3)(2) + S(3)(2) = 32}.
+   */
+  public static void testParentWiresPeerPointersOfMutuallyRecursiveCluster() throws Exception
+  {
+    Context ctx = new Context();
+    ctx.declare("a", Integer.class, ComplexFunction.class, ComplexFunctionSequence.class);
+    String sExpr = "S:k➔v➔a(k-1)(v)·a(k-1)(v)";
+    Sequence.compile("S", ComplexFunction.class, sExpr, ComplexFunctionSequence.class, ctx);
+
+    String aExpr = "a:k➔v➔when(k=1, v, else, S(k)(v))";
+    Sequence.compile("a", ComplexFunction.class, aExpr, ComplexFunctionSequence.class, ctx);
+
+    String                  pExpr = "P:k➔v➔a(k)(v)+S(k)(v)";
+    ComplexFunctionSequence P     = ComplexFunctionSequence.express(pExpr, ctx);
+
+    Integer                 k     = new Integer();
+    k.set(3);
+    Complex         v   = new Complex();
+    v.set(2, 0);
+    Complex         out = new Complex();
+
+    ComplexFunction p3  = P.evaluate(k, 1, 128, null);
+    p3.evaluate(v, 1, 128, out);
+
+    assertEquals(32.0, out.re().doubleValue(), 1e-30);
+    assertTrue(out.im().isZero());
+
+    Object aInstance = P.getClass().getField("a").get(P);
+    Object sInstance = P.getClass().getField("S").get(P);
+    assertNotNull("parent must allocate this.a", aInstance);
+    assertNotNull("parent must allocate this.S", sInstance);
+    assertSame("parent must wire this.a.S = this.S", sInstance, aInstance.getClass().getField("S").get(aInstance));
+    assertSame("parent must wire this.S.a = this.a", aInstance, sInstance.getClass().getField("a").get(sInstance));
+  }
+
+  /**
    * Mutually-recursive  pair where {@code S} itself uses {@code when}
    * to terminate — both peers piecewise. {@code S(k=2)(v) = a(1)(v)·a(1)(v) = v·v},
    * {@code S(k>2)(v) = 0}; {@code a(k=1)(v) = v}, {@code a(k>1)(v) = S(k)(v)}.
