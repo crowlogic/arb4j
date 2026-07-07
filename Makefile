@@ -141,8 +141,8 @@ $(SO_RESOURCE): $(SOURCES) $(FLINT_STATIC) $(XDO_STATIC)
 	clang $(CFLAGS) $(SOURCES) $(C_INCLUDES) \
 	  -L$(FLINT_PREFIX)/lib -L$(MPFR_PREFIX)/lib -L$(GMP_PREFIX)/lib -L$(XDO_PREFIX)/lib \
 	  -o$(SO_RESOURCE) \
-	  -Wl,-Bstatic -lflint -lmpfr -lgmp -lxdo -lX11 -lXtst -lXinerama -lxkbcommon -lXext -lXau -lXdmcp -lxcb \
-	  -Wl,-Bdynamic
+	  -Wl,-Bstatic -lflint -lmpfr -lgmp -lxdo -lX11 -lXtst -lXinerama -lXext -lXau -lXdmcp -lxcb \
+	  -Wl,-Bdynamic -lxkbcommon
 	strip $(SO_RESOURCE)
 
 libarblib.so: $(SO_RESOURCE)
