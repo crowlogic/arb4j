@@ -1,27 +1,30 @@
 # The σ-table / sum-operand caching: how it SHOULD work vs. what is running now
 
-> **Resolution shipped (commit `01efd2eb`).** The exponential is fixed by two
-> coupled changes, both respecting the cardinal rules (no shared caches, guard
-> intact):
-> 1. **σfunc is now memoized.** `shouldCache()` caches an integer-indexed body
->    when its upstream is itself a generated functional
+> **Resolution (issue #1127, superseding commit `01efd2eb`).** The
+> freeze-the-index design of §1.1 is what runs now, and the warming layer is
+> gone:
+> 1. **Outer indices are frozen at construction.** For a two-index function
+>    `σ : j ➔ k ➔ …`, `Expression.generateFunctionalElement` constructs a fresh
+>    inner instance per outer-index value with `j` copied in by value, and the
+>    outer sequence memoizes that frozen instance per `j`
+>    (`Expression.shouldCache`). Each frozen instance caches by its single
+>    remaining index `k` alone; there are no shared mutable fields between
+>    distinct outer-index instances, so a top-down read of the cyclic
+>    {σ,α,β,h} recurrence descends into already-frozen children instead of
+>    re-entering an in-flight instance.
+> 2. **`shouldCache()` memoizes** an integer-indexed definition when its
+>    upstream is itself a generated functional
 >    (`upstreamExpression == null || upstreamExpression.isGeneratedFunctional()`):
 >    σ returns a `Sequence` ⇒ σfunc caches by k; the Σ operand's upstream `a`
 >    returns a value ⇒ it stays uncached (it depends on the enclosing k as §2
 >    describes, so caching it by j alone would serve stale terms).
-> 2. **The σ-table is filled bottom-up** by `OrthogonalPolynomialMomentFunctionalSequence.warmTo(M,bits)`,
->    called from `MuntzPadeApproximant` before each Φ(M). This is the principled
->    way to memoize the cyclic {σ,α,β,h} recurrence without sharing caches:
->    computing it top-down memoized a partial ∅ (α(j) read σ(j)(j+1) while α(j)
->    was in flight); filling the triangular tableau in dependency order means
->    every read is of a fully-computed cell. Result: ~33K accesses → polynomial
->    (~8.5 hits per distinct value), no OOM, no ∅; full suite 0 errors.
->
-> The freeze-the-index ideal in Part 1 remains the longer-term target (it would
-> let `warmTo` and the operand's `k` field both disappear); `warmTo`'s precondition
-> (consumers must warm before top-down reads) is documented on the method and is
-> the one implicit-contract smell to encapsulate later. The rest of this document
-> is the original analysis that led here.
+> 3. **All cache warming is removed.** `OrthogonalPolynomialMomentFunctionalSequence.warmTo`,
+>    `Context.warmToBottomUp`/`sccWarmOrder`/`warmMember`/`setKExtentProvider`,
+>    the SCC/Tarjan cycle detection that gated them, and the `warmTo` calls in
+>    `MuntzPadeApproximant` are deleted. There is no fill-order precondition:
+>    caching is fully transparent, and consumers evaluate any member of the
+>    cluster directly. The rest of this document is the original analysis that
+>    led here.
 
 ---
 

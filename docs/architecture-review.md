@@ -477,10 +477,9 @@ the design already gives for free is the thing that stinks.
 *Best:* the parent already created the one `C` and propagated it (`this.A.C = this.C`), so the child never needs to ask anyone; the only instance the Context injects into is the single top-level element, exactly once.
 *Why it stinks:* it is **dead code in the DAG case** (the field is already non-null from parent propagation) and **the wrong answer in the cyclic case** (it masks a propagation that should have been emitted). It inverts the design's one firm rule — construction flows downward — into a runtime upward dependency on a registry.
 
-**The SCC subsystem** (`selfReferential`, `populateFunctionReferenceGraph`, `stronglyConnectedComponents`/Tarjan, `sccByName`, `sccOf`, `isInCycle`, `warmToBottomUp`, `sccWarmOrder`, `warmMember`, and `Expression.backfillMutuallyRecursiveReferences`).
-*Now:* ~250 lines that build a function-reference graph, run Tarjan to find cycles, then *manually warm* each cycle's members bottom-up in dependency order, driven by externally-registered per-member "k-extent providers," with a `CompilerException` if one wasn't registered.
-*Best:* allocate every instance in the cluster, wire the peer pointers (`a.S = S; S.a = a`), share caches, and let the **existing lazy, memoized `evaluate`** compute each value once on demand. Mutual recursion needs nothing the DAG case doesn't already have — two pointer assignments instead of one.
-*Why it stinks:* it re-implements, laboriously and with a new failure mode, what construct-downward + memoized evaluation already does for free. It treats a cycle as a categorically special structure requiring graph theory and a hand-rolled evaluation schedule, when "allocate-all-then-wire-all" makes a cycle and a DAG **identical** to the constructor. It is the canonical symptom of not trusting the recursion machinery — and it even leaks the project's own banned vocabulary ("curried") into comments and a runtime error string, which is the tell that the misconception is baked in.
+**The SCC subsystem** (`selfReferential`, `stronglyConnectedComponents`/Tarjan, `sccByName`, `sccOf`, `isInCycle`, `warmToBottomUp`, `sccWarmOrder`, `warmMember`, and `Expression.backfillMutuallyRecursiveReferences`).
+*Now:* **removed** (issue #1127). The frozen-index construction — a fresh inner instance per outer-index value, memoized per index — made the bottom-up warming schedule, the k-extent providers, and the cycle detection that gated them unnecessary; `populateFunctionReferenceGraph` survives only for deterministic codegen ordering and graph rendering.
+*Why it stank:* it re-implemented, laboriously and with a new failure mode, what construct-downward + memoized evaluation already does for free. It treated a cycle as a categorically special structure requiring graph theory and a hand-rolled evaluation schedule.
 
 **`ConvergentSeriesAccumulator` and the `~` sigil.**
 *Now:* `Σ{k=a..b~}` hands the loop to a separate Java object that runs its own loop with tolerance `2^(-bits/2)`, keeps a "best" partial as a fallback, and only handles real sums.
@@ -490,7 +489,7 @@ the design already gives for free is the thing that stinks.
 ### 9.3 Open — genuinely unresolved; neither clean nor stink yet
 
 - **Exact-type (Fraction/Integer) infinite-sum convergence.** There is no radius, so the ball criterion cannot apply, and convergent rational series (ζ at integers) demonstrably exist. The honest state is *unresolved*: it must not be force-fit to `isZero`, a fake tolerance, or a premature exception. The ball-type path can ship independently while this is worked out.
-- **Where mutual-recursion wiring is emitted once the SCC layer is gone.** Removing the kludge means the parent's `initialize()` must emit the peer pointer assignments for cyclic clusters the same way it already emits `this.A.C = this.C` for the DAG — this is a concrete, bounded task, not a research question, but it is not yet done.
+- **Where mutual-recursion wiring is emitted now that the SCC layer is gone** (removed in #1127). The parent's `initialize()` emitting the peer pointer assignments for cyclic clusters the same way it already emits `this.A.C = this.C` for the DAG remains a concrete, bounded task; today cyclic peers resolve lazily through `lookupFunctionInstance`.
 
 ### 9.4 Verdict
 
