@@ -1,7 +1,6 @@
 package arb.expressions;
 
 import arb.Integer;
-import arb.Real;
 import arb.functions.integer.Sequence;
 import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
@@ -29,8 +28,8 @@ import junit.framework.TestCase;
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
 @SuppressWarnings("unchecked")
-public class AutoCurryTest extends
-                           TestCase
+public class AutofunctionTest extends
+                              TestCase
 {
 
   private static Expression<Integer, RealFunction, Sequence<RealFunction>> sequenceExpression(String name, String body)
