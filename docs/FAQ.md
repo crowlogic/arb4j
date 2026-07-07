@@ -60,8 +60,8 @@ per call with the outer index copied into it by value** — the outer index is
 frozen at construction. The outer sequence memoizes that inner instance per
 outer-index value (`Expression.shouldCache`), so each frozen instance caches
 by its single remaining index alone. There are no shared mutable fields
-between distinct outer-index instances, hence no fill-order requirement and
-no cache-warming step of any kind: caching is fully transparent, and a
+between distinct outer-index instances, hence no fill-order requirement of
+any kind: caching is fully transparent, and a
 top-down read of a cyclic cluster like α(j) = σ(j)(j+1)/h(j) descends into
 already-frozen σ/h children rather than re-entering an in-flight instance.
 
@@ -85,5 +85,5 @@ already-frozen σ/h children rather than re-entering an in-flight instance.
   sequences use a separate instance per level (see also
   [`notes/issue-1032/`](../notes/issue-1032/) essays).
 - [#1127](https://github.com/crowlogic/arb4j/issues/1127) — freeze-the-index:
-  the cache-warming precondition and the SCC/Tarjan warming subsystem were
-  removed once outer indices became frozen at construction.
+  all fill-order preconditions were removed once outer indices became frozen
+  at construction.

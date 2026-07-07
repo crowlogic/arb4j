@@ -228,7 +228,7 @@ papers prove convergence *analytically*; the library is meant to deliver the
 
 The recursion machinery is **not accidental** — it is a deliberate, elegant
 mechanism, and the acyclic case proves it. The single task ahead is to make
-mutual recursion work the *same* way, without the SCC detection layer. The
+mutual recursion work the *same* way, without any cycle-detection layer. The
 evidence is in the decompiled classes generated from `JacobiPolynomialSequence`,
 whose six definitions share one `Context(α, β)`:
 
@@ -327,7 +327,7 @@ alias `f.<name> = f`; a function's own-type field is the recursive-call receiver
 and must be a different instance, or recursion re-enters `f` and smashes its
 scratch.
 
-### 6.5 The only remaining task — mutual recursion the same way, no SCC
+### 6.5 The only remaining task — mutual recursion the same way, no cycle-detection scaffolding
 
 Everything above is *general*. Look at what mutual recursion (`a ↔ S`, each
 referencing the other) actually needs versus what the DAG already does:
@@ -344,9 +344,9 @@ pointer assignment performed *after* all instances exist. **Allocate-all-then-
 wire-all** handles a DAG and a cycle *identically*; you never have to know which
 one you have.
 
-That is precisely why the SCC/Tarjan detection, the `selfReferential` sidecar,
-the `isInCycle` predicate, and the reflective post-hoc `backfillMutuallyRecursive
-References` pass are unnecessary. They exist to *detect* a cycle and *patch
+That is precisely why cycle detection, the `selfReferential` sidecar,
+the `isInCycle` predicate, and the reflective post-hoc reference-patching
+pass are unnecessary. They exist to *detect* a cycle and *patch
 references after the fact* — solving a problem that vanishes the moment you
 separate allocation from wiring, exactly as `JacobiPolynomialSequence` already
 does for its DAG and its `P` self-loop. The genuine, elegant mechanism is already
@@ -407,9 +407,9 @@ versus a Wynn-ε / Padé resummation — is a real design choice, not a contradi
 These are the project correctly identifying its own unfinished work (§7).
 
 **Valid and corrective — the recursion teardown — #1055, #1056, #1048, #1047.**
-Remove `backfillMutuallyRecursiveReferences` in favour of deterministic
+Remove the reflective post-hoc reference-patching pass in favour of deterministic
 allocate-all-then-wire-all (#1055); enable the `evaluate()` re-entrance guard by
-default (#1056); replace SCC instance-aliasing with a fresh instance per peer plus
+default (#1056); replace cyclic instance-aliasing with a fresh instance per peer plus
 a value-layer `(name, index, bits)` cache (#1048); fix the 10 generator sites that
 re-enter `evaluate()` on the same instance (#1047). These are exactly the
 accidental-complexity removal of §6 and §9.2. The guard surfacing ten failing
@@ -477,8 +477,8 @@ the design already gives for free is the thing that stinks.
 *Best:* the parent already created the one `C` and propagated it (`this.A.C = this.C`), so the child never needs to ask anyone; the only instance the Context injects into is the single top-level element, exactly once.
 *Why it stinks:* it is **dead code in the DAG case** (the field is already non-null from parent propagation) and **the wrong answer in the cyclic case** (it masks a propagation that should have been emitted). It inverts the design's one firm rule — construction flows downward — into a runtime upward dependency on a registry.
 
-**The SCC subsystem** (`selfReferential`, `stronglyConnectedComponents`/Tarjan, `sccByName`, `sccOf`, `isInCycle`, `warmToBottomUp`, `sccWarmOrder`, `warmMember`, and `Expression.backfillMutuallyRecursiveReferences`).
-*Now:* **removed** (issue #1127). The frozen-index construction — a fresh inner instance per outer-index value, memoized per index — made the bottom-up warming schedule, the k-extent providers, and the cycle detection that gated them unnecessary; `populateFunctionReferenceGraph` survives only for deterministic codegen ordering and graph rendering.
+**The cycle-detection subsystem.**
+*Now:* **removed** (issue #1127). The frozen-index construction — a fresh inner instance per outer-index value, memoized per index — made the bottom-up fill schedule, the k-extent providers, and the cycle detection that gated them unnecessary; `populateFunctionReferenceGraph` survives only for deterministic codegen ordering and graph rendering.
 *Why it stank:* it re-implemented, laboriously and with a new failure mode, what construct-downward + memoized evaluation already does for free. It treated a cycle as a categorically special structure requiring graph theory and a hand-rolled evaluation schedule.
 
 **`ConvergentSeriesAccumulator` and the `~` sigil.**
@@ -489,7 +489,7 @@ the design already gives for free is the thing that stinks.
 ### 9.3 Open — genuinely unresolved; neither clean nor stink yet
 
 - **Exact-type (Fraction/Integer) infinite-sum convergence.** There is no radius, so the ball criterion cannot apply, and convergent rational series (ζ at integers) demonstrably exist. The honest state is *unresolved*: it must not be force-fit to `isZero`, a fake tolerance, or a premature exception. The ball-type path can ship independently while this is worked out.
-- **Where mutual-recursion wiring is emitted now that the SCC layer is gone** (removed in #1127). **Resolved (#1129):** the parent's `initialize()` emits the peer pointer assignments for cyclic clusters through the same dependency-assignment path that emits `this.A.C = this.C` for the DAG — `Expression.generateDependencyAssignments` iterates `Dependency.getAssignments`, and `Context.populateFunctionReferenceGraph` records cycle edges like any other edge, so for a cluster `{a, S}` the parent emits `this.a.S = this.S;` and `this.S.a = this.a;` after Phase 1 (`generateReferencedFunctionInstances`) has allocated every instance. The `if (field == null)` guards in each member's own `initialize()` then preserve the parent-propagated instances. Verified by `RecursiveSequenceTest.testParentWiresPeerPointersOfMutuallyRecursiveCluster`, which asserts both peer-pointer identities on the parent's allocated instances and correct evaluation through the wired cycle.
+- **Where mutual-recursion wiring is emitted** (see #1127). **Resolved (#1129):** the parent's `initialize()` emits the peer pointer assignments for cyclic clusters through the same dependency-assignment path that emits `this.A.C = this.C` for the DAG — `Expression.generateDependencyAssignments` iterates `Dependency.getAssignments`, and `Context.populateFunctionReferenceGraph` records cycle edges like any other edge, so for a cluster `{a, S}` the parent emits `this.a.S = this.S;` and `this.S.a = this.a;` after Phase 1 (`generateReferencedFunctionInstances`) has allocated every instance. The `if (field == null)` guards in each member's own `initialize()` then preserve the parent-propagated instances. Verified by `RecursiveSequenceTest.testParentWiresPeerPointersOfMutuallyRecursiveCluster`, which asserts both peer-pointer identities on the parent's allocated instances and correct evaluation through the wired cycle.
 
 ### 9.4 Verdict
 
@@ -501,7 +501,7 @@ mathematics, get a proof-carrying answer at machine speed.* The recursion
 construction at its center is elegant and deliberate.
 
 Everything that stinks is **localized, recent, and additive** — a pull-from-context
-callback, an SCC-and-warming layer, and a convergent-sum side object — each one a
+callback, a cycle-detection layer, and a convergent-sum side object — each one a
 case of an author not trusting machinery that was already sufficient and adding
 scaffolding to compensate. None of it is load-bearing for the good design; all of
 it can be deleted in favor of the simpler thing the architecture already implies.
