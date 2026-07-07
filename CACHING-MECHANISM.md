@@ -1,8 +1,7 @@
 # The σ-table / sum-operand caching: how it SHOULD work vs. what is running now
 
 > **Resolution (issue #1127, superseding commit `01efd2eb`).** The
-> freeze-the-index design of §1.1 is what runs now, and the warming layer is
-> gone:
+> freeze-the-index design of §1.1 is what runs now:
 > 1. **Outer indices are frozen at construction.** For a two-index function
 >    `σ : j ➔ k ➔ …`, `Expression.generateFunctionalElement` constructs a fresh
 >    inner instance per outer-index value with `j` copied in by value, and the
@@ -18,13 +17,9 @@
 >    σ returns a `Sequence` ⇒ σfunc caches by k; the Σ operand's upstream `a`
 >    returns a value ⇒ it stays uncached (it depends on the enclosing k as §2
 >    describes, so caching it by j alone would serve stale terms).
-> 3. **All cache warming is removed.** `OrthogonalPolynomialMomentFunctionalSequence.warmTo`,
->    `Context.warmToBottomUp`/`sccWarmOrder`/`warmMember`/`setKExtentProvider`,
->    the SCC/Tarjan cycle detection that gated them, and the `warmTo` calls in
->    `MuntzPadeApproximant` are deleted. There is no fill-order precondition:
->    caching is fully transparent, and consumers evaluate any member of the
->    cluster directly. The rest of this document is the original analysis that
->    led here.
+> 3. **There is no fill-order precondition.** Caching is fully transparent,
+>    and consumers evaluate any member of the cluster directly. The rest of
+>    this document is the original analysis that led here.
 
 ---
 

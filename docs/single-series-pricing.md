@@ -520,7 +520,7 @@ Measured against the proven construction above (not against any source text):
    contain the truth, and the "best" return is a forbidden fallback. The
    geometric majorant (7.2) makes truncation sound and retires this class
    entirely — along with the `~` sigil, Aitken-Δ², `optimallyTruncated`, and
-   the SCC generation-time dispatch (all accelerations/special-cases, none an
+   the generation-time special-case dispatch (all accelerations/special-cases, none an
    enclosure).
 
 ---
@@ -559,7 +559,7 @@ machinery), summed by the verified `Σ{..∞}`.
 **Delete:** the multi-index price assembly; Assumption A3 / Prop *strip* and
 the pole-list rotation/multinomial lemmas; `ConvergentSeriesAccumulator`'s
 `2^{-bits/2}` stop and `best` return; the `~` sigil, Aitken-Δ²,
-`optimallyTruncated`, SCC dispatch. `MuntzPadeCumulantGenerator` need not
+`optimallyTruncated`, the generation-time special-case dispatch. `MuntzPadeCumulantGenerator` need not
 return: the cgf is `Σ{k=0..∞}d_k(v)z^k` and the price is the new
 `Σ{n=0..∞}` of (6.5) — two ordinary infinite sums sharing one verified-tail
 primitive.
