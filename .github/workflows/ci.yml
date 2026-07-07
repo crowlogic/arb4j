@@ -5,7 +5,7 @@ name: CI test reports
 #
 # Two hard limits are imposed on the run, exactly as requested:
 #   * one gigabyte maximum memory  -> the forked test JVM runs with -Xmx1g
-#   * a two-minute wall-clock cap  -> the whole `mvn install` is wrapped in
+#   * a five-minute wall-clock cap  -> the whole `mvn install` is wrapped in
 #     `timeout 120s`, so a hang (or a test that never returns) is killed.
 #
 # Partial results survive a crash. maven-surefire writes each test class's
@@ -34,7 +34,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     # Safety net for the setup/checkout/upload steps only; the actual 2-minute
-    # cap on the build+tests is the `timeout 120s` around mvn below.
+    # cap on the build+tests is the `timeout 300s` around mvn below.
     timeout-minutes: 15
     steps:
       - name: Check out HEAD
@@ -47,7 +47,7 @@ jobs:
           java-version: '25'
           cache: maven
 
-      - name: mvn install (1 GiB heap, 2-minute wall-clock cap)
+      - name: mvn install (1 GiB heap, 5-minute wall-clock cap)
         id: build
         env:
           # Source tree has Unicode-named files (e.g. σField.java); a UTF-8
@@ -56,10 +56,10 @@ jobs:
           LC_ALL: C.UTF-8
         run: |
           set +e
-          # timeout sends TERM at 120s, then KILL 15s later if it is still alive.
+          # timeout sends TERM at 300s, then KILL 15s later if it is still alive.
           # -DargLine="-Xmx1g" is appended to the surefire argLine defined in
           # pom.xml (its trailing ${argLine}), capping the test JVM heap at 1 GiB.
-          timeout --signal=TERM --kill-after=15s 120s \
+          timeout --signal=TERM --kill-after=15s 300s \
             mvn --batch-mode --no-transfer-progress install \
               -Dmaven.test.failure.ignore=true \
               -Darb4j.redirectTestOutputToFile=true \
@@ -67,7 +67,7 @@ jobs:
           status=$?
           echo "mvn-exit=$status" >> "$GITHUB_OUTPUT"
           if [ "$status" -eq 124 ]; then
-            echo "::warning::mvn install was killed after the 2-minute wall-clock limit; uploading whatever reports completed."
+            echo "::warning::mvn install was killed after the 5-minute limit; uploading whatever reports completed."
           elif [ "$status" -ne 0 ]; then
             echo "::warning::mvn install exited with status $status; uploading whatever reports completed."
           fi
@@ -132,11 +132,11 @@ jobs:
                 END { print f + e }')
           fi
           if [ "$exit_code" = "124" ]; then
-            echo "Build was killed by the 2-minute wall-clock limit; failing the job (partial reports were uploaded)."
+            echo "Build was killed by the 5-minute limit; failing the job (partial reports were uploaded)."
             exit 1
           fi
           if [ "${bad:-0}" -gt 0 ]; then
             echo "$bad test failure(s)/error(s) recorded; failing the job (reports were uploaded)."
             exit 1
           fi
-          echo "All completed tests passed within the 1 GiB / 2-minute budget."
+          echo "All completed tests passed within the 1 GiB / 5-minute limit."

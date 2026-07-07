@@ -1,8 +1,6 @@
 package arb.stochastic;
 
-import arb.RandomState;
-import arb.Real;
-import arb.arblib;
+import arb.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
@@ -16,48 +14,41 @@ import arb.functions.real.RealFunction;
  * increment of the distribution function, f(k) = F(k) − F(k−1), the discrete
  * counterpart of the Fundamental Theorem of Calculus.
  *
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the {@link TheArb4jLibrary}
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public class NegativeBinomialDistribution extends
                                           Distribution
 {
-  public final Context       context;
-  public final Real          shape;
-  public final Real          successProbability;
-  public final Real          r;
-  public final Real          p;
+  public final Context      context;
+  public final Real         shape;
+  public final Real         successProbability;
+  public final Real         r;
+  public final Real         p;
 
-  public final RealFunction  density;
-  public final RealFunction  logDensity;
-  public final RealFunction  distribution;
+  public final RealFunction density;
+  public final RealFunction logDensity;
+  public final RealFunction distribution;
 
   public NegativeBinomialDistribution(double shape, double successProbability)
   {
-    super("negative-binomial");
-    this.context = new Context();
-    this.shape = Real.named("r").set(shape);
-    this.successProbability = Real.named("p").set(successProbability);
-    this.r = this.shape;
-    this.p = this.successProbability;
-    this.context.registerVariable(this.shape);
-    this.context.registerVariable(this.successProbability);
-    this.density = RealFunction.express("f", densityExpression(), context);
-    this.logDensity = RealFunction.express("ℓ", logDensityExpression(), context);
-    this.distribution = RealFunction.express("F", cumulativeExpression(), context);
+    this(Real.valueOf(shape),
+         Real.valueOf(successProbability),
+         Double.SIZE);
   }
 
   public NegativeBinomialDistribution(Real r, Real p, int bits)
   {
     super("negative-binomial");
-    this.context = new Context();
-    this.shape = r.setName("r");
+    this.context            = new Context();
+    this.shape              = r.setName("r");
     this.successProbability = p.setName("p");
-    this.r = this.shape;
-    this.p = this.successProbability;
+    this.r                  = this.shape;
+    this.p                  = this.successProbability;
     this.context.registerVariable(this.shape);
     this.context.registerVariable(this.successProbability);
-    this.density = RealFunction.express("f", densityExpression(), context);
-    this.logDensity = RealFunction.express("ℓ", logDensityExpression(), context);
+    this.density      = RealFunction.express("f", densityExpression(), context);
+    this.logDensity   = RealFunction.express("ℓ", logDensityExpression(), context);
     this.distribution = RealFunction.express("F", cumulativeExpression(), context);
   }
 
@@ -82,7 +73,8 @@ public class NegativeBinomialDistribution extends
   @Override
   public String[] parameterNames()
   {
-    return new String[] { "r", "p" };
+    return new String[]
+    { "r", "p" };
   }
 
   @Override
@@ -156,8 +148,8 @@ public class NegativeBinomialDistribution extends
    */
   public Real sample(int sampleSize, long seed, int bits)
   {
-    Real observations = Real.newVector(sampleSize);
-    RandomState state = new RandomState().initialize().seed(seed);
+    Real        observations = Real.newVector(sampleSize);
+    RandomState state        = new RandomState().initialize().seed(seed);
     try
     {
       sample(state, bits, observations, sampleSize);
@@ -170,7 +162,8 @@ public class NegativeBinomialDistribution extends
       }
       catch (Exception e)
       {
-        throw new RuntimeException(e.getMessage(), e);
+        throw new RuntimeException(e.getMessage(),
+                                   e);
       }
     }
     return observations;
@@ -187,8 +180,8 @@ public class NegativeBinomialDistribution extends
 
   public Real sample(RandomState state, int bits, Real result)
   {
-    try ( Real uniform = new Real(); Real mass = new Real(); Real cumulative = new Real();
-          Real q = new Real(); Real ratio = new Real(); Real kPlusR = new Real())
+    try ( Real uniform = new Real(); Real mass = new Real(); Real cumulative = new Real(); Real q = new Real(); Real ratio = new Real();
+          Real kPlusR = new Real())
     {
       q.one().sub(successProbability, bits, q);
       arblib.arb_urandom(uniform, state, bits);
