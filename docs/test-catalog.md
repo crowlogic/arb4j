@@ -670,17 +670,17 @@ This catalog covers the current `src/test/java` tree under the requested extract
 **What it does:** Builds real vectors `[1,2,3]` and `[4,5,6]`, computes their dot product, and asserts it equals `32`.
 **Compiler features exercised:** none — tests native arb wrapper only.
 
-### AutoCurryTest.testTwoParameterDeclarationMatchesArrowChain
+### AutofunctionTest.testTwoParameterDeclarationMatchesArrowChain
 **What it does:** Parses `n➔t➔n+t` and `(n,t)=n+t`, then asserts both expressions render the same root AST.
 **Compiler features exercised:**
 - Nested functional declarations
 
-### AutoCurryTest.testSingleParameterDeclarationMatchesArrow
+### AutofunctionTest.testSingleParameterDeclarationMatchesArrow
 **What it does:** Parses `n➔t➔n+t` and `(n)=t➔n+t`, then asserts both forms produce the same root AST.
 **Compiler features exercised:**
 - Nested functional declarations
 
-### AutoCurryTest.testNamedDeclarationMatchesAnonymous
+### AutofunctionTest.testNamedDeclarationMatchesAnonymous
 **What it does:** Parses `Named(n,t)=n+t` and `(n,t)=n+t`, then asserts the consumed leading name does not change the resulting AST.
 **Compiler features exercised:**
 - Nested functional declarations

@@ -22,14 +22,6 @@ public class FractionalDerivativeNodeTest extends
     assertEquals(14.484203969691649, value, 1e-6);
   }
 
-  /**
-   * a type-annotation gloss on the expression: it documents the concrete Java
-   * types that the compiler assigns to each currying stage, using = to equate the
-   * abstract role (RealFunctional, RealFunction) with its signature
-   * (Real{q}->..., Real{t}->Real), and curly-brace annotations ({n}, {q}, {t}) to
-   * name the bound variable at each level. The body fracdiff(t^n, t^q) computes
-   * the fractional derivative of order q of the monomial tntn with respect to t
-   */
   public static void testRealFunctionalSequenceOfFractionalMonomialDerivatives()
   {
     // Integer{n}->(RealFunctional=Real{q}->(RealFunction=Real{t}->Real)
