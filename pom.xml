@@ -322,75 +322,11 @@
 	</build>
 
 	<profiles>
-		<!--
-		  Debian packaging profile.  Default `mvn install` produces only
-		  the thin jar that downstream Maven consumers (bonanzai, etc.)
-		  resolve against; it does NOT copy every runtime jar into
-		  target/dependency and does NOT emit class.path.debian.  Those
-		  staging steps run only when this profile is active, which
-		  debian/rules turns on via `mvn -Pdebian package`.
-		-->
-		<profile>
-			<id>debian</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-dependency-plugin</artifactId>
-						<executions>
-							<!--
-								Debian classpath: rewrites every entry to
-								/usr/share/arb4j/lib/<basename>.jar.
-								debian/rules ships this file as
-								/usr/share/arb4j/class.path and env.sh
-								exports ARB4J_CLASSPATH=$ARB4J_JAR:<file>.
-							-->
-							<execution>
-								<id>build-classpath-debian</id>
-								<phase>prepare-package</phase>
-								<goals>
-									<goal>build-classpath</goal>
-								</goals>
-								<configuration>
-									<outputFile>${project.build.directory}/class.path.debian</outputFile>
-									<includeScope>runtime</includeScope>
-									<prefix>/usr/share/arb4j/lib</prefix>
-									<stripVersion>false</stripVersion>
-								</configuration>
-							</execution>
-							<!--
-								Stage every runtime dependency jar into
-								target/dependency so debian/rules can copy
-								them into /usr/share/arb4j/lib and unzip the
-								JavaFX linux-classifier and j2v8 jars to
-								extract their .so entries into /usr/lib/jni.
-							-->
-							<execution>
-								<id>copy-dependencies-debian</id>
-								<phase>prepare-package</phase>
-								<goals>
-									<goal>copy-dependencies</goal>
-								</goals>
-								<configuration>
-									<outputDirectory>${project.build.directory}/dependency</outputDirectory>
-									<includeScope>runtime</includeScope>
-									<stripVersion>false</stripVersion>
-									<overWriteReleases>true</overWriteReleases>
-									<overWriteSnapshots>true</overWriteSnapshots>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
 
 		<!--
 		  Tracing profile: enable expression-compiler debug logging plus the
 		  static `arb4j.trace` and `arb4j.traceNodes` flags so a single
-		  invocation of `mvn -Ptrace test -Dtest=Foo#bar` reproduces the
-		  exact diagnostic stream used while debugging splice/curry issues
-		  (see issue #994).
+		  invocation of `mvn -Ptrace test -Dtest=Foo#bar`
 		-->
 		<profile>
 			<id>trace</id>
