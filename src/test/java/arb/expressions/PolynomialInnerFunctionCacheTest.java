@@ -37,7 +37,7 @@ public class PolynomialInnerFunctionCacheTest
     long total = IndexCache.HITS + IndexCache.MISSES;
 
     assertTrue("σ-table was not exercised: totalAccesses="
-               + total
+               + total,
                total >= 100);
 
     assertTrue(String.format("Polynomial inner-function recompute regressed (#1034): hits=%d, misses=%d, total=%d. "
