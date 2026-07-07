@@ -296,11 +296,11 @@ statically-linked binary (FLINT/MPFR/GMP are linked statically into it), tracked
 at `src/main/resources/native/libarblib.so` and packaged into the jar at
 `native/libarblib.so`. Building and running the library need only this committed
 `.so` plus the JDK and Maven above. You only need the native toolchain
-(`clang swig` plus the X11 dev headers `libx11-dev libxtst-dev libxinerama-dev
-libxi-dev libxkbcommon-dev libxfixes-dev`) if you intend to **rebuild** the `.so`
+(`clang clang++ swig bison python3`) if you intend to **rebuild** the `.so`
 after editing a SWIG interface file — see [Build](#build); the first such rebuild
-fetches and builds GMP/MPFR/FLINT 3.3.1 **and libxdo (xdotool)** statically into
-`~/.cache/arb4j` automatically.
+fetches and builds GMP/MPFR/FLINT 3.3.1, libxdo (xdotool), the entire X11 stack,
+and libxkbcommon statically into `~/.cache/arb4j` automatically. No X dev
+packages are required.
 
 **UTF-8 locale** — source files use Unicode in filenames (`σField.java`, `RiemannζFunction.java`, `RiemannξFunction.java`). Without a UTF-8 locale, `javac` fails with `Invalid filename: ??Field.java`.
 ```bash
@@ -322,14 +322,14 @@ mvn test
 ```
 
 You only need to rebuild the native library **when a SWIG interface file
-(`native/*.i`) changes**. Then, with `clang swig` and the X11 dev headers
-(`libx11-dev libxtst-dev libxinerama-dev libxi-dev libxkbcommon-dev
-libxfixes-dev libxext-dev libxau-dev libxdmcp-dev libxcb1-dev`) installed:
+(`native/*.i`) changes**. Then, with `clang clang++ swig bison python3`
+installed (no X dev packages needed — the whole X stack is built from source):
 
 ```bash
 make            # reruns SWIG + clang, relinks libarblib.so (statically linked
-                # FLINT/MPFR/GMP + libxdo, built once into ~/.cache/arb4j;
-                # libxkbcommon and the X11 deps are linked dynamically)
+                # FLINT/MPFR/GMP + libxdo + libxkbcommon + the full X11 stack,
+                # built once into ~/.cache/arb4j; the only dynamic dependencies
+                # of the result are libc and the Linux loader)
 mvn test
 ```
 
@@ -348,11 +348,16 @@ the version your distro ships is irrelevant. (The historical FLINT 3.1/3.2
 `flint_rand_*`/`stride` renames are pinned away by the fixed 3.3.1 build and the
 `sed` patches in the Makefile's SWIG step; no manual workaround is needed.)
 
-**libxdo is statically linked too.** xdotool ships no `.a`, so `make` builds
-`libxdo.a` from the pinned xdotool source into `~/.cache/arb4j` and links it
-statically, exactly like FLINT/MPFR/GMP. The runtime therefore no longer needs
-`libxdo.so.3` (which broke loading on hosts where it was absent). libxkbcommon
-is linked dynamically from the distro package (`libxkbcommon-dev`).
+**Everything else is statically linked too.** xdotool ships no `.a`, so `make`
+builds `libxdo.a` from the pinned xdotool source into `~/.cache/arb4j`. The
+entire X11 stack (xorgproto, libXau, libXdmcp, libxcb, libX11, libXext, libXtst,
+libXinerama) and libxkbcommon are likewise built from source as `-fPIC` static
+archives (the distro `.a` files are non-PIC and cannot link into a shared
+object) and linked statically. libxkbcommon's meson/ninja build tools are
+bootstrapped into `~/.cache/arb4j` without pip: meson is pure Python and runs
+straight from its release tarball; ninja bootstraps itself from source. The
+resulting `libarblib.so` has exactly two dynamic dependencies: `libc.so.6` and
+`ld-linux-x86-64.so.2`.
 
 ### Troubleshooting
 
