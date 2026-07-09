@@ -1,13 +1,11 @@
 package arb.functions.complex;
 
+import arb.*;
 import arb.Integer;
-import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
-import arb.functions.integer.ComplexFunctionSequence;
-import arb.functions.integer.ComplexPolynomialSequence;
-import arb.functions.integer.RealSequence;
+import arb.functions.integer.*;
 
 /**
  * General Müntz-lattice cumulant generating function (CGF) built from a
@@ -56,8 +54,8 @@ import arb.functions.integer.RealSequence;
  *
  * as registered expressions in a shared {@link Context}. Callers evaluate
  * {@code φ(v)} for any {@code v} after registering {@code T} (and N) in the
- * context. {@code N} is an {@code arb.Integer} so the live truncation order
- * flows into the compiled Σ without recompile.
+ * context. {@code N} is an {@code Integer} so the live truncation order flows
+ * into the compiled Σ without recompile.
  *
  * <p>
  * Use this class as the general arb4j entry point for any application that
@@ -204,31 +202,19 @@ public class MuntzPadeCumulantGenerator implements
     context.registerFunction("Φ", this);
   }
 
-  /**
-   * Set a hard upper bound for the adaptive truncation search inside
-   * {@link #evaluate}. Default {@code 256}; raise this if the series hasn't
-   * converged within the default cap.
-   */
-  public MuntzPadeCumulantGenerator setMaxN(int newMaxN)
-  {
-    if (newMaxN < 1)
-      throw new IllegalArgumentException("maxN must be ≥ 1, got " + newMaxN);
-    return this;
-  }
-
-  private final arb.Real                threshold = new arb.Real();
-  private final arb.Real                addMag    = new arb.Real();
-  private final arb.Real                bestMag   = new arb.Real();
-  private final arb.Real                expo      = new arb.Real();
-  private final arb.Real                tpow      = new arb.Real();
-  private final arb.Complex             sum       = new arb.Complex();
-  private final arb.Complex             addition  = new arb.Complex();
-  private final arb.Complex             best      = new arb.Complex();
-  private final arb.ComplexPolynomial   dk        = new arb.ComplexPolynomial();
-  private final arb.Integer             kIdx      = new arb.Integer();
+  private final Real              threshold = new Real();
+  private final Real              addMag    = new Real();
+  private final Real              bestMag   = new Real();
+  private final Real              expo      = new Real();
+  private final Real              tpow      = new Real();
+  private final Complex           sum       = new Complex();
+  private final Complex           addition  = new Complex();
+  private final Complex           best      = new Complex();
+  private final ComplexPolynomial dk        = new ComplexPolynomial();
+  private final Integer           kIdx      = new Integer();
 
   @Override
-  public arb.Complex evaluate(arb.Complex v, int order, int bits, arb.Complex res)
+  public Complex evaluate(Complex v, int order, int bits, Complex res)
   {
     threshold.one().mul2e(-bits / 2, threshold);
     bestMag.posInf();
@@ -267,15 +253,15 @@ public class MuntzPadeCumulantGenerator implements
   }
 
   @Override
-  public Class<arb.Complex> domainType()
+  public Class<Complex> domainType()
   {
-    return arb.Complex.class;
+    return Complex.class;
   }
 
   @Override
-  public Class<arb.Complex> coDomainType()
+  public Class<Complex> coDomainType()
   {
-    return arb.Complex.class;
+    return Complex.class;
   }
 
   @Override
