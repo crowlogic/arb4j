@@ -2,6 +2,6 @@
 # Print the first 10 Müntz–Padé orthogonal polynomials (tanh oracle default)
 BASEDIR=$(dirname $(readlink -f $0))/..
 if [ $# -eq 0 ]; then
-  set -- 1 1 0 -1 10
+  set -- 1 1 0 -1 20 164
 fi
 $BASEDIR/bin/run arb.applications.MuntzPadePolynomialPrinter "$@"
