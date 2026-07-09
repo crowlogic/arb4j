@@ -41,9 +41,9 @@ public final class MuntzPadeApproximant implements
   public final Real                                          α;
   public final Complex                                       v;
   private final int                                          workingBits;
-  private final Context                                      context;
+  public final Context context;
   private final Complex                                      z = new Complex();   // scratch t^α
-  private final OrthogonalPolynomialMomentFunctionalSequence ops;
+  public final OrthogonalPolynomialMomentFunctionalSequence ops;
   private final ComplexFunctionSequence                      Φ;
 
   private boolean closed;
