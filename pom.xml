@@ -6,7 +6,7 @@
 
 	<groupId>org.arblib</groupId>
 	<artifactId>arb4j</artifactId>
-	<version>1.1.2</version>
+	<version>1.1.3</version>
 	<packaging>jar</packaging>
 	<description>arb4j</description>
 
@@ -216,17 +216,12 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.2.5</version>
 				<configuration>
-					<argLine>-ea --illegal-native-access=allow
+<argLine>-ea --illegal-native-access=allow
 						--sun-misc-unsafe-memory-access=allow
 						-Djava.library.path=${project.basedir}
 						-XX:+DisableExplicitGC
 						${argLine}</argLine>
 					<redirectTestOutputToFile>${arb4j.redirectTestOutputToFile}</redirectTestOutputToFile>
-					<!-- Exclude native-memory-leak tests that require explicit GC;
-					     run them via: mvn -Pleak-test test -->
-					<excludes>
-						<exclude>**/MuntzPadeApproximantAbandonedAllocationTest.java</exclude>
-					</excludes>
 				</configuration>
 			</plugin>
 
