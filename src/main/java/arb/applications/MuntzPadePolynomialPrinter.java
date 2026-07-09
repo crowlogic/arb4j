@@ -2,8 +2,8 @@ package arb.applications;
 
 import arb.Complex;
 import arb.ComplexPolynomial;
+import arb.Integer;
 import arb.Real;
-import arb.expressions.Context;
 import arb.functions.complex.RiccatiMuntzPadeFunctional;
 import arb.functions.integer.ComplexPolynomialSequence;
 
@@ -76,13 +76,14 @@ public class MuntzPadePolynomialPrinter
     String pStr  = args[1];
     String qStr  = args[2];
     String rStr  = args[3];
-    int    N     = Integer.parseInt(args[4]);
-    int    bits  = args.length > 5 ? Integer.parseInt(args[5]) : DEFAULT_BITS;
+    int    N     = java.lang.Integer.parseInt(args[4]);
+    int    bits  = args.length > 5 ? java.lang.Integer.parseInt(args[5]) : DEFAULT_BITS;
 
-    System.out.printf("Müntz–Padé orthogonal polynomials for the spectral-tau Padé solution%n");
-    System.out.printf("Equation: D^%s y(t) = %s + %s·y(t) + %s·y(t)²,  y(0) = 0%n", muStr, pStr, qStr, rStr);
+    System.out.println("Müntz–Padé orthogonal polynomials of the spectral-tau solution");
+    System.out.println("of the constant-coefficient (time-independent) fractional Riccati equation");
+    System.out.printf("  D^%s y(t) = %s + %s·y(t) + %s·y(t)²,  y(0) = 0%n", muStr, pStr, qStr, rStr);
     System.out.printf("Working precision: %d bits (~%d decimal digits)%n", bits, (int) (bits * Math.log10(2)));
-    System.out.printf("Printing first %d orthogonal polynomials in z = t^μ%n", N);
+    System.out.printf("First %d orthogonal polynomials in z = t^μ%n", N);
     System.out.println();
 
     try ( Real μ = new Real().set(muStr, bits);
@@ -100,11 +101,13 @@ public class MuntzPadePolynomialPrinter
       // sequence m(k-1) = a(k) of the quasi-definite moment functional.
       int         moments = 2 * N;
       ComplexPolynomial[] m = new ComplexPolynomial[moments];
-      try ( ComplexPolynomial aK = new ComplexPolynomial() )
+      try ( ComplexPolynomial aK = new ComplexPolynomial();
+            Integer kInt = new Integer() )
       {
         for (int k = 1; k <= moments; k++)
         {
-          a.evaluate(k, 1, bits, aK);
+          kInt.set(k);
+          a.evaluate(kInt, 1, bits, aK);
           // For constant P, Q, R each a(k) is a degree-0 polynomial (a scalar);
           // evaluate at v = 0 to extract the constant term as a ComplexPolynomial.
           ComplexPolynomial mk = new ComplexPolynomial();
@@ -209,7 +212,7 @@ public class MuntzPadePolynomialPrinter
       System.out.println("Denominator polynomials P_n(z)  [monic orthogonal, first kind]");
       System.out.println("═".repeat(70));
       System.out.println("Recurrence: P_{n+1}(z) = (z − α_n)·P_n(z) − β_n·P_{n-1}(z)");
-      System.out.printf("  α_0 = %s%n", alphaArr[0].toString(15));
+      System.out.printf("  α_0 = %s%n", alphaArr[0]);
       System.out.println();
 
       ComplexPolynomial[] Pn = new ComplexPolynomial[N];
@@ -250,7 +253,8 @@ public class MuntzPadePolynomialPrinter
 
       for (int n = 0; n < N; n++)
       {
-        System.out.printf("  P_%d(z) = %s%n", n, Pn[n].toString());
+        Pn[n].setIndependentVariableName("z");
+        System.out.printf("  P_%d(z) = %s%n", n, Pn[n]);
       }
       System.out.println();
 
@@ -265,7 +269,7 @@ public class MuntzPadePolynomialPrinter
       System.out.println("Numerator polynomials Pn_n(z)  [associated, second kind]");
       System.out.println("═".repeat(70));
       System.out.println("Recurrence: Pn_{n+1}(z) = (z − α_n)·Pn_n(z) − β_n·Pn_{n-1}(z)");
-      System.out.printf("  h(0) = %s%n", hArr[0].toString(15));
+      System.out.printf("  h(0) = %s%n", hArr[0]);
       System.out.println();
 
       ComplexPolynomial[] PnAssoc = new ComplexPolynomial[N];
@@ -305,7 +309,8 @@ public class MuntzPadePolynomialPrinter
 
       for (int n = 0; n < N; n++)
       {
-        System.out.printf("  Pn_%d(z) = %s%n", n, PnAssoc[n].toString());
+        PnAssoc[n].setIndependentVariableName("z");
+        System.out.printf("  Pn_%d(z) = %s%n", n, PnAssoc[n]);
       }
       System.out.println();
 
@@ -319,9 +324,9 @@ public class MuntzPadePolynomialPrinter
       {
         System.out.printf("  %-6d  %-42s  %-42s  %-42s%n",
                           n,
-                          alphaArr[n].toString(12),
-                          betaArr[n].toString(12),
-                          hArr[n].toString(12));
+                          alphaArr[n],
+                          betaArr[n],
+                          hArr[n]);
       }
       System.out.println();
 
