@@ -5,7 +5,7 @@ import arb.expressions.Context;
 import arb.functions.complex.ComplexFunction;
 import junit.framework.TestCase;
 
-public class ComplexFunctionSequenceTest2 extends
+public class ComplexFunctionSequence2Test extends
                                           TestCase
 {
 
