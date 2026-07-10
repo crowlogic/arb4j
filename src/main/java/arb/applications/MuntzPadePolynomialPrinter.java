@@ -74,6 +74,9 @@ public class MuntzPadePolynomialPrinter implements Runnable
   @Option(names = "--bits", description = "working precision in bits (default: 128)", defaultValue = "128")
   int bits;
 
+  @Option(names = "--reset-radius", description = "reset ball radius to zero on α and β at each iteration")
+  boolean resetRadius;
+
   public static void main(String[] args)
   {
     int exitCode = new CommandLine(new MuntzPadePolynomialPrinter()).execute(args);
@@ -160,6 +163,7 @@ public class MuntzPadePolynomialPrinter implements Runnable
       System.out.println("═".repeat(70));
 
       String[] jacobiCols = { "n", "αₙ", "βₙ", "hₙ", "hₙ/hₙ₋₁" };
+      int actualN = N;
       String[][] jacobiData = new String[N][5];
       try ( Complex αn = new Complex(); Complex βn = new Complex(); Complex hn = new Complex(); Complex hnPrev = new Complex(); Complex ratio = new Complex() )
       {
@@ -168,6 +172,21 @@ public class MuntzPadePolynomialPrinter implements Runnable
           αvSeq.evaluate(n, bits, αn);
           βvSeq.evaluate(n, bits, βn);
           hvSeq.evaluate(n, bits, hn);
+          if (resetRadius)
+          {
+            αn.getReal().getRad().zero();
+            αn.getImag().getRad().zero();
+            βn.getReal().getRad().zero();
+            βn.getImag().getRad().zero();
+          }
+          if (αn.getReal().isNaN() || αn.getImag().isNaN()
+              || βn.getReal().isNaN() || βn.getImag().isNaN()
+              || hn.getReal().isNaN() || hn.getImag().isNaN())
+          {
+            System.out.printf("  terminated at n=%d (NaN detected)%n", n);
+            actualN = n;
+            break;
+          }
           jacobiData[n][0] = String.valueOf(n);
           jacobiData[n][1] = αn.toString();
           jacobiData[n][2] = βn.toString();
@@ -184,7 +203,8 @@ public class MuntzPadePolynomialPrinter implements Runnable
           }
         }
       }
-      new TextTable(jacobiCols, jacobiData).printTable();
+      String[][] trimmedData = java.util.Arrays.copyOf(jacobiData, actualN);
+      new TextTable(jacobiCols, trimmedData).printTable();
       System.out.println();
     }
   }
