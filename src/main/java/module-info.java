@@ -30,6 +30,7 @@ module arb4j
   requires transitive vineflower;
   requires transitive ch.qos.logback.classic;
   requires transitive jsr305;
+  requires transitive info.picocli;
   exports arb;
   exports arb.applications;
   exports arb.applications.expressor;
@@ -66,4 +67,5 @@ module arb4j
   exports arb.stochastic.processes.heston;
   exports arb.utensils;
   exports arb.viz;
+  opens arb.applications to info.picocli;
 }

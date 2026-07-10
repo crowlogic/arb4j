@@ -1,7 +1,8 @@
 #!/bin/sh
-# Print the first 10 Müntz–Padé orthogonal polynomials (tanh oracle default)
+# Print the orthogonal polynomials of the Müntz-Padé spectral-tau solution
+# of the constant-coefficient fractional Riccati equation.
+#
+# Defaults: tanh oracle (μ=1, P=1, Q=0, R=-1, N=10)
+# Override with: --mu 1/2 --P 1 --Q 0 --R -1 --N 5 --bits 256
 BASEDIR=$(dirname $(readlink -f $0))/..
-if [ $# -eq 0 ]; then
-  set -- 1 1 0 -1 20 164
-fi
 $BASEDIR/bin/run arb.applications.MuntzPadePolynomialPrinter "$@"
