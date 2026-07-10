@@ -877,6 +877,19 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
     return arblibJNI.ComplexPolynomial_length_get(swigCPtr, this);
   }
 
+  public boolean isZero()
+  {
+    int length = getLength();
+    for (int i = 0; i < length; i++)
+    {
+      if (!get(i).isZero())
+      {
+        return false;
+      }
+    }
+    return true;
+  }
+
   public ComplexPolynomial() {
     this(arblibJNI.new_ComplexPolynomial(), true);
   }

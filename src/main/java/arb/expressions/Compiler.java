@@ -72,6 +72,7 @@ public class Compiler
 
   public static HashSet<Class<?>>         complexScalarTypes = new HashSet<>(Arrays.asList(Complex.class,
                                                                                            ComplexPolynomial.class,
+                                                                                           ComplexMultivariatePolynomial.class,
                                                                                            ComplexMatrix.class,
                                                                                            Complex.class,
                                                                                            ComplexSequence.class,
@@ -103,6 +104,7 @@ public class Compiler
     typePrefixes.put(Integer.class, "ℤ");
     typePrefixes.put(RealPolynomial.class, "Xℝ");
     typePrefixes.put(ComplexPolynomial.class, "Xℂ");
+    typePrefixes.put(ComplexMultivariatePolynomial.class, "Xℂᴹ");
     typePrefixes.put(RealMatrix.class, "ℝᵐˣⁿ");
     typePrefixes.put(ComplexMatrix.class, "ℂᵐˣⁿ");
     typePrefixes.put(RationalFunction.class, "ℚ");
@@ -183,7 +185,7 @@ public class Compiler
     }
     else if (from.equals(Complex.class))
     {
-      return (to.equals(ComplexFraction.class) || to.equals(ComplexRationalFunction.class) || to.equals(ComplexPolynomial.class));
+      return (to.equals(ComplexFraction.class) || to.equals(ComplexRationalFunction.class) || to.equals(ComplexPolynomial.class) || to.equals(ComplexMultivariatePolynomial.class));
     }
     else if (from.equals(Fraction.class))
     {
@@ -203,18 +205,20 @@ public class Compiler
   }
 
   public static HashSet<Class<?>> promotableFromReal    = new HashSet<Class<?>>(Arrays.asList(Real.class,
-                                                                                              RationalFunction.class,
-                                                                                              AlgebraicNumber.class,
-                                                                                              Complex.class,
-                                                                                              Fraction.class,
-                                                                                              RealPolynomial.class,
-                                                                                              ComplexPolynomial.class));
+                                                                                               RationalFunction.class,
+                                                                                               AlgebraicNumber.class,
+                                                                                               Complex.class,
+                                                                                               Fraction.class,
+                                                                                               RealPolynomial.class,
+                                                                                               ComplexPolynomial.class,
+                                                                                               ComplexMultivariatePolynomial.class));
 
   public static HashSet<Class<?>> promotableFromInteger = new HashSet<Class<?>>(Arrays.asList(Real.class,
-                                                                                              Complex.class,
-                                                                                              Fraction.class,
-                                                                                              RealPolynomial.class,
-                                                                                              ComplexPolynomial.class));
+                                                                                               Complex.class,
+                                                                                               Fraction.class,
+                                                                                               RealPolynomial.class,
+                                                                                               ComplexPolynomial.class,
+                                                                                               ComplexMultivariatePolynomial.class));
 
   public static MethodVisitor cast(MethodVisitor methodVisitor, Class<?> type)
   {

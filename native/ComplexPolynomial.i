@@ -26,6 +26,19 @@
 	  {
 	    return arblib.acb_poly_degree(this);
 	  }
+
+	public boolean isZero()
+	{
+	  int length = getLength();
+	  for (int i = 0; i < length; i++)
+	  {
+	    if (!get(i).isZero())
+	    {
+	      return false;
+	    }
+	  }
+	  return true;
+	}
 	  
 	/**
 	 * The magnitude of this polynomial: the maximum over its coefficients of
