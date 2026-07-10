@@ -2,13 +2,13 @@ package arb.applications;
 
 import arb.Complex;
 import arb.ComplexPolynomial;
-import arb.Integer;
 import arb.Real;
 import arb.expressions.Context;
 import arb.functions.complex.MuntzPadeApproximant;
 import arb.functions.complex.RiccatiMuntzPadeFunctional;
 import arb.functions.integer.ComplexPolynomialSequence;
 import arb.functions.integer.ComplexSequence;
+import arb.utensils.text.tables.TextTable;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -72,11 +72,6 @@ public class MuntzPadePolynomialPrinter implements Runnable
       MuntzPadeApproximant approx = (MuntzPadeApproximant) eq.evaluate(zeroV, 1, bits, null);
       Context ctx = approx.context;
 
-      // Sequences already computed by the OPS and MuntzPadeApproximant constructor.
-      // ops       — the orthogonal polynomial sequence P_n (aliased as "Q" in ctx)
-      // Pn        — the associated polynomial sequence Pn_n
-      // αv, βv, hv — scalar Jacobi coefficients evaluated at v=0
-
       ComplexPolynomialSequence PnSeq = (ComplexPolynomialSequence) ctx.getFunctionMapping("Pn").instantiate();
       ComplexSequence αvSeq = (ComplexSequence) ctx.getFunctionMapping("αv").instantiate();
       ComplexSequence βvSeq = (ComplexSequence) ctx.getFunctionMapping("βv").instantiate();
@@ -94,14 +89,18 @@ public class MuntzPadePolynomialPrinter implements Runnable
       }
       System.out.println();
 
+      String[] polyCols = { "n", "P_n(z)" };
+      String[][] polyData = new String[N][2];
       for (int n = 0; n < N; n++)
       {
         try ( ComplexPolynomial Pn = approx.ops.evaluate(n, bits) )
         {
           Pn.setIndependentVariableName("z");
-          System.out.printf("  P_%d(z) = %s%n", n, Pn);
+          polyData[n][0] = String.valueOf(n);
+          polyData[n][1] = Pn.toString();
         }
       }
+      new TextTable(polyCols, polyData).printTable();
       System.out.println();
 
       // ── Numerator polynomials Pn_n(z) ───────────────────────────────────
@@ -116,22 +115,26 @@ public class MuntzPadePolynomialPrinter implements Runnable
       }
       System.out.println();
 
+      String[][] assocData = new String[N][2];
       for (int n = 0; n < N; n++)
       {
         try ( ComplexPolynomial PnAssoc = PnSeq.evaluate(n, bits) )
         {
           PnAssoc.setIndependentVariableName("z");
-          System.out.printf("  Pn_%d(z) = %s%n", n, PnAssoc);
+          assocData[n][0] = String.valueOf(n);
+          assocData[n][1] = PnAssoc.toString();
         }
       }
+      new TextTable(polyCols, assocData).printTable();
       System.out.println();
 
       // ── Jacobi coefficients ─────────────────────────────────────────────
       System.out.println("═".repeat(70));
       System.out.println("Jacobi coefficients α_n, β_n, h_n");
       System.out.println("═".repeat(70));
-      System.out.printf("  %-6s  %-42s  %-42s  %-42s%n", "n", "α_n", "β_n", "h_n");
-      System.out.println("  " + "-".repeat(132));
+
+      String[] jacobiCols = { "n", "α_n", "β_n", "h_n" };
+      String[][] jacobiData = new String[N][4];
       try ( Complex αn = new Complex(); Complex βn = new Complex(); Complex hn = new Complex() )
       {
         for (int n = 0; n < N; n++)
@@ -139,9 +142,13 @@ public class MuntzPadePolynomialPrinter implements Runnable
           αvSeq.evaluate(n, bits, αn);
           βvSeq.evaluate(n, bits, βn);
           hvSeq.evaluate(n, bits, hn);
-          System.out.printf("  %-6d  %-42s  %-42s  %-42s%n", n, αn, βn, hn);
+          jacobiData[n][0] = String.valueOf(n);
+          jacobiData[n][1] = αn.toString();
+          jacobiData[n][2] = βn.toString();
+          jacobiData[n][3] = hn.toString();
         }
       }
+      new TextTable(jacobiCols, jacobiData).printTable();
       System.out.println();
     }
   }
