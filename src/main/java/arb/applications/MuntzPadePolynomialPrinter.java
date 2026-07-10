@@ -9,6 +9,7 @@ import arb.functions.complex.MuntzPadeApproximant;
 import arb.functions.complex.RiccatiMuntzPadeFunctional;
 import arb.functions.integer.ComplexPolynomialSequence;
 import arb.functions.integer.ComplexSequence;
+import arb.stochastic.processes.heston.RoughHestonRiccatiMuntzPadeFunctional;
 import arb.utensils.text.tables.TextTable;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
@@ -147,6 +148,27 @@ public class MuntzPadePolynomialPrinter implements Runnable
   @Option(names = "--print-polynomials", description = "print the orthogonal polynomial tables")
   boolean printPolynomials;
 
+  @Option(names = "--rough-heston", description = "use rough Heston P, Q, R coefficients")
+  boolean roughHeston;
+
+  @Option(names = "--lambda", description = "rough Heston mean reversion speed λ (default: 0.3)", defaultValue = "0.3")
+  String lambda;
+
+  @Option(names = "--theta", description = "rough Heston long-run variance θ (default: 0.04)", defaultValue = "0.04")
+  String theta;
+
+  @Option(names = "--nu", description = "rough Heston vol-of-vol ν (default: 0.3)", defaultValue = "0.3")
+  String nu;
+
+  @Option(names = "--V0", description = "rough Heston initial variance V₀ (default: 0.04)", defaultValue = "0.04")
+  String V0;
+
+  @Option(names = "--rho", description = "rough Heston correlation ρ (default: -0.7)", defaultValue = "-0.7")
+  String rho;
+
+  @Option(names = "--T", description = "rough Heston time to maturity T (default: 1.0)", defaultValue = "1.0")
+  String T;
+
   public static void main(String[] args)
   {
     int exitCode = new CommandLine(new MuntzPadePolynomialPrinter()).execute(args);
@@ -158,16 +180,35 @@ public class MuntzPadePolynomialPrinter implements Runnable
   {
     System.out.println("Müntz–Padé orthogonal polynomials of the spectral-tau solution");
     System.out.println("of the constant-coefficient (time-independent) fractional Riccati equation");
-    System.out.printf("  D^%s y(t) = %s + %s·y(t) + %s·y(t)²,  y(0) = 0%n", mu, pCoeff, qCoeff, rCoeff);
+    System.out.printf("  D^%s y(t) = P(v) + Q(v)·y(t) + R(v)·y(t)²,  y(0) = 0%n", mu);
     System.out.printf("Working precision: %d bits (~%d decimal digits)%n", bits, (int) (bits * Math.log10(2)));
     System.out.printf("First %d orthogonal polynomials in z = t^μ%n", N);
     System.out.println();
 
-    try ( Real μ = new Real().set(mu, bits);
-          RiccatiMuntzPadeFunctional eq = new RiccatiMuntzPadeFunctional(μ, pCoeff, qCoeff, rCoeff);
-          Complex zeroV = new Complex())
+    Real μ = new Real().set(mu, bits);
+    Complex zeroV = new Complex();
+    zeroV.zero();
+
+    if (roughHeston)
     {
-      zeroV.zero();
+      System.out.println("Rough Heston coefficients:");
+      System.out.printf("  P(v) = ½(−v² − iv)%n");
+      System.out.printf("  Q(v) = %s·(iv·%s·%s − 1)%n", lambda, rho, nu);
+      System.out.printf("  R(v) = ½(%s·%s)²%n", lambda, nu);
+      System.out.printf("  λ = %s, θ = %s, ν = %s, V₀ = %s, ρ = %s, T = %s%n",
+                        lambda, theta, nu, V0, rho, T);
+      System.out.println();
+    }
+    else
+    {
+      System.out.printf("  P = %s%n", pCoeff);
+      System.out.printf("  Q = %s%n", qCoeff);
+      System.out.printf("  R = %s%n", rCoeff);
+      System.out.println();
+    }
+
+    try ( RiccatiMuntzPadeFunctional eq = makeEquation(μ) )
+    {
       MuntzPadeApproximant approx = (MuntzPadeApproximant) eq.evaluate(zeroV, 1, bits, null);
       Context ctx = approx.context;
 
@@ -314,6 +355,31 @@ public class MuntzPadePolynomialPrinter implements Runnable
       String[][] trimmedData = java.util.Arrays.copyOf(jacobiData, actualN);
       new TextTable(jacobiCols, trimmedData).printTable();
       System.out.println();
+    }
+  }
+
+  private RiccatiMuntzPadeFunctional makeEquation(Real μ)
+  {
+    if (roughHeston)
+    {
+      Context ctx = new Context();
+      Real λ = new Real(lambda, bits).setName("λ");
+      Real θ = new Real(theta, bits).setName("θ");
+      Real ν = new Real(nu, bits).setName("ν");
+      Real V0r = new Real(V0, bits).setName("V0");
+      Real ρ = new Real(rho, bits).setName("ρ");
+      Real Tval = new Real(T, bits).setName("T");
+      ctx.registerVariable(λ);
+      ctx.registerVariable(θ);
+      ctx.registerVariable(ν);
+      ctx.registerVariable(V0r);
+      ctx.registerVariable(ρ);
+      ctx.registerVariable(Tval);
+      return new RoughHestonRiccatiMuntzPadeFunctional(ctx, μ);
+    }
+    else
+    {
+      return new RiccatiMuntzPadeFunctional(μ, pCoeff, qCoeff, rCoeff);
     }
   }
 }
