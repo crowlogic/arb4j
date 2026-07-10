@@ -20,7 +20,7 @@ import arb.expressions.Context;
  * called. The compiled function is cached on the pair for the pair's lifetime;
  * the optional parent {@link Context} supplied at construction has its
  * variables imported into a private sub-Context so user-supplied free variables
- * (e.g. v, μ in the Riccati–Mittag-Leffler setting) continue to resolve when
+  * (e.g. v, μ in the fractional Riccati setting) continue to resolve when
  * the rational function is evaluated.
  *
  * <p>

@@ -283,7 +283,7 @@ static void ml_series(acb_t out, const acb_t z, const arb_t alpha,
  * occurs for moderate-to-large |z| (intermediate terms far exceed the result).
  * Re-sum at doubled working precision until the ball carries prec bits of
  * relative accuracy, or its absolute radius is already below 2^{-prec} (the
- * value itself is near zero, e.g. at a pole of the Cole–Hopf w). Capped to avoid
+ * value itself is near zero, e.g. at a pole of the Riccati solution). Capped to avoid
  * runaway. This replaces the optimal-parabolic-contour quadrature, whose finite
  * node count produced an unsound, ~1e-13-accurate ball in the mid-|z| range. */
 static void ml_series_adaptive(acb_t out, const acb_t z, const arb_t alpha,

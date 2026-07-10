@@ -1,8 +1,9 @@
 package arb.applications;
 
-import arb.Complex;
-import arb.ComplexPolynomial;
-import arb.Real;
+import java.io.InputStream;
+import java.util.Properties;
+
+import arb.*;
 import arb.expressions.Context;
 import arb.functions.complex.MuntzPadeApproximant;
 import arb.functions.complex.RiccatiMuntzPadeFunctional;
@@ -27,9 +28,34 @@ import picocli.CommandLine.Option;
  */
 @Command(name = "muntzPadePolynomials",
          description = "Print the orthogonal polynomials of the Müntz-Padé spectral-tau solution",
+         versionProvider = MuntzPadePolynomialPrinter.VersionProvider.class,
          mixinStandardHelpOptions = true)
 public class MuntzPadePolynomialPrinter implements Runnable
 {
+  static class VersionProvider implements picocli.CommandLine.IVersionProvider
+  {
+    @Override
+    public String[] getVersion() throws Exception
+    {
+      Properties props = new Properties();
+      try ( InputStream in = MuntzPadePolynomialPrinter.class.getResourceAsStream("/arb/build-info.properties") )
+      {
+        if (in != null)
+        {
+          props.load(in);
+        }
+      }
+      String arb4j = props.getProperty("arb4j.version", "dev");
+      var lines = new java.util.ArrayList<String>();
+      lines.add("muntzPadePolynomials (arb4j " + arb4j + ")");
+      props.stringPropertyNames()
+            .stream()
+            .filter(k -> !k.equals("arb4j.version"))
+            .sorted()
+            .forEach(k -> lines.add("  " + k.replace(".version", "") + " " + props.getProperty(k)));
+      return lines.toArray(String[]::new);
+    }
+  }
   @Option(names = "--mu", description = "fractional order μ (default: 1)", defaultValue = "1")
   String mu;
 

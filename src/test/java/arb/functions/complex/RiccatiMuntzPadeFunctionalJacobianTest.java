@@ -8,7 +8,8 @@ import junit.framework.TestCase;
 
 /**
  * Tests for the symbolic parameter derivative (Jacobian) of
- * {@link RiccatiMuntzPadeFunctional}.
+ * {@link RiccatiMuntzPadeFunctional}, computed by applying the chain rule
+ * directly to the Müntz coefficient recurrence.
  *
  * <h2>Mathematical setup</h2>
  *
@@ -30,20 +31,14 @@ import junit.framework.TestCase;
  *   ∂y/∂v (t; v) = 1 − e^{−t},
  * </pre>
  *
- * which is the solution of the linearized equation
- *
- * <pre>
- *   D¹ w = 1 − w,   w(0) = 0
- * </pre>
- *
- * with unit initial driving instead of v. This is independent of v, so
- * evaluating the Jacobian at any v (e.g. v = 1) must agree with the reference 1
- * − e^{−t} to the working precision.
+ * which is independent of v, so evaluating the Jacobian at any v (e.g. v = 1)
+ * gives the same value 1 − e^{−t}. The test asserts the computed derivative
+ * matches the closed form to 1e-8 absolute tolerance.
  *
  * <p>
- * A second test validates the Jacobian against a finite-difference
- * approximation to guard against sign errors or scaling defects in the
- * derivative recurrence.
+ * A second test validates the Jacobian against a central finite-difference
+ * approximation (step h = 1e-4) to 1e-6 tolerance, guarding against sign
+ * errors or scaling defects in the derivative recurrence.
  *
  * @author Stephen Crowley ©2024-2026
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
@@ -118,8 +113,8 @@ public class RiccatiMuntzPadeFunctionalJacobianTest extends
   }
 
   /**
-   * Validate the symbolic Jacobian against a finite-difference approximation at
-   * (t = 0.5, v = 1.5) with step h = 1e-4.
+   * Validate the symbolic Jacobian against a central finite-difference
+   * approximation at (t = 0.5, v = 1.5) with step h = 1e-4.
    *
    * <p>
    * Finite difference: (y(t; v+h) − y(t; v−h)) / (2h).
@@ -139,12 +134,10 @@ public class RiccatiMuntzPadeFunctionalJacobianTest extends
       vm.set(vd - hd, 0);
       t.set(td, 0);
 
-      // Forward and backward evaluations for finite difference
       eq.evaluate(vp, 1, BITS, null).evaluate(t, 1, BITS, yp);
       eq.evaluate(vm, 1, BITS, null).evaluate(t, 1, BITS, ym);
       double                                                fdDeriv = (yp.re().doubleValue() - ym.re().doubleValue()) / (2 * hd);
 
-      // Symbolic derivative at (v, t)
       Jacobian<Complex, ComplexFunction, ComplexFunctional> J       = eq.jacobian(new String[]
       { "v" });
       J.partials[0].evaluate(v, 1, BITS, null).evaluate(t, 1, BITS, w);
@@ -153,4 +146,5 @@ public class RiccatiMuntzPadeFunctionalJacobianTest extends
       assertEquals("symbolic ∂y/∂v must agree with finite difference to 1e-6", fdDeriv, symDeriv, 1e-6);
     }
   }
+
 }

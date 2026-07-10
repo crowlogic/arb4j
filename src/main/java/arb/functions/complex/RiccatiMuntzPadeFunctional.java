@@ -173,19 +173,12 @@ public class RiccatiMuntzPadeFunctional extends
   }
 
   /**
-   * Build w(t;v) = ∂y/∂v as a {@link MuntzPadeFunctional}.
-   *
-   * FIXME: theres prolly a better way to do this
-   * <p>
-   * p, q, r are polynomial variables in {@link #context}. Their v-derivatives are
-   * obtained via {@link ComplexPolynomial#derivative()}, then registered as
-   * variables p_dv, q_dv, r_dv for use in the f, g, w recurrence expressions.
-   * </p>
+   * Seed coefficients for the direct chain-rule derivative of the Müntz
+   * recurrence: ṗ=∂p/∂var, q̇=∂q/∂var, ṙ=∂r/∂var. The derivative recurrence
+   * is the same shape as the a-recurrence; only the three seeds change per
+   * variable, so they are refreshed per variable exactly the way p, q, r are
+   * refreshed from P, Q, R.
    */
-  // Settable seed coefficients ṗ=∂p/∂var, q̇=∂q/∂var, ṙ=∂r/∂var, and the linear
-  // Volterra recurrence for ∂a/∂var built once over them. The recurrence is the
-  // same for every variable; only the three seeds change, so they are refreshed
-  // per variable exactly the way p, q, r are refreshed from P, Q, R.
   private ComplexPolynomial         pdv, qdv, rdv;
   private ComplexPolynomialSequence dyByVar;
   // ∂P/∂var, ∂Q/∂var, ∂R/∂var are fixed expressions per variable — only the
@@ -196,33 +189,39 @@ public class RiccatiMuntzPadeFunctional extends
   private final Map<String, ComplexPolynomialNullaryFunction> dQ = new HashMap<>();
   private final Map<String, ComplexPolynomialNullaryFunction> dR = new HashMap<>();
 
-  private void ensureDerivativeRecurrence()
+  /**
+   * Lazily build the derivative recurrence da(k) = ∂a(k)/∂var by applying the
+   * chain rule to the Müntz coefficient recurrence:
+   *
+   * <pre>
+   *   da₁ = ṗ/Γ(μ+1)
+   *   daₖ = γₖ( q̇·aₖ₋₁ + q·daₖ₋₁ + ṙ·Σ aⱼaₖ₋₁₋ⱼ + r·Σ(daⱼ·aₖ₋₁₋ⱼ + aⱼ·daₖ₋₁₋ⱼ) )
+   * </pre>
+   *
+   * where γₖ = Γ((k−1)μ+1)/Γ(kμ+1). The recurrence has the same shape as the
+   * a-recurrence; self-reference is resolved by the compiler exactly as for a.
+   */
+  private void ensureDirectDerivativeRecurrence()
   {
     if (dyByVar != null)
       return;
     context.registerVariable(pdv = ComplexPolynomial.named("pdv"));
     context.registerVariable(qdv = ComplexPolynomial.named("qdv"));
     context.registerVariable(rdv = ComplexPolynomial.named("rdv"));
-    // ∂a/∂var is its own self-referential Müntz sequence, the linearisation of
-    // the a-recurrence: da₁ = ṗ/Γ(μ+1), and for k≥2
-    //   daₖ = γₖ( q̇·aₖ₋₁ + q·daₖ₋₁ + ṙ·Σ aⱼaₖ₋₁₋ⱼ + r·Σ(daⱼ·aₖ₋₁₋ⱼ + aⱼ·daₖ₋₁₋ⱼ) ),
-    // γₖ = Γ((k-1)μ+1)/Γ(kμ+1). Same shape as a; expressed once, self-reference
-    // resolved by the compiler exactly as for a.
     dyByVar = ComplexPolynomialSequence.express("da:k➔when(k=1,pdv/Γ(μ+1),else,(Γ((k-1)*μ+1)/Γ(k*μ+1))*(qdv*a(k-1)+q*da(k-1)+rdv*∑j➔a(j)*a(k-1-j){j=1..k-2}+r*∑j➔(da(j)*a(k-1-j)+a(j)*da(k-1-j)){j=1..k-2}))",
                                                 context);
   }
 
   /**
-   * The Müntz sequence ∂a(k,·)/∂var for var ∈ {v, λ, ν, ρ}, by differentiating
-   * the Riccati recurrence. The linear Volterra recurrence is identical to the
-   * v-derivative; only the seed coefficients ∂p/∂var, ∂q/∂var, ∂r/∂var differ,
-   * and those are obtained automatically by differentiating the coefficient
-   * expressions P, Q, R with respect to var. (μ is excluded: it also enters the
-   * Γ-ratios, contributing digamma terms.)
+   * The Müntz derivative sequence ∂a(k,·)/∂var for var ∈ {v, λ, ν, ρ}, by
+   * applying the chain rule to the Müntz coefficient recurrence. Only the seed
+   * coefficients ∂p/∂var, ∂q/∂var, ∂r/∂var differ per variable; those are
+   * obtained by differentiating the coefficient expressions P, Q, R with respect
+   * to var. (μ is excluded: it enters the Γ-ratios, contributing digamma terms.)
    */
   public ComplexPolynomialSequence parameterDerivative(String var, int bits)
   {
-    ensureDerivativeRecurrence();
+    ensureDirectDerivativeRecurrence();
     dP.computeIfAbsent(var, v -> P.derivative(v)).evaluate(bits, pdv);
     dQ.computeIfAbsent(var, v -> Q.derivative(v)).evaluate(bits, qdv);
     dR.computeIfAbsent(var, v -> R.derivative(v)).evaluate(bits, rdv);
@@ -330,20 +329,20 @@ public class RiccatiMuntzPadeFunctional extends
   }
 
   // ────────────────────────────────────────────────────────────────────────
-  // Jacobian: ∂y/∂v as a MuntzPadeFunction in its own right
+  // Jacobian: ∂y/∂v via direct chain-rule differentiation
   // ────────────────────────────────────────────────────────────────────────
 
   /**
-   * Jacobian of y with respect to v.
+   * Jacobian of y with respect to v, computed by applying the chain rule
+   * directly to the Müntz coefficient recurrence.
    *
    * <p>
-   * Differentiating the Riccati ODE in v gives the linear fractional Volterra
-   * equation
+   * Differentiating the recurrence aₖ = γₖ(q·aₖ₋₁ + r·Σ aⱼaₖ₋₁₋ⱼ) in v
+   * gives the derivative recurrence
    *
    * <pre>
-   *   Đᵅ w(t; v) = f(t; v) + g(t; v)·w(t; v),    w(t;v) := ∂y(t;v)/∂v
-   *   f(t; v)    = ṗ(v) + q̇(v)·y(t;v) + ṙ(v)·y(t;v)²
-   *   g(t; v)    = q(v) + 2·r(v)·y(t;v)
+   *   da₁ = ṗ/Γ(μ+1)
+   *   daₖ = γₖ( q̇·aₖ₋₁ + q·daₖ₋₁ + ṙ·Σ aⱼaₖ₋₁₋ⱼ + r·Σ(daⱼ·aₖ₋₁₋ⱼ + aⱼ·daₖ₋₁₋ⱼ) )
    * </pre>
    *
    * where ṗ, q̇, ṙ are the formal derivatives of the polynomial coefficient
@@ -351,7 +350,7 @@ public class RiccatiMuntzPadeFunctional extends
    * {@link ComplexPolynomial#derivative()} — pure algebraic coefficient shifting,
    * no numerical approximation.
    *
-   * The solution w(t;v) = Σ w_k(v)·t^{kμ} is itself a Müntz–Padé function.
+   * The solution ∂y/∂v(t;v) = Σ daₖ(v)·t^{kμ} is itself a Müntz–Padé function.
    * </p>
    */
   @Override
