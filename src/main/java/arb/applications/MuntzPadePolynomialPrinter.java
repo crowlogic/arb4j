@@ -77,6 +77,9 @@ public class MuntzPadePolynomialPrinter implements Runnable
   @Option(names = "--no-reset-radius", description = "do not reset ball radius on α and β at each iteration")
   boolean noResetRadius;
 
+  @Option(names = "--no-autoterm", description = "do not auto-terminate when 0∈Δβₙ")
+  boolean noAutoterm;
+
   public static void main(String[] args)
   {
     int exitCode = new CommandLine(new MuntzPadePolynomialPrinter()).execute(args);
@@ -162,9 +165,9 @@ public class MuntzPadePolynomialPrinter implements Runnable
       System.out.println("Jacobi coefficients αₙ, βₙ, hₙ");
       System.out.println("═".repeat(70));
 
-      String[] jacobiCols = { "n", "αₙ", "βₙ", "hₙ", "Δβₙ" };
+      String[] jacobiCols = { "n", "αₙ", "βₙ", "hₙ", "Δβₙ", "0∈Δβₙ" };
       int actualN = N;
-      String[][] jacobiData = new String[N][5];
+      String[][] jacobiData = new String[N][6];
       try ( Complex αn = new Complex(); Complex βn = new Complex(); Complex hn = new Complex(); Complex βnPrev = new Complex(); Complex deltaβ = new Complex() )
       {
         for (int n = 0; n < N; n++)
@@ -194,12 +197,21 @@ public class MuntzPadePolynomialPrinter implements Runnable
           if (n == 0)
           {
             jacobiData[n][4] = "—";
+            jacobiData[n][5] = "—";
           }
           else
           {
             βvSeq.evaluate(n - 1, bits, βnPrev);
             βn.sub(βnPrev, bits, deltaβ);
             jacobiData[n][4] = deltaβ.toString();
+            boolean containsZero = deltaβ.getReal().containsZero() && deltaβ.getImag().containsZero();
+            jacobiData[n][5] = String.valueOf(containsZero);
+            if (containsZero && !noAutoterm)
+            {
+              System.out.printf("  auto-terminated at n=%d (0∈Δβₙ)%n", n);
+              actualN = n + 1;
+              break;
+            }
           }
         }
       }
