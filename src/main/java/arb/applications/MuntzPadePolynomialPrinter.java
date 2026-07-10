@@ -9,7 +9,9 @@ import arb.functions.complex.MuntzPadeApproximant;
 import arb.functions.complex.RiccatiMuntzPadeFunctional;
 import arb.functions.integer.ComplexPolynomialSequence;
 import arb.functions.integer.ComplexSequence;
+import arb.functions.real.RealFunction;
 import arb.stochastic.processes.heston.RoughHestonRiccatiMuntzPadeFunctional;
+import arb.utensils.ShellFunctions;
 import arb.utensils.text.tables.TextTable;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
@@ -21,7 +23,8 @@ import picocli.CommandLine.Option;
  * (time-independent) fractional Riccati equation.
  *
  * <pre>
- *   D^μ y(t) = P + Q·y(t) + R·y(t)²,   y(0) = 0
+ *   D^μ y(v,t) = P(v) + Q(v)·y(v,t) + R(v)·y(t,v)²
+ *   y(0) = 0
  * </pre>
  *
  * @author Stephen Crowley ©2024–2026
@@ -169,6 +172,18 @@ public class MuntzPadePolynomialPrinter implements Runnable
   @Option(names = "--T", description = "rough Heston time to maturity T (default: 1.0)", defaultValue = "1.0")
   String T;
 
+  @Option(names = "--plot", description = "reference expression to plot alongside the Padé resummed function")
+  String plotExpr;
+
+  @Option(names = "--plot-left", description = "left endpoint of plot domain (default: 0)", defaultValue = "0")
+  double plotLeft;
+
+  @Option(names = "--plot-right", description = "right endpoint of plot domain (default: 1)", defaultValue = "1")
+  double plotRight;
+
+  @Option(names = "--plot-points", description = "number of sample points (default: 200)", defaultValue = "200")
+  int plotPoints;
+
   public static void main(String[] args)
   {
     int exitCode = new CommandLine(new MuntzPadePolynomialPrinter()).execute(args);
@@ -241,6 +256,7 @@ public class MuntzPadePolynomialPrinter implements Runnable
         System.out.printf("  discriminant = Q² − 4PR = %s%n", disc);
       }
       System.out.println();
+      System.out.printf("  a(k) = %s%n", ctx.getFunctionMapping("a").getExpressionString());
       System.out.printf("  m(k) = %s%n", ctx.getFunctionMapping("m").getExpressionString());
       System.out.printf("  σ(j)(k) = %s%n", ctx.getFunctionMapping("σ").getExpressionString());
       System.out.printf("  h(j) = %s%n", ctx.getFunctionMapping("h").getExpressionString());
@@ -374,6 +390,21 @@ public class MuntzPadePolynomialPrinter implements Runnable
       String[][] trimmedData = java.util.Arrays.copyOf(jacobiData, actualN);
       new TextTable(jacobiCols, trimmedData).printTable();
       System.out.println();
+
+      if (plotExpr != null)
+      {
+        int M = actualN - 1;
+        try ( RealFunction pade = RealFunction.express("t➔Φ(" + M + ")(t^" + mu + ")", ctx);
+              RealFunction ref = RealFunction.express(plotExpr))
+        {
+          ShellFunctions.plot(plotLeft, plotRight, plotPoints, pade, ref);
+          Thread.currentThread().join();
+        }
+        catch (Exception e)
+        {
+          throw new RuntimeException(e);
+        }
+      }
     }
   }
 
