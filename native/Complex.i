@@ -1515,18 +1515,85 @@ import arb.functions.complex.ComplexNullaryFunction;
           sb.append(", ");
         }
       }
-      Real real2 = get(i).getReal();
-      Real imag2 = get(i).getImag();
+      Complex c = get(i);
+      Real real2 = c.getReal();
+      Real imag2 = c.getImag();
       real2.printPrecision = imag2.printPrecision = printPrecision;
-      String imaginaryPartString = printPrecision ? imag2.toString() : imag2.getMid().toString();
-      String realPartString      = printPrecision ? real2.toString() : real2.getMid().toString();
-      if (imag2.isZero())
+      boolean realIsZero = real2.isZero();
+      boolean imagIsZero = imag2.isZero();
+      if (imagIsZero)
       {
-        sb.append(String.format("%s", realPartString));
+        sb.append(real2);
+        continue;
+      }
+      boolean imagExact = imag2.isExact();
+      boolean imagNeg   = imag2.isNegative();
+      if (realIsZero)
+      {
+        if (imag2.isOne())
+        {
+          sb.append("i");
+        }
+        else if (imag2.equals(-1))
+        {
+          sb.append("-i");
+        }
+        else if (imagExact)
+        {
+          sb.append(imag2.getMid());
+          sb.append("*i");
+        }
+        else
+        {
+          sb.append("(");
+          sb.append(imag2);
+          sb.append(")*i");
+        }
       }
       else
       {
-        sb.append(String.format("%s + i*%s", realPartString, imaginaryPartString));
+        sb.append(real2);
+        if (imag2.isOne())
+        {
+          sb.append(" + i");
+        }
+        else if (imag2.equals(-1))
+        {
+          sb.append(" - i");
+        }
+        else if (imagNeg)
+        {
+          sb.append(" - ");
+          String magStr = imagExact
+            ? imag2.getMid().toString().substring(1)
+            : imag2.toString().substring(1);
+          if (imagExact)
+          {
+            sb.append(magStr);
+          }
+          else
+          {
+            sb.append("(");
+            sb.append(magStr);
+            sb.append(")");
+          }
+          sb.append("*i");
+        }
+        else
+        {
+          sb.append(" + ");
+          if (imagExact)
+          {
+            sb.append(imag2.getMid());
+          }
+          else
+          {
+            sb.append("(");
+            sb.append(imag2);
+            sb.append(")");
+          }
+          sb.append("*i");
+        }
       }
     }
     if (dim > 1)

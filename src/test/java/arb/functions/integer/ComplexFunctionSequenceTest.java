@@ -21,6 +21,6 @@ public class ComplexFunctionSequenceTest extends
     ComplexFunction         function = seq.apply(3);
     Complex                 y        = function.eval(2.3, new Complex());
 
-    assertEquals("0.0654309123345280 +/- 2.84e-17 + i*-0.1284153959325313 +/- 2.69e-17", y.toString());
+    assertEquals("0.0654309123345280 +/- 2.84e-17 - (0.1284153959325313 +/- 2.69e-17)*i", y.toString());
   }
 }
