@@ -202,8 +202,12 @@ public class MuntzPadePolynomialPrinter implements Runnable
         System.out.println("  P(v) = ½(−v² − iv)");
         System.out.println("  Q(v) = λ(ivρν − 1)");
         System.out.println("  R(v) = ½(λν)²");
-        System.out.printf("  λ = %s, θ = %s, ν = %s, V₀ = %s, ρ = %s, T = %s%n",
-                          lambda, theta, nu, V0, rho, T);
+        System.out.printf("  λ = %s  (mean reversion speed)%n", lambda);
+        System.out.printf("  θ = %s  (long-run variance)%n", theta);
+        System.out.printf("  ν = %s  (vol-of-vol)%n", nu);
+        System.out.printf("  V₀ = %s  (initial variance)%n", V0);
+        System.out.printf("  ρ = %s  (correlation)%n", rho);
+        System.out.printf("  T = %s  (time to maturity)%n", T);
       }
       else
       {
