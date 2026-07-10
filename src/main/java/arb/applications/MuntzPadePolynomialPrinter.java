@@ -179,9 +179,9 @@ public class MuntzPadePolynomialPrinter implements Runnable
             βn.getReal().getRad().zero();
             βn.getImag().getRad().zero();
           }
-          if (αn.getReal().isNaN() || αn.getImag().isNaN()
-              || βn.getReal().isNaN() || βn.getImag().isNaN()
-              || hn.getReal().isNaN() || hn.getImag().isNaN())
+          if (!αn.getReal().isFinite() || !αn.getImag().isFinite()
+              || !βn.getReal().isFinite() || !βn.getImag().isFinite()
+              || !hn.getReal().isFinite() || !hn.getImag().isFinite())
           {
             System.out.printf("  terminated at n=%d (NaN detected)%n", n);
             actualN = n;
