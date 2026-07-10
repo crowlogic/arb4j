@@ -828,27 +828,6 @@ public class Context implements
                                                                                                                Expression<D, R, F> expression,
                                                                                                                String expressionString)
   {
-    // Hidden classes (Java 15+ lambdas / LambdaMetafactory output) have
-    // Class.descriptorString() forms like
-    //   Larb/.../MuntzPadeApproximant$$Lambda.0x000000000f19d628;
-    // which include a '.' between the host class and the hex suffix. That form
-    // is legal in MethodHandle/MethodType descriptors but illegal in a normal
-    // class-file constant pool, so emitting it as a field descriptor for the
-    // mapping produces a ClassFormatError ("Class name is empty or contains
-    // illegal character in descriptor") the next time the enclosing generated
-    // class is loaded. Reject the registration up-front with an actionable
-    // message rather than producing unloadable bytecode.
-    if (functionClass != null && functionClass.isHidden())
-    {
-      throw new IllegalArgumentException(format("Cannot register function '%s' with hidden class %s as functionClass. "
-                                                + "This typically happens when a lambda is passed without an explicit interface — "
-                                                + "the lambda's hidden class is captured via function.getClass() and its descriptor "
-                                                + "contains characters illegal in a class-file constant pool. "
-                                                + "Pass the implemented Function interface explicitly via the 5+ arg "
-                                                + "registerFunctionMapping(name, fn, domain, coDomain, functionInterface, ...) overload.",
-                                                functionName,
-                                                functionClass.getName()));
-    }
     FunctionMapping<D, R, F> alreadyMappedFunctionMapping = functions.get(functionName);
     FunctionMapping<D, R, F> mapping;
     if (alreadyMappedFunctionMapping != null)
