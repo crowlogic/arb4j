@@ -241,8 +241,6 @@
 
   static { NativeLibraryLoader.load("arblib"); }
 
-  public ComplexPolynomial divisor;
-
   public ComplexPolynomial pow(Integer in, int bits, ComplexPolynomial result)
   {
     arblib.acb_poly_pow_ui(result,this,in.getUnsignedValue(), bits);
@@ -331,17 +329,29 @@
 
     if (arblib.acb_poly_divrem(quotientBuffer, remainder, this, divisor, prec) == 0)
     {
-      throw new DivisionByZeroException("division by zero: dividend=" + divisor);
+      // Divisor's leading coefficient contains zero.
+      // FLINT set Q=0, R=this. Enforce that the remainder is zero within prec
+      // bits; if not, this is a genuine nonzero / zero division.
+      boolean remainderIsZero = true;
+      int     remLen           = remainder.getLength();
+      for (int i = 0; i < remLen; i++)
+      {
+        Complex c = remainder.get(i);
+        if (!c.getReal().isZeroUpTo(prec) || !c.getImag().isZeroUpTo(prec))
+        {
+          remainderIsZero = false;
+          break;
+        }
+      }
+      if (!remainderIsZero)
+      {
+        throw new DivisionByZeroException("division by zero: dividend=" + divisor);
+      }
     }
     if (aliased)
     {
       resultingQuotient.set(quotientBuffer);
       quotientBuffer.close();
-    }
-    if (remainder.getLength() > 0)
-    {
-      resultingQuotient.divisor   = divisor;
-      resultingQuotient.remainder = remainder;
     }
     resultingQuotient.bits = prec;
     return resultingQuotient;
@@ -561,8 +571,6 @@
     return this;
   }
   
-  public ComplexPolynomial remainder;
-  
   public String independentVariableName = "x";
 
   public String getIndependentVariableName()
@@ -619,7 +627,7 @@
         }
       }
     }
-    String string = builder.toString() + (remainder != null ? " with remainder " + remainder : "");
+    String string = builder.toString();
     if ( string.length() > 0 && string.charAt(0) == '-')
     {
       return "-" + string.substring(1).replaceAll("-", "- ").trim();

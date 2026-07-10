@@ -342,7 +342,10 @@ public class RoughHestonCharacteristicFunction implements
 
         // Num = quo·D + P with deg quo = 2: σ_T² = −2·Re(quo₂), μ_T = −Im(quo₁).
         Num.div(D, bits, quo);
-        ComplexPolynomial P = quo.remainder;
+        // P = Num − quo·D
+        ComplexPolynomial P = new ComplexPolynomial();
+        quo.mul(D, bits, P);
+        Num.sub(P, bits, P);
 
         Real σT2 = new Real();
         σT2.set(quo.get(2).re()).mul(-2, bits, σT2);

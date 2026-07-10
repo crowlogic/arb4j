@@ -190,11 +190,9 @@ import arb.functions.real.RealFunction;
     c.become(that.getCoeffs());
     swigCPtr                = that.swigCPtr;
     swigCMemOwn             = that.swigCMemOwn;
-    divisor                 = that.divisor;
     bits                    = that.bits;
     independentVariableName = that.independentVariableName;
     printPrecision          = that.printPrecision;
-    remainder               = that.remainder;
     return this;
   }
 
@@ -213,25 +211,6 @@ import arb.functions.real.RealFunction;
     return add(i, bits, this);
   }
   
-  public RealPolynomial setRemainder(int i)
-  {
-    if ( remainder == null )
-    {
-      remainder = new RealPolynomial();
-    }
-    remainder.set(i);
-    return this;
-  }
-
-  public RealPolynomial setDivisor(int i)
-  {
-    if (divisor == null)
-    {
-      divisor = new RealPolynomial();
-    }
-    divisor.set(i);
-    return this;
-  }
       
   /**
    * 
@@ -296,19 +275,11 @@ import arb.functions.real.RealFunction;
   }
   
   /**
-   * Compute a quotient of this polynomial with another and its remainder by
-   * reversing the inputs and performing power series division.
+   * Compute a quotient of this polynomial with another.
    * 
    * If the leading coefficient of the divisor contains zero (or if is identically
    * zero), then a {@link DivisionByZeroException} is thrown. Otherwise, the
-   * {@link RealPolynomial} quotient will be calculated
-   * 
-   * If there is a remainder then the {@link RealPolynomial#remainder} and
-   * {@link RealPolynomial#divisor} fields will be populated and will have its
-   * {@link AutoCloseable#close()} method called by the {@link RealPolynomial}
-   * quotient being returned as the result when its {@link AutoCloseable#close()}
-   * method is called, otherwise the quotients {@link RealPolynomial#remainder}
-   * will be null.
+   * {@link RealPolynomial} quotient will be calculated.
    */
   @Override
   public RealPolynomial div(RealPolynomial divisor, int prec, RealPolynomial resultingQuotient)
@@ -333,21 +304,28 @@ import arb.functions.real.RealFunction;
 
     if (arblib.arb_poly_divrem(quotientBuffer, remainder, this, divisor, prec) == 0)
     {
-      throw new DivisionByZeroException("division by zero: dividend=" + divisor + " this=" + this);
+      // Divisor's leading coefficient contains zero.
+      // FLINT set Q=0, R=this. Enforce that the remainder is zero within prec
+      // bits; if not, this is a genuine nonzero / zero division.
+      boolean remainderIsZero = true;
+      int     remLen           = remainder.getLength();
+      for (int i = 0; i < remLen; i++)
+      {
+        if (!remainder.get(i).isZeroUpTo(prec))
+        {
+          remainderIsZero = false;
+          break;
+        }
+      }
+      if (!remainderIsZero)
+      {
+        throw new DivisionByZeroException("division by zero: divisor=" + divisor + " this=" + this);
+      }
     }
     if (aliased)
     {
       resultingQuotient.set(quotientBuffer);
       quotientBuffer.close();
-    }
-    if (remainder.getLength() > 0)
-    {
-      resultingQuotient.divisor   = divisor;
-      resultingQuotient.remainder = remainder;
-    }
-    else
-    {
-      remainder.close();
     }
     resultingQuotient.bits = prec;
     return resultingQuotient;
@@ -665,8 +643,7 @@ import arb.functions.real.RealFunction;
         }
       }
     }
-    String string = builder.toString() + ((remainder != null && !remainder.isEmpty()) ? " with remainder "
-                  + (remainder + "/" + divisor) : "");
+    String string = builder.toString();
     if (string.length() > 0 && string.charAt(0) == '-')
     {
       return "-" + string.substring(1).replaceAll("-", "- ").trim();
@@ -676,8 +653,6 @@ import arb.functions.real.RealFunction;
   }
       
   public boolean printPrecision = false;
-  
-  public RealPolynomial divisor;
 
   public RealPolynomial mul(RealPolynomial that, int bits, RealPolynomial result)
   {
@@ -887,15 +862,6 @@ import arb.functions.real.RealFunction;
    */
   public void closeRetainingContextMemberships()
   {
-    if (remainder != null)
-    {
-      remainder.close();
-      remainder = null;
-    }
-    if ( divisor != null )
-    {
-      divisor.close();
-    }
     if (coeffs != null)
     {
       coeffs.close();
@@ -907,7 +873,6 @@ import arb.functions.real.RealFunction;
     }
   }
 
-  public RealPolynomial remainder;
   
  /**
    * @see arb#arb_poly_product_roots(RealPolynomial, Real, int, int)
@@ -1001,24 +966,6 @@ import arb.functions.real.RealFunction;
     return this;
   }
   
-  public RealPolynomial prepare()
-  {
-    if (remainder == null)
-    {
-      setRemainder(0);
-    }
-    if (divisor == null)
-    {
-      setDivisor(1);
-    }
-    return this;
-  }
-
-  public boolean hasRemainder()
-  {
-    return remainder != null && !remainder.isZero();
-  }  
-
   public RealPolynomial set(RealPolynomial a)
   {
     if (a == null)

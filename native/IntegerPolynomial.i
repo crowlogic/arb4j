@@ -141,8 +141,6 @@ import arb.expressions.Context;
     return 1;
   }
     
-  public IntegerPolynomial remainder;
-  
   public String independentVariableName = "x";
 
   public String getIndependentVariableName()
