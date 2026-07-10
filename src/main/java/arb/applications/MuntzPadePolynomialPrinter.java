@@ -162,10 +162,10 @@ public class MuntzPadePolynomialPrinter implements Runnable
       System.out.println("Jacobi coefficients αₙ, βₙ, hₙ");
       System.out.println("═".repeat(70));
 
-      String[] jacobiCols = { "n", "αₙ", "βₙ", "hₙ", "hₙ/hₙ₋₁" };
+      String[] jacobiCols = { "n", "αₙ", "βₙ", "hₙ" };
       int actualN = N;
-      String[][] jacobiData = new String[N][5];
-      try ( Complex αn = new Complex(); Complex βn = new Complex(); Complex hn = new Complex(); Complex hnPrev = new Complex(); Complex ratio = new Complex() )
+      String[][] jacobiData = new String[N][4];
+      try ( Complex αn = new Complex(); Complex βn = new Complex(); Complex hn = new Complex() )
       {
         for (int n = 0; n < N; n++)
         {
@@ -191,16 +191,6 @@ public class MuntzPadePolynomialPrinter implements Runnable
           jacobiData[n][1] = αn.toString();
           jacobiData[n][2] = βn.toString();
           jacobiData[n][3] = hn.toString();
-          if (n == 0)
-          {
-            jacobiData[n][4] = "—";
-          }
-          else
-          {
-            hvSeq.evaluate(n - 1, bits, hnPrev);
-            hn.div(hnPrev, bits, ratio);
-            jacobiData[n][4] = ratio.toString();
-          }
         }
       }
       String[][] trimmedData = java.util.Arrays.copyOf(jacobiData, actualN);
