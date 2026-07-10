@@ -186,31 +186,33 @@ public class MuntzPadePolynomialPrinter implements Runnable
     System.out.println();
 
     Real μ = new Real().set(mu, bits);
-    Complex zeroV = new Complex();
-    zeroV.zero();
-
-    if (roughHeston)
-    {
-      System.out.println("Rough Heston coefficients:");
-      System.out.printf("  P(v) = ½(−v² − iv)%n");
-      System.out.printf("  Q(v) = %s·(iv·%s·%s − 1)%n", lambda, rho, nu);
-      System.out.printf("  R(v) = ½(%s·%s)²%n", lambda, nu);
-      System.out.printf("  λ = %s, θ = %s, ν = %s, V₀ = %s, ρ = %s, T = %s%n",
-                        lambda, theta, nu, V0, rho, T);
-      System.out.println();
-    }
-    else
-    {
-      System.out.printf("  P = %s%n", pCoeff);
-      System.out.printf("  Q = %s%n", qCoeff);
-      System.out.printf("  R = %s%n", rCoeff);
-      System.out.println();
-    }
+    Complex zeroV = new Complex().zero();
 
     try ( RiccatiMuntzPadeFunctional eq = makeEquation(μ) )
     {
       MuntzPadeApproximant approx = (MuntzPadeApproximant) eq.evaluate(zeroV, 1, bits, null);
       Context ctx = approx.context;
+
+      System.out.println("═".repeat(70));
+      System.out.println("Coefficient functions");
+      System.out.println("═".repeat(70));
+      System.out.println();
+      if (roughHeston)
+      {
+        System.out.println("  P(v) = ½(−v² − iv)");
+        System.out.println("  Q(v) = λ(ivρν − 1)");
+        System.out.println("  R(v) = ½(λν)²");
+        System.out.printf("  λ = %s, θ = %s, ν = %s, V₀ = %s, ρ = %s, T = %s%n",
+                          lambda, theta, nu, V0, rho, T);
+      }
+      else
+      {
+        System.out.printf("  P(v) = %s  (constant)%n", pCoeff);
+        System.out.printf("  Q(v) = %s  (constant)%n", qCoeff);
+        System.out.printf("  R(v) = %s  (constant)%n", rCoeff);
+      }
+      System.out.println("═".repeat(70));
+      System.out.println();
 
       System.out.println("═".repeat(70));
       System.out.println("σ-table definitions (compiled expressions)");
