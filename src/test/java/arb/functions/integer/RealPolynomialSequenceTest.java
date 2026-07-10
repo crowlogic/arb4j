@@ -16,7 +16,7 @@ public class RealPolynomialSequenceTest extends
       IntegralSequence intSeq = seq.integral();
 
       RealPolynomial   intP3  = intSeq.apply(3);
-      assertEquals("0.3125*x⁴ - 0.46875*x²", intP3.toString());
+      assertEquals("0.3125*x⁴-0.46875*x²", intP3.toString());
     }
   }
 
@@ -27,7 +27,7 @@ public class RealPolynomialSequenceTest extends
     {
       DerivativeSequence diffSeq = seq.derivative();
       RealPolynomial     diffP3  = diffSeq.apply(3);
-      assertEquals("3.75*x² - 0.9375", diffP3.toString());
+      assertEquals("3.75*x²-0.9375", diffP3.toString());
     }
 
   }

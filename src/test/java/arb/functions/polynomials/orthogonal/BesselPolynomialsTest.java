@@ -25,7 +25,7 @@ public class BesselPolynomialsTest extends
         var p = y.evaluate(i, 128);
         if (i == 5)
         {
-          assertEquals("945*x⁵ + 945*x⁴ + 420*x³ + 105*x² + 15*x + 1", p.toString());
+          assertEquals("945*x⁵+945*x⁴+420*x³+105*x²+15*x+1", p.toString());
         }
       }
 
@@ -42,7 +42,7 @@ public class BesselPolynomialsTest extends
         var p = y.evaluate(i, 128);
         if (i == 5)
         {
-          assertEquals("945*x⁵ + 945*x⁴ + 420*x³ + 105*x² + 15*x + 1", p.toString());
+          assertEquals("945*x⁵+945*x⁴+420*x³+105*x²+15*x+1", p.toString());
         }
       }
 

@@ -16,7 +16,7 @@ public class LaguerrePolynomialsTest extends
     try ( var L = new LaguerrePolynomials())
     {
       var L2 = L.evaluate(2, 128);
-      assertEquals("0.5*x² - 2*x + 1", L2.toString());
+      assertEquals("0.5*x²-2*x+1", L2.toString());
     }
   }
 }

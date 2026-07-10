@@ -27,7 +27,7 @@ public class RealPolynomialTest extends
     var q  = Q.instantiate();
     var q3 = q.apply(3);
 //    System.out.println( "P3=" + P.apply(3));
-    assertEquals("0.3125*x⁴ - 0.46875*x²", q3.toString());
+    assertEquals("0.3125*x⁴-0.46875*x²", q3.toString());
   }
 
   public void testSetFraction()

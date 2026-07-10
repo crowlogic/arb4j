@@ -25,7 +25,7 @@ public class VariableNodeTest extends
     Expression<Object, RealPolynomial, RealPolynomialNullaryFunction> expression = RealPolynomialNullaryFunction.parse("3*x+x^2");
     RealPolynomialNullaryFunction                                     f          = expression.instantiate();
     RealPolynomial                                                    poly       = f.evaluate();
-    assertEquals("x² + 3*x", poly.toString());
+    assertEquals("x²+3*x", poly.toString());
   }
 
   public void testResolutionOfRealToRealPolynomialFunctionWithDifferentIndependentAndPlaceholderVariables()
@@ -36,7 +36,7 @@ public class VariableNodeTest extends
                                                                                                  "t->t+3*x+x^2");
     Function<Real, RealPolynomial>                                   f          = expression.instantiate();
     RealPolynomial                                                   poly       = f.evaluate(RealConstants.two, 0, 128, new RealPolynomial());
-    assertEquals("x² + 3*x + 2", poly.toString());
+    assertEquals("x²+3*x+2", poly.toString());
   }
 
   public void testResolutionOfRealToRealPolynomialFunctionWithSameIndependentAndPlaceholderVariables()

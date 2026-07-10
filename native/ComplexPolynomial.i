@@ -605,13 +605,23 @@
       xi.printPrecision = printPrecision;
       if (!xi.isZero() || (xi.isZero() && getLength() == 1 ))
       {
+        String coeffStr = xi.toString().replace(" ", "");
+        boolean negative = coeffStr.charAt(0) == '-';
         if (!builder.isEmpty())
         {
-          builder.append(((xi.re().sign() >= 0) ? " + " : " "));
+          builder.append(negative ? "-" : "+");
+        }
+        else if (negative)
+        {
+          builder.append("-");
+        }
+        if (negative)
+        {
+          coeffStr = coeffStr.substring(1);
         }
         if (i == 0 || !xi.re().isOne())
         {
-          builder.append(xi.toString().replace(" ", ""));
+          builder.append(coeffStr);
         }
         if (i > 0)
         {
@@ -627,12 +637,7 @@
         }
       }
     }
-    String string = builder.toString();
-    if ( string.length() > 0 && string.charAt(0) == '-')
-    {
-      return "-" + string.substring(1).replaceAll("-", "- ").trim();
-    }
-    return string.replaceAll("-", "- ").trim();
+    return builder.toString();
   }
 
   @Override

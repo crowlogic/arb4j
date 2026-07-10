@@ -127,7 +127,7 @@ public class IntegralNodeTest extends
     context.registerSequence("P", new ShiftedJacobiPolynomials());
     var F = RealPolynomialNullaryFunction.express("P(3)^2", context);
     var f = F.evaluate();
-    assertEquals("6.25*x⁶ - 9.375*x⁴ - 5*x³ + 3.515625*x² + 3.75*x + 1", f.toString());
+    assertEquals("6.25*x⁶-9.375*x⁴-5*x³+3.515625*x²+3.75*x+1", f.toString());
   }
 
   public void testIntegralOfAElementOfAContextualSequence()
@@ -155,7 +155,7 @@ public class IntegralNodeTest extends
 
     var poly = P4.integral();
 
-    assertEquals("0.4375*x⁵ - 0.7291666666666666666666667*x³ + 0.2734375*x", poly.toString());
+    assertEquals("0.4375*x⁵-0.7291666666666666666666667*x³+0.2734375*x", poly.toString());
   }
 
   public void testAnotherIntegralOfASequence()
@@ -170,7 +170,7 @@ public class IntegralNodeTest extends
     var P4int = RealPolynomialNullaryFunction.express("int(P4(x),x)", context);
 
     var poly  = P4int.evaluate();
-    assertEquals("0.4375*x⁵ - 0.7291666666666666666666667*x³ + 0.2734375*x", poly.toString());
+    assertEquals("0.4375*x⁵-0.7291666666666666666666667*x³+0.2734375*x", poly.toString());
   }
 
   public void testAnotherToo()

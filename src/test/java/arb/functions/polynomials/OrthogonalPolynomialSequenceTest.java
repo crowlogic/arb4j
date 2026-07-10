@@ -27,7 +27,7 @@ public class OrthogonalPolynomialSequenceTest extends
 
     {
       RealPolynomial r = P.evaluate(2, 128);
-      assertEquals("0.5*x² - 2*x + 1", r.toString());
+      assertEquals("0.5*x²-2*x+1", r.toString());
 
     }
   }
@@ -54,7 +54,7 @@ public class OrthogonalPolynomialSequenceTest extends
         // System.out.format("P[%d]=%s\n", i, r);
         if (i == 9)
         {
-          assertEquals("94.9609375*x⁹ - 201.09375*x⁷ + 140.765625*x⁵ - 36.09375*x³ + 2.4609375*x", r.toString());
+          assertEquals("94.9609375*x⁹-201.09375*x⁷+140.765625*x⁵-36.09375*x³+2.4609375*x", r.toString());
         }
       }
     }
@@ -72,7 +72,7 @@ public class OrthogonalPolynomialSequenceTest extends
         // System.out.format("H[%d]=%s\n", i, r);
         if (i == 9)
         {
-          assertEquals("512*x⁹ - 9216*x⁷ + 48384*x⁵ - 80640*x³ + 30240*x", r.toString());
+          assertEquals("512*x⁹-9216*x⁷+48384*x⁵-80640*x³+30240*x", r.toString());
         }
       }
     }
@@ -89,7 +89,7 @@ public class OrthogonalPolynomialSequenceTest extends
         RealPolynomial r = T.evaluate(i, 128);
         if (i == 9)
         {
-          assertEquals("256*x⁹ - 576*x⁷ + 432*x⁵ - 120*x³ + 9*x", r.toString());
+          assertEquals("256*x⁹-576*x⁷+432*x⁵-120*x³+9*x", r.toString());
         }
       }
     }
@@ -104,7 +104,7 @@ public class OrthogonalPolynomialSequenceTest extends
         RealPolynomial r = T.evaluate(i, 128);
         if (i == 9)
         {
-          assertEquals("256*x⁹ - 576*x⁷ + 432*x⁵ - 120*x³ + 9*x", r.toString());
+          assertEquals("256*x⁹-576*x⁷+432*x⁵-120*x³+9*x", r.toString());
         }
       }
     }

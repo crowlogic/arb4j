@@ -43,7 +43,7 @@ public class HypergeometricFunctionTest extends
                 RealPolynomialNullaryFunction.express("1/2-x/2"));
 
       RealPolynomial expressed = poly.evaluate(bits, new RealPolynomial());
-      assertEquals("0.065625*x² + 0.30625*x + 0.628125", expressed.toString());
+      assertEquals("0.065625*x²+0.30625*x+0.628125", expressed.toString());
     }
 
   }
@@ -102,7 +102,7 @@ public class HypergeometricFunctionTest extends
     {
       var            poly      = RealPolynomialNullaryFunction.express("pFq([-2,3.5,1],[2,4],1/2-x/2)");
       RealPolynomial expressed = poly.evaluate(bits, new RealPolynomial());
-      assertEquals("0.065625*x² + 0.30625*x + 0.628125", expressed.toString());
+      assertEquals("0.065625*x²+0.30625*x+0.628125", expressed.toString());
     }
     catch (UnsupportedOperationException e)
     {
@@ -161,7 +161,7 @@ public class HypergeometricFunctionTest extends
       F.init(Real.newVector(-6, 2.5), Real.newVector(1.0), arg);
       RealPolynomial polynomial = F.evaluate(null, 128, y);
       assert polynomial != null;
-      assertEquals("14.6630859375*x⁶ - 70.3828125*x⁵ + 135.3515625*x⁴ - 131.25*x³ + 65.625*x² - 15*x + 1", polynomial.toString());
+      assertEquals("14.6630859375*x⁶-70.3828125*x⁵+135.3515625*x⁴-131.25*x³+65.625*x²-15*x+1", polynomial.toString());
       double val = polynomial.eval(2.3);
       assertEquals(145.01289685058583, val);
     }
@@ -240,7 +240,7 @@ public class HypergeometricFunctionTest extends
     ComplexFunctionSequence express = ComplexFunctionSequence.express("Vpluscomplex:m➔pFq([1,m,-m],[½],-½*I/y)");
     ComplexFunction         p3      = express.evaluate(3, 128);
     arb.Complex             eval    = p3.eval(2.3, new arb.Complex());
-    assertEquals("-3.536862003780719037274006 +/- 1.55e-25 + (1.940494780964904916272657 +/- 2.85e-25)*i", eval.toString());
+    assertEquals("-3.536862003780719037274006 +/- 1.55e-25+(1.940494780964904916272657 +/- 2.85e-25)*ⅈ", eval.toString());
   }
 
   public static void testRealSequenceOfHypergeometricFunctions()

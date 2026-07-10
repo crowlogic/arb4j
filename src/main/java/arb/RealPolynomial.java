@@ -648,13 +648,23 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
       xi.printPrecision = printPrecision;
       if (!xi.isZero() || (xi.isZero() && getLength() == 1))
       {
+        String coeffStr = xi.toString().replace(" ", "");
+        boolean negative = xi.sign() < 0;
         if (!builder.isEmpty())
         {
-          builder.append(((xi.sign() >= 0) ? " + " : " "));
+          builder.append(negative ? "-" : "+");
+        }
+        else if (negative)
+        {
+          builder.append("-");
+        }
+        if (negative)
+        {
+          coeffStr = coeffStr.substring(1);
         }
         if (i == 0 || !xi.isOne())
         {
-          builder.append(xi.toString().replace(" ", ""));
+          builder.append(coeffStr);
         }
         if (i > 0)
         {
@@ -670,13 +680,7 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
         }
       }
     }
-    String string = builder.toString();
-    if (string.length() > 0 && string.charAt(0) == '-')
-    {
-      return "-" + string.substring(1).replaceAll("-", "- ").trim();
-    }
-    String trimmed = string.replaceAll("-", "- ").trim();
-    return trimmed;
+    return builder.toString();
   }
       
   public boolean printPrecision = false;

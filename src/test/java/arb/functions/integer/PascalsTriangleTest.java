@@ -19,7 +19,7 @@ public class PascalsTriangleTest extends
     try ( PascalsTriangle pascalsTriangle = new PascalsTriangle())
     {
       RealPolynomial row = pascalsTriangle.evaluate(10, 128, new RealPolynomial());
-      assertEquals("10*x⁹ + 45*x⁸ + 120*x⁷ + 210*x⁶ + 252*x⁵ + 210*x⁴ + 120*x³ + 45*x² + 10*x + 1", row.toString());
+      assertEquals("10*x⁹+45*x⁸+120*x⁷+210*x⁶+252*x⁵+210*x⁴+120*x³+45*x²+10*x+1", row.toString());
     }
   }
 

@@ -37,7 +37,7 @@ public class ModifiedLommelPolynomialsTest extends
         RealPolynomial p = m.evaluate(i, 128);
         if (i == 9)
         {
-          assertEquals("34459425*x⁹ - 16216200*x⁷ + 945945*x⁵ - 13860*x³ + 45*x", p.toString());
+          assertEquals("34459425*x⁹-16216200*x⁷+945945*x⁵-13860*x³+45*x", p.toString());
         }
       }
     }

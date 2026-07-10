@@ -217,7 +217,7 @@ public class VariableNodeResolutionTest extends
     try ( RealPolynomial result = f.evaluate(128, new RealPolynomial()))
     {
       assertNotNull("result should not be null", result);
-      assertEquals("x² + 1", result.toString());
+      assertEquals("x²+1", result.toString());
     }
   }
 

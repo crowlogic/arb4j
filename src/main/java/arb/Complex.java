@@ -71,6 +71,11 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
     return r.set(this).mul(s, prec, r);
   }
     
+  public ComplexPolynomial neg(ComplexPolynomial result)
+  {
+    return result.set(this).neg();
+  }
+
   public Complex rgamma(int bits)
   {
     return rgamma(bits,this);
@@ -1557,22 +1562,22 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
       {
         if (imag2.isOne())
         {
-          sb.append("i");
+          sb.append("ⅈ");
         }
         else if (imag2.equals(-1))
         {
-          sb.append("-i");
+          sb.append("-ⅈ");
         }
         else if (imagExact)
         {
           sb.append(imag2.getMid());
-          sb.append("*i");
+          sb.append("*ⅈ");
         }
         else
         {
           sb.append("(");
           sb.append(imag2);
-          sb.append(")*i");
+          sb.append(")*ⅈ");
         }
       }
       else
@@ -1580,15 +1585,15 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
         sb.append(real2);
         if (imag2.isOne())
         {
-          sb.append(" + i");
+          sb.append("+ⅈ");
         }
         else if (imag2.equals(-1))
         {
-          sb.append(" - i");
+          sb.append("-ⅈ");
         }
         else if (imagNeg)
         {
-          sb.append(" - ");
+          sb.append("-");
           String magStr = imagExact
             ? imag2.getMid().toString().substring(1)
             : imag2.toString().substring(1);
@@ -1602,11 +1607,11 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
             sb.append(magStr);
             sb.append(")");
           }
-          sb.append("*i");
+          sb.append("*ⅈ");
         }
         else
         {
-          sb.append(" + ");
+          sb.append("+");
           if (imagExact)
           {
             sb.append(imag2.getMid());
@@ -1617,7 +1622,7 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
             sb.append(imag2);
             sb.append(")");
           }
-          sb.append("*i");
+          sb.append("*ⅈ");
         }
       }
     }

@@ -46,6 +46,11 @@ import arb.functions.complex.ComplexNullaryFunction;
     return r.set(this).mul(s, prec, r);
   }
     
+  public ComplexPolynomial neg(ComplexPolynomial result)
+  {
+    return result.set(this).neg();
+  }
+
   public Complex rgamma(int bits)
   {
     return rgamma(bits,this);
@@ -1532,22 +1537,22 @@ import arb.functions.complex.ComplexNullaryFunction;
       {
         if (imag2.isOne())
         {
-          sb.append("i");
+          sb.append("ⅈ");
         }
         else if (imag2.equals(-1))
         {
-          sb.append("-i");
+          sb.append("-ⅈ");
         }
         else if (imagExact)
         {
           sb.append(imag2.getMid());
-          sb.append("*i");
+          sb.append("*ⅈ");
         }
         else
         {
           sb.append("(");
           sb.append(imag2);
-          sb.append(")*i");
+          sb.append(")*ⅈ");
         }
       }
       else
@@ -1555,15 +1560,15 @@ import arb.functions.complex.ComplexNullaryFunction;
         sb.append(real2);
         if (imag2.isOne())
         {
-          sb.append(" + i");
+          sb.append("+ⅈ");
         }
         else if (imag2.equals(-1))
         {
-          sb.append(" - i");
+          sb.append("-ⅈ");
         }
         else if (imagNeg)
         {
-          sb.append(" - ");
+          sb.append("-");
           String magStr = imagExact
             ? imag2.getMid().toString().substring(1)
             : imag2.toString().substring(1);
@@ -1577,11 +1582,11 @@ import arb.functions.complex.ComplexNullaryFunction;
             sb.append(magStr);
             sb.append(")");
           }
-          sb.append("*i");
+          sb.append("*ⅈ");
         }
         else
         {
-          sb.append(" + ");
+          sb.append("+");
           if (imagExact)
           {
             sb.append(imag2.getMid());
@@ -1592,7 +1597,7 @@ import arb.functions.complex.ComplexNullaryFunction;
             sb.append(imag2);
             sb.append(")");
           }
-          sb.append("*i");
+          sb.append("*ⅈ");
         }
       }
     }
