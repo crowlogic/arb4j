@@ -103,15 +103,15 @@ public class MuntzPadePolynomialPrinter implements Runnable
       ComplexSequence βvSeq = (ComplexSequence) ctx.getFunctionMapping("βv").instantiate();
       ComplexSequence hvSeq = (ComplexSequence) ctx.getFunctionMapping("hv").instantiate();
 
-      // ── Denominator polynomials P_n(z) ──────────────────────────────────
+      // ── Denominator polynomials Pₙ(z) ──────────────────────────────────
       System.out.println("═".repeat(70));
-      System.out.println("Denominator polynomials P_n(z)  [monic orthogonal, first kind]");
+      System.out.println("Denominator polynomials Pₙ(z)  [monic orthogonal, first kind]");
       System.out.println("═".repeat(70));
-      System.out.printf("Recurrence: P_{n+1}(z) = (z − α_n)·P_n(z) − β_n·P_{n-1}(z)%n");
+      System.out.printf("Recurrence: Pₙ₊₁(z) = (z − αₙ)·Pₙ(z) − βₙ·Pₙ₋₁(z)%n");
       try ( Complex α0 = new Complex() )
       {
         αvSeq.evaluate(0, bits, α0);
-        System.out.printf("  α_0 = %s%n", α0);
+        System.out.printf("  α₀ = %s%n", α0);
       }
       System.out.println();
 
@@ -129,15 +129,15 @@ public class MuntzPadePolynomialPrinter implements Runnable
       new TextTable(polyCols, polyData).printTable();
       System.out.println();
 
-      // ── Numerator polynomials Pn_n(z) ───────────────────────────────────
+      // ── Numerator polynomials Pnₙ(z) ───────────────────────────────────
       System.out.println("═".repeat(70));
-      System.out.println("Numerator polynomials Pn_n(z)  [associated, second kind]");
+      System.out.println("Numerator polynomials Pnₙ(z)  [associated, second kind]");
       System.out.println("═".repeat(70));
-      System.out.printf("Recurrence: Pn_{n+1}(z) = (z − α_n)·Pn_n(z) − β_n·Pn_{n-1}(z)%n");
+      System.out.printf("Recurrence: Pnₙ₊₁(z) = (z − αₙ)·Pnₙ(z) − βₙ·Pnₙ₋₁(z)%n");
       try ( Complex h0 = new Complex() )
       {
         hvSeq.evaluate(0, bits, h0);
-        System.out.printf("  h(0) = %s%n", h0);
+        System.out.printf("  h₀ = %s%n", h0);
       }
       System.out.println();
 
@@ -156,12 +156,12 @@ public class MuntzPadePolynomialPrinter implements Runnable
 
       // ── Jacobi coefficients ─────────────────────────────────────────────
       System.out.println("═".repeat(70));
-      System.out.println("Jacobi coefficients α_n, β_n, h_n");
+      System.out.println("Jacobi coefficients αₙ, βₙ, hₙ");
       System.out.println("═".repeat(70));
 
-      String[] jacobiCols = { "n", "α_n", "β_n", "h_n" };
-      String[][] jacobiData = new String[N][4];
-      try ( Complex αn = new Complex(); Complex βn = new Complex(); Complex hn = new Complex() )
+      String[] jacobiCols = { "n", "αₙ", "βₙ", "hₙ", "hₙ/hₙ₋₁" };
+      String[][] jacobiData = new String[N][5];
+      try ( Complex αn = new Complex(); Complex βn = new Complex(); Complex hn = new Complex(); Complex hnPrev = new Complex(); Complex ratio = new Complex() )
       {
         for (int n = 0; n < N; n++)
         {
@@ -172,6 +172,16 @@ public class MuntzPadePolynomialPrinter implements Runnable
           jacobiData[n][1] = αn.toString();
           jacobiData[n][2] = βn.toString();
           jacobiData[n][3] = hn.toString();
+          if (n == 0)
+          {
+            jacobiData[n][4] = "—";
+          }
+          else
+          {
+            hvSeq.evaluate(n - 1, bits, hnPrev);
+            hn.div(hnPrev, bits, ratio);
+            jacobiData[n][4] = ratio.toString();
+          }
         }
       }
       new TextTable(jacobiCols, jacobiData).printTable();
