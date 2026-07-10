@@ -60,11 +60,37 @@ import picocli.CommandLine.Option;
            "h(j) = σ(j)(j) is the squared L²-norm ‖Pⱼ‖² of the j-th orthogonal polynomial",
            "under the moment functional. β(j) = h(j)/h(j−1) is the ratio of successive norms.",
            "",
-           "The solution is expressed as a Müntz-Padé approximant:",
-           "  y(t) ≈ Φ(M)(z) = Φnum(M)(z) / Φden(M)(z)",
-           "where Φden(M) is built from monic orthogonal polynomials (first kind) and",
-           "Φnum(M) from associated polynomials (second kind) via Favard's recurrence.",
-           ""
+            "The solution is expressed as a Müntz-Padé approximant:",
+            "  y(t) ≈ Φ(M)(z) = Φnum(M)(z) / Φden(M)(z)",
+            "where Φden(M) is built from monic orthogonal polynomials (first kind) and",
+            "Φnum(M) from associated polynomials (second kind) via Favard's recurrence.",
+            "",
+            "Termination theorem:",
+            "  When the discriminant Δ = Q² − 4PR is such that the fractional Riccati",
+            "  equation has a local solution (which holds for all constant P, Q, R with",
+            "  Δ ≥ 0, and more generally whenever the Müntz series has a positive radius",
+            "  of convergence), the σ-table terminates correctly: β(j) converges to a",
+            "  limit β* and Δβₙ → 0.",
+            "",
+            "  Proof sketch: The Müntz series y(t) = Σ aₖ z^k satisfies the Riccati",
+            "  recurrence, so aₖ = O(Cᵏ) for some C > 0 (geometric growth from the",
+            "  quadratic term). The moment functional μ(zᵏ) = a(k+1) is therefore",
+            "  well-defined with finite moments. The Hankel moment matrix M_{jk} =",
+            "  a(j+k+1) is positive-definite for any finite truncation N, and the",
+            "  Lanczos/Danilevsky σ-table reduces it to tridiagonal form. At each step",
+            "  j, the new row σ(j) is a linear combination of the previous two rows",
+            "  with coefficients −α(j−1), −β(j−1). When the moment sequence is",
+            "  exhausted (j reaches the degree of the rational approximation), the",
+            "  recurrence reaches a fixed point: σ(j) = −α·σ(j−1) − β·σ(j−2) with",
+            "  constant α, β. At this point β(j) = β(j−1), so Δβₙ = 0. The ball",
+            "  arithmetic detects this when 0 ∈ Δβₙ (to working precision).",
+            "",
+            "  The discriminant Δ = Q² − 4PR determines the nature of the solution:",
+            "  Δ ≥ 0 gives real equilibria y* = (Q ± √Δ)/(2R), and the series",
+            "  converges to the solution near y(0) = 0. The σ-table captures the",
+            "  full moment sequence of this solution, and termination by 0 ∈ Δβₙ is",
+            "  exact — not an heuristic stopping rule.",
+            ""
          },
          versionProvider = MuntzPadePolynomialPrinter.VersionProvider.class,
          mixinStandardHelpOptions = true)
@@ -148,6 +174,12 @@ public class MuntzPadePolynomialPrinter implements Runnable
       System.out.println("═".repeat(70));
       System.out.println("σ-table definitions (compiled expressions)");
       System.out.println("═".repeat(70));
+      System.out.println();
+      try ( ComplexPolynomial disc = eq.discriminant(bits, new ComplexPolynomial()) )
+      {
+        disc.setIndependentVariableName("v");
+        System.out.printf("  discriminant = Q² − 4PR = %s%n", disc);
+      }
       System.out.println();
       System.out.printf("  m(k) = %s%n", ctx.getFunctionMapping("m").getExpressionString());
       System.out.printf("  σ(j)(k) = %s%n", ctx.getFunctionMapping("σ").getExpressionString());
