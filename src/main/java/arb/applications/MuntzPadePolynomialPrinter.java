@@ -124,13 +124,13 @@ public class MuntzPadePolynomialPrinter implements Runnable
   @Option(names = "--mu", description = "fractional order μ (default: 1)", defaultValue = "1")
   String mu;
 
-  @Option(names = "--P", description = "constant coefficient P (default: 1)", defaultValue = "1")
+  @Option(names = "--P", description = "coefficient P(v) as polynomial in v (default: 1)", defaultValue = "1")
   String pCoeff;
 
-  @Option(names = "--Q", description = "constant coefficient Q (default: 0)", defaultValue = "0")
+  @Option(names = "--Q", description = "coefficient Q(v) as polynomial in v (default: 0)", defaultValue = "0")
   String qCoeff;
 
-  @Option(names = "--R", description = "constant coefficient R (default: -1)", defaultValue = "-1")
+  @Option(names = "--R", description = "coefficient R(v) as polynomial in v (default: -1)", defaultValue = "-1")
   String rCoeff;
 
   @Option(names = "--N", description = "number of orthogonal polynomials (default: 10)", defaultValue = "10")
@@ -200,8 +200,14 @@ public class MuntzPadePolynomialPrinter implements Runnable
       if (roughHeston)
       {
         System.out.println("  P(v) = ½(−v² − iv)");
+        System.out.println("       = −½v² − ½iv");
+        System.out.println();
         System.out.println("  Q(v) = λ(ivρν − 1)");
+        System.out.println("       = −λ + λρνiv");
+        System.out.println();
         System.out.println("  R(v) = ½(λν)²");
+        System.out.println("       = ½λ²ν²");
+        System.out.println();
         System.out.printf("  λ = %s  (mean reversion speed)%n", lambda);
         System.out.printf("  θ = %s  (long-run variance)%n", theta);
         System.out.printf("  ν = %s  (vol-of-vol)%n", nu);
@@ -215,6 +221,13 @@ public class MuntzPadePolynomialPrinter implements Runnable
         System.out.printf("  Q(v) = %s  (constant)%n", qCoeff);
         System.out.printf("  R(v) = %s  (constant)%n", rCoeff);
       }
+      System.out.println();
+      eq.p.setIndependentVariableName("v");
+      eq.q.setIndependentVariableName("v");
+      eq.r.setIndependentVariableName("v");
+      System.out.printf("  p(v) = %s%n", eq.p);
+      System.out.printf("  q(v) = %s%n", eq.q);
+      System.out.printf("  r(v) = %s%n", eq.r);
       System.out.println("═".repeat(70));
       System.out.println();
 
