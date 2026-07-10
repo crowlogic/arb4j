@@ -74,8 +74,8 @@ public class MuntzPadePolynomialPrinter implements Runnable
   @Option(names = "--bits", description = "working precision in bits (default: 128)", defaultValue = "128")
   int bits;
 
-  @Option(names = "--reset-radius", description = "reset ball radius to zero on α and β at each iteration")
-  boolean resetRadius;
+  @Option(names = "--no-reset-radius", description = "do not reset ball radius on α and β at each iteration")
+  boolean noResetRadius;
 
   public static void main(String[] args)
   {
@@ -172,7 +172,7 @@ public class MuntzPadePolynomialPrinter implements Runnable
           αvSeq.evaluate(n, bits, αn);
           βvSeq.evaluate(n, bits, βn);
           hvSeq.evaluate(n, bits, hn);
-          if (resetRadius)
+          if (!noResetRadius)
           {
             αn.getReal().getRad().zero();
             αn.getImag().getRad().zero();
