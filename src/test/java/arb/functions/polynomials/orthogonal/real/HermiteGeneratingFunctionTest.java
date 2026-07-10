@@ -52,7 +52,10 @@ public class HermiteGeneratingFunctionTest extends
         {
           H.evaluate(index, 1, bits, h);
           reference.evaluate(index, 1, bits, ref);
-          log.info("H({})={} reference={}", n, h, ref);
+          if (log.isDebugEnabled())
+          {
+            log.debug("H({})={} reference={}", n, h, ref);
+          }
           assertEquals("order " + n, ref.toString(), h.toString());
         }
       }
@@ -65,7 +68,10 @@ public class HermiteGeneratingFunctionTest extends
           long start = System.currentTimeMillis();
           H.evaluate(index, 1, bits, h);
           reference.evaluate(index, 1, bits, ref);
-          log.info("order {} compared in {}ms", n, System.currentTimeMillis() - start);
+          if (log.isDebugEnabled())
+          {
+            log.debug("order {} compared in {}ms", n, System.currentTimeMillis() - start);
+          }
           assertEquals("degree at order " + n, ref.getLength(), h.getLength());
           assertTrue("order " + n, h.overlaps(ref));
         }
@@ -95,7 +101,10 @@ public class HermiteGeneratingFunctionTest extends
           {
             H.apply(n).evaluate(point, 1, bits, value);
             reference.evaluate(index, 1, bits, ref).evaluate(point, 1, bits, refValue);
-            log.info("H({})({})={} reference={}", n, point, value, refValue);
+            if (log.isDebugEnabled())
+            {
+              log.debug("H({})({})={} reference={}", n, point, value, refValue);
+            }
             assertTrue("order " + n + ": " + value + " vs " + refValue, value.overlaps(refValue));
           }
         }

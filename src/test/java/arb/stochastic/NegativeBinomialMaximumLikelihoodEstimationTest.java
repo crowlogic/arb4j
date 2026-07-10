@@ -70,7 +70,10 @@ public class NegativeBinomialMaximumLikelihoodEstimationTest extends
                                      bits);
                   Result result = mle.estimate(r0, p0))
             {
-              log.info("from (r₀={}, p₀={}): {}", start[0], start[1], result);
+              if (log.isDebugEnabled())
+              {
+                log.debug("from (r₀={}, p₀={}): {}", start[0], start[1], result);
+              }
               assertTrue("converged from (" + start[0] + "," + start[1] + ")", result.converged);
               assertTrue("iterations " + result.iterations + " within bound from (" + start[0] + "," + start[1] + ")",
                          result.iterations <= 100);

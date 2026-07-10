@@ -141,13 +141,16 @@ public class NegativeBinomialMaximumLikelihoodEstimation implements
     {
       hessianRows[i] = score.partials[i].jacobian(VARIABLES);
     }
-    log.info("score: ∂ℓ/∂r = {}", score.partials[0]);
-    log.info("score: ∂ℓ/∂p = {}", score.partials[1]);
-    for (int i = 0; i < VARIABLES.length; i++)
+    if (log.isDebugEnabled())
     {
-      for (int j = 0; j < VARIABLES.length; j++)
+      log.debug("score: ∂ℓ/∂r = {}", score.partials[0]);
+      log.debug("score: ∂ℓ/∂p = {}", score.partials[1]);
+      for (int i = 0; i < VARIABLES.length; i++)
       {
-        log.info("Hessian: ∂²ℓ/∂{}∂{} = {}", VARIABLES[i], VARIABLES[j], hessianRows[i].partials[j]);
+        for (int j = 0; j < VARIABLES.length; j++)
+        {
+          log.debug("Hessian: ∂²ℓ/∂{}∂{} = {}", VARIABLES[i], VARIABLES[j], hessianRows[i].partials[j]);
+        }
       }
     }
   }
@@ -270,7 +273,10 @@ public class NegativeBinomialMaximumLikelihoodEstimation implements
                                bits))
     {
       accumulate(L, S, H);
-      log.info("MLE start: L={}  r={}  p={}", L, x.get(0, 0), x.get(1, 0));
+      if (log.isDebugEnabled())
+      {
+        log.debug("MLE start: L={}  r={}  p={}", L, x.get(0, 0), x.get(1, 0));
+      }
 
       damping.set("1e-3", bits);
       boolean converged  = false;
@@ -283,7 +289,10 @@ public class NegativeBinomialMaximumLikelihoodEstimation implements
         {
           converged  = true;
           iterations = iter;
-          log.info("MLE iteration {}: converged ‖S‖∞={}", iter, snorm);
+          if (log.isDebugEnabled())
+          {
+            log.debug("MLE iteration {}: converged ‖S‖∞={}", iter, snorm);
+          }
           break;
         }
 
@@ -334,7 +343,10 @@ public class NegativeBinomialMaximumLikelihoodEstimation implements
           distribution.r.set(x.get(0, 0));
           distribution.p.set(x.get(1, 0));
           distribution.context.invalidateAllCaches();
-          log.info("MLE iteration {}: no admissible ascending step, ‖S‖∞={}", iter, snorm);
+          if (log.isDebugEnabled())
+          {
+            log.debug("MLE iteration {}: no admissible ascending step, ‖S‖∞={}", iter, snorm);
+          }
           break;
         }
 
@@ -345,13 +357,16 @@ public class NegativeBinomialMaximumLikelihoodEstimation implements
         }
         L.set(Lnew);
         accumulate(L, S, H);
-        log.info("MLE iteration {}: L={}  ‖S‖∞={}  damping={}  r={}  p={}",
-                 iter,
-                 L,
-                 snorm,
-                 damping,
-                 x.get(0, 0),
-                 x.get(1, 0));
+        if (log.isDebugEnabled())
+        {
+          log.debug("MLE iteration {}: L={}  ‖S‖∞={}  damping={}  r={}  p={}",
+                    iter,
+                    L,
+                    snorm,
+                    damping,
+                    x.get(0, 0),
+                    x.get(1, 0));
+        }
         if (dxnorm.compareTo(xtol) < 0)
         {
           converged = true;
@@ -415,7 +430,10 @@ public class NegativeBinomialMaximumLikelihoodEstimation implements
     {
       state.initialize().seed(seed);
       nb.sample(state, bits, samples, N);
-      log.info("sampled N={} observations from NB(r={}, p={})", N, rTrue, pTrue);
+      if (log.isDebugEnabled())
+      {
+        log.debug("sampled N={} observations from NB(r={}, p={})", N, rTrue, pTrue);
+      }
 
       try ( NegativeBinomialMaximumLikelihoodEstimation mle = new NegativeBinomialMaximumLikelihoodEstimation(nb,
                                                                                                               samples,

@@ -108,9 +108,15 @@ public class RoughHestonEdgeworthCallPriceTest extends
       for (int i = 0; i < STRIKES.length; i++)
       {
         K.set(STRIKES[i], bits);
-        log.info("[T1 {}/{}] pricing K={} elapsed={}s", i + 1, STRIKES.length, STRIKES[i], (System.nanoTime() - t0) / 1e9);
+        if (log.isDebugEnabled())
+        {
+          log.debug("[T1 {}/{}] pricing K={} elapsed={}s", i + 1, STRIKES.length, STRIKES[i], (System.nanoTime() - t0) / 1e9);
+        }
         price.call(K, bits, value);
-        log.info("[T1 {}/{}] priced  K={} elapsed={}s", i + 1, STRIKES.length, STRIKES[i], (System.nanoTime() - t0) / 1e9);
+        if (log.isDebugEnabled())
+        {
+          log.debug("[T1 {}/{}] priced  K={} elapsed={}s", i + 1, STRIKES.length, STRIKES[i], (System.nanoTime() - t0) / 1e9);
+        }
 
         // OTM: put for K<1 (P = C − 1 + K by parity at r=0), call for K≥1.
         if (i < 2)
@@ -124,7 +130,10 @@ public class RoughHestonEdgeworthCallPriceTest extends
         ref.set(REF_OTM[i], bits);
         otm.sub(ref, bits, diff);
         diff.abs();
-        log.info("[T1 {}/{}] K={} otm={} ref={} |Δ|={}", i + 1, STRIKES.length, STRIKES[i], otm, ref, diff);
+        if (log.isDebugEnabled())
+        {
+          log.debug("[T1 {}/{}] K={} otm={} ref={} |Δ|={}", i + 1, STRIKES.length, STRIKES[i], otm, ref, diff);
+        }
         assertTrue("K=" + STRIKES[i] + ": otm=" + otm + " ref=" + ref + " |Δ|=" + diff + " exceeds tolerance "
                       + ABS_TOL,
                    diff.compareTo(tolR) < 0);
@@ -212,9 +221,15 @@ public class RoughHestonEdgeworthCallPriceTest extends
       for (int i = 0; i < STRIKES_T2.length; i++)
       {
         K.set(STRIKES_T2[i], bits);
-        log.info("[T2 {}/{}] pricing K={} elapsed={}s", i + 1, STRIKES_T2.length, STRIKES_T2[i], (System.nanoTime() - t0) / 1e9);
+        if (log.isDebugEnabled())
+        {
+          log.debug("[T2 {}/{}] pricing K={} elapsed={}s", i + 1, STRIKES_T2.length, STRIKES_T2[i], (System.nanoTime() - t0) / 1e9);
+        }
         price.call(K, bits, value);
-        log.info("[T2 {}/{}] priced  K={} elapsed={}s", i + 1, STRIKES_T2.length, STRIKES_T2[i], (System.nanoTime() - t0) / 1e9);
+        if (log.isDebugEnabled())
+        {
+          log.debug("[T2 {}/{}] priced  K={} elapsed={}s", i + 1, STRIKES_T2.length, STRIKES_T2[i], (System.nanoTime() - t0) / 1e9);
+        }
 
         if (i < 4)
         {
@@ -228,7 +243,10 @@ public class RoughHestonEdgeworthCallPriceTest extends
         ref.set(REF_IV_T2[i], bits);
         vol.sub(ref, bits, diff);
         diff.abs();
-        log.info("[T2 {}/{}] K={} otm={} iv={} BB={} |Δiv|={}", i + 1, STRIKES_T2.length, STRIKES_T2[i], otm, vol, ref, diff);
+        if (log.isDebugEnabled())
+        {
+          log.debug("[T2 {}/{}] K={} otm={} iv={} BB={} |Δiv|={}", i + 1, STRIKES_T2.length, STRIKES_T2[i], otm, vol, ref, diff);
+        }
         assertTrue("K=" + STRIKES_T2[i] + ": iv=" + vol + " BB=" + ref
                       + " |Δiv|=" + diff + " exceeds the 4-decimal rounding bound " + IV_TOL,
                    diff.compareTo(tolR) < 0);
@@ -341,9 +359,15 @@ public class RoughHestonEdgeworthCallPriceTest extends
       for (int i = 0; i < STRIKES_T52.length; i++)
       {
         K.set(STRIKES_T52[i], bits);
-        log.info("[T52 {}/{}] pricing K={} elapsed={}s", i + 1, STRIKES_T52.length, STRIKES_T52[i], (System.nanoTime() - t0) / 1e9);
+        if (log.isDebugEnabled())
+        {
+          log.debug("[T52 {}/{}] pricing K={} elapsed={}s", i + 1, STRIKES_T52.length, STRIKES_T52[i], (System.nanoTime() - t0) / 1e9);
+        }
         price.call(K, bits, value);
-        log.info("[T52 {}/{}] priced  K={} elapsed={}s", i + 1, STRIKES_T52.length, STRIKES_T52[i], (System.nanoTime() - t0) / 1e9);
+        if (log.isDebugEnabled())
+        {
+          log.debug("[T52 {}/{}] priced  K={} elapsed={}s", i + 1, STRIKES_T52.length, STRIKES_T52[i], (System.nanoTime() - t0) / 1e9);
+        }
 
         if (i < 4)
         {
@@ -358,7 +382,10 @@ public class RoughHestonEdgeworthCallPriceTest extends
         tolR.set(TOL_IV_T52[i], bits);
         vol.sub(ref, bits, diff);
         diff.abs();
-        log.info("[T52 {}/{}] K={} otm={} iv={} BB={} |Δiv|={}", i + 1, STRIKES_T52.length, STRIKES_T52[i], otm, vol, ref, diff);
+        if (log.isDebugEnabled())
+        {
+          log.debug("[T52 {}/{}] K={} otm={} iv={} BB={} |Δiv|={}", i + 1, STRIKES_T52.length, STRIKES_T52[i], otm, vol, ref, diff);
+        }
         assertTrue("K=" + STRIKES_T52[i] + ": iv=" + vol + " BB=" + ref
                       + " |Δiv|=" + diff + " exceeds tolerance " + TOL_IV_T52[i],
                    diff.compareTo(tolR) < 0);
@@ -451,7 +478,10 @@ public class RoughHestonEdgeworthCallPriceTest extends
       price.κ.evaluate(two, 1, bits, κ2);
       double model = κ2.doubleValue();
       double rel   = Math.abs(model - analytic) / analytic;
-      log.info("[T2 anchor] κ(2)={}  analyticForwardVar={}  rel={}", model, analytic, rel);
+      if (log.isDebugEnabled())
+      {
+        log.debug("[T2 anchor] κ(2)={}  analyticForwardVar={}  rel={}", model, analytic, rel);
+      }
       assertTrue("model variance κ(2)=" + model + " disagrees with the analytic forward-variance integral "
                     + analytic + " (rel=" + rel + ") — the ATM level / maturity is wrong",
                  rel < 0.01);
