@@ -151,6 +151,9 @@ public class MuntzPadePolynomialPrinter implements
   @Option(names = "--print-polynomials", description = "print the orthogonal polynomial tables")
   boolean printPolynomials;
 
+  @Option(names = "--print-moments", defaultValue = "-1", description = "print moment sequence m(k); -1=off, 0=N, >0=count")
+  int     printMoments;
+
   @Option(names = "--rough-heston", description = "use rough Heston P, Q, R coefficients")
   boolean roughHeston;
 
@@ -273,6 +276,29 @@ public class MuntzPadePolynomialPrinter implements
       System.out.printf("  Φ(M)(z) = %s%n", ctx.getFunctionMapping("Φ").getExpressionString());
       System.out.println("═".repeat(70));
       System.out.println();
+
+      if (printMoments >= 0)
+      {
+        int numMoments = printMoments == 0 ? N : printMoments;
+        System.out.println("═".repeat(70));
+        System.out.printf("Moment sequence m(k) = a(k+1)  [first %d moments]%n", numMoments);
+        System.out.println("═".repeat(70));
+        System.out.println();
+        String[]   cols =
+        { "k", "m(k)" };
+        String[][] data = new String[numMoments][2];
+        for (int k = 0; k < numMoments; k++)
+        {
+          data[k][0] = String.valueOf(k);
+          try ( var mk = approx.ops.m.evaluate(k, bits))
+          {
+            data[k][1] = mk.toString();
+          }
+        }
+        new TextTable(cols,
+                      data).printTable();
+        System.out.println();
+      }
 
       ComplexPolynomialSequence PnSeq = (ComplexPolynomialSequence) ctx.getFunctionMapping("Pn").instantiate();
       ComplexSequence           αvSeq = (ComplexSequence) ctx.getFunctionMapping("αv").instantiate();
