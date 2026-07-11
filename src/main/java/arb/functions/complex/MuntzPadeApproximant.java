@@ -45,7 +45,6 @@ public final class MuntzPadeApproximant implements
   private final Complex                                      z = new Complex();   // scratch t^α
   public final OrthogonalPolynomialMomentFunctionalSequence ops;
   private final ComplexFunctionSequence                      Φ;
-  private final ComplexSequence                              βv;
 
   private boolean closed;
 
@@ -81,7 +80,7 @@ public final class MuntzPadeApproximant implements
     // Scalar versions of α, β, h evaluated at v — these are what the Padé
     // assembly needs (poly-in-z with Complex coefficients, not poly-in-u).
     ComplexSequence.express("αv", "αv:n➔α(n)(v)", context);
-    this.βv = ComplexSequence.express("βv", "βv:n➔β(n)(v)", context);
+    ComplexSequence.express("βv", "βv:n➔β(n)(v)", context);
     ComplexSequence.express("hv", "hv:n➔h(n)(v)", context);
 
     // Alias the OPS instance under "Q" so Φden can reference Q(M)[M-j].
@@ -109,6 +108,17 @@ public final class MuntzPadeApproximant implements
   {
     if (closed) throw new IllegalStateException("closed");
 
+    // The index-keyed sequence caches are precision-blind: an entry built at
+    // N bits is accurate to N bits and no further, so a request for more bits
+    // must rebuild them. Fewer-or-equal bits reuse the cache as-is (and reuse
+    // freely across different t at the same precision).
+    //
+    // A freshly-constructed approximant has EMPTY caches, so there is nothing
+    // to invalidate on its first evaluation — and invalidating would needlessly
+    // recurse through any shared upstream self-recursive sequence (e.g. the
+    // Riccati Müntz coefficient sequence a), whose per-level instance chain can
+    // be arbitrarily deep. Only a genuine precision INCREASE on an
+    // already-populated cache must rebuild.
     if (cachedBits < 0)
     {
       cachedBits = bits;
@@ -120,23 +130,48 @@ public final class MuntzPadeApproximant implements
     }
 
     t.pow(α, bits, z);
-    try ( Complex βn     = new Complex();
-          Complex βnPrev = new Complex();
-          Complex deltaβ = new Complex();
-          Integer M      = new Integer() )
+    try ( Real    threshold = new Real();
+          Real    diffMag   = new Real();
+          Real    bestMag   = new Real();
+          Complex prev      = new Complex();
+          Complex curr      = new Complex();
+          Complex best      = new Complex();
+          Complex diff      = new Complex();
+          Integer M         = new Integer() )
     {
-      for (int n = 1;; n++)
+      // Half-precision target: bit-exact agreement at `bits` is unreachable
+      // because the OPS h(j) underflows precision at some M*, so the
+      // neighbour-diff floors above 2^-bits and then climbs as precision is
+      // lost (eventually α=σ/h would divide by an arb-zero h(j)).
+      threshold.one().mul2e(-bits / 2, threshold);
+      bestMag.posInf();
+      M.set(2);
+      Φ.evaluate(M, 1, bits, null).evaluate(z, 1, bits, prev);
+      best.set(prev);
+      // Unbounded by design: the diff descends monotonically to that floor
+      // then stops shrinking, so one exit below always fires at finite M.
+      for (int m = 3;; m++)
       {
-        M.set(n);
-        βv.evaluate(M, 1, bits, βn);
-        M.set(n - 1);
-        βv.evaluate(M, 1, bits, βnPrev);
-        βn.sub(βnPrev, bits, deltaβ);
-        if (deltaβ.getReal().containsZero() && deltaβ.getImag().containsZero())
+        M.set(m);
+        Φ.evaluate(M, 1, bits, null).evaluate(z, 1, bits, curr);
+        curr.sub(prev, bits, diff).abs(bits, diffMag);
+        if (diffMag.compareTo(threshold) <= 0)
         {
-          M.set(n);
-          return Φ.evaluate(M, 1, bits, null).evaluate(z, order, bits, result);
+          return result.set(curr);
         }
+        if (diffMag.compareTo(bestMag) < 0)
+        {
+          bestMag.set(diffMag);
+          best.set(curr);
+        }
+        else
+        {
+          // Diff stopped shrinking: we hit the precision floor. The previous
+          // iterate is closest to the limit — return it, stopping before the
+          // h(j)→0 division a few M further on.
+          return result.set(best);
+        }
+        prev.set(curr);
       }
     }
   }

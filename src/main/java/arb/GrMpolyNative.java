@@ -69,6 +69,10 @@ final class GrMpolyNative
   private static final MethodHandle GR_MPOLY_SET_COEFF_SI_UI;
   private static final MethodHandle GR_MPOLY_SET_COEFF_SCALAR_UI;
   private static final MethodHandle GR_MPOLY_GET_COEFF_SCALAR_UI;
+  private static final MethodHandle GR_MPOLY_NEG;
+  private static final MethodHandle GR_MPOLY_LENGTH;
+  private static final MethodHandle GR_MPOLY_MUL_SCALAR;
+  private static final MethodHandle GR_MPOLY_MUL_SI;
 
   static
   {
@@ -183,11 +187,32 @@ final class GrMpolyNative
                                                             ADDRESS,
                                                             ADDRESS));
     GR_MPOLY_GET_COEFF_SCALAR_UI = downcall("gr_mpoly_get_coeff_scalar_ui",
-                                      FunctionDescriptor.of(JAVA_INT,
-                                                            ADDRESS,
-                                                            ADDRESS,
-                                                            ADDRESS,
-                                                            ADDRESS));
+                                       FunctionDescriptor.of(JAVA_INT,
+                                                             ADDRESS,
+                                                             ADDRESS,
+                                                             ADDRESS,
+                                                             ADDRESS));
+    GR_MPOLY_NEG             = downcall("gr_mpoly_neg",
+                                   FunctionDescriptor.of(JAVA_INT,
+                                                         ADDRESS,
+                                                         ADDRESS,
+                                                         ADDRESS));
+    GR_MPOLY_LENGTH          = downcall("gr_mpoly_length",
+                                   FunctionDescriptor.of(JAVA_LONG,
+                                                         ADDRESS,
+                                                         ADDRESS));
+    GR_MPOLY_MUL_SCALAR      = downcall("gr_mpoly_mul_scalar",
+                                   FunctionDescriptor.of(JAVA_INT,
+                                                         ADDRESS,
+                                                         ADDRESS,
+                                                         ADDRESS,
+                                                         ADDRESS));
+    GR_MPOLY_MUL_SI          = downcall("gr_mpoly_mul_si",
+                                   FunctionDescriptor.of(JAVA_INT,
+                                                         ADDRESS,
+                                                         ADDRESS,
+                                                         JAVA_LONG,
+                                                         ADDRESS));
   }
 
   private GrMpolyNative()
@@ -461,6 +486,54 @@ final class GrMpolyNative
                                    exponents),
                 polynomialContext);
     }
+  }
+
+  static void neg(MemorySegment result,
+                  MemorySegment source,
+                  MemorySegment polynomialContext)
+  {
+    invokeInt(GR_MPOLY_NEG,
+              result,
+              source,
+              polynomialContext);
+  }
+
+  static long length(MemorySegment polynomial,
+                     MemorySegment polynomialContext)
+  {
+    try
+    {
+      return (long) GR_MPOLY_LENGTH.invoke(polynomial,
+                                           polynomialContext);
+    }
+    catch (Throwable throwable)
+    {
+      throw rethrow(throwable);
+    }
+  }
+
+  static void mulScalar(MemorySegment result,
+                        MemorySegment polynomial,
+                        MemorySegment scalar,
+                        MemorySegment polynomialContext)
+  {
+    invokeInt(GR_MPOLY_MUL_SCALAR,
+              result,
+              polynomial,
+              scalar,
+              polynomialContext);
+  }
+
+  static void mulSi(MemorySegment result,
+                    MemorySegment polynomial,
+                    long scalar,
+                    MemorySegment polynomialContext)
+  {
+    invokeInt(GR_MPOLY_MUL_SI,
+              result,
+              polynomial,
+              scalar,
+              polynomialContext);
   }
 
   private static void invokeVoid(MethodHandle handle, Object... arguments)

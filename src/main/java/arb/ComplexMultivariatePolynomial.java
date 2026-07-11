@@ -78,6 +78,85 @@ public class ComplexMultivariatePolynomial implements AutoCloseable
     return this;
   }
 
+  // ── negate ─────────────────────────────────────────────────────────────
+
+  public ComplexMultivariatePolynomial negate(ComplexMultivariatePolynomial result)
+  {
+    ensureOpen();
+    result.ensureCompatible(this);
+    GrMpolyNative.neg(result.polynomial,
+                      polynomial,
+                      context.nativeContext());
+    return result;
+  }
+
+  public ComplexMultivariatePolynomial negate(int bits, ComplexMultivariatePolynomial result)
+  {
+    return negate(result);
+  }
+
+  // ── length / degree ────────────────────────────────────────────────────
+
+  public long length()
+  {
+    ensureOpen();
+    return GrMpolyNative.length(polynomial,
+                                context.nativeContext());
+  }
+
+  // ── pow (Java-level repeated squaring) ─────────────────────────────────
+
+  public ComplexMultivariatePolynomial pow(int exp,
+                                           int bits,
+                                           ComplexMultivariatePolynomial result)
+  {
+    ensureOpen();
+    result.ensureCompatible(this);
+    if (exp < 0)
+    {
+      throw new IllegalArgumentException("negative exponent not supported for multivariate polynomials");
+    }
+    if (exp == 0)
+    {
+      result.one();
+      return result;
+    }
+    if (exp == 1)
+    {
+      result.set(this);
+      return result;
+    }
+    try ( ComplexMultivariatePolynomial base = context.newPolynomial();
+          ComplexMultivariatePolynomial temp = context.newPolynomial() )
+    {
+      base.set(this);
+      result.one();
+      int e = exp;
+      while (e > 0)
+      {
+        if ((e & 1) == 1)
+        {
+          GrMpolyNative.mul(result.polynomial,
+                            result.polynomial,
+                            base.polynomial,
+                            context.nativeContext());
+        }
+        e >>= 1;
+        if (e > 0)
+        {
+          GrMpolyNative.mul(temp.polynomial,
+                            base.polynomial,
+                            base.polynomial,
+                            context.nativeContext());
+          base.set(temp);
+        }
+      }
+    }
+    return result;
+  }
+
+  // ── arithmetic: self-type ──────────────────────────────────────────────
+
   public ComplexMultivariatePolynomial add(ComplexMultivariatePolynomial other,
                                            int bits,
                                            ComplexMultivariatePolynomial result)
@@ -135,6 +214,8 @@ public class ComplexMultivariatePolynomial implements AutoCloseable
     return result;
   }
 
+  // ── arithmetic: Complex ────────────────────────────────────────────────
+
   public ComplexMultivariatePolynomial add(Complex other,
                                            int bits,
                                            ComplexMultivariatePolynomial result)
@@ -147,27 +228,6 @@ public class ComplexMultivariatePolynomial implements AutoCloseable
   {
     ensureCompatible(result);
     try ( ComplexMultivariatePolynomial temp = fromComplex(other, context))
-    {
-      GrMpolyNative.add(result.polynomial,
-                        polynomial,
-                        temp.polynomial,
-                        context.nativeContext());
-    }
-    return result;
-  }
-
-  public ComplexMultivariatePolynomial add(ComplexPolynomial other,
-                                           int bits,
-                                           ComplexMultivariatePolynomial result)
-  {
-    return add(other, result);
-  }
-
-  public ComplexMultivariatePolynomial add(ComplexPolynomial other,
-                                           ComplexMultivariatePolynomial result)
-  {
-    ensureCompatible(result);
-    try ( ComplexMultivariatePolynomial temp = fromComplexPolynomial(other, context, 0))
     {
       GrMpolyNative.add(result.polynomial,
                         polynomial,
@@ -198,6 +258,47 @@ public class ComplexMultivariatePolynomial implements AutoCloseable
     return result;
   }
 
+  public ComplexMultivariatePolynomial mul(Complex other,
+                                           int bits,
+                                           ComplexMultivariatePolynomial result)
+  {
+    return mul(other, result);
+  }
+
+  public ComplexMultivariatePolynomial mul(Complex other,
+                                           ComplexMultivariatePolynomial result)
+  {
+    ensureCompatible(result);
+    GrMpolyNative.mulScalar(result.polynomial,
+                            polynomial,
+                            MemorySegment.ofAddress(Complex.getCPtr(other)),
+                            context.nativeContext());
+    return result;
+  }
+
+  // ── arithmetic: ComplexPolynomial ──────────────────────────────────────
+
+  public ComplexMultivariatePolynomial add(ComplexPolynomial other,
+                                           int bits,
+                                           ComplexMultivariatePolynomial result)
+  {
+    return add(other, result);
+  }
+
+  public ComplexMultivariatePolynomial add(ComplexPolynomial other,
+                                           ComplexMultivariatePolynomial result)
+  {
+    ensureCompatible(result);
+    try ( ComplexMultivariatePolynomial temp = fromComplexPolynomial(other, context, 0))
+    {
+      GrMpolyNative.add(result.polynomial,
+                        polynomial,
+                        temp.polynomial,
+                        context.nativeContext());
+    }
+    return result;
+  }
+
   public ComplexMultivariatePolynomial sub(ComplexPolynomial other,
                                            int bits,
                                            ComplexMultivariatePolynomial result)
@@ -219,27 +320,6 @@ public class ComplexMultivariatePolynomial implements AutoCloseable
     return result;
   }
 
-  public ComplexMultivariatePolynomial mul(Complex other,
-                                           int bits,
-                                           ComplexMultivariatePolynomial result)
-  {
-    return mul(other, result);
-  }
-
-  public ComplexMultivariatePolynomial mul(Complex other,
-                                           ComplexMultivariatePolynomial result)
-  {
-    ensureCompatible(result);
-    try ( ComplexMultivariatePolynomial temp = fromComplex(other, context))
-    {
-      GrMpolyNative.mul(result.polynomial,
-                        polynomial,
-                        temp.polynomial,
-                        context.nativeContext());
-    }
-    return result;
-  }
-
   public ComplexMultivariatePolynomial mul(ComplexPolynomial other,
                                            int bits,
                                            ComplexMultivariatePolynomial result)
@@ -260,6 +340,266 @@ public class ComplexMultivariatePolynomial implements AutoCloseable
     }
     return result;
   }
+
+  // ── arithmetic: Real ───────────────────────────────────────────────────
+
+  public ComplexMultivariatePolynomial add(Real other,
+                                           int bits,
+                                           ComplexMultivariatePolynomial result)
+  {
+    ensureCompatible(result);
+    try ( Complex c = new Complex();
+          ComplexMultivariatePolynomial temp = context.newPolynomial() )
+    {
+      c.set(other);
+      temp.setCoefficient(new long[context.numberOfVariables], c);
+      GrMpolyNative.add(result.polynomial,
+                        polynomial,
+                        temp.polynomial,
+                        context.nativeContext());
+    }
+    return result;
+  }
+
+  public ComplexMultivariatePolynomial sub(Real other,
+                                           int bits,
+                                           ComplexMultivariatePolynomial result)
+  {
+    ensureCompatible(result);
+    try ( Complex c = new Complex();
+          ComplexMultivariatePolynomial temp = context.newPolynomial() )
+    {
+      c.set(other);
+      temp.setCoefficient(new long[context.numberOfVariables], c);
+      GrMpolyNative.sub(result.polynomial,
+                        polynomial,
+                        temp.polynomial,
+                        context.nativeContext());
+    }
+    return result;
+  }
+
+  public ComplexMultivariatePolynomial mul(Real other,
+                                           int bits,
+                                           ComplexMultivariatePolynomial result)
+  {
+    ensureCompatible(result);
+    try ( Complex c = new Complex() )
+    {
+      c.set(other);
+      GrMpolyNative.mulScalar(result.polynomial,
+                              polynomial,
+                              MemorySegment.ofAddress(Complex.getCPtr(c)),
+                              context.nativeContext());
+    }
+    return result;
+  }
+
+  // ── arithmetic: Integer ────────────────────────────────────────────────
+
+  public ComplexMultivariatePolynomial add(Integer other,
+                                           int bits,
+                                           ComplexMultivariatePolynomial result)
+  {
+    ensureCompatible(result);
+    try ( Complex c = new Complex();
+          ComplexMultivariatePolynomial temp = context.newPolynomial() )
+    {
+      c.set(other);
+      temp.setCoefficient(new long[context.numberOfVariables], c);
+      GrMpolyNative.add(result.polynomial,
+                        polynomial,
+                        temp.polynomial,
+                        context.nativeContext());
+    }
+    return result;
+  }
+
+  public ComplexMultivariatePolynomial sub(Integer other,
+                                           int bits,
+                                           ComplexMultivariatePolynomial result)
+  {
+    ensureCompatible(result);
+    try ( Complex c = new Complex();
+          ComplexMultivariatePolynomial temp = context.newPolynomial() )
+    {
+      c.set(other);
+      temp.setCoefficient(new long[context.numberOfVariables], c);
+      GrMpolyNative.sub(result.polynomial,
+                        polynomial,
+                        temp.polynomial,
+                        context.nativeContext());
+    }
+    return result;
+  }
+
+  public ComplexMultivariatePolynomial mul(Integer other,
+                                           int bits,
+                                           ComplexMultivariatePolynomial result)
+  {
+    ensureCompatible(result);
+    GrMpolyNative.mulSi(result.polynomial,
+                        polynomial,
+                        (long) other.getUnsignedIntValue(),
+                        context.nativeContext());
+    return result;
+  }
+
+  // ── arithmetic: Fraction ───────────────────────────────────────────────
+
+  public ComplexMultivariatePolynomial add(Fraction other,
+                                           int bits,
+                                           ComplexMultivariatePolynomial result)
+  {
+    ensureCompatible(result);
+    try ( Complex c = new Complex();
+          Real r = new Real();
+          ComplexMultivariatePolynomial temp = context.newPolynomial() )
+    {
+      r.set(other);
+      c.set(r);
+      temp.setCoefficient(new long[context.numberOfVariables], c);
+      GrMpolyNative.add(result.polynomial,
+                        polynomial,
+                        temp.polynomial,
+                        context.nativeContext());
+    }
+    return result;
+  }
+
+  public ComplexMultivariatePolynomial sub(Fraction other,
+                                           int bits,
+                                           ComplexMultivariatePolynomial result)
+  {
+    ensureCompatible(result);
+    try ( Complex c = new Complex();
+          Real r = new Real();
+          ComplexMultivariatePolynomial temp = context.newPolynomial() )
+    {
+      r.set(other);
+      c.set(r);
+      temp.setCoefficient(new long[context.numberOfVariables], c);
+      GrMpolyNative.sub(result.polynomial,
+                        polynomial,
+                        temp.polynomial,
+                        context.nativeContext());
+    }
+    return result;
+  }
+
+  public ComplexMultivariatePolynomial mul(Fraction other,
+                                           int bits,
+                                           ComplexMultivariatePolynomial result)
+  {
+    ensureCompatible(result);
+    try ( Complex c = new Complex();
+          Real r = new Real() )
+    {
+      r.set(other);
+      c.set(r);
+      GrMpolyNative.mulScalar(result.polynomial,
+                              polynomial,
+                              MemorySegment.ofAddress(Complex.getCPtr(c)),
+                              context.nativeContext());
+    }
+    return result;
+  }
+
+  // ── arithmetic: RealPolynomial ─────────────────────────────────────────
+
+  public ComplexMultivariatePolynomial add(RealPolynomial other,
+                                           int bits,
+                                           ComplexMultivariatePolynomial result)
+  {
+    ensureCompatible(result);
+    try ( ComplexMultivariatePolynomial temp = fromRealPolynomial(other, context, 0))
+    {
+      GrMpolyNative.add(result.polynomial,
+                        polynomial,
+                        temp.polynomial,
+                        context.nativeContext());
+    }
+    return result;
+  }
+
+  public ComplexMultivariatePolynomial sub(RealPolynomial other,
+                                           int bits,
+                                           ComplexMultivariatePolynomial result)
+  {
+    ensureCompatible(result);
+    try ( ComplexMultivariatePolynomial temp = fromRealPolynomial(other, context, 0))
+    {
+      GrMpolyNative.sub(result.polynomial,
+                        polynomial,
+                        temp.polynomial,
+                        context.nativeContext());
+    }
+    return result;
+  }
+
+  public ComplexMultivariatePolynomial mul(RealPolynomial other,
+                                           int bits,
+                                           ComplexMultivariatePolynomial result)
+  {
+    ensureCompatible(result);
+    try ( ComplexMultivariatePolynomial temp = fromRealPolynomial(other, context, 0))
+    {
+      GrMpolyNative.mul(result.polynomial,
+                        polynomial,
+                        temp.polynomial,
+                        context.nativeContext());
+    }
+    return result;
+  }
+
+  // ── arithmetic: IntegerPolynomial ──────────────────────────────────────
+
+  public ComplexMultivariatePolynomial add(IntegerPolynomial other,
+                                           int bits,
+                                           ComplexMultivariatePolynomial result)
+  {
+    ensureCompatible(result);
+    try ( ComplexMultivariatePolynomial temp = fromIntegerPolynomial(other, context, 0))
+    {
+      GrMpolyNative.add(result.polynomial,
+                        polynomial,
+                        temp.polynomial,
+                        context.nativeContext());
+    }
+    return result;
+  }
+
+  public ComplexMultivariatePolynomial sub(IntegerPolynomial other,
+                                           int bits,
+                                           ComplexMultivariatePolynomial result)
+  {
+    ensureCompatible(result);
+    try ( ComplexMultivariatePolynomial temp = fromIntegerPolynomial(other, context, 0))
+    {
+      GrMpolyNative.sub(result.polynomial,
+                        polynomial,
+                        temp.polynomial,
+                        context.nativeContext());
+    }
+    return result;
+  }
+
+  public ComplexMultivariatePolynomial mul(IntegerPolynomial other,
+                                           int bits,
+                                           ComplexMultivariatePolynomial result)
+  {
+    ensureCompatible(result);
+    try ( ComplexMultivariatePolynomial temp = fromIntegerPolynomial(other, context, 0))
+    {
+      GrMpolyNative.mul(result.polynomial,
+                        polynomial,
+                        temp.polynomial,
+                        context.nativeContext());
+    }
+    return result;
+  }
+
+  // ── coefficient accessors ──────────────────────────────────────────────
 
   public ComplexMultivariatePolynomial setCoefficient(long[] exponents, long coefficient)
   {
@@ -294,6 +634,8 @@ public class ComplexMultivariatePolynomial implements AutoCloseable
                                  context.nativeContext());
     return result;
   }
+
+  // ── predicates ─────────────────────────────────────────────────────────
 
   public boolean isZero()
   {
@@ -354,9 +696,20 @@ public class ComplexMultivariatePolynomial implements AutoCloseable
                         toString());
   }
 
+  // ── conversion factories ───────────────────────────────────────────────
+
+  public static ComplexMultivariatePolynomial fromComplex(Complex value,
+                                                           ComplexMultivariatePolynomialContext mvCtx)
+  {
+    ComplexMultivariatePolynomial result = mvCtx.newPolynomial();
+    long[] exponents = new long[mvCtx.numberOfVariables];
+    result.setCoefficient(exponents, value);
+    return result;
+  }
+
   public static ComplexMultivariatePolynomial fromComplexPolynomial(ComplexPolynomial poly,
-                                                                    ComplexMultivariatePolynomialContext mvCtx,
-                                                                    int variable)
+                                                                     ComplexMultivariatePolynomialContext mvCtx,
+                                                                     int variable)
   {
     ComplexMultivariatePolynomial result = mvCtx.newPolynomial();
     int length = poly.getLength();
@@ -380,14 +733,74 @@ public class ComplexMultivariatePolynomial implements AutoCloseable
     return result;
   }
 
-  public static ComplexMultivariatePolynomial fromComplex(Complex value,
-                                                           ComplexMultivariatePolynomialContext mvCtx)
+  public static ComplexMultivariatePolynomial fromRealPolynomial(RealPolynomial poly,
+                                                                  ComplexMultivariatePolynomialContext mvCtx,
+                                                                  int variable)
+  {
+    ComplexMultivariatePolynomial result = mvCtx.newPolynomial();
+    int length = poly.getLength();
+    long[] exponents = new long[mvCtx.numberOfVariables];
+    try ( Complex coeff = new Complex())
+    {
+      for (int i = 0; i < length; i++)
+      {
+        coeff.set(poly.get(i));
+        if (!coeff.isZero())
+        {
+          for (int v = 0; v < mvCtx.numberOfVariables; v++)
+          {
+            exponents[v] = 0;
+          }
+          exponents[variable] = i;
+          result.setCoefficient(exponents, coeff);
+        }
+      }
+    }
+    return result;
+  }
+
+  public static ComplexMultivariatePolynomial fromIntegerPolynomial(IntegerPolynomial poly,
+                                                                     ComplexMultivariatePolynomialContext mvCtx,
+                                                                     int variable)
+  {
+    ComplexMultivariatePolynomial result = mvCtx.newPolynomial();
+    int length = poly.getLength();
+    long[] exponents = new long[mvCtx.numberOfVariables];
+    try ( Complex coeff = new Complex())
+    {
+      for (int i = 0; i < length; i++)
+      {
+        coeff.set(poly.get(i));
+        if (!coeff.isZero())
+        {
+          for (int v = 0; v < mvCtx.numberOfVariables; v++)
+          {
+            exponents[v] = 0;
+          }
+          exponents[variable] = i;
+          result.setCoefficient(exponents, coeff);
+        }
+      }
+    }
+    return result;
+  }
+
+  public static ComplexMultivariatePolynomial fromFraction(Fraction value,
+                                                            ComplexMultivariatePolynomialContext mvCtx)
   {
     ComplexMultivariatePolynomial result = mvCtx.newPolynomial();
     long[] exponents = new long[mvCtx.numberOfVariables];
-    result.setCoefficient(exponents, value);
+    try ( Complex c = new Complex();
+          Real r = new Real() )
+    {
+      r.set(value);
+      c.set(r);
+      result.setCoefficient(exponents, c);
+    }
     return result;
   }
+
+  // ── lifecycle ──────────────────────────────────────────────────────────
 
   @Override
   public void close()

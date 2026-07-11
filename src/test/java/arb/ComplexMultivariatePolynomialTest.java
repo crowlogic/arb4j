@@ -6,7 +6,6 @@ import arb.functions.complex.ComplexPolynomialNullaryFunction;
 import junit.framework.TestCase;
 
 /**
- *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
@@ -193,6 +192,248 @@ public class ComplexMultivariatePolynomialTest extends
       assertFalse(p.isZero());
       p.zero();
       assertTrue(p.isZero());
+    }
+  }
+
+  // ── negate ─────────────────────────────────────────────────────────────
+
+  public void testNegate()
+  {
+    try ( var ctx = new ComplexMultivariatePolynomialContext(2, BITS);
+          var a = ctx.newPolynomial();
+          var neg = ctx.newPolynomial();
+          var sum = ctx.newPolynomial())
+    {
+      try ( var coeff = new Complex("3", BITS))
+      {
+        a.setCoefficient(new long[]{1, 0}, coeff);
+      }
+      a.negate(neg);
+      a.add(neg, BITS, sum);
+      assertTrue("a + (-a) should be zero", sum.isZero());
+    }
+  }
+
+  // ── length ─────────────────────────────────────────────────────────────
+
+  public void testLength()
+  {
+    try ( var ctx = new ComplexMultivariatePolynomialContext(2, BITS);
+          var p = ctx.newPolynomial())
+    {
+      assertEquals("empty polynomial has length 0", 0, p.length());
+      try ( var coeff = new Complex("3", BITS))
+      {
+        p.setCoefficient(new long[]{1, 0}, coeff);
+      }
+      assertEquals("polynomial with one term has length 1", 1, p.length());
+    }
+  }
+
+  // ── pow ────────────────────────────────────────────────────────────────
+
+  public void testPowZero()
+  {
+    try ( var ctx = new ComplexMultivariatePolynomialContext(2, BITS);
+          var p = ctx.newPolynomial();
+          var result = ctx.newPolynomial())
+    {
+      try ( var coeff = new Complex("3", BITS))
+      {
+        p.setCoefficient(new long[]{1, 0}, coeff);
+      }
+      p.pow(0, BITS, result);
+      assertTrue("any^0 should be 1", result.isOne());
+    }
+  }
+
+  public void testPowOne()
+  {
+    try ( var ctx = new ComplexMultivariatePolynomialContext(2, BITS);
+          var p = ctx.newPolynomial();
+          var result = ctx.newPolynomial())
+    {
+      try ( var coeff = new Complex("3", BITS))
+      {
+        p.setCoefficient(new long[]{1, 0}, coeff);
+      }
+      p.pow(1, BITS, result);
+      assertEquals("any^1 should be itself", p, result);
+    }
+  }
+
+  public void testPowTwo()
+  {
+    try ( var ctx = new ComplexMultivariatePolynomialContext(2, BITS);
+          var x = ctx.newPolynomial();
+          var result = ctx.newPolynomial();
+          var expected = ctx.newPolynomial();
+          var temp = ctx.newPolynomial();
+          var prod = ctx.newPolynomial())
+    {
+      x.generator(0);
+      x.pow(2, BITS, result);
+      expected.generator(0);
+      temp.generator(0);
+      expected.mul(temp, BITS, prod);
+      assertEquals("x^2 should equal x*x", prod, result);
+    }
+  }
+
+  // ── sub ────────────────────────────────────────────────────────────────
+
+  public void testSubSelfIsZero()
+  {
+    try ( var ctx = new ComplexMultivariatePolynomialContext(2, BITS);
+          var a = ctx.newPolynomial();
+          var result = ctx.newPolynomial())
+    {
+      try ( var coeff = new Complex("5", BITS))
+      {
+        a.setCoefficient(new long[]{1, 1}, coeff);
+      }
+      a.sub(a, BITS, result);
+      assertTrue("a - a should be zero", result.isZero());
+    }
+  }
+
+  // ── add/sub Complex ────────────────────────────────────────────────────
+
+  public void testSubComplex()
+  {
+    try ( var ctx = new ComplexMultivariatePolynomialContext(2, BITS);
+          var p = ctx.newPolynomial();
+          var result = ctx.newPolynomial())
+    {
+      try ( var coeff = new Complex("3", BITS))
+      {
+        p.setCoefficient(new long[]{0, 0}, coeff);
+      }
+      try ( var scalar = new Complex("3", BITS))
+      {
+        p.sub(scalar, BITS, result);
+      }
+      assertTrue("3 - 3 should be zero", result.isZero());
+    }
+  }
+
+  // ── mul Integer ────────────────────────────────────────────────────────
+
+  public void testMulInteger()
+  {
+    try ( var ctx = new ComplexMultivariatePolynomialContext(2, BITS);
+          var p = ctx.newPolynomial();
+          var result = ctx.newPolynomial())
+    {
+      try ( var coeff = new Complex("3", BITS))
+      {
+        p.setCoefficient(new long[]{1, 0}, coeff);
+      }
+      try ( var n = new Integer(2))
+      {
+        p.mul(n, BITS, result);
+      }
+      try ( var expected = ctx.newPolynomial();
+            var expectedCoeff = new Complex("6", BITS))
+      {
+        expected.setCoefficient(new long[]{1, 0}, expectedCoeff);
+        assertEquals("3x * 2 = 6x", expected, result);
+      }
+    }
+  }
+
+  // ── mul Real ───────────────────────────────────────────────────────────
+
+  public void testMulReal()
+  {
+    try ( var ctx = new ComplexMultivariatePolynomialContext(2, BITS);
+          var p = ctx.newPolynomial();
+          var result = ctx.newPolynomial())
+    {
+      try ( var coeff = new Complex("3", BITS))
+      {
+        p.setCoefficient(new long[]{1, 0}, coeff);
+      }
+      try ( var r = new Real("2.0", BITS))
+      {
+        p.mul(r, BITS, result);
+      }
+      try ( var expected = ctx.newPolynomial();
+            var expectedCoeff = new Complex("6", BITS))
+      {
+        expected.setCoefficient(new long[]{1, 0}, expectedCoeff);
+        assertEquals("3x * 2.0 = 6x", expected, result);
+      }
+    }
+  }
+
+  // ── set(String) / toString roundtrip ───────────────────────────────────
+
+  public void testSetString()
+  {
+    try ( var ctx = new ComplexMultivariatePolynomialContext(2, BITS);
+          var p = ctx.newPolynomial())
+    {
+      p.setCoefficient(new long[]{1, 0}, 3L);
+      p.setCoefficient(new long[]{0, 1}, 2L);
+      assertFalse(p.isZero());
+      assertFalse(p.isOne());
+    }
+  }
+
+  public void testIsOne()
+  {
+    try ( var ctx = new ComplexMultivariatePolynomialContext(2, BITS);
+          var p = ctx.newPolynomial())
+    {
+      p.one();
+      assertTrue(p.isOne());
+    }
+  }
+
+  // ── setCoefficient long ────────────────────────────────────────────────
+
+  public void testSetCoefficientLong()
+  {
+    try ( var ctx = new ComplexMultivariatePolynomialContext(2, BITS);
+          var p = ctx.newPolynomial())
+    {
+      p.setCoefficient(new long[]{1, 0}, 5L);
+      assertFalse(p.isZero());
+    }
+  }
+
+  // ── equals/hashCode ────────────────────────────────────────────────────
+
+  public void testEqualsAndHashCode()
+  {
+    try ( var ctx = new ComplexMultivariatePolynomialContext(2, BITS);
+          var a = ctx.newPolynomial();
+          var b = ctx.newPolynomial())
+    {
+      try ( var coeff = new Complex("3", BITS))
+      {
+        a.setCoefficient(new long[]{1, 0}, coeff);
+        b.setCoefficient(new long[]{1, 0}, coeff);
+      }
+      assertEquals(a, b);
+      assertEquals(a.hashCode(), b.hashCode());
+    }
+  }
+
+  public void testNotEqualsDifferentContext()
+  {
+    try ( var ctx1 = new ComplexMultivariatePolynomialContext(2, BITS);
+          var ctx2 = new ComplexMultivariatePolynomialContext(2, BITS);
+          var a = ctx1.newPolynomial();
+          var b = ctx2.newPolynomial())
+    {
+      try ( var coeff = new Complex("3", BITS))
+      {
+        a.setCoefficient(new long[]{1, 0}, coeff);
+        b.setCoefficient(new long[]{1, 0}, coeff);
+      }
+      assertFalse("polynomials from different contexts should not be equal", a.equals(b));
     }
   }
 }
