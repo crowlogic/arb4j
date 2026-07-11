@@ -292,6 +292,7 @@ public class MuntzPadePolynomialPrinter implements
           data[k][0] = String.valueOf(k);
           try ( var mk = approx.ops.m.evaluate(k, bits))
           {
+            mk.printPrecision = true;
             data[k][1] = mk.toString();
           }
         }

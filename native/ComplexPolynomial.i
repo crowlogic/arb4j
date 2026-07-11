@@ -604,7 +604,7 @@
     return this;
   }
   
-  boolean printPrecision = false;
+  public boolean printPrecision = false;
   
   public String toString()
   {
