@@ -632,7 +632,7 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
     return this;
   }
   
-  boolean printPrecision = false;
+  public boolean printPrecision = false;
   
   public String toString()
   {
