@@ -35,8 +35,11 @@
 #include <X11/X.h>
 #include <unistd.h>
 #include <wchar.h>
-
-
+#include <flint/gr.h>
+#include <flint/gr_types.h>
+#include <flint/gr_mpoly.h>
+#include <flint/gr_vec.h>
+#include <flint/mpoly_types.h>
 
 typedef unsigned long Window;
 
