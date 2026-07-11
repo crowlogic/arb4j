@@ -3,11 +3,7 @@ VERSION=$(shell $(BASEDIR)/bin/arb4jVersion)
 SOURCES=native/arb_wrap.c native/complex.c native/ml.c native/pade_resolvent.c
 JAVA_HOME=$(shell readlink -f `which javac` | sed "s:bin/javac::")
 SWIGFLAGS=-v -java -package arb -outdir src/main/java/arb
-CFLAGS=-g -O3 -fPIC -shared -Wno-int-conversion \
-  -Dflint_rand_struct=flint_rand_s \
-  -Dflint_rand_init=flint_randinit \
-  -Dflint_rand_clear=flint_randclear \
-  -Dflint_rand_set_seed=flint_randseed
+CFLAGS=-g -O3 -fPIC -shared -Wno-int-conversion 
 
 # GMP, MPFR, and FLINT are each fetched once, built with -fPIC
 # --disable-shared, and cached under ~/.cache/arb4j.
