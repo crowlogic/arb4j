@@ -103,9 +103,6 @@ build/libs/arb4j-$(VERSION).jar: install
 
 native/arb_wrap.c: $(shell find native -name "*.i")
 	swig $(SWIGFLAGS) native/arb.i
-	# FLINT 3.1/3.2 workaround: stride field removed (restored in 3.3)
-	sed -i 's|if (arg1) (arg1)->stride = arg2;|// stride removed in FLINT 3.1-3.2|g' native/arb_wrap.c
-	sed -i 's|result = (long) ((arg1)->stride);|result = 0; // stride removed in FLINT 3.1-3.2|g' native/arb_wrap.c
 
 $(GMP_TARBALL):
 	mkdir -p $(CACHE)
