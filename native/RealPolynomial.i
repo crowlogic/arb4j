@@ -1013,6 +1013,7 @@ import arb.functions.real.RealFunction;
    */
   public RealPolynomial identity()
   {
+    fitLength(2);
     setLength(2);
     set(0, RealConstants.zero);
     set(1, RealConstants.one);

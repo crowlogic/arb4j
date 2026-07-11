@@ -163,13 +163,7 @@ public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? ex
     // call bypasses the erased Function.evaluate(Object,int,int,Object)
     // bridge (which casts to the scalar codomain and would ClassCast).
     //
-    // Multivariate guard: this code path assumes both polynomials live in the
-    // same single-variable ring or are linked by a single inner-vs-outer
-    // composition. If a future expression mixes more than two distinct
-    // independent variables, native acb_poly_compose still produces a valid
-    // single-variable composition along the argument's variable; mixing
-    // genuinely multivariate operands here is out of scope and should be
-    // detected at a higher level once multivariate polynomial support exists.
+
     // Only fire the compose path when ALL THREE of (receiver, argument,
     // result) agree on the polynomial type. If the surrounding expression
     // expects a scalar (e.g. p(v) where v is the polynomial's own variable),
