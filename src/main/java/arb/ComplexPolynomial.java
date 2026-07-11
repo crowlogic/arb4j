@@ -606,6 +606,7 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
    */
   public ComplexPolynomial identity()
   {
+    fitLength(2);
     setLength(2);
     set(0, ComplexConstants.zero);
     set(1, ComplexConstants.one);

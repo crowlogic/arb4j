@@ -1040,6 +1040,7 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
    */
   public RealPolynomial identity()
   {
+    fitLength(2);
     setLength(2);
     set(0, RealConstants.zero);
     set(1, RealConstants.one);
