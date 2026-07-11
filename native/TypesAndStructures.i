@@ -328,8 +328,8 @@ typedef const arf_struct * arf_srcptr;
 typedef struct
 {
     acb_ptr coeffs;
-    slong length;
     slong alloc;
+    slong length;
 }
 acb_poly_struct;
 
@@ -338,8 +338,8 @@ typedef acb_poly_struct acb_poly_t[1];
 typedef struct
 {
     arb_ptr coeffs;
-    slong length;
     slong alloc;
+    slong length;
 }
 arb_poly_struct;
 

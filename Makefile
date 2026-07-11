@@ -28,7 +28,7 @@ MPFR_TARBALL := $(CACHE)/mpfr-$(MPFR_VERSION).tar.xz
 MPFR_URL     := https://www.mpfr.org/mpfr-$(MPFR_VERSION)/mpfr-$(MPFR_VERSION).tar.xz
 MPFR_SRCDIR  := $(CACHE)/mpfr-$(MPFR_VERSION)-src
 
-FLINT_VERSION := 3.3.1
+FLINT_VERSION := 3.6.0
 FLINT_PREFIX  := $(CACHE)/flint-$(FLINT_VERSION)
 FLINT_STATIC  := $(FLINT_PREFIX)/lib/libflint.a
 FLINT_TARBALL := $(CACHE)/flint-$(FLINT_VERSION).tar.gz
