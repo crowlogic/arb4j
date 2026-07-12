@@ -267,19 +267,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       return Complex.class;
     }
-if (ComplexFunctional.class.equals(parentCoDomainType))
-      {
-        return ComplexFunction.class;
-      }
-      if (ComplexFunctionalSequence.class.equals(parentCoDomainType))
-      {
-        return ComplexFunctional.class;
-      }
-      if (ComplexFunctionalSequenceSequence.class.equals(parentCoDomainType))
-      {
-        return ComplexFunctionalSequence.class;
-      }
-      if (RealToComplexFunction.class.equals(parentCoDomainType))
+    if (ComplexFunctional.class.equals(parentCoDomainType))
+    {
+      return ComplexFunction.class;
+    }
+    if (RealToComplexFunction.class.equals(parentCoDomainType))
     {
       return Complex.class;
     }
@@ -306,8 +298,7 @@ if (ComplexFunctional.class.equals(parentCoDomainType))
       return Complex.class;
     }
     if (RealSequence.class.equals(parentCoDomainType) || ComplexSequence.class.equals(parentCoDomainType)
-                  || ComplexPolynomialSequence.class.equals(parentCoDomainType) || RealPolynomialSequence.class.equals(parentCoDomainType)
-                  || ComplexFunctionalSequence.class.equals(parentCoDomainType) || ComplexFunctionalSequenceSequence.class.equals(parentCoDomainType))
+                  || ComplexPolynomialSequence.class.equals(parentCoDomainType) || RealPolynomialSequence.class.equals(parentCoDomainType))
     {
       return Integer.class;
     }
