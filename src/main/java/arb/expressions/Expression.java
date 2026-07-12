@@ -4627,6 +4627,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       funcCoDomain = RealPolynomial.class;
       funcClass    = RealPolynomialSequence.class;
     }
+    else if (ComplexFunctionalSequence.class.equals(coDomainType))
+    {
+      funcDomain   = Integer.class;
+      funcCoDomain = ComplexFunctional.class;
+      funcClass    = ComplexFunctionalSequence.class;
+    }
+    else if (ComplexFunctionalSequenceSequence.class.equals(coDomainType))
+    {
+      funcDomain   = Integer.class;
+      funcCoDomain = ComplexFunctionalSequence.class;
+      funcClass    = ComplexFunctionalSequenceSequence.class;
+    }
     else
     {
       throw new UnsupportedOperationException("TODO: implement " + coDomainType + " codomain functional");

@@ -4,6 +4,7 @@ import arb.*;
 import arb.Integer;
 import arb.expressions.Context;
 import arb.functions.integer.ComplexFunctionSequence;
+import arb.functions.integer.ComplexFunctionalSequenceSequence;
 import arb.functions.integer.ComplexPolynomialSequence;
 import arb.functions.integer.ComplexSequence;
 import arb.functions.polynomials.orthogonal.complex.OrthogonalPolynomialMomentFunctionalSequence;
