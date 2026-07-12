@@ -102,11 +102,6 @@ public final class MuntzPadeApproximant implements
     // straight from this assembly.
     ComplexPolynomialSequence.express("Φnum:M➔sum(j➔Pn(M)[M-j]*z^j{j=1..M})",   context);
     this.Φ = ComplexFunctionSequence.express("Φ:M➔z➔Φnum(M)(z)/Φden(M)(z)", context);
-
-    // Christoffel–Darboux kernel K_n(z,w) = Σ_{k=0}^{n-1} Pn_k(z) conj(Pn_k(w)) / hv(k)
-    ComplexFunctionalSequenceSequence.express("Kn:n➔z➔w➔sum(k➔Pn(k)(z)*conj(Pn(k)(w))/hv(k){k=0..n-1})", context);
-    // Christoffel–Darboux formula: CD_n(z,w) = (Pn_n(z)*conj(Pn_{n-1}(w)) - Pn_{n-1}(z)*conj(Pn_n(w))) / (hv(n-1)*(z-w))
-    ComplexFunctionalSequenceSequence.express("CDn:n➔z➔w➔(Pn(n)(z)*conj(Pn(n-1)(w))-Pn(n-1)(z)*conj(Pn(n)(w)))/(hv(n-1)*(z-w))", context);
   }
 
   @Override
