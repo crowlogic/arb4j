@@ -125,8 +125,6 @@ public class Compiler
     typePrefixes.put(ComplexFunction.class, "Fℂ");
     typePrefixes.put(RealFunction.class, "Fℝ");
     typePrefixes.put(RealToComplexFunction.class, "Fℝℂ");
-    typePrefixes.put(NumericalRealFunctionIntegral.class, "∫Fℝ");
-    typePrefixes.put(NumericalComplexFunctionIntegral.class, "∫Fℂ");
     typePrefixes.put(ComplexPolynomialSequence.class, "SXℂ");
     typePrefixes.put(RealPolynomialSequence.class, "SXℝ");
     typePrefixes.put(ComplexPolynomialSequenceSequence.class, "SSXℂ");

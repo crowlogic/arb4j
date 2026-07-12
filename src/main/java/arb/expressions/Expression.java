@@ -5960,8 +5960,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     case "int":
       return new IntegralNode<>(this,
                                 true);
-    case "nint":
-      return new NumericalIntegralNode<>(this);
     case "sum":
       return new SumNode<>(this,
                            true);
