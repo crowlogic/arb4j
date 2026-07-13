@@ -1,5 +1,8 @@
 package arb.functions.complex;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import arb.*;
 import arb.Integer;
 import arb.expressions.Context;
@@ -15,6 +18,7 @@ import junit.framework.TestCase;
  */
 public class MuntzPadeRKHSTest extends TestCase
 {
+  private static final Logger log = LoggerFactory.getLogger(MuntzPadeRKHSTest.class);
   public void testKernelAgreement()
   {
     Real    μ     = new Real().set("1", 128);
@@ -38,8 +42,8 @@ public class MuntzPadeRKHSTest extends TestCase
       ComplexFunction   cdNz = cdN.evaluate(z, 1, 128, null);
       Complex           cdVal = cdNz.evaluate(w, 1, 128, new Complex());
 
-      System.out.println("Kn(4)(0.5)(0.7) = " + knVal);
-      System.out.println("CDn(4)(0.5)(0.7) = " + cdVal);
+      log.info("Kn(4)(0.5)(0.7) = " + knVal);
+      log.info("CDn(4)(0.5)(0.7) = " + cdVal);
 
       try ( Complex diff = new Complex(); Real norm = new Real() )
       {
@@ -65,10 +69,10 @@ public class MuntzPadeRKHSTest extends TestCase
             ComplexPolynomial den = denSeq.evaluate(ni, 128) )
       {
         Complex roots = den.roots(128);
-        System.out.println("Φ_den(4) roots:");
+        log.info("Φ_den(4) roots:");
         for (int i = 0; i < roots.dim; i++)
         {
-          System.out.printf("  ζ_%d = %s%n", i, roots.get(i));
+          log.info(String.format("  ζ_%d = %s%n", i, roots.get(i)));
         }
         roots.close();
       }

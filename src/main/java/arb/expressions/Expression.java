@@ -4677,6 +4677,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                               funcCoDomain,
                                                                               funcClass);
     functionalExpression.upstreamExpression = this;
+    // Preserve the parse-time functionalChild (the next arrow level) BEFORE
+    // overwriting it with the generate-time functional. The parse-time chain
+    // holds the correct per-level independent variables; it must be threaded
+    // forward so functional chains of depth >= 3 do not lose the innermost
+    // independent variable (issue #1188).
+    Expression<?, ?, ?> parseTimeChild = this.functionalChild;
     this.functionalChild                    = functionalExpression;
     if (context == null)
     {
@@ -4693,6 +4699,22 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (declaredVariable != null)
     {
       functionalExpression.setIndependentVariable(declaredVariable.spliceInto(functionalExpression).asVariable());
+    }
+
+    // Thread the next arrow level's independent variable forward from the
+    // parse-time chain. When functionalExpression is itself a generated
+    // functional, its own newFunctionalExpression() reads these to set its
+    // child's independent variable, instead of losing it (issue #1188).
+    if (parseTimeChild != null && parseTimeChild != functionalExpression)
+    {
+      @SuppressWarnings("unchecked")
+      VariableNode<Object, Object, Function<?, ?>> nextLevelVariable =
+                                                                     (VariableNode<Object, Object, Function<?, ?>>) (VariableNode<?, ?, ?>) parseTimeChild.placeholderVariable;
+      if (nextLevelVariable != null)
+      {
+        functionalExpression.placeholderVariable = nextLevelVariable;
+      }
+      functionalExpression.functionalChild = parseTimeChild.functionalChild;
     }
 
     rootNode.isRootNode                      = true;
@@ -5593,6 +5615,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         // initialize(), which has no input parameter) causes VerifyError.
         // The independent variable is propagated at evaluate-time instead.
         if (getIndependentVariable() != null && varName.equals(getIndependentVariable().getName()))
+        {
+          continue;
+        }
+
+        // Skip variables that are not a declared field on THIS class. Such a
+        // variable is bound at a deeper functional level (it is that level's
+        // independent variable) and must be wired into the nested function
+        // there (at evaluate-time), not here. Emitting GETFIELD this.<varName>
+        // for a field this class does not declare produces a runtime
+        // NoSuchFieldError (issue #1188: depth>=3 arrow chain whose innermost
+        // body is a sum capturing the innermost independent variable).
+        if (!declaredVariables.contains(varName))
         {
           continue;
         }

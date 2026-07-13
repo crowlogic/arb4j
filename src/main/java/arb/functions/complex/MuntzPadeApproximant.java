@@ -4,6 +4,7 @@ import arb.*;
 import arb.Integer;
 import arb.expressions.Context;
 import arb.functions.integer.ComplexFunctionSequence;
+import arb.functions.integer.ComplexFunctionalSequence;
 import arb.functions.integer.ComplexFunctionalSequenceSequence;
 import arb.functions.integer.ComplexPolynomialSequence;
 import arb.functions.integer.ComplexSequence;
@@ -102,6 +103,13 @@ public final class MuntzPadeApproximant implements
     // straight from this assembly.
     ComplexPolynomialSequence.express("Φnum:M➔sum(j➔Pn(M)[M-j]*z^j{j=1..M})",   context);
     this.Φ = ComplexFunctionSequence.express("Φ:M➔z➔Φnum(M)(z)/Φden(M)(z)", context);
+
+    // Christoffel–Darboux reproducing kernel K_n(z,w) = Σ_{k=0}^{n} Q_k(z)·Q_k(w)/h_k
+    // over the OPS already built above (Q(k) gives Q_k, hv(k) gives h_k). Registered
+    // as a compiled Context sequence so the RKHS test (issues #1181/#1182) can
+    // verify K_n(z,w) ≡ K_n(w,w) and the support-point agreement with Φ_den's roots.
+    // Needs only the registered z/w variables and the existing Q, hv sequences.
+    ComplexFunctionalSequence.express("Kn:n➔z➔w➔sum(k➔Q(k)(z)*Q(k)(w)/hv(k){k=0..n})", context);
   }
 
   @Override
