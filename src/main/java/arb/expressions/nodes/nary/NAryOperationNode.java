@@ -52,10 +52,10 @@ import arb.functions.real.RealFunction;
  * <h2>Operand expression initialisation sequence</h2> {@link #parseOperand()}
  * constructs the child {@link Expression} with the three-argument constructor,
  * which leaves its internal expression string null. Before calling
- * {@code resolve()} on the child, the parent's string and cursor are copied
- * into it via
- * {@link arb.expressions.Expression#continueParsingFrom(Expression)}. Without
- * this step, {@code resolve()} immediately NPEs inside
+ * {@code resolve()} on the child, the parent's string is copied into it via
+ * {@link arb.expressions.Expression#setExpression(String)} and the cursor via
+ * {@link arb.expressions.Expression#setCursorState(arb.expressions.Expression.CursorState)}.
+ * Without this step, {@code resolve()} immediately NPEs inside
  * {@code currentCodePoint() → getExpression().length()}. After
  * {@code resolve()} returns, the parent cursor is synced forward past the
  * tokens the child consumed, and then {@code updateStringRepresentation()}
@@ -699,7 +699,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     operandExpression = new Expression<>(Integer.class,
                                          operandCoDomain,
                                          Sequence.class);
-    operandExpression.continueParsingFrom(expression);
+    operandExpression.setExpression(expression.getExpression());
+    operandExpression.setCursorState(expression.saveCursor());
     operandExpression.upstreamExpression = expression;
     operandExpression.setContext(expression.getContext());
     operandExpression.setIndependentVariable(null);
@@ -750,7 +751,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       }
     }
 
-    expression.continueParsingFrom(operandExpression);
+    expression.setCursorState(operandExpression.saveCursor());
     operandExpression.updateStringRepresentation();
     registerOperand(operandFunctionFieldName, operandExpression);
     propagateContextVariablesToOperand();
@@ -813,11 +814,11 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       expression.require('\u2026');
       this.upperLimit             = expression.resolve();
       this.indexVariableFieldName = firstFamilyIndexName;
-      operandExpression.continueParsingFrom(expression);
+      operandExpression.setCursorState(expression.saveCursor());
       var loNode = this.lowerLimit.spliceInto(operandExpression);
       var hiNode = this.upperLimit.spliceInto(operandExpression);
       registerFamilyFunction(operandExpression, specifiedName, firstFamilyIndexName, loNode, hiNode, operandExpression.rootNode);
-      expression.continueParsingFrom(operandExpression);
+      expression.setCursorState(operandExpression.saveCursor());
       operandExpression.rootNode.resolveFunctions();
       expression.getContext().functions.values().forEach(fm ->
       {
@@ -929,7 +930,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                                                identity,
                                                                operation);
     currentOperandExpression.rootNode = (Node<Integer, R, Sequence<R>>) (Node<?, ?, ?>) enumeratorNode;
-    expression.continueParsingFrom(currentOperandExpression);
+    expression.setCursorState(currentOperandExpression.saveCursor());
   }
 
   /**
@@ -953,7 +954,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
     while (expression.nextCharacterIs(','))
     {
-      currentOperandExpression.continueParsingFrom(expression);
+      currentOperandExpression.setCursorState(expression.saveCursor());
 
       Node<Integer, R, Sequence<R>> savedBody = currentOperandExpression.rootNode;
 
@@ -989,7 +990,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
       currentOperandExpression.rootNode = (Node<Integer, R, Sequence<R>>) (Node<?, ?, ?>) innerLevel;
 
-      expression.continueParsingFrom(currentOperandExpression);
+      expression.setCursorState(currentOperandExpression.saveCursor());
       currentOperandExpression = innerOperandExpression;
     }
   }

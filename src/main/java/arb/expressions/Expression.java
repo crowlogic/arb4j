@@ -1040,11 +1040,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return this;
     }
     compileInProgress = true;
+    if (trace) log.debug("#{}: compileInProgress = {}", System.identityHashCode(this), compileInProgress);
     try
     {
       if (context == null)
       {
         context = new Context();
+        if (trace) log.debug("#{}: context = {}", System.identityHashCode(this), context);
       }
 
       if (trace)
@@ -1069,12 +1071,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       if (compiledClass == null)
       {
         compiledClass = loadFunctionClass(internalName(), instructions, context);
+        if (trace) log.debug("#{}: compiledClass = {}", System.identityHashCode(this), compiledClass);
       }
       return this;
     }
     finally
     {
       compileInProgress = false;
+      if (trace) log.debug("#{}: compileInProgress = {}", System.identityHashCode(this), compileInProgress);
     }
   }
 
@@ -1230,17 +1234,22 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * Sets this{@link #expression} and calls {@link #setCursorFrom(Expression)} so
-   * that the effective parsing state of this expression becomes that of another
-   * expression
+   * Sets this expression's parsing cursor to the given {@link CursorState}. Does
+   * <b>not</b> touch {@link #expression}; the source string must already be set
+   * (via {@link #setExpression(String)} or construction) before calling this.
    * 
-   * @param anotherExpression
-   * @return
+   * @param state the cursor state to set
+   * @return this
    */
-  public Expression<D, C, F> continueParsingFrom(Expression<?, ?, ?> anotherExpression)
+  public Expression<D, C, F> setCursorState(CursorState state)
   {
-    expression = anotherExpression.expression;
-    return setCursorFrom(anotherExpression);
+    position          = state.position();
+    if (trace) log.debug("#{}: position = {}", System.identityHashCode(this), position);
+    character         = state.character();
+    if (trace) log.debug("#{}: character = {}", System.identityHashCode(this), character);
+    previousCharacter = state.previousCharacter();
+    if (trace) log.debug("#{}: previousCharacter = {}", System.identityHashCode(this), previousCharacter);
+    return this;
   }
 
   protected void copyIndependentVariableToFunctionalByValue(MethodVisitor mv,
@@ -1400,6 +1409,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     context.populateFunctionReferenceGraph();
     dependencies = Utensils.sortDependencies(context.functionReferenceGraph, getReferencedFunctions());
+    if (trace) log.debug("#{}: dependencies = {}", System.identityHashCode(this), dependencies);
 
     if (saveGraphs)
     {
@@ -1577,6 +1587,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
 
     variablesDeclared = true;
+    if (trace) log.debug("#{}: variablesDeclared = {}", System.identityHashCode(this), variablesDeclared);
   }
 
   /**
@@ -5009,14 +5020,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
           pendingParameterList = rest.isEmpty() ? null : new ArrayList<>(rest);
           return first;
         }
-        restoreCursor(saved);
+        setCursorState(saved);
         return null;
       }
 
       String name = parseName();
       if (name == null || name.isEmpty())
       {
-        restoreCursor(saved);
+        setCursorState(saved);
         return null;
       }
       skipSpaces();
@@ -5058,14 +5069,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
       pendingInputVariableBounds = null;
       pendingParameterList       = null;
-      restoreCursor(saved);
+      setCursorState(saved);
       return null;
     }
     catch (RuntimeException e)
     {
       pendingInputVariableBounds = null;
       pendingParameterList       = null;
-      restoreCursor(saved);
+      setCursorState(saved);
       return null;
     }
   }
@@ -6375,13 +6386,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     var    index      = resolveIndex();
     return new VariableReference<D, C, F>(identifier,
                                           index);
-  }
-
-  public void restoreCursor(CursorState state)
-  {
-    position          = state.position();
-    character         = state.character();
-    previousCharacter = state.previousCharacter();
   }
 
   protected Expression<D, C, F> saveAndOptionallyDecompileClassFile()
