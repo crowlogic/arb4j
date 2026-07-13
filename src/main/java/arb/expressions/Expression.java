@@ -564,19 +564,22 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public Expression(Class<? extends D> domain, Class<? extends C> coDomain, Class<? extends F> function)
   {
     this.upstreamExpression               = null;
+    if (trace) log.debug("#{}: upstreamExpression = {}", System.identityHashCode(this), upstreamExpression);
     this.domainType                       = domain;
+    if (trace) log.debug("#{}: domainType = {}", System.identityHashCode(this), domainType);
     this.coDomainType                     = coDomain;
+    if (trace) log.debug("#{}: coDomainType = {}", System.identityHashCode(this), coDomainType);
     this.functionClass                    = function;
+    if (trace) log.debug("#{}: functionClass = {}", System.identityHashCode(this), functionClass);
     this.genericFunctionClassInternalName = Type.getInternalName(function);
+    if (trace) log.debug("#{}: genericFunctionClassInternalName = {}", System.identityHashCode(this), genericFunctionClassInternalName);
     this.functionClassDescriptor          = function.descriptorString();
+    if (trace) log.debug("#{}: functionClassDescriptor = {}", System.identityHashCode(this), functionClassDescriptor);
 
     if (context != null && context.saveClasses)
     {
       saveClasses = true;
-    }
-    if (Expression.trace)
-    {
-      log.debug("#{}: new Expression(domain={}, coDomain={}, function={})", System.identityHashCode(this), domain, coDomain, function);
+      if (trace) log.debug("#{}: saveClasses = {}", System.identityHashCode(this), saveClasses);
     }
   }
 
@@ -608,36 +611,31 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     assert className != null : "className needs to be specified";
     this.upstreamExpression               = ascenentExpression;
+    if (trace) log.debug("#{}: upstreamExpression = {}#{}", System.identityHashCode(this), upstreamExpression, System.identityHashCode(upstreamExpression));
     this.className                        = className;
+    if (trace) log.debug("#{}: className = {}", System.identityHashCode(this), className);
     this.domainType                       = domain;
+    if (trace) log.debug("#{}: domainType = {}", System.identityHashCode(this), domainType);
     this.coDomainType                     = codomain;
+    if (trace) log.debug("#{}: coDomainType = {}", System.identityHashCode(this), coDomainType);
     this.functionClass                    = function;
+    if (trace) log.debug("#{}: functionClass = {}", System.identityHashCode(this), functionClass);
 
     this.genericFunctionClassInternalName = Type.getInternalName(function);
+    if (trace) log.debug("#{}: genericFunctionClassInternalName = {}", System.identityHashCode(this), genericFunctionClassInternalName);
     this.functionClassDescriptor          = function.descriptorString();
+    if (trace) log.debug("#{}: functionClassDescriptor = {}", System.identityHashCode(this), functionClassDescriptor);
     this.setExpression(Parser.normalize(expression));
     this.context      = context;
+    if (trace) log.debug("#{}: context = {}", System.identityHashCode(this), context);
     this.functionName = functionName;
+    if (trace) log.debug("#{}: functionName = {}", System.identityHashCode(this), functionName);
 
     if (context != null && context.saveClasses)
     {
       saveClasses = true;
+      if (trace) log.debug("#{}: saveClasses = {}", System.identityHashCode(this), saveClasses);
     }
-    if (Expression.trace)
-    {
-      log.debug("#{}: new Expression(className={}, domain={}, coDomain={}, function={}, expression={}, context={}, functionName={}, superExpression={}#{})",
-                System.identityHashCode(this),
-                className,
-                domain,
-                codomain,
-                function,
-                expression,
-                context,
-                functionName,
-                ascenentExpression,
-                System.identityHashCode(ascenentExpression));
-    }
-
   }
 
   @Override
@@ -730,14 +728,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     for (int i = 1; i < charCount; i++)
     {
       ++position;
+      if (trace) log.debug("#{}: position = {}", System.identityHashCode(this), position);
     }
     if (position < getExpression().length())
     {
       character = getExpression().charAt(position);
+      if (trace) log.debug("#{}: character = {}", System.identityHashCode(this), character);
     }
     else
     {
       character = Character.MIN_VALUE;
+      if (trace) log.debug("#{}: character = {}", System.identityHashCode(this), character);
     }
   }
 
@@ -923,6 +924,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Expression<D, C, F> clearIndependentVariable()
   {
+    if (trace)
+    {
+      log.debug("#{}: clearIndependentVariable: was {} in {}", System.identityHashCode(this), independentVariable, toStringExtended());
+    }
     independentVariable = null;
     return this;
 
@@ -940,12 +945,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                        functionName,
                                        upstreamExpression);
     expr.context = context;
+    if (trace) log.debug("#{}: context = {}", System.identityHashCode(expr), expr.context);
     expr.setIndependentVariable(independentVariable);
 
     expr.position            = position;
+    if (trace) log.debug("#{}: position = {}", System.identityHashCode(expr), expr.position);
     expr.character           = character;
+    if (trace) log.debug("#{}: character = {}", System.identityHashCode(expr), expr.character);
     expr.previousCharacter   = previousCharacter;
+    if (trace) log.debug("#{}: previousCharacter = {}", System.identityHashCode(expr), expr.previousCharacter);
     expr.placeholderVariable = placeholderVariable;
+    if (trace) log.debug("#{}: placeholderVariable = {}", System.identityHashCode(expr), expr.placeholderVariable);
     return expr;
   }
 
@@ -6622,9 +6632,21 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public VariableNode<D, C, F> setIndependentVariable(VariableNode<D, C, F> variableNode)
   {
+    if (trace)
+    {
+      log.debug("#{}: setIndependentVariable: {} -> {} in {}", System.identityHashCode(this), independentVariable, variableNode, toStringExtended());
+    }
     assert variableNode == null || canHaveIndependentVariable() : this.toStringExtended() + " cannot even have an independent variable";
     if (independentVariable != null && !independentVariable.equals(variableNode))
     {
+      if (trace)
+      {
+        log.debug("#{}: setIndependentVariable OVERWRITE-TO-DIFFERENT: existing={} new={} in {}",
+                  System.identityHashCode(this),
+                  independentVariable,
+                  variableNode,
+                  toStringExtended());
+      }
       throw new IllegalArgumentException("independentVariable is already set to " + independentVariable + " in " + this + " cannot set it to " + variableNode);
     }
     if (placeholderVariable != null && placeholderVariable.equals(variableNode))
