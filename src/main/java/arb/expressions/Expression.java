@@ -1645,10 +1645,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     Expression<D, C, F> copy = cloneExpression();
     copy.rootNode          = rootNode.spliceInto(copy);
+    if (trace) log.debug("#{}: rootNode = {}", System.identityHashCode(copy), copy.rootNode);
     copy.compiledClass     = null;
+    if (trace) log.debug("#{}: compiledClass = {}", System.identityHashCode(copy), copy.compiledClass);
     copy.instructions      = null;
+    if (trace) log.debug("#{}: instructions = {}", System.identityHashCode(copy), copy.instructions);
     copy.optimized         = false;
+    if (trace) log.debug("#{}: optimized = {}", System.identityHashCode(copy), copy.optimized);
     copy.instance          = null;
+    if (trace) log.debug("#{}: instance = {}", System.identityHashCode(copy), copy.instance);
     // #1027 fix: deepCloneExpression resets every state flag that the
     // clone-of-a-compiled-Expression would otherwise carry over from the
     // source. variablesDeclared was missing from this list, which meant a
@@ -1656,7 +1661,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // would assert in declareVariables because the flag inherited true
     // from the original.
     copy.variablesDeclared = false;
+    if (trace) log.debug("#{}: variablesDeclared = {}", System.identityHashCode(copy), copy.variablesDeclared);
     copy.compileInProgress = false;
+    if (trace) log.debug("#{}: compileInProgress = {}", System.identityHashCode(copy), copy.compileInProgress);
     return copy;
   }
 
@@ -1812,6 +1819,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     // Phase 4: Walk the tree and replace children by identity
     rootNode = replaceByIdentity(rootNode, replacements);
+    if (trace) log.debug("#{}: rootNode = {}", System.identityHashCode(this), rootNode);
 
     return this;
   }

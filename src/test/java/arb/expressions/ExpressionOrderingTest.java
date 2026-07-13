@@ -1,5 +1,8 @@
 package arb.expressions;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import arb.functions.complex.ComplexFunction;
 import junit.framework.TestCase;
 
@@ -16,6 +19,7 @@ import junit.framework.TestCase;
  */
 public class ExpressionOrderingTest extends TestCase
 {
+  private static final Logger log = LoggerFactory.getLogger(ExpressionOrderingTest.class);
 
   /**
    * Test showing that complexFunction.parse automatically instantiates with instantiate()
@@ -54,7 +58,7 @@ public class ExpressionOrderingTest extends TestCase
     // 2. Knfunc.apply(z) returns Knfuncfunc (binds z, middle level)
     // 3. Knfuncfunc.evaluate(n) returns result (inner level uses n field)
     
-    System.out.println("Kn expression parameter order: n (outermost) ➔ z ➔ w ➔ sum body");
+    log.info("Kn expression parameter order: n (outermost) ➔ z ➔ w ➔ sum body");
   }
 
   /**
@@ -73,11 +77,11 @@ public class ExpressionOrderingTest extends TestCase
    */
   public void testExpressionBindingHierarchy()
   {
-    System.out.println("Expression binding hierarchy");
-    System.out.println("1. Kn: Integer ➔ ComplexFunctional (binds n)");
-    System.out.println("2. Knfunc: Complex ➔ ComplexFunction (binds z)");
-    System.out.println("3. Knfuncfunc: Complex ➔ Complex (binds w, uses n from Knfunc)");
-    System.out.println("4. KnoperandF0001: Integer ➔ Complex (sum over k=0..n)");
+    log.info("Expression binding hierarchy");
+    log.info("1. Kn: Integer ➔ ComplexFunctional (binds n)");
+    log.info("2. Knfunc: Complex ➔ ComplexFunction (binds z)");
+    log.info("3. Knfuncfunc: Complex ➔ Complex (binds w, uses n from Knfunc)");
+    log.info("4. KnoperandF0001: Integer ➔ Complex (sum over k=0..n)");
     
     // This demonstrates why variable order matters:
     // n must be a field on Knfuncfunc to access the sum bound
@@ -99,8 +103,8 @@ public class ExpressionOrderingTest extends TestCase
     // Incorrect: n would not be accessible in the sum bound
     String incorrect = "w➔n➔z➔sum(k➔Q(k)(z)*Q(k)(w)/hv(k){k=0..n})";
     
-    System.out.println("Correct order allows n to be accessed in sum bound: " + correct);
-    System.out.println("Incorrect order would break: n is not available when sum is evaluated");
+    log.info("Correct order allows n to be accessed in sum bound: " + correct);
+    log.info("Incorrect order would break: n is not available when sum is evaluated");
     
     // The test failure in the last run confirms this - the sum needs n to be available
   }
@@ -110,12 +114,12 @@ public class ExpressionOrderingTest extends TestCase
    */
   public void testExpressionChainBuilding()
   {
-    System.out.println("Expression chain building steps:");
-    System.out.println("1. Kn: Integer ➔ ComplexFunctional (n-bound)");
-    System.out.println("2. Knfunc: n (field) + Complex ➔ ComplexFunction (z-bound)");
-    System.out.println("3. Knfuncfunc: n (field), z (field), Complex ➔ Complex (w-bound)");
-    System.out.println("4. KnoperandF0001: n (field), z (field), w (field), Integer ➔ Complex (sum)");
-    System.out.println("5. Sum evaluation: uses n from Knfuncfunc field (not method parameter)");
+    log.info("Expression chain building steps:");
+    log.info("1. Kn: Integer ➔ ComplexFunctional (n-bound)");
+    log.info("2. Knfunc: n (field) + Complex ➔ ComplexFunction (z-bound)");
+    log.info("3. Knfuncfunc: n (field), z (field), Complex ➔ Complex (w-bound)");
+    log.info("4. KnoperandF0001: n (field), z (field), w (field), Integer ➔ Complex (sum)");
+    log.info("5. Sum evaluation: uses n from Knfuncfunc field (not method parameter)");
     
     // This chain requires n to be a field at each level to propagate from Kn ➔ Knfunc ➔ Knfuncfunc
   }

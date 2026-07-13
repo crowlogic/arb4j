@@ -16,7 +16,7 @@ import junit.framework.TestCase;
  * @author Stephen Crowley ©2024-2026
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne for © terms
  */
-public class SumMultiBindingTest extends
+public class NestedSumBindingTest extends
                                  TestCase
 {
 
