@@ -86,6 +86,7 @@ public class MuntzPadeFunctional implements
   @Override
   public ComplexFunction evaluate(Complex v, int order, int bits, ComplexFunction result)
   {
+    assert order == 1 : "order parameter is ignored; adaptive order growth happens inside MuntzPadeApproximant.evaluate()";
     if (cachedResult != null && bits == cachedBits && cachedV != null && cachedV.equals(v))
     {
       return cachedResult;
