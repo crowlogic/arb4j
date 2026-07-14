@@ -805,6 +805,64 @@ public class Compiler
     return Stream.of(clazz.getMethods()).anyMatch(method -> method.getName().equals(methodName) && Arrays.equals(method.getParameterTypes(), parameterTypes));
   }
 
+  /**
+   * Emits bytecode that calls {@code log.info(String)} on the generated class's
+   * static {@code Logger} field.  The caller must push the message string onto
+   * the stack before calling this method; this method pops it and invokes
+   * {@code Logger.info}.
+   */
+  public static void emitLogInfo(MethodVisitor mv, String classInternalName)
+  {
+    mv.visitFieldInsn(GETSTATIC, classInternalName, "log", Type.getDescriptor(org.slf4j.Logger.class));
+    mv.visitInsn(SWAP);
+    mv.visitMethodInsn(INVOKEINTERFACE,
+                       Type.getInternalName(org.slf4j.Logger.class),
+                       "info",
+                       "(Ljava/lang/String;)V",
+                       true);
+  }
+
+  /**
+   * Emits bytecode that builds a {@link StringBuilder} message and logs it via
+   * {@code log.info(message)}.  The {@code parts} array may contain:
+   * <ul>
+   *   <li>{@link String} literals — pushed with {@code LDC}</li>
+   *   <li>{@link Integer} — pushed with {@code ILOAD}</li>
+   *   <li>{@link org.objectweb.asm.Type} descriptors for field loads via
+   *       {@code loadField} callback</li>
+   * </ul>
+   * This method creates the StringBuilder, appends each part, calls
+   * {@code toString()}, and emits the log.info call.
+   */
+  public static void emitLogStringBuilder(MethodVisitor mv,
+                                          String classInternalName,
+                                          String prefix,
+                                          Object... parts)
+  {
+    // new StringBuilder(prefix)
+    mv.visitTypeInsn(NEW, "java/lang/StringBuilder");
+    mv.visitInsn(DUP);
+    mv.visitLdcInsn(prefix);
+    mv.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "(Ljava/lang/String;)V", false);
+
+    for (Object part : parts)
+    {
+      if (part instanceof String s)
+      {
+        mv.visitLdcInsn(s);
+        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
+      }
+      else if (part instanceof java.lang.Integer intPart)
+      {
+        mv.visitVarInsn(ILOAD, intPart);
+        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(I)Ljava/lang/StringBuilder;", false);
+      }
+    }
+
+    mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;", false);
+    emitLogInfo(mv, classInternalName);
+  }
+
   public static String getFunctionDescriptor(boolean bitless, Class<?> coDomainType)
   {
     String functionDescriptor = bitless ? getMethodDescriptor(coDomainType, coDomainType) : getMethodDescriptor(coDomainType, int.class, coDomainType);

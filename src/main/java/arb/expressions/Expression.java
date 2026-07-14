@@ -1963,6 +1963,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       generateInvalidateMethod(classVisitor);
       generateDiffererentiationAndIntegrationMethods(classVisitor);
       declareFields(classVisitor);
+      if (Expression.trace)
+      {
+        generateLoggerInitializer(classVisitor);
+      }
       generateInitializationMethod(classVisitor);
       generateConstructor(classVisitor);
       declareIntermediateVariables(classVisitor);
@@ -2279,6 +2283,28 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     loadThisOntoStack(mv).visitMethodInsn(INVOKEVIRTUAL, internalName(), nameOfInitializerFunction, "()V", false);
     Compiler.designateLabel(mv, alreadyInitialized);
     return mv;
+  }
+
+  protected void generateLoggerInitializer(ClassVisitor classVisitor)
+  {
+    classVisitor.visitField(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC | Opcodes.ACC_FINAL,
+                            "log",
+                            Type.getDescriptor(org.slf4j.Logger.class),
+                            null,
+                            null);
+    MethodVisitor mv = classVisitor.visitMethod(ACC_STATIC, "<clinit>", "()V", null, null);
+    mv.visitCode();
+    // LoggerFactory.getLogger(ClassName.class)
+    mv.visitLdcInsn(Type.getObjectType(internalName()));
+    mv.visitMethodInsn(INVOKESTATIC,
+                       Type.getInternalName(org.slf4j.LoggerFactory.class),
+                       "getLogger",
+                       "(Ljava/lang/Class;)Lorg/slf4j/Logger;",
+                       false);
+    mv.visitFieldInsn(PUTSTATIC, internalName(), "log", Type.getDescriptor(org.slf4j.Logger.class));
+    mv.visitInsn(RETURN);
+    mv.visitMaxs(0, 0);
+    mv.visitEnd();
   }
 
   protected ClassVisitor generateConstructor(ClassVisitor classVisitor)

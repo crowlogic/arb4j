@@ -434,13 +434,73 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     setIndexToTheLowerLimit(mv);
     generateConvergenceTarget(mv);
     designateLabel(mv, beginLoop);
+    if (Expression.trace)
+    {
+      logConvergenceState(mv, "INFINITE_SUM_LOOP TOP");
+    }
     generateInnerLoop(mv);
     pop(mv);
+    if (Expression.trace)
+    {
+      logConvergenceState(mv, "INFINITE_SUM_LOOP AFTER_ADD");
+    }
     generateConvergenceTest(mv);
     jumpTo(mv, beginLoop);
     designateLabel(mv, endLoop);
+    if (Expression.trace)
+    {
+      logConvergenceState(mv, "INFINITE_SUM_LOOP TERMINATED");
+    }
     assignResult(mv, resultType);
     return mv;
+  }
+
+  protected void logConvergenceState(MethodVisitor mv, String tag)
+  {
+    String classInternalName = expression.internalName();
+    String sbInit = tag + " [index=";
+    mv.visitTypeInsn(NEW, "java/lang/StringBuilder");
+    mv.visitInsn(DUP);
+    mv.visitLdcInsn(sbInit);
+    mv.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "(Ljava/lang/String;)V", false);
+
+    loadIndexVariable(mv);
+    mv.visitMethodInsn(INVOKEVIRTUAL, Type.getInternalName(Integer.class), "getSignedValue", "()I", false);
+    mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(I)Ljava/lang/StringBuilder;", false);
+
+    mv.visitLdcInsn(", result=");
+    mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
+    loadIntermediateResultVariable(mv);
+    mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/Object;)Ljava/lang/StringBuilder;", false);
+
+    if (toleranceFieldName != null)
+    {
+      mv.visitLdcInsn(", tolerance=");
+      mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
+      loadFieldFromThis(mv, toleranceFieldName, Real.class);
+      mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/Object;)Ljava/lang/StringBuilder;", false);
+    }
+
+    if (operandValueFieldName != null)
+    {
+      mv.visitLdcInsn(", term=");
+      mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
+      loadFieldFromThis(mv, operandValueFieldName, generatedType);
+      mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/Object;)Ljava/lang/StringBuilder;", false);
+    }
+
+    if (absTermFieldName != null)
+    {
+      mv.visitLdcInsn(", |term|=");
+      mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
+      loadFieldFromThis(mv, absTermFieldName, Real.class);
+      mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/Object;)Ljava/lang/StringBuilder;", false);
+    }
+
+    mv.visitLdcInsn("]");
+    mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
+    mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;", false);
+    Compiler.emitLogInfo(mv, classInternalName);
   }
 
   /**
