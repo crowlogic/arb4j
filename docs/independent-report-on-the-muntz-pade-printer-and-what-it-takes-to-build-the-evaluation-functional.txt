@@ -1,0 +1,679 @@
+═══════════════════════════════════════════════════════════════════════════════
+           INDEPENDENT REPORT: HOW THE MUNTZ-PADE PRINTER WORKS,
+     WHAT EVERY EQUATION MEANS, WHAT EVERY TYPE IS, AND WHAT IT TAKES
+              TO BUILD THE EVALUATION FUNCTIONAL FROM THE SAME MATH
+═══════════════════════════════════════════════════════════════════════════════
+
+This report is an independent reading of:
+  • src/main/java/arb/applications/MuntzPadePolynomialPrinter.java
+  • src/main/java/arb/functions/complex/RiccatiMuntzPadeFunctional.java
+  • src/main/java/arb/functions/complex/MuntzPadeFunctional.java
+  • src/main/java/arb/functions/complex/MuntzPadeApproximant.java
+  • src/main/java/arb/functions/polynomials/orthogonal/complex/
+      OrthogonalPolynomialMomentFunctionalSequence.java
+  • docs/FractionalRiccatiSolutionMethodology.tex
+
+The printer program is a CLI program that computes and prints the orthogonal
+polynomials, Jacobi coefficients, and Padé approximants for the solution of
+a fractional Riccati equation. It is NOT a toy — it is the complete,
+standalone computation that the expression compiler's infinite-sum machinery
+must reproduce as a single compiled evaluation functional. Every infinite sum
+that appears in this system is an instance of one pattern: a moment-functional
+orthogonal-polynomial-sequence with Padé resummation. The printer demonstrates
+this pattern in full. What follows explains exactly what the printer does,
+what every equation means at the level of what happens to each number, and
+what it takes to build the evaluation functional that does the same thing as
+the printer but as a compiled function of its inputs.
+
+
+═══════════════════════════════════════════════════════════════════════════════
+  PART 1: WHAT PROBLEM IS BEING SOLVED
+═══════════════════════════════════════════════════════════════════════════════
+
+We have a fractional Riccati equation:
+
+  D^μ y(t; v) = p(v) + q(v)·y(t; v) + r(v)·y(t; v)²,   y(0) = 0
+
+where:
+  • t is the time variable (the argument of the solution)
+  • v is a parameter (in Rough Heston, v is the Fourier variable u)
+  • μ ∈ (0,1] is the fractional order (the "roughness" exponent)
+  • p(v), q(v), r(v) are polynomial coefficient functions of v
+  • D^μ is the Caputo fractional derivative of order μ
+
+The goal: given p, q, r, μ, compute y(t; v) for arbitrary t and v, with
+rigorous error bounds, using ball arithmetic.
+
+This is the core computation behind Rough Heston option pricing, where
+p(v) = ½(-v²-iv), q(v) = λ(iρνv - 1), r(v) = ½λ²ν², and μ = H + ½.
+
+
+═══════════════════════════════════════════════════════════════════════════════
+  PART 2: THE MUNTZ COEFFICIENT SEQUENCE — WHAT a(k) MEANS
+═══════════════════════════════════════════════════════════════════════════════
+
+The solution y(t; v) is expressed as a Müntz series — a power series in
+z = t^μ rather than in t itself:
+
+  y(t; v) = Σ_{k≥1} a(k, v) · t^{kμ}
+
+Each a(k, v) is itself a polynomial in v (a ComplexPolynomial). The
+coefficients satisfy the recurrence:
+
+  a(1, v) = p(v) / Γ(μ + 1)
+
+  a(k, v) = γ(k) · [ q(v)·a(k-1, v)
+                    + r(v)·Σ_{j=1}^{k-2} a(j, v)·a(k-1-j, v) ]
+
+where γ(k) = Γ((k-1)μ + 1) / Γ(kμ + 1) is a scalar Gamma ratio.
+
+WHAT THIS MEANS STEP BY STEP:
+
+  1. The first coefficient a(1, v) = p(v)/Γ(μ+1) is just the first
+     fractional integral of p evaluated at the first time step. It is a
+     polynomial in v because p(v) is a polynomial in v and Γ(μ+1) is a
+     scalar number.
+
+  2. Every subsequent coefficient a(k, v) is built from ALL PREVIOUS
+     coefficients. The term "q(v)·a(k-1, v)" is the linear part of the
+     Riccati equation applied to the previous term. The sum
+     "Σ a(j)·a(k-1-j)" is the convolution from the quadratic term
+     r(v)·y² — it pairs every pair of earlier coefficients whose indices
+     add up to k-2.
+
+  3. The Gamma ratio γ(k) shrinks as k grows (for μ ∈ (0,1]), so the
+     coefficients get smaller. This is why the series converges.
+
+  4. Each a(k, v) is a polynomial in v whose degree grows at most linearly:
+     deg(a(k)) ≤ k · max(deg(p), deg(q), deg(r)). The polynomial degree
+     is bounded but grows — this is the cost of keeping v as a variable.
+
+WHAT THE PRINTER DOES WITH a(k):
+
+  The printer computes a(k) as a ComplexPolynomialSequence (a sequence of
+  indexed polynomials). It does NOT evaluate at any particular v yet. It
+  builds the entire polynomial ring recursion symbolically: each a(k) is
+  a polynomial whose coefficients are computed from the polynomials a(1)
+  through a(k-1) using polynomial multiplication and addition.
+
+  The printer calls this sequence "a" and it lives in the Context.
+
+
+═══════════════════════════════════════════════════════════════════════════════
+  PART 3: THE MOMENT FUNCTIONAL — WHAT m(k) MEANS AND WHY IT EXISTS
+═══════════════════════════════════════════════════════════════════════════════
+
+The moment sequence is defined by:
+
+  m(k) = a(k+1)    for k ≥ 0
+
+This is a 1-index shift. The reason: the Müntz series starts at k=1, but
+the orthogonal polynomial machinery expects a moment sequence starting at
+index 0.
+
+WHAT THIS MEANS:
+
+  The sequence m(0), m(1), m(2), ... is the same as a(1), a(2), a(3), ...
+  Each m(k) is a polynomial in v. We are defining a "moment functional" L:
+
+    L[x^k] = m(k, v)
+
+  meaning: if you feed the monomial x^k to this functional, it returns the
+  k-th moment (which is a polynomial in v). This is extended linearly:
+  L[Σ c_k x^k] = Σ c_k · m(k, v).
+
+  This functional L is the bridge between the Müntz series and the
+  orthogonal polynomials. The Müntz coefficients ARE the moments. The
+  orthogonal polynomial machinery consumes moments and produces Jacobi
+  coefficients (α, β, h) — the tridiagonal matrix entries that define a
+  three-term recurrence for the polynomials orthogonal with respect to L.
+
+WHY THE MOMENT FUNCTIONAL MATTERS:
+
+  The Hankel matrix H_n = det[m(i+j)]_{0≤i,j≤n-1} measures how "well-
+  defined" the moment sequence is. If H_n ≠ 0 for all n, the moment
+  functional is "quasi-definite" and the orthogonal polynomials exist and
+  are unique. The paper proves this holds generically for the Riccati
+  moments (Lemma 3.4 in FractionalRiccatiSolutionMethodology.tex).
+
+  The Hankel determinants satisfy: H_n(u) = det[m(i+j, u)] where u is the
+  variable in p, q, r. For generic coefficient data and generic μ, all
+  H_n(u) ≠ 0 as polynomials. The printer never forms Hankel matrices — it
+  uses the Chebyshev/Wheeler recurrence instead, which is O(N) per step
+  vs O(N³) for direct Hankel.
+
+
+═══════════════════════════════════════════════════════════════════════════════
+  PART 4: THE SIGMA-TABLE (CHEBYSHEV/WHEELER RECURRENCE) — WHAT IT COMPUTES
+═══════════════════════════════════════════════════════════════════════════════
+
+The sigma table is a doubly-indexed array σ(j, k) of polynomials in v.
+The definition:
+
+  σ(j, k) = L[x^k · P(j, x)]
+
+where P(j, x) is the j-th monic orthogonal polynomial. But we do not
+know P(j, x) yet — the sigma table constructs it.
+
+THE RECURRENCE (what the printer actually computes):
+
+  σ(0, k) = m(k)                          for all k ≥ 0
+  σ(j, k) = σ(j-1, k+1) − α(j-1)·σ(j-1, k) − β(j-1)·σ(j-2, k)   for j ≥ 1
+
+with the convention σ(-1, k) = 0.
+
+WHAT THIS MEANS AT THE LEVEL OF NUMBERS:
+
+  At j=0, the sigma row is just the moment sequence: σ(0, k) = m(k).
+  This is the raw material.
+
+  At j=1, we compute α(0) from the first two elements of σ(0, ·):
+    α(0) = σ(0, 1) / σ(0, 0) = m(1) / m(0)
+  Then σ(1, k) = σ(0, k+1) − α(0)·σ(0, k) = m(k+1) − α(0)·m(k).
+  This is the "deflation" step: we have subtracted off the component of
+  the moment sequence that is a multiple of the first orthogonal
+  polynomial. What remains is orthogonal to P(0, x) = 1.
+
+  At j=2, we compute β(1) = σ(1, 1) / σ(0, 0) and α(1) from
+  σ(1, 2)/σ(1, 1) − σ(0, 1)/σ(0, 0). Then:
+    σ(2, k) = σ(1, k+1) − α(1)·σ(1, k) − β(1)·σ(0, k).
+  This subtracts off the components along P(1, x) and P(0, x). What
+  remains is orthogonal to both P(0) and P(1).
+
+  At each step j, we peel off one more polynomial and get a row σ(j, ·)
+  that is orthogonal to P(0), ..., P(j-1). The process is the Lanczos/
+  Danilevsky reduction of the Hankel moment matrix to tridiagonal form.
+
+THE DERIVED QUANTITIES:
+
+  h(j) = σ(j, j) = ‖P(j)‖² = L[P(j, x)²]
+    The squared norm of the j-th orthogonal polynomial. This is the
+    "energy" of P(j) under the moment functional. It equals H(j+1)/H(j),
+    the ratio of successive Hankel determinants.
+
+  α(j) = σ(j, j+1)/h(j)  −  σ(j-1, j)/h(j-1)
+    The diagonal entry of the Jacobi tridiagonal matrix. The two-term form
+    is critical: the second term (σ(j-1, j)/h(j-1)) is the correction
+    for non-symmetric moment functionals. For symmetric functionals
+    (where all odd moments vanish) this second term is zero, but for
+    Rough Heston's P(v) = ½(-v²-iv) which is non-real, the full
+    two-term form is required.
+
+  β(j) = h(j) / h(j-1)     for j ≥ 1,  β(0) = 0
+    The off-diagonal entry of the Jacobi tridiagonal matrix. It is the
+    ratio of successive squared norms.
+
+WHAT THE PRINTER OUTPUTS FOR THE SIGMA-TABLE:
+
+  The printer prints the expressions (as compiled expression strings):
+    σ(j)(k) = when(j=0, m(k), j=1, σ(0)(k+1) − α(0)·σ(0)(k),
+                else, σ(j−1)(k+1) − α(j−1)·σ(j−1)(k) − β(j−1)·σ(j−2)(k))
+    h(j) = σ(j)(j)
+    α(j) = when(j=0, σ(0)(1)/h(0), else, σ(j)(j+1)/h(j) − σ(j−1)(j)/h(j−1))
+    β(j) = when(j=0, 0, else, h(j)/h(j−1))
+
+  These are expression-compiled ComplexPolynomialSequences. Each index
+  produces a polynomial in v. The expressions are compiled once and
+  evaluated per index.
+
+
+═══════════════════════════════════════════════════════════════════════════════
+  PART 5: THE ORTHOGONAL POLYNOMIAL SEQUENCE (OPS) — WHAT P(n, x) MEANS
+═══════════════════════════════════════════════════════════════════════════════
+
+From α(j) and β(j), we build the monic orthogonal polynomials via the
+three-term recurrence:
+
+  P(-1, x) = 0
+  P(0, x)  = 1
+  P(n+1, x) = (x − α(n))·P(n, x) − β(n)·P(n-1, x)
+
+WHAT THIS MEANS:
+
+  P(n, x) is a polynomial of degree n in x. Its coefficients are
+  polynomials in v (because α(n) and β(n) are polynomials in v). So
+  P(n, x) ∈ C[v][x] — a polynomial in x whose coefficients live in the
+  polynomial ring C[v].
+
+  For the printer's default parameters (p=1, q=0, r=-1), the α(n) are
+  all zero (the moment functional is symmetric), and the recurrence
+  simplifies to:
+    P(n+1, x) = x·P(n, x) − β(n)·P(n-1, x)
+  This generates the classical Müntz orthogonal polynomials for the
+  Riccati equation y' = 1 − y², y(0) = 0 (whose solution is tanh, not tan).
+
+  The printer prints these as "Pn" expressions:
+    Pn(n) = when(n=0, 0, n=1, hv(0), else,
+                (z − αv(n-1))·Pn(n-1) − βv(n-1)·Pn(n-2))
+
+  where z is the independent variable (representing t^μ) and αv, βv, hv
+  are the scalar sequences α(n)(v), β(n)(v), h(n)(v) evaluated at v.
+
+
+═══════════════════════════════════════════════════════════════════════════════
+  PART 6: THE PADE DENOMINATOR AND NUMERATOR — WHAT Φ(z) IS
+═══════════════════════════════════════════════════════════════════════════════
+
+The generating function of the Müntz series is:
+
+  g(z, v) = Σ_{k≥1} a(k, v) · z^k
+
+This is a power series in z = t^μ. The diagonal [M/M] Padé approximant
+of g is a rational function:
+
+  R(M, z) = P̂(M, z) / Q̂(M, z)
+
+where:
+
+  Q̂(M, z) = z^M · P(M, 1/z)
+    The denominator polynomial. It is the "reciprocal flip" of the M-th
+    orthogonal polynomial: reverse the coefficient order of P(M, x) to
+    get Q̂(M, z). The printer computes this as:
+      Φden(M) = Σ_{j=1}^{M} Q(M)[M-j] · z^j  +  1
+    where Q(M) is the M-th orthogonal polynomial from the OPS, and
+    Q(M)[M-j] is its (M-j)-th coefficient.
+
+  P̂(M, z) = z^M · P^(1)(M, 1/z)
+    The numerator polynomial. P^(1)(M, x) is the "associated" or
+    "second-kind" polynomial, built by the SAME three-term recurrence
+    as P(M, x) but with different starting values:
+      P^(1)(-1, x) = -1,   P^(1)(0, x) = 0
+    The printer computes this as:
+      Pn(n) = when(n=0, 0, n=1, hv(0), else,
+                  (z − αv(n-1))·Pn(n-1) − βv(n-1)·Pn(n-2))
+    Note the different seeds: Pn(0) = 0 and Pn(1) = h(0) = ‖P(0)‖².
+    The numerator is then:
+      Φnum(M) = Σ_{j=1}^{M} Pn(M)[M-j] · z^j
+
+  The Padé approximant is:
+    Φ(M)(z) = Φnum(M)(z) / Φden(M)(z)
+
+WHAT THIS MEANS:
+
+  The Padé approximant matches the Müntz series g(z, v) to order 2M+1
+  (i.e., the first 2M+1 coefficients of the Taylor expansion of R(M,z)
+  around z=0 agree with those of g(z, v)). This is a rational function
+  of z, not a polynomial — it can represent pole singularities that a
+  polynomial cannot.
+
+  The quality of the approximation improves with M. The printer's
+  auto-termination condition determines when to stop increasing M.
+
+  The theorem (Theorem 7 in the tex, Theorem 4.3 in frmp_orthopoly.tex)
+  guarantees:
+    g(z) · Q̂(M, z) − P̂(M, z) = O(z^{2M+1})
+  and the leading remainder coefficient is h(M) = ‖P(M)‖² ≠ 0, so the
+  matching order is EXACT.
+
+
+═══════════════════════════════════════════════════════════════════════════════
+  PART 7: CONVERGENCE DETECTION — THE Δβ_n TERMINATION CRITERION
+═══════════════════════════════════════════════════════════════════════════════
+
+This is the part that connects directly to the expression compiler's
+infinite-sum convergence testing.
+
+THE PRINTER'S TERMINATION LOGIC (lines 408-420 of MuntzPadePolynomialPrinter):
+
+  For each n from 0 to N:
+    1. Evaluate α(n) → αn        (a Complex scalar = polynomial in v evaluated
+                                   at the current v)
+    2. Evaluate β(n) → βn        (same)
+    3. Evaluate h(n) → hn        (same)
+    4. Reset ball radii to zero on αn, βn, hn
+       (the printer zeroes out the error bound on these scalars so that
+       subsequent arithmetic captures only the mathematical difference,
+       not accumulated rounding error)
+    5. Compute Δβ_n = β(n) − β(n−1)
+    6. Check: does 0 ∈ Δβ_n?
+       i.e., does the ball (midpoint ± radius) around Δβ_n contain zero?
+       Since Δβ_n is a Complex ball, this means:
+         Δβ_n.getReal().containsZero()  &&  Δβ_n.getImag().containsZero()
+    7. If yes: STOP. The recurrence has converged.
+
+WHAT THIS MEANS IN PLAIN LANGUAGE:
+
+  β(n) is the off-diagonal entry of the Jacobi matrix at step n. As n
+  increases, β(n) approaches a limiting value β*. The difference
+  Δβ_n = β(n) − β(n−1) measures how much the recurrence has changed.
+
+  When Δβ_n → 0 (meaning its ball contains zero), the σ-table recurrence
+  has reached a fixed point: the new row σ(j, ·) is a linear combination
+  of the previous two rows with CONSTANT coefficients α and β. The moment
+  sequence has been fully "compressed" into the Jacobi coefficients. No
+  new information is coming from higher moments.
+
+  At this point, the Padé approximant has captured everything the Müntz
+  series has to give. Increasing M further does not improve the
+  approximation. The rational function R(M, z) has converged.
+
+  The printer's output with --N=20 confirms this: "auto-terminated at
+  n=18 (0∈Δβₙ)". The β values stabilize (the last two entries are
+  identical), and Δβ_18 contains zero because its ball radius (from the
+  finite-precision computation) straddles zero.
+
+THE RADIUS RESET IS ESSENTIAL:
+
+  Before computing Δβ_n, the printer resets the ball radii on αn, βn, hn
+  to zero. This is NOT optional. Without the reset, the ball radius
+  accumulates through the polynomial evaluation chain and Δβ_n would
+  NEVER contain zero — the radius would keep growing even when the
+  midpoint converges. The radius reset makes the convergence test
+  sensitive only to the MATHEMATICAL change between successive β values,
+  not to accumulated rounding error.
+
+  In the printer code (lines 383-389):
+    αn.getReal().getRad().zero();
+    αn.getImag().getRad().zero();
+    βn.getReal().getRad().zero();
+    βn.getImag().getRad().zero();
+    hn.getReal().getRad().zero();
+    hn.getImag().getRad().zero();
+
+  This is the exact analogue of what the expression compiler's
+  `savePreviousPartialSum` and `resetResultRadius` do for the infinite
+  sum. The principle is identical:
+    • Save the current value with radius zeroed
+    • Add the next term (which introduces new radius)
+    • Zero the radius on the accumulated result
+    • Compute the difference (delta = new − old)
+    • Check if 0 ∈ delta
+
+  For the infinite sum Σ{..∞}, the "result" is the partial sum, the
+  "beta" equivalent is the scalar difference between successive partial
+  sums, and the termination condition is 0 ∈ delta.
+
+
+═══════════════════════════════════════════════════════════════════════════════
+  PART 8: THE COMPLETE TYPE HIERARCHY — WHAT EACH CLASS DOES
+═══════════════════════════════════════════════════════════════════════════════
+
+The three-layer architecture, each layer with exactly one job:
+
+LAYER 1: RiccatiMuntzPadeFunctional
+  Input:  P(v), Q(v), R(v) as ComplexPolynomialNullaryFunction
+          (each is a function that returns a ComplexPolynomial when called)
+  Output: A ComplexPolynomialSequence a where a(k) is the k-th Müntz
+          coefficient (a polynomial in v)
+  What it does: Compiles the Müntz recurrence expression and evaluates
+          P, Q, R to populate the polynomial variables p, q, r in the
+          context. That is ALL it does. It does not know about orthogonal
+          polynomials, Padé, or convergence.
+  Key methods:
+    refreshPolynomials(bits) — evaluates P, Q, R → p, q, r
+    muntzBasis() — returns the sequence a
+    parameterDerivative(var, bits) — chain-rule derivative of a(k) w.r.t. a parameter
+
+LAYER 2: MuntzPadeFunctional
+  Input:  The Müntz coefficient sequence a (from Layer 1) plus fractional
+          order μ
+  Output: A MuntzPadeApproximant (a ComplexFunction that takes z = t^μ
+          and returns the Padé-approximated value)
+  What it does: Creates a MuntzPadeApproximant with the sequence a and
+          μ. Memoizes the result: if the same (v, bits) is requested
+          again, returns the cached approximant without recomputing.
+  Key method:
+    evaluate(v, order, bits, result) — rebinds the approximant to the
+          given v and returns it. The "rebind" updates the runtime
+          variable v in the shared Context, then clears the caches that
+          depend on v (αv, βv, hv, Pn, Φden, Φnum, Φ).
+
+LAYER 3: MuntzPadeApproximant
+  Input:  μ, the sequence a, a specific complex number v, working precision bits
+  Output: When evaluate(t, order, bits, result) is called, returns the
+          complex value of the Padé approximant at z = t^μ.
+  What it does (the CORE computation):
+    1. Registers v as a runtime variable in a fresh Context
+    2. Defines m(k) = a(k+1) — the 1-shift
+    3. Creates OrthogonalPolynomialMomentFunctionalSequence from m —
+       this builds the entire σ-table, h, α, β, the OPS, and the
+       orthogonal polynomials Q(k) = P(k, z) evaluated at v
+    4. Defines scalar sequences αv(n) = α(n)(v), βv(n) = β(n)(v),
+       hv(n) = h(n)(v) — these evaluate the polynomials-in-v at the
+       specific v to produce Complex scalars
+    5. Defines the Padé numerator Pn(n) via the second-kind recurrence
+    6. Defines Φden(M) = Σ Q(M)[M-j]·z^j + 1
+    7. Defines Φnum(M) = Σ Pn(M)[M-j]·z^j
+    8. Defines Φ(M)(z) = Φnum(M)(z) / Φden(M)(z)
+    9. At evaluation time: incrementally grows M from 2 upward, computing
+       Φ(M)(z) for each M until |Φ(M)(z) − Φ(M-1)(z)| ≤ 2^{-bits/2}
+       or the difference stops shrinking.
+
+  Key design point: The σ-table, a, and m are polynomials in v and are
+  computed ONCE. The v-dependent evaluations αv, βv, hv are computed per
+  v by calling the polynomial sequences with the specific v. This means
+  a sweep over many v values reuses the expensive polynomial algebra.
+
+  OrthogonalPolynomialMomentFunctionalSequence:
+    This class builds the σ-table from the moment sequence m. It
+    compiles the expressions:
+      σ(j)(k) = when(j=0, m(k), ...)
+      h(j) = σ(j)(j)
+      α(j) = when(j=0, σ(0)(1)/h(0), else, σ(j)(j+1)/h(j) − ...)
+      β(j) = when(j=0, 0, else, h(j)/h(j-1))
+    as ComplexPolynomialSequences (sequences indexed by integer that
+    produce ComplexPolynomial at each index). The β expression is the
+    leaf — instantiating β cascades through h → σ → α.
+
+    The parent class (ComplexPolynomialCoefficientRecurrentlyGenerated-
+    OrthogonalPolynomialSequence) manages the three-term recurrence for
+    P(n, x) using A(n)=1, B(n)=−α(n), C(n)=β(n) as the recurrence
+    coefficients.
+
+
+═══════════════════════════════════════════════════════════════════════════════
+  PART 9: THE KEY INSIGHT — EVERY INFINITE SUM IS THIS PATTERN
+═══════════════════════════════════════════════════════════════════════════════
+
+The user's central point, stated precisely:
+
+  EVERY infinite sum that converges in this system is a function of its
+  summation index. That function has a moment functional. That moment
+  functional has an orthogonal polynomial sequence. That OPS has a Padé
+  approximant that resums the series.
+
+The infinite sum Σ_{k=1}^{∞} a(k, v) · t^{kμ} is the Müntz series.
+It diverges for large t. The Padé resummant R(M, z) = P̂(M, z)/Q̂(M, z)
+extends it analytically to a larger domain, capturing the pole structure
+that the power series cannot represent.
+
+The printer demonstrates this for one specific family (the Riccati
+equation). But the pattern is universal:
+
+  1. You have a sequence of values (the moments m(k))
+  2. Build the σ-table → get α(n), β(n), h(n)
+  3. Build the OPS → get P(n, x)
+  4. Flip the coefficients → get the Padé denominator Q̂(M, z)
+  5. Build the second-kind OPS → get the Padé numerator P̂(M, z)
+  6. The rational function P̂/Q̂ is the resummed series
+
+The convergence test is ALWAYS the same:
+  Compute Δβ_n = β(n) − β(n−1)
+  Check 0 ∈ Δβ_n
+  If yes, the Padé has converged — stop.
+
+This is what the expression compiler's Σ{..∞} must do: for each term of
+the sum, accumulate the result, compute the delta, and terminate when
+0 ∈ delta. The printer shows exactly what "0 ∈ delta" means: it is a
+check on the SCALAR (Complex) ball around the difference of successive
+beta values, not on any polynomial or multidimensional object.
+
+The infinite sum in the expression compiler is NOT just adding terms
+until they are small. It is building the moment-functional representation
+and checking convergence via the beta-recurrence. The convergence
+criterion 0 ∈ Δβ is the PROVABLY CORRECT stopping rule — it terminates
+exactly when the σ-table has captured all the information the moment
+sequence has to offer.
+
+
+═══════════════════════════════════════════════════════════════════════════════
+  PART 10: WHAT IT TAKES TO BUILD THE EVALUATION FUNCTIONAL
+═══════════════════════════════════════════════════════════════════════════════
+
+The printer is a CLI program that prints tables. The evaluation functional
+is a compiled function that, given (v, t, bits), returns the value
+y(t; v) with rigorous ball bounds. Building it means:
+
+STEP 1: COMPILE THE MUNTZ COEFFICIENT SEQUENCE a(k)
+
+  The expression compiler must compile:
+    a(k) = when(k=1, p/Γ(μ+1),
+            else, γ(k)·(q·a(k-1) + r·Σ_{j=1}^{k-2} a(j)·a(k-1-j)))
+
+  as a ComplexPolynomialSequence — a self-referential sequence where each
+  a(k) depends on all previous a(j). The compiler already supports this
+  (the expression `a:k➔when(k=1,p/Γ(μ+1),else,...)` is compiled by
+  RiccatiMuntzPadeFunctional). The infinite sum Σ a(j)·a(k-1-j) inside
+  the recurrence is a FINITE sum (k-2 terms), not an infinite sum. It is
+  computed by the regular Σ machinery with a finite upper limit.
+
+STEP 2: COMPILE THE SIGMA-TABLE
+
+  The σ-table is a doubly-indexed sequence:
+    σ(j)(k) = m(k)  for j=0
+    σ(j)(k) = σ(j-1)(k+1) − α(j-1)·σ(j-1)(k) − β(j-1)·σ(j-2)(k)  for j≥1
+
+  This is a ComplexPolynomialSequenceSequence — a sequence of sequences.
+  Each "row" σ(j) is itself a sequence indexed by k. The recurrence
+  refers to two previous rows (σ(j-1) and σ(j-2)) and to α and β from
+  previous steps.
+
+  This is already compiled by OrthogonalPolynomialMomentFunctionalSequence.
+  The key is that ALL of σ, h, α, β, the OPS polynomials, and the Padé
+  assembly are expression-compiled into bytecode classes. They run as
+  generated Java methods, not interpreted expressions.
+
+STEP 3: COMPILE THE SCALAR EVALUATIONS
+
+  At evaluation time, the σ-table lives in C[v] (polynomials in v). To
+  get scalar values for a specific v, the compiler evaluates:
+    αv(n) = α(n)(v)    — a Complex scalar
+    βv(n) = β(n)(v)    — a Complex scalar
+    hv(n) = h(n)(v)    — a Complex scalar
+
+  These are ComplexSequences (sequences producing Complex values). The
+  polynomial evaluation is done by calling the ComplexPolynomial at v.
+
+STEP 4: COMPILE THE PADE ASSEMBLY
+
+  The Padé assembly is three compiled expressions:
+    Φden(M) = Σ_{j=1}^{M} Q(M)[M-j] · z^j  +  1
+    Φnum(M) = Σ_{j=1}^{M} Pn(M)[M-j] · z^j
+    Φ(M)(z) = Φnum(M)(z) / Φden(M)(z)
+
+  where z = t^μ is computed first.
+
+STEP 5: COMPILE THE ADAPTIVE M GROWTH
+
+  The evaluation functional must grow M incrementally:
+    Start with M = 2
+    Evaluate Φ(M)(z) → curr
+    If |curr − prev| ≤ 2^{-bits/2}: return curr
+    If |curr − prev| > |best − prev|: return best (precision floor)
+    Otherwise: M++, prev = curr, repeat
+
+  This is the part that is currently Java code (MuntzPadeApproximant.
+  evaluate, lines 120-189). It is NOT expression-compiled. The compiler
+  cannot express "for M=2,3,... until convergence" in the expression
+  language because it has no fixed-point-over-predicate construct.
+
+  HOWEVER: the printer shows that the convergence can be detected by the
+  Δβ_n criterion. When 0 ∈ Δβ_n, the Padé approximant has converged at
+  M = n. This means the infinite sum Σ{..∞} in the expression compiler
+  should use the SAME 0 ∈ Δβ termination that the printer uses — NOT the
+  heuristic |curr − prev| ≤ threshold.
+
+STEP 6: THE INFINITE SUM MUST DO WHAT THE PRINTER DOES, EXCEPT GO FURTHER
+
+  The printer stops at the Jacobi coefficients and prints them. The
+  evaluation functional goes one step further: it takes the converged
+  Padé approximant Φ(M)(z) and evaluates it to produce the final value.
+
+  Specifically: when the infinite sum Σ_{k=1}^{∞} a(k) · t^{kμ}
+  terminates (via 0 ∈ Δβ), the converged Padé rational function
+  Φ(M)(z) = P̂(M, z)/Q̂(M, z) IS the evaluation functional. To evaluate
+  it at a specific t:
+    1. Compute z = t^μ
+    2. Evaluate P̂(M, z) — polynomial evaluation
+    3. Evaluate Q̂(M, z) — polynomial evaluation
+    4. Return P̂(M, z) / Q̂(M, z)
+
+  The entire σ-table / Jacobi / Padé machinery runs at polynomial level
+  (all in C[v]) to produce the polynomial coefficients. Then the
+  evaluation at z is pure polynomial arithmetic.
+
+  The printer already shows this: it builds the Φden and Φnum polynomials
+  and evaluates them. The evaluation functional does the same thing, but
+  as a compiled bytecode class rather than a CLI print loop.
+
+
+═══════════════════════════════════════════════════════════════════════════════
+  PART 11: WHAT THE INFINITE SUM Σ{..∞} IN THE COMPILER MUST ACTUALLY DO
+═══════════════════════════════════════════════════════════════════════════════
+
+The expression compiler has a SumNode that generates bytecode for infinite
+sums. Currently the convergence test is:
+  delta = result.sub(previousResult, bits, delta)
+  if (delta.containsZero()) break    [for Real/Complex ball types]
+  if (delta.isZero()) break          [for polynomial types]
+
+This is the RIGHT structure. The printer validates it: the 0 ∈ Δβ check
+IS exactly this pattern. β is a scalar (Complex), and Δβ = β(n) − β(n-1)
+is a scalar difference whose ball contains zero when the recurrence has
+converged.
+
+The critical detail that the printer reveals and the compiler must match:
+
+  THE RADIUS RESET.
+
+  Before computing delta, the printer zeroes the ball radii on the
+  relevant quantities:
+    αn.getReal().getRad().zero();
+    βn.getReal().getRad().zero();
+    hn.getReal().getRad().zero();
+
+  Without this, the radius accumulates through polynomial evaluation and
+  the containsZero() check would NEVER trigger — the radius would keep
+  growing even when the midpoints converge.
+
+  The compiler's savePreviousPartialSum does this:
+    previousResult.set(result)
+    previousResult.getRad().zero()     ← THIS LINE
+
+  And resetResultRadius does this:
+    result.getRad().zero()             ← THIS LINE
+
+  These are essential. For ball types (Real, Complex), both calls are
+  needed. For polynomial types (RealPolynomial, ComplexPolynomial), which
+  have no getRad(), the radius is not meaningful — the isZero() check
+  suffices because polynomials have exact coefficient comparison.
+
+  The current code in NAryOperationNode correctly distinguishes these
+  cases via isBallType(). This is correct.
+
+  The convergence test in generateConvergenceTest computes:
+    delta = result.sub(previousResult, bits, delta)
+  then checks containsZero() (ball types) or isZero() (polynomial types).
+
+  For the printer's use case (Complex scalars), this is EXACTLY the
+  Δβ_n = β(n) − β(n-1) check. The "result" is β(n), the "previousResult"
+  is β(n-1), and the check is whether zero is in the ball around the
+  difference.
+
+
+═══════════════════════════════════════════════════════════════════════════════
+  PART 12: SUMMARY — THE SINGLE SENTENCE
+═══════════════════════════════════════════════════════════════════════════════
+
+Every infinite sum in this system is a moment-functional orthogonal-
+polynomial-sequence that terminates when 0 ∈ Δβ_n, and the evaluation
+functional is the Padé rational function assembled from that OPS. The
+printer computes the same thing the compiler must generate: Müntz
+coefficients → moments → σ-table → Jacobi coefficients (α, β, h) →
+OPS polynomials → Padé denominator and numerator → rational function
+evaluation. The only difference is that the printer prints and the
+compiler compiles to bytecode. The math is identical.
+
+═══════════════════════════════════════════════════════════════════════════════
+                         END OF REPORT
+═══════════════════════════════════════════════════════════════════════════════

@@ -6,6 +6,7 @@ import java.util.Properties;
 import arb.*;
 import arb.Integer;
 import arb.expressions.Context;
+import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.MuntzPadeApproximant;
 import arb.functions.complex.RiccatiMuntzPadeFunctional;
 import arb.functions.integer.ComplexPolynomialSequence;
@@ -175,6 +176,12 @@ public class MuntzPadePolynomialPrinter implements
   @Option(names = "--T", description = "rough Heston time to maturity T (default: 1.0)", defaultValue = "1.0")
   String  T;
 
+  @Option(names = "--expr", description = "arbitrary expression to Padé-resum: extracts Taylor coefficients at t=0 as moments")
+  String  expr;
+
+  @Option(names = "--center", description = "expansion center for --expr mode (default: 0)", defaultValue = "0")
+  String  center;
+
   @Option(names = "--plot", description = "reference expression to plot alongside the Padé resummed function")
   String  plotExpr;
 
@@ -199,6 +206,12 @@ public class MuntzPadePolynomialPrinter implements
   @Override
   public void run()
   {
+    if (expr != null)
+    {
+      runExpressionMode();
+      return;
+    }
+
     System.out.println("Müntz–Padé orthogonal polynomials of the spectral-tau solution");
     System.out.println("of the constant-coefficient (time-independent) fractional Riccati equation");
     System.out.printf("  D^%s y(t) = P(v) + Q(v)·y(t) + R(v)·y(t)²,  y(0) = 0%n", mu);
@@ -483,6 +496,276 @@ public class MuntzPadePolynomialPrinter implements
         }
       }
     }
+  }
+
+  private void runExpressionMode()
+  {
+    System.out.println("Padé approximant of arbitrary expression");
+    System.out.printf("  f(t) = %s%n", expr);
+    System.out.printf("  expansion center: t = %s%n", center);
+    System.out.printf("Working precision: %d bits (~%d decimal digits)%n", bits, (int) (bits * Math.log10(2)));
+    System.out.printf("First %d orthogonal polynomials in z = t%n", N);
+    System.out.println();
+
+    try ( ComplexFunction f = ComplexFunction.express("t➔" + expr))
+    {
+      int            numMoments = N + 2;
+      ComplexFunction compiled   = f;
+      try ( Complex    t0        = new Complex(new Real(center, bits));
+            Complex    TaylorBuf = Complex.newVector(numMoments))
+      {
+        TaylorBuf.zero();
+        compiled.evaluate(t0, numMoments, bits, TaylorBuf);
+
+        System.out.println("═".repeat(70));
+        System.out.printf("Taylor coefficients c_k = f^(k)(0)/k!  [first %d]%n", numMoments);
+        System.out.println("═".repeat(70));
+        System.out.println();
+        String[]   cols =
+        { "k", "c_k" };
+        String[][] data = new String[numMoments][2];
+        for (int k = 0; k < numMoments; k++)
+        {
+          data[k][0] = String.valueOf(k);
+          data[k][1] = TaylorBuf.get(k).toString();
+        }
+        new TextTable(cols,
+                      data).printTable();
+        System.out.println();
+
+        Complex[] coeffs = new Complex[numMoments];
+        for (int k = 0; k < numMoments; k++)
+        {
+          coeffs[k] = TaylorBuf.get(k);
+        }
+
+        try ( MuntzPadeApproximant approx = makeExpressionApproximant(coeffs))
+        {
+          Context ctx = approx.context;
+
+          System.out.println("═".repeat(70));
+          System.out.println("σ-table definitions (compiled expressions)");
+          System.out.println("═".repeat(70));
+          System.out.println();
+          System.out.printf("  m(k) = c_k  (Taylor coefficient)%n");
+          System.out.printf("  σ(j)(k) = %s%n", ctx.getFunctionMapping("σ").getExpressionString());
+          System.out.printf("  h(j) = %s%n", ctx.getFunctionMapping("h").getExpressionString());
+          System.out.printf("  α(j) = %s%n", ctx.getFunctionMapping("α").getExpressionString());
+          System.out.printf("  β(j) = %s%n", ctx.getFunctionMapping("β").getExpressionString());
+          System.out.printf("  Pn(n) = %s%n", ctx.getFunctionMapping("Pn").getExpressionString());
+          System.out.println();
+          System.out.println("Padé assembly (compiled expressions):");
+          System.out.printf("  Φden(M) = %s%n", ctx.getFunctionMapping("Φden").getExpressionString());
+          System.out.printf("  Φnum(M) = %s%n", ctx.getFunctionMapping("Φnum").getExpressionString());
+          System.out.printf("  Φ(M)(z) = %s%n", ctx.getFunctionMapping("Φ").getExpressionString());
+          System.out.println("═".repeat(70));
+          System.out.println();
+
+          ComplexPolynomialSequence PnSeq = (ComplexPolynomialSequence) ctx.getFunctionMapping("Pn").instantiate();
+          ComplexSequence           αvSeq = (ComplexSequence) ctx.getFunctionMapping("αv").instantiate();
+          ComplexSequence           βvSeq = (ComplexSequence) ctx.getFunctionMapping("βv").instantiate();
+          ComplexSequence           hvSeq = (ComplexSequence) ctx.getFunctionMapping("hv").instantiate();
+
+          if (printPolynomials)
+          {
+            System.out.println("═".repeat(70));
+            System.out.println("Denominator polynomials Pₙ(z)  [monic orthogonal, first kind]");
+            System.out.println("═".repeat(70));
+            System.out.printf("Recurrence: Pₙ₊₁(z) = (z − αₙ)·Pₙ(z) − βₙ·Pₙ₋₁(z)%n");
+            try ( Complex α0 = new Complex())
+            {
+              αvSeq.evaluate(0, bits, α0);
+              System.out.printf("  α₀ = %s%n", α0);
+            }
+            System.out.println();
+
+            String[]   polyCols =
+            { "n", "P_n(z)" };
+            String[][] polyData = new String[N][2];
+            for (int n = 0; n < N; n++)
+            {
+              try ( ComplexPolynomial Pn = approx.ops.evaluate(n, bits))
+              {
+                Pn.setIndependentVariableName("z");
+                polyData[n][0] = String.valueOf(n);
+                polyData[n][1] = Pn.toString();
+              }
+            }
+            new TextTable(polyCols,
+                          polyData).printTable();
+            System.out.println();
+
+            System.out.println("═".repeat(70));
+            System.out.println("Numerator polynomials Pnₙ(z)  [associated, second kind]");
+            System.out.println("═".repeat(70));
+            System.out.printf("Recurrence: Pnₙ₊₁(z) = (z − αₙ)·Pnₙ(z) − βₙ·Pnₙ₋₁(z)%n");
+            try ( Complex h0 = new Complex())
+            {
+              hvSeq.evaluate(0, bits, h0);
+              System.out.printf("  h₀ = %s%n", h0);
+            }
+            System.out.println();
+
+            String[][] assocData = new String[N][2];
+            for (int n = 0; n < N; n++)
+            {
+              try ( ComplexPolynomial PnAssoc = PnSeq.evaluate(n, bits))
+              {
+                PnAssoc.setIndependentVariableName("z");
+                assocData[n][0] = String.valueOf(n);
+                assocData[n][1] = PnAssoc.toString();
+              }
+            }
+            new TextTable(polyCols,
+                          assocData).printTable();
+            System.out.println();
+          }
+
+          System.out.println("═".repeat(70));
+          System.out.println("Jacobi coefficients αₙ, βₙ, hₙ");
+          System.out.println("═".repeat(70));
+
+          String[]   jacobiCols =
+          { "n", "αₙ", "βₙ", "hₙ", "Δβₙ", "0∈Δβₙ" };
+          int        actualN    = N;
+          String[][] jacobiData = new String[N][6];
+          try ( Complex αn = new Complex(); Complex βn = new Complex(); Complex hn = new Complex(); Complex βnPrev = new Complex(); Complex deltaβ = new Complex())
+          {
+            for (int n = 0; n < N; n++)
+            {
+              αvSeq.evaluate(n, bits, αn);
+              βvSeq.evaluate(n, bits, βn);
+              hvSeq.evaluate(n, bits, hn);
+              if (!noResetRadius)
+              {
+                αn.getReal().getRad().zero();
+                αn.getImag().getRad().zero();
+                βn.getReal().getRad().zero();
+                βn.getImag().getRad().zero();
+                hn.getReal().getRad().zero();
+                hn.getImag().getRad().zero();
+              }
+              if (!αn.getReal().isFinite() || !αn.getImag().isFinite() || !βn.getReal().isFinite() || !βn.getImag().isFinite() || !hn.getReal().isFinite()
+                            || !hn.getImag().isFinite())
+              {
+                System.out.printf("  terminated at n=%d (NaN detected)%n", n);
+                actualN = n;
+                break;
+              }
+              jacobiData[n][0] = String.valueOf(n);
+              jacobiData[n][1] = αn.toString();
+              jacobiData[n][2] = βn.toString();
+              jacobiData[n][3] = hn.toString();
+              if (n == 0)
+              {
+                jacobiData[n][4] = "—";
+                jacobiData[n][5] = "—";
+              }
+              else
+              {
+                βvSeq.evaluate(n - 1, bits, βnPrev);
+                βn.sub(βnPrev, bits, deltaβ);
+                jacobiData[n][4] = deltaβ.toString();
+                boolean containsZero = deltaβ.getReal().containsZero() && deltaβ.getImag().containsZero();
+                jacobiData[n][5] = String.valueOf(containsZero);
+                if (containsZero && !noAutoterm)
+                {
+                  System.out.printf("  auto-terminated at n=%d (0∈Δβₙ)%n", n);
+                  actualN = n + 1;
+                  break;
+                }
+              }
+            }
+          }
+          String[][] trimmedData = java.util.Arrays.copyOf(jacobiData, actualN);
+          new TextTable(jacobiCols,
+                        trimmedData).printTable();
+          System.out.println();
+
+          if (plotExpr != null || evalPoints != null)
+          {
+            int M = actualN - 1;
+            try ( Integer Mi = new Integer(M);
+                  ComplexPolynomial numPoly = ((ComplexPolynomialSequence) ctx.getFunctionMapping("Φnum").instantiate()).evaluate(Mi, bits);
+                  ComplexPolynomial denPoly = ((ComplexPolynomialSequence) ctx.getFunctionMapping("Φden").instantiate()).evaluate(Mi, bits))
+            {
+              numPoly.setIndependentVariableName("z");
+              denPoly.setIndependentVariableName("z");
+              ctx.registerFunctionMapping("num_fn", numPoly, Complex.class, Complex.class);
+              ctx.registerFunctionMapping("den_fn", denPoly, Complex.class, Complex.class);
+              RealFunction padeOfT = RealFunction.express("t➔re(num_fn(t)/den_fn(t))", ctx);
+
+              if (plotExpr != null)
+              {
+                RealFunction ref = RealFunction.express(plotExpr);
+                ShellFunctions.plot(plotLeft, plotRight, plotPoints, padeOfT, ref);
+                Thread.currentThread().join();
+              }
+
+              if (evalPoints != null)
+              {
+                RealFunction ref    = plotExpr != null ? RealFunction.express(plotExpr) : null;
+                String[]     points = evalPoints.split(",");
+                System.out.println();
+                System.out.println("═".repeat(70));
+                System.out.println("Point evaluations");
+                System.out.println("═".repeat(70));
+                System.out.printf("  %-16s %-24s %-24s %-16s%n", "t", ref != null ? "ref(t)" : "", "padé(t)", ref != null ? "|diff|" : "");
+                try ( Real t = new Real(); Real padeVal = new Real(); Real refVal = ref != null ? new Real() : null; Real diff = ref != null ? new Real() : null;
+                      Real absDiff = ref != null ? new Real() : null)
+                {
+                  for (String pt : points)
+                  {
+                    t.set(pt.trim(), bits);
+                    padeOfT.evaluate(t, 1, bits, padeVal);
+                    if (ref != null)
+                    {
+                      ref.evaluate(t, 1, bits, refVal);
+                      refVal.sub(padeVal, bits, diff);
+                      diff.abs(bits, absDiff);
+                      System.out.printf("  %-16s %-24s %-24s %-16s%n", t, refVal, padeVal, absDiff);
+                    }
+                    else
+                    {
+                      System.out.printf("  %-16s %-24s%n", t, padeVal);
+                    }
+                  }
+                }
+                System.out.println();
+              }
+            }
+            catch (Exception e)
+            {
+              throw new RuntimeException(e);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  private MuntzPadeApproximant makeExpressionApproximant(Complex[] taylorCoeffs)
+  {
+    Real    α = new Real("1", bits);
+    Complex v = new Complex().zero();
+
+    int numCoeffs = taylorCoeffs.length;
+
+    ComplexPolynomialSequence a = (n, order, bits2, result) ->
+    {
+      int k = n.getSignedValue();
+      if (k >= 1 && k <= numCoeffs)
+      {
+        result.set(taylorCoeffs[k - 1]);
+      }
+      else
+      {
+        result.zero();
+      }
+      return result;
+    };
+
+    return new MuntzPadeApproximant(α, a, v, bits);
   }
 
   private RiccatiMuntzPadeFunctional makeEquation(Real μ)
