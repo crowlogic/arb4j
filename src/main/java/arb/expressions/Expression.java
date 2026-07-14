@@ -728,17 +728,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     for (int i = 1; i < charCount; i++)
     {
       ++position;
-      if (trace) log.debug("#{}: position = {}", System.identityHashCode(this), position);
     }
     if (position < getExpression().length())
     {
       character = getExpression().charAt(position);
-      if (trace) log.debug("#{}: character = {}", System.identityHashCode(this), character);
     }
     else
     {
       character = Character.MIN_VALUE;
-      if (trace) log.debug("#{}: character = {}", System.identityHashCode(this), character);
     }
   }
 
@@ -945,17 +942,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                        functionName,
                                        upstreamExpression);
     expr.context = context;
-    if (trace) log.debug("#{}: context = {}", System.identityHashCode(expr), expr.context);
     expr.setIndependentVariable(independentVariable);
 
     expr.position            = position;
-    if (trace) log.debug("#{}: position = {}", System.identityHashCode(expr), expr.position);
     expr.character           = character;
-    if (trace) log.debug("#{}: character = {}", System.identityHashCode(expr), expr.character);
     expr.previousCharacter   = previousCharacter;
-    if (trace) log.debug("#{}: previousCharacter = {}", System.identityHashCode(expr), expr.previousCharacter);
     expr.placeholderVariable = placeholderVariable;
-    if (trace) log.debug("#{}: placeholderVariable = {}", System.identityHashCode(expr), expr.placeholderVariable);
     return expr;
   }
 
@@ -1244,11 +1236,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public Expression<D, C, F> setCursorState(CursorState state)
   {
     position          = state.position();
-    if (trace) log.debug("#{}: position = {}", System.identityHashCode(this), position);
     character         = state.character();
-    if (trace) log.debug("#{}: character = {}", System.identityHashCode(this), character);
     previousCharacter = state.previousCharacter();
-    if (trace) log.debug("#{}: previousCharacter = {}", System.identityHashCode(this), previousCharacter);
     return this;
   }
 

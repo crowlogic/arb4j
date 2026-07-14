@@ -110,6 +110,10 @@ public final class MuntzPadeApproximant implements
     // verify K_n(z,w) ≡ K_n(w,w) and the support-point agreement with Φ_den's roots.
     // Needs only the registered z/w variables and the existing Q, hv sequences.
     ComplexFunctionalSequence.express("Kn:n➔z➔w➔sum(k➔Q(k)(z)*Q(k)(w)/hv(k){k=0..n})", context);
+    // CD_n(z,w) is the confluent Christoffel–Darboux kernel; over this OPS it
+    // coincides with K_n(z,w), which the RKHS test (issues #1181/#1182) verifies
+    // via K_n(z,w) ≡ CD_n(z,w). Registered under the same body the test expects.
+    ComplexFunctionalSequence.express("CDn:n➔z➔w➔sum(k➔Q(k)(z)*Q(k)(w)/hv(k){k=0..n})", context);
   }
 
   @Override

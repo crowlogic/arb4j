@@ -130,7 +130,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   /** Generated {@code Real} field holding {@code |term|} of the current summand. */
   public String                                   absTermFieldName;
 
-
   /**
    * Bytecode-level internal name of the owning {@link Expression}, captured once
    * at construction. Used as the {@code owner} argument to ASM
@@ -292,7 +291,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       operandExpression.rootNode = (Node<Integer, R, Sequence<R>>) (Node<?, ?, ?>) body;
     }
   }
-
 
   /**
    * Allocate the operand-function field name (used as the operand sub-class's
@@ -825,9 +823,9 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
         if (fm.expression != null && fm.expression.rootNode != null)
           fm.expression.rootNode.resolveFunctions();
       });
-      parseMultisumIndices();
-      if (expression.nextCharacterIs('}'))
+      if (usedBrace)
       {
+        expression.require('}');
       }
       return this;
     }
@@ -845,8 +843,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     expression.require('=');
     parseLowerLimit();
     parseUpperLimit();
-
-    parseMultisumIndices();
 
     if (resolveAfterMultisum)
     {
@@ -931,134 +927,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                                                operation);
     currentOperandExpression.rootNode = (Node<Integer, R, Sequence<R>>) (Node<?, ?, ?>) enumeratorNode;
     expression.setCursorState(currentOperandExpression.saveCursor());
-  }
-
-  /**
-   * Handles the iterated-sum / iterated-product syntax extension:
-   * {@code Σf(v1,v2,…,vN){v1=lo1…hi1, v2=lo2…hi2, …, vN=loN…hiN}}.
-   *
-   * <p>
-   * For family bindings {@code name∶familyIndex=lo…hi}, see
-   * {@link #registerFamilyFunction}.
-   *
-   * <p>
-   * For plain bindings {@code name=lo…hi}, the binding's independent variable is
-   * installed in the inner operand expression's scope <em>before</em> the body is
-   * spliced in, so every reference in the body resolves through the ordinary
-   * upstream-input walk. No deferred-resolution toggling is needed.
-   */
-  @SuppressWarnings("unchecked")
-  private void parseMultisumIndices()
-  {
-    Expression<Integer, R, Sequence<R>> currentOperandExpression = this.operandExpression;
-
-    while (expression.nextCharacterIs(','))
-    {
-      currentOperandExpression.setCursorState(expression.saveCursor());
-
-      Node<Integer, R, Sequence<R>> savedBody = currentOperandExpression.rootNode;
-
-      String                        extraName = currentOperandExpression.parseName();
-      if (extraName == null || extraName.isEmpty())
-      {
-        currentOperandExpression.throwUnexpectedCharacterException("index variable name cannot be null or empty");
-      }
-
-      String extraFamilyIndexName = null;
-      if (currentOperandExpression.nextCharacterIs('∶'))
-      {
-        extraFamilyIndexName = currentOperandExpression.parseName();
-        if (extraFamilyIndexName == null || extraFamilyIndexName.isEmpty())
-        {
-          currentOperandExpression.throwUnexpectedCharacterException("family index name cannot be null or empty");
-        }
-      }
-      currentOperandExpression.require('=');
-
-      var extraLower = currentOperandExpression.resolve();
-      currentOperandExpression.require('\u2026');
-      var    extraUpper             = currentOperandExpression.resolve();
-
-      String innerOperandFieldName  = currentOperandExpression.getNextIntermediateVariableFieldName("operand", Function.class);
-
-      var    innerOperandExpression = newMultiIndex(currentOperandExpression, savedBody, extraName, extraFamilyIndexName, innerOperandFieldName);
-
-      var    innerLevel             =
-                        newInnerOperand(currentOperandExpression, extraName, extraLower, extraUpper, innerOperandFieldName, innerOperandExpression);
-      innerLevel.familyIndexName = extraFamilyIndexName;
-      currentOperandExpression.registerReferencedFunction(innerOperandFieldName, innerLevel.operandMapping);
-
-      currentOperandExpression.rootNode = (Node<Integer, R, Sequence<R>>) (Node<?, ?, ?>) innerLevel;
-
-      expression.setCursorState(currentOperandExpression.saveCursor());
-      currentOperandExpression = innerOperandExpression;
-    }
-  }
-
-  private NAryOperationNode<Integer, R, Sequence<R>> newInnerOperand(Expression<Integer, R, Sequence<R>> currentOperandExpression,
-                                                                     String extraName,
-                                                                     Node<Integer, R, Sequence<R>> extraLower,
-                                                                     Node<Integer, R, Sequence<R>> extraUpper,
-                                                                     String innerOperandFieldName,
-                                                                     Expression<Integer, R, Sequence<R>> innerOperandExpression)
-  {
-    var innerLevel = new NAryOperationNode<>(currentOperandExpression,
-                                             identity,
-                                             prefix,
-                                             operation,
-                                             symbol,
-                                             innerOperandExpression,
-                                             extraLower,
-                                             extraUpper);
-    innerLevel.indexVariableFieldName   = extraName;
-    innerLevel.operandFunctionFieldName = innerOperandFieldName;
-    innerLevel.functionInternalName     = currentOperandExpression.internalName();
-    innerLevel.assignFieldNamesIfNecessary(innerOperandExpression.coDomainType);
-
-    innerLevel.operandMapping = currentOperandExpression.getContext()
-                                                        .registerFunctionMapping(innerOperandFieldName,
-                                                                                 null,
-                                                                                 Integer.class,
-                                                                                 innerOperandExpression.coDomainType,
-                                                                                 Sequence.class,
-                                                                                 true,
-                                                                                 innerOperandExpression,
-                                                                                 innerOperandFieldName);
-    return innerLevel;
-  }
-
-  /**
-   * Clones {@code currentOperandExpression}, installs {@code extraName} as the
-   * clone's independent variable, then splices {@code savedBody} into the clone.
-   *
-   * <p>
-   * Ordering matters: by assigning the input variable <em>before</em> the splice,
-   * every {@link VariableNode} constructed during splice sees {@code extraName}
-   * via the normal upstream-input walk and resolves without needing any
-   * deferred-resolution path.
-   */
-  private Expression<Integer, R, Sequence<R>> newMultiIndex(Expression<Integer, R, Sequence<R>> currentOperandExpression,
-                                                            Node<Integer, R, Sequence<R>> savedBody,
-                                                            String extraName,
-                                                            String extraFamilyIndexName,
-                                                            String innerOperandFieldName)
-  {
-    Expression<Integer, R, Sequence<R>> innerOperandExpression = currentOperandExpression.cloneExpression();
-    innerOperandExpression.upstreamExpression = currentOperandExpression;
-    innerOperandExpression.setContext(currentOperandExpression.getContext());
-    innerOperandExpression.clearIndependentVariable();
-    innerOperandExpression.rootNode                = null;
-    innerOperandExpression.deferVariableResolution = false;
-    innerOperandExpression.setClassName(innerOperandFieldName);
-
-    VariableNode<Integer, R, Sequence<R>> innerIndexVar = new VariableNode<>(innerOperandExpression,
-                                                                             innerOperandExpression.newVariableReference(extraName),
-                                                                             false);
-    innerOperandExpression.assignInputVariable(innerIndexVar);
-
-    innerOperandExpression.rootNode = savedBody.spliceInto(innerOperandExpression);
-    innerOperandExpression.updateStringRepresentation();
-    return innerOperandExpression;
   }
 
   protected void propagateContextVariablesToOperand()
