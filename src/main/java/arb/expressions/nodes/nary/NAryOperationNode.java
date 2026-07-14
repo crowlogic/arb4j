@@ -124,10 +124,32 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   public String                                   operandValueFieldName;
 
-  /** Generated {@code Real} field holding the {@code 2^-bits} convergence target. */
+  /** Hard iteration limit for convergent sums — bomb with exception if exceeded. */
+  public static final int                         MAX_ITERATIONS                = 10_000;
+
+  /**
+   * Generated field holding the partial sum from the <em>previous</em> iteration
+   * of a convergent ({@code ..∞}) sum. Used by the printer-style convergence
+   * test: {@code 0 ∈ (S(n) − S(n−1))}. Its radius is <em>never</em> zeroed —
+   * only the current result's radius is zeroed (via {@link #deltaFieldName}).
+   * Only allocated for ball types ({@code Real}, {@code Complex}).
+   */
+  public String                                   previousResultFieldName;
+
+  /**
+   * Scratch field used to compute the convergence delta
+   * {@code ΔS = S(n) − S(n−1)}. A copy of the current result is placed here,
+   * then its radius is zeroed, then {@code sub} is called against
+   * {@link #previousResultFieldName}. The resulting ball's radius comes
+   * entirely from {@code previousResult}, matching the printer's semantics.
+   * Only allocated for ball types ({@code Real}, {@code Complex}).
+   */
+  public String                                   deltaFieldName;
+
+  /** Generated {@code Real} field holding the {@code 2^-bits} convergence target. Only for non-ball types. */
   public String                                   toleranceFieldName;
 
-  /** Generated {@code Real} field holding {@code |term|} of the current summand. */
+  /** Generated {@code Real} field holding {@code |term|} of the current summand. Only for non-ball types. */
   public String                                   absTermFieldName;
 
   /**
@@ -406,14 +428,22 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   }
 
   /**
-   * Emits the {@code {n=n₀..∞}} sum. This is the <em>identical</em> loop as the
-   * finite {@link #generate} case — {@code result += operand(index); index++} —
-   * with only the <em>loop-termination criterion</em> changed: instead of
-   * comparing the index against a fixed upper bound, the loop stops once the
-   * summand {@code |f(n)|} has fallen to the {@code 2^-bits} precision floor, or
-   * once it stops shrinking (the precision floor has been reached). Every
-   * infinite sum is, by contract, convergent; a divergent series is a modelling
-   * error detected at construction time, never a runtime branch here.
+   * Emits the {@code {n=n₀..∞}} sum using the <em>printer-style</em>
+   * convergence criterion: the loop stops once the ball around the scalar
+   * difference of successive partial sums contains zero, i.e.
+   * {@code 0 ∈ ΔSₙ} where {@code ΔSₙ = S(n) − S(n−1)}.
+   *
+   * <p>
+   * Only the current result's radius is zeroed (via {@link #deltaFieldName});
+   * {@link #previousResultFieldName} retains its natural evaluation-error
+   * radius. This ensures the delta's radius comes entirely from
+   * {@code S(n−1)}, making {@code containsZero()} triggerable — the exact
+   * mechanism used by {@code MuntzPadePolynomialPrinter}.
+   *
+   * <p>
+   * A hard limit of {@link #MAX_ITERATIONS} prevents infinite loops on
+   * non-convergent series: an {@link arb.exceptions.CompilerException} is
+   * thrown if the limit is hit.
    */
   protected MethodVisitor generateConvergentSum(MethodVisitor mv, Class<?> resultType)
   {
@@ -432,8 +462,30 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     propagateInputToOperand(mv);
     initializeResultVariable(mv, resultType);
     setIndexToTheLowerLimit(mv);
-    generateConvergenceTarget(mv);
+
+    if (isBallType())
+    {
+      // Ball types: initialize previousResult and delta scratch
+      initializeConvergenceField(mv, previousResultFieldName, resultType);
+      initializeConvergenceField(mv, deltaFieldName, resultType);
+    }
+    else
+    {
+      // Non-ball types: initialize tolerance = 2^-bits
+      generateConvergenceTarget(mv);
+    }
+
     designateLabel(mv, beginLoop);
+
+    // Hard iteration limit — bomb if exceeded
+    generateHardLimitCheck(mv);
+
+    if (isBallType())
+    {
+      // Ball types: save S(n−1) before adding
+      generateSavePreviousResult(mv);
+    }
+
     if (Expression.trace)
     {
       logConvergenceState(mv, "INFINITE_SUM_LOOP TOP");
@@ -444,7 +496,13 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     {
       logConvergenceState(mv, "INFINITE_SUM_LOOP AFTER_ADD");
     }
+
     generateConvergenceTest(mv);
+    if (Expression.trace && isBallType())
+    {
+      logConvergenceDelta(mv);
+    }
+
     jumpTo(mv, beginLoop);
     designateLabel(mv, endLoop);
     if (Expression.trace)
@@ -473,11 +531,11 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     loadIntermediateResultVariable(mv);
     mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/Object;)Ljava/lang/StringBuilder;", false);
 
-    if (toleranceFieldName != null)
+    if (previousResultFieldName != null)
     {
-      mv.visitLdcInsn(", tolerance=");
+      mv.visitLdcInsn(", prevResult=");
       mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
-      loadFieldFromThis(mv, toleranceFieldName, Real.class);
+      loadFieldFromThis(mv, previousResultFieldName, generatedType);
       mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/Object;)Ljava/lang/StringBuilder;", false);
     }
 
@@ -489,13 +547,47 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/Object;)Ljava/lang/StringBuilder;", false);
     }
 
-    if (absTermFieldName != null)
+    mv.visitLdcInsn("]");
+    mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
+    mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;", false);
+    Compiler.emitLogInfo(mv, classInternalName);
+  }
+
+  /**
+   * Logs the convergence delta and its containsZero status. Called after
+   * {@link #generateConvergenceTest} when {@code Expression.trace} is enabled.
+   */
+  protected void logConvergenceDelta(MethodVisitor mv)
+  {
+    String classInternalName = expression.internalName();
+
+    // Build: "CONVERGENCE_TEST [index=…, delta=…, 0∈delta=…]"
+    mv.visitTypeInsn(NEW, "java/lang/StringBuilder");
+    mv.visitInsn(DUP);
+    mv.visitLdcInsn("CONVERGENCE_TEST [index=");
+    mv.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "(Ljava/lang/String;)V", false);
+
+    loadIndexVariable(mv);
+    mv.visitMethodInsn(INVOKEVIRTUAL, Type.getInternalName(Integer.class), "getSignedValue", "()I", false);
+    mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(I)Ljava/lang/StringBuilder;", false);
+
+    mv.visitLdcInsn(", delta=");
+    mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
+    loadFieldFromThis(mv, deltaFieldName, generatedType);
+    mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/Object;)Ljava/lang/StringBuilder;", false);
+
+    mv.visitLdcInsn(", 0∈delta=");
+    mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
+    loadFieldFromThis(mv, deltaFieldName, generatedType);
+    if (isBallType())
     {
-      mv.visitLdcInsn(", |term|=");
-      mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
-      loadFieldFromThis(mv, absTermFieldName, Real.class);
-      mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/Object;)Ljava/lang/StringBuilder;", false);
+      invokeMethod(mv, generatedType, "containsZero", getMethodDescriptor(boolean.class), false);
     }
+    else
+    {
+      invokeMethod(mv, generatedType, "isZero", getMethodDescriptor(boolean.class), false);
+    }
+    mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Z)Ljava/lang/StringBuilder;", false);
 
     mv.visitLdcInsn("]");
     mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
@@ -504,30 +596,57 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   }
 
   /**
-   * Declares the {@code Real} scratch fields the {@code {..∞}} termination test
-   * uses: the {@code 2^-bits} tolerance, and the current/previous summand
-   * magnitudes. Registered as intermediate variables so the compiler-emitted
-   * {@code close()} releases their native memory.
+   * Declares the scratch fields the {@code {..∞}} printer-style convergence
+   * test uses: {@link #previousResultFieldName} holds {@code S(n−1)} (never
+   * zeroed), {@link #deltaFieldName} holds a zeroed copy of {@code S(n)} used
+   * to compute {@code ΔS = S(n) − S(n−1)}. Registered as intermediate
+   * variables so the compiler-emitted {@code close()} releases their native
+   * memory.
    */
   protected void declareConvergenceFields()
   {
-    if (toleranceFieldName == null)
+    if (isBallType())
     {
-      toleranceFieldName = expression.newIntermediateVariable("tolerance", Real.class);
+      if (previousResultFieldName == null)
+      {
+        previousResultFieldName = expression.newIntermediateVariable("previousResult", generatedType);
+      }
+      if (deltaFieldName == null)
+      {
+        deltaFieldName = expression.newIntermediateVariable("delta", generatedType);
+      }
     }
-    if (absTermFieldName == null)
+    else
     {
-      absTermFieldName = expression.newIntermediateVariable("absTerm", Real.class);
+      if (toleranceFieldName == null)
+      {
+        toleranceFieldName = expression.newIntermediateVariable("tolerance", Real.class);
+      }
+      if (absTermFieldName == null)
+      {
+        absTermFieldName = expression.newIntermediateVariable("absTerm", Real.class);
+      }
     }
   }
 
   /**
-   * Emits {@code tolerance = 2^-bits} once, before the loop: the summand
-   * magnitude below which the tail contributes nothing at the working precision.
+   * Emits {@code field = additiveIdentity()} — initializes a convergence
+   * scratch field (either {@link #previousResultFieldName} or
+   * {@link #deltaFieldName}) to the additive identity (zero).
+   */
+  protected void initializeConvergenceField(MethodVisitor mv, String fieldName, Class<?> resultType)
+  {
+    loadFieldFromThis(mv, fieldName, resultType);
+    invokeMethod(mv, resultType, "additiveIdentity", getMethodDescriptor(resultType), false);
+    pop(mv);
+  }
+
+  /**
+   * Emits {@code tolerance = 1; tolerance = tolerance · 2^(-bits)} — the
+   * convergence target for non-ball types. Pre-loop initialization only.
    */
   protected void generateConvergenceTarget(MethodVisitor mv)
   {
-    // tolerance = 1 ; tolerance = tolerance · 2^(-bits)
     loadFieldFromThis(mv, toleranceFieldName, Real.class);
     invokeMethod(mv, Real.class, "one", getMethodDescriptor(Real.class), false);
     loadBitsParameterOntoStack(mv);
@@ -538,33 +657,175 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   }
 
   /**
-   * Emits the loop-termination criterion evaluated once per iteration on the
-   * just-added summand held in {@link #operandValueFieldName}: stop once the
-   * term magnitude has fallen to the {@code 2^-bits} precision floor.
-   *
-   * <pre>
-   *   absTerm = |term|
-   *   if (absTerm ≤ tolerance) break;
-   * </pre>
-   *
-   * Every infinite sum is convergent by contract, so its terms necessarily fall
-   * below any positive tolerance; a divergent series is a modelling error caught
-   * at construction time, never here.
+   * Non-ball convergence: saves the current partial sum before adding the next
+   * term, for use by the {@code |term| ≤ tolerance} test.
    */
-  protected void generateConvergenceTest(MethodVisitor mv)
+  protected void generateSavePreviousResultForNonBall(MethodVisitor mv)
   {
-    // absTerm = |term|
     loadFieldFromThis(mv, operandValueFieldName, generatedType);
     loadBitsParameterOntoStack(mv);
     loadFieldFromThis(mv, absTermFieldName, Real.class);
     invokeMethod(mv, generatedType, "abs", getMethodDescriptor(Real.class, int.class, Real.class), false);
     pop(mv);
+  }
 
-    // if (absTerm ≤ tolerance) break;
-    loadFieldFromThis(mv, absTermFieldName, Real.class);
-    loadFieldFromThis(mv, toleranceFieldName, Real.class);
-    invokeMethod(mv, Real.class, "compareTo", getMethodDescriptor(int.class, Real.class), false);
-    jumpToIfLessThanOrEquals(mv, endLoop);
+  /**
+   * Emits {@code previousResult.set(result)} — saves the current partial sum
+   * {@code S(n−1)} before the next term is added. This value is <em>never</em>
+   * zeroed; its radius carries the natural accumulated evaluation error needed
+   * by the printer-style convergence test.
+   */
+  protected void generateSavePreviousResult(MethodVisitor mv)
+  {
+    loadFieldFromThis(mv, previousResultFieldName, generatedType);
+    loadIntermediateResultVariable(mv);
+    invokeMethod(mv, generatedType, "set", getMethodDescriptor(generatedType, generatedType), false);
+    pop(mv);
+  }
+
+  /**
+   * Emits a hard iteration limit check. If the index has reached
+   * {@link #MAX_ITERATIONS}, an {@link arb.exceptions.CompilerException} is
+   * thrown — never silently returns a partial result.
+   */
+  protected void generateHardLimitCheck(MethodVisitor mv)
+  {
+    Label skipLimit = new Label();
+
+    // if (index.getSignedValue() < MAX_ITERATIONS) goto skipLimit
+    loadIndexVariable(mv);
+    invokeMethod(mv, Integer.class, "getSignedValue", "()I", false);
+    mv.visitLdcInsn(MAX_ITERATIONS);
+    mv.visitJumpInsn(IF_ICMPLT, skipLimit);
+
+    // throw new CompilerException("Infinite sum exceeded hard limit of ...")
+    mv.visitTypeInsn(NEW, "arb/exceptions/CompilerException");
+    mv.visitInsn(DUP);
+    mv.visitLdcInsn("Infinite sum exceeded hard limit of " + MAX_ITERATIONS + " iterations without converging");
+    mv.visitMethodInsn(INVOKESPECIAL, "arb/exceptions/CompilerException", "<init>", "(Ljava/lang/String;)V", false);
+    mv.visitInsn(ATHROW);
+
+    designateLabel(mv, skipLimit);
+  }
+
+  /**
+   * Returns true if {@link #generatedType} is a ball-arithmetic type
+   * ({@code Real} or {@code Complex}) that carries a radius and supports
+   * {@code containsZero()} / {@code getRad().zero()}. Returns false for
+   * exact types like polynomials where convergence is checked via
+   * {@code isZero()} instead.
+   */
+  protected boolean isBallType()
+  {
+    return Real.class.equals(generatedType) || Complex.class.equals(generatedType);
+  }
+
+  /**
+   * Emits bytecode that zeros the radius of a field of type
+   * {@link #generatedType}. For {@code Real}, calls
+   * {@code field.getRad().zero()}. For {@code Complex}, zeros both
+   * {@code getReal().getRad()} and {@code getImag().getRad()}.
+   * For non-ball types (polynomials etc.) this is a no-op.
+   */
+  protected void generateZeroRadius(MethodVisitor mv, String fieldName)
+  {
+    if (Complex.class.equals(generatedType))
+    {
+      // delta.getReal().getRad().zero()
+      loadFieldFromThis(mv, fieldName, Complex.class);
+      invokeMethod(mv, Complex.class, "getReal", getMethodDescriptor(Real.class), false);
+      invokeMethod(mv, Real.class, "getRad", getMethodDescriptor(Magnitude.class), false);
+      invokeMethod(mv, Magnitude.class, "zero", getMethodDescriptor(Magnitude.class), false);
+      pop(mv);
+
+      // delta.getImag().getRad().zero()
+      loadFieldFromThis(mv, fieldName, Complex.class);
+      invokeMethod(mv, Complex.class, "getImag", getMethodDescriptor(Real.class), false);
+      invokeMethod(mv, Real.class, "getRad", getMethodDescriptor(Magnitude.class), false);
+      invokeMethod(mv, Magnitude.class, "zero", getMethodDescriptor(Magnitude.class), false);
+      pop(mv);
+    }
+    else if (Real.class.equals(generatedType))
+    {
+      // delta.getRad().zero()
+      loadFieldFromThis(mv, fieldName, Real.class);
+      invokeMethod(mv, Real.class, "getRad", getMethodDescriptor(Magnitude.class), false);
+      invokeMethod(mv, Magnitude.class, "zero", getMethodDescriptor(Magnitude.class), false);
+      pop(mv);
+    }
+  }
+
+  /**
+   * Emits the printer-style convergence test. After the current term has been
+   * added to the running sum, this method:
+   *
+   * <pre>
+   *   delta.set(result)          // copy S(n) into scratch
+   *   delta.getRad().zero()      // zero the radius of the COPY only
+   *   delta.sub(prevResult, …)   // ΔS = S(n) − S(n−1), radius from S(n−1)
+   *   if (0 ∈ ΔS) break;        // converged
+   * </pre>
+   *
+   * The critical invariant: {@link #previousResultFieldName} is <em>never</em>
+   * zeroed, so its radius provides the tolerance band for the convergence
+   * check. This matches the exact mechanism used by
+   * {@code MuntzPadePolynomialPrinter} for its β-coefficient convergence.
+   */
+  /**
+   * Emits the convergence test for infinite sums.
+   *
+   * <p>
+   * For ball types ({@code Real}, {@code Complex}): the printer-style
+   * convergence criterion — {@code 0 ∈ ΔSₙ} where {@code ΔSₙ = S(n) − S(n−1)}.
+   * Only the current result's radius is zeroed; previousResult retains its
+   * natural error radius.
+   *
+   * <p>
+   * For non-ball types (polynomials etc.): the old-style
+   * {@code |term| ≤ 2^{-bits}} criterion — the operand magnitude falls below
+   * the working-precision floor.
+   */
+  protected void generateConvergenceTest(MethodVisitor mv)
+  {
+    if (isBallType())
+    {
+      // delta.set(result) — copy the current partial sum into delta scratch
+      loadFieldFromThis(mv, deltaFieldName, generatedType);
+      loadIntermediateResultVariable(mv);
+      invokeMethod(mv, generatedType, "set", getMethodDescriptor(generatedType, generatedType), false);
+      pop(mv);
+
+      // Ball types: zero radius of the COPY only — previousResult keeps its error
+      generateZeroRadius(mv, deltaFieldName);
+
+      // delta = delta.sub(previousResult, bits, delta)
+      loadFieldFromThis(mv, deltaFieldName, generatedType);
+      loadFieldFromThis(mv, previousResultFieldName, generatedType);
+      loadBitsParameterOntoStack(mv);
+      loadFieldFromThis(mv, deltaFieldName, generatedType);
+      invokeMethod(mv, generatedType, "sub", getMethodDescriptor(generatedType, generatedType, int.class, generatedType), false);
+      pop(mv);
+
+      // if (delta.containsZero()) break; — IFNE jumps if true (converged)
+      loadFieldFromThis(mv, deltaFieldName, generatedType);
+      invokeMethod(mv, generatedType, "containsZero", getMethodDescriptor(boolean.class), false);
+      jumpToIfNotEqual(mv, endLoop);
+    }
+    else
+    {
+      // Non-ball types: absTerm = |operandValue|
+      loadFieldFromThis(mv, operandValueFieldName, generatedType);
+      loadBitsParameterOntoStack(mv);
+      loadFieldFromThis(mv, absTermFieldName, Real.class);
+      invokeMethod(mv, generatedType, "abs", getMethodDescriptor(Real.class, int.class, Real.class), false);
+      pop(mv);
+
+      // if (absTerm ≤ tolerance) break; — IFLE jumps if ≤0 (converged)
+      loadFieldFromThis(mv, absTermFieldName, Real.class);
+      loadFieldFromThis(mv, toleranceFieldName, Real.class);
+      invokeMethod(mv, Real.class, "compareTo", getMethodDescriptor(int.class, Real.class), false);
+      jumpToIfLessThanOrEquals(mv, endLoop);
+    }
   }
 
   protected void declareIndexVariableField()
