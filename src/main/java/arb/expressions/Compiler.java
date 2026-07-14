@@ -726,16 +726,6 @@ public class Compiler
       // can resolve the argument domain of a functional applied to a Complex argument.
       return Complex.class;
     }
-    else if (ComplexFunctional.class.equals(resultType))
-    {
-      // ComplexFunctional is Integer → ComplexFunction; its scalar type is the
-      // inner ComplexFunction (whose own scalar is Complex). Required for
-      // functional-of-functional chains such as K_n(z,w) = Σ Q_k(z)·Q_k(w)/h_k
-      // (issues #1181/#1182), where Kn is a ComplexFunctionalSequence producing
-      // ComplexFunctional codomain, so a nested evaluation Kn(n)(z)(w) resolves
-      // correctly instead of throwing "dont know what the scalar type is".
-      return ComplexFunction.class;
-    }
     else if (IntegerPolynomial.class.equals(resultType) || Integer.class.equals(resultType))
     {
       return Integer.class;
