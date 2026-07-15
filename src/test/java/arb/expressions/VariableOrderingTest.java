@@ -4,10 +4,13 @@ import arb.*;
 import arb.functions.integer.*;
 import arb.functions.complex.*;
 import arb.functions.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import junit.framework.TestCase;
 
 public class VariableOrderingTest extends TestCase
 {
+  private static final Logger log = LoggerFactory.getLogger(VariableOrderingTest.class);
   public void testThreeVarsNoSum()
   {
     Context ctx = new Context();
@@ -36,10 +39,10 @@ public class VariableOrderingTest extends TestCase
       {
         w.set(4.0, 0.0);
         
-        Complex result = new Complex();
+Complex result = new Complex();
         func2.evaluate(w, 1, 128, result);
-        
-        System.out.println("testSeq(n=2, z=3, w=4) = z^(n+w) = 3^(2+4) = 729 = " + result);
+
+        log.info("testSeq(n=2, z=3, w=4) = z^(n+w) = 3^(2+4) = 729 = " + result);
       }
       finally
       {
@@ -80,10 +83,10 @@ public class VariableOrderingTest extends TestCase
       {
         w.set(3.0, 0.0);
         
-        Complex result = new Complex();
+Complex result = new Complex();
         func2.evaluate(w, 1, 128, result);
-        
-        System.out.println("testSum(n=2, z=2, w=3) = sum k=0..2 of (z+w) = 3*(2+3) = 15 = " + result);
+
+        log.info("testSum(n=2, z=2, w=3) = sum k=0..2 of (z+w) = 3*(2+3) = 15 = " + result);
       }
       finally
       {
