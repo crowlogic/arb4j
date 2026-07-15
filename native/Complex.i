@@ -1555,7 +1555,7 @@ import arb.functions.complex.ComplexNullaryFunction;
         sb.append(real2);
         continue;
       }
-      boolean imagExact = imag2.isExact();
+      boolean imagExact = imag2.isExact() || !printPrecision;
       boolean imagNeg   = imag2.isNegative();
       if (realIsZero)
       {
