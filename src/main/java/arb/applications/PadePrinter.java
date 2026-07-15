@@ -208,8 +208,7 @@ static class VersionProvider implements
 
   public static void main(String[] args)
   {
-    int exitCode = new CommandLine(new PadePrinter()).execute(args);
-    System.exit(exitCode);
+    new CommandLine(new PadePrinter()).execute(args);
   }
 
   @Override
@@ -749,7 +748,7 @@ System.out.println("═".repeat(70));
     }
   }
 
-  private MuntzPadeApproximant makeExpressionApproximant(ComplexFunction f, Complex t0)
+  MuntzPadeApproximant makeExpressionApproximant(ComplexFunction f, Complex t0)
   {
     Real α = new Real("1", bits);
 
