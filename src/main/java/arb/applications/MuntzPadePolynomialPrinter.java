@@ -281,12 +281,12 @@ public class MuntzPadePolynomialPrinter implements
       System.out.printf("  h(j) = %s%n", ctx.getFunctionMapping("h").getExpressionString());
       System.out.printf("  α(j) = %s%n", ctx.getFunctionMapping("α").getExpressionString());
       System.out.printf("  β(j) = %s%n", ctx.getFunctionMapping("β").getExpressionString());
-      System.out.printf("  Pn(n) = %s%n", ctx.getFunctionMapping("Pn").getExpressionString());
+      System.out.printf("  Pn(n) = %s%n", approx.PnSeq.getExpressionString());
       System.out.println();
       System.out.println("Padé assembly (compiled expressions):");
-      System.out.printf("  Φden(M) = %s%n", ctx.getFunctionMapping("Φden").getExpressionString());
-      System.out.printf("  Φnum(M) = %s%n", ctx.getFunctionMapping("Φnum").getExpressionString());
-      System.out.printf("  Φ(M)(z) = %s%n", ctx.getFunctionMapping("Φ").getExpressionString());
+      System.out.printf("  Φden(M) = %s%n", approx.ΦdenSeq.getExpressionString());
+      System.out.printf("  Φnum(M) = %s%n", approx.ΦnumSeq.getExpressionString());
+      System.out.printf("  Φ(M)(z) = %s%n", approx.Φ.getExpressionString());
       System.out.println("═".repeat(70));
       System.out.println();
 
@@ -314,10 +314,10 @@ public class MuntzPadePolynomialPrinter implements
         System.out.println();
       }
 
-      ComplexPolynomialSequence PnSeq = (ComplexPolynomialSequence) ctx.getFunctionMapping("Pn").instantiate();
-      ComplexSequence           αvSeq = (ComplexSequence) ctx.getFunctionMapping("αv").instantiate();
-      ComplexSequence           βvSeq = (ComplexSequence) ctx.getFunctionMapping("βv").instantiate();
-      ComplexSequence           hvSeq = (ComplexSequence) ctx.getFunctionMapping("hv").instantiate();
+      ComplexPolynomialSequence PnSeq = approx.PnSeq;
+      ComplexSequence           αvSeq = approx.αvSeq;
+      ComplexSequence           βvSeq = approx.βvSeq;
+      ComplexSequence           hvSeq = approx.hvSeq;
 
       if (printPolynomials)
       {
@@ -442,8 +442,8 @@ public class MuntzPadePolynomialPrinter implements
       {
         int M = actualN - 1;
         try ( Integer Mi = new Integer(M);
-              ComplexPolynomial numPoly = ((ComplexPolynomialSequence) ctx.getFunctionMapping("Φnum").instantiate()).evaluate(Mi, bits);
-              ComplexPolynomial denPoly = ((ComplexPolynomialSequence) ctx.getFunctionMapping("Φden").instantiate()).evaluate(Mi, bits))
+              ComplexPolynomial numPoly = approx.ΦnumSeq.evaluate(Mi, bits);
+              ComplexPolynomial denPoly = approx.ΦdenSeq.evaluate(Mi, bits))
         {
           numPoly.setIndependentVariableName("z");
           denPoly.setIndependentVariableName("z");
@@ -543,30 +543,30 @@ public class MuntzPadePolynomialPrinter implements
         {
           Context ctx = approx.context;
 
-          System.out.println("═".repeat(70));
-          System.out.println("σ-table definitions (compiled expressions)");
-          System.out.println("═".repeat(70));
-          System.out.println();
-          System.out.printf("  m(k) = c_k  (Taylor coefficient)%n");
-          System.out.printf("  σ(j)(k) = %s%n", ctx.getFunctionMapping("σ").getExpressionString());
-          System.out.printf("  h(j) = %s%n", ctx.getFunctionMapping("h").getExpressionString());
-          System.out.printf("  α(j) = %s%n", ctx.getFunctionMapping("α").getExpressionString());
-          System.out.printf("  β(j) = %s%n", ctx.getFunctionMapping("β").getExpressionString());
-          System.out.printf("  Pn(n) = %s%n", ctx.getFunctionMapping("Pn").getExpressionString());
-          System.out.println();
-          System.out.println("Padé assembly (compiled expressions):");
-          System.out.printf("  Φden(M) = %s%n", ctx.getFunctionMapping("Φden").getExpressionString());
-          System.out.printf("  Φnum(M) = %s%n", ctx.getFunctionMapping("Φnum").getExpressionString());
-          System.out.printf("  Φ(M)(z) = %s%n", ctx.getFunctionMapping("Φ").getExpressionString());
-          System.out.println("═".repeat(70));
-          System.out.println();
+System.out.println("═".repeat(70));
+      System.out.println("σ-table definitions (compiled expressions)");
+      System.out.println("═".repeat(70));
+      System.out.println();
+      System.out.printf("  m(k) = c_k  (Taylor coefficient)%n");
+      System.out.printf("  σ(j)(k) = %s%n", ctx.getFunctionMapping("σ").getExpressionString());
+      System.out.printf("  h(j) = %s%n", ctx.getFunctionMapping("h").getExpressionString());
+      System.out.printf("  α(j) = %s%n", ctx.getFunctionMapping("α").getExpressionString());
+      System.out.printf("  β(j) = %s%n", ctx.getFunctionMapping("β").getExpressionString());
+      System.out.printf("  Pn(n) = %s%n", approx.PnSeq.getExpressionString());
+      System.out.println();
+      System.out.println("Padé assembly (compiled expressions):");
+      System.out.printf("  Φden(M) = %s%n", approx.ΦdenSeq.getExpressionString());
+      System.out.printf("  Φnum(M) = %s%n", approx.ΦnumSeq.getExpressionString());
+      System.out.printf("  Φ(M)(z) = %s%n", approx.Φ.getExpressionString());
+      System.out.println("═".repeat(70));
+      System.out.println();
 
-          ComplexPolynomialSequence PnSeq = (ComplexPolynomialSequence) ctx.getFunctionMapping("Pn").instantiate();
-          ComplexSequence           αvSeq = (ComplexSequence) ctx.getFunctionMapping("αv").instantiate();
-          ComplexSequence           βvSeq = (ComplexSequence) ctx.getFunctionMapping("βv").instantiate();
-          ComplexSequence           hvSeq = (ComplexSequence) ctx.getFunctionMapping("hv").instantiate();
+      ComplexPolynomialSequence PnSeq = approx.PnSeq;
+      ComplexSequence           αvSeq = approx.αvSeq;
+      ComplexSequence           βvSeq = approx.βvSeq;
+      ComplexSequence           hvSeq = approx.hvSeq;
 
-          if (printPolynomials)
+      if (printPolynomials)
           {
             System.out.println("═".repeat(70));
             System.out.println("Denominator polynomials Pₙ(z)  [monic orthogonal, first kind]");
@@ -686,8 +686,8 @@ public class MuntzPadePolynomialPrinter implements
           {
             int M = actualN - 1;
             try ( Integer Mi = new Integer(M);
-                  ComplexPolynomial numPoly = ((ComplexPolynomialSequence) ctx.getFunctionMapping("Φnum").instantiate()).evaluate(Mi, bits);
-                  ComplexPolynomial denPoly = ((ComplexPolynomialSequence) ctx.getFunctionMapping("Φden").instantiate()).evaluate(Mi, bits))
+                  ComplexPolynomial numPoly = approx.ΦnumSeq.evaluate(Mi, bits);
+                  ComplexPolynomial denPoly = approx.ΦdenSeq.evaluate(Mi, bits))
             {
               numPoly.setIndependentVariableName("z");
               denPoly.setIndependentVariableName("z");
