@@ -275,18 +275,18 @@ public class MuntzPadePolynomialPrinter implements
         System.out.printf("  discriminant = Q² − 4PR = %s%n", disc);
       }
       System.out.println();
-      System.out.printf("  a(k) = %s%n", ctx.getFunctionMapping("a").getExpressionString());
-      System.out.printf("  m(k) = %s%n", ctx.getFunctionMapping("m").getExpressionString());
-      System.out.printf("  σ(j)(k) = %s%n", ctx.getFunctionMapping("σ").getExpressionString());
-      System.out.printf("  h(j) = %s%n", ctx.getFunctionMapping("h").getExpressionString());
-      System.out.printf("  α(j) = %s%n", ctx.getFunctionMapping("α").getExpressionString());
-      System.out.printf("  β(j) = %s%n", ctx.getFunctionMapping("β").getExpressionString());
-      System.out.printf("  Pn(n) = %s%n", ctx.getFunctionMapping("Pn").getExpressionString());
+      System.out.printf("  a(k) = %s%n", approx.aSeq);
+      System.out.printf("  m(k) = %s%n", approx.mSeq);
+      System.out.printf("  σ(j)(k) = %s%n", approx.σSeq);
+      System.out.printf("  h(j) = %s%n", approx.hSeq);
+      System.out.printf("  α(j) = %s%n", approx.αSeq);
+      System.out.printf("  β(j) = %s%n", approx.βSeq);
+      System.out.printf("  Pn(n) = %s%n", approx.PnSeq);
       System.out.println();
       System.out.println("Padé assembly (compiled expressions):");
-      System.out.printf("  Φden(M) = %s%n", ctx.getFunctionMapping("Φden").getExpressionString());
-      System.out.printf("  Φnum(M) = %s%n", ctx.getFunctionMapping("Φnum").getExpressionString());
-      System.out.printf("  Φ(M)(z) = %s%n", ctx.getFunctionMapping("Φ").getExpressionString());
+      System.out.printf("  Φden(M) = %s%n", approx.ΦdenSeq);
+      System.out.printf("  Φnum(M) = %s%n", approx.ΦnumSeq);
+      System.out.printf("  Φ(M)(z) = %s%n", approx.Φ);
       System.out.println("═".repeat(70));
       System.out.println();
 
@@ -552,12 +552,12 @@ System.out.println("═".repeat(70));
       System.out.printf("  h(j) = %s%n", ctx.getFunctionMapping("h").getExpressionString());
       System.out.printf("  α(j) = %s%n", ctx.getFunctionMapping("α").getExpressionString());
       System.out.printf("  β(j) = %s%n", ctx.getFunctionMapping("β").getExpressionString());
-      System.out.printf("  Pn(n) = %s%n", approx.PnSeq.getExpressionString());
+      System.out.printf("  Pn(n) = %s%n", ctx.getFunctionMapping("Pn").getExpressionString());
       System.out.println();
       System.out.println("Padé assembly (compiled expressions):");
-      System.out.printf("  Φden(M) = %s%n", approx.ΦdenSeq.getExpressionString());
-      System.out.printf("  Φnum(M) = %s%n", approx.ΦnumSeq.getExpressionString());
-      System.out.printf("  Φ(M)(z) = %s%n", approx.Φ.getExpressionString());
+      System.out.printf("  Φden(M) = %s%n", ctx.getFunctionMapping("Φden").getExpressionString());
+      System.out.printf("  Φnum(M) = %s%n", ctx.getFunctionMapping("Φnum").getExpressionString());
+      System.out.printf("  Φ(M)(z) = %s%n", ctx.getFunctionMapping("Φ").getExpressionString());
       System.out.println("═".repeat(70));
       System.out.println();
 
