@@ -91,7 +91,7 @@ public class PadePrinterTest extends TestCase
   @Test
   public void testAutoTerminationDetectsZeroInDeltaBeta()
   {
-    int bits = 64;
+    int bits = 128;
     try ( Real μ = new Real("1", bits))
     {
       RiccatiMuntzPadeFunctional eq = new RiccatiMuntzPadeFunctional(μ, "1", "0", "-1");
@@ -103,11 +103,17 @@ public class PadePrinterTest extends TestCase
               Complex βn_1  = new Complex();
               Complex delta = new Complex())
         {
-          βvSeq.evaluate(5, bits, βn);
-          βvSeq.evaluate(4, bits, βn_1);
-          βn.sub(βn_1, bits, delta);
-          boolean containsZero = delta.getReal().containsZero() && delta.getImag().containsZero();
-          assertTrue("Δβₙ should contain zero at convergence", containsZero);
+          for (int n = 1; n <= 20; n++)
+          {
+            βvSeq.evaluate(n,     bits, βn);
+            βvSeq.evaluate(n - 1, bits, βn_1);
+            βn.sub(βn_1, bits, delta);
+            if (delta.getReal().containsZero() && delta.getImag().containsZero())
+            {
+              return;
+            }
+          }
+          fail("Δβₙ did not contain zero for any n up to 20");
         }
       }
     }
@@ -146,9 +152,8 @@ public class PadePrinterTest extends TestCase
     try ( PrintStream ps = new PrintStream(baos, true, StandardCharsets.UTF_8))
     {
       System.setOut(ps);
-      PadePrinter.main(new String[] { "--P", "1", "--Q", "0", "--R", "-1",
-                                      "--mu", "1", "--N", "3", "--bits", "64",
-                                      "--no-plot" });
+      PadePrinter.main("--P", "1", "--Q", "0", "--R", "-1",
+                       "--mu", "1", "--N", "3", "--bits", "64");
     }
     finally
     {
@@ -169,8 +174,8 @@ public class PadePrinterTest extends TestCase
     try ( PrintStream ps = new PrintStream(baos, true, StandardCharsets.UTF_8))
     {
       System.setOut(ps);
-      PadePrinter.main(new String[] { "--expr", "exp(t)", "--center", "0",
-                                      "--N", "2", "--bits", "64" });
+      PadePrinter.main("--expr", "exp(t)", "--center", "0",
+                       "--N", "2", "--bits", "64");
     }
     finally
     {

@@ -826,7 +826,19 @@ public class Context implements
          FunctionMapping<D, R, F>
          registerFunctionMapping(String functionName, F function, Class<?> domainType, Class<?> coDomainType)
   {
-    return registerFunctionMapping(functionName, function, domainType, coDomainType, function.getClass(), true, null, null);
+    Class<?> fc = function.getClass();
+    if (fc.isSynthetic() || fc.isAnonymousClass())
+    {
+      for (Class<?> iface : fc.getInterfaces())
+      {
+        if (Function.class.isAssignableFrom(iface))
+        {
+          fc = iface;
+          break;
+        }
+      }
+    }
+    return registerFunctionMapping(functionName, function, domainType, coDomainType, fc, true, null, null);
   }
 
   public <D, R, F extends Function<? extends D, ? extends R>> FunctionMapping<D, R, F> registerFunctionMapping(String functionName,

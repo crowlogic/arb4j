@@ -206,7 +206,7 @@ static class VersionProvider implements
   @Option(names = "--plot-points", description = "number of sample points (default: 200)", defaultValue = "200")
   int     plotPoints;
 
-  public static void main(String[] args)
+  public static void main(String... args)
   {
     new CommandLine(new PadePrinter()).execute(args);
   }
@@ -750,24 +750,15 @@ System.out.println("═".repeat(70));
 
   MuntzPadeApproximant makeExpressionApproximant(ComplexFunction f, Complex t0)
   {
-    Real α = new Real("1", bits);
-
-    ComplexPolynomialSequence a = (n, order, bits2, result) ->
-    {
-      int k = n.getSignedValue();
-      try ( Complex coeffs = Complex.newVector(k + 1))
-      {
-        f.evaluate(t0, k, bits2, coeffs);
-        result.set(coeffs.get(k - 1));
-      }
-      return result;
-    };
-
-    try ( Complex v = new Complex())
-    {
-      v.zero();
-      return new MuntzPadeApproximant(α, a, v, bits);
-    }
+    Real   α = new Real("1", bits).setName("α");
+    int    M = N + 2;
+    Complex c = Complex.newVector(M);
+    f.evaluate(t0, M, bits, c);
+    Context momentCtx = new Context();
+    momentCtx.registerVariable("c", c);
+    ComplexPolynomialSequence a = ComplexPolynomialSequence.express("a:k➔c[k]", momentCtx);
+    Complex v = new Complex().zero();
+    return new MuntzPadeApproximant(α, a, v, bits);
   }
 
   private RiccatiMuntzPadeFunctional makeEquation(Real μ)
