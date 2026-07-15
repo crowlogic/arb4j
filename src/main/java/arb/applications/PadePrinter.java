@@ -32,10 +32,11 @@ import picocli.CommandLine.Option;
  * @author Stephen Crowley ©2024–2026
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms
  */
-@Command(name = "muntzPadePolynomials", description =
+@Command(name = "pade", description =
 { "",
-  "Print the orthogonal polynomials of the Müntz-Padé spectral-tau solution",
-  "of the constant-coefficient (time-independent) fractional Riccati equation.",
+  "Print the Padé approximant and Christoffel–Darboux kernel",
+  "of the Müntz-Padé spectral-tau solution of the constant-coefficient",
+  "fractional Riccati equation.",
   "",
   "The fractional Riccati equation:",
   "  D^μ y(t) = P + Q·y(t) + R·y(t)²,  y(0) = 0",
@@ -70,6 +71,14 @@ import picocli.CommandLine.Option;
   "where Φden(M) is built from monic orthogonal polynomials (first kind) and",
   "Φnum(M) from associated polynomials (second kind) via Favard's recurrence.",
   "",
+  "The Christoffel–Darboux reproducing kernel is:",
+  "  K_n(z,w) = Σ_{k=0}^{n} Q_k(z) Q_k(w) / h_k",
+  "where Q_k are the monic orthogonal polynomials and h_k = ‖Q_k‖².",
+  "By the Christoffel–Darboux formula:",
+  "  K_n(z,w) = [Q_{n+1}(z) Q_n(w) − Q_n(z) Q_{n+1}(w)] / [h_{n+1} (z − w)]",
+  "for z ≠ w. The Padé approximant inherits its approximation properties from",
+  "the reproducing property of this kernel.",
+  "",
   "Termination theorem:",
   "  When the discriminant Δ = Q² − 4PR is such that the fractional Riccati",
   "  equation has a local solution (which holds for all constant P, Q, R with",
@@ -95,18 +104,18 @@ import picocli.CommandLine.Option;
   "  converges to the solution near y(0) = 0. The σ-table captures the",
   "  full moment sequence of this solution, and termination by 0 ∈ Δβₙ is",
   "  exact — not an heuristic stopping rule.",
-  "" }, versionProvider = MuntzPadePolynomialPrinter.VersionProvider.class, mixinStandardHelpOptions = true)
-public class MuntzPadePolynomialPrinter implements
-                                        Runnable
+  "" }, versionProvider = PadePrinter.VersionProvider.class, mixinStandardHelpOptions = true)
+public class PadePrinter implements
+                                      Runnable
 {
-  static class VersionProvider implements
-                               picocli.CommandLine.IVersionProvider
+static class VersionProvider implements
+                                 picocli.CommandLine.IVersionProvider
   {
     @Override
     public String[] getVersion() throws Exception
     {
       Properties props = new Properties();
-      try ( InputStream in = MuntzPadePolynomialPrinter.class.getResourceAsStream("/arb/build-info.properties"))
+      try ( InputStream in = PadePrinter.class.getResourceAsStream("/arb/build-info.properties"))
       {
         if (in != null)
         {
@@ -115,7 +124,7 @@ public class MuntzPadePolynomialPrinter implements
       }
       String arb4j = props.getProperty("arb4j.version", "dev");
       var    lines = new java.util.ArrayList<String>();
-      lines.add("muntzPadePolynomials (arb4j " + arb4j + ")");
+      lines.add("pade (arb4j " + arb4j + ")");
       props.stringPropertyNames()
            .stream()
            .filter(k -> !k.equals("arb4j.version"))
@@ -199,7 +208,7 @@ public class MuntzPadePolynomialPrinter implements
 
   public static void main(String[] args)
   {
-    int exitCode = new CommandLine(new MuntzPadePolynomialPrinter()).execute(args);
+    int exitCode = new CommandLine(new PadePrinter()).execute(args);
     System.exit(exitCode);
   }
 
@@ -283,10 +292,11 @@ public class MuntzPadePolynomialPrinter implements
       System.out.printf("  β(j) = %s%n", approx.βSeq);
       System.out.printf("  Pn(n) = %s%n", approx.PnSeq);
       System.out.println();
-      System.out.println("Padé assembly (compiled expressions):");
+System.out.println("Padé assembly (compiled expressions):");
       System.out.printf("  Φden(M) = %s%n", approx.ΦdenSeq);
       System.out.printf("  Φnum(M) = %s%n", approx.ΦnumSeq);
       System.out.printf("  Φ(M)(z) = %s%n", approx.Φ);
+      System.out.printf("  K_n(z,w) = %s%n", String.format(approx.KnSeq.toString(), "z", "w", "ₙ"));
       System.out.println("═".repeat(70));
       System.out.println();
 
@@ -558,6 +568,7 @@ System.out.println("═".repeat(70));
       System.out.printf("  Φden(M) = %s%n", ctx.getFunction("Φden").toString());
       System.out.printf("  Φnum(M) = %s%n", ctx.getFunction("Φnum").toString());
       System.out.printf("  Φ(M)(z) = %s%n", ctx.getFunction("Φ").toString());
+      System.out.printf("  K_n(z,w) = %s%n", String.format(approx.KnSeq.toString(), "z", "w", "ₙ"));
       System.out.println("═".repeat(70));
       System.out.println();
 

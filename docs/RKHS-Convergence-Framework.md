@@ -198,5 +198,5 @@ Padé approximant.
 | Kernel | `MuntzPadeApproximant.KnSeq` | `K_n(z,w)` compiled expression |
 | Confluent kernel | `MuntzPadeApproximant.CDnSeq` | `CD_n(z,w)` compiled expression |
 | Orthogonal polynomials | `MuntzPadeApproximant.Q` (via `ops`) | `Q(k)` sequence |
-| Termination | `MuntzPadePolynomialPrinter` | Auto-terminates when `0 ∈ Δβₙ` |
+| Termination | `PadePrinter` | Auto-terminates when `0 ∈ Δβₙ` |
 | RKHS test | `MuntzPadeRKHSTest` | Kernel agreement, support roots, conjugate identity |

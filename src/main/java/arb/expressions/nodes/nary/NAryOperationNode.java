@@ -438,7 +438,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
    * {@link #previousResultFieldName} retains its natural evaluation-error
    * radius. This ensures the delta's radius comes entirely from
    * {@code S(n−1)}, making {@code containsZero()} triggerable — the exact
-   * mechanism used by {@code MuntzPadePolynomialPrinter}.
+   * mechanism used by {@code PadePrinter}.
    *
    * <p>
    * A hard limit of {@link #MAX_ITERATIONS} prevents infinite loops on
@@ -769,7 +769,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
    * The critical invariant: {@link #previousResultFieldName} is <em>never</em>
    * zeroed, so its radius provides the tolerance band for the convergence
    * check. This matches the exact mechanism used by
-   * {@code MuntzPadePolynomialPrinter} for its β-coefficient convergence.
+   * {@code PadePrinter} for its β-coefficient convergence.
    */
   /**
    * Emits the convergence test for infinite sums.

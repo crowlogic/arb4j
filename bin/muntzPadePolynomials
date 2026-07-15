@@ -5,4 +5,4 @@
 # Defaults: tanh oracle (μ=1, P=1, Q=0, R=-1, N=10)
 # Override with: --mu 1/2 --P 1 --Q 0 --R -1 --N 5 --bits 256
 BASEDIR=$(dirname $(readlink -f $0))/..
-$BASEDIR/bin/run arb.applications.MuntzPadePolynomialPrinter "$@"
+$BASEDIR/bin/run arb.applications.PadePrinter "$@"

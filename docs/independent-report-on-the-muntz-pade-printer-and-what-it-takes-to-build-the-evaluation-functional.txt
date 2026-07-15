@@ -5,7 +5,7 @@
 ═══════════════════════════════════════════════════════════════════════════════
 
 This report is an independent reading of:
-  • src/main/java/arb/applications/MuntzPadePolynomialPrinter.java
+  • src/main/java/arb/applications/PadePrinter.java
   • src/main/java/arb/functions/complex/RiccatiMuntzPadeFunctional.java
   • src/main/java/arb/functions/complex/MuntzPadeFunctional.java
   • src/main/java/arb/functions/complex/MuntzPadeApproximant.java
@@ -313,7 +313,7 @@ WHAT THIS MEANS:
 This is the part that connects directly to the expression compiler's
 infinite-sum convergence testing.
 
-THE PRINTER'S TERMINATION LOGIC (lines 408-420 of MuntzPadePolynomialPrinter):
+THE PRINTER'S TERMINATION LOGIC (lines 408-420 of PadePrinter):
 
   For each n from 0 to N:
     1. Evaluate α(n) → αn        (a Complex scalar = polynomial in v evaluated
