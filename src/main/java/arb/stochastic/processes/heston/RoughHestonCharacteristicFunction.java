@@ -107,8 +107,8 @@ public class RoughHestonCharacteristicFunction implements
   public final MuntzPadeCumulantGenerator cgf;
 
   /**
-   * Müntz truncation order of the cumulant series, owned by {@link #cgf}. Mutate
-   * via {@code N.set(...)} to change the truncation without recompile.
+   * Müntz RKHS dimension of the cumulant series, owned by {@link #cgf}. Mutate
+   * via {@code N.set(...)} to change the sum order without recompile.
    */
   public final Integer N;
 
@@ -120,7 +120,7 @@ public class RoughHestonCharacteristicFunction implements
    * </pre>
    *
    * with Φ supplied by {@link #cgf}. A single compiled expression — no per-call
-   * Java arithmetic. {@code N} is the {@link #cgf}'s truncation order; mutate
+   * Java arithmetic. {@code N} is the {@link #cgf}'s RKHS dimension; mutate
    * via {@link #setN}.
    */
   public final ComplexFunction φ;

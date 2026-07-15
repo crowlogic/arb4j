@@ -54,7 +54,7 @@ import arb.functions.integer.*;
  *
  * as registered expressions in a shared {@link Context}. Callers evaluate
  * {@code φ(v)} for any {@code v} after registering {@code T} (and N) in the
- * context. {@code N} is an {@code Integer} so the live truncation order flows
+ * context. {@code N} is an {@code Integer} so the RKHS dimension flows
  * into the compiled Σ without recompile.
  *
  * <p>
@@ -84,8 +84,8 @@ public class MuntzPadeCumulantGenerator implements
   public final Real                      T;
 
   /**
-   * Truncation order N for the CGF series. The compiled Σ uses this as its upper
-   * bound; mutate via {@link #setN} to change the truncation without recompile.
+   * RKHS dimension N for the CGF series. The compiled Σ uses this as its upper
+   * bound; mutate via {@link #setN} to change the sum order without recompile.
    */
   public final Integer                   N;
 
@@ -151,7 +151,7 @@ public class MuntzPadeCumulantGenerator implements
    *                a {@link RiccatiMuntzPadeFunctional}.
    * @param u       ordinary-integral weight sequence k ↦ u_k (scalars).
    * @param w       fractional-integral weight sequence k ↦ w_k (scalars).
-   * @param N0      initial truncation order. Mutate via {@link #setN}.
+   * @param N0      initial RKHS dimension. Mutate via {@link #setN}.
    */
   public MuntzPadeCumulantGenerator(Context context, ComplexPolynomialSequence a, RealSequence u, RealSequence w, int N0)
   {

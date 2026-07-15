@@ -81,7 +81,7 @@ import picocli.CommandLine.Option;
   "  recurrence, so aₖ = O(Cᵏ) for some C > 0 (geometric growth from the",
   "  quadratic term). The moment functional μ(zᵏ) = a(k+1) is therefore",
   "  well-defined with finite moments. The Hankel moment matrix M_{jk} =",
-  "  a(j+k+1) is positive-definite for any finite truncation N, and the",
+  "  a(j+k+1) is positive-definite for all N, and the",
   "  Lanczos/Danilevsky σ-table reduces it to tridiagonal form. At each step",
   "  j, the new row σ(j) is a linear combination of the previous two rows",
   "  with coefficients −α(j−1), −β(j−1). When the moment sequence is",
