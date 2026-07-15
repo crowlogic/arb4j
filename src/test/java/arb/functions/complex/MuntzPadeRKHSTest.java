@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import arb.*;
 import arb.Integer;
+import arb.expressions.Context;
 import arb.functions.ComplexFunctional;
 import arb.functions.integer.ComplexFunctionalSequence;
 import arb.functions.integer.Sequence;
@@ -64,7 +65,7 @@ public void testSupportRoots()
             ComplexPolynomial den = approx.ΦdenSeq.evaluate(ni, 128) )
       {
         Complex roots = den.roots(128);
-        log.debug("Φ_den(4) roots:");
+        assertTrue("Φ_den(4) should have " + nS + " roots, got " + roots.dim(), roots.dim() == nS);
         for (int i = 0; i < roots.dim(); i++)
         {
           log.debug("  ζ_" + i + " = " + roots.get(i));
@@ -106,6 +107,38 @@ public void testSupportRoots()
           assertTrue(String.format("K_n − CD_n at (%s,%s) should be ≃ 0, got |diff| = %s", s[0], s[1], norm),
                      norm.isZeroUpTo(96));
         }
+      }
+    }
+  }
+
+  public void testConjugateIdentity()
+  {
+    try ( Complex z = new Complex().set(3.0, 4.0);
+          Complex w = new Complex();
+          Complex c = new Complex();
+          Complex product = new Complex();
+          Real    absSq   = new Real() )
+    {
+      // conj(z) * z = |z|²
+      z.conj(w);
+      z.mul(w, 128, product);
+      z.abs(128, absSq);
+      absSq.mul(absSq, 128, absSq);
+      try ( Real diff = new Real(); Real norm = new Real() )
+      {
+        product.re(128, diff);
+        diff.sub(absSq, 128, diff);
+        diff.abs(128, norm);
+        assertTrue("conj(z)*z real part should equal |z|², |diff| = " + norm, norm.isZeroUpTo(96));
+      }
+      // conj(conj(z)) = z
+      z.conj(c);
+      c.conj(w);
+      try ( Complex d = new Complex(); Real norm = new Real() )
+      {
+        w.sub(z, 128, d);
+        d.abs(128, norm);
+        assertTrue("conj(conj(z)) should equal z, |diff| = " + norm, norm.isZeroUpTo(96));
       }
     }
   }
