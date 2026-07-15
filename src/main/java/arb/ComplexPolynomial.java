@@ -648,27 +648,41 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
       if (!xi.isZero() || (xi.isZero() && getLength() == 1 ))
       {
         String coeffStr = xi.toString().replace(" ", "");
-        boolean negative = coeffStr.charAt(0) == '-';
-        if (!builder.isEmpty())
-        {
-          builder.append(negative ? "-" : "+");
-        }
-        else if (negative)
-        {
-          builder.append("-");
-        }
-        if (negative)
-        {
-          coeffStr = coeffStr.substring(1);
-        }
         boolean isComplexCoeff = !xi.getImag().isZero();
-        if (i == 0 || !xi.isOne())
+        boolean negative = coeffStr.charAt(0) == '-';
+        if (isComplexCoeff && i > 0)
         {
-          if (isComplexCoeff && i > 0)
+          if (negative)
           {
-            builder.append("(").append(coeffStr).append(")");
+            if (!builder.isEmpty()) builder.append("-");
+            else                    builder.append("-");
+            try (Complex n = new Complex())
+            {
+              xi.neg(n);
+              builder.append("(").append(n.toString().replace(" ", "")).append(")");
+            }
           }
           else
+          {
+            if (!builder.isEmpty()) builder.append("+");
+            builder.append("(").append(coeffStr).append(")");
+          }
+        }
+        else
+        {
+          if (!builder.isEmpty())
+          {
+            builder.append(negative ? "-" : "+");
+          }
+          else if (negative)
+          {
+            builder.append("-");
+          }
+          if (negative)
+          {
+            coeffStr = coeffStr.substring(1);
+          }
+          if (!xi.isOne() || i == 0)
           {
             builder.append(coeffStr);
           }
