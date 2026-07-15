@@ -885,7 +885,31 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
   {
     return exp(prec,this);
   }
-  
+
+  /**
+   * Generalized exponential integral E_s(z) = ∫_1^∞ e^{-zt}/t^s dt
+   * @param s order (Complex)
+   * @param bits precision
+   * @param result
+   * @return E_s(this)
+   */
+  public Complex expint(Complex s, int bits, Complex result)
+  {
+    arblib.acb_hypgeom_expint(result, s, this, bits);
+    return result;
+  }
+
+  /**
+   * Generalized exponential integral E_s(this)
+   * @param s order (Complex)
+   * @param bits precision
+   * @return E_s(this) stored in this
+   */
+  public Complex expint(Complex s, int bits)
+  {
+    return expint(s, bits, this);
+  }
+
   public Complex(double r, double i)
   {
     this();

@@ -177,6 +177,14 @@ public class arblib {
     arblibJNI.arb_hypgeom_si_series(RealPolynomial.getCPtr(res), res, RealPolynomial.getCPtr(z), z, len, prec);
   }
 
+  public static void arb_hypgeom_expint(Real res, Real s, Real z, int prec) {
+    arblibJNI.arb_hypgeom_expint(Real.getCPtr(res), res, Real.getCPtr(s), s, Real.getCPtr(z), z, prec);
+  }
+
+  public static void acb_hypgeom_expint(Complex res, Complex s, Complex z, int prec) {
+    arblibJNI.acb_hypgeom_expint(Complex.getCPtr(res), res, Complex.getCPtr(s), s, Complex.getCPtr(z), z, prec);
+  }
+
   public static void arb_poly_gamma_series(RealPolynomial res, RealPolynomial f, int n, int prec) {
     arblibJNI.arb_poly_gamma_series(RealPolynomial.getCPtr(res), res, RealPolynomial.getCPtr(f), f, n, prec);
   }

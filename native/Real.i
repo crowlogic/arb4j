@@ -532,6 +532,31 @@ import arb.utensils.Utensils;
     arblib.arb_hypgeom_si(result, this, bits);
     return result;
   }
+
+  /**
+   * Generalized exponential integral E_s(z) = ∫_1^∞ e^{-zt}/t^s dt
+   * @param s order (typically 1 for E_1(z))
+   * @param bits precision
+   * @param result
+   * @return E_s(z)
+   */
+  public Real expint(Real s, int bits, Real result)
+  {
+    arblib.arb_hypgeom_expint(result, s, this, bits);
+    return result;
+  }
+
+  /**
+   * Generalized exponential integral E_s(this)
+   * @param s order
+   * @param bits precision
+   * @return E_s(this)
+   */
+  public Real expint(Real s, int bits)
+  {
+    return expint(s, bits, this);
+  }
+
   public Complex sin(int prec, Complex result)
   {
     sin(prec, result.re());

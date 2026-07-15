@@ -99,6 +99,10 @@ void arb_hypgeom_si(arb_t res, const arb_t z, slong prec);
 
 void arb_hypgeom_si_series(arb_poly_t res, const arb_poly_t z, slong len, slong prec);
 
+void arb_hypgeom_expint(arb_t res, const arb_t s, const arb_t z, slong prec);
+
+void acb_hypgeom_expint(acb_t res, const acb_t s, const acb_t z, slong prec);
+
 void arb_poly_gamma_series(arb_poly_t res, const arb_poly_t f, slong n, slong prec);
 
 void acb_poly_gamma_series(acb_poly_t res, const acb_poly_t f, slong n, slong prec);
