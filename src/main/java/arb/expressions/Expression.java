@@ -1979,6 +1979,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       generateGetExpressionMethod(classVisitor);
 
       generateToStringMethod(classVisitor);
+      generateToNameStringMethod(classVisitor);
       generateTypesetMethod(classVisitor);
     }
     finally
@@ -3732,6 +3733,29 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     invokeStaticMethod(methodVisitor, String.class, "format", String.class, String.class, Object[].class);
 
+    Compiler.generateReturnFromMethod(methodVisitor);
+    return classVisitor;
+  }
+
+  /**
+   * Generates a {@code public String toNameString()} method on the compiled class
+   * that renders the AST with real variable names instead of {@code %s} placeholders.
+   * The existing {@code toString()} uses {@link Node#toStringBound(java.util.Map)} which
+   * emits {@code %s} for upstream-input variables; this method uses the plain
+   * {@link Node#toString()} which renders every variable by its actual name.
+   */
+  protected ClassVisitor generateToNameStringMethod(ClassVisitor classVisitor)
+  {
+    var methodVisitor = classVisitor.visitMethod(ACC_PUBLIC, "toNameString", Compiler.getMethodDescriptor(String.class), null, null);
+    methodVisitor.visitCode();
+
+    String namePrefix = (functionName != null && !functionName.isEmpty()) ? functionName + ":" : "";
+    updateStringRepresentation();
+    String bodyExpr = rootNode != null ? rootNode.toString() : getExpression();
+    String arrow    = (getIndependentVariable() == null || bodyExpr.contains("➔")) ? "" : (getIndependentVariable().getName() + "➔");
+    String staticStr = namePrefix + arrow + bodyExpr;
+
+    methodVisitor.visitLdcInsn(staticStr);
     Compiler.generateReturnFromMethod(methodVisitor);
     return classVisitor;
   }

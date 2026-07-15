@@ -661,9 +661,17 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
         {
           coeffStr = coeffStr.substring(1);
         }
+        boolean isComplexCoeff = !xi.getReal().isZero() && !xi.getImag().isZero();
         if (i == 0 || !xi.re().isOne())
         {
-          builder.append(coeffStr);
+          if (isComplexCoeff && i > 0)
+          {
+            builder.append("(").append(coeffStr).append(")");
+          }
+          else
+          {
+            builder.append(coeffStr);
+          }
         }
         if (i > 0)
         {

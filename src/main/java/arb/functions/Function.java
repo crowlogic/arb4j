@@ -748,6 +748,11 @@ public interface Function<D, CO> extends
     }
   }
 
+  default String toNameString()
+  {
+    return toString();
+  }
+
   @Override
   default String typeset()
   {
