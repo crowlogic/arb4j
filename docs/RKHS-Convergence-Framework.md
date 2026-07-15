@@ -119,20 +119,85 @@ precision.
 
 ## 5. Christoffel–Darboux Kernel
 
-At termination with RKHS dimension `n`, the reproducing kernel is the finite
-Christoffel–Darboux sum:
+### 5.1 Definition
+
+The Christoffel–Darboux kernel is the reproducing kernel for the polynomial
+Hilbert space `L²(μ)` of degree `≤ n` with respect to the moment functional `μ`.
+It is defined as the sum
 
 ```
-K_n(z,w) = Σ_{k=0}^{n−1} P_k(z) P̄_k(w) / h(k)
-          = (P_n(z)·P_{n−1}(w) − P_{n−1}(z)·P_n(w)) / (h(n−1)·(z − w))
+K_n(z,w) = Σ_{k=0}^{n} Q_k(z) · Q_k(w) / h_k
 ```
 
-The confluent form (right-hand side) avoids the sum by expressing the kernel
-through two consecutive orthogonal polynomials. This is the explicit
-computational object: given the Jacobi coefficients `α, β` and the norms `h`,
-the kernel is evaluated via polynomial evaluation at `(z,w)`.
+where `Q_k` are the monic orthogonal polynomials and `h_k = ‖Q_k‖²_μ` are the
+squared norms. This is a bivariate polynomial in `(z,w)` of bidegree `(n,n)`.
 
-### Compiled Expressions in arb4j
+### 5.2 Why the kernel exists
+
+The CD kernel exists because `L²(μ)` is a reproducing kernel Hilbert space: for
+any polynomial `f` of degree `≤ n`,
+
+```
+f(z) = ⟨f, K_n(·,z)⟩_μ = Σ_{k=0}^{n} ⟨f, Q_k⟩_μ · Q_k(z) / h_k
+```
+
+This is the generalized Fourier expansion. The kernel `K_n(z,w)` encodes the
+same orthogonal polynomial data as the σ-table but in a bilinear form that is
+simultaneously a function of two variables. It is the unique polynomial of
+bidegree `(n,n)` that reproduces all polynomials of degree `≤ n` in the `μ`
+inner product.
+
+### 5.3 Christoffel–Darboux formula (closed form)
+
+The sum collapses to a closed form involving only two consecutive orthogonal
+polynomials:
+
+```
+K_n(z,w) = [Q_{n+1}(z) · Q_n(w) − Q_n(z) · Q_{n+1}(w)] / [h_{n+1} · (z − w)]
+```
+
+for `z ≠ w`. This is the confluent form: the `n+1` terms in the sum are replaced
+by a single rational expression. The confluent limit (as `w → z`) gives the
+diagonal
+
+```
+K_n(z,z) = Q_{n+1}'(z) · Q_n(z) / h_{n+1} − Q_n'(z) · Q_{n+1}(z) / h_{n+1}
+```
+
+which is always non-negative: `K_n(z,z) ≥ 0` for all `z`.
+
+### 5.4 What the kernel is used for
+
+**Gaussian quadrature.** The zeros `{ζ_j}` of `Q_n` are the Gaussian quadrature
+nodes for `μ`. The weights are
+
+```
+w_j = h_0 / [Q_n'(ζ_j) · Q_{n−1}(ζ_j)]
+```
+
+satisfying `Σ_j w_j f(ζ_j) = ∫ f dμ` for all polynomials `f` of degree `≤ 2n−1`.
+The kernel evaluated at these nodes is diagonal: `K_n(ζ_i, ζ_j) = δ_{ij} / w_j`.
+
+**Interpolation of the Padé approximant.** The Padé approximant `Φ(M)(z)` can be
+written as an interpolation formula using the CD kernel:
+
+```
+Φ(M)(z) = Σ_{j=1}^{M} [Pn_M^*(z_j) / Q_M^*'(z_j)] · K_M(z, z_j) · w_j
+```
+
+where `{z_j}` are the reciprocals of the quadrature nodes (the poles of `Φ(M)`),
+`Pn_M^*` and `Q_M^*` are the reciprocal polynomials, and `w_j` are the
+quadrature weights. This is the precise relationship between the kernel and the
+Padé approximant: the kernel provides the interpolation basis, the Padé
+approximant is the function being interpolated.
+
+**Convergence certificate.** The diagonal `K_n(z,z)` measures how well the
+orthogonal polynomials `Q_0, …, Q_n` can approximate at the point `z`. When
+`K_n(z,z)` is large, the approximation is good; when small, the approximation
+is poor. The convergence of the Padé approximant is equivalent to the convergence
+of the kernel to the Cauchy kernel of the spectral measure.
+
+### 5.5 Compiled expressions in arb4j
 
 The kernel and its confluent form are registered as compiled Context sequences on
 `MuntzPadeApproximant`:
@@ -146,12 +211,18 @@ where `Q(k)` is the `k`-th orthogonal polynomial and `hv(k) = h(k)(v)` is the
 norm evaluated at the perturbation point. Both sequences are verified to agree
 to 96 bits in `MuntzPadeRKHSTest.testKernelAgreement()`.
 
-### Support Points
+The kernel is printed by `PadePrinter` as the compiler's own expression:
+
+```
+K_n(z,w) = Kn:Σk➔((Q(k)(z))*(Q(k)(w)))/hv(k){k=0…ₙ}
+```
+
+### 5.6 Support points
 
 The roots of the denominator polynomial `Φ_den(n)(z)` are the support points of
-the moment functional `μ` at RKHS dimension `n`. Computed via
-`ComplexPolynomial.roots(int bits)`, verified in
-`MuntzPadeRKHSTest.testSupportRoots()`.
+the moment functional `μ` at RKHS dimension `n`. These are the reciprocals of
+the Gaussian quadrature nodes. Computed via `ComplexPolynomial.roots(int bits)`,
+verified in `MuntzPadeRKHSTest.testSupportRoots()`.
 
 ## 6. Padé as Meromorphic Extension
 
