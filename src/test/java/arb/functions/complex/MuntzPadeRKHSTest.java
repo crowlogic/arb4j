@@ -54,21 +54,18 @@ public class MuntzPadeRKHSTest extends TestCase
     }
   }
 
-  public void testSupportRoots()
+public void testSupportRoots()
   {
     Real    μ     = new Real().set("1", 128);
     Complex zeroV = new Complex().zero();
     try ( RiccatiMuntzPadeFunctional eq = new RiccatiMuntzPadeFunctional(μ, "1", "0", "-1");
           MuntzPadeApproximant approx = (MuntzPadeApproximant) eq.evaluate(zeroV, 1, 128, null) )
     {
-      Context ctx = approx.context;
       int nS = 4;
       try ( Integer ni = new Integer(nS);
-            @SuppressWarnings("unchecked")
-            Sequence<ComplexPolynomial> denSeq = ctx.getFunctionMapping("Φden").instantiate();
-            ComplexPolynomial den = denSeq.evaluate(ni, 128) )
+            ComplexPolynomial den = approx.Φden().evaluate(ni, 128) )
       {
-Complex roots = den.roots(128);
+        Complex roots = den.roots(128);
         log.debug("Φ_den(4) roots:");
         for (int i = 0; i < roots.dim(); i++)
         {
@@ -86,9 +83,8 @@ Complex roots = den.roots(128);
     try ( RiccatiMuntzPadeFunctional eq = new RiccatiMuntzPadeFunctional(μ, "1", "0", "-1");
           MuntzPadeApproximant approx = (MuntzPadeApproximant) eq.evaluate(zeroV, 1, 128, null) )
     {
-      Context ctx = approx.context;
-      ComplexFunctionalSequence knSeq = ctx.getFunctionMapping("Kn").instantiate();
-      ComplexFunctionalSequence cdSeq = ctx.getFunctionMapping("CDn").instantiate();
+      ComplexFunctionalSequence knSeq = approx.Kn();
+      ComplexFunctionalSequence cdSeq = approx.CDn();
       int nK = 4;
 
       double[][] samples = { {0.5, 0.7}, {1.0, 0.5}, {-0.3, 0.2}, {0.8, -0.4} };

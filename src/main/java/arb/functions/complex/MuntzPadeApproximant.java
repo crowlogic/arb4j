@@ -40,15 +40,67 @@ public final class MuntzPadeApproximant implements
                                          AutoCloseable
 {
 
-  public final Real                                          α;
+public final Real                                          α;
   public final Complex                                       v;
   private final int                                          workingBits;
-  public final Context context;
+  public final Context                                       context;
   private final Complex                                      z = new Complex();   // scratch t^α
   public final OrthogonalPolynomialMomentFunctionalSequence ops;
   private final ComplexFunctionSequence                      Φ;
-
+  private final ComplexPolynomialSequence                    ΦdenSeq;
+  private final ComplexPolynomialSequence                    ΦnumSeq;
+  private final ComplexPolynomialSequence                    PnSeq;
+  private final ComplexSequence                              αvSeq;
+  private final ComplexSequence                              βvSeq;
+  private final ComplexSequence                              hvSeq;
+  private final ComplexFunctionalSequence                    KnSeq;
+  private final ComplexFunctionalSequence                    CDnSeq;
   private boolean closed;
+
+  public ComplexPolynomialSequence Φden()
+  {
+    return ΦdenSeq;
+  }
+
+  public ComplexPolynomialSequence Φnum()
+  {
+    return ΦnumSeq;
+  }
+
+  public ComplexPolynomialSequence Pn()
+  {
+    return PnSeq;
+  }
+
+  public ComplexSequence αv()
+  {
+    return αvSeq;
+  }
+
+  public ComplexSequence βv()
+  {
+    return βvSeq;
+  }
+
+  public ComplexSequence hv()
+  {
+    return hvSeq;
+  }
+
+  public ComplexFunctionalSequence Kn()
+  {
+    return KnSeq;
+  }
+
+  public ComplexFunctionalSequence CDn()
+  {
+    return CDnSeq;
+  }
+
+  public ComplexFunctionSequence Φ()
+  {
+    return Φ;
+  }
 
   /**
    * Working precision (in bits) at which the memoized σ-table / Jacobi /
@@ -81,9 +133,9 @@ public final class MuntzPadeApproximant implements
 
     // Scalar versions of α, β, h evaluated at v — these are what the Padé
     // assembly needs (poly-in-z with Complex coefficients, not poly-in-u).
-    ComplexSequence.express("αv", "αv:n➔α(n)(v)", context);
-    ComplexSequence.express("βv", "βv:n➔β(n)(v)", context);
-    ComplexSequence.express("hv", "hv:n➔h(n)(v)", context);
+    this.αvSeq = ComplexSequence.express("αv", "αv:n➔α(n)(v)", context);
+    this.βvSeq = ComplexSequence.express("βv", "βv:n➔β(n)(v)", context);
+    this.hvSeq = ComplexSequence.express("hv", "hv:n➔h(n)(v)", context);
 
     // Alias the OPS instance under "Q" so Φden can reference Q(M)[M-j].
     context.registerSequence("Q", ops);
@@ -91,17 +143,17 @@ public final class MuntzPadeApproximant implements
     // Padé numerator (associated polynomial of the second kind) — same Favard
     // 3-term recurrence as Q with seed Pn_0=0, Pn_1=hv(0).
     ComplexPolynomialSequence.declare("Pn", context);
-    ComplexPolynomialSequence.express("Pn",
+    this.PnSeq = ComplexPolynomialSequence.express("Pn",
         "Pn:n➔when(n=0, 0, n=1, hv(0), else, (z-αv(n-1))*Pn(n-1)-βv(n-1)*Pn(n-2))",
         context);
 
-    ComplexPolynomialSequence.express("Φden:M➔sum(j➔Q(M)[M-j]*z^j{j=1..M})+1", context);
+    this.ΦdenSeq = ComplexPolynomialSequence.express("Φden:M➔sum(j➔Q(M)[M-j]*z^j{j=1..M})+1", context);
     // Φnum mirrors Φden's reverse-coefficient form: coefficient j of Pn(M)
     // multiplies z^(M-j), so summing in that order gives the Müntz-Padé
     // numerator with the correct leading-order behaviour. The standard
     // [3/2] Padé of tanh comes out as (z + z³/15)/(1 + 2z²/5) at M=3
     // straight from this assembly.
-    ComplexPolynomialSequence.express("Φnum:M➔sum(j➔Pn(M)[M-j]*z^j{j=1..M})",   context);
+    this.ΦnumSeq = ComplexPolynomialSequence.express("Φnum:M➔sum(j➔Pn(M)[M-j]*z^j{j=1..M})",   context);
     this.Φ = ComplexFunctionSequence.express("Φ:M➔z➔Φnum(M)(z)/Φden(M)(z)", context);
 
     // Christoffel–Darboux reproducing kernel K_n(z,w) = Σ_{k=0}^{n} Q_k(z)·Q_k(w)/h_k
@@ -109,11 +161,11 @@ public final class MuntzPadeApproximant implements
     // as a compiled Context sequence so the RKHS test (issues #1181/#1182) can
     // verify K_n(z,w) ≡ K_n(w,w) and the support-point agreement with Φ_den's roots.
     // Needs only the registered z/w variables and the existing Q, hv sequences.
-    ComplexFunctionalSequence.express("Kn:n➔z➔w➔sum(k➔Q(k)(z)*Q(k)(w)/hv(k){k=0..n})", context);
+    this.KnSeq = ComplexFunctionalSequence.express("Kn:n➔z➔w➔sum(k➔Q(k)(z)*Q(k)(w)/hv(k){k=0..n})", context);
     // CD_n(z,w) is the confluent Christoffel–Darboux kernel; over this OPS it
     // coincides with K_n(z,w), which the RKHS test (issues #1181/#1182) verifies
     // via K_n(z,w) ≡ CD_n(z,w). Registered under the same body the test expects.
-    ComplexFunctionalSequence.express("CDn:n➔z➔w➔sum(k➔Q(k)(z)*Q(k)(w)/hv(k){k=0..n})", context);
+    this.CDnSeq = ComplexFunctionalSequence.express("CDn:n➔z➔w➔sum(k➔Q(k)(z)*Q(k)(w)/hv(k){k=0..n})", context);
   }
 
   @Override
