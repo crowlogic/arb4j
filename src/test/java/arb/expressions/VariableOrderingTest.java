@@ -42,7 +42,7 @@ public class VariableOrderingTest extends TestCase
 Complex result = new Complex();
         func2.evaluate(w, 1, 128, result);
 
-        log.info("testSeq(n=2, z=3, w=4) = z^(n+w) = 3^(2+4) = 729 = " + result);
+        log.debug("testSeq(n=2, z=3, w=4) = z^(n+w) = 3^(2+4) = 729 = " + result);
       }
       finally
       {
@@ -86,7 +86,7 @@ Complex result = new Complex();
 Complex result = new Complex();
         func2.evaluate(w, 1, 128, result);
 
-        log.info("testSum(n=2, z=2, w=3) = sum k=0..2 of (z+w) = 3*(2+3) = 15 = " + result);
+        log.debug("testSum(n=2, z=2, w=3) = sum k=0..2 of (z+w) = 3*(2+3) = 15 = " + result);
       }
       finally
       {

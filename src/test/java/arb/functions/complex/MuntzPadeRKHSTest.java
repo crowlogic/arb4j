@@ -42,8 +42,8 @@ public class MuntzPadeRKHSTest extends TestCase
       ComplexFunction   cdNz = cdN.evaluate(z, 1, 128, null);
       Complex           cdVal = cdNz.evaluate(w, 1, 128, new Complex());
 
-      log.info("Kn(4)(0.5)(0.7) = " + knVal);
-      log.info("CDn(4)(0.5)(0.7) = " + cdVal);
+      log.debug("Kn(4)(0.5)(0.7) = " + knVal);
+      log.debug("CDn(4)(0.5)(0.7) = " + cdVal);
 
       try ( Complex diff = new Complex(); Real norm = new Real() )
       {
@@ -68,11 +68,11 @@ public class MuntzPadeRKHSTest extends TestCase
             Sequence<ComplexPolynomial> denSeq = ctx.getFunctionMapping("Φden").instantiate();
             ComplexPolynomial den = denSeq.evaluate(ni, 128) )
       {
-        Complex roots = den.roots(128);
-        log.info("Φ_den(4) roots:");
-        for (int i = 0; i < roots.dim; i++)
+Complex roots = den.roots(128);
+        log.debug("Φ_den(4) roots:");
+        for (int i = 0; i < roots.dim(); i++)
         {
-          log.info(String.format("  ζ_%d = %s%n", i, roots.get(i)));
+          log.debug("  ζ_" + i + " = " + roots.get(i));
         }
         roots.close();
       }
