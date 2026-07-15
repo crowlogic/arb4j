@@ -110,9 +110,9 @@ public class OrthogonalPolynomialMomentFunctionalSequence extends
     this.β = ComplexPolynomialSequence.express("β", "β:j ➔ when(j = 0, 0, else, h(j) / h(j-1))", context);
 
     // After the cascade, pull the other cluster members out of the context.
-    this.σ = context.getFunctionMapping("σ").instantiate();
-    this.h = context.getFunctionMapping("h").instantiate();
-    this.α = context.getFunctionMapping("α").instantiate();
+    this.σ = context.getFunction("σ");
+    this.h = context.getFunction("h");
+    this.α = context.getFunction("α");
 
     p0.one(); // P(0, x) = 1; p1 set lazily in initialize()
   }

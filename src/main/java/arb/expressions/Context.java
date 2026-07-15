@@ -153,8 +153,8 @@ public class Context implements
   public final FunctionMappings               functions;
 
   /**
-   * Ownership manifest: every generated function instance constructed within
-   * this Context registers itself here (in its own {@code initialize()}, via
+   * Ownership manifest: every generated function instance constructed within this
+   * Context registers itself here (in its own {@code initialize()}, via
    * {@link #own}) — the outer {@code express()} instance and every per-level
    * child/operand a recurrence lazily allocates alike. This Context is the sole
    * entity responsible for freeing them. A reference is not an ownership: an
@@ -180,23 +180,24 @@ public class Context implements
 
   public final ObservableMap<String, Named>   variables;
 
-  public boolean disableLommelPolynomials;
+  public boolean                              disableLommelPolynomials;
 
   /**
    * Optional package identity for this Context. When non-null, every generated
    * class produced by an {@link Expression} bound to this Context is emitted
-   * under this dotted package, giving it a bytecode-level identity distinct
-   * from classes in other Contexts. This is the prerequisite for the {@code
-   * mergeFrom} feature described in #1024 — contexts with different package
-   * names can never have a genuine class-identity clash, because
-   * {@code arb.jacobi.P} and {@code arb.riccati.P} are different JVM classes.
+   * under this dotted package, giving it a bytecode-level identity distinct from
+   * classes in other Contexts. This is the prerequisite for the {@code
+   * mergeFrom} feature described in #1024 — contexts with different package names
+   * can never have a genuine class-identity clash, because {@code arb.jacobi.P}
+   * and {@code arb.riccati.P} are different JVM classes.
    *
-   * <p>Callers that represent named mathematical objects pass the package at
+   * <p>
+   * Callers that represent named mathematical objects pass the package at
    * construction time, e.g. {@code new Context("arb.jacobi")}. Contexts
    * constructed via the no-arg ctor keep the legacy unpackaged identity for
    * backwards compatibility.
    */
-  public String packageName = null;
+  public String                               packageName                  = null;
 
   public ExpressionClassLoader getClassLoader()
   {
@@ -221,11 +222,11 @@ public class Context implements
    * (through any path — {@link #registerVariable(String, Named)},
    * {@link #mergeFrom(Context, ConflictPolicy)}, {@link #rename(String, String)},
    * constructors, …) records this Context via
-   * {@link Named#registerContext(Context)}, and every variable removed forgets
-   * it via {@link Named#unregisterContext(Context)} (unless it remains mapped
-   * under another name). This is what lets a variable's
-   * {@link AutoCloseable#close()} remove it from every Context it belongs to,
-   * so that closed variables never remain registered in a Context.
+   * {@link Named#registerContext(Context)}, and every variable removed forgets it
+   * via {@link Named#unregisterContext(Context)} (unless it remains mapped under
+   * another name). This is what lets a variable's {@link AutoCloseable#close()}
+   * remove it from every Context it belongs to, so that closed variables never
+   * remain registered in a Context.
    */
   private void maintainVariableContextMemberships()
   {
@@ -262,11 +263,11 @@ public class Context implements
 
   /**
    * Construct a Context with a dotted package identity. Every generated class
-   * produced under this Context will be emitted into {@code packageName} at
-   * the bytecode level. See {@link #packageName} for rationale.
+   * produced under this Context will be emitted into {@code packageName} at the
+   * bytecode level. See {@link #packageName} for rationale.
    *
-   * @param packageName dotted package (e.g. {@code "arb.jacobi"}), or null
-   *                    for the legacy unpackaged behaviour
+   * @param packageName dotted package (e.g. {@code "arb.jacobi"}), or null for
+   *                    the legacy unpackaged behaviour
    */
   public Context(String packageName)
   {
@@ -315,6 +316,17 @@ public class Context implements
     return functionMapping;
   }
 
+  @SuppressWarnings("unchecked")
+  public <D, R, F extends Function<? extends D, ? extends R>> F getFunction(String functionName)
+  {
+    FunctionMapping<D, R, F> mapping = functions.get(functionName);
+    if (mapping == null)
+    {
+      return null;
+    }
+    return mapping.getInstance();
+  }
+
   /**
    * Phase-two wiring helper invoked from generated {@code initialize()} bytecode:
    * returns the canonical {@link FunctionMapping#instance} for
@@ -336,9 +348,9 @@ public class Context implements
 
   public <D, R, F extends Function<? extends D, ? extends R>> void injectFunctionReferences(F f)
   {
-    Class<?> functionClass = f.getClass();
+    Class<?> functionClass      = f.getClass();
     // Determine f's name in this context so we can detect mutual recursion.
-    String targetFunctionName = null;
+    String   targetFunctionName = null;
     for (var e : functions.entrySet())
     {
       if (e.getValue().instance == f)
@@ -369,8 +381,7 @@ public class Context implements
       // is running — firing the re-entrancy guard. The generated initialize()
       // method allocates an instance for each such peer, so leaving the
       // field null here is correct.
-      if (finalTargetName != null
-          && Expression.isTransitivelyReachable(functionMapping, finalTargetName, new java.util.HashSet<>()))
+      if (finalTargetName != null && Expression.isTransitivelyReachable(functionMapping, finalTargetName, new java.util.HashSet<>()))
       {
         return;
       }
@@ -401,10 +412,10 @@ public class Context implements
   }
 
   /**
-   * Clear the memoization cache of every instantiated function in this
-   * Context; each function's own per-instance reentrancy flag terminates any
-   * cycle in the reference graph. The per-index caches are precision-blind, so
-   * callers invoke this when a higher working precision is requested.
+   * Clear the memoization cache of every instantiated function in this Context;
+   * each function's own per-instance reentrancy flag terminates any cycle in the
+   * reference graph. The per-index caches are precision-blind, so callers invoke
+   * this when a higher working precision is requested.
    */
   public void invalidateAllCaches()
   {
@@ -441,10 +452,10 @@ public class Context implements
   }
 
   /**
-   * Allocates an instance of the function registered under {@code name}.
-   * Used by the generated {@code initialize()} bytecode for forward-declared
-   * peers — functions that were declared via {@code ctx.declare(...)} but not
-   * yet expressed when the calling expression was compiled.
+   * Allocates an instance of the function registered under {@code name}. Used by
+   * the generated {@code initialize()} bytecode for forward-declared peers —
+   * functions that were declared via {@code ctx.declare(...)} but not yet
+   * expressed when the calling expression was compiled.
    *
    * <p>
    * Each allocated peer has its own {@code evaluating} flag and shares the
@@ -452,8 +463,8 @@ public class Context implements
    * uses a distinct instance and the re-entrancy guard cannot fire.
    *
    * @param name the function name registered in this context
-   * @return an instance of the named function's concrete class, or
-   *         {@code null} if the mapping has no instance yet
+   * @return an instance of the named function's concrete class, or {@code null}
+   *         if the mapping has no instance yet
    */
   public Function<?, ?> allocatePeer(String name)
   {
@@ -508,8 +519,8 @@ public class Context implements
   /**
    * Variant of {@link #findAssignableField(Class, String, Class)} that takes a
    * pre-fetched array of fields, so the caller can amortize the
-   * {@link Class#getFields()} call across many variable lookups for the
-   * same class.
+   * {@link Class#getFields()} call across many variable lookups for the same
+   * class.
    */
   protected static java.lang.reflect.Field findAssignableField(java.lang.reflect.Field[] fields, String name, Class<?> valueClass)
   {
@@ -530,7 +541,7 @@ public class Context implements
     {
       log.debug(String.format("Context(#%s).injectVariableReferences(f=%s) variables={}", System.identityHashCode(this), f.getClass().getName(), variables));
     }
-    Class<?> compiledClass = f.getClass();
+    Class<?>                  compiledClass  = f.getClass();
     // Locate the owning FunctionMapping to use its cached getFields()
     // array. injectVariableReferences runs during instantiate(), BEFORE
     // express() assigns the new instance to mapping.instance, so identity
@@ -613,26 +624,26 @@ public class Context implements
    * Conflict-resolution policy for {@link #mergeFrom(Context, ConflictPolicy)}.
    *
    * <ul>
-   * <li>{@link #PREFER_THIS}    — keep the existing binding in {@code this};
-   *                                drop the incoming one silently.</li>
-   * <li>{@link #PREFER_OTHER}   — overwrite the existing binding in {@code this}
-   *                                with the incoming one.</li>
+   * <li>{@link #PREFER_THIS} — keep the existing binding in {@code this}; drop
+   * the incoming one silently.</li>
+   * <li>{@link #PREFER_OTHER} — overwrite the existing binding in {@code this}
+   * with the incoming one.</li>
    * <li>{@link #RENAME_INCOMING}— rename the incoming binding (variable or
-   *                                function) and the references to it inside the
-   *                                incoming Context, then add the renamed entry.
-   *                                Full AST-and-source rewrite of the incoming
-   *                                Expressions is not yet implemented — see
-   *                                #1024 follow-up. Today the policy throws
-   *                                {@link UnsupportedOperationException} so
-   *                                callers can detect that they need to land on
-   *                                a non-clashing name before merging.</li>
-   * <li>{@link #ERROR}          — throw a {@link CompilerException} on any
-   *                                conflict (legacy behavior).</li>
+   * function) and the references to it inside the incoming Context, then add the
+   * renamed entry. Full AST-and-source rewrite of the incoming Expressions is not
+   * yet implemented — see #1024 follow-up. Today the policy throws
+   * {@link UnsupportedOperationException} so callers can detect that they need to
+   * land on a non-clashing name before merging.</li>
+   * <li>{@link #ERROR} — throw a {@link CompilerException} on any conflict
+   * (legacy behavior).</li>
    * </ul>
    */
   public enum ConflictPolicy
   {
-    PREFER_THIS, PREFER_OTHER, RENAME_INCOMING, ERROR
+   PREFER_THIS,
+   PREFER_OTHER,
+   RENAME_INCOMING,
+   ERROR
   }
 
   /**
@@ -660,20 +671,19 @@ public class Context implements
    * resolving conflicts according to {@code policy}.
    *
    * <p>
-   * Iterates the incoming Context's variables map, then its functions map.
-   * For each entry:
+   * Iterates the incoming Context's variables map, then its functions map. For
+   * each entry:
    * </p>
    * <ul>
    * <li>If {@code this} has no binding under that name, the incoming entry is
-   *     added.</li>
+   * added.</li>
    * <li>If {@code this} has the same instance bound under that name (reference
-   *     equality), nothing happens.</li>
-   * <li>Otherwise the policy is applied:
-   *     {@link ConflictPolicy#PREFER_THIS} drops the incoming entry;
-   *     {@link ConflictPolicy#PREFER_OTHER} overwrites the existing one;
-   *     {@link ConflictPolicy#RENAME_INCOMING} is not yet implemented and
-   *     throws {@link UnsupportedOperationException} (see #1024 follow-up);
-   *     {@link ConflictPolicy#ERROR} throws {@link CompilerException}.</li>
+   * equality), nothing happens.</li>
+   * <li>Otherwise the policy is applied: {@link ConflictPolicy#PREFER_THIS} drops
+   * the incoming entry; {@link ConflictPolicy#PREFER_OTHER} overwrites the
+   * existing one; {@link ConflictPolicy#RENAME_INCOMING} is not yet implemented
+   * and throws {@link UnsupportedOperationException} (see #1024 follow-up);
+   * {@link ConflictPolicy#ERROR} throws {@link CompilerException}.</li>
    * </ul>
    *
    * <p>
@@ -682,10 +692,10 @@ public class Context implements
    * </p>
    *
    * <p>
-   * Successful merges return silently. Anything that needs caller attention —
-   * a clash under ERROR, an unrenameable binding under RENAME_INCOMING — is
-   * signalled by an exception, not a return value, so failures cannot be
-   * silently dropped by ignoring a report object.
+   * Successful merges return silently. Anything that needs caller attention — a
+   * clash under ERROR, an unrenameable binding under RENAME_INCOMING — is
+   * signalled by an exception, not a return value, so failures cannot be silently
+   * dropped by ignoring a report object.
    * </p>
    */
   public void mergeFrom(Context context, ConflictPolicy policy)
@@ -920,18 +930,18 @@ public class Context implements
 
   public <R extends Named> Context registerVariables(R... vars)
   {
-    for ( R rvar : vars )
+    for (R rvar : vars)
     {
       registerVariable(rvar);
     }
     return this;
   }
-  
+
   public <R extends Named> R registerVariable(R var)
   {
     if (Expression.trace)
     {
-      log.debug("#{}: registerVariable({}={})", System.identityHashCode(this),var.getName(), var);
+      log.debug("#{}: registerVariable({}={})", System.identityHashCode(this), var.getName(), var);
     }
     return registerVariable(var.getName(), var);
   }
@@ -958,47 +968,55 @@ public class Context implements
   /**
    * Reject names that contain superscript or subscript characters. Such
    * characters have parser-level meaning in the expression language (powers,
-   * indices) and silently embedding them in an identifier produces names that
-   * the tokenizer cannot match as a single token, causing baffling
+   * indices) and silently embedding them in an identifier produces names that the
+   * tokenizer cannot match as a single token, causing baffling
    * {@code UndefinedReferenceException}s at expression-compile time when the
    * tokenizer takes the prefix and leaves the trailing exponent/subscript
    * unconsumed.
    *
    * @param name what is being registered
    * @param kind "variable" or "function" — used only for the error message
-   * @throws IllegalArgumentException if {@code name} contains any superscript
-   *         or subscript character
+   * @throws IllegalArgumentException if {@code name} contains any superscript or
+   *                                  subscript character
    */
   static void validateIdentifier(String name, String kind)
   {
-    if (name == null || name.isEmpty()) return;
-    name.codePoints().forEach(cp -> {
+    if (name == null || name.isEmpty())
+      return;
+    name.codePoints().forEach(cp ->
+    {
       String cpStr = new String(Character.toChars(cp));
       if (arb.expressions.Parser.SUPERSCRIPT_TO_NORMAL.containsKey(cpStr))
       {
-        throw new IllegalArgumentException(format(
-            "Cannot register %s with name '%s': contains superscript character '%s' (U+%04X). "
-          + "Superscripts are parser tokens (exponents) and cannot appear in identifiers.",
-            kind, name, cpStr, cp));
+        throw new IllegalArgumentException(format("Cannot register %s with name '%s': contains superscript character '%s' (U+%04X). "
+                                                  + "Superscripts are parser tokens (exponents) and cannot appear in identifiers.",
+                                                  kind,
+                                                  name,
+                                                  cpStr,
+                                                  cp));
       }
       for (Character sub : arb.expressions.Parser.SUBSCRIPT_DIGITS_ARRAY)
       {
         if (sub.charValue() == cp)
         {
-          throw new IllegalArgumentException(format(
-              "Cannot register %s with name '%s': contains subscript digit '%s' (U+%04X). "
-            + "Subscript digits are parser tokens (indices) and cannot appear in identifiers.",
-              kind, name, cpStr, cp));
+          throw new IllegalArgumentException(format("Cannot register %s with name '%s': contains subscript digit '%s' (U+%04X). "
+                                                    + "Subscript digits are parser tokens (indices) and cannot appear in identifiers.",
+                                                    kind,
+                                                    name,
+                                                    cpStr,
+                                                    cp));
         }
       }
       for (Character sub : arb.expressions.Parser.SUBSCRIPT_CHARACTERS_ARRAY)
       {
         if (sub.charValue() == cp)
         {
-          throw new IllegalArgumentException(format(
-              "Cannot register %s with name '%s': contains subscript character '%s' (U+%04X). "
-            + "Subscript characters are parser tokens (indices) and cannot appear in identifiers.",
-              kind, name, cpStr, cp));
+          throw new IllegalArgumentException(format("Cannot register %s with name '%s': contains subscript character '%s' (U+%04X). "
+                                                    + "Subscript characters are parser tokens (indices) and cannot appear in identifiers.",
+                                                    kind,
+                                                    name,
+                                                    cpStr,
+                                                    cp));
         }
       }
     });
@@ -1214,7 +1232,5 @@ public class Context implements
     disableLommelPolynomials = true;
     return this;
   }
-
- 
 
 }

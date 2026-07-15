@@ -1198,6 +1198,10 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return Integer.class.equals(expression.coDomainType) ? Real.class : Compiler.scalarType(expression.coDomainType);
     case "arg":
       return Real.class;
+    case "roots":
+      return Complex.class;
+    case "conj":
+      return Complex.class;
     case "ζ":
       return Complex.class;
     case "exp":

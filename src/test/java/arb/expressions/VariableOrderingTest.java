@@ -15,12 +15,9 @@ public class VariableOrderingTest extends TestCase
   {
     Context ctx = new Context();
     
-    ComplexFunctionalSequence.express("testSeq:n➔z➔w➔z^(n+w)", ctx);
+    ComplexFunctionalSequence seq = ComplexFunctionalSequence.express("testSeq:n➔z➔w➔z^(n+w)", ctx);
+    assertNotNull("testSeq should be registered in context", seq);
     
-    var mapping = ctx.getFunctionMapping("testSeq");
-    assertNotNull("testSeq should be registered in context", mapping);
-    
-    ComplexFunctionalSequence seq = mapping.instantiate();
     assertNotNull("sequence should instantiate", seq);
     
     int n = 2;

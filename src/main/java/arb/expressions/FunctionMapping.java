@@ -182,7 +182,7 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
   }
 
   /**
-   * Re-entrance guard for {@link #instantiate()} and {@link Expression#instantiate()}.
+   * Re-entrance guard for {@link #getInstance()} and {@link Expression#instantiate()}.
    * Resolving a field type during instantiation can route through
    * {@link ExpressionClassLoader#findClass} back to this same mapping; and a
    * sub-expression whose body references the owning sequence (e.g.
@@ -192,7 +192,7 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
    */
   boolean instantiateInProgress;
 
-  public <E extends F> E instantiate()
+  public <E extends F> E getInstance()
   {
     if (instance != null)
     {

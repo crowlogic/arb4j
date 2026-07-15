@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 
 import arb.*;
 import arb.Integer;
-import arb.expressions.Context;
 import arb.functions.ComplexFunctional;
 import arb.functions.integer.ComplexFunctionalSequence;
 import arb.functions.integer.Sequence;
@@ -26,9 +25,8 @@ public class MuntzPadeRKHSTest extends TestCase
     try ( RiccatiMuntzPadeFunctional eq = new RiccatiMuntzPadeFunctional(μ, "1", "0", "-1");
           MuntzPadeApproximant approx = (MuntzPadeApproximant) eq.evaluate(zeroV, 1, 128, null) )
     {
-      Context ctx = approx.context;
-      ComplexFunctionalSequence knSeq = ctx.getFunctionMapping("Kn").instantiate();
-      ComplexFunctionalSequence cdSeq = ctx.getFunctionMapping("CDn").instantiate();
+      ComplexFunctionalSequence knSeq = approx.KnSeq;
+      ComplexFunctionalSequence cdSeq = approx.CDnSeq;
       int nK = 4;
 
       Complex z = new Complex().set(0.5, 0.0);

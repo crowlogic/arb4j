@@ -177,11 +177,11 @@ public class MuntzPadeCumulantGenerator implements
     if (context.getVariable("N") == null)
       context.registerVariable(N);
 
-    if (context.getFunctionMapping("a") == null)
+    if (context.getFunction("a") == null)
       context.registerFunction("a", a);
-    if (context.getFunctionMapping("u") == null)
+    if (context.getFunction("u") == null)
       context.registerFunction("u", u);
-    if (context.getFunctionMapping("w") == null)
+    if (context.getFunction("w") == null)
       context.registerFunction("w", w);
 
     // Consolidated coefficient sequence with a(0):=0 enforced via the when().

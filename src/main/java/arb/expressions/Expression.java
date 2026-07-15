@@ -4234,7 +4234,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       Object referencedInstance;
       try
       {
-        referencedInstance = mapping.instantiate();
+        referencedInstance = mapping.getInstance();
       }
       catch (Throwable t)
       {

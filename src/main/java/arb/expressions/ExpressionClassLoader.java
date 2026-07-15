@@ -145,7 +145,7 @@ public class ExpressionClassLoader extends
           {
             log.debug("findClass('{}') calling instantiate() to compile operand expression", name);
           }
-          functionMapping.instantiate();
+          functionMapping.getInstance();
         }
         else if (Expression.trace)
         {

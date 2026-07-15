@@ -7,19 +7,6 @@
 		</encoder>
 	</appender>
 
-	<!--
-	  The Maven build overrides <resources> to copy only libarblib.so, so
-	  src/main/resources/logback.xml never lands on the test classpath. Without
-	  a config logback falls back to its built-in BasicConfigurator (root=DEBUG),
-	  which floods every test run with FunctionNode/Expression debug spam even
-	  though nobody enabled debug/trace. This test-scoped config restores a sane
-	  INFO default for the whole suite.
-	-->
-	<!-- Distribution DEBUG is far too noisy for CI; silence it entirely -->
-	<logger name="arb.stochastic.Distribution" level="WARN" />
-	<logger name="arb.stochastic.processes.heston" level="WARN" />
-	<logger name="arb.functions.polynomials.orthogonal.real" level="WARN" />
-
 	<root level="INFO">
 		<appender-ref ref="console" />
 	</root>

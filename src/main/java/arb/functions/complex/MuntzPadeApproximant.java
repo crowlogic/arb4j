@@ -235,14 +235,13 @@ public final Real                                          α;
     // native allocation) survives; only the v-dependent αv/βv/hv → Pn → Φnum/Φ
     // (and Φden) caches are cleared, via the non-propagating invalidateLocalCache
     // so clearing a consumer does not cascade into its v-independent producers.
-    for (String name : V_DEPENDENT_CACHES)
-    {
-      var mapping = context.getFunctionMapping(name);
-      if (mapping != null && mapping.instance != null)
-      {
-        mapping.instance.invalidateLocalCache();
-      }
-    }
+    αvSeq.invalidateLocalCache();
+    βvSeq.invalidateLocalCache();
+    hvSeq.invalidateLocalCache();
+    PnSeq.invalidateLocalCache();
+    ΦdenSeq.invalidateLocalCache();
+    ΦnumSeq.invalidateLocalCache();
+    Φ.invalidateLocalCache();
     // Leave cachedBits untouched: it records the precision at which the
     // surviving v-independent caches (σ-table, Müntz a, m) still hold. Resetting
     // it to -1 would make evaluate's `cachedBits < 0` branch silently adopt a
@@ -251,9 +250,6 @@ public final Real                                          α;
     // full invalidation when a precision increase actually needs one.
     return this;
   }
-
-  private static final String[] V_DEPENDENT_CACHES =
-  { "αv", "βv", "hv", "Pn", "Φden", "Φnum", "Φ" };
 
   @Override
   public void close()
