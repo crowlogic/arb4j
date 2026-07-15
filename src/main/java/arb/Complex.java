@@ -1729,6 +1729,11 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
   {
     return getReal().isZero() && getImag().isZero();
   }
+
+  public boolean isOne()
+  {
+    return getReal().isOne() && getImag().isZero();
+  }
   
   public boolean containsZero()
   {

@@ -336,6 +336,16 @@ public class Integer implements
     return result.set(this).sub(subtrahend, bits, result);
   }
 
+  public ComplexPolynomial add(Complex addend, int bits, ComplexPolynomial result)
+  {
+    return result.set(this).add(addend, bits, result);
+  }
+
+  public ComplexPolynomial sub(Complex subtrahend, int bits, ComplexPolynomial result)
+  {
+    return result.set(this).sub(subtrahend, bits, result);
+  }
+
   public ComplexRationalFunction add(ComplexRationalFunction addend, int bits, ComplexRationalFunction result)
   {
     return result.set(this).add(addend, bits, result);

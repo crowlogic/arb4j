@@ -67,4 +67,79 @@ public class ComplexPolynomialRoundtripTest extends TestCase
   {
     assertRoundtrip("-ⅈ");
   }
+
+  public static void testMixedComplexCoefficientHighDegree()
+  {
+    assertRoundtrip("(1+ⅈ)*x²");
+  }
+
+  public static void testMixedComplexCoefficientDegreeOne()
+  {
+    assertRoundtrip("(1+ⅈ)*x");
+  }
+
+  public static void testNegativeMixedComplexCoefficient()
+  {
+    assertRoundtrip("(-1-ⅈ)*x²");
+  }
+
+  public static void testMultipleMixedComplexCoefficients()
+  {
+    assertRoundtrip("(1+ⅈ)*x²+(2-ⅈ)*x");
+  }
+
+  public static void testMixedComplexConstantAndHighDegree()
+  {
+    assertRoundtrip("(1+ⅈ)*x³+3*x+2");
+  }
+
+  public static void testPureImaginaryHighDegree()
+  {
+    assertRoundtrip("ⅈ*x⁴");
+  }
+
+  public static void testConstantMixedComplex()
+  {
+    assertRoundtrip("1+ⅈ");
+  }
+
+  public static void testNegativeMixedComplexConstant()
+  {
+    assertRoundtrip("-1-ⅈ");
+  }
+
+  public static void testLargeMixedPolynomial()
+  {
+    assertRoundtrip("(3+2*ⅈ)*x³-(1+ⅈ)*x+4");
+  }
+
+  public static void testComplexCoeffWithNegativeRealPositiveImag()
+  {
+    assertRoundtrip("(-2+3*ⅈ)*x²");
+  }
+
+  public static void testComplexCoeffWithPositiveRealNegativeImag()
+  {
+    assertRoundtrip("(2-3*ⅈ)*x²");
+  }
+
+  public static void testMixedComplexAllDegrees()
+  {
+    assertRoundtrip("(1+ⅈ)*x³+(2-ⅈ)*x²+(3+2*ⅈ)*x+4-ⅈ");
+  }
+
+  public static void testZeroDegreeTermWithComplexCoeff()
+  {
+    assertRoundtrip("(1+ⅈ)+x²");
+  }
+
+  public static void testOnlyComplexConstant()
+  {
+    assertRoundtrip("3+2*ⅈ");
+  }
+
+  public static void testComplexCoeffDegreeFour()
+  {
+    assertRoundtrip("(1+ⅈ)*x⁴+(2-ⅈ)*x²+1");
+  }
 }

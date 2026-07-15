@@ -229,4 +229,28 @@ public class IntegerTest extends
 
   }
 
+  public static void testAddComplexToComplexPolynomial()
+  {
+    try ( Integer i = new Integer(5);
+          Complex c = new Complex(3, 2);
+          ComplexPolynomial result = new ComplexPolynomial() )
+    {
+      i.add(c, 128, result);
+      assertEquals(8, result.get(0).re().integerValue(new Integer()).getSignedValue());
+      assertEquals(2, result.get(0).im().integerValue(new Integer()).getSignedValue());
+    }
+  }
+
+  public static void testSubComplexFromComplexPolynomial()
+  {
+    try ( Integer i = new Integer(5);
+          Complex c = new Complex(3, 2);
+          ComplexPolynomial result = new ComplexPolynomial() )
+    {
+      i.sub(c, 128, result);
+      assertEquals(2, result.get(0).re().integerValue(new Integer()).getSignedValue());
+      assertEquals(-2, result.get(0).im().integerValue(new Integer()).getSignedValue());
+    }
+  }
+
 }

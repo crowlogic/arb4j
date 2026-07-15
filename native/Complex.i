@@ -1704,6 +1704,11 @@ import arb.functions.complex.ComplexNullaryFunction;
   {
     return getReal().isZero() && getImag().isZero();
   }
+
+  public boolean isOne()
+  {
+    return getReal().isOne() && getImag().isZero();
+  }
   
   public boolean containsZero()
   {

@@ -7,6 +7,7 @@
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
         <listEntry value="4"/>
     </listAttribute>
+    <mapAttribute key="org.eclipse.debug.core.environmentVariables"/>
     <stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value="=arb4j"/>
     <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
     <stringAttribute key="org.eclipse.jdt.junit.TESTNAME" value=""/>
@@ -18,5 +19,5 @@
     <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value=""/>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="arb4j"/>
     <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.m2e.launchconfig.sourcepathProvider"/>
-    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-ea"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-ea&#10;-ea --illegal-native-access=allow&#10;&#9;&#9;&#9;&#9;&#9;&#9;--sun-misc-unsafe-memory-access=allow&#10;&#9;&#9;&#9;&#9;&#9;&#9;-Djava.library.path=/home/crow/git/crowlogic/arb4j&#10;&#9;&#9;&#9;&#9;&#9;&#9;-XX:+DisableExplicitGC&#10;&#9;&#9;&#9;&#9;&#9;&#9;"/>
 </launchConfiguration>
