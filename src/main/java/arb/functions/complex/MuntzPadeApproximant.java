@@ -7,6 +7,7 @@ import arb.functions.integer.ComplexFunctionSequence;
 import arb.functions.integer.ComplexFunctionalSequence;
 import arb.functions.integer.ComplexFunctionalSequenceSequence;
 import arb.functions.integer.ComplexPolynomialSequence;
+import arb.functions.integer.ComplexPolynomialSequenceSequence;
 import arb.functions.integer.ComplexSequence;
 import arb.functions.polynomials.orthogonal.complex.OrthogonalPolynomialMomentFunctionalSequence;
 
@@ -55,6 +56,13 @@ public final Real                                          α;
   private final ComplexSequence                              hvSeq;
   private final ComplexFunctionalSequence                    KnSeq;
   private final ComplexFunctionalSequence                    CDnSeq;
+  private final ComplexPolynomialSequence                    aSeq;
+  private final ComplexPolynomialSequence                    mSeq;
+  private final ComplexPolynomialSequenceSequence            σSeq;
+  private final ComplexPolynomialSequence                    hSeq;
+  private final ComplexPolynomialSequence                    αSeq;
+  private final ComplexPolynomialSequence                    βSeq;
+
   private boolean closed;
 
   public ComplexPolynomialSequence Φden()
@@ -102,6 +110,36 @@ public final Real                                          α;
     return Φ;
   }
 
+  public ComplexPolynomialSequence a()
+  {
+    return aSeq;
+  }
+
+  public ComplexPolynomialSequence m()
+  {
+    return mSeq;
+  }
+
+  public ComplexPolynomialSequenceSequence σ()
+  {
+    return σSeq;
+  }
+
+  public ComplexPolynomialSequence h()
+  {
+    return hSeq;
+  }
+
+  public ComplexPolynomialSequence αSeq()
+  {
+    return αSeq;
+  }
+
+  public ComplexPolynomialSequence βSeq()
+  {
+    return βSeq;
+  }
+
   /**
    * Working precision (in bits) at which the memoized σ-table / Jacobi /
    * Padé sequences currently hold their values. The per-index caches
@@ -120,22 +158,29 @@ public final Real                                          α;
 
     context.registerVariable(α);
     context.registerVariable("v", this.v);
+    this.aSeq = a;
     context.registerSequence("a", a);
 
     // m(k) = a(k+1): 1-shift (caller's a is 1-indexed, OPS is 0-indexed).
     // Each a(k) is a ComplexPolynomial in v; m passes them directly to the OPS
     // σ-table, which builds α(j), β(j), h(j) as polynomials in v.
-    ComplexPolynomialSequence m = ComplexPolynomialSequence.express("m:k➔a(k+1)", context);
+    this.mSeq = ComplexPolynomialSequence.express("m:k➔a(k+1)", context);
 
     // OPS owns σ, h, α, β, the recurrence-coefficient sequences A/B/C, and the
     // orthogonal-polynomial Q (its parent's P field, accessed via ops.evaluate).
-    this.ops = new OrthogonalPolynomialMomentFunctionalSequence(context, m);
+    this.ops = new OrthogonalPolynomialMomentFunctionalSequence(context, mSeq);
 
     // Scalar versions of α, β, h evaluated at v — these are what the Padé
     // assembly needs (poly-in-z with Complex coefficients, not poly-in-u).
     this.αvSeq = ComplexSequence.express("αv", "αv:n➔α(n)(v)", context);
     this.βvSeq = ComplexSequence.express("βv", "βv:n➔β(n)(v)", context);
     this.hvSeq = ComplexSequence.express("hv", "hv:n➔h(n)(v)", context);
+
+    // Capture OPS internal sequences for typed access (public fields)
+    this.σSeq = ops.σ;
+    this.hSeq = ops.h;
+    this.αSeq = ops.α;
+    this.βSeq = ops.β;
 
     // Alias the OPS instance under "Q" so Φden can reference Q(M)[M-j].
     context.registerSequence("Q", ops);
