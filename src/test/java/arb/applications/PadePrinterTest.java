@@ -56,7 +56,7 @@ public class PadePrinterTest extends TestCase
       try ( MuntzPadeApproximant approx = new PadePrinter().makeExpressionApproximant(f, t0))
       {
         assertNotNull("σSeq should be non-null", approx.σSeq);
-        assertNotNull("αSeq should be non-null", approx.αSeq);
+        assertNotNull("αSeq should be non-null", approx.α);
         assertNotNull("βSeq should be non-null", approx.βSeq);
         assertNotNull("hSeq should be non-null",  approx.hSeq);
         try ( Complex α0 = new Complex())
@@ -84,7 +84,7 @@ public class PadePrinterTest extends TestCase
         assertNotNull("ΦdenSeq should be non-null", approx.ΦdenSeq);
         assertNotNull("ΦnumSeq should be non-null", approx.ΦnumSeq);
         assertNotNull("KnSeq should be non-null",   approx.KnSeq);
-        assertTrue("σ-table should produce at least 1 row", approx.αSeq != null);
+        assertTrue("σ-table should produce at least 1 row", approx.α != null);
       }
     }
   }

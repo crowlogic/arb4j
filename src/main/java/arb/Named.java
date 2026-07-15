@@ -18,6 +18,12 @@ import arb.expressions.Context;
 public interface Named
 {
 
+
+  public default String toNameString()
+  {
+    return toString();
+  }
+  
   /**
    * Registry mapping each {@link Named} variable (by identity, since the
    * arithmetic types have value-based {@link Object#equals(Object)}) to the
