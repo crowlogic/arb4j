@@ -4,6 +4,7 @@ import arb.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
+import arb.functions.integer.RealSequence;
 import arb.functions.real.RealFunction;
 
 /**
@@ -25,6 +26,8 @@ public class NegativeBinomialDistribution extends
   public final Real         successProbability;
   public final Real         r;
   public final Real         p;
+  public final Real         q;
+  public       RealSequence pmf;
 
   public final RealFunction density;
   public final RealFunction logDensity;
@@ -45,11 +48,38 @@ public class NegativeBinomialDistribution extends
     this.successProbability = p.setName("p");
     this.r                  = this.shape;
     this.p                  = this.successProbability;
+    try ( Real qInit = new Real())
+    {
+      this.q = qInit.one().sub(p, bits, qInit).setName("q");
+    }
     this.context.registerVariable(this.shape);
     this.context.registerVariable(this.successProbability);
     this.density      = RealFunction.express("f", densityExpression(), context);
     this.logDensity   = RealFunction.express("ℓ", logDensityExpression(), context);
     this.distribution = RealFunction.express("F", cumulativeExpression(), context);
+    this.pmf          = buildPmfSequence(bits);
+  }
+
+  /**
+   * Compile the pmf recurrence into a {@link RealSequence}. The recurrence
+   * {@code f(n) = f(n-1)*((n-1)+r)*q/n} with {@code f(0) = p^r} is defined over a
+   * dedicated context so its free variables {@code r}, {@code p}, {@code q} do
+   * not collide with the distribution/density/log-density expressions.
+   */
+  private RealSequence buildPmfSequence(int bits)
+  {
+    try ( Context pmfContext = new Context())
+    {
+      Real rVar = new Real().set(this.r).setName("r");
+      Real pVar = new Real().set(this.p).setName("p");
+      Real qVar = new Real().set(this.q).setName("q");
+      pmfContext.registerVariable(rVar);
+      pmfContext.registerVariable(pVar);
+      pmfContext.registerVariable(qVar);
+      return RealSequence.express("f",
+                                  "f:n➔when(n=0, p^r, else, f(n-1)*((n-1)+r)*q/n)",
+                                  pmfContext);
+    }
   }
 
   @Override
@@ -178,24 +208,23 @@ public class NegativeBinomialDistribution extends
     return results;
   }
 
-  public Real sample(RandomState state, int bits, Real result)
+public Real sample(RandomState state, int bits, Real result)
   {
-    try ( Real uniform = new Real(); Real mass = new Real(); Real cumulative = new Real(); Real q = new Real(); Real ratio = new Real();
-          Real kPlusR = new Real())
+    try ( Real uniform = new Real(); Real mass = new Real(); Real cumulative = new Real();
+           arb.Integer k = new arb.Integer())
     {
-      q.one().sub(successProbability, bits, q);
       arblib.arb_urandom(uniform, state, bits);
-      successProbability.pow(shape, bits, mass);
+      // f(0) = p^r is the first partial-sum increment
+      pmf.evaluate(k.set(0), 1, bits, mass);
       cumulative.set(mass);
-      int k = 0;
+      int n = 0;
       while (cumulative.compareTo(uniform) <= 0)
       {
-        shape.add(k, bits, kPlusR).mul(q, bits, ratio).div(k + 1, bits, ratio);
-        mass.mul(ratio, bits, mass);
+        n++;
+        pmf.evaluate(k.set(n), 1, bits, mass);
         cumulative.add(mass, bits, cumulative);
-        k++;
       }
-      return result.set(k);
+      return result.set(n);
     }
   }
 
@@ -204,6 +233,8 @@ public class NegativeBinomialDistribution extends
     density.invalidateCache();
     logDensity.invalidateCache();
     distribution.invalidateCache();
+    pmf.close();
+    pmf = buildPmfSequence(64);
   }
 
   @Override
@@ -212,6 +243,7 @@ public class NegativeBinomialDistribution extends
     density.close();
     logDensity.close();
     distribution.close();
+    pmf.close();
     context.close();
     super.close();
   }
