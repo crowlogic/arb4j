@@ -38,14 +38,6 @@ make jar
 
 `make` does everything: SWIG codegen → C compilation → shared library. The SWIG rule at `native/arb_wrap.c` depends on all `.i` files, so editing any `.i` file triggers SWIG regeneration on next `make`.
 
-## Testing rules
-
-- **NEVER filter `mvn` output** with `tail`, `head`, `grep`, or similar — run `mvn test` unfiltered and let the full output stream to the terminal. Only `tee` to file is permitted if you need a copy.
-- **ALWAYS use `-Darb4j.verifyBytecode=true`** when running tests — this enables `CheckClassAdapter` at bytecode generation time, catching VerifyError-class defects immediately rather than at JVM load time.
-- `-Dtest` permitted ONLY with `-Ptrace` for targeted diagnosis. Never change test scope/requirements.
-- If a change introduces a test failure, **IMMEDIATELY revert it** — never dismiss as "pre-existing."
-- No personal pronouns in analysis; third-person impersonal only.
-
 ## Architecture
 
 ### Four layers
@@ -115,10 +107,13 @@ Unimplemented paths throw; they do not return null or silently fall back. For ve
 ## Testing
 
 - **JUnit 4** only (no JUnit 5). Most tests extend `TestCase` (JUnit 3 naming); a few use `@Test` annotations.
-- **No formal integration/unit test separation** — all 179 test files in `src/test/java/`, run with `mvn test`.
+- **No formal integration/unit test separation** — all 171 test files in `src/test/java/`, run with `mvn test`.
 - **try-with-resources everywhere** — every `Real`/`Complex`/`Fraction` in tests is wrapped in try-with-resources.
 - **LeakTracker** (`arb4j.trackLeaks=true`): Weak-reference-based native allocation leak detector. Writes to `/tmp/arb4j-leaks.txt`. Dedicated leak test isolated via Maven profile (`-Pleak-test`) because it requires `System.gc()`.
 - **Surefire flags**: `-ea --illegal-native-access=allow --sun-misc-unsafe-memory-access=allow -Djava.library.path=${project.basedir} -XX:+DisableExplicitGC`
+- **`-Ptrace` profile** adds `-Darb4j.trace=true -Darb4j.traceNodes=true -Darb4j.saveClasses=true -Darb4j.decompileClasses=true` for expression compiler debugging. Use `mvn -Ptrace test -Dtest="..."`
+- **`-Pleak-test` profile** runs only `MuntzPadeApproximantAbandonedAllocationTest` with explicit GC enabled: `mvn -Pleak-test test`
+- **Test output must use SLF4J `log.debug`**, never `System.out`/`System.err` or `log.info`. Root logger level is INFO in `src/main/resources/logback.xml`, so DEBUG is suppressed by default.
 - **Slow tests**: `RoughHestonOptionPricerTest` alone takes ~183s (O(N³) ball-arithmetic). Most tests finish in <12s.
 
 ## Testing rules
