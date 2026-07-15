@@ -125,7 +125,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   public String                                   operandValueFieldName;
 
   /** Hard iteration limit for convergent sums — bomb with exception if exceeded. */
-  public static final int                         MAX_ITERATIONS                = 10_000;
+
 
   /**
    * Generated field holding the partial sum from the <em>previous</em> iteration
@@ -439,11 +439,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
    * radius. This ensures the delta's radius comes entirely from
    * {@code S(n−1)}, making {@code containsZero()} triggerable — the exact
    * mechanism used by {@code PadePrinter}.
-   *
-   * <p>
-   * A hard limit of {@link #MAX_ITERATIONS} prevents infinite loops on
-   * non-convergent series: an {@link arb.exceptions.CompilerException} is
-   * thrown if the limit is hit.
    */
   protected MethodVisitor generateConvergentSum(MethodVisitor mv, Class<?> resultType)
   {
@@ -478,8 +473,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     designateLabel(mv, beginLoop);
 
     // Hard iteration limit — bomb if exceeded
-    generateHardLimitCheck(mv);
-
     if (isBallType())
     {
       // Ball types: save S(n−1) before adding
@@ -683,30 +676,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     pop(mv);
   }
 
-  /**
-   * Emits a hard iteration limit check. If the index has reached
-   * {@link #MAX_ITERATIONS}, an {@link arb.exceptions.CompilerException} is
-   * thrown — never silently returns a partial result.
-   */
-  protected void generateHardLimitCheck(MethodVisitor mv)
-  {
-    Label skipLimit = new Label();
 
-    // if (index.getSignedValue() < MAX_ITERATIONS) goto skipLimit
-    loadIndexVariable(mv);
-    invokeMethod(mv, Integer.class, "getSignedValue", "()I", false);
-    mv.visitLdcInsn(MAX_ITERATIONS);
-    mv.visitJumpInsn(IF_ICMPLT, skipLimit);
-
-    // throw new CompilerException("Infinite sum exceeded hard limit of ...")
-    mv.visitTypeInsn(NEW, "arb/exceptions/CompilerException");
-    mv.visitInsn(DUP);
-    mv.visitLdcInsn("Infinite sum exceeded hard limit of " + MAX_ITERATIONS + " iterations without converging");
-    mv.visitMethodInsn(INVOKESPECIAL, "arb/exceptions/CompilerException", "<init>", "(Ljava/lang/String;)V", false);
-    mv.visitInsn(ATHROW);
-
-    designateLabel(mv, skipLimit);
-  }
 
   /**
    * Returns true if {@link #generatedType} is a ball-arithmetic type

@@ -2629,12 +2629,6 @@ This catalog covers the current `src/test/java` tree under the requested extract
 **What it does:** Manually sets a higher-order Padé pair for tanh, evaluates it at `z=0.5`, and verifies the real part matches `tanh(0.5)` to 5 digits with zero imaginary part.
 **Compiler features exercised:** none — tests native arb wrapper only.
 
-### FoxHFunctionTest.testMittagLefflerReduction
-**What it does:** Compiles a Fox H-function specialization and a Mittag-Leffler reference, evaluates both at seven complex points, and verifies matching real and imaginary parts to `1e-12`.
-**Compiler features exercised:**
-- Built-in function and special-function nodes
-- Context-based symbol resolution and namespace management
-
 ### HyperbolicTangentTest.testTanhAtZero
 **What it does:** Builds the Riccati Müntz–Padé functional for `y'=1-y²`, evaluates it at 0, and verifies the result is exactly 0.
 **Compiler features exercised:**
@@ -2733,26 +2727,6 @@ This catalog covers the current `src/test/java` tree under the requested extract
 
 ### RiccatiDiscriminantTest.testDiscriminantWithVDependentCoefficients
 **What it does:** Builds a Riccati functional with `Q(v)=2v`, computes the discriminant, and verifies the resulting polynomial is `4v²-4`.
-**Compiler features exercised:**
-- Typed expression compilation and codomain promotion
-
-### RiccatiMittagLefflerFunctionTest.testConstructionAndFirstMuntzCoefficient
-**What it does:** Builds the Riccati functional for `μ=0.6`, retrieves the compiled Müntz coefficient sequence, evaluates `a₁` at `v=1`, and verifies its real part equals `1/Γ(1.6)` with zero imaginary part.
-**Compiler features exercised:**
-- Typed expression compilation and codomain promotion
-
-### RiccatiMittagLefflerFunctionTest.testSecondMuntzCoefficientClosedForm
-**What it does:** Builds the linear fractional Riccati case with `μ=1/2`, evaluates the second Müntz coefficient at `v=1`, and verifies it equals `-1+0i`.
-**Compiler features exercised:**
-- Typed expression compilation and codomain promotion
-
-### RiccatiMittagLefflerFunctionTest.testFractionalLinearMatchesMittagLefflerClosedForm
-**What it does:** Evaluates the fractional linear Riccati solution at `t=1/2`, `1`, and `2`, and verifies each real part matches a compiled Mittag-Leffler reference with zero imaginary part.
-**Compiler features exercised:**
-- Typed expression compilation and codomain promotion
-
-### RiccatiMittagLefflerFunctionTest.testFractionalOracleIsVerifiedEnclosure
-**What it does:** Evaluates the fractional linear Riccati solution at `t=1` and verifies the returned real ball contains the compiled exact reference `1-ℰ(1/2,-1)`.
 **Compiler features exercised:**
 - Typed expression compilation and codomain promotion
 

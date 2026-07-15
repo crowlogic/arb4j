@@ -1,0 +1,14 @@
+#!/bin/sh
+# Run PadePrinter with arxiv:2508.15080 Table 2 parameter set (section 1.3)
+# See https://github.com/crowlogic/arb4j/issues/1195
+BASEDIR=$(dirname $(readlink -f $0))/..
+exec $BASEDIR/bin/run arb.applications.PadePrinter \
+  --rough-heston \
+  --mu 0.62 \
+  --lambda 0.1 \
+  --rho -0.681 \
+  --theta 0.3156 \
+  --nu 0.331 \
+  --V0 0.0392 \
+  --T 0.0192307692307692 \
+  "$@"

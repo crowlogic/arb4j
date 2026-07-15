@@ -174,7 +174,7 @@ Canonical feature names used by `docs/test-catalog.md`. Section headings here ar
 
 ## Fractional calculus
 **Brief description:** The compiler supports Caputo fractional derivatives and Riemann–Liouville fractional integrals in parsed operator form and in closed-form special cases for monomials and selected built-ins.
-**Key source files/classes:** `src/main/java/arb/expressions/nodes/CaputoFractionalDerivativeNode.java`, `src/main/java/arb/expressions/nodes/RiemannLiouvilleFractionalIntegralNode.java`, `src/main/java/arb/expressions/nodes/Node.java`, `src/main/java/arb/expressions/nodes/unary/MittagLefflerFunctionNode.java`
+**Key source files/classes:** `src/main/java/arb/expressions/nodes/CaputoFractionalDerivativeNode.java`, `src/main/java/arb/expressions/nodes/RiemannLiouvilleFractionalIntegralNode.java`, `src/main/java/arb/expressions/nodes/Node.java`
 **Representative tests:**
 - [FractionTest.testRaiseIntegerToFractionalPower](test-catalog.md#fractiontesttestraiseintegertofractionalpower)
 - [CaputoFractionalDerivativeNodeTest.testFracdiffParserConstructorDoesNotNPE](test-catalog.md#caputofractionalderivativenodetesttestfracdiffparserconstructordoesnotnpe)
@@ -200,7 +200,7 @@ Canonical feature names used by `docs/test-catalog.md`. Section headings here ar
 
 ## Built-in function and special-function nodes
 **Brief description:** Built-in name resolution maps selected functions to dedicated AST nodes or specialized generation paths for transcendental, hypergeometric, and number-theoretic functions.
-**Key source files/classes:** `src/main/java/arb/expressions/Expression.java`, `src/main/java/arb/expressions/nodes/unary/BesselFunctionNodeOfTheFirstKind.java`, `src/main/java/arb/expressions/nodes/unary/GammaFunctionNode.java`, `src/main/java/arb/expressions/nodes/unary/HypergeometricFunctionNode.java`, `src/main/java/arb/expressions/nodes/unary/FoxHFunctionNode.java`, `src/main/java/arb/expressions/nodes/unary/MittagLefflerFunctionNode.java`
+**Key source files/classes:** `src/main/java/arb/expressions/Expression.java`, `src/main/java/arb/expressions/nodes/unary/BesselFunctionNodeOfTheFirstKind.java`, `src/main/java/arb/expressions/nodes/unary/GammaFunctionNode.java`, `src/main/java/arb/expressions/nodes/unary/HypergeometricFunctionNode.java`
 **Representative tests:**
 - [ComplexRationalFunctionTest.testComplexRationalLommelPolynomials](test-catalog.md#complexrationalfunctiontesttestcomplexrationallommelpolynomials)
 - [ComplexRationalFunctionTest.testComplexRationalLommelPolynomialsAsNullary](test-catalog.md#complexrationalfunctiontesttestcomplexrationallommelpolynomialsasnullary)

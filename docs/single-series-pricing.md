@@ -567,7 +567,7 @@ primitive.
 **The one new primitive:** a `Σ{..∞}` whose convergence test consults an
 a-priori majorant $\tau(N)\downarrow0$ attached to the summand, not the
 magnitude of the last term. Every absolutely convergent series arb4j cares
-about (this price, $e^x$, Mittag-Leffler, Fox-H) carries such a majorant;
+about (this price, $e^x$) carries such a majorant;
 making it a first-class part of the summand contract is the single principled
 change that retires the whole heuristic tower.
 
