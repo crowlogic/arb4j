@@ -20,10 +20,10 @@ public class ComplexPolyDiagTest extends TestCase
     {
       try (var c2 = a.get(2))
       {
-        log.info("coeff[2] = [{}] getImag.isZero={} getReal=[{}] getImag=[{}]",
-                 c2, c2.getImag().isZero(), c2.getReal(), c2.getImag());
+        log.debug("coeff[2] = [{}] getImag.isZero={} getReal=[{}] getImag=[{}]",
+                  c2, c2.getImag().isZero(), c2.getReal(), c2.getImag());
       }
-      log.info("toString = [{}]", a.toString());
+      log.debug("toString = [{}]", a.toString());
     }
 
     try (var f2 = ComplexPolynomialNullaryFunction.express("ⅈ*x²");
@@ -31,9 +31,9 @@ public class ComplexPolyDiagTest extends TestCase
     {
       try (var c2 = a2.get(2))
       {
-        log.info("pureImag coeff[2] = [{}] getImag.isZero={}", c2, c2.getImag().isZero());
+        log.debug("pureImag coeff[2] = [{}] getImag.isZero={}", c2, c2.getImag().isZero());
       }
-      log.info("pureImag toString = [{}]", a2.toString());
+      log.debug("pureImag toString = [{}]", a2.toString());
     }
   }
 }
