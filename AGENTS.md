@@ -38,6 +38,14 @@ make jar
 
 `make` does everything: SWIG codegen → C compilation → shared library. The SWIG rule at `native/arb_wrap.c` depends on all `.i` files, so editing any `.i` file triggers SWIG regeneration on next `make`.
 
+## Testing rules
+
+- **NEVER filter `mvn` output** with `tail`, `head`, `grep`, or similar — run `mvn test` unfiltered and let the full output stream to the terminal. Only `tee` to file is permitted if you need a copy.
+- **ALWAYS use `-Darb4j.verifyBytecode=true`** when running tests — this enables `CheckClassAdapter` at bytecode generation time, catching VerifyError-class defects immediately rather than at JVM load time.
+- `-Dtest` permitted ONLY with `-Ptrace` for targeted diagnosis. Never change test scope/requirements.
+- If a change introduces a test failure, **IMMEDIATELY revert it** — never dismiss as "pre-existing."
+- No personal pronouns in analysis; third-person impersonal only.
+
 ## Architecture
 
 ### Four layers
@@ -112,6 +120,14 @@ Unimplemented paths throw; they do not return null or silently fall back. For ve
 - **LeakTracker** (`arb4j.trackLeaks=true`): Weak-reference-based native allocation leak detector. Writes to `/tmp/arb4j-leaks.txt`. Dedicated leak test isolated via Maven profile (`-Pleak-test`) because it requires `System.gc()`.
 - **Surefire flags**: `-ea --illegal-native-access=allow --sun-misc-unsafe-memory-access=allow -Djava.library.path=${project.basedir} -XX:+DisableExplicitGC`
 - **Slow tests**: `RoughHestonOptionPricerTest` alone takes ~183s (O(N³) ball-arithmetic). Most tests finish in <12s.
+
+## Testing rules
+
+- **NEVER filter `mvn` output** with `tail`, `head`, `grep`, or similar — run `mvn test` unfiltered and let the full output stream to the terminal. Only `tee` to file is permitted if you need a copy.
+- **ALWAYS use `-Darb4j.verifyBytecode=true`** when running tests — this enables `CheckClassAdapter` at bytecode generation time, catching VerifyError-class defects immediately rather than at JVM load time.
+- `-Dtest` permitted ONLY with `-Ptrace` for targeted diagnosis. Never change test scope/requirements.
+- If a change introduces a test failure, **IMMEDIATELY revert it** — never dismiss as "pre-existing."
+- No personal pronouns in analysis; third-person impersonal only.
 
 ## Known gotchas
 
