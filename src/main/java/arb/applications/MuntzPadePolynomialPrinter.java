@@ -281,12 +281,12 @@ public class MuntzPadePolynomialPrinter implements
       System.out.printf("  h(j) = %s%n", ctx.getFunctionMapping("h").getExpressionString());
       System.out.printf("  α(j) = %s%n", ctx.getFunctionMapping("α").getExpressionString());
       System.out.printf("  β(j) = %s%n", ctx.getFunctionMapping("β").getExpressionString());
-      System.out.printf("  Pn(n) = %s%n", approx.PnSeq.getExpressionString());
+      System.out.printf("  Pn(n) = %s%n", ctx.getFunctionMapping("Pn").getExpressionString());
       System.out.println();
       System.out.println("Padé assembly (compiled expressions):");
-      System.out.printf("  Φden(M) = %s%n", approx.ΦdenSeq.getExpressionString());
-      System.out.printf("  Φnum(M) = %s%n", approx.ΦnumSeq.getExpressionString());
-      System.out.printf("  Φ(M)(z) = %s%n", approx.Φ.getExpressionString());
+      System.out.printf("  Φden(M) = %s%n", ctx.getFunctionMapping("Φden").getExpressionString());
+      System.out.printf("  Φnum(M) = %s%n", ctx.getFunctionMapping("Φnum").getExpressionString());
+      System.out.printf("  Φ(M)(z) = %s%n", ctx.getFunctionMapping("Φ").getExpressionString());
       System.out.println("═".repeat(70));
       System.out.println();
 
