@@ -1,0 +1,859 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{amssymb,amsmath}
+\usepackage{enumitem}
+\usepackage{tabularx}
+\usepackage{fancyvrb}
+
+\geometry{margin=2.5cm}
+
+\definecolor{javared}{RGB}{180,0,0}
+\definecolor{javagreen}{RGB}{0,128,0}
+\definecolor{javapurple}{RGB}{128,0,128}
+\definecolor{javacomment}{RGB}{128,128,128}
+
+\lstdefinelanguage{JavaFiltered}{
+  morekeywords={abstract,assert,boolean,break,byte,case,catch,char,class,
+    const,continue,default,do,double,else,enum,extends,false,final,finally,
+    float,for,goto,if,implements,import,instanceof,int,interface,long,native,
+    new,null,package,private,protected,public,return,short,static,strictfp,
+    super,switch,synchronized,this,throw,throws,transient,true,try,void,
+    volatile,while,var},
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]",
+  sensitive=true
+}
+
+\lstset{
+  language=JavaFiltered,
+  basicstyle=\small\ttfamily,
+  keywordstyle=\color{javapurple}\bfseries,
+  commentstyle=\color{javacomment},
+  stringstyle=\color{javared},
+  numbers=left,
+  numberstyle=\tiny\color{javacomment},
+  frame=single,
+  breaklines=true,
+  tabsize=2,
+  columns=fullflexible
+}
+
+\title{\textbf{PadePrinter: A Complete Line-by-Line Walkthrough}\\[4pt]
+       \large arb4j --- M\"untz--Pad\'e Spectral-Tau Printer}
+\author{Stephen Crowley}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Introduction}
+
+PadePrinter is a \texttt{picocli}-based command-line application that prints the
+Pad\'e approximant and Christoffel--Darboux kernel of the M\"untz--Pad\'e
+spectral-tau solution of the constant-coefficient fractional Riccati equation:
+
+\[
+D^{\mu} y(v,t) = P(v) + Q(v)\cdot y(v,t) + R(v)\cdot y(v,t)^{2},\qquad y(0)=0.
+\]
+
+It lives at \texttt{src/main/java/arb/applications/PadePrinter.java} and
+implements \texttt{Runnable} so that \texttt{picocli} can dispatch to it.
+
+\section{Package and Imports (Lines 1--20)}
+
+\begin{lstlisting}
+package arb.applications;
+
+import java.io.InputStream;
+import java.util.Properties;
+
+import arb.*;
+import arb.Integer;
+import arb.expressions.Context;
+import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.MuntzPadeApproximant;
+import arb.functions.complex.RiccatiMuntzPadeFunctional;
+import arb.functions.integer.ComplexPolynomialSequence;
+import arb.functions.integer.ComplexSequence;
+import arb.functions.real.RealFunction;
+import arb.stochastic.processes.heston.RoughHestonRiccatiMuntzPadeFunctional;
+import arb.utensils.ShellFunctions;
+import arb.utensils.text.tables.TextTable;
+import picocli.CommandLine;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
+\end{lstlisting}
+
+\textbf{Line 1:} Package declaration. PadePrinter is an application, not a
+library component, so it lives in \texttt{arb.applications}.
+
+\textbf{Lines 3--4:} \texttt{InputStream} and \texttt{Properties}---used by the
+\texttt{VersionProvider} inner class to read build metadata from
+\texttt{/arb/build-info.properties} baked into the jar.
+
+\textbf{Line 6:} Wildcard import of the \texttt{arb} package, pulling in
+\texttt{Real}, \texttt{Complex}, \texttt{ComplexPolynomial}, and every other
+core type.
+
+\textbf{Line 7:} Explicit import of \texttt{arb.Integer} (the ball-arithmetic
+variant, not \texttt{java.lang.Integer})---necessary because the wildcard
+import can shadow it.
+
+\textbf{Lines 8--17:} The domain types. \texttt{Context} wires shared variables
+and sub-functions. \texttt{ComplexFunction} is the expression-compiler's
+function interface for complex codomains.
+\texttt{MuntzPadeApproximant} is the result of the Riccati solver---it holds
+every computed sequence ($\sigma$-table, Jacobi coefficients, orthogonal
+polynomials, kernel). \texttt{RiccatiMuntzPadeFunctional} defines the Riccati
+equation with coefficients $P$, $Q$, $R$. \texttt{RoughHestonRiccatiMuntzPadeFunctional}
+specialises it for the rough Heston model. \texttt{ComplexPolynomialSequence}
+and \texttt{ComplexSequence} are the expression-compiler's typed sequence
+interfaces. \texttt{RealFunction} wraps a real-valued compiled expression.
+\texttt{ShellFunctions} provides the \texttt{plot()} entry point for JavaFX
+plotting. \texttt{TextTable} formats tabular data to stdout.
+
+\textbf{Lines 18--20:} \texttt{picocli} annotations and entry point. The
+\texttt{@Command}, \texttt{@Option} annotations define the CLI interface;
+\texttt{CommandLine} executes it.
+
+\section{Class Javadoc and \texttt{@Command} Annotation (Lines 22--107)}
+
+\begin{lstlisting}[firstnumber=22]
+/**
+ * Prints the first N orthogonal polynomials of the numerator and denominator of
+ * the M\"untz-Pad\'e spectral-tau solution of the constant-coefficient
+ * (time-independent) fractional Riccati equation.
+ *
+ * <pre>
+ *   D^\mu y(v,t) = P(v) + Q(v)\cdot y(v,t) + R(v)\cdot y(t,v)^2
+ *   y(0) = 0
+ * </pre>
+ *
+ * @author Stephen Crowley \copyright2024--2026
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne \copyright terms
+ */
+\end{lstlisting}
+
+\textbf{Lines 22--34:} The class-level Javadoc states the problem. The equation
+here shows $y$ depending on both $v$ (a perturbation parameter) and $t$. The
+M\"untz--Pad\'e method solves this by expanding $y$ as a M\"untz series in
+$z = t^{\mu}$.
+
+\newpage
+
+\begin{lstlisting}[firstnumber=35]
+@Command(name = "pade", description =
+{ "",
+  "Print the Pad\'e approximant and Christoffel--Darboux kernel",
+  ...
+  "" }, versionProvider = PadePrinter.VersionProvider.class,
+        mixinStandardHelpOptions = true)
+\end{lstlisting}
+
+\textbf{Line 35:} The \texttt{@Command} annotation registers the CLI as
+\texttt{pade}. \texttt{mixinStandardHelpOptions = true} auto-adds
+\texttt{--help} and \texttt{--version} flags.
+
+\textbf{Lines 36--107:} The \texttt{description} array is a multi-line string
+that \texttt{picocli} prints when \texttt{--help} is invoked. It documents:
+\begin{itemize}[nosep]
+\item The Riccati recurrence for the coefficients $a_k$
+\item The moment functional $\mu(z^k) = m(k) = a(k+1)$
+\item The $\sigma$-table as a Lanczos/Danilevsky reduction of the Hankel
+  moment matrix
+\item The termination theorem: when $0 \in \Delta\beta_n$, the Jacobi
+  recurrence has converged
+\item The Christoffel--Darboux kernel and its formula
+\item The discriminant $\Delta = Q^2 - 4PR$ and its role
+\end{itemize}
+
+\section{\texttt{VersionProvider} Inner Class (Lines 111--135)}
+
+\begin{lstlisting}[firstnumber=111]
+static class VersionProvider implements
+                                 picocli.CommandLine.IVersionProvider
+  {
+    @Override
+    public String[] getVersion() throws Exception
+    {
+      Properties props = new Properties();
+      try ( InputStream in = PadePrinter.class
+              .getResourceAsStream("/arb/build-info.properties"))
+      {
+        if (in != null)
+        {
+          props.load(in);
+        }
+      }
+      String arb4j = props.getProperty("arb4j.version", "dev");
+      var    lines = new java.util.ArrayList<String>();
+      lines.add("pade (arb4j " + arb4j + ")");
+      props.stringPropertyNames()
+           .stream()
+           .filter(k -> !k.equals("arb4j.version"))
+           .sorted()
+           .forEach(k -> lines.add("  " +
+               k.replace(".version", "") + " " + props.getProperty(k)));
+      return lines.toArray(String[]::new);
+    }
+  }
+\end{lstlisting}
+
+\textbf{Lines 111--135:} Reads \texttt{build-info.properties} (auto-generated by
+\texttt{make}) and formats its contents as version strings. The first line is
+\texttt{pade (arb4j <version>)} followed by every other property (gmp, mpfr,
+flint, xdotool, swig, java versions) sorted alphabetically, with the
+\texttt{.version} suffix stripped from the key names. Loads via
+\texttt{try-with-resources} so the \texttt{InputStream} is always closed.
+
+\section{Options Fields (Lines 137--207)}
+
+\begin{lstlisting}[firstnumber=137]
+@Option(names = "--mu", description = "fractional order \mu (default: 1)",
+        defaultValue = "1")
+String  mu;
+...
+@Option(names = "--N", description = "number of orthogonal polynomials (default: 10)",
+        defaultValue = "10")
+int     N;
+...
+@Option(names = "--bits", description = "working precision in bits (default: 128)",
+        defaultValue = "128")
+int     bits;
+\end{lstlisting}
+
+Every field annotated with \texttt{@Option} becomes a CLI flag. The complete
+inventory:
+
+\begin{tabularx}{\textwidth}{l l X}
+\toprule
+\textbf{Flag} & \textbf{Type} & \textbf{Purpose} \\
+\midrule
+\texttt{--mu} & String & Fractional order $\mu$ (parsed to \texttt{Real}) \\
+\texttt{--P} & String & Coefficient $P(v)$ (default \texttt{"1"}) \\
+\texttt{--Q} & String & Coefficient $Q(v)$ (default \texttt{"0"}) \\
+\texttt{--R} & String & Coefficient $R(v)$ (default \texttt{"-1"}) \\
+\texttt{--N} & int & Number of orthogonal polynomials (default 10) \\
+\texttt{--bits} & int & Working precision (default 128) \\
+\texttt{--no-reset-radius} & boolean & Don't zero ball radii \\
+\texttt{--no-autoterm} & boolean & Don't auto-terminate at $0\in\Delta\beta_n$ \\
+\texttt{--print-polynomials} & boolean & Print orthogonal polynomial tables \\
+\texttt{--print-moments} & int & Print moment sequence ($-1$=off) \\
+\texttt{--rough-heston} & boolean & Use rough Heston coefficients \\
+\texttt{--lambda} & String & Rough Heston $\lambda$ (default \texttt{"0.3"}) \\
+\texttt{--theta} & String & Rough Heston $\theta$ (default \texttt{"0.04"}) \\
+\texttt{--nu} & String & Rough Heston $\nu$ (default \texttt{"0.3"}) \\
+\texttt{--V0} & String & Rough Heston $V_0$ (default \texttt{"0.04"}) \\
+\texttt{--rho} & String & Rough Heston $\rho$ (default \texttt{"-0.7"}) \\
+\texttt{--T} & String & Rough Heston $T$ (default \texttt{"1.0"}) \\
+\texttt{--expr} & String & Arbitrary expression to Pad\'e-resum \\
+\texttt{--center} & String & Expansion center for \texttt{--expr} (default \texttt{"0"}) \\
+\texttt{--plot} & String & Reference expression to plot \\
+\texttt{--eval} & String & Comma-separated evaluation points \\
+\texttt{--plot-left} & double & Left plot endpoint (default 0) \\
+\texttt{--plot-right} & double & Right plot endpoint (default 1) \\
+\texttt{--plot-points} & int & Plot sample points (default 200) \\
+\bottomrule
+\end{tabularx}
+
+\section{Entry Point --- \texttt{main()} (Lines 209--213)}
+
+\begin{lstlisting}[firstnumber=209]
+public static void main(String[] args)
+{
+  int exitCode = new CommandLine(new PadePrinter()).execute(args);
+  System.exit(exitCode);
+}
+\end{lstlisting}
+
+\textbf{Line 211:} \texttt{picocli} instantiates \texttt{PadePrinter}, injects
+the option values from \texttt{args}, then calls \texttt{run()} on it.
+\texttt{System.exit} propagates the exit code (0 for success, non-zero for
+errors).
+
+\section{\texttt{run()} --- Mode Dispatch (Lines 216--222)}
+
+\begin{lstlisting}[firstnumber=216]
+public void run()
+{
+  if (expr != null)
+  {
+    runExpressionMode();
+    return;
+  }
+
+  System.out.println("M\"untz--Pad\'e orthogonal polynomials ...");
+  ...
+\end{lstlisting}
+
+\textbf{Lines 218--222:} If \texttt{--expr} was provided, dispatch to
+\texttt{runExpressionMode()} which handles the arbitrary-expression path.
+Otherwise fall through to the standard Riccati-equation path.
+
+\newpage
+
+\section{Standard Mode --- Header and Setup (Lines 224--237)}
+
+\begin{lstlisting}[firstnumber=224]
+System.out.println("M\"untz--Pad\'e orthogonal polynomials of the spectral-tau solution");
+System.out.println("of the constant-coefficient (time-independent) fractional Riccati equation");
+System.out.printf("  D^%s y(t) = P(v) + Q(v)\cdot y(t) + R(v)\cdot y(t)^2,  y(0) = 0%n", mu);
+System.out.printf("Working precision: %d bits (~%d decimal digits)%n",
+                   bits, (int) (bits * Math.log10(2)));
+System.out.printf("First %d orthogonal polynomials in z = t^\mu%n", N);
+System.out.println();
+
+Real    \mu     = new Real().set(mu, bits);
+Complex zeroV = new Complex().zero();
+
+try ( RiccatiMuntzPadeFunctional eq = makeEquation(\mu))
+{
+  MuntzPadeApproximant approx =
+      (MuntzPadeApproximant) eq.evaluate(zeroV, 1, bits, null);
+  Context              ctx    = approx.context;
+\end{lstlisting}
+
+\textbf{Lines 224--229:} Print the banner. \texttt{bits * Math.log10(2)}
+converts bits to approximate decimal digits.
+
+\textbf{Line 231:} \texttt{mu} is parsed from its string form to a
+\texttt{Real} ball at \texttt{bits} precision. The raw string \texttt{mu} came
+from the \texttt{--mu} CLI option (a String, not a Real), because
+\texttt{picocli} cannot directly inject into \texttt{arb.Real}.
+
+\textbf{Line 232:} \texttt{zeroV = new Complex().zero()} creates a zero-valued
+complex at the perturbation point $v = 0$. This is the evaluation point for the
+$\sigma$-table: the orthogonal-polynomial coefficients are polynomials in $v$,
+and evaluating at $v=0$ gives the scalar Pad\'e coefficients used in the
+assembled rational approximant.
+
+\textbf{Line 234:} \texttt{makeEquation($\mu$)} constructs the
+\texttt{RiccatiMuntzPadeFunctional} (or
+\texttt{RoughHestonRiccatiMuntzPadeFunctional} if \texttt{--rough-heston} is
+set). The \texttt{try}-with-resources ensures the equation is closed when done.
+
+\textbf{Line 236:} \texttt{eq.evaluate(zeroV, 1, bits, null)} evaluates the
+functional at $v = 0$ with order 1. This triggers the entire M\"untz--Pad\'e
+machinery: the $\sigma$-table sequences are compiled, the moment sequence is
+computed from the Riccati recurrence, the Jacobi coefficients are extracted,
+and the orthogonal polynomials are built. The return type is cast to
+\texttt{MuntzPadeApproximant}, which holds all results.
+
+\textbf{Line 237:} Extract the \texttt{Context} for later use in registering
+function mappings for the plot/eval path.
+
+\newpage
+
+\section{Standard Mode --- Coefficient Functions (Lines 239--275)}
+
+\begin{lstlisting}[firstnumber=239]
+System.out.println("=".repeat(70));
+System.out.println("Coefficient functions");
+System.out.println("=".repeat(70));
+System.out.println();
+if (roughHeston)
+{
+  System.out.println("  P(v) = \frac12(-v^2 - iv)");
+  ...
+}
+else
+{
+  System.out.printf("  P(v) = %s  (constant)%n", pCoeff);
+  System.out.printf("  Q(v) = %s  (constant)%n", qCoeff);
+  System.out.printf("  R(v) = %s  (constant)%n", rCoeff);
+}
+System.out.println();
+eq.p.setIndependentVariableName("v");
+eq.q.setIndependentVariableName("v");
+eq.r.setIndependentVariableName("v");
+System.out.printf("  p(v) = %s%n", eq.p);
+System.out.printf("  q(v) = %s%n", eq.q);
+System.out.printf("  r(v) = %s%n", eq.r);
+System.out.println("=".repeat(70));
+\end{lstlisting}
+
+\textbf{Lines 239--267:} Print the coefficient functions $P$, $Q$, $R$. In
+rough Heston mode, the coefficient formulas are hard-coded
+($P(v) = \frac12(-v^2 - iv)$ etc.) because they are fixed by the rough Heston
+model. Otherwise the user-provided strings from \texttt{--P}, \texttt{--Q},
+\texttt{--R} are displayed.
+
+\textbf{Lines 268--273:} Rename the independent variable of each compiled
+coefficient expression to ``v'' for display, then print them as evaluated
+polynomials. \texttt{eq.p}, \texttt{eq.q}, \texttt{eq.r} are
+\texttt{ComplexPolynomial} instances or compiled expressions depending on the
+implementation.
+
+\section{Standard Mode --- $\sigma$-Table Definitions (Lines 277--301)}
+
+\begin{lstlisting}[firstnumber=277]
+System.out.println("=".repeat(70));
+System.out.println("\sigma-table definitions (compiled expressions)");
+System.out.println("=".repeat(70));
+System.out.println();
+try ( ComplexPolynomial disc = eq.discriminant(bits, new ComplexPolynomial()))
+{
+  disc.setIndependentVariableName("v");
+  System.out.printf("  discriminant = Q^2 - 4PR = %s%n", disc);
+}
+System.out.println();
+System.out.printf("  a(k) = %s%n", approx.aSeq.toNameString());
+System.out.printf("  m(k) = %s%n", approx.mSeq.toNameString());
+System.out.printf("  \sigma(j)(k) = %s%n", approx.\sigmaSeq.toNameString());
+System.out.printf("  h(j) = %s%n", approx.hSeq.toNameString());
+System.out.printf("  \alpha(j) = %s%n", approx.\alphaSeq.toNameString());
+System.out.printf("  \beta(j) = %s%n", approx.\betaSeq.toNameString());
+System.out.printf("  Pn(n) = %s%n", approx.PnSeq.toNameString());
+System.out.println();
+System.out.println("Pad\'e assembly (compiled expressions):");
+System.out.printf("  \Phi_den(M) = %s%n", approx.\Phi denSeq.toNameString());
+System.out.printf("  \Phi_num(M) = %s%n", approx.\Phi numSeq.toNameString());
+System.out.printf("  \Phi(M)(z) = %s%n", approx.\Phi.toNameString());
+System.out.printf("  K_n(z,w) = %s%n", approx.KnSeq.toNameString());
+System.out.println("=".repeat(70));
+\end{lstlisting}
+
+\textbf{Line 281:} Compute and display the discriminant $Q^2 - 4PR$ as a
+polynomial in $v$.
+
+\textbf{Lines 287--293:} For each sequence in the approximant, call
+\texttt{toNameString()} which returns the expression-compiler's source-level
+representation of the compiled expression. This shows the user exactly how the
+compiler transcribed the mathematical definitions into executable bytecode:
+
+\begin{itemize}[nosep]
+\item \texttt{a(k)} --- The Riccati coefficient sequence (moments before shift)
+\item \texttt{m(k) = a(k+1)} --- The moment functional (1-index shift)
+\item $\sigma(j)(k)$ --- The $\sigma$-table (Chebyshev--Stieltjes procedure)
+\item $h(j) = \sigma(j)(j)$ --- Squared $L^2$ norms
+\item $\alpha(j), \beta(j)$ --- Jacobi recurrence coefficients
+\item $P_n(n)$ --- Associated (second-kind) polynomials
+\item $\Phi_{\text{den}}(M)$ --- Denominator polynomial (monic orthogonal, favard recurrence)
+\item $\Phi_{\text{num}}(M)$ --- Numerator polynomial (associated)
+\item $\Phi(M)(z)$ --- The assembled Pad\'e approximant $\Phi_{\text{num}} / \Phi_{\text{den}}$
+\item $K_n(z,w)$ --- The Christoffel--Darboux reproducing kernel
+\end{itemize}
+
+\section{Standard Mode --- Moment Sequence Printing (Lines 303--325)}
+
+\begin{lstlisting}[firstnumber=303]
+if (printMoments >= 0)
+{
+  int numMoments = printMoments == 0 ? N : printMoments;
+  System.out.println("=".repeat(70));
+  System.out.printf("Moment sequence m(k) = a(k+1)  [first %d moments]%n", numMoments);
+  ...
+  for (int k = 0; k < numMoments; k++)
+  {
+    moments[k][0] = String.valueOf(k);
+    try ( var mk = approx.ops.m.evaluate(k, bits))
+    {
+      mk.printPrecision = true;
+      moments[k][1] = mk.toString();
+    }
+  }
+  new TextTable(cols, moments).printTable();
+}
+\end{lstlisting}
+
+\textbf{Lines 303--304:} Only print moments when \texttt{--print-moments >= 0}.
+\texttt{printMoments == 0} means ``print $N$ moments'' (same as the polynomial
+count). A positive value gives an explicit count.
+
+\textbf{Line 316:} \texttt{approx.ops.m.evaluate(k, bits)} evaluates the $k$-th
+moment $m(k) = a(k+1)$. The moment is a \texttt{ComplexPolynomial} in $v$,
+evaluated at the frozen point $v = 0$ inside the approximant construction, but
+here we display it as a polynomial.
+
+\textbf{Line 318:} \texttt{mk.printPrecision = true} enables printing the ball
+radius alongside the midpoint, revealing the certified error bound.
+
+\section{Standard Mode --- Polynomial Tables (Lines 327--387)}
+
+\begin{lstlisting}[firstnumber=327]
+ComplexPolynomialSequence PnSeq = approx.PnSeq;
+ComplexSequence           \alpha vSeq = approx.\alpha vSeq;
+ComplexSequence           \beta vSeq = approx.\beta vSeq;
+ComplexSequence           hvSeq = approx.hvSeq;
+\end{lstlisting}
+
+\textbf{Lines 327--330:} Local aliases for the scalar-evaluated sequences.
+These are the $\alpha$, $\beta$, $h$ values evaluated at $v=0$ (the
+perturbation point), giving scalar (complex-number) coefficients rather than
+polynomials in $v$.
+
+\newpage
+
+\begin{lstlisting}[firstnumber=332]
+if (printPolynomials)
+{
+  // Denominator polynomials P_n(z) -- monic orthogonal, first kind
+  ...
+  for (int n = 0; n < N; n++)
+  {
+    try ( ComplexPolynomial Pn = approx.ops.evaluate(n, bits))
+    {
+      Pn.setIndependentVariableName("z");
+      ...
+    }
+  }
+  new TextTable(polyCols, polyData).printTable();
+
+  // Numerator polynomials Pn_n(z) -- associated, second kind
+  ...
+  for (int n = 0; n < N; n++)
+  {
+    try ( ComplexPolynomial PnAssoc = PnSeq.evaluate(n, bits))
+    {
+      PnAssoc.setIndependentVariableName("z");
+      ...
+    }
+  }
+  new TextTable(polyCols, assocData).printTable();
+}
+\end{lstlisting}
+
+\textbf{Lines 332--387:} Conditionally print both sets of orthogonal
+polynomials:
+
+\begin{enumerate}[nosep]
+\item \textbf{Denominator polynomials $P_n(z)$} (first kind, monic orthogonal):
+  Evaluated via \texttt{approx.ops.evaluate(n, bits)} which returns a
+  \texttt{ComplexPolynomial}. These are the orthogonal polynomials with respect
+  to the moment functional, satisfying the three-term recurrence
+  $P_{n+1}(z) = (z - \alpha_n) P_n(z) - \beta_n P_{n-1}(z)$.
+
+\item \textbf{Numerator polynomials $\tilde P_n(z)$} (second kind, associated):
+  Evaluated via \texttt{PnSeq.evaluate(n, bits)}. These satisfy the same
+  recurrence but with different initial conditions.
+\end{enumerate}
+
+Each polynomial's independent variable is renamed to ``z'' for display.
+
+\section{Standard Mode --- Jacobi Coefficient Table (Lines 389--449)}
+
+\begin{lstlisting}[firstnumber=394]
+String[]   jacobiCols = { "n", "\alpha_n", "\beta_n", "h_n", "\Delta\beta_n",
+                          "0\in\Delta\beta_n" };
+int        actualN    = N;
+String[][] jacobiData = new String[N][6];
+try ( Complex \alpha n = new Complex(); Complex \beta n = new Complex();
+      Complex hn = new Complex(); Complex \beta nPrev = new Complex();
+      Complex delta\beta = new Complex())
+{
+  for (int n = 0; n < N; n++)
+  {
+    \alpha vSeq.evaluate(n, bits, \alpha n);
+    \beta vSeq.evaluate(n, bits, \beta n);
+    hvSeq.evaluate(n, bits, hn);
+    ...
+\end{lstlisting}
+
+This is the computational core of the display. For each $n = 0, \ldots, N-1$:
+
+\textbf{Lines 402--404:} Evaluate the three Jacobi sequences at index $n$,
+writing into pre-allocated \texttt{Complex} receivers (the ``last-argument-is-
+result'' pattern). Reusing the same five \texttt{Complex} instances across all
+iterations avoids allocation churn.
+
+\textbf{Lines 405--413:} If \texttt{--no-reset-radius} is NOT set (the default),
+zero out the ball radii of the results. The $\sigma$-table's ball arithmetic
+propagates uncertainty from the moment sequence through the recurrence. For
+display purposes, we want to see the value without the radius clouding the
+output. The radii are still correct---they just aren't printed.
+
+\textbf{Lines 414--420:} Check for NaN. Ball arithmetic produces NaN when
+the computation loses all precision (e.g., catastrophic cancellation). If
+detected, terminate the table early.
+
+\textbf{Lines 425--443:} For $n \ge 1$, compute $\Delta\beta_n = \beta_n - \beta_{n-1}$.
+\texttt{deltaBeta.getReal().containsZero() \&\& deltaBeta.getImag().containsZero()}
+checks whether the ball interval for $\Delta\beta_n$ contains zero. If it does
+and \texttt{--no-autoterm} is not set, the iteration auto-terminates: the
+$\sigma$-table has converged and further rows would not change the recurrence
+coefficients.
+
+\textbf{Line 446--448:} Trim the table to the actual number of rows that were
+computed and print it via \texttt{TextTable}.
+
+\section{Standard Mode --- Plotting and Evaluation (Lines 451--507)}
+
+\begin{lstlisting}[firstnumber=451]
+if (plotExpr != null || evalPoints != null)
+{
+  int M = actualN - 1;
+  try ( Integer Mi = new Integer(M);
+        ComplexPolynomial numPoly = approx.\Phi numSeq.evaluate(Mi, bits);
+        ComplexPolynomial denPoly = approx.\Phi denSeq.evaluate(Mi, bits))
+  {
+    numPoly.setIndependentVariableName("z");
+    denPoly.setIndependentVariableName("z");
+    ctx.registerFunctionMapping("num_fn", numPoly, Complex.class, Complex.class);
+    ctx.registerFunctionMapping("den_fn", denPoly, Complex.class, Complex.class);
+    RealFunction padeOfT = RealFunction.express(
+        "t\gg re(num_fn(t^" + mu + ")/den_fn(t^" + mu + "))", ctx);
+    ...
+  }
+}
+\end{lstlisting}
+
+\textbf{Line 453:} The Pad\'e order $M$ is one less than the number of
+Jacobi rows (the last computed $n$).
+
+\textbf{Lines 454--456:} Evaluate the numerator and denominator polynomials of
+the Pad\'e approximant at order $M$. These are \texttt{ComplexPolynomial}
+instances with coefficients that are balls---the certified error bounds.
+
+\textbf{Lines 460--462:} Register the numerator and denominator as functions
+\texttt{num\_fn} and \texttt{den\_fn} in the \texttt{Context}, then compile a
+real-valued expression \texttt{t $\rightarrow$ re(num\_fn(t\textasciicircum mu)/den\_fn(t\textasciicircum mu))}
+that evaluates the Pad\'e approximant at any point $t$. The change of variable
+$z = t^{\mu}$ is composed into the expression.
+
+\textbf{Line 464--468 (plot):} If \texttt{--plot} was given, compile the
+reference expression and call \texttt{ShellFunctions.plot()} which opens a
+JavaFX window showing both functions.
+
+\textbf{Lines 471--501 (eval):} If \texttt{--eval} was given, iterate over the
+comma-separated points, evaluate both the Pad\'e approximant and the reference
+(if any) at each point, compute the absolute difference, and display as a
+table. Each evaluation is a ball-arithmetic computation that carries a
+certified radius.
+
+\section{Expression Mode --- \texttt{runExpressionMode()} (Lines 511--750)}
+
+\begin{lstlisting}[firstnumber=511]
+private void runExpressionMode()
+{
+  System.out.println("Pad\'e approximant of arbitrary expression");
+  System.out.printf("  f(t) = %s%n", expr);
+  System.out.printf("  expansion center: t = %s%n", center);
+  ...
+  try ( ComplexFunction f = ComplexFunction.express("t\gg" + expr))
+  {
+    int            numMoments = N + 2;
+    ComplexFunction compiled   = f;
+    try ( Complex t0 = new Complex(new Real(center, bits));
+          Complex taylorCoefficients = Complex.newVector(numMoments))
+    {
+      taylorCoefficients.zero();
+      compiled.evaluate(t0, numMoments, bits, taylorCoefficients);
+      ...
+\end{lstlisting}
+
+\textbf{Line 520:} Compile the user's expression \texttt{expr} into a
+\texttt{ComplexFunction}. The string \texttt{"t $\rightarrow$ " + expr} parses
+the expression compiler's Unicode syntax, builds an AST, and emits JVM bytecode.
+
+\textbf{Line 522:} Request $N+2$ Taylor coefficients (slightly more than the
+number of orthogonal polynomials to give the $\sigma$-table enough moments).
+
+\textbf{Line 524:} Build the expansion center $t_0$ as a \texttt{Complex} ball.
+
+\textbf{Line 525:} Allocate a vector of $N+2$ complex numbers to hold the
+Taylor coefficients.
+
+\textbf{Line 528:} Evaluate the compiled function at $t_0$ with order $N+2$.
+The expression compiler's jet mode computes all derivatives simultaneously,
+producing $c_k = f^{(k)}(t_0)/k!$ in one pass.
+
+\newpage
+
+\begin{lstlisting}[firstnumber=546]
+try ( MuntzPadeApproximant approx =
+          makeExpressionApproximant(taylorCoefficients))
+{
+  Context ctx = approx.context;
+  ...
+  // Rest is identical to standard mode:
+  //   - Print \sigma-table definitions
+  //   - Print polynomial tables (if --print-polynomials)
+  //   - Print Jacobi coefficient table with auto-termination
+  //   - Plot/eval (if --plot or --eval)
+\end{lstlisting}
+
+\textbf{Line 546:} Construct a \texttt{MuntzPadeApproximant} from the Taylor
+coefficients via \texttt{makeExpressionApproximant}. From this point onward,
+the expression mode reuses the same logic as the standard mode: printing the
+$\sigma$-table definitions, polynomial tables, Jacobi coefficients, and
+plot/eval sections. The code structure is identical (\texttt{approx.$\sigma$Seq},
+\texttt{approx.hSeq}, etc.) because the approximant returns the same typed
+sequences regardless of whether the moments came from the Riccati recurrence
+or from Taylor coefficients of an arbitrary expression.
+
+\section{\texttt{makeExpressionApproximant()} (Lines 752--774)}
+
+\begin{lstlisting}[firstnumber=752]
+private MuntzPadeApproximant makeExpressionApproximant(
+    Complex taylorCoefficients)
+{
+  Real    \alpha = new Real("1", bits);
+  Complex v      = new Complex().zero();
+
+  int numCoefficients = taylorCoefficients.dim();
+
+  ComplexPolynomialSequence a = (n, order, bits2, result) ->
+  {
+    int k = n.getSignedValue();
+    if (k >= 1 && k <= numCoefficients)
+    {
+      result.set(taylorCoefficients.get(k - 1));
+    }
+    else
+    {
+      result.zero();
+    }
+    return result;
+  };
+
+  return new MuntzPadeApproximant(\alpha, a, v, bits);
+}
+\end{grammar}
+
+\textbf{Line 754:} The fractional order $\alpha$ is set to 1 (ordinary Pad\'e,
+not M\"untz--Pad\'e), because the expression mode works with standard Taylor
+series $z = t$ rather than $z = t^{\mu}$.
+
+\textbf{Line 755:} The perturbation point $v$ is set to 0 (no parameter
+dependence).
+
+\textbf{Lines 759--771:} Define the coefficient sequence $a(k)$ as a lambda that
+returns the $k$-th Taylor coefficient for $1 \le k \le N$, and zero otherwise.
+The 1-index shift matches the convention of the Riccati recurrence where
+$a(1)$ is the first non-trivial coefficient.
+
+\textbf{Line 773:} Construct and return the \texttt{MuntzPadeApproximant}. This
+triggers the same $\sigma$-table compilation, Jacobi coefficient extraction,
+and orthogonal polynomial construction as the Riccati path---all driven by the
+moment sequence $m(k) = a(k+1)$.
+
+\section{\texttt{makeEquation()} (Lines 776--809)}
+
+\begin{lstlisting}[firstnumber=776]
+private RiccatiMuntzPadeFunctional makeEquation(Real \mu)
+{
+  if (roughHeston)
+  {
+    Context ctx  = new Context();
+    Real    \lambda    = new Real(\lambda, bits).setName("\lambda");
+    Real    \theta    = new Real(\theta, bits).setName("\theta");
+    Real    \nu       = new Real(nu, bits).setName("\nu");
+    Real    V0r       = new Real(V0, bits).setName("V0");
+    Real    \rho      = new Real(rho, bits).setName("\rho");
+    Real    Tval      = new Real(T, bits).setName("T");
+    ctx.registerVariable(\lambda);
+    ctx.registerVariable(\theta);
+    ctx.registerVariable(\nu);
+    ctx.registerVariable(V0r);
+    ctx.registerVariable(\rho);
+    ctx.registerVariable(Tval);
+    return new RoughHestonRiccatiMuntzPadeFunctional(ctx, \mu);
+  }
+  else
+  {
+    return new RiccatiMuntzPadeFunctional(\mu, pCoeff, qCoeff, rCoeff);
+  }
+}
+\end{lstlisting}
+
+\textbf{Lines 778--801 (rough Heston path):} Creates a \texttt{Context} and
+registers each rough Heston parameter as a named variable. The
+\texttt{RoughHestonRiccatiMuntzPadeFunctional} uses these variables in its
+compiled coefficient expressions, which are strings like
+\texttt{"(1/2)*(-v$^\wedge$2 - i*v)"} for $P(v)$. The expression compiler
+resolves the parameter names ($\lambda$, $\theta$, $\nu$, etc.) at compile
+time through the context.
+
+\textbf{Lines 802--808 (standard path):} Constructs a
+\texttt{RiccatiMuntzPadeFunctional} directly from the user-provided strings
+\texttt{pCoeff}, \texttt{qCoeff}, \texttt{rCoeff}, and the fractional order
+$\mu$. No context is needed because the coefficients are literal polynomial
+strings.
+
+\section{Data Flow Summary}
+
+\begin{enumerate}
+\item \textbf{Input parsing:} \texttt{picocli} injects CLI flags into fields.
+\item \textbf{Equation construction:} \texttt{makeEquation($\mu$)} builds the
+  Riccati functional, compiling $P$, $Q$, $R$ into executable bytecode.
+\item \textbf{Evaluation:} \texttt{eq.evaluate(zeroV, 1, bits, null)} triggers
+  the full M\"untz--Pad\'e pipeline:
+  \begin{enumerate}
+  \item The Riccati recurrence generates the coefficient sequence $a(k)$.
+  \item $m(k) = a(k+1)$ defines the moment functional.
+  \item The $\sigma$-table (Chebyshev--Stieltjes procedure) reduces the Hankel
+    moment matrix to tridiagonal form, producing $\alpha(j)$, $\beta(j)$, $h(j)$.
+  \item The orthogonal polynomials $P_n(z)$ (first kind) and associated
+    polynomials $\tilde P_n(z)$ (second kind) are built via Favard's recurrence.
+  \item The Pad\'e numerator $\Phi_{\text{num}}(M)$ and denominator
+    $\Phi_{\text{den}}(M)$ are assembled.
+  \item The Christoffel--Darboux kernel $K_n(z,w)$ is compiled.
+  \end{enumerate}
+\item \textbf{Display:} The printer formats and prints every intermediate and
+  final result as human-readable tables.
+\item \textbf{Termination:} The $\sigma$-table auto-terminates when
+  $0 \in \Delta\beta_n$ (the ball arithmetic detects convergence).
+\item \textbf{Plot/Evaluate:} The assembled rational approximant is registered
+  as a context function and used for point evaluation or plotting against a
+  reference expression.
+\end{enumerate}
+
+\section{Design Notes}
+
+\subsection{Why \texttt{System.out.println} Instead of SLF4J?}
+
+PadePrinter is a CLI application (not a library or test). Its entire purpose
+is to write formatted output to stdout for the user to read. Using
+\texttt{System.out} here is the correct choice---SLF4J is for programmatic
+logging, not user-facing output.
+
+\subsection{Ball Arithmetic and the Radius Reset}
+
+The \texttt{--no-reset-radius} flag controls whether the ball radii are zeroed
+for display. The radii are mathematically correct and propagate all
+uncertainties from the moment sequence through the $\sigma$-table. Zeroing them
+gives a cleaner display of the midpoint values without hiding the fact that the
+radii were present. The default behavior resets them; passing
+\texttt{--no-reset-radius} preserves them so the user can inspect the error
+enclosures.
+
+\subsection{Auto-Termination by $0 \in \Delta\beta_n$}
+
+The $\sigma$-table's convergence criterion is exact, not heuristic. When the
+moment sequence is exhausted (the Jacobi recurrence reaches a fixed point),
+$\beta_n = \beta_{n-1}$ and therefore $\Delta\beta_n = 0$. Ball arithmetic
+detects this via \texttt{containsZero()} on both the real and imaginary
+components. This is the same termination condition used in the computed
+$\sigma$-table theory (see \texttt{docs/RKHS-Convergence-Framework.md}).
+
+\subsection{Resource Management}
+
+Every native-memory-backed type (\texttt{Real}, \texttt{Complex},
+\texttt{ComplexPolynomial}, \texttt{MuntzPadeApproximant}) is either wrapped in
+\texttt{try}-with-resources or has its ownership transferred to a
+\texttt{try}-with-resources scope. The \texttt{RiccatiMuntzPadeFunctional} and
+its contained \texttt{MuntzPadeApproximant} form a tree of closeable objects;
+the outer \texttt{try} block ensures the root is closed, which cascades through
+the tree.
+
+\subsection{Two-Mode Code Duplication}
+
+The standard mode (Riccati equation) and expression mode (arbitrary function)
+share approximately 250 lines of identical logic for printing the
+$\sigma$-table, polynomial tables, Jacobi coefficients, and plot/eval sections.
+This duplication is structural rather than accidental: the two modes construct
+the \texttt{MuntzPadeApproximant} through different paths (Riccati recurrence
+vs. Taylor coefficient extraction), but once the approximant exists, the
+display logic is identical. A future refactoring could extract the common
+display code into shared methods.
+
+\end{document}

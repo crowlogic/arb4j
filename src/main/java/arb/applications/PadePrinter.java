@@ -519,31 +519,31 @@ System.out.println("Padé assembly (compiled expressions):");
 
     try ( ComplexFunction f = ComplexFunction.express("t➔" + expr))
     {
-      int            numMoments = N + 2;
-      ComplexFunction compiled   = f;
-      try ( Complex    t0        = new Complex(new Real(center, bits));
-            Complex    taylorCoefficients = Complex.newVector(numMoments))
-        {
-        taylorCoefficients.zero();
-        compiled.evaluate(t0, numMoments, bits, taylorCoefficients);
+      try ( Complex t0 = new Complex(new Real(center, bits)))
+      {
+        int numMoments = N + 2;
 
         System.out.println("═".repeat(70));
-        System.out.printf("Taylor coefficients c_k = f^(k)(0)/k!  [first %d]%n", numMoments);
+        System.out.printf("Taylor coefficients c_k = f^(k)(%s)/k!  [first %d]%n", center, numMoments);
         System.out.println("═".repeat(70));
         System.out.println();
         String[]   cols =
         { "k", "c_k" };
         String[][] taylorCoeffs = new String[numMoments][2];
-        for (int k = 0; k < numMoments; k++)
+        try ( Complex coeffs = Complex.newVector(numMoments))
         {
-          taylorCoeffs[k][0] = String.valueOf(k);
-          taylorCoeffs[k][1] = taylorCoefficients.get(k).toString();
+          f.evaluate(t0, numMoments, bits, coeffs);
+          for (int k = 0; k < numMoments; k++)
+          {
+            taylorCoeffs[k][0] = String.valueOf(k);
+            taylorCoeffs[k][1] = coeffs.get(k).toString();
+          }
         }
         new TextTable(cols,
                       taylorCoeffs).printTable();
         System.out.println();
 
-        try ( MuntzPadeApproximant approx = makeExpressionApproximant(taylorCoefficients))
+        try ( MuntzPadeApproximant approx = makeExpressionApproximant(f, t0))
         {
           Context ctx = approx.context;
 
@@ -749,28 +749,26 @@ System.out.println("═".repeat(70));
     }
   }
 
-  private MuntzPadeApproximant makeExpressionApproximant(Complex taylorCoefficients)
+  private MuntzPadeApproximant makeExpressionApproximant(ComplexFunction f, Complex t0)
   {
-    Real    α = new Real("1", bits);
-    Complex v = new Complex().zero();
-
-    int numCoefficients = taylorCoefficients.dim();
+    Real α = new Real("1", bits);
 
     ComplexPolynomialSequence a = (n, order, bits2, result) ->
     {
       int k = n.getSignedValue();
-      if (k >= 1 && k <= numCoefficients)
+      try ( Complex coeffs = Complex.newVector(k + 1))
       {
-        result.set(taylorCoefficients.get(k - 1));
-      }
-      else
-      {
-        result.zero();
+        f.evaluate(t0, k, bits2, coeffs);
+        result.set(coeffs.get(k - 1));
       }
       return result;
     };
 
-    return new MuntzPadeApproximant(α, a, v, bits);
+    try ( Complex v = new Complex())
+    {
+      v.zero();
+      return new MuntzPadeApproximant(α, a, v, bits);
+    }
   }
 
   private RiccatiMuntzPadeFunctional makeEquation(Real μ)
