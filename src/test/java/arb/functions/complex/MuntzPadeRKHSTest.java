@@ -63,7 +63,7 @@ public void testSupportRoots()
     {
       int nS = 4;
       try ( Integer ni = new Integer(nS);
-            ComplexPolynomial den = approx.Φden().evaluate(ni, 128) )
+            ComplexPolynomial den = approx.ΦdenSeq.evaluate(ni, 128) )
       {
         Complex roots = den.roots(128);
         log.debug("Φ_den(4) roots:");
@@ -83,8 +83,8 @@ public void testSupportRoots()
     try ( RiccatiMuntzPadeFunctional eq = new RiccatiMuntzPadeFunctional(μ, "1", "0", "-1");
           MuntzPadeApproximant approx = (MuntzPadeApproximant) eq.evaluate(zeroV, 1, 128, null) )
     {
-      ComplexFunctionalSequence knSeq = approx.Kn();
-      ComplexFunctionalSequence cdSeq = approx.CDn();
+      ComplexFunctionalSequence knSeq = approx.KnSeq;
+      ComplexFunctionalSequence cdSeq = approx.CDnSeq;
       int nK = 4;
 
       double[][] samples = { {0.5, 0.7}, {1.0, 0.5}, {-0.3, 0.2}, {0.8, -0.4} };

@@ -47,98 +47,23 @@ public final Real                                          α;
   public final Context                                       context;
   private final Complex                                      z = new Complex();   // scratch t^α
   public final OrthogonalPolynomialMomentFunctionalSequence ops;
-  private final ComplexFunctionSequence                      Φ;
-  private final ComplexPolynomialSequence                    ΦdenSeq;
-  private final ComplexPolynomialSequence                    ΦnumSeq;
-  private final ComplexPolynomialSequence                    PnSeq;
-  private final ComplexSequence                              αvSeq;
-  private final ComplexSequence                              βvSeq;
-  private final ComplexSequence                              hvSeq;
-  private final ComplexFunctionalSequence                    KnSeq;
-  private final ComplexFunctionalSequence                    CDnSeq;
-  private final ComplexPolynomialSequence                    aSeq;
-  private final ComplexPolynomialSequence                    mSeq;
-  private final ComplexPolynomialSequenceSequence            σSeq;
-  private final ComplexPolynomialSequence                    hSeq;
-  private final ComplexPolynomialSequence                    αSeq;
-  private final ComplexPolynomialSequence                    βSeq;
+  public final ComplexFunctionSequence                       Φ;
+  public final ComplexPolynomialSequence                     ΦdenSeq;
+  public final ComplexPolynomialSequence                     ΦnumSeq;
+  public final ComplexPolynomialSequence                     PnSeq;
+  public final ComplexSequence                               αvSeq;
+  public final ComplexSequence                               βvSeq;
+  public final ComplexSequence                               hvSeq;
+  public final ComplexFunctionalSequence                     KnSeq;
+  public final ComplexFunctionalSequence                     CDnSeq;
+  public final ComplexPolynomialSequence                     aSeq;
+  public final ComplexPolynomialSequence                     mSeq;
+  public final ComplexPolynomialSequenceSequence             σSeq;
+  public final ComplexPolynomialSequence                     hSeq;
+  public final ComplexPolynomialSequence                     αSeq;
+  public final ComplexPolynomialSequence                     βSeq;
 
   private boolean closed;
-
-  public ComplexPolynomialSequence Φden()
-  {
-    return ΦdenSeq;
-  }
-
-  public ComplexPolynomialSequence Φnum()
-  {
-    return ΦnumSeq;
-  }
-
-  public ComplexPolynomialSequence Pn()
-  {
-    return PnSeq;
-  }
-
-  public ComplexSequence αv()
-  {
-    return αvSeq;
-  }
-
-  public ComplexSequence βv()
-  {
-    return βvSeq;
-  }
-
-  public ComplexSequence hv()
-  {
-    return hvSeq;
-  }
-
-  public ComplexFunctionalSequence Kn()
-  {
-    return KnSeq;
-  }
-
-  public ComplexFunctionalSequence CDn()
-  {
-    return CDnSeq;
-  }
-
-  public ComplexFunctionSequence Φ()
-  {
-    return Φ;
-  }
-
-  public ComplexPolynomialSequence a()
-  {
-    return aSeq;
-  }
-
-  public ComplexPolynomialSequence m()
-  {
-    return mSeq;
-  }
-
-  public ComplexPolynomialSequenceSequence σ()
-  {
-    return σSeq;
-  }
-
-  public ComplexPolynomialSequence h()
-  {
-    return hSeq;
-  }
-
-  public ComplexPolynomialSequence αSeq()
-  {
-    return αSeq;
-  }
-
-  public ComplexPolynomialSequence βSeq()
-  {
-    return βSeq;
-  }
 
   /**
    * Working precision (in bits) at which the memoized σ-table / Jacobi /
