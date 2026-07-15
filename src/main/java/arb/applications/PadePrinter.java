@@ -106,10 +106,10 @@ import picocli.CommandLine.Option;
   "  exact — not an heuristic stopping rule.",
   "" }, versionProvider = PadePrinter.VersionProvider.class, mixinStandardHelpOptions = true)
 public class PadePrinter implements
-                                      Runnable
+                         Runnable
 {
-static class VersionProvider implements
-                                 picocli.CommandLine.IVersionProvider
+  static class VersionProvider implements
+                               picocli.CommandLine.IVersionProvider
   {
     @Override
     public String[] getVersion() throws Exception
@@ -235,98 +235,18 @@ static class VersionProvider implements
       MuntzPadeApproximant approx = (MuntzPadeApproximant) eq.evaluate(zeroV, 1, bits, null);
       Context              ctx    = approx.context;
 
-      System.out.println("═".repeat(70));
-      System.out.println("Coefficient functions");
-      System.out.println("═".repeat(70));
-      System.out.println();
-      if (roughHeston)
-      {
-        System.out.println("  P(v) = ½(−v² − iv)");
-        System.out.println("       = −½v² − ½iv");
-        System.out.println();
-        System.out.println("  Q(v) = λ(ivρν − 1)");
-        System.out.println("       = −λ + λρνiv");
-        System.out.println();
-        System.out.println("  R(v) = ½(λν)²");
-        System.out.println("       = ½λ²ν²");
-        System.out.println();
-        System.out.printf("  λ = %s  (mean reversion speed)%n", lambda);
-        System.out.printf("  θ = %s  (long-run variance)%n", theta);
-        System.out.printf("  ν = %s  (vol-of-vol)%n", nu);
-        System.out.printf("  V₀ = %s  (initial variance)%n", V0);
-        System.out.printf("  ρ = %s  (correlation)%n", rho);
-        System.out.printf("  T = %s  (time to maturity)%n", T);
-      }
-      else
-      {
-        System.out.printf("  P(v) = %s  (constant)%n", pCoeff);
-        System.out.printf("  Q(v) = %s  (constant)%n", qCoeff);
-        System.out.printf("  R(v) = %s  (constant)%n", rCoeff);
-      }
-      System.out.println();
-      eq.p.setIndependentVariableName("v");
-      eq.q.setIndependentVariableName("v");
-      eq.r.setIndependentVariableName("v");
-      System.out.printf("  p(v) = %s%n", eq.p);
-      System.out.printf("  q(v) = %s%n", eq.q);
-      System.out.printf("  r(v) = %s%n", eq.r);
-      System.out.println("═".repeat(70));
-      System.out.println();
-
-      System.out.println("═".repeat(70));
-      System.out.println("σ-table definitions (compiled expressions)");
-      System.out.println("═".repeat(70));
-      System.out.println();
-      try ( ComplexPolynomial disc = eq.discriminant(bits, new ComplexPolynomial()))
-      {
-        disc.setIndependentVariableName("v");
-        System.out.printf("  discriminant = Q² − 4PR = %s%n", disc);
-      }
-      System.out.println();
-      System.out.printf("  a(k) = %s%n", approx.aSeq.toNameString());
-      System.out.printf("  m(k) = %s%n", approx.mSeq.toNameString());
-      System.out.printf("  σ(j)(k) = %s%n", approx.σSeq.toNameString());
-      System.out.printf("  h(j) = %s%n", approx.hSeq.toNameString());
-      System.out.printf("  α(j) = %s%n", approx.αSeq.toNameString());
-      System.out.printf("  β(j) = %s%n", approx.βSeq.toNameString());
-      System.out.printf("  Pn(n) = %s%n", approx.PnSeq.toNameString());
-      System.out.println();
-System.out.println("Padé assembly (compiled expressions):");
-      System.out.printf("  Φden(M) = %s%n", approx.ΦdenSeq.toNameString());
-      System.out.printf("  Φnum(M) = %s%n", approx.ΦnumSeq.toNameString());
-      System.out.printf("  Φ(M)(z) = %s%n", approx.Φ.toNameString());
-      System.out.printf("  K_n(z,w) = %s%n", approx.KnSeq.toNameString());
-      System.out.println("═".repeat(70));
-      System.out.println();
-
-      if (printMoments >= 0)
-      {
-        int numMoments = printMoments == 0 ? N : printMoments;
-        System.out.println("═".repeat(70));
-        System.out.printf("Moment sequence m(k) = a(k+1)  [first %d moments]%n", numMoments);
-        System.out.println("═".repeat(70));
-        System.out.println();
-        String[]   cols =
-        { "k", "m(k)" };
-        String[][] moments = new String[numMoments][2];
-        for (int k = 0; k < numMoments; k++)
-        {
-          moments[k][0] = String.valueOf(k);
-          try ( var mk = approx.ops.m.evaluate(k, bits))
-          {
-            mk.printPrecision = true;
-            moments[k][1] = mk.toString();
-          }
-        }
-        new TextTable(cols,
-                      moments).printTable();
-        System.out.println();
-      }
-
       ComplexPolynomialSequence PnSeq = approx.PnSeq;
       ComplexSequence           αvSeq = approx.αvSeq;
       ComplexSequence           βvSeq = approx.βvSeq;
       ComplexSequence           hvSeq = approx.hvSeq;
+      
+
+      printFractionalRicattiParameters(eq);
+
+      printPadeSequences(approx);
+
+      printMomentSequence(approx);
+
 
       if (printPolynomials)
       {
@@ -450,8 +370,7 @@ System.out.println("Padé assembly (compiled expressions):");
       if (plotExpr != null || evalPoints != null)
       {
         int M = actualN - 1;
-        try ( Integer Mi = new Integer(M);
-              ComplexPolynomial numPoly = approx.ΦnumSeq.evaluate(Mi, bits);
+        try ( Integer Mi = new Integer(M); ComplexPolynomial numPoly = approx.ΦnumSeq.evaluate(Mi, bits);
               ComplexPolynomial denPoly = approx.ΦdenSeq.evaluate(Mi, bits))
         {
           numPoly.setIndependentVariableName("z");
@@ -507,6 +426,100 @@ System.out.println("Padé assembly (compiled expressions):");
     }
   }
 
+  private void printMomentSequence(MuntzPadeApproximant approx)
+  {
+    if (printMoments >= 0)
+    {
+      int numMoments = printMoments == 0 ? N : printMoments;
+      System.out.println("═".repeat(70));
+      System.out.printf("Moment sequence m(k) = a(k+1)  [first %d moments]%n", numMoments);
+      System.out.println("═".repeat(70));
+      System.out.println();
+      String[]   cols    =
+      { "k", "m(k)" };
+      String[][] moments = new String[numMoments][2];
+      for (int k = 0; k < numMoments; k++)
+      {
+        moments[k][0] = String.valueOf(k);
+        try ( var mk = approx.ops.m.evaluate(k, bits))
+        {
+          mk.printPrecision = true;
+          moments[k][1]     = mk.toString();
+        }
+      }
+      new TextTable(cols,
+                    moments).printTable();
+      System.out.println();
+    }
+  }
+
+  private void printPadeSequences(MuntzPadeApproximant approx)
+  {
+    System.out.println("═".repeat(70));
+    System.out.println("σ-table definitions (compiled expressions)");
+    System.out.println("═".repeat(70));
+    System.out.println();
+
+    System.out.println();
+    System.out.printf("  a(k) = %s%n", approx.aSeq.toNameString());
+    System.out.printf("  m(k) = %s%n", approx.mSeq.toNameString());
+    System.out.printf("  σ(j)(k) = %s%n", approx.σSeq.toNameString());
+    System.out.printf("  h(j) = %s%n", approx.hSeq.toNameString());
+    System.out.printf("  α(j) = %s%n", approx.αSeq.toNameString());
+    System.out.printf("  β(j) = %s%n", approx.βSeq.toNameString());
+    System.out.printf("  Pn(n) = %s%n", approx.PnSeq.toNameString());
+    System.out.println();
+    System.out.println("Padé assembly (compiled expressions):");
+    System.out.printf("  Φden(M) = %s%n", approx.ΦdenSeq.toNameString());
+    System.out.printf("  Φnum(M) = %s%n", approx.ΦnumSeq.toNameString());
+    System.out.printf("  Φ(M)(z) = %s%n", approx.Φ.toNameString());
+    System.out.printf("  K_n(z,w) = %s%n", approx.KnSeq.toNameString());
+    System.out.println("═".repeat(70));
+    System.out.println();
+  }
+
+  private void printFractionalRicattiParameters(RiccatiMuntzPadeFunctional eq)
+  {
+    if (roughHeston)
+    {
+      System.out.println("  P(v) = ½(−v² − iv)");
+      System.out.println("       = −½v² − ½iv");
+      System.out.println();
+      System.out.println("  Q(v) = λ(ivρν − 1)");
+      System.out.println("       = −λ + λρνiv");
+      System.out.println();
+      System.out.println("  R(v) = ½(λν)²");
+      System.out.println("       = ½λ²ν²");
+      System.out.println();
+      System.out.printf("  λ = %s  (mean reversion speed)%n", lambda);
+      System.out.printf("  θ = %s  (long-run variance)%n", theta);
+      System.out.printf("  ν = %s  (vol-of-vol)%n", nu);
+      System.out.printf("  V₀ = %s  (initial variance)%n", V0);
+      System.out.printf("  ρ = %s  (correlation)%n", rho);
+      System.out.printf("  T = %s  (time to maturity)%n", T);
+    }
+    else
+    {
+      System.out.printf("  P(v) = %s  (constant)%n", pCoeff);
+      System.out.printf("  Q(v) = %s  (constant)%n", qCoeff);
+      System.out.printf("  R(v) = %s  (constant)%n", rCoeff);
+    }
+    System.out.println();
+    eq.p.setIndependentVariableName("v");
+    eq.q.setIndependentVariableName("v");
+    eq.r.setIndependentVariableName("v");
+    System.out.printf("  p(v) = %s%n", eq.p);
+    System.out.printf("  q(v) = %s%n", eq.q);
+    System.out.printf("  r(v) = %s%n", eq.r);
+    System.out.println("═".repeat(70));
+    System.out.println();
+    try ( ComplexPolynomial disc = eq.discriminant(bits, new ComplexPolynomial()))
+    {
+      disc.setIndependentVariableName("v");
+      System.out.printf("  discriminant = Q² − 4PR = %s%n", disc);
+    }
+  }
+
   private void runExpressionMode()
   {
     System.out.println("Padé approximant of arbitrary expression");
@@ -518,7 +531,8 @@ System.out.println("Padé assembly (compiled expressions):");
 
     try ( ComplexFunction f = ComplexFunction.express("t➔" + expr))
     {
-      try ( Complex t0 = new Complex(new Real(center, bits)))
+      try ( Complex t0 = new Complex(new Real(center,
+                                              bits)))
       {
         int numMoments = N + 2;
 
@@ -526,7 +540,7 @@ System.out.println("Padé assembly (compiled expressions):");
         System.out.printf("Taylor coefficients c_k = f^(k)(%s)/k!  [first %d]%n", center, numMoments);
         System.out.println("═".repeat(70));
         System.out.println();
-        String[]   cols =
+        String[]   cols         =
         { "k", "c_k" };
         String[][] taylorCoeffs = new String[numMoments][2];
         try ( Complex coeffs = Complex.newVector(numMoments))
@@ -546,31 +560,31 @@ System.out.println("Padé assembly (compiled expressions):");
         {
           Context ctx = approx.context;
 
-System.out.println("═".repeat(70));
-      System.out.println("σ-table definitions (compiled expressions)");
-      System.out.println("═".repeat(70));
-      System.out.println();
-      System.out.printf("  m(k) = c_k  (Taylor coefficient)%n");
-      System.out.printf("  σ(j)(k) = %s%n", approx.σSeq.toNameString());
-      System.out.printf("  h(j) = %s%n", approx.hSeq.toNameString());
-      System.out.printf("  α(j) = %s%n", approx.αSeq.toNameString());
-      System.out.printf("  β(j) = %s%n", approx.βSeq.toNameString());
-      System.out.printf("  Pn(n) = %s%n", approx.PnSeq.toNameString());
-      System.out.println();
-      System.out.println("Padé assembly (compiled expressions):");
-      System.out.printf("  Φden(M) = %s%n", approx.ΦdenSeq.toNameString());
-      System.out.printf("  Φnum(M) = %s%n", approx.ΦnumSeq.toNameString());
-      System.out.printf("  Φ(M)(z) = %s%n", approx.Φ.toNameString());
-      System.out.printf("  K_n(z,w) = %s%n", approx.KnSeq.toNameString());
-      System.out.println("═".repeat(70));
-      System.out.println();
+          System.out.println("═".repeat(70));
+          System.out.println("σ-table definitions (compiled expressions)");
+          System.out.println("═".repeat(70));
+          System.out.println();
+          System.out.printf("  m(k) = c_k  (Taylor coefficient)%n");
+          System.out.printf("  σ(j)(k) = %s%n", approx.σSeq.toNameString());
+          System.out.printf("  h(j) = %s%n", approx.hSeq.toNameString());
+          System.out.printf("  α(j) = %s%n", approx.αSeq.toNameString());
+          System.out.printf("  β(j) = %s%n", approx.βSeq.toNameString());
+          System.out.printf("  Pn(n) = %s%n", approx.PnSeq.toNameString());
+          System.out.println();
+          System.out.println("Padé assembly (compiled expressions):");
+          System.out.printf("  Φden(M) = %s%n", approx.ΦdenSeq.toNameString());
+          System.out.printf("  Φnum(M) = %s%n", approx.ΦnumSeq.toNameString());
+          System.out.printf("  Φ(M)(z) = %s%n", approx.Φ.toNameString());
+          System.out.printf("  K_n(z,w) = %s%n", approx.KnSeq.toNameString());
+          System.out.println("═".repeat(70));
+          System.out.println();
 
-      ComplexPolynomialSequence PnSeq = approx.PnSeq;
-      ComplexSequence           αvSeq = approx.αvSeq;
-      ComplexSequence           βvSeq = approx.βvSeq;
-      ComplexSequence           hvSeq = approx.hvSeq;
+          ComplexPolynomialSequence PnSeq = approx.PnSeq;
+          ComplexSequence           αvSeq = approx.αvSeq;
+          ComplexSequence           βvSeq = approx.βvSeq;
+          ComplexSequence           hvSeq = approx.hvSeq;
 
-      if (printPolynomials)
+          if (printPolynomials)
           {
             System.out.println("═".repeat(70));
             System.out.println("Denominator polynomials Pₙ(z)  [monic orthogonal, first kind]");
@@ -633,7 +647,8 @@ System.out.println("═".repeat(70));
           { "n", "αₙ", "βₙ", "hₙ", "Δβₙ", "0∈Δβₙ" };
           int        actualN    = N;
           String[][] jacobiData = new String[N][6];
-          try ( Complex αn = new Complex(); Complex βn = new Complex(); Complex hn = new Complex(); Complex βnPrev = new Complex(); Complex deltaβ = new Complex())
+          try ( Complex αn = new Complex(); Complex βn = new Complex(); Complex hn = new Complex(); Complex βnPrev = new Complex();
+                Complex deltaβ = new Complex())
           {
             for (int n = 0; n < N; n++)
             {
@@ -689,8 +704,7 @@ System.out.println("═".repeat(70));
           if (plotExpr != null || evalPoints != null)
           {
             int M = actualN - 1;
-            try ( Integer Mi = new Integer(M);
-                  ComplexPolynomial numPoly = approx.ΦnumSeq.evaluate(Mi, bits);
+            try ( Integer Mi = new Integer(M); ComplexPolynomial numPoly = approx.ΦnumSeq.evaluate(Mi, bits);
                   ComplexPolynomial denPoly = approx.ΦdenSeq.evaluate(Mi, bits))
             {
               numPoly.setIndependentVariableName("z");
@@ -715,8 +729,8 @@ System.out.println("═".repeat(70));
                 System.out.println("Point evaluations");
                 System.out.println("═".repeat(70));
                 System.out.printf("  %-16s %-24s %-24s %-16s%n", "t", ref != null ? "ref(t)" : "", "padé(t)", ref != null ? "|diff|" : "");
-                try ( Real t = new Real(); Real padeVal = new Real(); Real refVal = ref != null ? new Real() : null; Real diff = ref != null ? new Real() : null;
-                      Real absDiff = ref != null ? new Real() : null)
+                try ( Real t = new Real(); Real padeVal = new Real(); Real refVal = ref != null ? new Real() : null;
+                      Real diff = ref != null ? new Real() : null; Real absDiff = ref != null ? new Real() : null)
                 {
                   for (String pt : points)
                   {
@@ -750,15 +764,19 @@ System.out.println("═".repeat(70));
 
   MuntzPadeApproximant makeExpressionApproximant(ComplexFunction f, Complex t0)
   {
-    Real   α = new Real("1", bits).setName("α");
-    int    M = N + 2;
+    Real    α = new Real("1",
+                         bits).setName("α");
+    int     M = N + 2;
     Complex c = Complex.newVector(M);
     f.evaluate(t0, M, bits, c);
     Context momentCtx = new Context();
     momentCtx.registerVariable("c", c);
     ComplexPolynomialSequence a = ComplexPolynomialSequence.express("a:k➔c[k]", momentCtx);
-    Complex v = new Complex().zero();
-    return new MuntzPadeApproximant(α, a, v, bits);
+    Complex                   v = new Complex().zero();
+    return new MuntzPadeApproximant(α,
+                                    a,
+                                    v,
+                                    bits);
   }
 
   private RiccatiMuntzPadeFunctional makeEquation(Real μ)
