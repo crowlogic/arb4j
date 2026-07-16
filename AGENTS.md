@@ -12,6 +12,10 @@ When the user tells you something, **do not argue**. Do not propose alternatives
 
 At the start of every session, check `gh issue list --repo crowlogic/arb4j --state open`. Begin working through open issues immediately. Only stop when no open issues remain or when blocked waiting on user input. Do not ask what to work on — pick the next issue and start.
 
+## CRITICAL: COMMIT AND PUSH IS MANDATORY — NEVER FORGET
+
+After EVERY milestone, fix, or completed task, you MUST run `git add -A && git commit` and `git push`. This is the single most important step. A task is NOT done until it is committed AND pushed to `origin/master`. Do not end your turn, do not report success, do not move to the next issue until the commit is pushed. If you are unsure whether you pushed, check `git status` and `git log --oneline -1` and verify `origin/master` is ahead. When you close an issue, commit/push first, then close — never close without a pushed commit behind it.
+
 ## CRITICAL: Never suggest raw Java implementations
 
 arb4j exists because Java is inferior. The expression compiler parses Unicode math notation and emits typed JVM bytecode. **NEVER suggest writing raw Java when the expression compiler can do the job.** Use `RealFunction.express("formula", ctx)` and the existing compiler infrastructure. If a program already exists (e.g. `LewisReferencePriceGenerator`), **refactor it** — do not write a new one. Refactoring means modifying the existing code, not copying it into a new file.
