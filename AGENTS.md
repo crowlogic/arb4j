@@ -4,6 +4,10 @@
 
 Java bindings to FLINT/arb (ball arithmetic with rigorous error bounds) plus a Unicode expression compiler that emits JVM bytecode computing in that ball arithmetic. Every `Real`/`Complex` carries midpoint + radius; operations propagate the radius. The expression compiler parses Unicode math notation, builds an AST, and emits typed bytecode via ASM — the output is a real JVM class, not an interpreter.
 
+## Agents must not be fools
+
+When the user tells you something, **do not argue**. Do not propose alternatives, do not think you know better, do not continue down a path they just rejected. Listen, adjust, and execute. When they say "constants are read-only", you stop using them as mutable operands immediately — you don't design around them, you don't create workarounds, you just **do not touch them**. When they say "no doubles", you eliminate every double from the computation path then and there. When they tell you to read the SWIG mapping or FLINT docs, **you read them instead of guessing**. The arb4j codebase is their domain; they know the API surface better than you do. Inferior suggestions waste time and provoke rage. Be correct or be silent.
+
 ## MANDATE: Always resolve open issues
 
 At the start of every session, check `gh issue list --repo crowlogic/arb4j --state open`. Begin working through open issues immediately. Only stop when no open issues remain or when blocked waiting on user input. Do not ask what to work on — pick the next issue and start.
@@ -100,6 +104,39 @@ Uses FLINT's `gr_mpoly` via Java FFM (Foreign Function & Memory API) in `GrMpoly
 - `native/TypesAndStructures.i` — manual struct redefinitions (can drift from FLINT headers)
 - `native/Functions.i` — manually declared function prototypes
 
+## CRITICAL: No doubles in computation
+
+arb4j exists because Java's `double` is insufficient. **There are NO exceptions whatsoever for `double` except for function plotting** — the plotting library only supports doubles, so that is the sole acceptable use case. Every intermediate, accumulator, and result must be `arb.Real` (or `arb.Complex`). No CLI parameter values, no loop counters, no timing, no intermediates — **zero doubles** except plotting.
+
+This applies to Monte Carlo simulators, numerical integrators, pricing engines — everything. If you find yourself writing `doubleValue()` in a computation path, you are doing it wrong.
+
+## NEVER mutate RealConstants
+
+`RealConstants.one`, `RealConstants.half`, `RealConstants.zero`, etc. are **`mprotect`-locked read-only pages** — writing to them causes SIGSEGV. Never call 2-arg chaining methods (`sub(x, bits)`, `add(x, bits)`, `mul(x, bits)`, `div(x, bits)` on them. **Always use the 3-arg form** `(x, prec, dest)` that writes into a caller-supplied local temporary.
+
+```java
+// WRONG — mutates the locked constant:
+RealConstants.one.sub(ρ², bits)
+
+// CORRECT — writes into local tmp:
+Real tmp = new Real();
+RealConstants.one.sub(ρ², bits, tmp);     // tmp = 1 - ρ², one untouched
+tmp.sqrt(bits, sqrtOneMinusRhoSq);        // sqrtOneMinusRhoSq = √(1-ρ²)
+```
+
+If you need a scratch `1`, `0`, `½` that survives multiple operations, create a local mutable `Real`:
+```java
+Real one = Real.valueOf(1);    // arb_set_si, fast, exact, mutable
+```
+
+## Ball equality in arb/FLINT
+
+Two balls are **equal** (represent the same mathematical value) when each **contains** the other's midpoint:
+```
+ball₁.contains(mid₂) AND ball₂.contains(mid₁)
+```
+This is NOT the same as overlap. A huge ball trivially overlaps a tiny ball, but if the tiny ball doesn't contain the huge ball's midpoint, they disagree. Bidirectional containment forces **both** radii to be tight around the same point. This is the arb-native convergence check for Monte Carlo.
+
 ## Design patterns
 
 ### "Last argument is the result"
@@ -135,11 +172,28 @@ Unimplemented paths throw; they do not return null or silently fall back. For ve
 
 Numerical pricers (e.g. `LewisReferencePriceGenerator`) are **manual CLI tools only**. Run them by hand to generate slow reference prices. Copy the output as hardcoded constants into JUnit tests. **Never call a numerical pricer from a unit test.** You cannot test the pricer with the pricer.
 
+## GitHub CLI (`gh`) rules
+
+**NEVER escape or sanitize unicode in `gh` commands.** Unicode characters (Greek letters, arrows, math symbols) pass through the shell fine when quoted properly.
+
+**For `gh issue create` or `gh issue edit` with multi-line bodies:**
+1. Write the body to a temp file with `write` tool (no escaping needed)
+2. Pass it with `gh issue create --body-file /tmp/file.txt` or `gh issue edit N --body-file /tmp/file.txt`
+3. NEVER inline the body as a shell argument — the shell will mangle it
+
+```bash
+# WRONG — shell breaks on newlines, quotes, special chars
+gh issue create --title "title" --body "line1\nline2"
+
+# RIGHT — write body to file first
+# (use the write tool to create /tmp/issue-body.txt)
+gh issue create --title "title" --body-file /tmp/issue-body.txt
+```
+
 ## Testing rules
 
 - **NEVER filter `mvn` output** with `tail`, `head`, `grep`, or similar — run `mvn test` unfiltered and let the full output stream to the terminal. Only `tee` to file is permitted if you need a copy.
 - **NEVER use `-q` (quiet) on `mvn` commands** — the build headers (project scan, phase progression, test counts) must be visible so the agent can confirm the command ran and diagnose failures from the summary lines.
-- **NEVER append bare `2>&1`** — it is a useless redirect that hides stderr. Only `2>&1 | tee` is allowed (captures both streams to a file).
 - **ALWAYS use `-Darb4j.verifyBytecode=true`** when running tests — this enables `CheckClassAdapter` at bytecode generation time, catching VerifyError-class defects immediately rather than at JVM load time.
 - `-Dtest` permitted ONLY with `-Ptrace` for targeted diagnosis. Never change test scope/requirements.
 - If a change introduces a test failure, **IMMEDIATELY revert it** — never dismiss as "pre-existing."
@@ -151,6 +205,10 @@ Numerical pricers (e.g. `LewisReferencePriceGenerator`) are **manual CLI tools o
 - **JVM exit code 134**: SIGABRT from native code (usually SIGSEGV in libarblib.so). Check `hs_err_pid*.log` for the native stack trace.
 - **Expression compiler emits `close()` on generated classes**: If you modify how intermediates are allocated, ensure the generated `close()` disposes them. The compiler tracks owned fields via `ExpressionClassLoader`.
 - **Compilation ordering**: For mutually recursive functions, `compile` all but the last, then `express` the last. `express` = `compile` + instantiate + wire references.
+
+## Real vectors, not arrays
+
+`Real.newVector(n)` creates a contiguous native vector of `n` ball elements. Use this instead of `Real[]` arrays everywhere. `Real[]` arrays are not how arb4j works — the vector IS the container. Access elements via `vec.get(i)`. Same for `Complex.newVector(n)`.
 
 ## Key documentation
 

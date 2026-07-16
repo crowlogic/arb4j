@@ -7,7 +7,7 @@ function extractTokens(cmd: string): string[] {
   while (i < s.length) {
     const c = s[i]
     if (c === '"') { let t = ""; i++; while (i < s.length && s[i] !== '"') { t += s[i]; i++ }; i++; tokens.push(t); continue }
-    if (c === "'") { let t = ""; i++; while (i < s.length && s[i] !== "'') { t += s[i]; i++ }; i++; tokens.push(t); continue }
+    if (c === "'") { let t = ""; i++; while (i < s.length && s[i] !== "'") { t += s[i]; i++ }; i++; tokens.push(t); continue }
     if (c === " ") { i++; continue }
     let t = ""
     while (i < s.length && s[i] !== " ") { t += s[i]; i++ }
@@ -29,26 +29,21 @@ function isBlocked(cmd: string): string | null {
   while (i < s.length) {
     const c = s[i]
     if (c === '"') { i++; while (i < s.length && s[i] !== '"') i++; i++; continue }
-    if (c === "'") { i++; while (i < s.length && s[i] !== "'') i++; i++; continue }
+    if (c === "'") { i++; while (i < s.length && s[i] !== "'") i++; i++; continue }
     if (c === "\\" && i + 1 < s.length) { i += 2; continue }
-
-    // 2>&1 — only allowed when immediately followed by " | tee"
-    if (c === "2" && s[i + 1] === ">" && s[i + 2] === "&" && s[i + 3] === "1") {
-      i += 4
-      const rest = s.slice(i).trimStart()
-      if (!rest.startsWith("| tee") && !rest.startsWith("|tee")) {
-        return "BLOCKED: useless 2>&1 redirect.\n" +
-               "Only '2>&1 | tee' is allowed (captures both streams to file). " +
-               "2>&1 alone or with other pipes hides stderr."
-      }
-      continue
-    }
 
     if (c === "|") {
       i++
       while (i < s.length && s[i] === " ") i++
       let w = ""
       while (i < s.length && s[i] !== " " && s[i] !== "|") { w += s[i]; i++ }
+      if (w === "tee") {
+        while (i < s.length && s[i] !== "|") i++
+        if (i < s.length && s[i] === "|") {
+          return `BLOCKED: nothing may be piped after tee.\ntee writes to file AND passes stdout through unfiltered. Any pipe after tee filters stdout.`
+        }
+        continue
+      }
       if (FILTER_WORDS.includes(w)) {
         return `BLOCKED: output filtering forbidden.\nPipe to '${w}' detected.`
       }
@@ -78,21 +73,19 @@ function hasMvnQuietFlag(tokens: string[]): boolean {
   return false
 }
 
-export default {
-  id: "unfiltered-output-protection",
-  async setup(ctx: any) {
-    ctx["tool.execute.before"] = async (input: any, output: any) => {
-        if (input.tool !== "bash") return
-        const cmd = output.args.command || ""
-        const reason = isBlocked(cmd)
-        if (reason) {
-          throw new Error(
-            reason + "\n\n" +
-            "Command: " + cmd + "\n" +
-            "Allowed: | tee, | cat, 2>&1 | tee"
-          )
-        }
-      },
-    }
-  },
+export const UnfilteredOutputProtection = async (ctx: any) => {
+  return {
+    "tool.execute.before": async (input: any, output: any) => {
+      if (input.tool !== "bash") return
+      const cmd = output.args.command || ""
+      const reason = isBlocked(cmd)
+      if (reason) {
+        throw new Error(
+          reason + "\n\n" +
+          "Command: " + cmd + "\n" +
+          "Allowed: | tee (must be last pipe)"
+        )
+      }
+    },
+  }
 }

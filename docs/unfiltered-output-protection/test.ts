@@ -8,12 +8,16 @@ function isBlocked(cmd: string): boolean {
     if (c === '"') { i++; while (i < s.length && s[i] !== '"') i++; i++; continue }
     if (c === "'") { i++; while (i < s.length && s[i] !== "'") i++; i++; continue }
     if (c === "\\" && i + 1 < s.length) { i += 2; continue }
-    if (c === "2" && s[i + 1] === ">" && s[i + 2] === "&" && s[i + 3] === "1") { i += 4; continue }
     if (c === "|") {
       i++
       while (i < s.length && s[i] === " ") i++
       let w = ""
       while (i < s.length && s[i] !== " " && s[i] !== "|") { w += s[i]; i++ }
+      if (w === "tee") {
+        while (i < s.length && s[i] !== "|") i++
+        if (i < s.length && s[i] === "|") return true
+        continue
+      }
       if (FILTER_WORDS.includes(w)) return true
       continue
     }
@@ -21,7 +25,7 @@ function isBlocked(cmd: string): boolean {
       if (i > 0 && s[i - 1] === "2") { i++; continue }
       return true
     }
-    if (c === "<") { return true }
+    if (c === "<") return true
     i++
   }
   return false
@@ -47,6 +51,13 @@ const PROTECTED = [
   "ls -la | sort | head",
   "echo foo | tail | head",
 
+  // tee followed by pipe — BLOCKED
+  "echo foo | tee /tmp/out.txt | head",
+  "echo foo | tee /tmp/out.txt | grep bar",
+  "mvn compile -pl . 2>&1 | tee shit.txt | grep 'SHIT' | head -69",
+  "mvn test 2>&1 | tee /tmp/test.log | grep ERROR | head -20",
+  "make 2>&1 | tee build.log | tail -5",
+
   // redirects — BLOCKED
   "echo foo > /tmp/out.txt",
   "echo foo >> /tmp/out.txt",
@@ -57,11 +68,6 @@ const PROTECTED = [
   // pipe + redirect combo — BLOCKED
   "echo foo > /tmp/out.txt | cat",
   "cat file | head > out.txt",
-
-  // 2>&1 with redirect — BLOCKED
-  "echo foo 2>&1 > /tmp/out.txt",
-  "make 2>&1 > build.log",
-  "mvn test 2>&1 > test.log",
 ]
 
 const ALLOWED = [
@@ -81,20 +87,19 @@ const ALLOWED = [
   "echo test | cat",
   "cat file | cat",
 
-  // pipe to tee — ALLOWED
+  // pipe to tee — tee must be last pipe — ALLOWED
   "echo foo | tee /tmp/out.txt",
   "make 2>&1 | tee /tmp/build.log",
   "mvn test 2>&1 | tee /tmp/test.log",
-  "echo foo | tee /tmp/a.txt | cat",
 
   // 2>&1 alone — ALLOWED
   "echo foo 2>&1",
   "make 2>&1",
   "mvn test 2>&1",
 
-  // 2>&1 with tee — ALLOWED
-  "echo foo 2>&1 | tee /tmp/out.txt",
-  "make 2>&1 | tee /tmp/build.log",
+  // mvn with flags — ALLOWED
+  "mvn test -Dtest=FooTest",
+  "mvn -Ptrace test",
 ]
 
 let passed = 0
