@@ -10,13 +10,14 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
 /**
- * Generates rough Heston reference call prices via Lewis (2001) Fourier
+ * Generates rough Heston reference call/put prices via Lewis (2001) Fourier
  * inversion using numerical integration of the characteristic function. This is
  * NOT for use in tests or production — it is a one-shot tool to produce
  * hardcoded reference values that are then copied into test assertions.
  *
  * <pre>
- *   C(K) = 1 − K · ( ½ + π⁻¹ · ∫₀^∞ Re[ φ(v−i/2) · e^{−iv·lnK} / (v²+¼) ] dv )
+ *   C(K) = S0 − K · ( ½ + π⁻¹ · ∫₀^∞ Re[ φ(v−i/2) · e^{−iv·lnK} / (v²+¼) ] dv )
+ *   P(K) = C(K) − S0 + K·e^{−rT}                                          (put-call parity, r=0 → P = C − S0 + K)
  * </pre>
  *
  * @author Stephen Crowley ©2026
@@ -24,13 +25,18 @@ import picocli.CommandLine.Option;
  */
 @Command(name = "lewis", description =
 {
-  "Generate reference call prices via Lewis (2001) Fourier inversion",
-  "for the rough Heston model. Prints call prices for each strike.",
+  "Generate reference call and put prices via Lewis (2001) Fourier inversion",
+  "for the rough Heston model. Prints call, put (via parity), and residual.",
   "",
-  "The Lewis formula:",
-  "  C(K) = 1 − K · ( ½ + 1/π · ∫₀^∞ Re[ φ(v−i/2) · e^{−iv·lnK} / (v²+¼) ] dv )",
+  "Lewis call formula:",
+  "  C(K) = S0 − K · ( ½ + 1/π · ∫₀^∞ Re[ φ(v−i/2) · e^{−iv·lnK} / (v²+¼) ] dv )",
   "",
-  "Output format: one line per strike:  K C",
+  "Put-call parity (r=0):",
+  "  P(K) = C(K) − S0 + K",
+  "",
+  "Output format: one line per strike:  K C P residual",
+  "  residual = C − P − S0 + K  (should be 0)",
+  "",
   "These values are intended to be hardcoded into test assertions."
 })
 public class LewisReferencePriceGenerator implements
@@ -102,19 +108,29 @@ public class LewisReferencePriceGenerator implements
           "K➔S0-K*(0.5+1.0/π*nint(v➔re(φ(v-ⅈ/2)*exp(-ⅈ*v*ln(K))/(v^2+0.25)), v=0…%s, N=%d))",
           Double.toString(Vmax), N);
 
-      RealFunction price = RealFunction.express(lewis, ctx);
+      RealFunction callPrice = RealFunction.express(lewis, ctx);
       String[] parts = strikes.split(",");
-      try ( Real K = new Real())
+      try ( Real K = new Real(); Real call = new Real(); Real put = new Real(); Real residual = new Real())
       {
         for (String s : parts)
         {
           s = s.trim();
           K.set(s, bits);
-          try ( Real val = new Real())
-          {
-            price.evaluate(K, 1, bits, val);
-            System.out.format("%s %s%n", s, val.toString());
-          }
+
+          // C(K) via Lewis formula
+          callPrice.evaluate(K, 1, bits, call);
+
+          // P(K) = C(K) − S0 + K  (put-call parity, r=0)
+          call.sub(new Real("1", bits), bits, put);
+          put.add(K, bits, put);
+
+          // residual = C − P − S0 + K  (should be 0)
+          residual.add(call, bits, residual);
+          residual.sub(put, bits, residual);
+          residual.sub(new Real("1", bits), bits, residual);
+          residual.add(K, bits, residual);
+
+          System.out.format("%s %s %s %s%n", s, call.toString(), put.toString(), residual.toString());
         }
       }
     }
