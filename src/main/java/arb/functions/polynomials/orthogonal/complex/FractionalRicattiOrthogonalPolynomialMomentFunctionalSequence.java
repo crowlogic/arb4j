@@ -1,5 +1,6 @@
 package arb.functions.polynomials.orthogonal.complex;
 
+import arb.ComplexPolynomial;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -80,12 +81,25 @@ public class FractionalRicattiOrthogonalPolynomialMomentFunctionalSequence exten
   /**
    * Construct from an existing {@link RiccatiMuntzPadeFunctional}, sharing its
    * Müntz–Tau coefficient sequence between this OPS path and any other consumer.
+   *
+   * @throws IllegalStateException if the discriminant Δ(v) = q(v)² − 4·p(v)·r(v)
+   *                               is identically zero, which would mean the
+   *                               Riccati RHS has a double root for all v and the
+   *                               fractional Riccati solution degenerates
    */
   public FractionalRicattiOrthogonalPolynomialMomentFunctionalSequence(RiccatiMuntzPadeFunctional muntz)
   {
     super(muntz.context,
           riccatiMomentSequence(muntz));
     this.muntz = muntz;
+    try ( ComplexPolynomial d = new ComplexPolynomial())
+    {
+      muntz.discriminant(128, d);
+      if ( d.isZero() )
+        throw new IllegalStateException("discriminant Δ(v)=q(v)²−4·p(v)·r(v) is identically zero — "
+                                      + "the Riccati RHS has a double root for every v, "
+                                      + "the fractional Riccati solution is degenerate");
+    }
   }
 
   /**

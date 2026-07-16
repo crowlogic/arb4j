@@ -3749,28 +3749,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     invokeStaticMethod(methodVisitor, String.class, "format", String.class, String.class, Object[].class);
 
-    // Append intermediate variable values after the formatted expression
-    var intermediates = sortedIntermediateVariables();
-    if (!intermediates.isEmpty())
-    {
-      int fmtSlot = 1;
-      methodVisitor.visitVarInsn(ASTORE, fmtSlot);
-      methodVisitor.visitTypeInsn(NEW, "java/lang/StringBuilder");
-      methodVisitor.visitInsn(DUP);
-      methodVisitor.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "()V", false);
-      methodVisitor.visitVarInsn(ALOAD, fmtSlot);
-      methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
-      for (var iv : intermediates)
-      {
-        methodVisitor.visitLdcInsn(" " + iv.name + "=");
-        methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
-        loadThisAndFieldOntoStack(methodVisitor, iv.name, iv.type);
-        invokeStaticMethod(methodVisitor, String.class, "valueOf", String.class, Object.class);
-        methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
-      }
-      methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;", false);
-    }
-
     Compiler.generateReturnFromMethod(methodVisitor);
     return classVisitor;
   }
