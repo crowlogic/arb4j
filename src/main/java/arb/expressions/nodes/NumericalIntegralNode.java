@@ -1,5 +1,7 @@
 package arb.expressions.nodes;
 
+import java.util.function.Consumer;
+
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -425,6 +427,12 @@ public class NumericalIntegralNode<D, C, F extends Function<? extends D, ? exten
     Class<?> integratorCls = isComplex ? NumericalComplexFunctionIntegral.class
                                        : NumericalRealFunctionIntegral.class;
 
+    if (Expression.trace)
+    {
+      mv.visitLdcInsn("NINT EVAL");
+      Compiler.emitLogInfo(mv, expression.internalName());
+    }
+
     // Wire the integrand instance's free-variable fields from the outer
     // expression's evaluate-time inputs BEFORE seeding the trapezoid grid.
     // Without this, init() would pre-sample with null `this.x` (or any
@@ -491,6 +499,12 @@ public class NumericalIntegralNode<D, C, F extends Function<? extends D, ? exten
                                              int.class,
                                              resultType);
 
+    if (Expression.trace)
+    {
+      mv.visitLdcInsn("NINT DONE");
+      Compiler.emitLogInfo(mv, expression.internalName());
+    }
+
     generatedType = resultType;
     return mv;
   }
@@ -554,6 +568,41 @@ public class NumericalIntegralNode<D, C, F extends Function<? extends D, ? exten
       panelWidthNode = panelWidthNode.replaceConstantNodes();
     }
     return this;
+  }
+
+  /**
+   * Visit only the limits and panel parameters — <em>not</em> the
+   * {@code integrandNode} or {@code integrationVariableNode}. Those belong to
+   * the separately-compiled integrand expression ({@link #integrandExpression})
+   * and its own AST is managed independently. Including them here would leak
+   * the integrand's internal variable and constant nodes into the outer
+   * expression's {@code nodeStream()}, causing
+   * {@link Expression#replaceConstantNodes} to hoist them into
+   * {@code StaticNode}s that reference the integrand's class name as the
+   * field owner — producing a {@code VerifyError} in
+   * {@code evaluateStaticSubexpressions} because the static-subexpression
+   * method runs on the outer class, not the integrand class.
+   */
+  @Override
+  public void accept(Consumer<Node<D, C, F>> t)
+  {
+    if (lowerLimitNode != null)
+    {
+      lowerLimitNode.accept(t);
+    }
+    if (upperLimitNode != null)
+    {
+      upperLimitNode.accept(t);
+    }
+    if (panelCountNode != null)
+    {
+      panelCountNode.accept(t);
+    }
+    if (panelWidthNode != null)
+    {
+      panelWidthNode.accept(t);
+    }
+    t.accept(this);
   }
 
   @Override

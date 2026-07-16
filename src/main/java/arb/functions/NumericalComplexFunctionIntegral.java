@@ -1,9 +1,12 @@
 package arb.functions;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import arb.Complex;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.Expression;
 
 /**
  * F(x) = ∫_a^x f(t) dt where f : ℝ → ℂ is a {@link RealToComplexFunction}.
@@ -21,6 +24,8 @@ public class NumericalComplexFunctionIntegral implements
                                               RealToComplexFunction,
                                               AutoCloseable
 {
+  private static final Logger log = LoggerFactory.getLogger(NumericalComplexFunctionIntegral.class);
+
   RealToComplexFunction source;
   double                a;
   double                dt;
@@ -111,13 +116,21 @@ public class NumericalComplexFunctionIntegral implements
       {
         for (int j = count; j < newCount; j++)
         {
+          if (Expression.trace)
+          {
+            log.info("TRAPEZOID_COMPLEX [j={}/{}, a={}, dt={}]", j, newCount - 1, a, dt);
+          }
           tr.set(a + j * dt);
           source.evaluate(tr, 1, bits, yValues.get(j));
-
-          // cumulative[j] = cumulative[j-1] + (y[j-1] + y[j]) * dt/2
           yValues.get(j - 1).add(yValues.get(j), bits, trap);
           trap.mul(halfDt, bits, trap);
           cumulative.get(j - 1).add(trap, bits, cumulative.get(j));
+          if (Expression.trace)
+          {
+            log.info("TRAPEZOID_COMPLEX [j={}/{}, t={}, y[j]={}, trap={}, cum[j]={}]",
+                     j, newCount - 1,
+                     tr, yValues.get(j), trap, cumulative.get(j));
+          }
         }
       }
       count = newCount;

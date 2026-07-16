@@ -1,8 +1,11 @@
 package arb.functions;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.Expression;
 import arb.functions.real.RealFunction;
 
 /**
@@ -17,9 +20,11 @@ import arb.functions.real.RealFunction;
  *      {@link TheArb4jLibrary}
  */
 public class NumericalRealFunctionIntegral implements
-                                           RealFunction,
-                                           AutoCloseable
+                                            RealFunction,
+                                            AutoCloseable
 {
+  private static final Logger log = LoggerFactory.getLogger(NumericalRealFunctionIntegral.class);
+
   RealFunction source;
   double       a;
   double       dt;
@@ -105,13 +110,21 @@ public class NumericalRealFunctionIntegral implements
       {
         for (int j = count; j < newCount; j++)
         {
+          if (Expression.trace)
+          {
+            log.info("TRAPEZOID [j={}/{}, a={}, dt={}]", j, newCount - 1, a, dt);
+          }
           t.set(a + j * dt);
           source.evaluate(t, 1, bits, yValues.get(j));
-
-          // cumulative[j] = cumulative[j-1] + (y[j-1] + y[j]) * dt/2
           yValues.get(j - 1).add(yValues.get(j), bits, trap);
           trap.mul(halfDt, bits, trap);
           cumulative.get(j - 1).add(trap, bits, cumulative.get(j));
+          if (Expression.trace)
+          {
+            log.info("TRAPEZOID [j={}/{}, t={}, y[j]={}, trap={}, cum[j]={}]",
+                     j, newCount - 1,
+                     t, yValues.get(j), trap, cumulative.get(j));
+          }
         }
       }
       count = newCount;
