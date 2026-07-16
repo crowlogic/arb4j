@@ -1,5 +1,6 @@
 package arb.applications;
 
+import arb.Integer;
 import arb.Real;
 import arb.expressions.Context;
 import arb.functions.integer.RealSequence;
@@ -26,7 +27,7 @@ public class RoughHestonMonteCarloTest extends TestCase
           Real K = new Real("1.0",     bits, "K");
           Real h = new Real("0.02",    bits, "h");
           Real d = new Real("0",       bits, "d");
-          Real N = Real.valueOf(numSteps);
+          Integer N = new Integer(numSteps);
           Real W = Real.newVector(numSteps);
           Real Z = Real.newVector(numSteps); )
     {
@@ -42,14 +43,14 @@ public class RoughHestonMonteCarloTest extends TestCase
 
       RealSequence.express("V",
         "V:n➔when(n=0, v, else, "
-      + "max(V(n-1)+0, 0) + κ*(θ - max(V(n-1)+0, 0))*h + σ*√(max(V(n-1)+0, 0))*(ρ*W[n-1] + √(1-ρ²)*Z[n-1]))",
+      + "max(V(n-1), 0) + κ*(θ - max(V(n-1), 0))*h + σ*√(max(V(n-1), 0))*(ρ*W[n-1] + √(1-ρ²)*Z[n-1]))",
         ctx);
 
       RealNullaryFunction.express(
-        "max(s*exp(d*T + Σ_{n=0}^{N-1}( -max(V(n)+0, 0)/2*h + √(max(V(n)+0, 0))*W[n] )) - K, 0)",
+        "max(s*exp(d*T + Σn➔( -max(V(n), 0)/2*h + √(max(V(n), 0))*W[n] ){n=0…N-1}) - K, 0)",
         ctx);
       RealNullaryFunction.express(
-        "max(K - s*exp(d*T + Σ_{n=0}^{N-1}( -max(V(n)+0, 0)/2*h + √(max(V(n)+0, 0))*W[n] )), 0)",
+        "max(K - s*exp(d*T + Σn➔( -max(V(n), 0)/2*h + √(max(V(n), 0))*W[n] ){n=0…N-1}), 0)",
         ctx);
 
       assertTrue(true);

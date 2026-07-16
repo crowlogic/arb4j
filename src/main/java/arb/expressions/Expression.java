@@ -6137,6 +6137,28 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return new LogGammaJetNode<>(this);
     case "si":
       return new SineIntegralJetNode<>(this);
+    case "max":
+    {
+      Node<D, C, F> left  = resolve();
+      require(',');
+      Node<D, C, F> right = resolve();
+      require(')');
+      return new ExtremumNode<>(this,
+                                left,
+                                right,
+                                true);
+    }
+    case "min":
+    {
+      Node<D, C, F> left  = resolve();
+      require(',');
+      Node<D, C, F> right = resolve();
+      require(')');
+      return new ExtremumNode<>(this,
+                                left,
+                                right,
+                                false);
+    }
     default:
 
       // Issue #1018: bridge `name(arg)` to a registered context variable

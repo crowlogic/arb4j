@@ -105,15 +105,15 @@ public class RoughHestonMonteCarloSimulator implements Runnable, AutoCloseable
 
       RealSequence.express("V",
         "V:n➔when(n=0, v, else, "
-      + "max(V(n-1)+0, 0) + κ*(θ - max(V(n-1)+0, 0))*h + σ*√(max(V(n-1)+0, 0))*(ρ*W[n-1] + √(1-ρ²)*Z[n-1]))",
+      + "max(V(n-1), 0) + κ*(θ - max(V(n-1), 0))*h + σ*√(max(V(n-1), 0))*(ρ*W[n-1] + √(1-ρ²)*Z[n-1]))",
         ctx);
 
       RealNullaryFunction payoffCall = RealNullaryFunction.express(
-        "max(s*exp(d*T + Σ_{n=0}^{N-1}( -max(V(n)+0, 0)/2*h + √(max(V(n)+0, 0))*W[n] )) - K, 0)",
+        "max(s*exp(d*T + Σn➔( -max(V(n), 0)/2*h + √(max(V(n), 0))*W[n] ){n=0…N-1}) - K, 0)",
         ctx);
 
       RealNullaryFunction payoffPut = RealNullaryFunction.express(
-        "max(K - s*exp(d*T + Σ_{n=0}^{N-1}( -max(V(n)+0, 0)/2*h + √(max(V(n)+0, 0))*W[n] )), 0)",
+        "max(K - s*exp(d*T + Σn➔( -max(V(n), 0)/2*h + √(max(V(n), 0))*W[n] ){n=0…N-1}), 0)",
         ctx);
 
       for (int nPaths = minPaths; nPaths <= maxPaths; nPaths *= 2)
