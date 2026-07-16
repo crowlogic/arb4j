@@ -1,11 +1,8 @@
 package arb.applications;
 
-import arb.Integer;
 import arb.Real;
 import arb.RealConstants;
 import arb.arblib;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.functions.integer.RealSequence;
 import arb.functions.real.RealNullaryFunction;
@@ -15,7 +12,7 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
 @Command(name = "rough-heston-mc")
-public class RoughHestonMonteCarloSimulator implements Runnable
+public class RoughHestonMonteCarloSimulator implements Runnable, AutoCloseable
 {
   @Option(names = "--S0",     defaultValue = "1")      private String S0s;
   @Option(names = "--r",      defaultValue = "0")      private String rs;
@@ -34,70 +31,89 @@ public class RoughHestonMonteCarloSimulator implements Runnable
   @Option(names = "--minPaths", defaultValue = "1000") private int    minPaths;
   @Option(names = "--maxPaths", defaultValue = "1000000") private int maxPaths;
 
+  private RealNullaryFunction S0fn;
+  private RealNullaryFunction rFn;
+  private RealNullaryFunction qFn;
+  private RealNullaryFunction Tfn;
+  private RealNullaryFunction κfn;
+  private RealNullaryFunction θfn;
+  private RealNullaryFunction σfn;
+  private RealNullaryFunction V0fn;
+  private RealNullaryFunction ρfn;
+  private RealNullaryFunction Kfn;
+
+  @Override
+  public void close()
+  {
+    if (S0fn != null) S0fn.close();
+    if (rFn  != null) rFn.close();
+    if (qFn  != null) qFn.close();
+    if (Tfn  != null) Tfn.close();
+    if (κfn  != null) κfn.close();
+    if (θfn  != null) θfn.close();
+    if (σfn  != null) σfn.close();
+    if (V0fn != null) V0fn.close();
+    if (ρfn  != null) ρfn.close();
+    if (Kfn  != null) Kfn.close();
+  }
+
   @Override
   public void run()
   {
-    Context ctx = new Context();
+    S0fn = RealNullaryFunction.express(S0s);
+    rFn  = RealNullaryFunction.express(rs);
+    qFn  = RealNullaryFunction.express(qs);
+    Tfn  = RealNullaryFunction.express(Ts);
+    κfn  = RealNullaryFunction.express(κs);
+    θfn  = RealNullaryFunction.express(θs);
+    σfn  = RealNullaryFunction.express(σs);
+    V0fn = RealNullaryFunction.express(V0s);
+    ρfn  = RealNullaryFunction.express(ρs);
+    Kfn  = RealNullaryFunction.express(Ks);
 
-    RealNullaryFunction S0fn = RealNullaryFunction.express(S0s);
-    RealNullaryFunction rFn  = RealNullaryFunction.express(rs);
-    RealNullaryFunction qFn  = RealNullaryFunction.express(qs);
-    RealNullaryFunction Tfn  = RealNullaryFunction.express(Ts);
-    RealNullaryFunction κfn  = RealNullaryFunction.express(κs);
-    RealNullaryFunction θfn  = RealNullaryFunction.express(θs);
-    RealNullaryFunction σfn  = RealNullaryFunction.express(σs);
-    RealNullaryFunction V0fn = RealNullaryFunction.express(V0s);
-    RealNullaryFunction ρfn  = RealNullaryFunction.express(ρs);
-    RealNullaryFunction Kfn  = RealNullaryFunction.express(Ks);
-
-    try ( Real S0 = S0fn.evaluate(bits); Real r = rFn.evaluate(bits);
+    try ( Context ctx = new Context();
+          Real s = S0fn.evaluate(bits); Real r = rFn.evaluate(bits);
           Real q  = qFn.evaluate(bits);  Real T = Tfn.evaluate(bits);
           Real κ  = κfn.evaluate(bits);  Real θ = θfn.evaluate(bits);
-          Real σ  = σfn.evaluate(bits);  Real V0 = V0fn.evaluate(bits);
+          Real σ  = σfn.evaluate(bits);  Real v = V0fn.evaluate(bits);
           Real ρ  = ρfn.evaluate(bits);  Real K = Kfn.evaluate(bits);
-          Real dt      = T.div(numSteps, bits);
-          Real sqrtDt  = dt.sqrt(bits);
-          Real rMinusQ = r.sub(q, bits);
-          Real sqrtOmRsq = new Real(); )
+          Real h   = T.div(numSteps, bits);
+          Real d   = r.sub(q, bits); )
     {
-      RealConstants.one.sub(ρ.mul(ρ, bits), bits, sqrtOmRsq);
-      sqrtOmRsq.sqrt(bits, sqrtOmRsq);
-      Real steps = Real.valueOf(numSteps);
+      Real N = Real.valueOf(numSteps);
 
-      S0.setName("S0");  ctx.registerVariable(S0);
-      r.setName("r");    ctx.registerVariable(r);
-      q.setName("q");    ctx.registerVariable(q);
-      T.setName("T");    ctx.registerVariable(T);
-      κ.setName("κ");    ctx.registerVariable(κ);
-      θ.setName("θ");    ctx.registerVariable(θ);
-      σ.setName("σ");    ctx.registerVariable(σ);
-      V0.setName("V0");  ctx.registerVariable(V0);
-      ρ.setName("ρ");    ctx.registerVariable(ρ);
-      K.setName("K");    ctx.registerVariable(K);
-      dt.setName("dt");      ctx.registerVariable(dt);
-      sqrtDt.setName("√dt");    ctx.registerVariable(sqrtDt);
-      rMinusQ.setName("rMinusQ"); ctx.registerVariable(rMinusQ);
-      sqrtOmRsq.setName("√1mρ²"); ctx.registerVariable(sqrtOmRsq);
-      steps.setName("steps"); ctx.registerVariable(steps);
+      s.setName("s");  ctx.registerVariable(s);
+      r.setName("r");  ctx.registerVariable(r);
+      q.setName("q");  ctx.registerVariable(q);
+      T.setName("T");  ctx.registerVariable(T);
+      κ.setName("κ");  ctx.registerVariable(κ);
+      θ.setName("θ");  ctx.registerVariable(θ);
+      σ.setName("σ");  ctx.registerVariable(σ);
+      v.setName("v");  ctx.registerVariable(v);
+      ρ.setName("ρ");  ctx.registerVariable(ρ);
+      K.setName("K");  ctx.registerVariable(K);
+      h.setName("h");  ctx.registerVariable(h);
+      d.setName("d");  ctx.registerVariable(d);
+      N.setName("N");  ctx.registerVariable(N);
 
-      Real dWS    = Real.newVector(numSteps);
-      Real dWperp = Real.newVector(numSteps);
-      dWS.setName("dWS");       ctx.registerVariable(dWS);
-      dWperp.setName("dWperp"); ctx.registerVariable(dWperp);
+      Real W = Real.newVector(numSteps);
+      Real Z = Real.newVector(numSteps);
+      W.setName("W");  ctx.registerVariable(W);
+      Z.setName("Z");  ctx.registerVariable(Z);
 
       ctx.declare("V", Integer.class, Real.class, RealSequence.class);
 
       RealSequence.express("V",
-        "V:n➔when(n=0, V0, else, "
-      + "V(n-1) + κ*(θ - V(n-1))*dt + σ*√(V(n-1))*(ρ*dWS[n-1] + √1mρ²*dWperp[n-1]))",
+        "V:n➔when(n=0, v, else, "
+      + "max(V(n-1)+0, 0) + κ*(θ - max(V(n-1)+0, 0))*h + σ*√(max(V(n-1)+0, 0))*(ρ*W[n-1] + √(1-ρ²)*Z[n-1]))",
         ctx);
 
       RealNullaryFunction payoffCall = RealNullaryFunction.express(
-        "max(S0*exp(rMinusQ*T + Σ_{n=0}^{steps-1}( -V(n)/2*dt + √(V(n))*dWS[n] )) - K, 0)",
+        "max(s*exp(d*T + Σ_{n=0}^{N-1}( -max(V(n)+0, 0)/2*h + √(max(V(n)+0, 0))*W[n] )) - K, 0)",
         ctx);
 
       RealNullaryFunction payoffPut = RealNullaryFunction.express(
-        "max(K - S0*exp(rMinusQ*T + Σ_{n=0}^{steps-1}( -V(n)/2*dt + √(V(n))*dWS[n] )), 0)",
+        "max(K - s*exp(d*T + Σ_{n=0}^{N-1}( -max(V(n)+0, 0)/2*h + √(max(V(n)+0, 0))*W[n] )), 0)",
         ctx);
 
       for (int nPaths = minPaths; nPaths <= maxPaths; nPaths *= 2)
@@ -105,20 +121,17 @@ public class RoughHestonMonteCarloSimulator implements Runnable
         System.err.printf("[convergence] %d paths%n", nPaths);
         boolean converged;
 
-        try ( SimResult r1 = simulate(nPaths, seed1, dWS, dWperp, payoffCall, payoffPut, K, S0);
-              SimResult r2 = simulate(nPaths, seed2, dWS, dWperp, payoffCall, payoffPut, K, S0); )
+        try ( SimResult r1 = simulate(nPaths, seed1, W, Z, payoffCall, payoffPut, K, s);
+              SimResult r2 = simulate(nPaths, seed2, W, Z, payoffCall, payoffPut, K, s); )
         {
           converged = r1.callBall.contains(r2.callBall)
                    && r2.callBall.contains(r1.callBall);
 
-          System.out.printf("# paths=%d steps=%d bits=%d K=%s%n", nPaths, numSteps, bits, K);
-          System.out.printf("call1=%s%n", r1.callBall);
-          System.out.printf("call2=%s%n", r2.callBall);
-          System.out.printf("put1=%s%n", r1.putBall);
-          System.out.printf("put2=%s%n", r2.putBall);
-          System.out.printf("parity1=%s%n", r1.parityResidual);
-          System.out.printf("parity2=%s%n", r2.parityResidual);
-          System.out.printf("converged=%s%n", converged);
+          System.out.printf("%s %s %s %s %s %s %s 1.0%n",
+            K, T,
+            r1.callBall.getMid(), r1.callBall.getRad(),
+            r1.putBall.getMid(), r1.putBall.getRad(),
+            r1.parityResidual);
         }
 
         if (converged)
@@ -133,10 +146,10 @@ public class RoughHestonMonteCarloSimulator implements Runnable
   }
 
   private SimResult simulate(int nPaths, long seed,
-                              Real dWS, Real dWperp,
-                              RealNullaryFunction payoffCall,
-                              RealNullaryFunction payoffPut,
-                              Real K, Real S0)
+                               Real W, Real Z,
+                               RealNullaryFunction payoffCall,
+                               RealNullaryFunction payoffPut,
+                               Real K, Real s)
   {
     SimResult result = new SimResult(bits);
 
@@ -149,14 +162,13 @@ public class RoughHestonMonteCarloSimulator implements Runnable
     noise2.initializeWithSeed(seed + 1000);
 
     Real payoffVal = new Real();
-    Integer pathIdx = new Integer();
 
     long t0 = System.nanoTime();
 
     for (int path = 0; path < nPaths; path++)
     {
-      noise1.sample(bits, dWS);
-      noise2.sample(bits, dWperp);
+      noise1.sample(bits, W);
+      noise2.sample(bits, Z);
 
       payoffCall.evaluate(bits, payoffVal);
       callPayoffs.get(path).set(payoffVal);
@@ -187,7 +199,7 @@ public class RoughHestonMonteCarloSimulator implements Runnable
     }
 
     result.callBall.sub(result.putBall, bits, result.parityResidual);
-    result.parityResidual.sub(S0, bits, result.parityResidual);
+    result.parityResidual.sub(s, bits, result.parityResidual);
     result.parityResidual.add(K, bits, result.parityResidual);
 
     noise1.close();
@@ -247,6 +259,9 @@ public class RoughHestonMonteCarloSimulator implements Runnable
 
   public static void main(String[] args)
   {
-    new CommandLine(new RoughHestonMonteCarloSimulator()).execute(args);
+    try ( RoughHestonMonteCarloSimulator simulator = new RoughHestonMonteCarloSimulator() )
+    {
+      new CommandLine(simulator).execute(args);
+    }
   }
 }

@@ -394,5 +394,34 @@
 				</plugins>
 			</build>
 		</profile>
+
+		<!--
+		  Monte Carlo reference price generator profile. Runs only the
+		  Monte Carlo smoke test (expression compilation verification,
+		  no long-running simulation). Fast: completes in < 2 seconds.
+		  
+		  Usage: mvn -Pmontecarlo test
+		-->
+		<profile>
+			<id>montecarlo</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<argLine>-ea --illegal-native-access=allow
+								--sun-misc-unsafe-memory-access=allow
+								-Djava.library.path=${project.basedir}
+								-Darb4j.verifyBytecode=true
+								${argLine}</argLine>
+							<includes>
+								<include>**/RoughHestonMonteCarloTest.java</include>
+							</includes>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 	</profiles>
 </project>
