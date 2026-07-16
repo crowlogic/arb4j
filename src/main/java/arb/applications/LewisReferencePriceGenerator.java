@@ -70,9 +70,20 @@ public class LewisReferencePriceGenerator implements
   @Option(names = "--strikes", description = "comma-separated list of strikes (default: 0.95,0.975,1.0,1.025,1.05)", defaultValue = "0.95,0.975,1.0,1.025,1.05")
   private String strikes;
 
+  @Option(names = "--trace", description = "enable expression compiler trace/decompile output")
+  private boolean trace;
+
   @Override
   public void run()
   {
+    if (trace)
+    {
+      System.setProperty("arb4j.trace", "true");
+      System.setProperty("arb4j.saveClasses", "true");
+      System.setProperty("arb4j.decompileClasses", "true");
+      System.setProperty("arb4j.traceNodes", "true");
+    }
+
     Context ctx = new Context();
     ctx.registerVariable(new Real(Double.toString(λ), bits, "λ"));
     ctx.registerVariable(new Real(Double.toString(θ), bits, "θ"));
@@ -88,7 +99,7 @@ public class LewisReferencePriceGenerator implements
               new RoughHestonCharacteristicFunction(ctx, ComplexConstants.zero))
     {
       String lewis = String.format(
-          "K➔1-K*(0.5+1.0/π*nint(v➔re(φ(v-ⅈ/2)*exp(-ⅈ*v*ln(K))/(v^2+0.25)), v=0…%s, N=%d))",
+          "K➔S0-K*(0.5+1.0/π*nint(v➔re(φ(v-ⅈ/2)*exp(-ⅈ*v*ln(K))/(v^2+0.25)), v=0…%s, N=%d))",
           Double.toString(Vmax), N);
 
       RealFunction price = RealFunction.express(lewis, ctx);

@@ -26,17 +26,22 @@ Hand-written Java files (safe to edit directly): `GrMpolyNative.java`, `ComplexM
 # Full rebuild: SWIG codegen + C compilation → libarblib.so
 make
 
-# Run all tests
+# Run tests with "mvn test"
+# BREATHING must be "mvn install" with no -q, no grep head or tail
+# NEVER EVER FILTER TEST OUTPUT – the full stream must be visible to catch any failures
 mvn test
 
-# Run a single test class
+# Build jar only
+mvn install
+
+# Run a single test class with -Dtest
 mvn test -Dtest="arb.expressions.nodes.VariableNodeResolutionTest"
 
-# Build jar
-make jar
+# ALL TESTS MUST PASS AND MUST BE FAST (under 10 seconds on this machine)
+# If a test fails, revert it immediately – never dismiss as "pre-existing"
 ```
 
-`make` does everything: SWIG codegen → C compilation → shared library. The SWIG rule at `native/arb_wrap.c` depends on all `.i` files, so editing any `.i` file triggers SWIG regeneration on next `make`.
+`make` does everything: SWIG codegen → C compilation → shared library. The SWIG rule at `native/arb_wrap.c` depends on all `.i` files, so editing any `.i` file triggers SWIG regeneration on next `make`.<dark-gray>(</dark-gray>vival:*>:*|*</vival:*>(***3.5s</vival:*>:*)<dark-gray>)</dark-gray>
 
 ## Architecture
 
