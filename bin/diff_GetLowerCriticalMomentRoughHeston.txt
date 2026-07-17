@@ -1,0 +1,10 @@
+75,76c75
+<     [u,~,exitflag] = fmincon(min_fun,u_sep,[],[],[],[],[],u_sep,[],...
+<                              options);
+---
+> [u,~,exitflag] = fminsearch(min_fun,u_sep,optimset('Display','off'));
+78,79c77
+<     [u,~,exitflag] = fmincon(min_fun,u_sep,[],[],[],[],u_sep+eps,0,[],...
+<                               options);
+---
+> [u,~,exitflag] = fminsearch(min_fun,u_sep,optimset('Display','off'));

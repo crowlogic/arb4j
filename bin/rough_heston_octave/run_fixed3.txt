@@ -1,0 +1,8 @@
+warning: function /usr/share/octave/packages/statistics-1.8.2/signtest.m shadows a core library function
+warning: called from
+    load_packages_and_dependencies at line 62 column 5
+    load_packages at line 53 column 3
+    pkg at line 712 column 7
+    price_european at line 23 column 1
+
+0.013998732911 0.557059024956

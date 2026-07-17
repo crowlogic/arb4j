@@ -1,0 +1,31 @@
+92,101c92,101
+< addOptional(p,'r',0);
+< addOptional(p,'q',0);
+< addOptional(p,'beta',[]);
+< addOptional(p,'N',250);
+< addOptional(p,'ubound',2000);
+< addOptional(p,'midpoint',10);
+< addOptional(p,'dA',50);
+< addOptional(p,'eps',10^(-6));
+< addOptional(p,'nmax',200);
+< addOptional(p,'disp_iter',false);
+---
+> addParameter(p,'r',0);
+> addParameter(p,'q',0);
+> addParameter(p,'beta',[]);
+> addParameter(p,'N',250);
+> addParameter(p,'ubound',2000);
+> addParameter(p,'midpoint',10);
+> addParameter(p,'dA',50);
+> addParameter(p,'eps',10^(-6));
+> addParameter(p,'nmax',200);
+> addParameter(p,'disp_iter',false);
+192c192,197
+< iv = blsimpv(s_0,K,r,T,price,'Yield',q,'class',call);
+---
+> % OCTAVE PORT: Octave's financial blsimpv takes POSITIONAL args only
+> % (Limit, Yield, Tolerance, Class) and does NOT support MATLAB's
+> % 'Yield'/'class' name-value pairs. Map the MATLAB call
+> %   blsimpv(s_0,K,r,T,price,'Yield',q,'class',call)
+> % to the positional form, preserving Yield=q and Class=call.
+> iv = blsimpv(s_0, K, r, T, price, 10, q, 1e-6, call);

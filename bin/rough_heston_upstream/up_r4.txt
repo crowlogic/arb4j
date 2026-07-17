@@ -1,0 +1,12 @@
+warning: function /usr/share/octave/packages/statistics-1.8.2/signtest.m shadows a core library function
+warning: called from
+    load_packages_and_dependencies at line 62 column 5
+    load_packages at line 53 column 3
+    pkg at line 712 column 7
+    test_up at line 2 column 1
+
+error: operator -: nonconformant arguments (op1 is 1x4, op2 is 0x0)
+error: called from
+    NumericalIntegrationCall at line 63 column 5
+    NumericalIntegrationRoughHeston at line 177 column 1
+    test_up at line 5 column 2

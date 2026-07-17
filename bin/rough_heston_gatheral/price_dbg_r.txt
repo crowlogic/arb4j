@@ -1,0 +1,3 @@
+Error in t(dah + lam * h) %*% rev(xi) : non-conformable arguments
+Calls: <Anonymous> ... <Anonymous> -> f -> phi -> do.call -> mapply -> <Anonymous>
+Execution halted

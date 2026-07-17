@@ -1,0 +1,4 @@
+len dah: 253  len h: 253 
+dah dim: 253 1  h dim: 253 1 
+len xi: 1 
+class dah: matrix array 
