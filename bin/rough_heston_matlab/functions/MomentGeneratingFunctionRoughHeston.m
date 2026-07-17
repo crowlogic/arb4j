@@ -49,7 +49,9 @@ function phi = MomentGeneratingFunctionRoughHeston(v_0,alpha,lambda,...
 %   2004.
 % 
 
-    % Define the Volterra integral equation:
+    % Ensure column vector (Octave compatibility)
+    u_shape = size(u);
+    u = u(:);
     c1 = 0.5*u.*(u-1);
     c2 =  rho*xi*u - lambda;
     c3 = 0.5*xi.^2;
@@ -63,6 +65,7 @@ function phi = MomentGeneratingFunctionRoughHeston(v_0,alpha,lambda,...
     dt = T / N;
     phi = exp( v_bar*lambda*sum(psi(:,1:end-1),2).*dt ...
                + v_0.*sum(Dalpha_psi(:,1:end-1),2).*dt );
+    phi = reshape(phi, u_shape);
     
 end
 
