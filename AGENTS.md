@@ -12,9 +12,28 @@ When the user tells you something, **do not argue**. Do not propose alternatives
 
 When a ported routine misbehaves (e.g. `blsimpv` returning garbage or erroring under Octave), the defect is in the **port**, not in the feature. **NEVER remove, disable, stub, or reduce the feature** (no "print price only, skip IV", no `if isscalar` guards that drop output, no chopping functionality) to make the error go away. That is gutting the spec. Instead, find the exact root cause in the ported code and fix it so the feature works as specified. A correct port preserves 100% of the original behavior. Reducing quality to silence an error is worse than the error.
 
-## MANDATE: Always resolve open issues
+## Two operating modes
 
-At the start of every session, check `gh issue list --repo crowlogic/arb4j --state open`. Begin working through open issues immediately. Continue working through issues indefinitely — the loop terminates only when the open issue list is literally empty, or when every remaining issue is blocked in a way that requires user input. Do not ask what to work on — pick the next issue and start.
+The agent has two modes, selected by the user's instructions:
+
+### Task-based mode (DEFAULT)
+
+Stick to what the user tells you. Do not go rogue, do not invent work, do not check issues unless asked. Follow instructions literally and do not stop until the task is done. This is the baseline behavior whenever the user gives you a direct task. All rules in "Agents must not be fools" apply.
+
+### Issue-closer mode
+
+Activated only when the user says something like "close issues", "work through issues", "issue-closer mode", or otherwise indicates they want issues resolved. In this mode:
+
+1. Check `gh issue list --repo crowlogic/arb4j --state open` at start.
+2. Work through each open issue in order.
+3. For each issue:
+   - If it can be fixed now (unblocked, actionable), fix it, commit, push, close.
+   - If it is blocked waiting on user input or external dependency, log the blocker in an issue comment, add label `blocked`, and skip it.
+   - If it depends on another open issue, note the dependency and skip.
+4. Repeat until every open issue is either closed or marked `blocked` with a clear blocker comment.
+5. Do not ask what to work on — pick the next issue and start.
+
+The loop terminates only when the open issue list is empty or every remaining issue carries the `blocked` label.
 
 ## CRITICAL: COMMIT AND PUSH IS MANDATORY — NEVER FORGET
 

@@ -50,6 +50,8 @@ function phi = MomentGeneratingFunctionRoughHeston(v_0,alpha,lambda,...
 % 
 
     % Define the Volterra integral equation:
+    input_is_row = isrow(u);
+    u = u(:); % force column so SolveVIE infers correct M from size(f(0,0),1)
     c1 = 0.5*u.*(u-1);
     c2 =  rho*xi*u - lambda;
     c3 = 0.5*xi.^2;
@@ -64,6 +66,9 @@ function phi = MomentGeneratingFunctionRoughHeston(v_0,alpha,lambda,...
     phi = exp( v_bar*lambda*sum(psi(:,1:end-1),2).*dt ...
                + v_0.*sum(Dalpha_psi(:,1:end-1),2).*dt );
     phi = reshape(phi, size(u));
+    if input_is_row
+        phi = phi.'; % restore original orientation
+    end
     
 end
 

@@ -28,7 +28,7 @@ psi = @(v,alpha)( real(exp(-1i.*v.*k).*phi( v - 1i*(alpha + 1) ) ...
 min_fun = @(alpha)( -alpha*k + 0.5*log( psi(0,alpha).^2 ) );
 options = optimset('Display','off','MaxIter',10^4,'MaxFunEvals',10^4);
 lb = lower_critical_moment - 1;ub = -1;
-[alpha, ~, exitflag] = fmincon(min_fun,(ub-lb)/2,[],[],[],[],lb,ub,[],options);
+[alpha, ~, exitflag] = fmincon(min_fun, (lb+ub)/2, [], [], [], [], lb, ub, [], options);
 
 if exitflag <= 0
     error(['GetOptimalFourierAlpha: fmincon did not converge. Please ', ...
