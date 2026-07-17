@@ -5,7 +5,15 @@ from dataclasses import dataclass
 from typing import Optional, Union, Literal, Tuple
 
 import numpy as np
-from numba import njit
+try:
+    from numba import njit
+except ImportError:
+    def njit(*args, **kwargs):
+        if args and callable(args[0]):
+            return args[0]
+        def _njit(f):
+            return f
+        return _njit
 
 import jax
 jax.config.update("jax_enable_x64", True)
