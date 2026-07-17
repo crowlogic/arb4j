@@ -3124,7 +3124,7 @@ This catalog covers the current `src/test/java` tree under the requested extract
 - Typed expression compilation and codomain promotion
 
 ### RoughHestonOptionPricerTest.testBlackScholesLimitIsExact
-**What it does:** Prices a call with `lewisSingleSeries`, independently computes the Black-Scholes price from the same inputs, and checks that the absolute difference is below `2^-100`.
+**What it does:** Prices a call with the single-series pricer, independently computes the Black-Scholes price from the same inputs, and checks that the absolute difference is below `2^-100`.
 **Compiler features exercised:** none — tests native arb wrapper only.
 
 ### RoughHestonOptionPricerTest.testCayleyScaleInvariance

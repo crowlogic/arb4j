@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
  * of the log-price density around the matching Gaussian, with the
  * Hermite-basis weights c(n) built by the Blinnikov–Moessner recurrence.
  * Closed-form, exact-symbolic {@link Real} arithmetic — no FFT, no
- * Carr–Madan / Lewis quadrature, no damping parameters, no integer-partition
+ * quadrature, no damping parameters, no integer-partition
  * enumeration.
  *
  * <h2>Structure: expressions all the way down</h2>

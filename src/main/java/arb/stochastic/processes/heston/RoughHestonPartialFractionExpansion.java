@@ -26,10 +26,10 @@ public class RoughHestonPartialFractionExpansion implements
   /** Pad\u00e9 order. {@code u.dim == A.dim == 2*M}. */
   public final int     M;
 
-  /** σ_T²(M) — the Lewis-Gaussian variance of κ_M at large |v|. */
+  /** σ_T²(M) — the Gaussian variance of κ_M at large |v|. */
   public final Real    σT2;
 
-  /** μ_T(M) — the Lewis-Gaussian drift of κ_M at large |v|. */
+  /** μ_T(M) — the Gaussian drift of κ_M at large |v|. */
   public final Real    μT;
 
   /** PFE poles: u_j ∈ ℂ, Im(u_j) < 0, for j = 1..2M. */
@@ -52,7 +52,7 @@ public class RoughHestonPartialFractionExpansion implements
   /**
    * The hypothesis of the erfc–Hermite series representation at this order:
    * σ_T² &gt; 0 and every pole strictly below the real axis (Im u_j &lt; 0), so
-   * ψ = e^ρ is analytic on the closed left w-half-plane of the Lewis line.
+   * ψ = e^ρ is analytic on the closed left w-half-plane of the pricing contour.
    * Guaranteed for all sufficiently large M by the pole-location asymptotics;
    * an order at which it fails is outside this chart and the next order is
    * taken.

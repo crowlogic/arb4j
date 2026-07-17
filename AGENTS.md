@@ -50,7 +50,7 @@ session and were never touched.
 
 ## CRITICAL: Never suggest raw Java implementations
 
-arb4j exists because Java is inferior. The expression compiler parses Unicode math notation and emits typed JVM bytecode. **NEVER suggest writing raw Java when the expression compiler can do the job.** Use `RealFunction.express("formula", ctx)` and the existing compiler infrastructure. If a program already exists (e.g. `LewisReferencePriceGenerator`), **refactor it** — do not write a new one. Refactoring means modifying the existing code, not copying it into a new file.
+arb4j exists because Java is inferior. The expression compiler parses Unicode math notation and emits typed JVM bytecode. **NEVER suggest writing raw Java when the expression compiler can do the job.** Use `RealFunction.express("formula", ctx)` and the existing compiler infrastructure. If a program already exists, **refactor it** — do not write a new one. Refactoring means modifying the existing code, not copying it into a new file.
 
 ## CRITICAL: SWIG-generated files
 
@@ -206,7 +206,7 @@ Unimplemented paths throw; they do not return null or silently fall back. For ve
 
 ## Reference prices
 
-Numerical pricers (e.g. `LewisReferencePriceGenerator`) are **manual CLI tools only**. Run them by hand to generate slow reference prices. Copy the output as hardcoded constants into JUnit tests. **Never call a numerical pricer from a unit test.** You cannot test the pricer with the pricer.
+Numerical pricers are **manual CLI tools only**. Run them by hand to generate slow reference prices. Copy the output as hardcoded constants into JUnit tests. **Never call a numerical pricer from a unit test.** You cannot test the pricer with the pricer.
 
 ## GitHub CLI (`gh`) rules
 

@@ -77,7 +77,7 @@ used here.
 
 ---
 
-# 2. The defining contour integral (Lewis/Parseval), proved
+# 2. The defining contour integral, proved
 
 **Proposition 2.1.** *Under (H), with $c\in(1,p^{*})$,*
 
