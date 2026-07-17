@@ -8,6 +8,10 @@ Java bindings to FLINT/arb (ball arithmetic with rigorous error bounds) plus a U
 
 When the user tells you something, **do not argue**. Do not propose alternatives, do not think you know better, do not continue down a path they just rejected. Listen, adjust, and execute. When they say "constants are read-only", you stop using them as mutable operands immediately — you don't design around them, you don't create workarounds, you just **do not touch them**. When they say "no doubles", you eliminate every double from the computation path then and there. When they tell you to read the SWIG mapping or FLINT docs, **you read them instead of guessing**. The arb4j codebase is their domain; they know the API surface better than you do. Inferior suggestions waste time and provoke rage. Be correct or be silent.
 
+## NEVER amputate features to dodge a port defect
+
+When a ported routine misbehaves (e.g. `blsimpv` returning garbage or erroring under Octave), the defect is in the **port**, not in the feature. **NEVER remove, disable, stub, or reduce the feature** (no "print price only, skip IV", no `if isscalar` guards that drop output, no chopping functionality) to make the error go away. That is gutting the spec. Instead, find the exact root cause in the ported code and fix it so the feature works as specified. A correct port preserves 100% of the original behavior. Reducing quality to silence an error is worse than the error.
+
 ## MANDATE: Always resolve open issues
 
 At the start of every session, check `gh issue list --repo crowlogic/arb4j --state open`. Begin working through open issues immediately. Only stop when no open issues remain or when blocked waiting on user input. Do not ask what to work on — pick the next issue and start.

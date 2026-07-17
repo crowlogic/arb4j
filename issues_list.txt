@@ -1,0 +1,4 @@
+1202	OPEN	Hard-code independently verified rough Heston prices, validate the arb4j Padé pricer, and remove the obsolete Lewis generator		2026-07-16T21:05:39Z
+1201	OPEN	Validate PaDE pricer against verified reference table		2026-07-16T19:59:37Z
+1200	OPEN	Package two independent rough Heston reference pricers into bin/ and verify price agreement		2026-07-16T19:21:51Z
+1195	OPEN	RoughHeston reference prices: generate numerically, hardcode into tests		2026-07-16T16:12:07Z
