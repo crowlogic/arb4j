@@ -26,18 +26,14 @@ function alpha = GetOptimalFourierAlpha(phi,k,lower_critical_moment)
 psi = @(v,alpha)( real(exp(-1i.*v.*k).*phi( v - 1i*(alpha + 1) ) ...
                   ./ (-(v - 1i.*alpha).*(v - 1i.*(alpha+1)))) );
 min_fun = @(alpha)( -alpha*k + 0.5*log( psi(0,alpha).^2 ) );
-% OCTAVE FIX: fmincon (MATLAB Optimization Toolbox) is unavailable in
-% Octave. This is a 1-D bounded minimization, replaced by fminbnd
-% from the Octave 'optim' package — the direct equivalent.
+options = optimset('Display','off','MaxIter',10^4,'MaxFunEvals',10^4);
 lb = lower_critical_moment - 1;ub = -1;
-[alpha, ~, exitflag] = fminbnd(min_fun, lb, ub, optimset('Display','off'));
+[alpha, ~, exitflag] = fmincon(min_fun,(ub-lb)/2,[],[],[],[],lb,ub,[],options);
 
 if exitflag <= 0
-    error(['GetOptimalFourierAlpha: fminbnd did not converge. Please ', ...
+    error(['GetOptimalFourierAlpha: fmincon did not converge. Please ', ...
            'inspect inputs and/or code.']);
 end
-
-
 
 end
 

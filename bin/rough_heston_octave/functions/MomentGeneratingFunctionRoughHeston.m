@@ -59,20 +59,10 @@ function phi = MomentGeneratingFunctionRoughHeston(v_0,alpha,lambda,...
     % Solve it:
     [psi,Dalpha_psi] = SolveVIE(f,alpha,T,N);
     
-    % Octave port: if VIE returned NaN (numerical instability detected),
-    % return NaN so the integrand handles it gracefully
-    if any(isnan(psi(:))) || any(isnan(Dalpha_psi(:)))
-        phi = complex(NaN(size(u)));
-        return;
-    end
-    
     % Integrate to get the characteristic function, see (**):
     dt = T / N;
     phi = exp( v_bar*lambda*sum(psi(:,1:end-1),2).*dt ...
                + v_0.*sum(Dalpha_psi(:,1:end-1),2).*dt );
-    % OCTAVE FIX: keep phi the same shape as the input u so that
-    % column/row mismatches with the Fourier-integration variable
-    % (which Octave's integral passes as a row) do not arise.
     phi = reshape(phi, size(u));
     
 end

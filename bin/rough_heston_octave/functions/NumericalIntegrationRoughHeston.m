@@ -170,7 +170,6 @@ if ~exist('beta','var') || isempty(beta)
     lower_critical = GetLowerCriticalMomentRoughHeston(lambda,rho,xi,...
                                                        T_star,T);
     beta = GetOptimalFourierAlpha(phi,k,lower_critical) + 1;
-    disp(["AUTO_BETA=",num2str(beta)," lower_critical=",num2str(lower_critical)]);
 end
 
 % Compute price of call option assuming S(0) = 1, zero interest rates,
@@ -190,11 +189,6 @@ end
 price = s_0*exp(-q*T).*price;
 
 % Compute implied volatilities:
-% OCTAVE PORT: Octave's financial blsimpv takes POSITIONAL args only
-% (Limit, Yield, Tolerance, Class) and does NOT support MATLAB's
-% 'Yield'/'class' name-value pairs. Map the MATLAB call
-%   blsimpv(s_0,K,r,T,price,'Yield',q,'class',call)
-% to the positional form, preserving Yield=q and Class=call.
 iv = blsimpv(s_0, K, r, T, price, 10, q, 1e-6, call);
 
 end

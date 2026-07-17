@@ -39,18 +39,11 @@ function [y,Dalpha_y,t] = SolveVIE(f,alpha,T,N,M)
     if ~exist('M','var') || isempty(M)
         M = size(f(0,0),1);
     end
-    M = max(M,1);
     
     % Initialization:
-    % OCTAVE FIX: (0:h:T) can yield N points instead of N+1 when
-    % T/h is not representable exactly. Build an exact N+1 grid.
-    % Use a ROW vector so phi(u) keeps the same orientation as the
-    % Fourier-integration variable v (Octave's integral passes a row).
     h = T / N;
     t = linspace(0, T, N+1);
-    
-    y        = NaN(M, N+1);
-    Dalpha_y = NaN(M, N+1);
+    [y,Dalpha_y] = deal(NaN(M,N+1));
     
     % Define coefficient functions:
     dummy1 = ( (h^alpha) / (alpha*(alpha + 1)) );
@@ -59,13 +52,13 @@ function [y,Dalpha_y,t] = SolveVIE(f,alpha,T,N,M)
                       + (k-j).^(alpha+1) - 2*(k-j+1).^(alpha+1) ) );
     a_kp1_kp1 = dummy1;
     b_j_kp1 = @(j,k) (  ((h^alpha)/alpha) * ( (k+1-j).^(alpha) ...
-                                             - (k-j).^(alpha)  ) );
+                                            - (k-j).^(alpha)  ) );
     
     % Run scheme:
     y(:,1) = 0;
     Dalpha_y(:,1) = f(0,0);
     for k=0:N-1
-        js = (0:1:k);
+        js = (0:1:k); 
         
         % Compute predictor:
         yp = sum(b_j_kp1(js,k).*Dalpha_y(:,1:k+1),2)./gamma(alpha);
@@ -82,33 +75,12 @@ function [y,Dalpha_y,t] = SolveVIE(f,alpha,T,N,M)
         
         % Compute fractional derivative:
         Dalpha_y(:,k+2) = f(h,y(:,k+2));
-
-        if any(any(isnan(y(:,k+2)))) || any(any(isnan(Dalpha_y(:,k+2))))
-            dbg = fopen('/tmp/octave-vie-debug.log','a');
-            if dbg >= 0
-                fprintf(dbg, 'VIE NaN k=%d y1=%s Da1=%s yp=%s y2=%s Da2=%s\n', ...
-                    k, any2str(y(:,k+1)'), any2str(Dalpha_y(:,k+1)'), ...
-                    any2str(yp'), any2str(y(:,k+2)'), any2str(Dalpha_y(:,k+2)'));
-                fclose(dbg);
-            end
-        end
-
+        
     end
     
     if any(any(isnan(y))) || any(any(isnan(Dalpha_y)))
-        y(:) = NaN;
-        Dalpha_y(:) = NaN;
+        error('SolveVIE: NaNs produced!');
     end
     
-end
-
-function s = any2str(x)
-    if isempty(x)
-        s = '[]';
-    elseif any(isnan(x)(:)) || any(isinf(x)(:))
-        s = '[NaN/Inf]';
-    else
-        s = strrep(strrep(num2str(real(x)),' ','_'),'\n','');
-    end
 end
 

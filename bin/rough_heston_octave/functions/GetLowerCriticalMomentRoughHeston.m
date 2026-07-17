@@ -72,9 +72,11 @@ end
 min_fun = @(u)(abs(T(u) - T_eval));
 options = optimset('Display','off','MaxIter',10^4,'MaxFunEvals',10^4);
 if case_A
-[u,~,exitflag] = fminsearch(min_fun,u_sep,optimset('Display','off'));
+    [u,~,exitflag] = fmincon(min_fun,u_sep,[],[],[],[],[],u_sep,[],...
+                             options);
 else
-[u,~,exitflag] = fminsearch(min_fun,u_sep,optimset('Display','off'));
+    [u,~,exitflag] = fmincon(min_fun,u_sep,[],[],[],[],u_sep+eps,0,[],...
+                              options);
 end
 
 if exitflag <= 0
