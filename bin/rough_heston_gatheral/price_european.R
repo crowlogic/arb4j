@@ -16,6 +16,9 @@ nu    <- as.numeric(args[7])   # vol-of-vol
 rho   <- as.numeric(args[8])
 r     <- as.numeric(args[9])
 
+wd <- dirname(sub("^--file=", "", grep("^--file=", commandArgs(), value=TRUE)[1]))
+if (is.na(wd)) wd <- getwd()
+setwd(wd)
 source("roughHestonAdamsLambda.R")
 source("BlackFormula.R")
 

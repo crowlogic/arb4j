@@ -1,0 +1,21 @@
+# Julia
+*.jl.cov
+*.jl.*.cov
+*.jl.mem
+/docs/build/
+/Manifest.toml.bak
+
+# Generated results are reproducible from scripts; keep the repo lean.
+# (Comment these out if you want committed figures/benchmarks.)
+/results/figures/
+/results/benchmarks/*.tmp
+
+# Market data: not redistributed; see data/README.md to reproduce.
+/data/*.csv
+
+# OS / editor / tooling cruft
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.claude/

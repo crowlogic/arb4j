@@ -25,11 +25,12 @@ def phi(u, tau):
 k = np.log(K / S0)
 otm_price = float(lewis_formula_otm_price(phi, k, T)[0])
 
+# Lewis formula returns prices normalized to S0=1, scale back
 if k >= 0:
-    call = otm_price
+    call = otm_price * S0
     put = call - (S0 - K * np.exp(-r * T))
 else:
-    put = otm_price
+    put = otm_price * S0
     call = put + (S0 - K * np.exp(-r * T))
 
 print(f"{call:.12f} {put:.12f}")
