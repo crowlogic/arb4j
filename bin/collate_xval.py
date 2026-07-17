@@ -20,6 +20,15 @@ PRICER_LABELS = OrderedDict([
     ("qipc",     "qipc"),
 ])
 
+# Validity is per-model, all-or-nothing. A model is either VALID — every one
+# of its prices counts as one evenly-weighted sample in the reference ball —
+# or totally INVALID and excluded from the ball entirely (its columns are
+# still recorded for the record). There is no per-point outlier rejection.
+#   roughprix: INVALID — wrapper OTM/parity bug, diverges at T=1.0
+#   R-Adams:   INVALID — negative prices at short T (Fourier truncation)
+#   qipc:      INVALID — Riccati quadratic coefficient has extra λ² factor
+VALID_KEYS = ["octave", "ws", "julia"]
+
 def load_csv(path, label):
     """Load a CSV into {case_id: (call, put)} dict."""
     data = {}
@@ -50,6 +59,24 @@ def max_diff(prices):
     if len(vals) < 2:
         return 0.0
     return max(abs(a - b) for a in vals for b in vals)
+
+def ball(prices):
+    """Derive a reference ball from evenly-weighted samples.
+    Returns (n, midpoint, spread, radius) where:
+      n        = number of valid samples
+      midpoint = arithmetic mean (each sample weight 1/n)
+      spread   = max |sample - midpoint|
+      radius   = spread / sqrt(n)   — uncertainty of the evenly-weighted mean
+    """
+    import math
+    vals = [p for p in prices if p is not None]
+    n = len(vals)
+    if n == 0:
+        return (0, None, None, None)
+    mid = sum(vals) / n
+    spr = max(abs(v - mid) for v in vals)
+    rad = spr / math.sqrt(n)
+    return (n, mid, spr, rad)
 
 def main():
     ap = argparse.ArgumentParser()
@@ -85,7 +112,6 @@ def main():
         all_cases.update(data.keys())
     all_cases = sorted(all_cases)
 
-    active_keys = [k for k in PRICER_LABELS if "BROKEN" not in PRICER_LABELS[k]]
     all_keys = list(PRICER_LABELS.keys())
 
     # Print header
@@ -94,8 +120,11 @@ def main():
     print(f"# Loaded CSVs:")
     for k, s in statuses.items():
         status_str = s if s != "missing" else f"file not found — run {k} grid first"
-        print(f"#   {PRICER_LABELS[k]:12s} → {status_str}")
+        validity = "VALID" if k in VALID_KEYS else "INVALID (excluded from ball)"
+        print(f"#   {PRICER_LABELS[k]:12s} → {status_str}  [{validity}]")
     print(f"# Consensus tolerance: {PENNY} (one penny per unit spot)")
+    print(f"# Reference ball: midpoint = mean of N valid samples (even weights),")
+    print(f"#                 radius   = max|sample - midpoint| / sqrt(N)")
     print()
 
     if not all_cases:
@@ -117,12 +146,20 @@ def main():
                 row[f"{key}_call"] = None
                 row[f"{key}_put"]  = None
 
-        # Compute diffs among active (non-broken) pricers
-        active_calls = [row[f"{k}_call"] for k in active_keys if row.get(f"{k}_call") is not None]
-        active_puts  = [row[f"{k}_put"]  for k in active_keys if row.get(f"{k}_put")  is not None]
-        row["consensus"] = max(active_calls) if active_calls else None
-        row["max_call_diff"] = max_diff(active_calls)
-        row["max_put_diff"]  = max_diff(active_puts)
+        # Ball from VALID models only — each valid model is one evenly-weighted sample
+        valid_calls = [row[f"{k}_call"] for k in VALID_KEYS if row.get(f"{k}_call") is not None]
+        valid_puts  = [row[f"{k}_put"]  for k in VALID_KEYS if row.get(f"{k}_put")  is not None]
+        n_c, mid_c, spr_c, rad_c = ball(valid_calls)
+        n_p, mid_p, spr_p, rad_p = ball(valid_puts)
+        row["n"]             = n_c
+        row["mid_call"]      = mid_c
+        row["spread_call"]   = spr_c
+        row["radius_call"]   = rad_c
+        row["mid_put"]       = mid_p
+        row["spread_put"]    = spr_p
+        row["radius_put"]    = rad_p
+        row["max_call_diff"] = max_diff(valid_calls)
+        row["max_put_diff"]  = max_diff(valid_puts)
         rows.append(row)
 
     # Filter by min-diff
@@ -136,9 +173,9 @@ def main():
         for key in all_keys:
             fieldnames.append(f"{PRICER_LABELS[key]}_call")
             fieldnames.append(f"{PRICER_LABELS[key]}_put")
-        fieldnames.append("consensus_call")
-        fieldnames.append("max_call_diff")
-        fieldnames.append("max_put_diff")
+        fieldnames += ["n", "mid_call", "spread_call", "radius_call",
+                       "mid_put", "spread_put", "radius_put",
+                       "max_call_diff", "max_put_diff"]
 
         w = csv.writer(sys.stdout)
         w.writerow(fieldnames)
@@ -147,7 +184,13 @@ def main():
             for key in all_keys:
                 out.append(format_price(row.get(f"{key}_call")))
                 out.append(format_price(row.get(f"{key}_put")))
-            out.append(format_price(row["consensus"]))
+            out.append(str(row["n"]))
+            out.append(format_price(row["mid_call"]))
+            out.append(format_price(row["spread_call"]))
+            out.append(format_price(row["radius_call"]))
+            out.append(format_price(row["mid_put"]))
+            out.append(format_price(row["spread_put"]))
+            out.append(format_price(row["radius_put"]))
             out.append(f"{row['max_call_diff']:.2e}")
             out.append(f"{row['max_put_diff']:.2e}")
             w.writerow(out)
@@ -158,8 +201,8 @@ def main():
     for key in all_keys:
         lbl = PRICER_LABELS[key]
         print(f" {lbl} call | {lbl} put |", end="")
-    print(" consensus | max diff |")
-    print("|" + "|".join(["---"] * (1 + 2*len(all_keys) + 2)) + "|")
+    print(" N | mid call | radius call | mid put | radius put | max diff |")
+    print("|" + "|".join(["---"] * (1 + 2*len(all_keys) + 6)) + "|")
 
     for row in rows:
         cid = row["case_id"]
@@ -168,9 +211,8 @@ def main():
             c = row.get(f"{key}_call")
             p = row.get(f"{key}_put")
             print(f" {format_price(c)} | {format_price(p)} |", end="")
-        con = row["consensus"]
         md  = max(row["max_call_diff"], row["max_put_diff"])
-        print(f" {format_price(con)} | {md:.2e} |")
+        print(f" {row['n']} | {format_price(row['mid_call'])} | {format_price(row['radius_call'])} | {format_price(row['mid_put'])} | {format_price(row['radius_put'])} | {md:.2e} |")
 
     # Summary
     print()
