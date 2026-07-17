@@ -17,6 +17,7 @@ print("case_id,S0,K,T,H,lam,theta,nu,rho,r,call,put")
 
 octave_dir = os.path.join(BASE, "rough_heston_matlab")
 func_dir   = os.path.join(octave_dir, "functions")
+shim_dir   = os.path.join(BASE, "octshim")
 
 for label, H, lam, theta, nu, rho in models:
     for T in expiries:
@@ -26,7 +27,7 @@ for label, H, lam, theta, nu, rho in models:
             sys.stderr.write(f"\r[{idx}/{total}] {case}  ")
             sys.stderr.flush()
             cmd = ["octave", "--no-gui", "-q",
-                   "--eval", f"addpath('{octave_dir}'); addpath(genpath('{func_dir}')); [c,p]=price_european({S0},{K},{T},{H},{lam},{theta},{nu},{rho},{r}); fprintf('%.12f %.12f\\n',c,p);"]
+                   "--eval", f"pkg load financial; addpath('{octave_dir}'); addpath(genpath('{func_dir}')); addpath(genpath('{shim_dir}')); [c,p]=price_european({S0},{K},{T},{H},{lam},{theta},{nu},{rho},{r}); fprintf('%.12f %.12f\\n',c,p);"]
             try:
                 res = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
                 out = res.stdout.strip()

@@ -64,7 +64,7 @@ def main():
     # Locate CSV files from runner scripts
     csv_files = {
         "octave":   os.path.join(BASE, "output", "octave_grid.csv"),
-        "ws":       os.path.join(BASE, "output", "ws_grid.csv"),
+        "ws":       os.path.join(BASE, "output", "workshop_grid.csv"),
         "julia":    os.path.join(BASE, "output", "julia_grid.csv"),
         "rp":       os.path.join(BASE, "output", "rp_grid.csv"),
         "r_adams":  os.path.join(BASE, "output", "r_adams_grid.csv"),
