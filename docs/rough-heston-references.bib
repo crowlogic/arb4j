@@ -1,0 +1,129 @@
+% References for rough Heston implementations vendored in arb4j/bin/
+% Sources: issue #1200 (vendor reference pricers) and
+%          issue #1202 (hard-code verified prices, validate Padé pricer)
+
+% --- Rough Heston model foundations ---
+
+@article{ElEuchRosenbaum2018,
+  author  = {Omar El Euch and Mathieu Rosenbaum},
+  title   = {Perfect hedging in rough {H}eston models},
+  journal = {Mathematical Finance},
+  volume  = {28},
+  number  = {6},
+  pages   = {3813--3856},
+  year    = {2018}
+}
+
+@article{ElEuchRosenbaum2019,
+  author  = {Omar El Euch and Mathieu Rosenbaum},
+  title   = {The characteristic function of rough {H}eston models},
+  journal = {Mathematical Finance},
+  volume  = {29},
+  number  = {1},
+  pages   = {3--38},
+  year    = {2019}
+}
+
+@article{GerholdGersteneckerPinter2019,
+  author  = {Stefan Gerhold and Christoph Gerstenecker and Arpad Pinter},
+  title   = {Moment explosions in the rough {H}eston model},
+  journal = {Decisions in Economics and Finance},
+  volume  = {42},
+  pages   = {575--608},
+  year    = {2019}
+}
+
+% --- Numerical methods for fractional Riccati / Volterra ---
+
+@article{DiethelmFordFreed2004,
+  author  = {Kai Diethelm and Neville J. Ford and Alan D. Freed},
+  title   = {Detailed error analysis for a fractional {A}dams method},
+  journal = {Numerical Algorithms},
+  volume  = {36},
+  pages   = {31--52},
+  year    = {2004}
+}
+
+% --- Fourier inversion / optimal contour ---
+
+@techreport{LordKahl2006,
+  author      = {Roger Lord and Christian Kahl},
+  title       = {Optimal {F}ourier inversion in semi-analytical option pricing},
+  institution = {Tinbergen Institute},
+  number      = {2006-066/2},
+  year        = {2006},
+  url         = {https://papers.ssrn.com/sol3/papers.cfm?abstract_id=921336}
+}
+
+@book{Zhu2010,
+  author    = {Jianwei Zhu},
+  title     = {Applications of {F}ourier Transform to Smile Modelling},
+  publisher = {Springer},
+  year      = {2010}
+}
+
+% --- Gatheral / Padé rational approximation ---
+
+@article{GatheralRadoicic2019,
+  author  = {Jim Gatheral and Rado{\v{s}} Radoi{\v{c}}i{\'{c}}},
+  title   = {Rational approximation of the rough {H}eston solution},
+  journal = {International Journal of Theoretical and Applied Finance},
+  volume  = {24},
+  number  = {5},
+  pages   = {2150029},
+  year    = {2021},
+  note    = {arXiv:1910.00321}
+}
+
+% --- Implementation-specific ---
+
+@misc{jgatheralRationalRoughHeston,
+  author = {Jim Gatheral},
+  title  = {{R}ational{R}ough{H}eston: {R}ational approximation of the rough {H}eston {CF}},
+  year   = {2019},
+  url    = {https://github.com/jgatheral/RationalRoughHeston}
+}
+
+@misc{sigurdroemerRoughHeston,
+  author = {Sigurd R{\o}mer},
+  title  = {rough\_heston: {M}atlab/{O}ctave implementation of rough {H}eston option pricing},
+  year   = {2021},
+  url    = {https://github.com/sigurdroemer/rough_heston}
+}
+
+@misc{hagerpaRoughPrix,
+  author = {Patrick Hager},
+  title  = {roughprix: {JAX}-accelerated rough {H}eston pricing},
+  year   = {2023},
+  url    = {https://github.com/hagerpa/roughprix}
+}
+
+@misc{soyaRoughHestonQIPC,
+  author = {soya-git},
+  title  = {rough-heston-qipc: {Q}uadratic-implicit predictor-corrector for the rough {H}eston model},
+  year   = {2023},
+  url    = {https://github.com/soya-git/rough-heston-qipc}
+}
+
+@misc{BreneisApproximations2023,
+  author = {Simon Breneis},
+  title  = {Efficient approximation of fractional stochastic {V}olterra equations for the rough {H}eston model},
+  year   = {2023},
+  url    = {https://github.com/SimonBreneis/approximations_to_fractional_stochastic_volterra_equations}
+}
+
+@misc{BourgeyRoughVolatilityWorkshop2024,
+  author = {Florian Bourgey},
+  title  = {{R}ough{V}olatility{W}orkshop2024: {P}ython translations of {G}atheral's {Q}uant{M}inds workshop materials},
+  year   = {2024},
+  url    = {https://github.com/fbourgey/RoughVolatilityWorkshop2024}
+}
+
+% --- arb4j Padé implementation context ---
+
+@misc{arb4jRoughHeston,
+  author = {Carl R. {G.}},
+  title  = {arb4j: {J}ava bindings to {FLINT}/arb with expression compiler and rough {H}eston {P}ad\'{e} pricer},
+  year   = {2026},
+  url    = {https://github.com/crowlogic/arb4j}
+}

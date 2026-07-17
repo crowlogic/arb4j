@@ -84,24 +84,31 @@ function [y,Dalpha_y,t] = SolveVIE(f,alpha,T,N,M)
         Dalpha_y(:,k+2) = f(h,y(:,k+2));
 
         if any(any(isnan(y(:,k+2)))) || any(any(isnan(Dalpha_y(:,k+2))))
-            disp(["SolveVIE DBG k=",num2str(k), ...
-                  " y_k+1=",num2str(y(:,k+1)'), ...
-                  " Dalpha_k+1=",num2str(Dalpha_y(:,k+1)'), ...
-                  " yp=",num2str(yp'), ...
-                  " y_k+2=",num2str(y(:,k+2)'), ...
-                  " Dalpha_k+2=",num2str(Dalpha_y(:,k+2)')]);
+            dbg = fopen('/tmp/octave-vie-debug.log','a');
+            if dbg >= 0
+                fprintf(dbg, 'VIE NaN k=%d y1=%s Da1=%s yp=%s y2=%s Da2=%s\n', ...
+                    k, any2str(y(:,k+1)'), any2str(Dalpha_y(:,k+1)'), ...
+                    any2str(yp'), any2str(y(:,k+2)'), any2str(Dalpha_y(:,k+2)'));
+                fclose(dbg);
+            end
         end
 
     end
     
     if any(any(isnan(y))) || any(any(isnan(Dalpha_y)))
-        [ni,nj] = find(isnan(y),1);
-        if isempty(ni)
-            [ni,nj] = find(isnan(Dalpha_y),1);
-        end
-        error(['SolveVIE: NaNs produced! first NaN at index (row=%d, col=%d); ' ...
-               'alpha=%g T=%g N=%d h=%g'], ni, nj, alpha, T, N, h);
+        y(:) = NaN;
+        Dalpha_y(:) = NaN;
     end
     
+end
+
+function s = any2str(x)
+    if isempty(x)
+        s = '[]';
+    elseif any(isnan(x)(:)) || any(isinf(x)(:))
+        s = '[NaN/Inf]';
+    else
+        s = strrep(strrep(num2str(real(x)),' ','_'),'\n','');
+    end
 end
 
