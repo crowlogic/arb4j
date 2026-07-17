@@ -14,7 +14,7 @@ When a ported routine misbehaves (e.g. `blsimpv` returning garbage or erroring u
 
 ## MANDATE: Always resolve open issues
 
-At the start of every session, check `gh issue list --repo crowlogic/arb4j --state open`. Begin working through open issues immediately. Only stop when no open issues remain or when blocked waiting on user input. Do not ask what to work on — pick the next issue and start.
+At the start of every session, check `gh issue list --repo crowlogic/arb4j --state open`. Begin working through open issues immediately. Continue working through issues indefinitely — the loop terminates only when the open issue list is literally empty, or when every remaining issue is blocked in a way that requires user input. Do not ask what to work on — pick the next issue and start.
 
 ## CRITICAL: COMMIT AND PUSH IS MANDATORY — NEVER FORGET
 
