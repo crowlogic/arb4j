@@ -1,5 +1,0 @@
-65a66,69
->     % OCTAVE FIX: keep phi the same shape as the input u so that
->     % column/row mismatches with the Fourier-integration variable
->     % (which Octave's integral passes as a row) do not arise.
->     phi = reshape(phi, size(u));
