@@ -1,0 +1,12 @@
+# Reference parameter set for rough Heston cross-validation
+# V0 = theta convention (all implementations support this)
+# 
+# Set A: baseline (from earlier reference price work)
+S0=100 K=100 T=1 H=0.3 lam=2 theta=0.04 nu=0.3 rho=-0.7 r=0.1
+#
+# Set B: published Table 1 (V0=theta variant)
+S0=1 K=0.95 T=0.00396825 H=0.12 lam=0.1 theta=0.3156 nu=0.331 rho=-0.681 r=0
+S0=1 K=0.975 T=0.00396825 H=0.12 lam=0.1 theta=0.3156 nu=0.331 rho=-0.681 r=0
+S0=1 K=1.0 T=0.00396825 H=0.12 lam=0.1 theta=0.3156 nu=0.331 rho=-0.681 r=0
+S0=1 K=1.025 T=0.00396825 H=0.12 lam=0.1 theta=0.3156 nu=0.331 rho=-0.681 r=0
+S0=1 K=1.05 T=0.00396825 H=0.12 lam=0.1 theta=0.3156 nu=0.331 rho=-0.681 r=0

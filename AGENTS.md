@@ -39,6 +39,15 @@ The loop terminates only when the open issue list is empty or every remaining is
 
 After EVERY milestone, fix, or completed task, you MUST run `git add -A && git commit` and `git push`. This is the single most important step. A task is NOT done until it is committed AND pushed to `origin/master`. Do not end your turn, do not report success, do not move to the next issue until the commit is pushed. If you are unsure whether you pushed, check `git status` and `git log --oneline -1` and verify `origin/master` is ahead. When you close an issue, commit/push first, then close — never close without a pushed commit behind it.
 
+## CRITICAL: NEVER OMIT ANYTHING FROM COMMITS
+
+Every file created or modified during a session must be included in the next commit.
+There is no exception. No "I'll leave this out", no "this is just temporary", no "this
+doesn't belong here". If a file exists on disk and was part of the work, it goes in.
+Omission is censorship of the record. `git add -A` captures everything; do not
+selectively stage. The only files not committed are those that existed before the
+session and were never touched.
+
 ## CRITICAL: Never suggest raw Java implementations
 
 arb4j exists because Java is inferior. The expression compiler parses Unicode math notation and emits typed JVM bytecode. **NEVER suggest writing raw Java when the expression compiler can do the job.** Use `RealFunction.express("formula", ctx)` and the existing compiler infrastructure. If a program already exists (e.g. `LewisReferencePriceGenerator`), **refactor it** — do not write a new one. Refactoring means modifying the existing code, not copying it into a new file.
