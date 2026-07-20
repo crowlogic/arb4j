@@ -66,7 +66,7 @@ def ball(prices):
       n        = number of valid samples
       midpoint = arithmetic mean (each sample weight 1/n)
       spread   = max |sample - midpoint|
-      radius   = spread / sqrt(n)   — uncertainty of the evenly-weighted mean
+      radius   = sample standard deviation (ddof=1) of the valid samples
     """
     import math
     vals = [p for p in prices if p is not None]
@@ -75,7 +75,10 @@ def ball(prices):
         return (0, None, None, None)
     mid = sum(vals) / n
     spr = max(abs(v - mid) for v in vals)
-    rad = spr / math.sqrt(n)
+    if n < 2:
+        rad = 0.0
+    else:
+        rad = math.sqrt(sum((v - mid)**2 for v in vals) / (n - 1))
     return (n, mid, spr, rad)
 
 def main():
@@ -124,7 +127,7 @@ def main():
         print(f"#   {PRICER_LABELS[k]:12s} → {status_str}  [{validity}]")
     print(f"# Consensus tolerance: {PENNY} (one penny per unit spot)")
     print(f"# Reference ball: midpoint = mean of N valid samples (even weights),")
-    print(f"#                 radius   = max|sample - midpoint| / sqrt(N)")
+    print(f"#                 radius   = sample standard deviation (ddof=1) of valid samples")
     print()
 
     if not all_cases:
