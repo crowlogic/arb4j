@@ -127,7 +127,7 @@ python3 bin/rough_heston_workshop/price_european.py 1.0 0.8 0.00396825397 0.12 0
 # args: S0 K T H lam theta nu rho r
 ```
 
-Works with r=0 only (the internal `lewis_formula_otm_price` ignores r).
+Works with r=0 only (the internal `fourier_inversion_formula_otm_price` ignores r).
 
 #### Julia (`bin/QuantJulia/price_european.jl`)
 

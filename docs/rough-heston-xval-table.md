@@ -9,7 +9,7 @@ counts as one evenly-weighted sample in the reference ball — or totally INVALI
 from the ball entirely. There are no per-point outliers and no outlier rejection.
 
 VALID models (N samples per case, evenly weighted):
-- Octave: sigurdroemer fractional Adams VIE (Diethelm-Ford-Freed predictor-corrector) + Lewis/Lord-Kahl Fourier inversion
+- Octave: sigurdroemer fractional Adams VIE (Diethelm-Ford-Freed predictor-corrector) + Lord-Kahl Fourier inversion
 - WS-Pade: fbourgey workshop Padé [n,n] rational-approx CF + Gauss-Legendre quadrature
 - Julia: QuantJulia implicit fractional Adams-Moulton + Gil-Pelaez Fourier inversion
 

@@ -751,7 +751,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     if (upstreamInput && Node.emittingBoundFormat.get())
     {
       java.lang.Integer index = Node.boundVariableIndices.get().get(reference.name);
-      return index != null ? String.format("%%%d$s", index) : "%s";
+      return index != null ? String.format("%%%d$s", index) : reference.toString();
     }
     return reference.toString();
   }

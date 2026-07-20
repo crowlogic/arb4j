@@ -3,8 +3,8 @@
 ## Overview
 
 Seven independent implementations of European call/put pricing under the
-rough Heston model (El Euch & Rosenbaum 2018, 2019). Each uses the Lewis
-(2001) Fourier inversion formula but differs in how the fractional Riccati
+rough Heston model (El Euch & Rosenbaum 2018, 2019). Each uses Fourier inversion
+but differs in how the fractional Riccati
 ODE / Volterra integral equation for the characteristic function is solved.
 
 ---
@@ -23,7 +23,7 @@ ODE / Volterra integral equation for the characteristic function is solved.
 ### Mathematical method
 - **CF**: Adams predictor-corrector scheme for the fractional Riccati ODE solution ψ(t)
 - **Final sub-step**: Padé [5,5] rational approximation
-- **Integration**: Lewis formula with optimal α contour (Lord-Kahl)
+- **Integration**: Fourier inversion formula with optimal α contour (Lord-Kahl)
 - **Normalization**: S₀ = 1 normalized, prices scaled by S₀
 
 ### Parameter convention
@@ -170,7 +170,7 @@ Identical to rough_heston_octave and rough_heston_workshop.
 - **CF**: Padé [n,n] rational approximation (n = 2–6) of the fractional
   Riccati ODE solution h(a, τ), plus explicit φ(t) integration via
   Gauss-Legendre quadrature
-- **Integration**: Lewis formula with optimal α (Lord-Kahl root search)
+- **Integration**: Fourier inversion formula with optimal α (Lord-Kahl root search)
 - **Additional**: RSQE/HQE Monte Carlo path simulation schemes
 
 ### Parameter convention
@@ -209,7 +209,7 @@ None. This is the most reliable implementation on this machine.
 ### Mathematical method
 - **CF**: Quadratic-implicit Adams (QIPc) — an A-stable implicit method for
   the fractional Riccati ODE, using Newton iteration to solve the implicit step
-- **Integration**: Lewis formula
+- **Integration**: Fourier inversion formula
 
 ### Spot check results
 
@@ -243,7 +243,7 @@ in the QIPc implementation. Needs investigation.
 ### Mathematical method
 - **CF**: Root-Padé (default), standard Padé [5,5], H-expansion, series-based
   Padé diagnostics — multiple solver backends with automatic fallback
-- **Integration**: Lewis formula with JAX acceleration
+- **Integration**: Fourier inversion formula with JAX acceleration
 - **GPU**: CUDA-enabled jaxlib optional (falls back to CPU)
 
 ### Parameter convention

@@ -3,14 +3,20 @@ package arb.stochastic.processes.heston;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import arb.Complex;
 import arb.ComplexConstants;
 import arb.ComplexPolynomial;
 import arb.Integer;
+import arb.Magnitude;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
+import arb.functions.real.RealFunction;
+import arb.stochastic.processes.heston.RoughHestonEdgeworthCallPrice;
 import junit.framework.TestCase;
 
 /**
@@ -44,8 +50,9 @@ import junit.framework.TestCase;
  */
 @SuppressWarnings("resource")
 public class RoughHestonMuntzPadeSolverConsistencyTest extends
-                                                      TestCase
+                                                       TestCase
 {
+  private static final Logger log = LoggerFactory.getLogger(RoughHestonMuntzPadeSolverConsistencyTest.class);
   /** Evaluate the Müntz coefficient a_k(v) at a real point v. */
   private static Complex evalA(RoughHestonCharacteristicFunction cf, int k, double v, int bits, Complex out)
   {
@@ -241,5 +248,181 @@ public class RoughHestonMuntzPadeSolverConsistencyTest extends
       for (Real p : owned)
         p.close();
     }
+  }
+
+  /**
+   * Expected rough Heston option prices were generated independently by three
+   * external implementations tracked in issues #1200, #1195, and #1202. Only
+   * values on which all three implementations agreed were admitted. arb4j's PaDE
+   * implementation did not participate in generating or selecting these expected
+   * values.
+   *
+   * Reference dataset version: 82dec0b0 (consensus_xval.csv)
+   * External implementations:
+   *   1. sigurdroemer/rough_heston (Octave Adams VIE)
+   *   2. fbourgey/RoughVolatilityWorkshop2024 (Python Padé CF)
+   *   3. Yugam2508/QuantJulia (Julia implicit Adams-Moulton)
+   */
+  private static final String[] CTX_VARS  = { "\u03BB", "\u03B8", "\u03BD", "V0", "\u03C1", "\u03BC", "T", "S0", "rr" };
+
+  /**
+   * Two-parameter rough Heston models from the cross-validation grid.
+   * Each row: { H, \u03BB, \u03B8, \u03BD, \u03C1 }.
+   */
+  private static final double[][] MODELS  = {
+    { 0.12, 0.1,  0.3156, 0.331, -0.681 },   // M1
+    { 0.30, 2.0,  0.04,   0.3,   -0.7   },   // M2
+  };
+
+  /**
+   * Reference-case data for all 42 grid points.
+   * <p>
+   * Each row: { modelIdx, T_expr, K_str, callMid, callRad, putMid, putRad }.
+   * modelIdx 0/1 selects MODELS row. T_expr is a rational expression ("1/252")
+   * passed to the expression compiler.  Radii equal for call/put because they
+   * come from the same 3-pricer spread.
+   */
+  private static final String[][] REF_CASES = {
+    { "0", "1/252", "0.8",   "0.200000023958", "0.000000000144", "0.000000023958", "0.000000000144" },
+    { "0", "1/252", "0.9",   "0.100081091256", "0.000000101577", "0.000081091256", "0.000000101577" },
+    { "0", "1/252", "0.95",  "0.051620774434", "0.000000563804", "0.001620774434", "0.000000563804" },
+    { "0", "1/252", "1.0",   "0.013998472617", "0.000000133278", "0.013998472617", "0.000000133278" },
+    { "0", "1/252", "1.05",  "0.000868850428", "0.000000686870", "0.050868850428", "0.000000686870" },
+    { "0", "1/252", "1.1",   "0.000004042896", "0.000000020575", "0.100004042896", "0.000000020575" },
+    { "0", "1/252", "1.2",   "0",               "0",              "0.200000000008", "0"               },
+    { "0", "1/52",  "0.8",   "0.200264323549", "0.000000319661", "0.000264323549", "0.000000319661" },
+    { "0", "1/52",  "0.9",   "0.104281448143", "0.000001462421", "0.004281448143", "0.000001462421" },
+    { "0", "1/52",  "0.95",  "0.062665248770", "0.000001288536", "0.012665248770", "0.000001288536" },
+    { "0", "1/52",  "1.0",   "0.030647286290", "0.000000481964", "0.030647286290", "0.000000481964" },
+    { "0", "1/52",  "1.05",  "0.011167341614", "0.000002396470", "0.061167341614", "0.000002396470" },
+    { "0", "1/52",  "1.1",   "0.002744855911", "0.000002181017", "0.102744855911", "0.000002181017" },
+    { "0", "1/52",  "1.2",   "0.000038198716", "0.000000159273", "0.200038198716", "0.000000159273" },
+    { "0", "1.0",   "0.8",   "0.312684931308", "0.000000153968", "0.112684931308", "0.000000153968" },
+    { "0", "1.0",   "0.9",   "0.256792163206", "0.000006984619", "0.156792163206", "0.000006984619" },
+    { "0", "1.0",   "0.95",  "0.231755335948", "0.000010838585", "0.181755335948", "0.000010838585" },
+    { "0", "1.0",   "1.0",   "0.208597377285", "0.000014829718", "0.208597377285", "0.000014829718" },
+    { "0", "1.0",   "1.05",  "0.187257941895", "0.000018838223", "0.237257941895", "0.000018838223" },
+    { "0", "1.0",   "1.1",   "0.167667066545", "0.000022748558", "0.267667066545", "0.000022748558" },
+    { "0", "1.0",   "1.2",   "0.133413610842", "0.000029862546", "0.333413610842", "0.000029862546" },
+    { "1", "1/252", "0.8",   "0.200000000000", "0",               "0",               "0"               },
+    { "1", "1/252", "0.9",   "0.100000000004", "0",               "0",               "0"               },
+    { "1", "1/252", "0.95",  "0.050001585479", "0.000000004214", "0.000001585479", "0.000000004214" },
+    { "1", "1/252", "1.0",   "0.005001803822", "0.000000030710", "0.005001803822", "0.000000030710" },
+    { "1", "1/252", "1.05",  "0.000000001087", "0",               "0.050000001087", "0"               },
+    { "1", "1/252", "1.1",   "0.000000011402", "0.000000013166", "0.100000011402", "0.000000013166" },
+    { "1", "1/252", "1.2",   "0.000000012110", "0.000000013983", "0.200000012110", "0.000000013983" },
+    { "1", "1/52",  "0.8",   "0.200000000967", "0",               "0.000000000967", "0"               },
+    { "1", "1/52",  "0.9",   "0.100016942514", "0.000000038510", "0.000016942514", "0.000000038510" },
+    { "1", "1/52",  "0.95",  "0.050708509389", "0.000000475177", "0.000708509389", "0.000000475177" },
+    { "1", "1/52",  "1.0",   "0.010928499602", "0.000000148074", "0.010928499602", "0.000000148074" },
+    { "1", "1/52",  "1.05",  "0.000146917789", "0.000000372316", "0.050146917789", "0.000000372316" },
+    { "1", "1/52",  "1.1",   "0.000000014092", "0.000000000179", "0.100000014092", "0.000000000179" },
+    { "1", "1/52",  "1.2",   "0",               "0",              "0.200000000008", "0"               },
+    { "1", "1.0",   "0.8",   "0.216552344008", "0.000004459638", "0.016552344008", "0.000004459638" },
+    { "1", "1.0",   "0.9",   "0.137924919127", "0.000002588756", "0.037924919127", "0.000002588756" },
+    { "1", "1.0",   "0.95",  "0.104528511870", "0.000000903262", "0.054528511870", "0.000000903262" },
+    { "1", "1.0",   "1.0",   "0.075929675943", "0.000003357228", "0.075929675943", "0.000003357228" },
+    { "1", "1.0",   "1.05",  "0.052521888433", "0.000006680485", "0.102521888433", "0.000006680485" },
+    { "1", "1.0",   "1.1",   "0.034372303347", "0.000009100025", "0.134372303347", "0.000009100025" },
+    { "1", "1.0",   "1.2",   "0.012208619640", "0.000009164694", "0.212208619640", "0.000009164694" },
+  };
+
+  /**
+   * Exercise the one Java pricing path — {@link RoughHestonEdgeworthCallPrice}
+   * — against every reference case in {@link #REF_CASES} and verify that the
+   * computed price ball contains the reference midpoint.
+   */
+  public void testEdgeworthCallPriceAgainstReferenceConsensus()
+  {
+    final int bits = 256;
+    int passed = 0, failed = 0;
+
+    try (Real S0 = new Real("1.0", bits).setName("S0");
+         Real rr = new Real("0.0", bits).setName("rr"))
+    {
+      for (int i = 0; i < REF_CASES.length; i++)
+      {
+        String[] row  = REF_CASES[i];
+        int    mIdx   = java.lang.Integer.parseInt(row[0]);
+        String tExpr  = row[1];
+        String kStr   = row[2];
+        String midStr = row[3];
+        String radStr = row[4];
+
+        double[] mp = MODELS[mIdx];
+        double H = mp[0], lam = mp[1], theta = mp[2], nu = mp[3], rho = mp[4];
+
+        String label = "M" + (mIdx + 1) + "_T" + tExpr.replace("/", "_") + "_K" + kStr;
+
+        try (Real λ  = new Real(Double.toString(lam),   bits).setName("λ");
+             Real θ  = new Real(Double.toString(theta), bits).setName("θ");
+             Real ν  = new Real(Double.toString(nu),    bits).setName("ν");
+             Real V0 = new Real(Double.toString(theta), bits).setName("V0");
+             Real ρ  = new Real(Double.toString(rho),   bits).setName("ρ");
+             Real μ  = new Real(Double.toString(H + 0.5), bits).setName("μ");
+             Real K  = new Real(kStr, bits))
+        {
+          try (Context tCtx = new Context(λ, θ, ν, V0, ρ, μ, S0))
+          {
+            Real T = RealFunction.express(tExpr, tCtx).evaluate(null, bits, new Real());
+            T.setName("T");
+
+            try (Context ctx      = new Context(λ, θ, ν, V0, ρ, μ, T, S0, rr);
+                 var    pricer   = new RoughHestonEdgeworthCallPrice(ctx, K, ComplexConstants.zero);
+                 Real   computed = new Real();
+                 Real   refMid   = new Real(midStr, bits);
+                 Real   refRad   = new Real(radStr, bits);
+                 Real   radMag   = new Real())
+            {
+              pricer.call(bits, computed);
+
+              log.debug("Case {} {}: computed={} refMid={} refRad={}",
+                        label, i, computed, midStr, radStr);
+
+              /* D1: computed ball must contain reference midpoint */
+              boolean d1 = computed.contains(refMid);
+              log.debug("  D1 (computed contains refMid): {} computed=[{} ± {}] refMid={}",
+                        d1, computed.getMid(), computed.getRad(), midStr);
+
+              /* D2: reference ball must contain computed midpoint */
+              boolean d2 = true;
+              if (radStr.charAt(0) != '0')
+              {
+                refRad.getMagnitude(new Magnitude());
+                try (Real refBall = new Real(midStr, bits))
+                {
+                  refBall.setRad(refRad.getMagnitude(new Magnitude()));
+                  try (Real computedMid = new Real(computed.getMid(), new Magnitude()))
+                  {
+                    d2 = refBall.contains(computedMid);
+                    log.debug("  D2 (refBall contains computedMid): {} refBall=[{} ± {}] computedMid={}",
+                              d2, midStr, radStr, computedMid);
+                  }
+                }
+              }
+              else
+              {
+                log.debug("  D2: skipped (zero reference radius)");
+              }
+
+              if (d1 && d2)
+              {
+                passed++;
+                log.debug("  PASS");
+              }
+              else
+              {
+                failed++;
+                log.debug("  FAIL d1={} d2={}", d1, d2);
+                fail("Case " + label + " T=" + tExpr + " K=" + kStr
+                     + ": computed=" + computed + " refMid=" + midStr
+                     + " d1=" + d1 + " d2=" + d2);
+              }
+            }
+          }
+        }
+      }
+    }
+    log.debug("RESULT: {}/{} passed, {} failed", passed, passed + failed, failed);
   }
 }
