@@ -79,11 +79,11 @@
     counterexamples. The final section applies the algebra to the rough
     Heston characteristic function <math|\<varphi\><rsub|M>=exp
     <around*|(|t*<space|0.17em>A<rsub|M><around|(|x|)>/B<rsub|M><around|(|x|)>|)>>,
-    <math|x=t<rsup|\<alpha\>>>, produced by the diagonal Padé pipeline of the
+    <math|x=t<rsup|\<alpha\>>>, produced by the diagonal Padï¿½ pipeline of the
     companion papers: we give the exact local Laurent data of
     <math|\<varphi\><rsub|M>> at the zeros of <math|B<rsub|M>> in the
-    coefficient algebra, and prove convergence of Padé prices to exact prices
-    under explicit hypotheses on a fixed Lewis-type contour, with no contour
+    coefficient algebra, and prove convergence of Padï¿½ prices to exact prices
+    under explicit hypotheses on a fixed contour, with no contour
     deformation through approximant poles. Statements that remain open
     (resurgent/alien-derivative structure, uniform-in-parameter domination,
     exponential-motive positioning) are listed as open problems, not
@@ -172,7 +172,7 @@
     <math|N!<space|0.17em>\<Lambda\><rsub|N>=B<rsub|N>*<around|(|1!<space|0.17em>c<rsub|1>,<space|0.17em>2!<space|0.17em>c<rsub|2>,\<ldots\>,m!<space|0.17em>c<rsub|m>,<space|0.17em>0,\<ldots\>,0|)>>,
     where <math|B<rsub|N>> is the complete Bell polynomial, defined by
     <math|exp <around*|(|<big|sum><rsub|j\<ge\>1>x<rsub|j>*t<rsup|j>/j!|)>=<big|sum><rsub|N\<ge\>0>B<rsub|N>*<around|(|x<rsub|1>,\<ldots\>,x<rsub|N>|)>*<space|0.17em>t<rsup|N>/N!>
-    <em|(Comtet <cite-detail|Comtet|Ÿ3.3>)>.
+    <em|(Comtet <cite-detail|Comtet|ï¿½3.3>)>.
   </proposition>
 
   <\proof>
@@ -250,7 +250,7 @@
     (<math|<around|(|<CA><rsub|m>|)><rsub|0>=<C>>), it is automatically a
     Hopf algebra, with antipode determined by
     <math|S<around|(|c<rsub|j>|)>=-c<rsub|j>> <em|(graded connected
-    bialgebras possess antipodes; see <cite-detail|MilnorMoore|Ÿ1><space|0.17em>)>.
+    bialgebras possess antipodes; see <cite-detail|MilnorMoore|ï¿½1><space|0.17em>)>.
   </definition>
 
   <\theorem>
@@ -389,14 +389,14 @@
   </proof>
 
   <\remark>
-    <label|rem:notFdB><math|<CA><rsub|\<infty\>>> is <em|not> the Faà di
+    <label|rem:notFdB><math|<CA><rsub|\<infty\>>> is <em|not> the Faï¿½ di
     Bruno Hopf algebra: the latter is the coordinate Hopf algebra of the
     group of formal diffeomorphisms and is not cocommutative
-    <em|(Figueroa\UGracia-Bondía <cite|FGB>)>, whereas
+    <em|(Figueroa\UGracia-Bondï¿½a <cite|FGB>)>, whereas
     <math|<CA><rsub|\<infty\>>\<cong\><Sym>> is commutative and
     cocommutative. The relation to Bell polynomials is the coefficient
     identity of Proposition<nbsp><reference|prop:bell>, not an isomorphism
-    with the Faà di Bruno object. This answers, precisely, the question \Pis
+    with the Faï¿½ di Bruno object. This answers, precisely, the question \Pis
     it the Bell algebra\Q: the coefficient algebra is the algebra of
     symmetric functions, in which the <math|\<Lambda\><rsub|N>> are the
     complete homogeneous basis re-expressed through rescaled power sums.
@@ -467,7 +467,7 @@
     Definition<nbsp><reference|def:E> with the <math|c<rsub|1>>-factor split
     off. Appell sequences are exactly the Sheffer sequences with identity
     delta series, so <math|<around|(|p<rsub|N>|)>> is Sheffer of Appell type
-    <em|(Roman <cite-detail|Roman|Ÿ2.5>)>.
+    <em|(Roman <cite-detail|Roman|ï¿½2.5>)>.
   </proof>
 
   <\theorem>
@@ -531,11 +531,11 @@
   </proof>
 
   <\corollary>
-    [Normality of the Padé table of <math|E>]<label|cor:padeE> Let
+    [Normality of the Padï¿½ table of <math|E>]<label|cor:padeE> Let
     <math|<ev><rsub|c>:<CA><rsub|m>\<to\><C>> be evaluation at
     <math|c\<in\><C><rsup|m>> and let <math|\<cal-L\>> be the moment
     functional <math|\<cal-L\><around|[|x<rsup|N>|]>=<ev><rsub|c><around|(|\<Lambda\><rsub|N>|)>>.
-    The Hankel determinants governing the diagonal Padé approximants of
+    The Hankel determinants governing the diagonal Padï¿½ approximants of
     <math|E<around|(|v|)>> at <math|c> <em|(Gragg <cite|Gragg>)> are the
     numbers <math|<around|(|-1|)><rsup|<binom|n|2>>*<space|0.17em>s<rsub|<around|(|<around|(|n-1|)><rsup|n>|)>>>
     and <math|<around|(|-1|)><rsup|<binom|n|2>>*<space|0.17em>s<rsub|<around|(|n<rsup|n>|)>>>
@@ -544,18 +544,18 @@
     <math|<around|(|j\<gtr\>m|)>>. In particular, for <math|m=1> (so
     <math|p<rsub|1>=c<rsub|1>>, <math|p<rsub|\<ge\>2>=0>), the exponential
     specialization <math|s<rsub|\<lambda\>>\<mapsto\>f<rsup|\<lambda\>>*c<rsub|1><rsup|<around|\||\<lambda\>|\|>>/<around|\||\<lambda\>|\|>>!
-    <em|(<cite-detail|Macdonald|I.Ÿ7, Ex.<nbsp>24(a) with
+    <em|(<cite-detail|Macdonald|I.ï¿½7, Ex.<nbsp>24(a) with
     <math|n\<to\>\<infty\>>; equivalently <math|<ev>> of
     <cite-detail|Macdonald|I.(5.16)> at the exponential
     specialization><space|0.17em>)>, where <math|f<rsup|\<lambda\>>\<gtr\>0>
     is the number of standard Young tableaux, shows every such determinant is
-    nonzero for <math|c<rsub|1>\<ne\>0>: the Padé table of
+    nonzero for <math|c<rsub|1>\<ne\>0>: the Padï¿½ table of
     <math|e<rsup|c<rsub|1>*v>> is normal, recovering the classical normality
     of the exponential.
   </corollary>
 
   <\proof>
-    Immediate from Theorem<nbsp><reference|thm:hankelschur>, the Padé\UHankel
+    Immediate from Theorem<nbsp><reference|thm:hankelschur>, the Padï¿½\UHankel
     dictionary <cite|Gragg>, and <math|f<rsup|\<lambda\>>\<ge\>1> for every
     partition <math|\<lambda\>>.
   </proof>
@@ -564,7 +564,7 @@
     <label|rem:zeroloci>For <math|m\<ge\>2> the quasi-definiteness locus of
     <math|\<cal-L\>> is precisely the complement of the union of the
     hypersurfaces <math|<around|{|c\<in\><C><rsup|m>:s<rsub|<around|(|<around|(|n-1|)><rsup|n>|)>>*<around|(|p<rsub|j>=j*c<rsub|j>|)>=0|}>>;
-    the obstruction to Padé normality of exponentials of principal parts is a
+    the obstruction to Padï¿½ normality of exponentials of principal parts is a
     rectangular Schur divisor. This gives the \Pdiscriminant locus\Q
     appearing in the companion Chebyshev\UWheeler paper a name in the
     pure-pole case.
@@ -614,7 +614,7 @@
     <math|\<bbb-G\><rsub|m>>, hence <math|\<bbb-G\><rsub|m>> itself or the
     finite group <math|\<mu\><rsub|n>>; the latter occurs iff
     <math|y<rsup|n>\<in\><C><around|(|z|)>> for some <math|n\<ge\>1> <em|(van
-    der Put\USinger <cite-detail|vdPS|Ex.<nbsp>1.19, Ÿ1.4>)>. Suppose
+    der Put\USinger <cite-detail|vdPS|Ex.<nbsp>1.19, ï¿½1.4>)>. Suppose
     <math|e<rsup|n*R>=f\<in\><C><around|(|z|)>>. Then
     <math|n*R<rprime|'>=f<rprime|'>/f>. Every residue of <math|R<rprime|'>>
     vanishes, since <math|R<rprime|'>> is the derivative of a rational
@@ -818,7 +818,7 @@
     [<math|m=2>: Hermite-type polynomials]<label|thm:hermite> Define
     <math|<math-bf|H><rsub|N><around|(|x,y|)>> by <math|exp
     <around|(|x*t+y*t<rsup|2>|)>=<big|sum><rsub|N\<ge\>0><math-bf|H><rsub|N><around|(|x,y|)>*<space|0.17em>t<rsup|N>/N!>
-    <em|(the Hermite\UKampé de Fériet polynomials <cite|Appell>)>. Then for
+    <em|(the Hermite\UKampï¿½ de Fï¿½riet polynomials <cite|Appell>)>. Then for
     <math|m=2>,
 
     <\equation*>
@@ -845,7 +845,7 @@
     [Single-term pole of order <math|m>: Wright functions]<label|thm:wright>
     Let <math|\<phi\><around|(|\<rho\>,\<beta\>;\<zeta\>|)>\<assign\><big|sum><rsub|k\<ge\>0><dfrac|\<zeta\><rsup|k>|k!<space|0.17em>\<Gamma\>*<around|(|\<rho\>*k+\<beta\>|)>>>
     be Wright's generalized Bessel function <em|(Wright <cite|Wright1933>;
-    Kilbas\USaigo <cite-detail|KilbasSaigo|Ÿ1.11>)>, entire in
+    Kilbas\USaigo <cite-detail|KilbasSaigo|ï¿½1.11>)>, entire in
     <math|\<zeta\>> for <math|\<rho\>\<gtr\>-1>. Then for
     <math|b\<in\><C><rsup|\<times\>>>, <math|c\<in\><C>>, <math|n\<in\><Z>>,
 
@@ -1204,7 +1204,7 @@
   <math|x=t<rsup|\<alpha\>>>, <math|\<alpha\>=H+<tfrac|1|2>\<in\><around|(|0,1|)>>;
   <math|G<around|(|a,\<cdot\>|)>> is given by the neighboring-pair series
   with coefficients <math|g<rsub|j>\<in\><C><around|[|a|]>>
-  <cite-detail|CrowleyCGF|Thm.<nbsp>1>; and the diagonal Padé approximant
+  <cite-detail|CrowleyCGF|Thm.<nbsp>1>; and the diagonal Padï¿½ approximant
   <math|G<rsub|M>=A<rsub|M>/B<rsub|M>> (<math|deg A<rsub|M>=deg B<rsub|M>=M>)
   is produced exactly in <math|<C><around|[|a|]>> by the polynomial
   Chebyshev\UWheeler recurrence <cite-detail|CrowleyCGF|Thm.<nbsp>2>,
@@ -1298,11 +1298,11 @@
   domination.
 
   <\definition>
-    [Lewis-type pricing functional]<label|def:lewis> Fix maturity
+    [Contour pricing functional]<label|def:contour> Fix maturity
     <math|T\<gtr\>0>, <math|x<rsup|\<ast\>>=T<rsup|\<alpha\>>>, log-strike
     <math|k>, and a horizontal contour <math|\<Im\>*a=\<eta\><rsub|0>>
     interior to the moment-analyticity strip of
-    <math|\<varphi\><around|(|\<cdummy\>,T|)>>. A <em|Lewis-type functional>
+    <math|\<varphi\><around|(|\<cdummy\>,T|)>>. A <em|Contour functional>
     is
 
     <\equation*>
@@ -1312,13 +1312,12 @@
     with <math|c<rsub|0>,K> depending only on
     <math|<around|(|S<rsub|0>,K,r,T,k,\<eta\><rsub|0>|)>>; the call price is
     <math|P<around|[|\<varphi\>|(>\<cdot\>,T)>] for the standard choices of
-    <math|<around|(|c<rsub|0>,K,\<eta\><rsub|0>|)>> <em|(Lewis
-    <cite|Lewis2001>; Carr\UMadan <cite|CarrMadan>; Gil-Pelaez
+    <math|<around|(|c<rsub|0>,K,\<eta\><rsub|0>|)>> <em|(Carr\UMadan <cite|CarrMadan>; Gil-Pelaez
     <cite|GilPelaez>)>.
   </definition>
 
   <\theorem>
-    [Convergence of Padé prices]<label|thm:priceconv> Assume:
+    [Convergence of Padï¿½ prices]<label|thm:priceconv> Assume:
 
     <\enumerate>
       <item>for every <math|u\<in\><R>>, <math|B<rsub|M>*<around|(|u+<math-up|i>\<eta\><rsub|0>,\<cdot\>|)>>
@@ -1333,7 +1332,7 @@
     </enumerate>
 
     Then <math|P<around|[|\<varphi\><rsub|M>|(>\<cdot\>,T)]\<to\>P<around|[|\<varphi\>|(>\<cdot\>,T)>]:
-    Padé prices converge to exact prices. Moreover
+    Padï¿½ prices converge to exact prices. Moreover
     <with|font-shape|right|(H1)> holds pointwise on the contour as a
     consequence of the real-ray Stahl theorem
     <cite-detail|CrowleyCGF|Thm.<nbsp>3> applied at each fixed
@@ -1355,7 +1354,7 @@
     zero-freeness of <math|B<rsub|M>> on a fixed neighborhood
     <math|\<Omega\>\<supset\><around|[|0,x<rsup|\<ast\>>|]>> upgrades, by the
     standard capacity-to-uniform argument on compacts avoiding the poles
-    <em|(Stahl <cite-detail|Stahl|Thm.<nbsp>1 and Ÿ6>)>, to uniform
+    <em|(Stahl <cite-detail|Stahl|Thm.<nbsp>1 and ï¿½6>)>, to uniform
     convergence <math|G<rsub|M>\<to\>G> on
     <math|<around|[|0,x<rsup|\<ast\>>|]>>; then <math|\<varphi\><rsub|M>=exp
     <around|(|T*G<rsub|M><around|(|a,T<rsup|\<alpha\>>|)>|)>\<to\>exp
@@ -1467,7 +1466,7 @@
     [Domination]<label|prob:H2> Prove hypothesis <with|font-shape|right|(H2)>
     of Theorem<nbsp><reference|thm:priceconv>: a uniform-in-<math|M>
     integrable majorant for <math|<around|\||\<varphi\><rsub|M>|\|>> on the
-    Lewis contour, e.g. via a uniform-in-<math|a> version of the Stahl rate
+    contour, e.g. via a uniform-in-<math|a> version of the Stahl rate
     on the contour combined with the exact Gaussian-type decay of
     <math|\<varphi\>>.
   </problem>
@@ -1477,7 +1476,7 @@
     exponential factor of the Hukuhara--Levelt--Turrittin normal form of the
     rank-one connection <math|d-d*R> at the irregular singularity <math|a>
     <em|(<cite-detail|vdPS|Ch.<nbsp>3>)>; this much is classical. Construct
-    the action of the alien derivations of Écalle on the
+    the action of the alien derivations of ï¿½calle on the
     <math|<CA><rsub|m>>-module of Theorem<nbsp><reference|thm:module> \V the
     natural conjecture, suggested by Lemma<nbsp><reference|lem:derivation>,
     is that singular directions act through the lowering operators
@@ -1490,7 +1489,7 @@
   <\problem>
     [Exponential periods]<label|prob:motives>
     <math|e<rsup|R>*<space|0.17em>d*z> is an exponential-period integrand;
-    the category of exponential motives <em|(Fresán--Jossen
+    the category of exponential motives <em|(Fresï¿½n--Jossen
     <cite|FresanJossen>)> attaches cohomological invariants to
     <math|<around|(|\<bbb-A\><rsup|1>,R|)>>. Position <math|<CA><rsub|m>>
     relative to the de Rham realization of the rank-one exponential
@@ -1520,8 +1519,8 @@
   </problem>
 
   <\thebibliography|99>
-    <bibitem|Appell>P.<nbsp>Appell, J.<nbsp>Kampé de Fériet, <em|Fonctions
-    hypergéométriques et hypersphériques. Polynomes d'Hermite>,
+    <bibitem|Appell>P.<nbsp>Appell, J.<nbsp>Kampï¿½ de Fï¿½riet, <em|Fonctions
+    hypergï¿½omï¿½triques et hypersphï¿½riques. Polynomes d'Hermite>,
     Gauthier-Villars, Paris, 1926.
 
     <bibitem|Barry>P.<nbsp>Barry, <em|Riordan Arrays: A Primer>, Logic Press,
@@ -1542,7 +1541,7 @@
     Chapman & Hall/CRC, 2009.
 
     <bibitem|CrowleyCGF>S.<nbsp>Crowley, Neighboring-pair representation of
-    the rough Heston CGF and global rational closed form via Padé
+    the rough Heston CGF and global rational closed form via Padï¿½
     approximation, companion paper, arb4j repository, 2026.
 
     <bibitem|CrowleyCW>S.<nbsp>Crowley, A universal solution methodology for
@@ -1550,22 +1549,22 @@
     Chebyshev\UWheeler recurrence, companion paper, arb4j repository, 2026.
 
     <bibitem|DLMF>NIST <em|Digital Library of Mathematical Functions>,
-    Ÿ10.35, https://dlmf.nist.gov/.
+    ï¿½10.35, https://dlmf.nist.gov/.
 
-    <bibitem|FGB>H.<nbsp>Figueroa, J.<nbsp>M.<nbsp>Gracia-Bondía,
+    <bibitem|FGB>H.<nbsp>Figueroa, J.<nbsp>M.<nbsp>Gracia-Bondï¿½a,
     Combinatorial Hopf algebras in quantum field theory I, <em|Rev. Math.
     Phys.> <with|font-series|bold|17> (2005), 881\U976.
 
     <bibitem|FS>P.<nbsp>Flajolet, R.<nbsp>Sedgewick, <em|Analytic
     Combinatorics>, Cambridge Univ. Press, 2009.
 
-    <bibitem|FresanJossen>J.<nbsp>Fresán, P.<nbsp>Jossen, <em|Exponential
+    <bibitem|FresanJossen>J.<nbsp>Fresï¿½n, P.<nbsp>Jossen, <em|Exponential
     Motives>, book draft, http://javier.fresan.perso.math.cnrs.fr/.
 
     <bibitem|GilPelaez>J.<nbsp>Gil-Pelaez, Note on the inversion theorem,
     <em|Biometrika> <with|font-series|bold|38> (1951), 481\U482.
 
-    <bibitem|Gragg>W.<nbsp>B.<nbsp>Gragg, The Padé table and its relation to
+    <bibitem|Gragg>W.<nbsp>B.<nbsp>Gragg, The Padï¿½ table and its relation to
     certain algorithms of numerical analysis, <em|SIAM Review>
     <with|font-series|bold|14> (1972), 1\U62.
 
@@ -1578,10 +1577,6 @@
     <bibitem|Koutschan>C.<nbsp>Koutschan, Advanced applications of the
     holonomic systems approach, PhD thesis, RISC, J.<nbsp>Kepler Univ. Linz,
     2009.
-
-    <bibitem|Lewis2001>A.<nbsp>L.<nbsp>Lewis, A simple option formula for
-    general jump-diffusion and other exponential Lévy processes, OptionCity
-    working paper, 2001.
 
     <bibitem|Lipshitz>L.<nbsp>Lipshitz, The diagonal of a D-finite power
     series is D-finite, <em|J. Algebra> <with|font-series|bold|113> (1988),
@@ -1605,7 +1600,7 @@
     L.<nbsp>C.<nbsp>Woodson, The Riordan group, <em|Discrete Appl. Math.>
     <with|font-series|bold|34> (1991), 229\U239.
 
-    <bibitem|Stahl>H.<nbsp>Stahl, The convergence of Padé approximants to
+    <bibitem|Stahl>H.<nbsp>Stahl, The convergence of Padï¿½ approximants to
     functions with branch points, <em|J. Approx. Theory>
     <with|font-series|bold|91> (1997), 139\U204.
 
@@ -1670,7 +1665,6 @@
     <associate|bib-KauersPaule|<tuple|KauersPaule|17|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|bib-KilbasSaigo|<tuple|KilbasSaigo|18|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|bib-Koutschan|<tuple|Koutschan|18|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|bib-Lewis2001|<tuple|Lewis2001|18|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|bib-Lipshitz|<tuple|Lipshitz|18|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|bib-Macdonald|<tuple|Macdonald|18|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|bib-MilnorMoore|<tuple|MilnorMoore|18|../.TeXmacs/texts/scratch/no_name_2.tm>>
@@ -1686,7 +1680,7 @@
     <associate|def:E|<tuple|1|2|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|def:category|<tuple|33|11|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|def:hopf|<tuple|8|3|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|def:lewis|<tuple|40|15|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|def:contour|<tuple|40|15|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|eq:Prec|<tuple|3|10|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|eq:axiomrec|<tuple|4|11|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|eq:partition|<tuple|2|2|../.TeXmacs/texts/scratch/no_name_2.tm>>
@@ -1816,8 +1810,6 @@
       CrowleyCGF
 
       CrowleyCGF
-
-      Lewis2001
 
       CarrMadan
 

@@ -90,7 +90,7 @@
   t^{\alpha}$, as the exponential of a diagonal Pad{\'e} approximant in the
   coefficient algebra: we give the exact local Laurent data of $\varphi_M$
   at the zeros of $B_M$, prove convergence of Pad{\'e} prices to exact
-  prices under explicit hypotheses on a fixed Lewis-type contour with no
+  prices under explicit hypotheses on a fixed contour with no
   contour deformation through approximant poles, and derive and prove exact
   European call and put price formulas directly from the cumulant
   generating function via Gil--Pelaez inversion, including a certified
@@ -1505,16 +1505,16 @@ strip of analyticity of the exact characteristic function, and convergence is
 proved by domination.
 
 \begin{definition}
-  [Lewis-type pricing functional]\label{def:lewis} Fix maturity $T > 0$,
+  [Contour pricing functional]\label{def:contour} Fix maturity $T > 0$,
   $x^{\ast} = T^{\alpha}$, log-strike $k$, and a horizontal contour $\Im a =
   \eta_0$ interior to the moment-analyticity strip of $\varphi (\cdummy, T)$.
-  A {\tmem{Lewis-type functional}} is
+  A {\tmem{Contour functional}} is
   \[ P [\psi] \hspace{0.27em} = \hspace{0.27em} c_0 + \int_{\R} K (u) 
      \hspace{0.17em} \psi (u + \mathrm{i} \eta_0)  \hspace{0.17em} du, \qquad
      |K (u) | \le \frac{C_K}{1 + u^2}, \]
   with $c_0, K$ depending only on $(S_0, K, r, T, k, \eta_0)$; the call price
   is $P [\varphi (\cdot, T)$] for the standard choices of $(c_0, K, \eta_0)$
-  {\tmem{(Lewis {\cite{Lewis2001}}; Carr--Madan {\cite{CarrMadan}}; Gil-Pelaez
+  {\tmem{(Carr--Madan {\cite{CarrMadan}}; Gil-Pelaez
   {\cite{GilPelaez}})}}.
 \end{definition}
 
@@ -1694,7 +1694,7 @@ $E [e^{iuX_T}] = \varphi_T (u)$ for real $u$.
   the two contours exactly as in the proof of Theorem~\ref{thm:priceconv}
   (the kernel $K (u) = (2 \pi iu)^{- 1} e^{- iuk}$, extended continuously at
   $u = 0$ as in Theorem~\ref{thm:callput}, plays the role of the abstract
-  kernel of Definition~\ref{def:lewis} there).
+  kernel of Definition~\ref{def:contour} there).
 \end{proof}
 
 \begin{proposition}
@@ -1878,10 +1878,7 @@ $E [e^{iuX_T}] = \varphi_T (u)$ for real $u$.
   \bibitem{Koutschan}C.~Koutschan, Advanced applications of the holonomic
   systems approach, PhD thesis, RISC, J.~Kepler Univ. Linz, 2009.
   
-  \bibitem{Lewis2001}A.~L.~Lewis, A simple option formula for general
-  jump-diffusion and other exponential L{\'e}vy processes, OptionCity working
-  paper, 2001.
-  
+  \bibitem{Widder}
   \bibitem{Lipshitz}L.~Lipshitz, The diagonal of a D-finite power series is
   D-finite, {\tmem{J. Algebra}} \tmtextbf{113} (1988), 373--378.
   

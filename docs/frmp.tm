@@ -25,7 +25,7 @@
     <assign|sgn|<macro|sgn>>
   </hide-preamble>
 
-  <doc-data|<doc-title|The Fractional Riccati--Müntz--Padé
+  <doc-data|<doc-title|The Fractional Riccati--Mï¿½ntz--Padï¿½
   Theorem<next-line><with|font-size|1.19|Closed-Form Density and European
   Call Price under Rough Heston via Fox <math|H>, with COS Pricing as
   Alternative>>|<doc-author|<author-data|<author-name|Stephen
@@ -34,12 +34,12 @@
   <abstract-data|<\abstract>
     Three results are established for the rough Heston model. First
     (Theorem<nbsp><reference|thm:conv>), the diagonal <math|<around|[|M/M|]>>
-    Padé resummation of the local Puiseux series of the cumulant generating
+    Padï¿½ resummation of the local Puiseux series of the cumulant generating
     function converges on every compact subset of the complement of the Stahl
     branch/polar set, including beyond the Puiseux radius of the original
-    series, at Stahl rate. The Padé denominator is the orthogonal polynomial
+    series, at Stahl rate. The Padï¿½ denominator is the orthogonal polynomial
     of degree <math|M> under the Hankel moment functional, produced directly
-    from the Müntz moments by the Chebyshev algorithm in arbitrary-precision
+    from the Mï¿½ntz moments by the Chebyshev algorithm in arbitrary-precision
     arithmetic, equivalent to solving the Hankel system but without matrix
     formation or inversion. Second (Theorems<nbsp><reference|thm:foxH_density>,
     <reference|thm:foxH_price>), both the density of the log-return and the
@@ -52,7 +52,7 @@
     partial-fraction expansion at <math|O<around|(|M<rsup|2>|)>> per
     maturity. The price formula is derived by two analytically independent
     routes (convolution chain and Mellin--Barnes inversion) converging on
-    identical parameter data. The Padé characteristic function has Gaussian
+    identical parameter data. The Padï¿½ characteristic function has Gaussian
     real-axis decay, sharper than the stretched-exponential decay of the
     exact rough Heston cf. Third (Theorem<nbsp><reference|thm:price>), the
     same prices may alternatively be computed by applying the Fang--Oosterlee
@@ -62,18 +62,18 @@
 
   <\table-of-contents|toc>
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>Fractional
-    calculus and the Müntz basis> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    calculus and the Mï¿½ntz basis> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-1><vspace|0.5fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|2<space|2spc>The
-    Müntz\UTau recurrence> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    Mï¿½ntz\UTau recurrence> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-2><vspace|0.5fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|3<space|2spc>Rough
     Heston cumulant moments> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-3><vspace|0.5fn>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|4<space|2spc>Padé
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|4<space|2spc>Padï¿½
     resummation via the Chebyshev algorithm>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-4><vspace|0.5fn>
@@ -90,11 +90,11 @@
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-7>>
 
-    <with|par-left|1tab|4.4<space|2spc>Padé numerator from associated
+    <with|par-left|1tab|4.4<space|2spc>Padï¿½ numerator from associated
     polynomials <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-8>>
 
-    <with|par-left|1tab|4.5<space|2spc>Padé matching
+    <with|par-left|1tab|4.5<space|2spc>Padï¿½ matching
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-9>>
 
@@ -178,7 +178,7 @@
     <no-break><pageref|auto-27><vspace|0.5fn>
   </table-of-contents>
 
-  <section|Fractional calculus and the Müntz basis><label|sec:fc>
+  <section|Fractional calculus and the Mï¿½ntz basis><label|sec:fc>
 
   <\definition>
     [Riemann\ULiouville operators]<label|def:RL> For
@@ -206,18 +206,18 @@
     gives<nbsp><eqref|eq:power>.
   </proof>
 
-  The Müntz lattice <math|<around|{|t<rsup|k*\<mu\>>|}><rsub|k\<ge\>0>> is
+  The Mï¿½ntz lattice <math|<around|{|t<rsup|k*\<mu\>>|}><rsub|k\<ge\>0>> is
   closed under <math|<Imu>> by<nbsp><eqref|eq:power> and closed under
   multiplication. In the variable <math|z=t<rsup|\<mu\>>> every element is
   <math|z<rsup|k>>, so ordinary power-series arithmetic applies.
 
-  <section|The Müntz\UTau recurrence><label|sec:recurrence>
+  <section|The Mï¿½ntz\UTau recurrence><label|sec:recurrence>
 
   Define <math|\<gamma\><rsub|k>\<assign\>\<Gamma\>*<around|(|<around|(|k-1|)>*\<mu\>+1|)>/\<Gamma\>*<around|(|k*\<mu\>+1|)>>
   for <math|k\<ge\>1>, so that <math|<Imu>t<rsup|<around|(|k-1|)>*\<mu\>>=\<gamma\><rsub|k>*<space|0.17em>t<rsup|k*\<mu\>>>.
 
   <\theorem>
-    [Müntz\UTau recurrence]<label|thm:recurrence> The unique formal
+    [Mï¿½ntz\UTau recurrence]<label|thm:recurrence> The unique formal
     power-series solution of
 
     <\equation>
@@ -293,13 +293,13 @@
     via<nbsp><eqref|eq:cumulant_moments> requires
     <math|<around|{|a<rsub|k><around|(|v|)>|}><rsub|k=1><rsup|2*M>>, since
     the <math|V<rsub|0>> term in <math|M<rsub|k>> uses <math|a<rsub|k+1>>.
-    The Müntz-coefficient budget is <math|2*M> Riccati coefficients per
+    The Mï¿½ntz-coefficient budget is <math|2*M> Riccati coefficients per
     strike.
   </remark>
 
-  <section|Padé resummation via the Chebyshev algorithm><label|sec:pade>
+  <section|Padï¿½ resummation via the Chebyshev algorithm><label|sec:pade>
 
-  The diagonal <math|<around|[|M/M|]>> Padé approximant of
+  The diagonal <math|<around|[|M/M|]>> Padï¿½ approximant of
   <math|<wide|\<Phi\>|^>> is the unique pair
   <math|<around|(|P<rsub|M>,Q<rsub|M>|)>> with <math|deg P<rsub|M>\<le\>M-1>,
   <math|deg Q<rsub|M>\<le\>M>, <math|Q<rsub|M><around|(|0|)>=1>, satisfying
@@ -366,7 +366,7 @@
     precision.
   </theorem>
 
-  <subsection|Padé numerator from associated polynomials>
+  <subsection|Padï¿½ numerator from associated polynomials>
 
   <\definition>
     [Associated polynomial of the second kind]<label|def:assoc>
@@ -383,10 +383,10 @@
     <math|p<rsub|1><rsup|<around|(|1|)>>\<equiv\>M<rsub|0><around|(|v|)>>.
   </lemma>
 
-  <subsection|Padé matching>
+  <subsection|Padï¿½ matching>
 
   <\lemma>
-    [Padé denominator and numerator]<label|lem:match>
+    [Padï¿½ denominator and numerator]<label|lem:match>
     <math|Q<rsub|M><around|(|z|)>\<assign\>z<rsup|M>*p<rsub|M>*<around|(|1/z|)>>,
     <math|P<rsub|M><around|(|z|)>\<assign\>z<rsup|M-1>*p<rsub|M><rsup|<around|(|1|)>>*<around|(|1/z|)>>.
     Then <math|Q<rsub|M><around|(|0|)>=1>, <math|deg P<rsub|M>\<le\>M-1>, and
@@ -490,7 +490,7 @@
   </remark>
 
   <\remark>
-    [Tail comparison]<label|rem:tail_compare> Padé <math|\<phi\><rsub|M>> has
+    [Tail comparison]<label|rem:tail_compare> Padï¿½ <math|\<phi\><rsub|M>> has
     Gaussian decay <math|e<rsup|-<tfrac|1|2>\<sigma\><rsub|T><rsup|2>*u<rsup|2>>>,
     sharper than the stretched-exponential
     <math|e<rsup|-c<around|\||u|\|><rsup|2*\<mu\>>>> (<math|\<mu\>\<less\>1>)
@@ -499,7 +499,7 @@
 
   <\proposition>
     [Strip admissibility]<label|prop:strip> For rough Heston with
-    <math|\<mu\>\<in\><around|(|<tfrac|1|2>,1|)>> and Padé order <math|M>,
+    <math|\<mu\>\<in\><around|(|<tfrac|1|2>,1|)>> and Padï¿½ order <math|M>,
     the PFE poles <math|<around|{|u<rsub|j><around|(|T|)>|}><rsub|j=1><rsup|2*M>>
     split by Hermitian symmetry (Lemma<nbsp><reference|lem:herm>) into
     <math|M> poles in <math|<around|{|<Imag>u<rsub|j>\<less\>0|}>> and
@@ -517,7 +517,7 @@
 
   <\remark>
     [Independence from <math|c>]<label|rem:cauchy_independence> By Cauchy's
-    theorem the Lewis contour can be deformed between any two admissible
+    theorem the contour can be deformed between any two admissible
     vertical lines without crossing poles, so the integral value is
     unchanged. The Fox <math|H> price formula<nbsp><eqref|eq:foxH_price> is a
     contour-invariant analytic identity.
@@ -627,10 +627,10 @@
   The increment gives <math|<around|(|<around|\||S|\|>+1,<around|\||S|\|>+1,<around|\||S|\|>+2,2\|S\|+2|)>>.
 
   Assume<nbsp><eqref|eq:strip_hypothesis> for some <math|c\<in\><R>>
-  (Proposition<nbsp><reference|prop:strip>). The Lewis representation
+  (Proposition<nbsp><reference|prop:strip>). The Parseval representation
 
   <\equation>
-    <label|eq:lewis>C<rsub|M>*<around|(|K,T|)>=<frac|S<rsub|0>*e<rsup|-r*T>|2*\<pi\>*i>*<big|int><rsub|c-i*\<infty\>><rsup|c+i*\<infty\>><frac|\<phi\><rsub|M><around|(|i*w,T|)>*e<rsup|-w*<wide|k|~>>|w*<around|(|w-1|)>>*<space|0.17em>d*w
+    <label|eq:contour>C<rsub|M>*<around|(|K,T|)>=<frac|S<rsub|0>*e<rsup|-r*T>|2*\<pi\>*i>*<big|int><rsub|c-i*\<infty\>><rsup|c+i*\<infty\>><frac|\<phi\><rsub|M><around|(|i*w,T|)>*e<rsup|-w*<wide|k|~>>|w*<around|(|w-1|)>>*<space|0.17em>d*w
   </equation>
 
   combined with the Bessel resummation
@@ -777,7 +777,7 @@
 
   <section|Summary><label|sec:summary>
 
-  <with|font-series|bold|T1.> Padé resummation directly on
+  <with|font-series|bold|T1.> Padï¿½ resummation directly on
   <math|<around|{|M<rsub|k><around|(|v|)>|}>> via the Chebyshev algorithm in
   arbitrary precision, in <math|O<around|(|M<rsup|2>|)>> ring operations with
   no Hankel matrix inversion. Stahl convergence
@@ -801,17 +801,17 @@
   Gaussian-rate truncation error.
 
   <\thebibliography|9>
-    <bibitem|Chebyshev>P.<nbsp>L.<nbsp>Chebyshev, <em|Sur le développement
-    des fonctions à une seule variable>, Bull.<nbsp>Acad.<nbsp>Imp.<nbsp>Sci.<nbsp>St.<nbsp>Pétersbourg
+    <bibitem|Chebyshev>P.<nbsp>L.<nbsp>Chebyshev, <em|Sur le dï¿½veloppement
+    des fonctions ï¿½ une seule variable>, Bull.<nbsp>Acad.<nbsp>Imp.<nbsp>Sci.<nbsp>St.<nbsp>Pï¿½tersbourg
     <with|font-series|bold|1> (1859), 193\U200.
 
     <bibitem|Chihara>T.<nbsp>S.<nbsp>Chihara, <em|An Introduction to
     Orthogonal Polynomials>, Gordon and Breach, 1978.
 
-    <bibitem|Brezinski>C.<nbsp>Brezinski, <em|Padé-Type Approximation and
-    General Orthogonal Polynomials>, Birkhäuser, 1980.
+    <bibitem|Brezinski>C.<nbsp>Brezinski, <em|Padï¿½-Type Approximation and
+    General Orthogonal Polynomials>, Birkhï¿½user, 1980.
 
-    <bibitem|StahlBranch>H.<nbsp>Stahl, <em|Convergence of Padé approximants
+    <bibitem|StahlBranch>H.<nbsp>Stahl, <em|Convergence of Padï¿½ approximants
     to functions with branch points>, J.<nbsp>Approx.<nbsp>Theory
     <with|font-series|bold|91> (1997), 139\U204.
 
@@ -822,10 +822,6 @@
     <bibitem|MathaiSaxena>A.<nbsp>M.<nbsp>Mathai, R.<nbsp>K.<nbsp>Saxena,
     H.<nbsp>J.<nbsp>Haubold, <em|The H-Function: Theory and Applications>,
     Springer, 2010.
-
-    <bibitem|Lewis>A.<nbsp>Lewis, <em|A simple option formula for general
-    jump-diffusion and other exponential Lévy processes>, Envision Financial
-    Systems Working Paper, 2001.
 
     <bibitem|CarrMadan>P.<nbsp>Carr and D.<nbsp>Madan, <em|Option valuation
     using the fast Fourier transform>, J.<nbsp>Comp.<nbsp>Finance
@@ -887,7 +883,6 @@
     <associate|bib-Chihara|<tuple|Chihara|11|../../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|bib-ElEuchRosenbaum|<tuple|ElEuchRosenbaum|11|../../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|bib-FangOosterlee|<tuple|FangOosterlee|11|../../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|bib-Lewis|<tuple|Lewis|11|../../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|bib-MathaiSaxena|<tuple|MathaiSaxena|11|../../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|bib-SKM|<tuple|SKM|11|../../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|bib-StahlBranch|<tuple|StahlBranch|11|../../.TeXmacs/texts/scratch/no_name_2.tm>>
@@ -931,7 +926,7 @@
     <associate|eq:gauss_decay|<tuple|24|6|../../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|eq:heston_IVP|<tuple|8|3|../../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|eq:interval|<tuple|41|9|../../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:lewis|<tuple|38|8|../../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|eq:contour|<tuple|38|8|../../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|eq:p1_def|<tuple|18|4|../../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|eq:pade_match|<tuple|11|4|../../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|eq:pade_proved|<tuple|19|5|../../.TeXmacs/texts/scratch/no_name_2.tm>>
@@ -984,18 +979,18 @@
   <\collection>
     <\associate|toc>
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>Fractional
-      calculus and the Müntz basis> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      calculus and the Mï¿½ntz basis> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-1><vspace|0.5fn>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>The
-      Müntz\UTau recurrence> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      Mï¿½ntz\UTau recurrence> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-2><vspace|0.5fn>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>Rough
       Heston cumulant moments> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-3><vspace|0.5fn>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>Padé
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>Padï¿½
       resummation via the Chebyshev algorithm>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-4><vspace|0.5fn>
@@ -1012,11 +1007,11 @@
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-7>>
 
-      <with|par-left|<quote|1tab>|4.4<space|2spc>Padé numerator from
+      <with|par-left|<quote|1tab>|4.4<space|2spc>Padï¿½ numerator from
       associated polynomials <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-8>>
 
-      <with|par-left|<quote|1tab>|4.5<space|2spc>Padé matching
+      <with|par-left|<quote|1tab>|4.5<space|2spc>Padï¿½ matching
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-9>>
 

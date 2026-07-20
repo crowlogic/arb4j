@@ -166,8 +166,8 @@ inputs because their proofs are book-length or paper-length and orthogonal
 to our construction: Stahl's theorem on the convergence of diagonal Pad\'e
 approximants to functions with branch points~\cite{Stahl}, the existence
 and analyticity of the rough Heston characteristic
-function~\cite{ElEuchRosenbaum}, and the Parseval/Lewis contour
-representation of European option values~\cite{Lewis,Widder}. Their
+function~\cite{ElEuchRosenbaum}, and the Parseval contour
+representation of European option values~\cite{Widder}. Their
 hypotheses are verified at the point of use. Crucially, the absolute
 convergence of the price series at fixed $M$ (Theorem~\ref{thm:absconv}),
 which is the assertion ``convergent for all valid parameter sets,'' uses
@@ -241,7 +241,7 @@ the right-tail condition placing the call contour at $c\in(1,p^*)$.)}
 \subsection{External inputs}
 
 \begin{description}
-\item[(E1) Parseval/Lewis representation~\cite{Widder,Lewis}.] If $f$ and
+\item[(E1) Parseval representation~\cite{Widder}.] If $f$ and
 $p$ have overlapping vertical/horizontal strips of analyticity for their
 bilateral Laplace and Fourier transforms, the pairing $\int_\R f(x)p(x)\,dx$
 equals the contour integral obtained by substituting the inverse transform
@@ -902,7 +902,7 @@ orientation of the improper limits is accounted for; this is
 \eqref{eq:gPhat}.
 \end{proof}
 
-\begin{theorem}[Lewis contour representations]\label{thm:lewis}
+\begin{theorem}[Contour representations]\label{thm:contour}
 Under \ref{A2}--\ref{A4} the discounted European call and put satisfy, with
 $c\in(1,p^*)$ and $c_P\in(-p^*,0)$,
 \begin{align}
@@ -910,10 +910,10 @@ C_M(K,T)&=\frac{e^{-rT}}{2\pi i}\int_{c-i\infty}^{c+i\infty}
 \phi_M(-iw,T)\,\hat g_C(w)\,dw
 =\frac{K e^{-rT}}{2\pi i}\int_{c-i\infty}^{c+i\infty}
 \frac{\phi_M(-iw,T)\,e^{-w\tilde k}}{w(w-1)}\,dw,
-\label{eq:lewis-call}\\
+\label{eq:contour-call}\\
 \Pi_M(K,T)&=\frac{K e^{-rT}}{2\pi i}\int_{c_P-i\infty}^{c_P+i\infty}
 \frac{\phi_M(-iw,T)\,e^{-w\tilde k}}{w(w-1)}\,dw,
-\label{eq:lewis-put}
+\label{eq:contour-put}
 \end{align}
 where $\Pi_M$ is the put. The integrands are identical; only the abscissa
 differs.
@@ -925,7 +925,7 @@ The discounted call is $C_M=e^{-rT}\E[g_C(X_T)]=e^{-rT}\int_\R g_C(x)p(x)
 for a vertical line $\Real w=c$ inside the intersection of the strip
 $\Real w>1$ (where $\hat g_C$ is analytic, Lemma~\ref{lem:payoff}) and the
 strip where $\E[e^{wX_T}]=\phi_M(-iw)$ is finite,
-\begin{equation}\label{eq:lewis-pf1}
+\begin{equation}\label{eq:contour-pf1}
 \int_\R g_C(x)p(x)\,dx
 =\frac{1}{2\pi i}\int_{c-i\infty}^{c+i\infty}\hat g_C(w)\,
 \E[e^{wX_T}]\,dw
@@ -938,7 +938,7 @@ $|\phi_M(-iw)|=|\phi_M(u)|\le e^{C_T}e^{-\sigma_T^2(\Real w)^2/2}\cdot
 real-axis bound into the strip $0<\Imag u<p^*$ where there is no pole
 (Proposition~\ref{prop:strip}, \ref{A4}); together with
 $|\hat g_C(w)|=S_0e^{rT}e^{(1-c)\tilde k}|w(w-1)|^{-1}=O(|\Imag w|^{-2})$
-the integrand is absolutely integrable, validating \eqref{eq:lewis-pf1}.
+the integrand is absolutely integrable, validating \eqref{eq:contour-pf1}.
 Now substitute \eqref{eq:gChat} and multiply by $e^{-rT}$:
 \[
 C_M(K,T)=\frac{e^{-rT}}{2\pi i}\int_{c-i\infty}^{c+i\infty}
@@ -946,15 +946,15 @@ S_0e^{rT}\frac{e^{(1-w)\tilde k}}{w(w-1)}\phi_M(-iw,T)\,dw.
 \]
 Since $S_0e^{rT}e^{(1-w)\tilde k}=S_0e^{rT}e^{\tilde k}e^{-w\tilde k}$
 and $S_0e^{rT}e^{\tilde k}=K$ by \eqref{eq:ktilde}, this simplifies to
-\eqref{eq:lewis-call}. The put is identical with $\hat g_P$
+\eqref{eq:contour-call}. The put is identical with $\hat g_P$
 in place of $\hat g_C$ and the line $\Real w=c_P<<0$ inside the common strip;
 since $\hat g_P=\hat g_C$ as meromorphic functions (Lemma~\ref{lem:payoff}),
 the integrand is the same and only the abscissa changes, giving
-\eqref{eq:lewis-put}.
+\eqref{eq:contour-put}.
 \end{proof}
 
 \begin{remark}[Put--call parity as a contour shift]\label{rem:parity}
-The call and put integrands in \eqref{eq:lewis-call}--\eqref{eq:lewis-put}
+The call and put integrands in \eqref{eq:contour-call}--\eqref{eq:contour-put}
 coincide; the difference $C_M-\Pi_M$ is the integral over the closed contour
 between $\Real w=c_P$ and $\Real w=c$, which encloses the two kernel poles
 $w=0$ and $w=1$ and no $u_j$-images. By the residue theorem,
@@ -1286,7 +1286,7 @@ put--call parity.
 \end{theorem}
 
 \begin{proof}
-\textbf{(1)} By Theorem~\ref{thm:lewis},
+\textbf{(1)} By Theorem~\ref{thm:contour},
 $C_M=\frac{K e^{-rT}}{2\pi i}\int_{c-i\infty}^{c+i\infty}\phi_M(-iw)e^{-w\tilde k}
 [w(w-1)]^{-1}dw$.
 \textbf{(2)} Lemma~\ref{lem:rotate} rewrites the integrand as
@@ -1557,8 +1557,8 @@ Theorem~\ref{thm:apost}.
 (Theorem~\ref{thm:price}) in the partial-fraction data
 $(\sigma_T,\mu_T,\{u_j,A_j\})$, with kernel
 $\mathcal E=\tfrac12 e^{g}\erfc-\mathbf1\,e^{g}$ and every derivative the
-closed Hermite form \eqref{eq:dE-explicit}, derived from the Parseval/Lewis
-representation (Theorem~\ref{thm:lewis}; payoff transforms
+closed Hermite form \eqref{eq:dE-explicit}, derived from the Parseval
+representation (Theorem~\ref{thm:contour}; payoff transforms
 Lemma~\ref{lem:payoff}), the rotation Lemma~\ref{lem:rotate} ($B_j=iA_j$,
 $\hat u_j=iu_j$, $\xi=\tilde k+\mu_T$), the Cauchy product
 Lemma~\ref{lem:cauchy}, and the Schwinger identity Lemma~\ref{lem:E}; the
@@ -1578,7 +1578,6 @@ normalisations, and $C_M\to C$ at the Stahl rate.
 \bibitem{Stahl} H.~Stahl, \emph{The convergence of Pad\'e approximants to functions with branch points}, J.~Approx.~Theory \textbf{91} (1997), 139--204.
 \bibitem{ElEuchRosenbaum} O.~El~Euch and M.~Rosenbaum, \emph{The characteristic function of rough Heston models}, Math.~Finance \textbf{29} (2019), 3--38.
 \bibitem{GatheralRadoicic} J.~Gatheral and R.~Radoi\v{c}i\'c, \emph{Rational approximation of the rough Heston solution}, Int.~J.~Theor.~Appl.~Finance \textbf{22} (2019), 1950010.
-\bibitem{Lewis} A.~Lewis, \emph{A simple option formula for general jump-diffusion and other exponential L\'evy processes}, Envision Financial Systems Working Paper, 2001.
 \bibitem{Widder} D.~V.~Widder, \emph{The Laplace Transform}, Princeton University Press, 1941.
 \bibitem{Olver} F.~W.~J.~Olver et al., \emph{NIST Handbook of Mathematical Functions}, Cambridge University Press, 2010 (\S7.10 for $\erfc$; \S18 for Hermite polynomials).
 \bibitem{SKM} S.~G.~Samko, A.~A.~Kilbas, O.~I.~Marichev, \emph{Fractional Integrals and Derivatives}, Gordon and Breach, 1993.
